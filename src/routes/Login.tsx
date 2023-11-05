@@ -127,7 +127,7 @@ export default function Login() {
           autoFocus={cachedCredentials != null}
           type={ButtonType.Green}
           onClick={login}
-          text="Continue"
+          text="Continue ⟶"
           isLoading={isLoading}
         />
         {status !== "" && <div className="status">{status}</div>}
