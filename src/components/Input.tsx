@@ -54,6 +54,7 @@ export default function Input(props: Props) {
 
     if (props.constraints) {
       const violations = props.constraints.filter(constraint => !constraint.pattern.test(value))
+
       setViolatedConstraints(violations)
     }
   }
@@ -69,7 +70,7 @@ export default function Input(props: Props) {
         value={value}
         onChange={handleInputChange}
       />
-      <div className="constraints --flex -vertical -gap">
+      <div className="constraints --flex -vertical -gap-half">
         {violatedConstraints.map(constraint => (
           <span
             key={constraint.message}

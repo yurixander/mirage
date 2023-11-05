@@ -98,11 +98,12 @@ export default function Login() {
   return (
     <div className="Login --flex -vertical">
       <img className="--float -left -top" src="/pink-glow.svg" />
-      <div className="--margin-x2 --text-center">
-        <h3>Just one more step</h3>
-        <p>Sign in now to get started.</p>
-      </div>
+      <img alt="Mirage's logo" width="200" src="/logo-black.svg" className="--margin-x2" />
       <div className="login-box --z --margin-x1">
+        <div className="--text-center --margin-x1">
+          <h4>Just one more thing.</h4>
+          <p>Sign in now to get started</p>
+        </div>
         <Input
           isDisabled={isLoading}
           label="Base URL"

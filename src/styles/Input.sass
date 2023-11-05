@@ -7,5 +7,15 @@
       color: var(--color-error)
       font-size: 0.8rem
 
+      &::before
+        content: ""
+        display: inline-block
+        width: 1.2ch
+        height: 1.2ch
+        border-radius: 50%
+        background-color: currentColor
+        margin-right: 1ch
+        box-shadow: 0 0 8px currentColor
+
       &[data-is-met="true"]
         color: var(--color-success)
