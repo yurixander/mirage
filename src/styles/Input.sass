@@ -1,0 +1,11 @@
+.Input
+  & > .constraints
+    margin-top: var(--size-margin-half)
+    padding-left: calc(var(--border-radius) / 2)
+
+    & > .constraint
+      color: var(--color-error)
+      font-size: 0.8rem
+
+      &[data-is-met="true"]
+        color: var(--color-success)

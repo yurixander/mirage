@@ -1,0 +1,145 @@
+@import "utility"
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap")
+
+$color-darken-percent: 10%
+
+@mixin box-shadow
+  box-shadow: 0 5px 16px var(--color-box-shadow)
+
+@mixin border
+  border: var(--border-width) solid var(--color-ui-border)
+
+:root
+  --border-radius: 8px
+  --color-text: #4b5563
+  --color-text-strong: #1c2126
+  --color-text-white: #eee
+  --color-background: #fff
+  --color-ui: #efefef
+  --color-ui-contrast: #f9fbfc
+  --color-ui-border: #e9ebed
+  --color-box-shadow: #eee
+  --color-error: #e53e3e
+  --color-success: #38a169
+  --v-line-height: 200%
+  --v-radius: 4px
+  --border-width: 1px
+  --size-gap: 1rem
+  --size-margin-half: 0.5rem
+  --size-margin-1: 1rem
+  --size-margin-2: 2rem
+
+*
+  box-sizing: border-box
+
+html,
+body,
+#root
+  height: 100%
+
+html
+  font-size: 16px
+
+body
+  position: relative
+  margin: 0
+  font-family: "Inter", sans-serif
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  color: var(--color-text)
+  user-select: none
+  overflow: hidden
+
+code
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace
+
+input,
+button
+  /* TODO: Only for box-shadow and border-color. */
+  width: 100%
+  font-size: inherit
+
+button:disabled,
+input:disabled
+  opacity: 0.5
+  cursor: not-allowed
+
+input
+  padding: 0.5rem
+  border-radius: var(--v-radius)
+  background: none
+  color: inherit
+  border: 1px solid var(--color-ui-border)
+  outline: unset
+  font-family: inherit
+
+button
+  font-size: 1rem
+  /* TODO: Inspect this. Using absolute height, but should work on most cases. */
+  height: calc(1rem + 2rem)
+  padding: 1rem
+  outline: unset
+  cursor: pointer
+  background-color: #444
+  border: 1px solid #444
+  border-bottom: 4px solid #303030
+  color: rgba(255, 255, 255, 0.5)
+  font-weight: bold
+  border-radius: var(--border-radius)
+  display: flex
+  justify-content: center
+  align-items: center
+  font-family: inherit
+
+button:active:not(:disabled)
+  transform: translateY(3px)
+
+button.shrink
+  width: auto
+
+button[data-type="green"]
+  background-color: #4caf50
+  border-color: darken(#4caf50, $color-darken-percent)
+  color: #fff
+
+button[data-type="green"]:focus
+  border-color: #69e66d
+
+.text-link
+  text-decoration: underline
+  text-underline-offset: 0.4rem
+  cursor: pointer
+  transition: opacity 0.1s ease
+
+.text-center
+  text-align: center
+
+p
+  margin: unset
+  line-height: var(--v-line-height)
+
+h1, h2, h3, h4, h5, h6
+  // font-family: "Inter", sans-serif
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif
+  font-weight: bolder
+  color: var(--color-text-strong)
+  margin-top: 0
+  margin-bottom: var(--size-margin-half)
+
+h1
+  font-size: 3rem
+
+h2
+  font-size: 2.5rem
+
+h3
+  font-size: 2rem
+
+h4
+  font-size: 1.5rem
+
+h5
+  font-size: 1.25rem
+
+h6
+  font-size: 1rem

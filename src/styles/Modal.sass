@@ -1,0 +1,35 @@
+@keyframes pop-up
+  from
+    opacity: 0.2
+    transform: scale(0.8)
+    padding-top: 2rem
+    padding-bottom: 2rem
+
+.Modal > .overlay
+  display: flex
+  justify-content: center
+  align-items: center
+  z-index: 10
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background: rgba(0, 0, 0, 0.7)
+
+  & > .content
+    display: flex
+    flex-direction: column
+    z-index: 11
+    position: absolute
+    border-radius: var(--v-radius)
+    background-color: var(--color-ui)
+    padding: 4rem
+    max-width: 600px
+    width: 100%
+    gap: 1rem
+    overflow: hidden
+    animation: pop-up 0.3s ease
+
+  & > .content p
+    margin-bottom: 2rem

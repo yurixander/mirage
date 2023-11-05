@@ -1,0 +1,47 @@
+@keyframes slide-in-out
+  0%
+    left: 100%
+    opacity: 0
+
+  10%
+    left: 0
+    opacity: 0.5
+
+  75%
+    left: 0
+    opacity: 0.5
+
+  100%
+    left: 100%
+    opacity: 0
+
+.Notifications
+  display: flex
+  flex-direction: column
+  gap: 1rem
+  position: absolute
+  right: 0
+  top: 2rem
+  z-index: 9
+  overflow: hidden
+  padding: 16px
+  padding-right: 0
+
+  & > .notification
+    position: relative
+    padding: 1rem
+    background-color: var(--color-ui)
+    border-radius: calc(var(--v-radius) * 2)
+    border-top-right-radius: 0
+    border-bottom-right-radius: 0
+    box-shadow: 0 0 16px #282828
+    min-width: 375px
+    animation: slide-in-out 7s ease forwards
+
+  & > .notification:hover
+    opacity: 1 !important
+
+  & > .notification > .title
+    color: rgb(149, 223, 149)
+    margin-bottom: 10px
+    opacity: 0.5
