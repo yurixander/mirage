@@ -1,6 +1,6 @@
 <div align="center">
   <img width="150" alt="Mirage's logo" src="./public/logo-white.svg" />
-  <p>A simple, lightweight, and easy-to-use web client for the <a href="https://matrix.org" target="_blank">[Matrix] protocol</a>.</p>
+  <p>A simple, lightweight, and easy-to-use web client for the <a href="https://matrix.org">[Matrix] protocol</a>.</p>
 </div>
 
 <hr />
