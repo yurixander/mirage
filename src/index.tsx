@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom"
 import App from "./routes/App"
 import {createRoot} from "react-dom/client"
 import "./polyfills"
+import {StrictMode} from "react"
 
 export enum Path {
   App = "/",
@@ -17,10 +18,12 @@ export type Credentials = {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path={Path.App} element={<App />} />
-      <Route path={Path.Login} caseSensitive element={<Login />} />
-    </Routes>
-  </BrowserRouter>
+  <StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path={Path.App} element={<App />} />
+        <Route path={Path.Login} caseSensitive element={<Login />} />
+      </Routes>
+    </BrowserRouter>
+  </StrictMode>
 )
