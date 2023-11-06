@@ -15,7 +15,8 @@ type Props = {
   placeholder: string
   constraints?: InputConstraint[]
   alwaysShowAllConstraints?: boolean
-  onChange?: (value: string) => void
+  onValueChange?: (value: string) => void
+  initialValue?: string
   value?: string
 }
 
@@ -36,18 +37,33 @@ const urlPattern = new RegExp(
   "(\\#[-a-zA-Z\\d_]*)?$", "i"
 )
 
+const userIdPattern = new RegExp(
+  // `@` [username] `:` [domain]
+  /^@[a-zA-Z_\-=\.\/0-9]+:[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/
+)
+
 export const urlConstraint: InputConstraint = {
   message: "Must be a valid URL.",
   pattern: urlPattern,
 }
 
+export const nonEmptyConstraint: InputConstraint = {
+  message: "Must not be empty.",
+  pattern: /.+/,
+}
+
+export const userIdConstraint: InputConstraint = {
+  message: "Must be a valid user ID.",
+  pattern: userIdPattern,
+}
+
 export default function Input(props: Props) {
   // TODO: Handle `alwaysShowAllConstraints` option.
 
-  const [value, setValue] = useState(props.value || "")
+  const [value, setValue] = useState(props.initialValue || "")
   const [violatedConstraints, setViolatedConstraints] = useState<InputConstraint[]>([])
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
     setValue(value)
@@ -57,6 +73,9 @@ export default function Input(props: Props) {
 
       setViolatedConstraints(violations)
     }
+
+    if (props.onValueChange !== undefined)
+      props.onValueChange(value)
   }
 
   return (
@@ -67,8 +86,8 @@ export default function Input(props: Props) {
         disabled={props.isDisabled}
         autoFocus={props.autoFocus}
         placeholder={props.placeholder}
-        value={value}
-        onChange={handleInputChange}
+        value={props.value ?? value}
+        onChange={handleChange}
       />
       <div className="constraints --flex -vertical -gap-half">
         {violatedConstraints.map(constraint => (

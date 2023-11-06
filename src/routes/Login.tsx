@@ -1,45 +1,32 @@
 import "../styles/Login.sass"
-import {useState} from "react"
-// import * as sdk from "matrix-js-sdk";
-// import {SyncState} from "matrix-js-sdk/lib/sync";
+import {useEffect, useState} from "react"
+import * as sdk from "matrix-js-sdk"
+import {SyncState} from "matrix-js-sdk/lib/sync"
 import {useNavigate} from "react-router-dom"
-import {Credentials} from "../index"
+import {Credentials, Path} from "../index"
 import Button, {ButtonType} from "../components/Button"
 import {smartTimeout} from "../useTimeout"
-import {reflectInputValue} from "../util"
-import Label from "../components/Label"
 import Footer from "../components/Footer"
-import Input, {urlConstraint} from "../components/Input"
+import Input, {nonEmptyConstraint, urlConstraint, userIdConstraint} from "../components/Input"
+import useQueue from "../hooks/queue"
+import StatusMessage from "../components/StatusMessage"
+
+const CREDENTIALS_LOCAL_STORAGE_KEY = "credentials"
 
 export default function Login() {
-  const cachedCredentials = localStorage.getItem("credentials")
-
-  const defaultCredentials: Credentials = cachedCredentials
-    ? JSON.parse(cachedCredentials)
-    : {
-      baseUrl: "https://matrix-client.matrix.org/",
-      userId: "",
-      accessToken: "",
-    } satisfies Credentials
-
-  const [baseUrl, setBaseUrl] = useState(defaultCredentials.baseUrl)
-  const [userId, setUserId] = useState(defaultCredentials.userId)
-  const [status, setStatus] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [baseUrl, setBaseUrl] = useState("https://matrix-client.matrix.org/")
+  const [userId, setUserId] = useState<string>("")
+  const {current: status, pushItem: pushStatus} = useQueue<string>()
+  const [isConnecting, setIsConnecting] = useState(true)
+  const [accessToken, setAccessToken] = useState<string>("")
   const navigate = useNavigate()
 
-  const [accessToken, setAccessToken] = useState(
-    defaultCredentials.accessToken
-  )
-
-  const updateStatus = (newStatus: string) => {
-    smartTimeout(() => setStatus(null), 3000)
-    setStatus(newStatus)
-  }
+  const updateStatus = (newStatus: string) =>
+    pushStatus(newStatus)
 
   const cacheCredentials = () => {
     localStorage.setItem(
-      "credentials",
+      CREDENTIALS_LOCAL_STORAGE_KEY,
       JSON.stringify({
         baseUrl,
         accessToken,
@@ -48,52 +35,63 @@ export default function Login() {
     )
   }
 
-  const login = () => {
-    if (isLoading) return
+  const login = (credentials: Credentials) => {
+    if (isConnecting)
+      return
 
-    setIsLoading(true)
+    setIsConnecting(true)
 
-    // const client = sdk.createClient({
-    //   baseUrl,
-    //   accessToken,
-    //   userId,
-    // });
+    const client = sdk.createClient(credentials)
 
-    // smartTimeout(() => {
-    //   if (!isLoading) {
-    //     return;
-    //   }
+    smartTimeout(() => {
+      if (!isConnecting) {
+        return
+      }
 
-    //   client.stopClient();
-    //   updateStatus("Timed out. Try again later.");
-    //   setIsLoading(false);
-    // }, 15000);
+      client.stopClient()
+      updateStatus("Timed out. Try again later.")
+      setIsConnecting(false)
+    }, 10_000)
 
-    // client.once(sdk.ClientEvent.Sync, function (state, _, res) {
-    //   setIsLoading(false);
+    client.once(sdk.ClientEvent.Sync, function(state, _syncState, res) {
+      if (state === SyncState.Error) {
+        client.stopClient()
+        updateStatus(`Sync error: ${res?.error?.message}`)
+        setIsConnecting(false)
 
-    //   if (state === SyncState.Error) {
-    //     updateStatus(`Sync error: ${res?.error?.message}`);
+        return
+      }
 
-    //     return;
-    //   }
+      cacheCredentials()
+      client.stopClient()
 
-    //   cacheCredentials();
-    //   client.stopClient();
+      navigate(Path.App, {
+        state: {
+          baseUrl,
+          accessToken,
+          userId,
+        },
+      })
+    })
 
-    //   navigate(Path.App, {
-    //     state: {
-    //       baseUrl,
-    //       accessToken,
-    //       userId,
-    //     },
-    //   });
-    // });
-
-    // // TODO: Inefficient, we only need to test whether the credentials are valid.
-    // // We might need to use React context to solve this.
-    // client.startClient();
+    // OPTIMIZE: Inefficient, we only need to test whether the credentials are valid. Might need to use React context to solve this.
+    client.startClient()
   }
+
+  // Automatically login if credentials are cached.
+  useEffect(() => {
+    const cachedCredentialsJson = localStorage.getItem(CREDENTIALS_LOCAL_STORAGE_KEY)
+
+    if (cachedCredentialsJson === null) {
+      setIsConnecting(false)
+
+      return
+    }
+
+    const cachedCredentials: Credentials = JSON.parse(cachedCredentialsJson)
+
+    login(cachedCredentials)
+  }, [])
 
   return (
     <div className="Login --flex -vertical">
@@ -105,32 +103,35 @@ export default function Login() {
           <p>Sign in now to get started</p>
         </div>
         <Input
-          isDisabled={isLoading}
+          isDisabled={isConnecting}
           label="Base URL"
-          placeholder="Base URL"
+          placeholder="https://matrix-client.matrix.org/"
           constraints={[urlConstraint]}
-          onChange={setBaseUrl}
+          value={baseUrl}
+          onValueChange={setBaseUrl}
         />
         <Input
-          isDisabled={isLoading}
+          isDisabled={isConnecting}
           label="Access Token"
           placeholder="Access token"
-          onChange={setAccessToken}
+          autoFocus
+          constraints={[nonEmptyConstraint]}
+          onValueChange={setAccessToken}
         />
         <Input
-          isDisabled={isLoading}
+          isDisabled={isConnecting}
           label="User ID"
-          placeholder="User ID"
-          onChange={setUserId}
+          placeholder="@doe:matrix.org"
+          constraints={[userIdConstraint]}
+          onValueChange={setUserId}
         />
         <Button
-          autoFocus={cachedCredentials != null}
           type={ButtonType.Green}
-          onClick={login}
+          onClick={() => login({baseUrl, accessToken, userId})}
           text="Continue ⟶"
-          isLoading={isLoading}
+          isLoading={isConnecting}
         />
-        {status !== "" && <div className="status">{status}</div>}
+        {status !== null && <StatusMessage text={status} />}
       </div>
       <Footer />
     </div>

@@ -2,7 +2,8 @@ import "./styles/index.sass"
 import Login from "./routes/Login"
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import App from "./routes/App"
-import {createRoot} from 'react-dom/client'
+import {createRoot} from "react-dom/client"
+import "./polyfills"
 
 export enum Path {
   App = "/",
