@@ -126,7 +126,7 @@ export default function Login() {
           onValueChange={setUserId}
         />
         <Button
-          type={ButtonType.Green}
+          type={ButtonType.Primary}
           onClick={() => login({baseUrl, accessToken, userId})}
           text="Continue ⟶"
           isLoading={isConnecting}

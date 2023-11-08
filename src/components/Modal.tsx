@@ -18,7 +18,7 @@ export default function Modal(props: ModalProps) {
         <Label center text="Confirm action" />
         <p>{props.text}</p>
         <Button
-          type={ButtonType.Green}
+          type={ButtonType.Primary}
           text={props.acceptText || "Close"}
           onClick={props.onAccept || (() => { })}
         />

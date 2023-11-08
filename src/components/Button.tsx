@@ -1,7 +1,7 @@
 import Loader from "./Loader"
 
 export enum ButtonType {
-  Green = "green",
+  Primary = "primary",
 }
 
 type Props = {
