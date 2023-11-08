@@ -26,9 +26,13 @@ export default function App() {
   const navigate = useNavigate();
   const $messageInput = React.useRef<HTMLInputElement>(null);
 
-  // React state.
-  const [isInitializing, setIsInitializing] = useState(true);
 
+  // React to provide access to the input element to modify its properties
+  React.useRef<HTMLInputElement>(null);
+
+  // Use the JavaScript useState hook library to store the state of the input element
+  const [isInitializing, setIsInitializing] = useState<boolean>(true);
+  // room is from src/components/RoomsBar.tsx
   const [rooms, setRooms] = useState<Room[]>([
     {
       id: "test_a",
