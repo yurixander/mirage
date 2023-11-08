@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="350" alt="Mirage's logo" src="./public/logo-white.svg" />
+  <img width="250" alt="Mirage's logo" src="./public/logo-white.svg" />
   <br />
   <br />
   <img alt="Interface preview" src="./github/preview.png">
