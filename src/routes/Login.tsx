@@ -10,6 +10,8 @@ import Footer from "../components/Footer"
 import Input, {nonEmptyConstraint, urlConstraint, userIdConstraint} from "../components/Input"
 import useQueue from "../hooks/queue"
 import StatusMessage from "../components/StatusMessage"
+import NotificationDot from "../components/NotificationDot";
+
 
 const CREDENTIALS_LOCAL_STORAGE_KEY = "credentials"
 
@@ -95,6 +97,7 @@ export default function Login() {
 
   return (
     <div className="Login --flex -vertical">
+      <NotificationDot></NotificationDot>
       <img className="--float -left -top" src="/pink-glow.svg" />
       <img alt="Mirage's logo" width="200" src="/logo-black.svg" className="--margin-x2" />
       <div className="login-box --z --margin-x1">

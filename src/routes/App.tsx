@@ -11,7 +11,6 @@ import RoomsBar, { Room } from "../components/RoomsBar";
 import Modal, { ModalProps } from "../components/Modal";
 import Notifications, { Notification } from "../components/Notifications";
 import { faWarning } from "@fortawesome/free-solid-svg-icons";
-
 export type Message = {
   senderId?: string;
   // sender?: sdk.RoomMember;
