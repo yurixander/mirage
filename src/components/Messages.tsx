@@ -1,10 +1,11 @@
 import {Message} from "../routes/App"
+import "../styles/Messages.sass"
 
 type Props = {
   messages: Message[]
 }
 
-export default function ChatMessages(props: Props) {
+export default function Messages(props: Props) {
   const getDefaultAvatarUrl = (senderId: string) =>
     // TODO: Be careful with sender ID URL injection.
     `https://avatar.oxro.io/avatar.svg?name=${senderId}&caps=1&isRounded=true&length=1`

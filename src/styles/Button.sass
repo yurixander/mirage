@@ -1,0 +1,37 @@
+@import "index"
+
+button
+  font-size: 1rem
+  /* TODO: Inspect this. Using absolute height, but should work on most cases. */
+  height: calc(1rem + 2rem)
+  padding: 1rem
+  outline: unset
+  cursor: pointer
+  background-color: var(--color-black)
+  border: 1px solid #444
+  border-bottom: 4px solid #303030
+  color: rgba(255, 255, 255, 0.5)
+  font-weight: bold
+  border-radius: var(--border-radius)
+  display: flex
+  justify-content: center
+  align-items: center
+  font-family: inherit
+
+button:active:not(:disabled)
+  transform: translateY(3px)
+
+button.shrink
+  width: auto
+
+button[data-style="primary"]
+  background: linear-gradient(to top, var(--color-primary), var(--color-primary-lighter))
+  border-color: darken(#C973FF, $color-darken-percent)
+  color: #fff
+
+button[data-style="green"]
+  /* TODO: Gradient needs end color. */
+  background: linear-gradient(to top, var(--color-green), var(--color-green))
+  /* TODO: Use darken function. */
+  border-color: var(--color-green-border)
+  color: #fff
