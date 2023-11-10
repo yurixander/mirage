@@ -3,11 +3,11 @@ name: Create React component
 about: Description of a request for a React component.
 title: Create `X` React component
 labels: 'react: component'
-assignees: yurixander
+assignees: Tokyotox
 
 ---
 
-The `NotificationDot` component will be useful as an indicator to help catch the user's attention when he/she is pinged or other important events occur.
+The `X` component will ...
 
 ## Props
 * `amount: number` The amount to display.
@@ -22,6 +22,10 @@ Top-bottom paddings: `3px`
 ## Colors used
 * Red background: `#FF6D6D`
 * Text: `#F9FBFC`
+
+## Typography
+* Font size should remain default.
+* Font weight should remain default.
 
 ## Reference
 <img width="200" src="" />
