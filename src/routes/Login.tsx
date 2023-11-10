@@ -96,7 +96,7 @@ export default function Login() {
 
   return (
     <div className="Login --flex -vertical">
-      <NotificationDot></NotificationDot>
+      <NotificationDot amount={100}/>
       <img className="--float -left -top" src="/pink-glow.svg" />
       <img alt="Mirage's logo" width="200" src="/logo-black.svg" className="--margin-x2" />
       <div className="login-box --z --margin-x1">
