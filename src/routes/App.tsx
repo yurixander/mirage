@@ -1,15 +1,8 @@
 import "../styles/App.sass"
 import {useLocation, useNavigate} from "react-router-dom"
-import {Credentials, Path} from "../index"
 // import * as sdk from "matrix-js-sdk";
 // import { SyncState } from "matrix-js-sdk/lib/sync";
 import React, {useEffect, useState} from "react"
-import Messages from "../components/Messages"
-import ChatControls from "../components/ChatControls"
-import Loader from "../components/Loader"
-import RoomsBar, {Room} from "../components/RoomsBar"
-import Modal, {ModalProps} from "../components/Modal"
-import {faWarning} from "@fortawesome/free-solid-svg-icons"
 
 export type Message = {
   senderId?: string
@@ -18,43 +11,9 @@ export type Message = {
   avatarUrl?: string
 }
 
-// let client: sdk.MatrixClient;
-
 export default function App() {
   const location = useLocation()
   const navigate = useNavigate()
-  const $messageInput = React.useRef<HTMLInputElement>(null)
-
-  // React state.
-  const [isInitializing, setIsInitializing] = useState(true)
-
-  const [rooms, setRooms] = useState<Room[]>([
-    {
-      id: "test_a",
-      name: "Test A",
-      avatarUrl:
-        "https://avatar.oxro.io/avatar.svg?name=TestA&caps=1&isRounded=true&length=1",
-    },
-    {
-      id: "orange",
-      name: "Orange",
-      avatarUrl:
-        "https://avatar.oxro.io/avatar.svg?name=Orange&caps=1&isRounded=true&length=1",
-    },
-    {
-      id: "apple",
-      name: "Apple",
-      avatarUrl:
-        "https://avatar.oxro.io/avatar.svg?name=Apple&caps=1&isRounded=true&length=1",
-    },
-  ])
-
-  // const [messages, setMessages] = useState<Message[]>([]);
-  // const [message, setMessage] = useState("");
-  // const [activeRoomId, setActiveRoomId] = useState<string | null>("apple");
-  // const [typing, setTyping] = useState<string[]>([]);
-  // const [activeModal, setActiveModal] = useState<ModalProps | null>(null);
-  // const [notifications, setNotifications] = useState<Notification[]>([]);
 
   useEffect(() => {
     // if (location.state === null) return navigate(Path.Login);
@@ -135,11 +94,6 @@ export default function App() {
     // client.startClient();
   })
 
-  // React event handlers.
-  const viewCredentials = () => {
-    // console.log(credentials)
-  }
-
   const logout = () => {
     // client.stopClient();
     // navigate(Path.Login);
@@ -162,42 +116,10 @@ export default function App() {
     // $messageInput.current?.focus();
   }
 
-  const addSystemMessage = (subject: string, message: string) => {
-    // setMessages((messages) => [
-    //   {
-    //     content: {
-    //       body: `${subject}: ${message}`,
-    //     },
-    //   },
-    //   ...messages,
-    // ]);
-  }
-
-  const handleRoomChange = (room: Room) => {
-    // if (room.id === activeRoomId) return;
-    // addSystemMessage("switched to room", room.name);
-    // setActiveRoomId(room.id);
-  }
-
   return (
     <div className="App">
-      {/* {activeModal && (
-        <Modal
-          text={activeModal.text}
-          acceptText={activeModal.acceptText}
-          onAccept={() => setActiveModal(null)}
-        />
-      )} */}
-      {/* <Notifications notifications={notifications} /> */}
-      {
-        /* {isInitializing
-      ? <div className="init">
-        <div className="status">Initializing client. This may take a while.</div>
-        <Loader />
-        <div onClick={logout} className="text-link">Cancel &bull; Go back to sign in</div>
-      </div>
-      :*/ <div className="app">
-          {/* <RoomsBar
+      <div className="app">
+        {/* <RoomsBar
             avatarBaseUrl={"/"}
             activeRoomId={activeRoomId}
             rooms={rooms}
@@ -213,8 +135,8 @@ export default function App() {
               ]);
             }}
           /> */}
-          <div className="chat">
-            {/* <ChatMessages messages={messages} />
+        <div className="chat">
+          {/* <ChatMessages messages={messages} />
             <ChatControls
               placeholder="Type a message..."
               sendButtonText="Send message"
@@ -234,9 +156,8 @@ export default function App() {
                   " typing..."
                 : "No one is typing."}
             </div> */}
-          </div>
         </div>
-      }
+      </div>
     </div>
   )
 }
