@@ -1,7 +1,9 @@
 import Loader from "./Loader"
+import "../styles/Button.sass"
 
 export enum ButtonStyle {
   Primary = "primary",
+  Green = "green",
   TextLink = "text-link"
 }
 

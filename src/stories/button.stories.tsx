@@ -3,19 +3,15 @@ import Button, {ButtonProps, ButtonStyle} from "../components/Button"
 
 type Story = StoryObj<typeof Button>
 
-const meta: Meta<typeof Button> = {
-  title: "Button",
-  component: Button,
-}
+const meta: Meta<typeof Button> = {component: Button}
 
-const Template = (args: ButtonProps) => <Button {...args} />
-
-export const Primary: Story = Template.bind({})
-
-Primary.args = {
-  text: "Primary",
-  style: ButtonStyle.Primary,
-  onClick: () => { },
+export const Default: Story = {
+  render: (args: ButtonProps) => <Button {...args} />,
+  args: {
+    text: "This is a button",
+    style: ButtonStyle.Primary,
+    onClick: () => { },
+  }
 }
 
 export default meta
