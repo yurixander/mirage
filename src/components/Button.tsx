@@ -5,7 +5,7 @@ export enum ButtonStyle {
   TextLink = "text-link"
 }
 
-type Props = {
+export type ButtonProps = {
   className?: string
   autoFocus?: boolean
   onClick: () => void
@@ -15,7 +15,7 @@ type Props = {
   isDisabled?: boolean
 }
 
-export default function Button(props: Props) {
+export default function Button(props: ButtonProps) {
   return <button
     className={props.className}
     data-style={props.style}
