@@ -5,7 +5,9 @@ export type NotificationDotProps = {
 }
 
 export default function NotificationDot(props: NotificationDotProps) {
-  return <div className="NotificationDot">
-    {props.amount >= 100 ? "99+" : props.amount}
+  return (
+    <div className="NotificationDot">
+      {props.amount >= 100 ? "99+" : props.amount}
     </div>
+  )
 }

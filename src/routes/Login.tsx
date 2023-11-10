@@ -10,7 +10,6 @@ import Footer from "../components/Footer"
 import Input, {nonEmptyConstraint, urlConstraint, userIdConstraint} from "../components/Input"
 import useQueue from "../hooks/useQueue"
 import StatusMessage from "../components/StatusMessage"
-import NotificationDot from "../components/NotificationDot"
 
 const CREDENTIALS_LOCAL_STORAGE_KEY = "credentials"
 
