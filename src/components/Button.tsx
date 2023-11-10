@@ -1,23 +1,26 @@
 import Loader from "./Loader"
+import "../styles/Button.sass"
 
-export enum ButtonType {
+export enum ButtonStyle {
   Primary = "primary",
+  Green = "green",
+  TextLink = "text-link"
 }
 
-type Props = {
+export type ButtonProps = {
   className?: string
   autoFocus?: boolean
   onClick: () => void
   text: string
   isLoading?: boolean
-  type?: ButtonType
+  style?: ButtonStyle
   isDisabled?: boolean
 }
 
-export default function Button(props: Props) {
+export default function Button(props: ButtonProps) {
   return <button
     className={props.className}
-    data-type={props.type}
+    data-style={props.style}
     disabled={props.isLoading || props.isDisabled}
     autoFocus={props.autoFocus}
     onClick={props.onClick}>

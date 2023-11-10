@@ -1,10 +1,11 @@
 import "./styles/index.sass"
+import "./polyfills"
 import Login from "./routes/Login"
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import App from "./routes/App"
 import {createRoot} from "react-dom/client"
-import "./polyfills"
 import {StrictMode} from "react"
+import {assert} from "./util"
 
 export enum Path {
   App = "/",
@@ -17,7 +18,11 @@ export type Credentials = {
   userId: string
 }
 
-createRoot(document.getElementById("root")!).render(
+const $root = document.getElementById("root")
+
+assert($root !== null, "root element should be present")
+
+createRoot($root).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>

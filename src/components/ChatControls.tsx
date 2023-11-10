@@ -4,7 +4,7 @@ import Button from "./Button"
 type Props = {
   ref?: React.LegacyRef<HTMLInputElement>,
   value: string,
-  setValue: (_: string) => void,
+  setValue: (value: string) => void,
   placeholder: string,
   sendButtonText: string,
   sendMessage: () => void,
@@ -19,7 +19,7 @@ export default function ChatControls(props: Props) {
       placeholder={props.placeholder}
       value={props.value}
       onChange={reflectInputValue(props.setValue)}
-      onKeyUp={(e) => {if (e.key === "Enter") props.sendMessage()}} />
+      onKeyUp={(event) => {if (event.key === "Enter") props.sendMessage()}} />
     <Button text={props.sendButtonText} onClick={props.sendMessage} />
   </div>
 }

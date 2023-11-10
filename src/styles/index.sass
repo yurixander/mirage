@@ -24,6 +24,8 @@ $color-darken-percent: 15%
   --color-primary: #C463FF
   --color-primary-lighter: #C973FF
   --color-black: #444
+  --color-green: #5CC679
+  --color-green-border: #4CA464
   --v-line-height: 200%
   --v-radius: 4px
   --border-width: 1px
@@ -77,35 +79,6 @@ input
   border-bottom-width: 2px
   outline: unset
   font-family: inherit
-
-button
-  font-size: 1rem
-  /* TODO: Inspect this. Using absolute height, but should work on most cases. */
-  height: calc(1rem + 2rem)
-  padding: 1rem
-  outline: unset
-  cursor: pointer
-  background-color: var(--color-black)
-  border: 1px solid #444
-  border-bottom: 4px solid #303030
-  color: rgba(255, 255, 255, 0.5)
-  font-weight: bold
-  border-radius: var(--border-radius)
-  display: flex
-  justify-content: center
-  align-items: center
-  font-family: inherit
-
-button:active:not(:disabled)
-  transform: translateY(3px)
-
-button.shrink
-  width: auto
-
-button[data-type="primary"]
-  background: linear-gradient(to top, var(--color-primary), var(--color-primary-lighter))
-  border-color: darken(#C973FF, $color-darken-percent)
-  color: #fff
 
 .text-link
   text-decoration: underline

@@ -1,9 +1,5 @@
 import "../styles/StatusMessage.sass"
 
-export enum ButtonType {
-  Green = "green",
-}
-
 type Props = {
   className?: string
   text: string
