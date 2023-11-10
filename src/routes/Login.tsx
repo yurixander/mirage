@@ -44,9 +44,8 @@ export default function Login() {
     const client = sdk.createClient(credentials)
 
     smartTimeout(() => {
-      if (!isConnecting) {
+      if (!isConnecting)
         return
-      }
 
       client.stopClient()
       updateStatus("Timed out. Try again later.")

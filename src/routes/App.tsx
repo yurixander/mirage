@@ -1,33 +1,32 @@
-import "../styles/App.sass";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Credentials, Path } from "../index";
+import "../styles/App.sass"
+import {useLocation, useNavigate} from "react-router-dom"
+import {Credentials, Path} from "../index"
 // import * as sdk from "matrix-js-sdk";
 // import { SyncState } from "matrix-js-sdk/lib/sync";
-import React, { useEffect, useState } from "react";
-import ChatMessages from "../components/ChatMessages";
-import ChatControls from "../components/ChatControls";
-import Loader from "../components/Loader";
-import RoomsBar, { Room } from "../components/RoomsBar";
-import Modal, { ModalProps } from "../components/Modal";
-import Notifications, { Notification } from "../components/Notifications";
-import { faWarning } from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect, useState} from "react"
+import Messages from "../components/Messages"
+import ChatControls from "../components/ChatControls"
+import Loader from "../components/Loader"
+import RoomsBar, {Room} from "../components/RoomsBar"
+import Modal, {ModalProps} from "../components/Modal"
+import {faWarning} from "@fortawesome/free-solid-svg-icons"
 
 export type Message = {
-  senderId?: string;
+  senderId?: string
   // sender?: sdk.RoomMember;
   // content: sdk.IContent;
-  avatarUrl?: string;
-};
+  avatarUrl?: string
+}
 
 // let client: sdk.MatrixClient;
 
 export default function App() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const $messageInput = React.useRef<HTMLInputElement>(null);
+  const location = useLocation()
+  const navigate = useNavigate()
+  const $messageInput = React.useRef<HTMLInputElement>(null)
 
   // React state.
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(true)
 
   const [rooms, setRooms] = useState<Room[]>([
     {
@@ -48,7 +47,7 @@ export default function App() {
       avatarUrl:
         "https://avatar.oxro.io/avatar.svg?name=Apple&caps=1&isRounded=true&length=1",
     },
-  ]);
+  ])
 
   // const [messages, setMessages] = useState<Message[]>([]);
   // const [message, setMessage] = useState("");
@@ -134,7 +133,7 @@ export default function App() {
     //   addSystemMessage(`member ${member.membership}`, member.name);
     // });
     // client.startClient();
-  });
+  })
 
   // React event handlers.
   const viewCredentials = () => {
@@ -144,7 +143,7 @@ export default function App() {
   const logout = () => {
     // client.stopClient();
     // navigate(Path.Login);
-  };
+  }
 
   const sendMessage = () => {
     // if (activeRoomId === null) return window.alert("Active room is null.");
@@ -161,7 +160,7 @@ export default function App() {
     // );
     // setMessage("");
     // $messageInput.current?.focus();
-  };
+  }
 
   const addSystemMessage = (subject: string, message: string) => {
     // setMessages((messages) => [
@@ -172,13 +171,13 @@ export default function App() {
     //   },
     //   ...messages,
     // ]);
-  };
+  }
 
   const handleRoomChange = (room: Room) => {
     // if (room.id === activeRoomId) return;
     // addSystemMessage("switched to room", room.name);
     // setActiveRoomId(room.id);
-  };
+  }
 
   return (
     <div className="App">
@@ -239,5 +238,5 @@ export default function App() {
         </div>
       }
     </div>
-  );
+  )
 }
