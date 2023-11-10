@@ -4,11 +4,11 @@ import * as sdk from "matrix-js-sdk"
 import {SyncState} from "matrix-js-sdk/lib/sync"
 import {useNavigate} from "react-router-dom"
 import {Credentials, Path} from "../index"
-import Button, {ButtonType} from "../components/Button"
-import {smartTimeout} from "../useTimeout"
+import Button, {ButtonStyle} from "../components/Button"
+import {smartTimeout} from "../hooks/useTimeout"
 import Footer from "../components/Footer"
 import Input, {nonEmptyConstraint, urlConstraint, userIdConstraint} from "../components/Input"
-import useQueue from "../hooks/queue"
+import useQueue from "../hooks/useQueue"
 import StatusMessage from "../components/StatusMessage"
 
 const CREDENTIALS_LOCAL_STORAGE_KEY = "credentials"
@@ -126,7 +126,7 @@ export default function Login() {
           onValueChange={setUserId}
         />
         <Button
-          type={ButtonType.Primary}
+          style={ButtonStyle.Primary}
           onClick={() => login({baseUrl, accessToken, userId})}
           text="Continue ⟶"
           isLoading={isConnecting}

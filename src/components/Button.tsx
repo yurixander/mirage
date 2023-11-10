@@ -1,7 +1,8 @@
 import Loader from "./Loader"
 
-export enum ButtonType {
+export enum ButtonStyle {
   Primary = "primary",
+  TextLink = "text-link"
 }
 
 type Props = {
@@ -10,14 +11,14 @@ type Props = {
   onClick: () => void
   text: string
   isLoading?: boolean
-  type?: ButtonType
+  style?: ButtonStyle
   isDisabled?: boolean
 }
 
 export default function Button(props: Props) {
   return <button
     className={props.className}
-    data-type={props.type}
+    data-style={props.style}
     disabled={props.isLoading || props.isDisabled}
     autoFocus={props.autoFocus}
     onClick={props.onClick}>

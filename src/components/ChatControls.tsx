@@ -4,7 +4,7 @@ import Button from "./Button"
 type Props = {
   ref?: React.LegacyRef<HTMLInputElement>,
   value: string,
-  setValue: (_: string) => void,
+  setValue: (value: string) => void,
   placeholder: string,
   sendButtonText: string,
   sendMessage: () => void,
