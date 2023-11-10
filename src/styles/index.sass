@@ -1,42 +1,47 @@
 @import "utility"
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap")
 
+/* Utility variables */
 $color-darken-percent: 15%
+$border-radius: 8px
+$border-width: 1px
+$line-height: 160%
+
+/* Colors */
+$color-text: #4B5563
+$color-red: #FF6D6D
+$color-green: #5CC679
+$color-primary: #C463FF
+$color-white: #FFF
+$color-contrast: #F9FBFC
+$color-contrast-dark: #E9EBED
+$color-contrast-darker: #D9D9D9
+$color-contrast-icon: #DBDBDB
+
+/* Sizing, margins & paddings */
+$size-x1: 15px
+$size-x2: 30px
+$size-10px: 10px
+$size-5px: 5px
+$size-3px: 3px
+$size-2px: 2px
+
+/* Typography */
+$font-size-small: 10px
+$font-size-medium: 12px
+$font-size-normal: 1rem
+$font-size-large: 16px
 
 @mixin box-shadow
   box-shadow: 0 5px 16px var(--color-box-shadow)
 
 @mixin border
-  border: var(--border-width) solid var(--color-ui-border)
-
-:root
-  --border-radius: 8px
-  --color-text: #4b5563
-  --color-text-strong: #1c2126
-  --color-text-white: #eee
-  --color-background: #fff
-  --color-ui: #efefef
-  --color-ui-contrast: #f9fbfc
-  --color-ui-border: #e9ebed
-  --color-box-shadow: #eee
-  --color-error: #e53e3e
-  --color-success: #38a169
-  --color-primary: #C463FF
-  --color-primary-lighter: #C973FF
-  --color-black: #444
-  --color-green: #5CC679
-  --color-green-border: #4CA464
-  --v-line-height: 200%
-  --v-radius: 4px
-  --border-width: 1px
-  --size-gap: 1rem
-  --size-gap-half: 0.5rem
-  --size-margin-half: 0.5rem
-  --size-margin-1: 1rem
-  --size-margin-2: 2rem
+  border: $border-width solid var(--color-ui-border)
 
 *
   box-sizing: border-box
+  font-family: inherit
+  font-size: inherit
 
 html,
 body,
@@ -44,26 +49,19 @@ body,
   height: 100%
 
 html
-  font-size: 16px
+  font-size: $font-size-normal
 
 body
   position: relative
   margin: 0
   font-family: "Inter", sans-serif
+  font-weight: 300
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
-  color: var(--color-text)
+  color: $color-text
   user-select: none
   overflow: hidden
-
-code
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace
-
-input,
-button
-  /* TODO: Only for box-shadow and border-color. */
-  width: 100%
-  font-size: inherit
+  line-height: $line-height
 
 button:disabled,
 input:disabled
@@ -80,40 +78,14 @@ input
   outline: unset
   font-family: inherit
 
-.text-link
-  text-decoration: underline
-  text-underline-offset: 0.4rem
-  cursor: pointer
-  transition: opacity 0.1s ease
-
-.text-center
-  text-align: center
-
 p
   margin: unset
   line-height: var(--v-line-height)
 
 h1, h2, h3, h4, h5, h6
-  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif
-  font-weight: bolder
+  // font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif
+  font-weight: bold
   color: var(--color-text-strong)
   margin-top: 0
   margin-bottom: var(--size-margin-half)
-
-h1
-  font-size: 3rem
-
-h2
-  font-size: 2.5rem
-
-h3
-  font-size: 2rem
-
-h4
-  font-size: 1.5rem
-
-h5
-  font-size: 1.25rem
-
-h6
-  font-size: 1rem
+  font-size: $font-size-large
