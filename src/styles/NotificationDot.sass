@@ -2,7 +2,15 @@
 
 .NotificationDot
   display: inline-block
-  border-radius: $border-radius
-  background-color: $color-red
+  border-radius: 50%
+  background-color: $color-contrast-darker
   color: $color-contrast
-  padding: $size-3px $size-5px
+  width: $size-10px
+  height: $size-10px
+
+  &.important
+    width: unset
+    height: unset
+    border-radius: $border-radius
+    background-color: $color-red
+    padding: $size-3px $size-5px
