@@ -7,16 +7,17 @@ const meta: Meta<typeof NotificationDot> = {component: NotificationDot}
 
 export const Default: Story = {
   render: (args: NotificationDotProps) => <NotificationDot {...args} />,
-  args: {
-    amount: 2
-  }
-} 
+  args: {amount: 2}
+}
+
+export const Zero: Story = {
+  render: (args: NotificationDotProps) => <NotificationDot {...args} />,
+  args: {amount: 0}
+}
 
 export const AtOrOver100: Story = {
   render: (args: NotificationDotProps) => <NotificationDot {...args} />,
-  args: {
-    amount: 100
-  }
+  args: {amount: 100}
 }
 
 export default meta
