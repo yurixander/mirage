@@ -2,24 +2,29 @@ import "../styles/NotificationDot.sass"
 import {assert} from "../util"
 
 export type NotificationDotProps = {
-  amount: number
+  mentionAmount?: number
 }
 
 export default function NotificationDot(props: NotificationDotProps) {
-  assert(props.amount >= 0, "amount should never be negative")
+  if (props.mentionAmount !== undefined) {
+    assert(props.mentionAmount > 0, "mention amount should be greater than zero if it's defined")
+    assert(Number.isInteger(props.mentionAmount), "mention amount should never be a decimal")
+  }
 
   const classNames = ["NotificationDot"]
 
-  if (props.amount !== 0)
-    classNames.push("important")
+  if (props.mentionAmount !== undefined)
+    classNames.push("mention")
 
-  // If there's too many notifications to display, just show "99+"
-  // to avoid overflowing the dot to a larger width.
-  const amount = props.amount > 99 ? "99+" : props.amount.toString()
+  const adjustedAmount = props.mentionAmount !== undefined
+    // If there's too many notifications to display, just show "99+"
+    // to avoid overflowing the dot to a larger width.
+    ? props.mentionAmount > 99 ? "99+" : props.mentionAmount.toString()
+    : undefined
 
   return (
     <div className={classNames.join(" ")}>
-      {props.amount > 0 && amount}
+      {adjustedAmount !== undefined && adjustedAmount}
     </div>
   )
 }

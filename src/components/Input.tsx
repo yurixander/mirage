@@ -80,7 +80,7 @@ export default function Input(props: Props) {
 
   return (
     <div className={`Input --flex -vertical ${props.className || ""}`.trim()}>
-      {props.label && <Label text={props.label} />}
+      {props.label !== undefined && <Label text={props.label} />}
       <input
         type="text"
         disabled={props.isDisabled}
