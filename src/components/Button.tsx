@@ -13,6 +13,7 @@ export type ButtonProps = {
   onClick: () => void
   text: string
   isLoading?: boolean
+  loadingText?: string
   style?: ButtonStyle
   isDisabled?: boolean
 }
@@ -25,7 +26,7 @@ export default function Button(props: ButtonProps) {
     autoFocus={props.autoFocus}
     onClick={props.onClick}>
     {props.isLoading
-      ? <Loader text="Connecting" />
+      ? <Loader text={props.loadingText || props.text} />
       : props.text}
   </button>
-};
+}
