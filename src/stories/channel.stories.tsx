@@ -10,8 +10,8 @@ export const Default: Story = {
   args: {
     name: "Help & guides",
     icon: "string",
-    isActive: true ,
-    notification: 0,
+    isActive: true,
+    mentionAmount: 0,
   }
 }
 
