@@ -8,12 +8,12 @@ const render = (args: NotificationDotProps) => <NotificationDot {...args} />
 
 export const Unread: Story = {
   render,
-  args: {mentionAmount: undefined}
+  args: {mentionAmount: 2, },
 }
 
 export const WithMentions: Story = {
   render,
-  args: {mentionAmount: 2}
+  args: {mentionAmount: undefined}
 }
 
 export const AtOrOver100Mentions: Story = {

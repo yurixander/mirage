@@ -11,8 +11,29 @@ export const Default: Story = {
     name: "Help & guides",
     icon: "string",
     isActive: true,
-    mentionAmount: 0,
+    containsUnreadMessages: true,
+    mentionCount: 100
+  }
+}
+export const ZeroAmount: Story = {
+  render: (args: ChannelProps) => <Channel {...args} />,
+  args: {
+    name: "Help & guides",
+    icon: "string",
+    isActive: true,
+    containsUnreadMessages: true,
+    mentionCount: 0
   }
 }
 
+export const NonUnreadMessages: Story = {
+  render: (args: ChannelProps) => <Channel {...args} />,
+  args: {
+    name: "Help & guides",
+    icon: "string",
+    isActive: true,
+    containsUnreadMessages: false,
+    mentionCount: 0
+  }
+}
 export default meta
