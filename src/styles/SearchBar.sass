@@ -1,13 +1,37 @@
 @import "index"
 
 .SearchBar
+  position: relative
+  padding: $size-10px
   display: inline-flex
   justify-content: flex-start
   align-items: center
   gap: $size-5px
-  padding: $size-10px
   background-color: $color-contrast-dark
   border-radius: $border-radius
 
+  &.open
+    border-bottom-left-radius: 0
+    border-bottom-right-radius: 0
+
   > input
     padding: 0
+
+  > .results
+    width: 100%
+    background-color: $color-contrast-dark
+    position: absolute
+    left: 0
+    top: 100%
+    padding: $size-10px
+    border-top: 1px solid $color-contrast-darker
+    border-bottom-left-radius: $border-radius
+    border-bottom-right-radius: $border-radius
+
+    > .result
+      border-radius: $border-radius
+      padding: $size-5px $size-10px
+      cursor: pointer
+
+      &:hover
+        background-color: $color-contrast-darker
