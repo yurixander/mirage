@@ -1,7 +1,7 @@
 import "../styles/App.sass"
 import {useLocation, useNavigate} from "react-router-dom"
-// import * as sdk from "matrix-js-sdk";
-// import { SyncState } from "matrix-js-sdk/lib/sync";
+import * as sdk from "matrix-js-sdk"
+import {SyncState} from "matrix-js-sdk/lib/sync"
 import React, {useEffect, useState} from "react"
 
 export type Message = {
