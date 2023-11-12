@@ -6,12 +6,12 @@ type Story = StoryObj<typeof NotificationDot>
 const meta: Meta<typeof NotificationDot> = {component: NotificationDot}
 const render = (args: NotificationDotProps) => <NotificationDot {...args} />
 
-export const Unread: Story = {
+export const WithMentions: Story = {
   render,
-  args: {mentionAmount: 2, },
+  args: {mentionAmount: 2},
 }
 
-export const WithMentions: Story = {
+export const Unread: Story = {
   render,
   args: {mentionAmount: undefined}
 }
