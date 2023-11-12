@@ -1,8 +1,8 @@
 import "../styles/Channel.sass"
-import {ReactComponent as Hash} from "../../public/icons/hash.svg";
-import {ReactComponent as Star} from "../../public/icons/star.svg";
-import NotificationDot from "./NotificationDot";
-import {assert, cut} from "../util";
+import {ReactComponent as HashIcon} from "../../public/icons/hash.svg"
+import {ReactComponent as StarIcon} from "../../public/icons/star.svg"
+import NotificationDot from "./NotificationDot"
+import {assert, trim} from "../util"
 
 export enum ChannelType {
   Text,
@@ -25,16 +25,17 @@ export default function Channel(props: ChannelProps) {
   let icon: JSX.Element
 
   switch (props.type) {
-    case ChannelType.Text: icon = <Hash className={"Icon " + classNameActive} />; break
-    case ChannelType.Space: icon = <Star className={"Icon " + classNameActive} />; break
+    case ChannelType.Text: icon = <HashIcon className={"Icon " + classNameActive} />; break
+    case ChannelType.Space: icon = <StarIcon className={"Icon " + classNameActive} />; break
   }
 
   const mentionCountProp = props.mentionCount > 0 ? props.mentionCount : undefined
+  const MAX_NAME_LENGTH = 16
 
   return (
     <div className="Channel">
       {icon}
-      <span className={classNameActive}>{cut(props.name, 16)}</span>
+      <span className={classNameActive}>{trim(props.name, MAX_NAME_LENGTH)}</span>
       {props.containsUnreadMessages && <NotificationDot mentionAmount={mentionCountProp} />}
     </div>
   )

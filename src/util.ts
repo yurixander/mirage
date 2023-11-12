@@ -9,6 +9,6 @@ export function assert(condition: boolean, reasoning: string): asserts condition
     throw new Error(`assertion failed: ${reasoning}`)
 }
 
-export function cut(text: string, length: number) {
-  return text.length >= length ? `${text.substring(0, length)}...` : text
+export function trim(text: string, maxLength: number) {
+  return text.length >= maxLength ? `${text.substring(0, maxLength)}...` : text
 }
