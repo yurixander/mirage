@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react"
-import Channel, {ChannelProps} from "../components/Channel"
+import Channel, {ChannelProps, ChannelType} from "../components/Channel"
 
 type Story = StoryObj<typeof Channel>
 
@@ -9,7 +9,7 @@ export const Default: Story = {
   render: (args: ChannelProps) => <Channel {...args} />,
   args: {
     name: "Help & guides",
-    icon: "string",
+    type: ChannelType.Space,
     isActive: true,
     containsUnreadMessages: true,
     mentionCount: 100
@@ -19,7 +19,7 @@ export const ZeroAmount: Story = {
   render: (args: ChannelProps) => <Channel {...args} />,
   args: {
     name: "Help & guides",
-    icon: "string",
+    type: ChannelType.Text,
     isActive: true,
     containsUnreadMessages: true,
     mentionCount: 0
@@ -30,7 +30,7 @@ export const NonUnreadMessages: Story = {
   render: (args: ChannelProps) => <Channel {...args} />,
   args: {
     name: "Help & guides",
-    icon: "string",
+    type: ChannelType.Space,
     isActive: true,
     containsUnreadMessages: false,
     mentionCount: 0
