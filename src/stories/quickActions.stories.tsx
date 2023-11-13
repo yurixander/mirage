@@ -6,9 +6,9 @@ type Story = StoryObj<typeof QuickActions>
 const meta: Meta<typeof QuickActions> = {component: QuickActions}
 const render = (args: QuickActionsProps) => <QuickActions {...args} />
 
-export const Primary: Story = {
+export const Default: Story = {
   render,
-  args: {  }
+  args: {}
 }
 
 export default meta
