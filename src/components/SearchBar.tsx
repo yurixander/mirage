@@ -19,9 +19,15 @@ export default function SearchBar(props: SearchBarProps) {
   const [results, setResults] = useState<SearchResult[]>([])
 
   // Focus the input when the user presses the search hotkey.
-  useGlobalHotkey({ctrl: true, key: KEYBOARD_HOTKEY_CHAR}, () =>
+  useGlobalHotkey({ctrl: true, key: KEYBOARD_HOTKEY_CHAR}, () => {
+    // NOTE: The input is required to be focused before selecting
+    // the text.
     inputRef.current?.focus()
-  )
+
+    // Select all the text in the input after focusing it,
+    // so that the user can immediately start typing a new query.
+    inputRef.current?.select()
+  })
 
   const MINIMUM_QUERY_LENGTH = 3
 
