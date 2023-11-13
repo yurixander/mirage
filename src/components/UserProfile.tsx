@@ -55,7 +55,11 @@ export default function UserProfile(props: UserProfileProps) {
         <div className="username">{trim(props.username, MAX_NAME_LENGTH)}</div>
       </div>
       {/* TODO: Handle click on settings button. */}
-      <IconButton onClick={() => { }} icon={SettingsIcon} tooltip="Settings" />
+      <IconButton
+        onClick={() => { }}
+        icon={SettingsIcon}
+        tooltip="Settings"
+        tooltipPlacement="top" />
     </div>
   )
 }
