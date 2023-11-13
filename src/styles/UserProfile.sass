@@ -2,48 +2,53 @@
 
 .UserProfile
   display: flex
-  flex-direction: row
-  align-items: center
   padding: $size-x1
 
-  & .online
-    background-color: $color-green-light
+  > .avatar
+    position: relative
+    overflow: hidden
+    width: 37px
+    height: 37px
+    border-radius: $border-radius
+    background-color: $color-red
 
-  & .offline
-    background-color: $color-gray-text
+    > svg
+      position: absolute
+      left: 50%
+      top: 50%
+      transform: translate(-50%, -50%)
+      width: 110%
+      height: 110%
 
-  & .idle
-    background-color: $color-yellow
+    > .status
+      position: absolute
+      width: 15px
+      height: 15px
+      border-radius: 50%
+      border: 2px solid $color-contrast
+      transform: translate(25%, 25%)
+      right: 0
+      bottom: 0
 
-  & .avatar
-      display: flex
-      align-items: end
-      justify-content: end
-      width: 37px
-      height: 37px
-      border-radius: $border-radius
-      background-color: $color-red
+      &.online
+        background-color: $color-green-light
 
-      & div
-        width: 15px
-        height: 15px
-        border-radius: 50%
-        border: 2px solid #FFFF
-        transform: translate(10%, 10%)
+      &.offline
+        background-color: $color-gray-text
 
-  & .info
-     padding: 4px
+      &.idle
+        background-color: $color-yellow
 
-     & .display-name
-       font-size: $font-size-large
-       font-weight: 600
-       line-height: $font-size-line-height
+  > .info
+    margin-right: auto
+    padding: 4px
 
-     & .username
-       font-size: $size-10px
-       font-weight: 300
-       line-height: $font-size-line-height
+    > .display-name
+      font-size: $font-size-large
+      font-weight: 600
+      line-height: $font-size-line-height
 
-
-  & .settings-icon
-    margin-left: 20px
+    > .username
+      font-size: $size-10px
+      font-weight: 300
+      line-height: $font-size-line-height

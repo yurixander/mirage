@@ -10,6 +10,7 @@
     "@types/node": "^20.8.10",
     "@types/react": "^18.2.35",
     "@types/react-dom": "^18.2.14",
+    "boring-avatars": "^1.10.1",
     "buffer": "^6.0.3",
     "matrix-js-sdk": "^29.1.0",
     "react": "^18.2.0",
