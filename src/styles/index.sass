@@ -35,6 +35,9 @@ $font-size-small: 10px
 $font-size-medium: 12px
 $font-size-normal: 1rem
 $font-size-large: 16px
+$font-weight-default: 300
+$font-weight-strong: 500
+$font-weight-stronger: bold
 
 @mixin box-shadow
   box-shadow: 0 5px 16px var(--color-box-shadow)
@@ -60,7 +63,7 @@ body
   position: relative
   margin: 0
   font-family: "Inter", sans-serif
-  font-weight: 300
+  font-weight: $font-weight-default
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   color: $color-text
@@ -88,7 +91,7 @@ p
 
 h1, h2, h3, h4, h5, h6
   // font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif
-  font-weight: bold
+  font-weight: $font-weight-strong
   margin-top: 0
   margin-bottom: $size-10px
   font-size: $font-size-large
