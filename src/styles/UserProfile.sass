@@ -7,26 +7,29 @@ $avatar-size: 37px
   gap: $size-5px
   padding: $size-x1
 
-  > .avatar
+  > .avatar-wrapper
     position: relative
-    overflow: hidden
-    width: $avatar-size
-    height: $avatar-size
-    border-radius: $border-radius
-    background-color: $color-red
 
-    > svg
-      position: absolute
-      left: 50%
-      top: 50%
-      transform: translate(-50%, -50%)
-      width: calc($avatar-size * sqrt(2))
-      height: calc($avatar-size * sqrt(2))
+    > .avatar
+      position: relative
+      overflow: hidden
+      width: $avatar-size
+      height: $avatar-size
+      border-radius: $border-radius
+      background-color: $color-red
+
+      > svg
+        position: absolute
+        left: 50%
+        top: 50%
+        transform: translate(-50%, -50%)
+        width: calc($avatar-size * sqrt(2))
+        height: calc($avatar-size * sqrt(2))
 
     > .status
       position: absolute
-      width: 15px
-      height: 15px
+      width: 13px
+      height: 13px
       border-radius: 50%
       border: 2px solid $color-contrast
       transform: translate(25%, 25%)
@@ -50,10 +53,9 @@ $avatar-size: 37px
 
     > .display-name
       font-size: $font-size-large
-      font-weight: 600
+      font-weight: $font-weight-strong
       line-height: $line-height
 
     > .username
       font-size: $size-10px
-      font-weight: 300
       line-height: $line-height
