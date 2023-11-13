@@ -7,21 +7,41 @@ import {ReactComponent as PhoneIcon} from "../../public/icons/phone.svg"
 import {ReactComponent as SendIcon} from "../../public/icons/dms.svg"
 
 export type QuickActionsProps = {
-  sendMessage: () => void,
-  call: () => void,
-  viewNotification: () => void,
-  viewInbox: () => void,
-  logout: () => void
+  onViewDirectMessages: () => void,
+  onViewCalls: () => void,
+  onViewNotifications: () => void,
+  onOpenExtensions: () => void,
+  onLogout: () => void
 }
 
 export default function QuickActions(props: QuickActionsProps) {
   return (
     <div className="QuickActions">
-      <IconButton onClick={props.sendMessage} tooltip="send" icon={SendIcon} />
-      <IconButton onClick={props.call} tooltip="phone" icon={PhoneIcon} />
-      <IconButton onClick={props.viewNotification} tooltip="viewNotification" icon={NotificationIcon} />
-      <IconButton onClick={props.viewInbox} tooltip="viewInbox" icon={BoxIcon} />
-      <IconButton onClick={props.logout} tooltip="logout" icon={LogoutIcon} />
+      <IconButton
+        onClick={props.onViewDirectMessages}
+        tooltip="Direct messages"
+        tooltipPlacement="right"
+        icon={SendIcon} />
+      <IconButton
+        onClick={props.onViewCalls}
+        tooltip="Calls"
+        tooltipPlacement="right"
+        icon={PhoneIcon} />
+      <IconButton
+        onClick={props.onViewNotifications}
+        tooltip="Notifications"
+        tooltipPlacement="right"
+        icon={NotificationIcon} />
+      <IconButton
+        onClick={props.onOpenExtensions}
+        tooltip="Extensions"
+        tooltipPlacement="right"
+        icon={BoxIcon} />
+      <IconButton
+        onClick={props.onLogout}
+        tooltip="Sign out"
+        tooltipPlacement="right"
+        icon={LogoutIcon} />
     </div>
   )
 }
