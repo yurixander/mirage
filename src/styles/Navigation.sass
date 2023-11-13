@@ -1,0 +1,33 @@
+@import  "index"
+
+$server-size: 50px
+
+.Navigation
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  font-family: Iowan Old Style
+
+  & > .app-name
+    display: flex
+    align-items: flex-end
+
+    & > span
+      font-style: italic
+      font-size: $font-size-small
+
+  & > .divider
+    height: $size-3px
+    margin: $size-x1
+    width: 100%
+    background-color: $color-contrast-dark
+
+.server
+  display: flex
+  align-items: center
+  justify-content: center
+  width: $server-size
+  height: $server-size
+  border-radius: $border-radius
+  background-color: $color-red
