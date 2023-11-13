@@ -11,7 +11,7 @@ export type IconButtonProps = {
 }
 
 export default function IconButton(props: IconButtonProps) {
-  const TOOLTIP_SHOW_DELAY = 500
+  const TOOLTIP_SHOW_DELAY = 1000
 
   // TODO: Style tooltip to have consistent typography (ex. default font size and weight, etc.).
   return (
