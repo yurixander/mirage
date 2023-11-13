@@ -1,14 +1,17 @@
 @import "index"
 
+$avatar-size: 37px
+
 .UserProfile
   display: flex
+  gap: $size-5px
   padding: $size-x1
 
   > .avatar
     position: relative
     overflow: hidden
-    width: 37px
-    height: 37px
+    width: $avatar-size
+    height: $avatar-size
     border-radius: $border-radius
     background-color: $color-red
 
@@ -17,8 +20,8 @@
       left: 50%
       top: 50%
       transform: translate(-50%, -50%)
-      width: 110%
-      height: 110%
+      width: calc($avatar-size * sqrt(2))
+      height: calc($avatar-size * sqrt(2))
 
     > .status
       position: absolute
@@ -40,15 +43,17 @@
         background-color: $color-yellow
 
   > .info
+    display: inline-flex
+    flex-direction: column
+    gap: $size-3px
     margin-right: auto
-    padding: 4px
 
     > .display-name
       font-size: $font-size-large
       font-weight: 600
-      line-height: $font-size-line-height
+      line-height: $line-height
 
     > .username
       font-size: $size-10px
       font-weight: 300
-      line-height: $font-size-line-height
+      line-height: $line-height
