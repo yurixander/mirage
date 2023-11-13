@@ -12,3 +12,13 @@ export function assert(condition: boolean, reasoning: string): asserts condition
 export function trim(text: string, maxLength: number) {
   return text.length >= maxLength ? `${text.substring(0, maxLength)}...` : text
 }
+
+export function validateUrl(url: string): boolean {
+  try {
+    new URL(url)
+
+    return true
+  } catch {
+    return false
+  }
+}
