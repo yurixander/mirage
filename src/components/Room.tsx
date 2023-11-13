@@ -15,6 +15,7 @@ export type RoomProps = {
   isActive: boolean
   containsUnreadMessages: boolean
   mentionCount: number
+  onClick: () => void
 }
 
 export default function Room(props: RoomProps) {
@@ -33,7 +34,7 @@ export default function Room(props: RoomProps) {
   const MAX_NAME_LENGTH = 16
 
   return (
-    <div className="Room">
+    <div onClick={props.onClick} className="Room">
       {icon}
       <span className={classNameActive}>{trim(props.name, MAX_NAME_LENGTH)}</span>
       {props.containsUnreadMessages && <NotificationDot mentionAmount={mentionCountProp} />}

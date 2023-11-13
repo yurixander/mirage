@@ -9,7 +9,7 @@ export type KeyCueProps = {
 }
 
 export default function KeyCue(props: KeyCueProps) {
-  assert(props.char.length === 1, "char should be a single character")
+  assert(props.char.length === 1, "key should be a single character")
 
   return (
     <div className="KeyCue">
