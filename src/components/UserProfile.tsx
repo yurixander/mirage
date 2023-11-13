@@ -41,8 +41,10 @@ export default function UserProfile(props: UserProfileProps) {
 
   return (
     <div className="UserProfile">
-      <div className="avatar">
-        {avatarImage}
+      <div className="avatar-wrapper">
+        <div className="avatar">
+          {avatarImage}
+        </div>
         <div className={"status " + userStatusClassName} />
       </div>
       <div className="info">
