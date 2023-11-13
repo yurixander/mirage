@@ -7,21 +7,24 @@ $avatar-size: 37px
   gap: $size-5px
   padding: $size-x1
 
-  > .avatar
+  > .avatar-wrapper
     position: relative
-    overflow: hidden
-    width: $avatar-size
-    height: $avatar-size
-    border-radius: $border-radius
-    background-color: $color-red
 
-    > svg
-      position: absolute
-      left: 50%
-      top: 50%
-      transform: translate(-50%, -50%)
-      width: calc($avatar-size * sqrt(2))
-      height: calc($avatar-size * sqrt(2))
+    > .avatar
+      position: relative
+      overflow: hidden
+      width: $avatar-size
+      height: $avatar-size
+      border-radius: $border-radius
+      background-color: $color-red
+
+      > svg
+        position: absolute
+        left: 50%
+        top: 50%
+        transform: translate(-50%, -50%)
+        width: calc($avatar-size * sqrt(2))
+        height: calc($avatar-size * sqrt(2))
 
     > .status
       position: absolute
