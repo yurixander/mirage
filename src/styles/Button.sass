@@ -1,16 +1,11 @@
 @import "global"
 
 button
-  font-size: 1rem
-  /* TODO: Inspect this. Using absolute height, but should work on most cases. */
-  height: calc(1rem + 2rem)
-  padding: 1rem
+  padding: $size-x1
   outline: unset
   cursor: pointer
-  background-color: $color-contrast
-  border: 1px solid #444
-  border-bottom: 4px solid #303030
-  color: rgba(255, 255, 255, 0.5)
+  border: 1px solid $color-red
+  border-bottom: 4px solid $color-red
   font-weight: $font-weight-strong
   border-radius: $border-radius
   display: flex
@@ -19,7 +14,7 @@ button
   font-family: inherit
 
 button:active:not(:disabled)
-  transform: translateY(3px)
+  transform: translateY($size-2px)
 
 button.shrink
   width: auto

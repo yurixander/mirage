@@ -1,7 +1,7 @@
 import "../styles/Room.sass"
 import {ReactComponent as HashIcon} from "../../public/icons/hash.svg"
 import {ReactComponent as StarIcon} from "../../public/icons/star.svg"
-import NotificationDot from "./NotificationDot"
+import NotificationIndicator from "./NotificationIndicator"
 import {assert, trim} from "../util"
 
 export enum RoomType {
@@ -37,7 +37,7 @@ export default function Room(props: RoomProps) {
     <div onClick={props.onClick} className="Room">
       {icon}
       <span className={classNameActive}>{trim(props.name, MAX_NAME_LENGTH)}</span>
-      {props.containsUnreadMessages && <NotificationDot mentionAmount={mentionCountProp} />}
+      {props.containsUnreadMessages && <NotificationIndicator mentionAmount={mentionCountProp} />}
     </div>
   )
 }

@@ -7,7 +7,12 @@ export type InputConstraint = {
   pattern: RegExp
 }
 
-type Props = {
+export enum InputIconPlacement {
+  Left,
+  Right,
+}
+
+export type InputProps = {
   isDisabled?: boolean
   label?: string
   className?: string
@@ -18,6 +23,8 @@ type Props = {
   onValueChange?: (value: string) => void
   initialValue?: string
   value?: string
+  iconPlacement?: InputIconPlacement
+  icon?: React.ReactNode
 }
 
 const urlPattern = new RegExp(
@@ -42,6 +49,11 @@ const userIdPattern = new RegExp(
   /^@[a-zA-Z_\-=\.\/0-9]+:[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/
 )
 
+const integerPattern = new RegExp(
+  // Optional sign and digits.
+  /^[-+]?\d+$/
+)
+
 export const urlConstraint: InputConstraint = {
   message: "Must be a valid URL.",
   pattern: urlPattern,
@@ -57,7 +69,12 @@ export const userIdConstraint: InputConstraint = {
   pattern: userIdPattern,
 }
 
-export default function Input(props: Props) {
+export const integerConstraint: InputConstraint = {
+  message: "Must be an integer.",
+  pattern: integerPattern,
+}
+
+export default function Input(props: InputProps) {
   // TODO: Handle `alwaysShowAllConstraints` option.
 
   const [value, setValue] = useState(props.initialValue || "")

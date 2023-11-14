@@ -1,10 +1,10 @@
 import {Meta, StoryObj} from "@storybook/react"
-import NotificationDot, {NotificationDotProps} from "../components/NotificationDot"
+import NotificationIndicator, {NotificationIndicatorProps} from "../components/NotificationIndicator"
 
-type Story = StoryObj<typeof NotificationDot>
+type Story = StoryObj<typeof NotificationIndicator>
 
-const meta: Meta<typeof NotificationDot> = {component: NotificationDot}
-const render = (args: NotificationDotProps) => <NotificationDot {...args} />
+const meta: Meta<typeof NotificationIndicator> = {component: NotificationIndicator}
+const render = (args: NotificationIndicatorProps) => <NotificationIndicator {...args} />
 
 export const WithMentions: Story = {
   render,
