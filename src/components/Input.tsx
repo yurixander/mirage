@@ -76,6 +76,7 @@ export const integerConstraint: InputConstraint = {
 
 export default function Input(props: InputProps) {
   // TODO: Handle `alwaysShowAllConstraints` option.
+  // TODO: Handle `icon` and `iconPlacement` options.
 
   const [value, setValue] = useState(props.initialValue || "")
   const [violatedConstraints, setViolatedConstraints] = useState<InputConstraint[]>([])
@@ -96,6 +97,7 @@ export default function Input(props: InputProps) {
   }
 
   return (
+    // TODO: Utility functions were removed. Adjust class names accordingly.
     <div className={`Input --flex -vertical ${props.className || ""}`.trim()}>
       {props.label !== undefined && <Label text={props.label} />}
       <input
