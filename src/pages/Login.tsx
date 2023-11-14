@@ -94,7 +94,7 @@ export default function LoginPage() {
   }, [])
 
   return (
-    // TODO: Utility functions were removed. Adjust class names accordingly.
+    // TODO: Utility classes were removed. Adjust class names accordingly.
     <div className="Login --flex -vertical">
       <img className="--float -left -top" src="/pink-glow.svg" />
       <img alt="Mirage's logo" width="200" src="/logo-black.svg" className="--margin-x2" />

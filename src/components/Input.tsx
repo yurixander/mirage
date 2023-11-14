@@ -97,7 +97,7 @@ export default function Input(props: InputProps) {
   }
 
   return (
-    // TODO: Utility functions were removed. Adjust class names accordingly.
+    // TODO: Utility classes were removed. Adjust class names accordingly.
     <div className={`Input --flex -vertical ${props.className || ""}`.trim()}>
       {props.label !== undefined && <Label text={props.label} />}
       <input
