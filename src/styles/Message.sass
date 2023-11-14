@@ -1,0 +1,34 @@
+@import "global"
+
+.Message
+  display: flex
+  justify-content: flex-start
+  align-items: flex-start
+
+  > .wrapper
+    width: 100%
+    display: flex
+    gap: $size-10px
+
+    > .avatar
+      cursor: pointer
+      width: 40px
+      height: 40px
+      border-radius: $border-radius
+      background-color: $color-contrast
+      display: flex
+      justify-content: center
+      align-items: center
+      overflow: hidden
+
+      > img
+        width: 100%
+        height: 100%
+
+    > .content
+      > .author-name
+        cursor: pointer
+        font-weight: $font-weight-strong
+
+    > .time
+      margin-left: auto
