@@ -3,7 +3,7 @@ import {useEffect, useState} from "react"
 import * as sdk from "matrix-js-sdk"
 import {SyncState} from "matrix-js-sdk/lib/sync"
 import {useNavigate} from "react-router-dom"
-import {Credentials, Path} from "../index"
+import {Credentials, Path} from "../util"
 import Button, {ButtonStyle} from "../components/Button"
 import {smartTimeout} from "../hooks/useTimeout"
 import Footer from "../components/Footer"
@@ -13,7 +13,7 @@ import StatusMessage from "../components/StatusMessage"
 
 const CREDENTIALS_LOCAL_STORAGE_KEY = "credentials"
 
-export default function Login() {
+export default function LoginPage() {
   const [baseUrl, setBaseUrl] = useState("https://matrix-client.matrix.org/")
   const [userId, setUserId] = useState<string>("")
   const {current: status, pushItem: pushStatus} = useQueue<string>()
@@ -77,7 +77,8 @@ export default function Login() {
     client.startClient()
   }
 
-  // Automatically login if credentials are cached.
+  // Automatically login if credentials are cached. The user should
+  // manually logout to clear the cache.
   useEffect(() => {
     const cachedCredentialsJson = localStorage.getItem(CREDENTIALS_LOCAL_STORAGE_KEY)
 

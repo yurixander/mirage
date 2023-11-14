@@ -1,33 +1,22 @@
-import "./styles/index.sass"
+import "./styles/global.sass"
 import "./polyfills"
-import Login from "./routes/Login"
+import LoginPage from "./pages/Login"
 import {BrowserRouter, Route, Routes} from "react-router-dom"
-import App from "./routes/App"
+import AppPage from "./pages/App"
 import {createRoot} from "react-dom/client"
 import {StrictMode} from "react"
-import {assert} from "./util"
-
-export enum Path {
-  App = "/",
-  Login = "/login",
-}
-
-export type Credentials = {
-  baseUrl: string
-  accessToken: string
-  userId: string
-}
+import {Path, assert} from "./util"
 
 const $root = document.getElementById("root")
 
-assert($root !== null, "root element should be present")
+assert($root !== null, "root element should exist")
 
 createRoot($root).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path={Path.App} element={<App />} />
-        <Route path={Path.Login} caseSensitive element={<Login />} />
+        <Route path={Path.App} element={<AppPage />} />
+        <Route path={Path.Login} caseSensitive element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

@@ -1,4 +1,4 @@
-@import "index"
+@import "global"
 
 button
   font-size: 1rem
@@ -7,12 +7,12 @@ button
   padding: 1rem
   outline: unset
   cursor: pointer
-  background-color: var(--color-black)
+  background-color: $color-contrast
   border: 1px solid #444
   border-bottom: 4px solid #303030
   color: rgba(255, 255, 255, 0.5)
   font-weight: $font-weight-strong
-  border-radius: var(--border-radius)
+  border-radius: $border-radius
   display: flex
   justify-content: center
   align-items: center
@@ -25,13 +25,11 @@ button.shrink
   width: auto
 
 button[data-style="primary"]
-  background: linear-gradient(to top, var(--color-primary), var(--color-primary-lighter))
-  border-color: darken(#C973FF, $color-darken-percent)
-  color: #fff
+  background: linear-gradient(to top, $color-primary, lighten($color-primary, $color-change-percent))
+  border-color: darken($color-primary, $color-change-percent)
+  color: $color-white
 
 button[data-style="green"]
-  /* TODO: Gradient needs end color. */
-  background: linear-gradient(to top, var(--color-green), var(--color-green))
-  /* TODO: Use darken function. */
-  border-color: var(--color-green-border)
-  color: #fff
+  background: linear-gradient(to top, $color-green, lighten($color-green, $color-change-percent))
+  border-color: darken($color-green, $color-change-percent)
+  color: $color-white
