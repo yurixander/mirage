@@ -1,17 +1,17 @@
-import "../styles/NotificationDot.sass"
+import "../styles/NotificationIndicator.sass"
 import {assert} from "../util"
 
-export type NotificationDotProps = {
+export type NotificationIndicatorProps = {
   mentionAmount?: number
 }
 
-export default function NotificationDot(props: NotificationDotProps) {
+export default function NotificationIndicator(props: NotificationIndicatorProps) {
   if (props.mentionAmount !== undefined) {
     assert(props.mentionAmount > 0, "mention amount should be greater than zero if it's defined")
     assert(Number.isInteger(props.mentionAmount), "mention amount should never be a decimal")
   }
 
-  const classNames = ["NotificationDot"]
+  const classNames = ["NotificationIndicator"]
 
   if (props.mentionAmount !== undefined)
     classNames.push("mention")
