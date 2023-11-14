@@ -11,7 +11,7 @@ export type Message = {
   avatarUrl?: string
 }
 
-export default function App() {
+export default function AppPage() {
   const location = useLocation()
   const navigate = useNavigate()
 

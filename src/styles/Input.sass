@@ -1,10 +1,12 @@
+@import "global"
+
 .Input
   & > .constraints
-    margin-top: var(--size-margin-half)
-    padding-left: calc(var(--border-radius) / 2)
+    margin-top: $size-5px
+    padding-left: calc($border-radius / 2)
 
     & > .constraint
-      color: var(--color-error)
+      color: $color-red
       font-size: 0.8rem
 
       &::before
@@ -18,4 +20,4 @@
         box-shadow: 0 0 8px currentColor
 
       &[data-is-met="true"]
-        color: var(--color-success)
+        color: $color-green

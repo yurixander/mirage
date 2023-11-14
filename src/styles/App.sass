@@ -1,9 +1,11 @@
+@import "global.sass"
+
 @keyframes glow
   to
-    background-color: var(--color-text-white)
+    background-color: $color-text
 
 .App
-  background-color: var(--color-background)
+  background-color: $color-contrast
   height: 100%
   padding: 1rem
 
@@ -30,8 +32,8 @@
 
 .chat
   padding: 1rem
-  border-radius: var(--v-radius)
-  background-color: var(--color-ui)
+  border-radius: $border-radius
+  background-color: $color-white
   height: 100%
 
   &
@@ -53,7 +55,7 @@
     padding: 1rem
     line-height: 150%
     font-size: 1.3rem
-    color: var(--color-text)
+    color: $color-text
     user-select: text
 
   & > .messages > .message > .avatar
@@ -103,7 +105,7 @@
     height: 0.5rem
     width: 0.5rem
     border-radius: 50%
-    background-color: var(--color-ui-contrast)
+    background-color: $color-contrast
     margin-right: 0.2rem
     animation: glow 0.8s infinite alternate
 
