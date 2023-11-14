@@ -1,5 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
-import UserProfile, {UserProfileProps, UserStatus} from "../components/UserProfile"
+import UserProfile, {UserActivity, UserProfileProps, UserStatus} from "../components/UserProfile"
+import {ReactComponent as SpotifyIcon} from "../../public/icons/spotify.svg"
 
 type Story = StoryObj<typeof UserProfile>
 
@@ -11,7 +12,7 @@ export const Default: Story = {
   args: {
     displayName: "Emerald Branch",
     displayNameColor: "#5CC679",
-    username: "@emerald_branch",
+    text: "@emerald_branch",
     status: UserStatus.Offline
   }
 }
@@ -21,7 +22,7 @@ export const Online: Story = {
   args: {
     displayName: "Emerald Branch",
     displayNameColor: "#5CC679",
-    username: "@emerald_branch",
+    text: "@emerald_branch",
     status: UserStatus.Online
   }
 }
@@ -31,8 +32,21 @@ export const Idle: Story = {
   args: {
     displayName: "Emerald Branch",
     displayNameColor: "#5CC679",
-    username: "@emerald_branch",
+    text: "@emerald_branch",
     status: UserStatus.Idle
+  }
+}
+
+export const WithIcon: Story = {
+  render,
+  args: {
+    displayName: "Emerald Branch",
+    displayNameColor: "#5CC679",
+    text: "Listening to Spotify",
+    status: UserStatus.Idle,
+    activity: UserActivity.Listening,
+    icon: SpotifyIcon,
+    platform: "Spotify"
   }
 }
 

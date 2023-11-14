@@ -1,8 +1,10 @@
 import "../styles/UserProfile.sass"
-import {ReactComponent as SettingsIcon} from "../../public/icons/cog.svg"
-import {assert, trim, validateUrl} from "../util"
+import {assert, validateUrl} from "../util"
 import Avatar from "boring-avatars"
-import IconButton from "./IconButton"
+
+export enum UserActivity {
+  Listening = "Listening to "
+}
 
 export enum UserStatus {
   Online,
@@ -12,16 +14,30 @@ export enum UserStatus {
 
 export type UserProfileProps = {
   avatarUrl?: string,
-  username: string,
+  text: string,
   displayName: string,
   displayNameColor: string,
-  status: UserStatus
+  status: UserStatus,
+  activity?: UserActivity,
+  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
+  platform?: string
 }
 
 export default function UserProfile(props: UserProfileProps) {
-  // TODO: Check if display name can be empty. If it cannot, then use an assert.
+  assert(props.displayName.length > 0, "display name should not be empty")
+  assert(props.text !== undefined && props.text.length > 0,
+    "username should not be undefined or empty")
 
-  assert(props.username.length > 0, "username should not be empty")
+  //TODO: check undefined values of the activity, platform and icon.
+  if (props.icon !== undefined)
+    assert(props.activity !== undefined || props.platform !== undefined,
+      "User activity and platform should not be undefined")
+  else if (props.activity !== undefined)
+    assert(props.icon !== undefined || props.platform !== undefined,
+      "icon and platform should not be undefined or empty")
+  else if (props.platform !== undefined)
+    assert(props.icon !== undefined || props.activity !== undefined,
+      "icon and activity should not be undefined")
 
   if (props.avatarUrl !== undefined)
     assert(validateUrl(props.avatarUrl), "avatar URL should be valid if defined")
@@ -37,7 +53,15 @@ export default function UserProfile(props: UserProfileProps) {
 
   const avatarImage = props.avatarUrl !== undefined
     ? <img src={props.avatarUrl} />
-    : <Avatar name={props.username} variant="beam" />
+    : <Avatar name={props.text} variant="beam" />
+
+  //TODO: Check font weight of platform text.
+  const action = props.activity !== undefined
+    ? <text className="text">
+      {props.activity}
+      <text className="platform">{props.platform}</text>
+    </text>
+    : <span className="text">{props.text}</span>
 
   return (
     <div className="UserProfile">
@@ -50,16 +74,13 @@ export default function UserProfile(props: UserProfileProps) {
       <div className="info">
         <div
           style={{color: props.displayNameColor}}
-          className="display-name">{trim(props.displayName, MAX_NAME_LENGTH)}
+          className="display-name">{props.displayName}
         </div>
-        <div className="username">{trim(props.username, MAX_NAME_LENGTH)}</div>
+        <div className="activity">
+          {props.icon && <props.icon className="activity-icon" />}
+          {action}
+        </div>
       </div>
-      {/* TODO: Handle click on settings button. */}
-      <IconButton
-        onClick={() => { }}
-        icon={SettingsIcon}
-        tooltip="Settings"
-        tooltipPlacement="top" />
     </div>
   )
 }

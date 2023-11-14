@@ -1,12 +1,12 @@
 import {Meta, StoryObj} from "@storybook/react"
-import ChatList from "../components/Roster"
+import Roster from "../components/Roster"
 
-type Story = StoryObj<typeof ChatList>
+type Story = StoryObj<typeof Roster>
 
-const meta: Meta<typeof ChatList> = {component: ChatList}
-const render = () => <ChatList />
+const meta: Meta<typeof Roster> = {component: Roster}
+const render = () => <Roster />
 
-export const DefaultChatList: Story = {
+export const Default: Story = {
   render,
   args: {}
 }
