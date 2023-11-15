@@ -7,7 +7,7 @@ type Story = StoryObj<typeof UserProfile>
 const meta: Meta<typeof UserProfile> = {component: UserProfile}
 const render = (args: UserProfileProps) => <UserProfile {...args} />
 
-export const Default: Story = {
+export const Offline: Story = {
   render,
   args: {
     displayName: "Emerald Branch",
@@ -37,7 +37,7 @@ export const Idle: Story = {
   }
 }
 
-export const WithIcon: Story = {
+export const WithActivityIcon: Story = {
   render,
   args: {
     displayName: "Emerald Branch",

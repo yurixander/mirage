@@ -8,7 +8,7 @@ type Story = StoryObj<typeof RosterUser>
 const meta: Meta<typeof RosterUser> = {component: RosterUser}
 const render = (args: RosterUserProps) => <RosterUser {...args} />
 
-export const Default: Story = {
+export const WithActivity: Story = {
   render,
   args: {
     userProfileProps: {
