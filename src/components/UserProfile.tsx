@@ -61,13 +61,15 @@ export default function UserProfile(props: UserProfileProps) {
     ? <img src={props.avatarUrl} />
     : <Avatar name={props.text} variant="beam" />
 
-  //TODO: Check font weight of platform text.
-  const action = props.activity !== undefined
-    ? <span className="text-or-activity">
-      {props.activity}
-      <span className="platform">{props.platform}</span>
-    </span>
-    : <span className="text-or-activity">{props.text}</span>
+  // TODO: Check font weight of platform text.
+  const activityOrText = props.activity !== undefined
+    ? (
+      <span className="activity-or-text">
+        {props.activity + " "}
+        <span className="platform">{props.platform}</span>
+      </span>
+    )
+    : <span className="activity-or-text">{props.text}</span>
 
   return (
     <div className="UserProfile">
@@ -84,7 +86,7 @@ export default function UserProfile(props: UserProfileProps) {
         </div>
         <div className="activity">
           {props.icon && <props.icon className="activity-icon" />}
-          {action}
+          {activityOrText}
         </div>
       </div>
     </div>
