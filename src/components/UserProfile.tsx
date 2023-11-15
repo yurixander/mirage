@@ -1,9 +1,9 @@
 import "../styles/UserProfile.sass"
-import {assert, validateUrl} from "../util"
+import {assert, trim, validateUrl} from "../util"
 import Avatar from "boring-avatars"
 
 export enum UserActivity {
-  Listening = "Listening to "
+  Listening = "Listening to"
 }
 
 export enum UserStatus {
@@ -28,21 +28,27 @@ export default function UserProfile(props: UserProfileProps) {
   assert(props.text !== undefined && props.text.length > 0,
     "username should not be undefined or empty")
 
-  //TODO: check undefined values of the activity, platform and icon.
+  // TODO: check undefined values of the activity, platform and icon.
   if (props.icon !== undefined)
-    assert(props.activity !== undefined || props.platform !== undefined,
-      "User activity and platform should not be undefined")
+    assert(
+      props.activity !== undefined || props.platform !== undefined,
+      "User activity and platform should not be undefined"
+    )
   else if (props.activity !== undefined)
-    assert(props.icon !== undefined || props.platform !== undefined,
-      "icon and platform should not be undefined or empty")
+    assert(
+      props.icon !== undefined || props.platform !== undefined,
+      "icon and platform should not be undefined or empty"
+    )
   else if (props.platform !== undefined)
-    assert(props.icon !== undefined || props.activity !== undefined,
-      "icon and activity should not be undefined")
+    assert(
+      props.icon !== undefined || props.activity !== undefined,
+      "icon and activity should not be undefined"
+    )
 
   if (props.avatarUrl !== undefined)
     assert(validateUrl(props.avatarUrl), "avatar URL should be valid if defined")
 
-  const MAX_NAME_LENGTH = 18
+  const MAX_DISPLAY_NAME_LENGTH = 18
   let userStatusClassName: string
 
   switch (props.status) {
@@ -57,11 +63,11 @@ export default function UserProfile(props: UserProfileProps) {
 
   //TODO: Check font weight of platform text.
   const action = props.activity !== undefined
-    ? <text className="text">
+    ? <span className="text-or-activity">
       {props.activity}
-      <text className="platform">{props.platform}</text>
-    </text>
-    : <span className="text">{props.text}</span>
+      <span className="platform">{props.platform}</span>
+    </span>
+    : <span className="text-or-activity">{props.text}</span>
 
   return (
     <div className="UserProfile">
@@ -74,7 +80,7 @@ export default function UserProfile(props: UserProfileProps) {
       <div className="info">
         <div
           style={{color: props.displayNameColor}}
-          className="display-name">{props.displayName}
+          className="display-name">{trim(props.displayName, MAX_DISPLAY_NAME_LENGTH)}
         </div>
         <div className="activity">
           {props.icon && <props.icon className="activity-icon" />}
