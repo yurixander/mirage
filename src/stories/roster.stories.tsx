@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react"
-import Roster, {Category, RosterProps} from "../components/Roster"
+import Roster, {RosterUserCategory, RosterProps} from "../components/Roster"
 import {UserStatus} from "../components/UserProfile"
 
 type Story = StoryObj<typeof Roster>
@@ -12,7 +12,7 @@ export const Default: Story = {
   args: {
     users: [
       {
-        category: Category.Member,
+        category: RosterUserCategory.Member,
         userProfileProps: {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
@@ -21,7 +21,7 @@ export const Default: Story = {
         }
       },
       {
-        category: Category.Member,
+        category: RosterUserCategory.Member,
         userProfileProps: {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
@@ -30,7 +30,7 @@ export const Default: Story = {
         }
       },
       {
-        category: Category.Member,
+        category: RosterUserCategory.Member,
         userProfileProps: {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
@@ -39,7 +39,7 @@ export const Default: Story = {
         }
       },
       {
-        category: Category.Admin,
+        category: RosterUserCategory.Admin,
         userProfileProps: {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
@@ -48,7 +48,7 @@ export const Default: Story = {
         }
       },
       {
-        category: Category.Member,
+        category: RosterUserCategory.Member,
         userProfileProps: {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
@@ -57,7 +57,7 @@ export const Default: Story = {
         }
       },
       {
-        category: Category.Member,
+        category: RosterUserCategory.Member,
         userProfileProps: {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",

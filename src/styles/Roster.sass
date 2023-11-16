@@ -1,22 +1,23 @@
 @import "global"
 
-.Roster
+// REVISE: Need to use `flex` and `gap` instead of margins everywhere.
 
+.Roster
   & > .header
     display: flex
     align-items: center
     margin: $size-5px
 
-    & > .title
+    > .title
       width: 100%
       margin-left: $size-5px
 
-  & > .divider
+  > .divider
     height: $border-width
     width: 100%
     background-color: $color-contrast-dark
 
-  & > .scrollContainer
+  > .scroll-container
     display: flex
     flex-direction: column
     height: 100vh
@@ -26,14 +27,14 @@
     -ms-overflow-style: none
     gap: $size-10px
 
-    & > :last-child
-      margin-bottom: $size-x2 * 2
-
     &::-webkit-scrollbar
       display: none
 
-.admins
-  margin-top: $size-10px
+    > :last-child
+      margin-bottom: $size-x2 * 2
+
+  .admins
+    margin-top: $size-10px
 
 .UserProfile
   padding: $size-10px
