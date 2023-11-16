@@ -1,0 +1,60 @@
+@import "global"
+
+$avatar-size: 37px
+
+.UserProfileGhost
+  display: flex
+  gap: $size-5px
+  padding: $size-x1
+
+  > .avatar-wrapper-ghost
+    position: relative
+
+    > .avatar-ghost
+      position: relative
+      overflow: hidden
+      width: $avatar-size
+      height: $avatar-size
+      border-radius: $border-radius
+      background-color: $color-contrast-dark
+
+      > svg
+        position: absolute
+        left: 50%
+        top: 50%
+        transform: translate(-50%, -50%)
+        width: calc($avatar-size * sqrt(2))
+        height: calc($avatar-size * sqrt(2))
+
+    > .status
+      position: absolute
+      width: 13px
+      height: 13px
+      border-radius: 50%
+      border: 2px solid $color-contrast
+      transform: translate(25%, 25%)
+      right: 0
+      bottom: 0
+      background-color: $color-contrast-dark
+
+  > .info-ghost
+    display: inline-flex
+    flex-direction: column
+    gap: $size-3px
+    margin-right: auto
+
+    > .display-name-ghost
+      color: #ffffff00
+      border-radius: $border-radius
+      font-size: $font-size-large
+      font-weight: $font-weight-strong
+      background-color: $color-contrast-dark
+
+    > .activity-ghost
+      color: #ffffff00
+      width: min-content
+      height: $size-10px
+      font-size: $font-size-small
+      background-color: $color-contrast-dark
+      border-radius: $border-radius
+      margin-top: $size-3px

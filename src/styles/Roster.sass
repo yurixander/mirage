@@ -15,3 +15,30 @@
     height: $border-width
     width: 100%
     background-color: $color-contrast-dark
+
+  & > .scrollContainer
+    display: flex
+    flex-direction: column
+    height: 100vh
+    overflow-y: scroll
+    scroll-behavior: smooth
+    scrollbar-width: none
+    -ms-overflow-style: none
+    gap: $size-10px
+
+    & > :last-child
+      margin-bottom: $size-x2 * 2
+
+    &::-webkit-scrollbar
+      display: none
+
+.admins
+  margin-top: $size-10px
+
+.UserProfile
+  padding: $size-10px
+
+.Label
+  margin-left: $size-10px
+  padding-top: $size-5px
+  color: $color-gray-text
