@@ -12,7 +12,7 @@ export default function UserProfileGhost(props: UserProfileGhostProps) {
     ghosts.push(x * props.opacityMultiplier)
 
   return (
-    <div>
+    <div className="user-ghost-container">
       {ghosts.map(multiplier =>
         <div style={{opacity: 1 - multiplier}} className="UserProfileGhost">
           <div className="avatar-wrapper-ghost">

@@ -28,14 +28,25 @@
     scrollbar-width: none
     -ms-overflow-style: none
 
-    & > :last-child
+    > :last-child
       margin-bottom: $size-x2 * 2
 
     &::-webkit-scrollbar
       display: none
 
-.admins
-  margin-top: $size-10px
+    > .admins
+      display: flex
+      flex-direction: column
+      gap: $size-10px
+      margin-top: $size-10px
+
+      > .Label
+        color: $color-gray-text
+
+    > .members
+      display: flex
+      flex-direction: column
+      gap: $size-10px
 
       > .Label
         color: $color-gray-text
