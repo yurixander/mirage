@@ -2,16 +2,17 @@
 
 @keyframes dot-jump
   to
-    transform: translateY(-3px)
+    transform: translateY(-4px)
 
-$animation-delay-increment: 100ms
+$animation-delay-increment: 150ms
 
 .TypingIndicator
   display: inline-flex
   align-items: center
-  gap: $size-5px
+  gap: $size-3px
 
   > .dots
+    transform: translateY(3px)
     display: inline-flex
     gap: $size-2px
 

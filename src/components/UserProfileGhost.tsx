@@ -6,14 +6,14 @@ export type UserProfileGhostProps = {
 }
 
 export default function UserProfileGhost(props: UserProfileGhostProps) {
-  const list = []
-  for (let x = 1; x <= props.count; x++) {
-    list.push(x * props.opacityMultiplier)
-  }
+  const ghosts = []
+
+  for (let x = 1; x <= props.count; x++)
+    ghosts.push(x * props.opacityMultiplier)
 
   return (
-    <div className="user-ghost-container">
-      {list.map(multiplier =>
+    <div>
+      {ghosts.map(multiplier =>
         <div style={{opacity: 1 - multiplier}} className="UserProfileGhost">
           <div className="avatar-wrapper-ghost">
             <div className="avatar-ghost">

@@ -6,13 +6,13 @@ import Label from "./Label"
 import UserProfile, {UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 
-export enum Category {
+export enum RosterUserCategory {
   Admin,
   Member
 }
 
 export type RosterUserData = {
-  category: Category,
+  category: RosterUserCategory,
   userProfileProps: UserProfileProps
 }
 
@@ -21,8 +21,8 @@ export type RosterProps = {
 }
 
 export default function Roster(props: RosterProps) {
-  const admins = props.users.filter(user => user.category === Category.Admin)
-  const members = props.users.filter(user => user.category === Category.Member)
+  const admins = props.users.filter(user => user.category === RosterUserCategory.Admin)
+  const members = props.users.filter(user => user.category === RosterUserCategory.Member)
 
   return (
     <div className="Roster">
@@ -31,7 +31,7 @@ export default function Roster(props: RosterProps) {
         <div className="title">People</div>
         <IconButton
           onClick={() => {
-            //TODO: Handle sort button click
+            // TODO: Handle `sort` button click.
           }}
           tooltip="Sort by..."
           tooltipPlacement="right"
@@ -40,11 +40,11 @@ export default function Roster(props: RosterProps) {
       <div className="divider" />
       <div className="scroll-container">
         <div className="admins">
-          <Label text={"admin — " + admins.length} />
+          <Label text={"Admin — " + admins.length} />
           {admins.map(admin => <UserProfile {...admin.userProfileProps} />)}
         </div>
         <div className="members">
-          <Label text={"member — " + members.length} />
+          <Label text={"Member — " + members.length} />
           {members.map(member => <UserProfile {...member.userProfileProps} />)}
         </div>
         <UserProfileGhost count={4} opacityMultiplier={0.20} />
