@@ -12,7 +12,7 @@ export type UserCardProps = {
 }
 
 export default function UserCard(props: UserCardProps) {
-  //FIXME: This is temporary. Proper formatting is needed. Will require a specialized library.
+  // FIXME: This is temporary. Proper formatting is needed. Will require a specialized library.
   const accountCreationTime = new Date(props.accountCreationTime).toLocaleTimeString()
   const serverJoinTime = new Date(props.serverJoinTime).toLocaleTimeString()
   const lastMessageTime = new Date(props.lastMessageTime).toLocaleTimeString()
@@ -29,7 +29,7 @@ export default function UserCard(props: UserCardProps) {
         </div>
         <div className="account">
           <Label text="Account" />
-          <span className="created">Created <b>{accountCreationTime}</b></span>
+          <span>Created <b>{accountCreationTime}</b></span>
           <span>Joined server <b>{serverJoinTime}</b></span>
           <span>Last message sent was <b>{lastMessageTime}</b></span>
         </div>
