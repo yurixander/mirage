@@ -11,6 +11,8 @@ export type MessageProps = {
 
 export default function Message(props: MessageProps) {
   const time = new Date(props.timestamp)
+
+  // FIXME: This is temporary. Proper formatting is needed. Will require a specialized library.
   const localeTimeString = time.toLocaleTimeString()
 
   return (
