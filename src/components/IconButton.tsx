@@ -13,6 +13,7 @@ export type IconButtonProps = {
 
 export default function IconButton(props: IconButtonProps) {
   // TODO: Style tooltip to have consistent typography (ex. default font size and weight, etc.).
+  // FIXME: Styling needs to be adjusted to ensure consistent width/height sizing of the SVG itself, as it seems to be responsively resizing on viewport resize.
   return (
     <Tippy
       content={props.tooltip}

@@ -6,3 +6,7 @@ $avatar-size: 37px
   display: flex
   gap: $size-5px
   padding: $size-x1
+
+  // FIXME: This is directly styling a component; need to avoid that. Create a container element, and style that instead.
+  :first-child
+    margin-right: auto
