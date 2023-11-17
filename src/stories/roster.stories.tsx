@@ -17,7 +17,8 @@ export const Default: Story = {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
-          status: UserStatus.Idle
+          status: UserStatus.Idle,
+          isLarge: false
         }
       },
       {
@@ -26,7 +27,8 @@ export const Default: Story = {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
-          status: UserStatus.Online
+          status: UserStatus.Online,
+          isLarge: false
         }
       },
       {
@@ -35,7 +37,8 @@ export const Default: Story = {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
-          status: UserStatus.Idle
+          status: UserStatus.Idle,
+          isLarge: false
         }
       },
       {
@@ -44,7 +47,8 @@ export const Default: Story = {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
-          status: UserStatus.Online
+          status: UserStatus.Online,
+          isLarge: false
         }
       },
       {
@@ -53,7 +57,8 @@ export const Default: Story = {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
-          status: UserStatus.Idle
+          status: UserStatus.Idle,
+          isLarge: false
         }
       },
       {
@@ -62,7 +67,8 @@ export const Default: Story = {
           displayName: "Emerald Branch",
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
-          status: UserStatus.Idle
+          status: UserStatus.Idle,
+          isLarge: false
         }
       }
     ]

@@ -4,7 +4,8 @@ import "../styles/Button.sass"
 export enum ButtonStyle {
   Primary = "primary",
   Green = "green",
-  TextLink = "text-link"
+  TextLink = "text-link",
+  Default = "default"
 }
 
 export type ButtonProps = {

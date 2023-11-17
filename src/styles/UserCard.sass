@@ -1,0 +1,56 @@
+@import "global"
+
+.UserCard
+  display: flex
+  flex-direction: column
+  width: 250px
+  height: 350px
+  border-radius: $border-radius
+  border: $border-width solid $color-border
+  box-shadow: 0px 0px 5px 0px $color-contrast-dark
+  background-color: $color-contrast
+
+  > .header
+    padding: $size-x1
+    border-radius: $border-radius
+    border: $border-width solid $color-border
+    background-color: $color-white
+
+  > .actions
+    display: flex
+    flex-direction: row
+    justify-content: flex-end
+    padding: $size-x1
+    border: $border-width solid $color-border
+    background-color: $color-contrast-dark
+    border-bottom-left-radius: $border-radius
+    border-bottom-right-radius: $border-radius
+
+  > .body
+    display: flex
+    flex-direction: column
+    padding: $size-x1
+    gap: $size-x1
+    flex-grow: 1
+    background-color: $color-contrast
+
+    > .about-me
+      > .about-content
+        font-size: $font-size-small
+
+      > .Label
+        color: $color-gray-text
+
+    > .account
+      display: flex
+      flex-direction: column
+      gap: $size-5px
+
+      > span
+        font-size: $font-size-small
+
+      > .created
+        margin-top: $size-5px
+
+      > .Label
+        color: $color-gray-text

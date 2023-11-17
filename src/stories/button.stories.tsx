@@ -24,4 +24,13 @@ export const Green: Story = {
   }
 }
 
+export const Default: Story = {
+  render,
+  args: {
+    text: "This is a button",
+    style: ButtonStyle.Default,
+    onClick: () => { },
+  }
+}
+
 export default meta
