@@ -1,34 +1,33 @@
 @import "global"
 
-$server-size: 50px
-
 .Navigation
   display: flex
   flex-direction: column
   align-items: center
   justify-content: center
 
-  & > .app-name
+  > .app-name
     display: flex
     align-items: flex-end
     font-family: Iowan Old Style
 
-    & > span
+    > span
       font-style: italic
       margin-left: $size-2px
       font-size: $font-size-small
 
-  & > .divider
+  > .divider
     height: $border-width
     margin: $size-x1
     width: 100%
     background-color: $color-contrast-dark
 
-.server
-  display: flex
-  align-items: center
-  justify-content: center
-  width: $server-size
-  height: $server-size
-  border-radius: $border-radius
-  background-color: $color-red
+  > .servers
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+    justify-content: center
+    gap: $size-x1
+
+    > .add-server
+      cursor: pointer

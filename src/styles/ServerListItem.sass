@@ -1,0 +1,34 @@
+@import "global"
+
+$server-size: 50px
+
+.ServerListItem
+  display: flex
+  align-items: center
+
+  > .avatar
+    position: relative
+    overflow: hidden
+    width: $server-size
+    height: $server-size
+    border-radius: $border-radius
+    background-color: $color-red
+    margin-left: $size-5px
+    box-sizing: border-box
+    cursor: pointer
+
+    > svg
+      position: absolute
+      left: 50%
+      top: 50%
+      transform: translate(-50%, -50%)
+      width: calc($server-size * sqrt(2))
+      height: calc($server-size * sqrt(2))
+
+  > .selected
+    border: $size-3px solid $color-primary
+    box-shadow: 0px 3px 5px 2px $color-contrast-darker
+    box-sizing: border-box
+
+  > .indicator
+    fill: $color-primary
