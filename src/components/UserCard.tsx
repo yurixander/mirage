@@ -12,6 +12,8 @@ export type UserCardProps = {
 }
 
 export default function UserCard(props: UserCardProps) {
+  // CONSIDER: Using a floating UI library to handle the positioning of this component.
+
   // FIXME: This is temporary. Proper formatting is needed. Will require a specialized library.
   const accountCreationTime = new Date(props.accountCreationTime).toLocaleTimeString()
   const serverJoinTime = new Date(props.serverJoinTime).toLocaleTimeString()
