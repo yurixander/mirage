@@ -23,7 +23,8 @@ export default function UserBar(props: UserBarProps) {
         text={trim(props.username, MAX_NAME_LENGTH)}
         displayName={trim(props.displayName, MAX_NAME_LENGTH)}
         displayNameColor={props.displayNameColor}
-        status={props.status} />
+        status={props.status}
+        isLarge={false} />
       {/* TODO: Handle click on settings button. */}
       <IconButton
         onClick={() => { }}

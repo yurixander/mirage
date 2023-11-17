@@ -18,7 +18,8 @@ export const WithActivity: Story = {
       status: UserStatus.Idle,
       activity: UserActivity.Listening,
       icon: SpotifyIcon,
-      platform: "Spotify"
+      platform: "Spotify",
+      isLarge: false
     },
     onClick: () => { }
   }
@@ -32,6 +33,7 @@ export const NoActivity: Story = {
       displayNameColor: "#5CC679",
       status: UserStatus.Online,
       text: "Online",
+      isLarge: false
     },
     onClick: () => { }
   }

@@ -38,7 +38,7 @@ export default function Roster(props: RosterProps) {
           icon={SortIcon} />
       </div>
       <div className="divider" />
-      <div className="scrollContainer">
+      <div className="scroll-container">
         <div className="admins">
           <Label text={"admin — " + admins.length} />
           {admins.map(admin => <UserProfile {...admin.userProfileProps} />)}

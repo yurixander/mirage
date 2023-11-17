@@ -1,11 +1,14 @@
 @import "global"
 
-$avatar-size: 37px
+$avatar-size-default: 37px
+$avatar-size-large: 50px
+
+$status-size-default: 13px
+$status-size-large: 17px
 
 .UserProfile
   display: flex
   gap: $size-5px
-  padding: $size-x1
 
   > .avatar-wrapper
     position: relative
@@ -13,8 +16,8 @@ $avatar-size: 37px
     > .avatar
       position: relative
       overflow: hidden
-      width: $avatar-size
-      height: $avatar-size
+      width: $avatar-size-default
+      height: $avatar-size-default
       border-radius: $border-radius
       background-color: $color-red
 
@@ -23,13 +26,13 @@ $avatar-size: 37px
         left: 50%
         top: 50%
         transform: translate(-50%, -50%)
-        width: calc($avatar-size * sqrt(2))
-        height: calc($avatar-size * sqrt(2))
+        width: calc($avatar-size-default * sqrt(2))
+        height: calc($avatar-size-default * sqrt(2))
 
     > .status
       position: absolute
-      width: 13px
-      height: 13px
+      width: $status-size-default
+      height: $status-size-default
       border-radius: 50%
       border: 2px solid $color-contrast
       transform: translate(25%, 25%)
@@ -44,6 +47,20 @@ $avatar-size: 37px
 
       &.idle
         background-color: $color-yellow
+
+  > .large
+
+    > .avatar
+      width: $avatar-size-large
+      height: $avatar-size-large
+
+      > svg
+        width: calc($avatar-size-large * sqrt(2))
+        height: calc($avatar-size-large * sqrt(2))
+
+    > .status
+      width: $status-size-large
+      height: $status-size-large
 
   > .info
     display: inline-flex
@@ -65,5 +82,5 @@ $avatar-size: 37px
       > .activity-icon
         margin-right: $size-3px
 
-.platform
-  font-weight: $font-weight-strong
+      > .platform
+        font-weight: $font-weight-strong
