@@ -4,7 +4,7 @@
   display: flex
   flex-direction: column
   width: 250px
-  height: 350px
+  min-height: 320px
   border-radius: $border-radius
   border: $border-width solid $color-border
   box-shadow: 0px 0px 5px 0px $color-contrast-dark
@@ -13,18 +13,8 @@
   > .header
     padding: $size-x1
     border-radius: $border-radius
-    border: $border-width solid $color-border
+    border-bottom: $border-width solid $color-border
     background-color: $color-white
-
-  > .actions
-    display: flex
-    flex-direction: row
-    justify-content: flex-end
-    padding: $size-x1
-    border: $border-width solid $color-border
-    background-color: $color-contrast-dark
-    border-bottom-left-radius: $border-radius
-    border-bottom-right-radius: $border-radius
 
   > .body
     display: flex
@@ -38,9 +28,6 @@
       > .about-content
         font-size: $font-size-small
 
-      > .Label
-        color: $color-gray-text
-
     > .account
       display: flex
       flex-direction: column
@@ -49,8 +36,12 @@
       > span
         font-size: $font-size-small
 
-      > .created
-        margin-top: $size-5px
-
-      > .Label
-        color: $color-gray-text
+  > .actions
+    display: flex
+    flex-direction: row
+    justify-content: flex-end
+    padding: $size-10px
+    border-top: $border-width solid $color-border
+    background-color: $color-card-actions-bg
+    border-bottom-left-radius: $border-radius
+    border-bottom-right-radius: $border-radius

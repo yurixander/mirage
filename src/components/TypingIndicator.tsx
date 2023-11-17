@@ -17,7 +17,7 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
   const names = (
     <>
       {props.users.map(user =>
-        <span style={{color: user.color}}>{user.displayName}</span>
+        <span className="name" style={{color: user.color}}>{user.displayName}</span>
       )}
     </>
   )
