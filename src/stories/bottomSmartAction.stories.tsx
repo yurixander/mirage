@@ -11,7 +11,8 @@ export const Default: Story = {
   render,
   args: {
     icon: StarIcon,
-    text: "Help & guides"
+    text: "Help & guides",
+    onClick: () => { }
   }
 }
 
