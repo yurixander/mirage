@@ -4,6 +4,7 @@
   display: flex
   justify-content: flex-start
   align-items: flex-start
+  width: 100%
 
   > .wrapper
     width: 100%
@@ -26,9 +27,14 @@
         height: 100%
 
     > .content
+      > .text
+        max-width: 600px
+
       > .author-name
         cursor: pointer
         font-weight: $font-weight-strong
 
     > .time
+      display: flex
+      align-items: center
       margin-left: auto
