@@ -1,0 +1,18 @@
+@import "global"
+
+.UnreadIndicator
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: center
+
+  > .line
+    height: $border-width
+    background-color: $color-red
+    flex-grow: 1
+
+  > span
+    font-size: $font-size-small
+    margin-left: $size-10px
+    margin-right: $size-10px
+    color: $color-red
