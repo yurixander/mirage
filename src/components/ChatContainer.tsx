@@ -1,12 +1,90 @@
 import "../styles/ChatContainer.sass"
+import {ReactComponent as LinkIcon} from "../../public/icons/link.svg"
+import {ReactComponent as InfoIcon} from "../../public/icons/info.svg"
+import {ReactComponent as MoreIcon} from "../../public/icons/three-dots.svg"
+import {ReactComponent as HashIcon} from "../../public/icons/hash.svg"
+import {ReactComponent as StarIcon} from "../../public/icons/star.svg"
+import {ReactComponent as AccessibilityIcon} from "../../public/icons/accessibility.svg"
+import {ReactComponent as GlobeIcon} from "../../public/icons/globe.svg"
+import {ReactComponent as ThemeIcon} from "../../public/icons/theme.svg"
+import {ReactComponent as EmojiIcon} from "../../public/icons/emoji.svg"
+import {ReactComponent as PaperclipIcon} from "../../public/icons/paperclip.svg"
+import IconButton from "./IconButton"
+import {RoomType} from "./Room"
+import {assert} from "../util"
+import BottomSmartAction from "./BottomSmartAction"
 
-export default function ChatContainer() {
+export type ChatContainerProps = {
+  name: string,
+  text: string,
+  type: RoomType
+}
+
+export default function ChatContainer(props: ChatContainerProps) {
+  assert(props.name.length !== 0, "room name should not be empty")
+
+  let icon: JSX.Element
+  switch (props.type) {
+    case RoomType.Text: icon = <HashIcon className="Icon" />; break
+    case RoomType.Space: icon = <StarIcon className="Icon" />; break
+  }
+
   return (
     <div className="ChatContainer">
-      <div className="header" />
-      <div className="chats" />
-      <div className="actions" />
-      <div className="information" />
+      <div className="header">
+        <div className="title">
+          {icon}
+          <span className="name">{props.name}</span>
+          <span className="text">{props.text}</span>
+        </div>
+        <IconButton
+          onClick={() => {/* TODO: Handle `info` button click. */}}
+          tooltip={"More info"}
+          tooltipPlacement={"auto"}
+          icon={InfoIcon} />
+        <IconButton
+          onClick={() => {/* TODO: Handle `link` button click. */}}
+          tooltip={"Copy link"}
+          tooltipPlacement={"auto"}
+          icon={LinkIcon} />
+        <IconButton
+          onClick={() => {/* TODO: Handle `more` button click. */}}
+          tooltip={"More actions"}
+          tooltipPlacement={"auto"}
+          icon={MoreIcon} />
+      </div>
+      <div className="chat" >
+        {/* TODO: Create here Chat messages */}
+      </div>
+      <div className="actions">
+        <IconButton onClick={() => {/* TODO: Handle `emoji` button click. */}}
+          tooltip={"emoji"}
+          tooltipPlacement={"bottom"}
+          icon={EmojiIcon} />
+        <IconButton onClick={() => {/* TODO: Handle `Send media` button click. */}}
+          tooltip={"Send media"}
+          tooltipPlacement={"bottom"}
+          icon={PaperclipIcon} />
+        {/* TODO: Put here Input Component. */}
+      </div>
+      <div className="information">
+        <BottomSmartAction
+          icon={StarIcon}
+          text="Quick menu"
+          onClick={() => { }} />
+        <BottomSmartAction
+          icon={AccessibilityIcon}
+          text="Accessibility"
+          onClick={() => { }} />
+        <BottomSmartAction
+          icon={ThemeIcon}
+          text="Switch theme"
+          onClick={() => { }} />
+        <BottomSmartAction
+          icon={GlobeIcon}
+          text="63ms ping"
+          onClick={() => { }} />
+      </div>
     </div>
   )
 }
