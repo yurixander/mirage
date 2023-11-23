@@ -26,7 +26,7 @@ export default function GuideArrow(props: GuideArrowProps) {
     : -1
 
   // TODO: `translate` part should be in the SASS file.
-  const arrowTransform = `scaleX(${arrowFlip}) translate(50%)`
+  const arrowTransform = `scaleX(${arrowFlip})`
 
   return (
     <div style={{transform: rotation}} className="GuideArrow">
