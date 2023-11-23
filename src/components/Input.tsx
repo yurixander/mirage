@@ -1,15 +1,17 @@
 import "../styles/Input.sass"
 import {useState} from "react"
 import Label from "./Label"
+import IconButton from "./IconButton"
 
 export type InputConstraint = {
   message: string
   pattern: RegExp
 }
 
-export enum InputIconPlacement {
-  Left,
-  Right,
+export type InputAction = {
+  tooltip: string
+  onClick: () => void
+  icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
 }
 
 export type InputProps = {
@@ -23,8 +25,8 @@ export type InputProps = {
   onValueChange?: (value: string) => void
   initialValue?: string
   value?: string
-  iconPlacement?: InputIconPlacement
   icon?: React.ReactNode
+  actions?: InputAction[]
 }
 
 const urlPattern = new RegExp(
@@ -100,6 +102,7 @@ export default function Input(props: InputProps) {
     // TODO: Utility classes were removed. Adjust class names accordingly.
     <div className={`Input --flex -vertical ${props.className || ""}`.trim()}>
       {props.label !== undefined && <Label text={props.label} />}
+      {props.icon && <div className="icon"> {props.icon} </div>}
       <input
         type="text"
         disabled={props.isDisabled}
@@ -107,7 +110,7 @@ export default function Input(props: InputProps) {
         placeholder={props.placeholder}
         value={props.value ?? value}
         onChange={handleChange}
-      />
+      ></input>
       <div className="constraints --flex -vertical -gap-half">
         {violatedConstraints.map(constraint => (
           <span
@@ -117,6 +120,14 @@ export default function Input(props: InputProps) {
             {constraint.message}
           </span>
         ))}
+      </div>
+      <div className="actions">
+        {props.actions?.map(action =>
+          <IconButton
+            onClick={action.onClick}
+            tooltip={action.tooltip}
+            tooltipPlacement={"auto"}
+            icon={action.icon} />)}
       </div>
     </div>
   )
