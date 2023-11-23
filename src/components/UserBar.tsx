@@ -18,13 +18,15 @@ export default function UserBar(props: UserBarProps) {
 
   return (
     <div className="UserBar">
-      <UserProfile
-        avatarUrl={props.avatarUrl}
-        text={trim(props.username, MAX_NAME_LENGTH)}
-        displayName={trim(props.displayName, MAX_NAME_LENGTH)}
-        displayNameColor={props.displayNameColor}
-        status={props.status}
-        isLarge={false} />
+      <div className="profile-container">
+        <UserProfile
+          avatarUrl={props.avatarUrl}
+          text={trim(props.username, MAX_NAME_LENGTH)}
+          displayName={trim(props.displayName, MAX_NAME_LENGTH)}
+          displayNameColor={props.displayNameColor}
+          status={props.status}
+          isLarge={false} />
+      </div>
       {/* TODO: Handle click on settings button. */}
       <IconButton
         onClick={() => { }}
