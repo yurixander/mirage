@@ -25,6 +25,7 @@ export default function GuideArrow(props: GuideArrowProps) {
     ? 1
     : -1
 
+  // TODO: `translate` part should be in the SASS file.
   const arrowTransform = `scaleX(${arrowFlip})`
 
   return (
