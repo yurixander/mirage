@@ -12,7 +12,6 @@ export default function EventMessage(props: EventMessageProps) {
 
   return (
     <div className="EventMessage">
-      {/* FIXME: Icon needs to be adjusted to be vertically centered, now that `line-height` was added to the content. */}
       <PencilIcon />
       <div className="content">
         {props.content}
