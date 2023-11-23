@@ -1,6 +1,15 @@
 @import "global"
 
 .Input
+  display: flex
+  align-items: center
+  border: $border-width solid $color-border
+  border-radius: $border-radius
+
+  & > input
+    border: none
+    width: 100%
+
   & > .constraints
     margin-top: $size-5px
     padding-left: calc($border-radius / 2)
@@ -21,3 +30,14 @@
 
       &[data-is-met="true"]
         color: $color-green
+
+  & > .icon
+    height: $icon-size
+    width: $icon-size
+    fill: $color-contrast-icon
+    margin-left: $size-10px
+
+  & > .actions
+    display: flex
+    margin-right: $size-5px
+    fill: $color-contrast-icon

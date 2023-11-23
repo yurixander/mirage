@@ -21,7 +21,7 @@ export type UserProfileProps = {
   activity?: UserActivity,
   icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
   platform?: string,
-  isLarge: boolean
+  isLarge?: boolean
 }
 
 export default function UserProfile(props: UserProfileProps) {
@@ -70,7 +70,9 @@ export default function UserProfile(props: UserProfileProps) {
     </span>
     : <span className="activity-or-text">{props.text}</span>
 
-  const isLargeClassName = props.isLarge ? "large" : ""
+  const isLargeClassName = props.isLarge !== undefined && props.isLarge
+    ? "large"
+    : ""
 
   return (
     <div className="UserProfile">
