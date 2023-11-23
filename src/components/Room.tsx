@@ -26,8 +26,8 @@ export default function Room(props: RoomProps) {
   let icon: JSX.Element
 
   switch (props.type) {
-    case RoomType.Text: icon = <HashIcon className={"Icon " + classNameActive} />; break
-    case RoomType.Space: icon = <StarIcon className={"Icon " + classNameActive} />; break
+    case RoomType.Text: icon = <HashIcon className={"icon " + classNameActive} />; break
+    case RoomType.Space: icon = <StarIcon className={"icon " + classNameActive} />; break
   }
 
   const mentionCountProp = props.mentionCount > 0 ? props.mentionCount : undefined
