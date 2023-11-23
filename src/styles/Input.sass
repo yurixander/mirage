@@ -6,15 +6,15 @@
   border: $border-width solid $color-border
   border-radius: $border-radius
 
-  & > input
+  > input
     border: none
     width: 100%
 
-  & > .constraints
+  > .constraints
     margin-top: $size-5px
     padding-left: calc($border-radius / 2)
 
-    & > .constraint
+    > .constraint
       color: $color-red
       font-size: 0.8rem
 
@@ -31,13 +31,11 @@
       &[data-is-met="true"]
         color: $color-green
 
-  & > .icon
-    height: $icon-size
-    width: $icon-size
+  > .icon
     fill: $color-contrast-icon
     margin-left: $size-10px
 
-  & > .actions
+  > .actions
     display: flex
     margin-right: $size-5px
     fill: $color-contrast-icon
