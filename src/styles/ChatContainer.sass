@@ -3,6 +3,7 @@
 .ChatContainer
   display: flex
   flex-direction: column
+  height: 100%
   gap: $size-x1
   border: $border-width solid $color-border
 
@@ -21,17 +22,18 @@
       > .Icon
         fill: $color-primary
 
-      > .name
-        color: $color-primary
+        > .name
+          color: $color-primary
 
-      > .text
-        color: $color-gray-text
+        > .text
+          color: $color-gray-text
 
   > .chat
     display: flex
     flex-direction: column
     gap: $size-10px
     overflow: hidden
+    flex-grow: 1
 
   > .actions
     display: flex

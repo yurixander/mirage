@@ -1,16 +1,16 @@
 @import "global"
 
 button
-  padding: $size-x1
-  outline: unset
-  cursor: pointer
-  border: 1px solid $color-red
-  border-bottom: 4px solid $color-red
-  font-weight: $font-weight-strong
-  border-radius: $border-radius
   display: flex
   justify-content: center
   align-items: center
+  padding: $size-x1
+  outline: unset
+  cursor: pointer
+  border: $border-width solid $color-red
+  border-bottom: 4px solid $color-red
+  border-radius: $border-radius
+  font-weight: $font-weight-strong
   font-family: inherit
   transform-origin: center
 
@@ -39,8 +39,7 @@ button[data-style="default"]
   padding: $size-10px
   background: $color-green
   font-size: $font-size-small
-  border-width: $border-width
-  border-color: $color-green-dark
+  border: $border-width solid $color-green-dark
+  border-radius: $border-radius-small
   color: $color-white
   font-weight: $font-weight-strong
-  border-radius: $border-radius-small
