@@ -22,7 +22,8 @@ export default function IconButton(props: IconButtonProps) {
       placement={props.tooltipPlacement}>
       <div
         className="IconButton"
-        onClick={props.onClick}>
+        onClick={props.onClick}
+        tabIndex={0}>
         <props.icon className="icon" />
       </div>
     </Tippy>
