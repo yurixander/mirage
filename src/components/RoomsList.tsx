@@ -1,17 +1,17 @@
 import Room, {RoomProps, RoomType} from "./Room"
-import "../styles/ServerSections.sass"
+import "../styles/RoomsList.sass"
 import Label from "./Label"
 
-export type ServerSectionsProps = {
+export type RoomsListProps = {
   rooms: RoomProps[]
 }
 
-export default function ServerSections(props: ServerSectionsProps) {
+export default function RoomsList(props: RoomsListProps) {
   const spaces = props.rooms.filter(room => room.type === RoomType.Space)
-  const channels = props.rooms.filter(room => room.type === RoomType.Text)
+  const textChannels = props.rooms.filter(room => room.type === RoomType.Text)
 
   return (
-    <div className="ServerSection">
+    <div className="RoomsList">
       <div className="spaces">
         <Label text={"Spaces"} />
         {spaces.map(space =>
@@ -25,7 +25,7 @@ export default function ServerSections(props: ServerSectionsProps) {
       </div>
       <div className="channels">
         <Label text={"Channels"} />
-        {channels.map(channel =>
+        {textChannels.map(channel =>
           <Room
             name={channel.name}
             type={channel.type}

@@ -9,7 +9,6 @@ export type ServerListItemProps = {
   isActive: boolean,
   onClick: () => void
   tooltip: string
-  tooltipPlacement: Placement
 }
 
 export default function ServerListItem(props: ServerListItemProps) {
@@ -28,7 +27,7 @@ export default function ServerListItem(props: ServerListItemProps) {
         inertia={true}
         animation="scale-subtle"
         duration={100}
-        placement={props.tooltipPlacement}>
+        placement={"right"}>
         <div
           className={"avatar " + selectedClassName}
           onClick={props.onClick} >

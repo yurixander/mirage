@@ -11,8 +11,7 @@ export const Default: Story = {
   args: {
     isActive: false,
     onClick: () => { },
-    tooltip: "Server 1",
-    tooltipPlacement: "auto"
+    tooltip: "Server 1"
   }
 }
 
@@ -21,8 +20,7 @@ export const Selected: Story = {
   args: {
     isActive: true,
     onClick: () => { },
-    tooltip: "Server 2",
-    tooltipPlacement: "auto"
+    tooltip: "Server 2"
   }
 }
 

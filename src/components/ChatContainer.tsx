@@ -24,6 +24,7 @@ export default function ChatContainer(props: ChatContainerProps) {
   assert(props.name.length !== 0, "room name should not be empty")
 
   let icon: JSX.Element
+
   switch (props.type) {
     case RoomType.Text: icon = <HashIcon className="Icon" />; break
     case RoomType.Space: icon = <StarIcon className="Icon" />; break
@@ -39,18 +40,18 @@ export default function ChatContainer(props: ChatContainerProps) {
         </div>
         <IconButton
           onClick={() => {/* TODO: Handle `info` button click. */}}
-          tooltip={"More info"}
-          tooltipPlacement={"auto"}
+          tooltip={"Room details"}
+          tooltipPlacement={"bottom"}
           icon={InfoIcon} />
         <IconButton
           onClick={() => {/* TODO: Handle `link` button click. */}}
           tooltip={"Copy link"}
-          tooltipPlacement={"auto"}
+          tooltipPlacement={"bottom"}
           icon={LinkIcon} />
         <IconButton
           onClick={() => {/* TODO: Handle `more` button click. */}}
           tooltip={"More actions"}
-          tooltipPlacement={"auto"}
+          tooltipPlacement={"bottom"}
           icon={MoreIcon} />
       </div>
       <div className="chat" >
@@ -58,12 +59,12 @@ export default function ChatContainer(props: ChatContainerProps) {
       </div>
       <div className="actions">
         <IconButton onClick={() => {/* TODO: Handle `emoji` button click. */}}
-          tooltip={"emoji"}
-          tooltipPlacement={"bottom"}
+          tooltip={"Emoji"}
+          tooltipPlacement={"top"}
           icon={EmojiIcon} />
-        <IconButton onClick={() => {/* TODO: Handle `Send media` button click. */}}
-          tooltip={"Send media"}
-          tooltipPlacement={"bottom"}
+        <IconButton onClick={() => {/* TODO: Handle `attach` button click. */}}
+          tooltip={"Attach"}
+          tooltipPlacement={"top"}
           icon={PaperclipIcon} />
         {/* TODO: Put here Input Component. */}
       </div>
