@@ -1,11 +1,11 @@
 import {Meta, StoryObj} from "@storybook/react"
-import ServerSections, {ServerSectionsProps} from "../components/ServerSections"
+import RoomsList, {RoomsListProps} from "../components/RoomsList"
 import {RoomType} from "../components/Room"
 
-type Story = StoryObj<typeof ServerSections>
+type Story = StoryObj<typeof RoomsList>
 
-const meta: Meta<typeof ServerSections> = {component: ServerSections}
-const render = (args: ServerSectionsProps) => <ServerSections {...args} />
+const meta: Meta<typeof RoomsList> = {component: RoomsList}
+const render = (args: RoomsListProps) => <RoomsList {...args} />
 
 export const Default: Story = {
   render,

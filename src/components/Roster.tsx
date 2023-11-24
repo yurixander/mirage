@@ -33,7 +33,7 @@ export default function Roster(props: RosterProps) {
           onClick={() => {
             // TODO: Handle `sort` button click.
           }}
-          tooltip="Sort by..."
+          tooltip="Sort members"
           tooltipPlacement="right"
           icon={SortIcon} />
       </div>
