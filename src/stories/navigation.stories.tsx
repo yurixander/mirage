@@ -14,14 +14,45 @@ export const DefaultNav: Story = {
         isActive: true,
         tooltip: "Server 1",
         onClick: () => { }
-      }, {
+      },
+      {
         isActive: false,
         tooltip: "Server 2",
         onClick: () => { }
-      }
-      , {
+      },
+      {
         isActive: false,
-        tooltip: "Server 3",
+        tooltip: "Server 2",
+        onClick: () => { }
+      },
+      {
+        isActive: false,
+        tooltip: "Server 2",
+        onClick: () => { }
+      },
+      {
+        isActive: false,
+        tooltip: "Server 2",
+        onClick: () => { }
+      },
+      {
+        isActive: false,
+        tooltip: "Server 2",
+        onClick: () => { }
+      },
+      {
+        isActive: false,
+        tooltip: "Server 2",
+        onClick: () => { }
+      },
+      {
+        isActive: false,
+        tooltip: "Server 2",
+        onClick: () => { }
+      },
+      {
+        isActive: false,
+        tooltip: "Server 2",
         onClick: () => { }
       }
     ]

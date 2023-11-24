@@ -11,29 +11,32 @@ export type NavigationProps = {
 export default function Navigation(props: NavigationProps) {
   return (
     <div className="Navigation">
-      <AppLogo onClick={() => {/* TODO:  Handle click on logo. */}} />
-      <div className="app-name">
-        <div>Mirage</div>
-        <span>©</span>
-      </div>
-      <div className="divider" />
-      {/* TODO: Check server component. */}
-      <div className="servers">
-        {props.servers.map(server => <ServerListItem {...server} />)}
-        <Tippy
-          content="Add server"
-          arrow={true}
-          inertia={true}
-          animation="scale-subtle"
-          duration={100}
-          placement="right">
-          <div
-            className="add-server"
-            onClick={() => { /* TODO: Handle click on Add server. */}}>
-            <AddServerIcon />
-          </div>
-        </Tippy>
+      <div className="container">
+        <AppLogo onClick={() => {/* TODO:  Handle click on logo. */}} />
+        <div className="app-name">
+          <div>Mirage</div>
+          <span>©</span>
+        </div>
+        <div className="divider" />
+        {/* TODO: Check server component. */}
+        <div className="servers">
+          {props.servers.map(server => <ServerListItem {...server} />)}
+          <Tippy
+            content="Add server"
+            arrow={true}
+            inertia={true}
+            animation="scale-subtle"
+            duration={100}
+            placement="right">
+            <div
+              className="add-server"
+              onClick={() => { /* TODO: Handle click on Add server. */}}>
+              <AddServerIcon />
+            </div>
+          </Tippy>
+        </div>
       </div>
     </div>
+
   )
 }
