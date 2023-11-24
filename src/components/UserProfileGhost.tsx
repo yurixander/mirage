@@ -8,8 +8,8 @@ export type UserProfileGhostProps = {
 export default function UserProfileGhost(props: UserProfileGhostProps) {
   const ghosts = []
 
-  for (let x = 1; x <= props.count; x++)
-    ghosts.push(x * props.opacityMultiplier)
+  for (let i = 1; i <= props.count; i++)
+    ghosts.push(i * props.opacityMultiplier)
 
   return (
     <div className="user-ghost-container">

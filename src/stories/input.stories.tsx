@@ -1,7 +1,7 @@
 import {Meta, StoryObj} from "@storybook/react"
 import Input, {InputProps, integerConstraint, InputAction} from "../components/Input"
-import {ReactComponent as SendIcon} from "../../public/icons/dms.svg"
-import {ReactComponent as Search} from "../../public/icons/search.svg"
+import {ReactComponent as LocationIcon} from "../../public/icons/dms.svg"
+import {ReactComponent as SearchIcon} from "../../public/icons/search.svg"
 
 type Story = StoryObj<typeof Input>
 
@@ -24,8 +24,8 @@ export const WithIntegerConstraint: Story = {
 export const WithIcon: Story = {
   render,
   args: {
-    placeholder: "Integers only",
-    icon: <SendIcon />
+    placeholder: "This is an input",
+    icon: <LocationIcon />
   }
 }
 
@@ -35,14 +35,14 @@ export const WithActions: Story = {
     placeholder: "This is an input",
     actions: [
       {
-        tooltip: "Send message",
+        tooltip: "Search",
         onClick: () => { },
-        icon: Search
+        icon: SearchIcon
       },
       {
-        tooltip: "Send message",
+        tooltip: "Location",
         onClick: () => { },
-        icon: Search
+        icon: LocationIcon
       }
     ]
   }
