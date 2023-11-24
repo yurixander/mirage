@@ -101,16 +101,26 @@ export default function Input(props: InputProps) {
   return (
     // TODO: Utility classes were removed. Adjust class names accordingly.
     <div className={`Input --flex -vertical ${props.className || ""}`.trim()}>
-      {props.label !== undefined && <Label text={props.label} />}
-      {props.icon && <div className="icon"> {props.icon} </div>}
-      <input
-        type="text"
-        disabled={props.isDisabled}
-        autoFocus={props.autoFocus}
-        placeholder={props.placeholder}
-        value={props.value ?? value}
-        onChange={handleChange}
-      ></input>
+      <div className="container">
+        {props.label !== undefined && <Label text={props.label} />}
+        {props.icon && <div className="icon"> {props.icon} </div>}
+        <input
+          type="text"
+          disabled={props.isDisabled}
+          autoFocus={props.autoFocus}
+          placeholder={props.placeholder}
+          value={props.value ?? value}
+          onChange={handleChange}
+        ></input>
+        {props.actions && <div className="actions">
+          {props.actions?.map(action =>
+            <IconButton
+              onClick={action.onClick}
+              tooltip={action.tooltip}
+              tooltipPlacement={"auto"}
+              icon={action.icon} />)}
+        </div>}
+      </div>
       <div className="constraints --flex -vertical -gap-half">
         {violatedConstraints.map(constraint => (
           <span
@@ -120,14 +130,6 @@ export default function Input(props: InputProps) {
             {constraint.message}
           </span>
         ))}
-      </div>
-      <div className="actions">
-        {props.actions?.map(action =>
-          <IconButton
-            onClick={action.onClick}
-            tooltip={action.tooltip}
-            tooltipPlacement={"auto"}
-            icon={action.icon} />)}
       </div>
     </div>
   )

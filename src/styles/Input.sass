@@ -1,14 +1,26 @@
 @import "global"
 
 .Input
-  display: flex
-  align-items: center
-  border: $border-width solid $color-border
-  border-radius: $border-radius
+  > .container
+    display: flex
+    align-items: center
+    border: $border-width solid $color-border
+    border-radius: $border-radius
 
-  > input
-    border: none
-    width: 100%
+    > input
+      border: none
+      width: 100%
+
+    > .icon
+      width: $size-icon
+      height: $size-icon
+      fill: $color-contrast-icon
+      margin-left: $size-10px
+
+    > .actions
+      display: flex
+      margin-right: $size-5px
+      fill: $color-contrast-icon
 
   > .constraints
     margin-top: $size-5px
@@ -30,14 +42,3 @@
 
       &[data-is-met="true"]
         color: $color-green
-
-  > .icon
-    width: $size-icon
-    height: $size-icon
-    fill: $color-contrast-icon
-    margin-left: $size-10px
-
-  > .actions
-    display: flex
-    margin-right: $size-5px
-    fill: $color-contrast-icon
