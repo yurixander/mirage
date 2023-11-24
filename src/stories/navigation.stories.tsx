@@ -13,18 +13,15 @@ export const DefaultNav: Story = {
       {
         isActive: true,
         tooltip: "Server 1",
-        tooltipPlacement: "right",
         onClick: () => { }
       }, {
         isActive: false,
         tooltip: "Server 2",
-        tooltipPlacement: "right",
         onClick: () => { }
       }
       , {
         isActive: false,
         tooltip: "Server 3",
-        tooltipPlacement: "right",
         onClick: () => { }
       }
     ]
