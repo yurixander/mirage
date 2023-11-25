@@ -13,7 +13,6 @@ import IconButton from "./IconButton"
 import {RoomType} from "./Room"
 import {assert} from "../util"
 import BottomSmartAction from "./BottomSmartAction"
-import Message, {MessageProps} from "./Message"
 
 export type ChatContainerProps = {
   name: string,
@@ -68,7 +67,9 @@ export default function ChatContainer(props: ChatContainerProps) {
           tooltip={"Attach"}
           tooltipPlacement={"top"}
           icon={PaperclipIcon} />
-        {/* TODO: Put here Input Component. */}
+        <div className="input-typing">
+          {/* TODO: Put here Input Component. */}
+        </div>
       </div>
       <div className="information">
         <BottomSmartAction

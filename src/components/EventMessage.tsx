@@ -1,5 +1,6 @@
 import "../styles/EventMessage.sass"
 import {ReactComponent as PencilIcon} from "../../public/icons/pencil.svg"
+import {timeFormatter} from "../util"
 
 export type EventMessageProps = {
   content: JSX.Element
@@ -7,8 +8,7 @@ export type EventMessageProps = {
 }
 
 export default function EventMessage(props: EventMessageProps) {
-  const time = new Date(props.timestamp)
-  const localeTimeString = time.toLocaleTimeString()
+  const localeTimeString = timeFormatter(props.timestamp)
 
   return (
     <div className="EventMessage">
