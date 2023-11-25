@@ -13,11 +13,13 @@ import IconButton from "./IconButton"
 import {RoomType} from "./Room"
 import {assert} from "../util"
 import BottomSmartAction from "./BottomSmartAction"
+import Message, {MessageProps} from "./Message"
 
 export type ChatContainerProps = {
   name: string,
   text: string,
-  type: RoomType
+  type: RoomType,
+  chatComponents: JSX.Element[]
 }
 
 export default function ChatContainer(props: ChatContainerProps) {
@@ -26,8 +28,8 @@ export default function ChatContainer(props: ChatContainerProps) {
   let icon: JSX.Element
 
   switch (props.type) {
-    case RoomType.Text: icon = <HashIcon className="Icon" />; break
-    case RoomType.Space: icon = <StarIcon className="Icon" />; break
+    case RoomType.Text: icon = <HashIcon className="icon" />; break
+    case RoomType.Space: icon = <StarIcon className="icon" />; break
   }
 
   return (
@@ -55,7 +57,7 @@ export default function ChatContainer(props: ChatContainerProps) {
           icon={MoreIcon} />
       </div>
       <div className="chat" >
-        {/* TODO: Create here Chat messages */}
+        {props.chatComponents.map(component => component)}
       </div>
       <div className="actions">
         <IconButton onClick={() => {/* TODO: Handle `emoji` button click. */}}
