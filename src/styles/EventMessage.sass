@@ -1,9 +1,17 @@
 @import "global"
 
+$avatar-size: 40px
+
 .EventMessage
   display: flex
   gap: $size-10px
   align-items: center
+
+  > .pencil-container
+    display: flex
+    align-items: center
+    justify-content: end
+    width: $avatar-size
 
   > .content
     line-height: $line-height-large
