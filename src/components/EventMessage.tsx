@@ -12,7 +12,9 @@ export default function EventMessage(props: EventMessageProps) {
 
   return (
     <div className="EventMessage">
-      <PencilIcon />
+      <div className="pencil-container">
+        <PencilIcon />
+      </div>
       <div className="content">
         {props.content}
       </div>
