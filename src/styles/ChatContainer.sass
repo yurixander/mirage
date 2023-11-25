@@ -11,7 +11,7 @@
     display: flex
     align-items: center
     gap: $size-x1
-    padding: $size-10px
+    padding: $size-x1
     border-bottom: $border-width solid $color-border
 
     > .title
@@ -19,21 +19,30 @@
       width: 100%
       gap: $size-5px
 
-      > .Icon
+      > .icon
         fill: $color-primary
 
-        > .name
-          color: $color-primary
+      > .name
+        color: $color-primary
 
-        > .text
-          color: $color-gray-text
+      > .text
+        color: $color-gray-text
 
   > .chat
     display: flex
     flex-direction: column
-    gap: $size-10px
+    gap: $size-x1
+    margin-left: $size-x1
+    margin-right: $size-x1
     overflow: hidden
     flex-grow: 1
+    overflow-y: scroll
+    scroll-behavior: smooth
+    scrollbar-width: none
+    -ms-overflow-style: none
+
+    &::-webkit-scrollbar
+      display: none
 
   > .actions
     display: flex
