@@ -21,7 +21,7 @@ export const NameChange: Story = {
   args: {
     content: (
       <span>
-        <strong style={{color: userDisplayNameColor}}>Sapphire Pineapple</strong> changed their name to <strong style={{color: userDisplayNameColor}}>Snappy Turtle</strong>.
+        <strong style={{color: userDisplayNameColor}}>Sapphire Pineapple</strong> <span>changed their name to</span> <strong style={{color: userDisplayNameColor}}>Snappy Turtle</strong>.
       </span>
     ),
     timestamp: Date.now()
