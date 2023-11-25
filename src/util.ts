@@ -1,4 +1,5 @@
 import React from "react"
+import dayjs from 'dayjs'
 
 export enum Path {
   App = "/",
@@ -9,6 +10,10 @@ export type Credentials = {
   baseUrl: string
   accessToken: string
   userId: string
+}
+
+export function timeFormatter(timestamp: number): string {
+  return dayjs(timestamp).format('hh:mm a')
 }
 
 export function reflectInputValue(setter: (_: string) => void) {

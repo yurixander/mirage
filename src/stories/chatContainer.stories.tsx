@@ -23,20 +23,20 @@ export const Default: Story = {
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
-        timestamp={0}
+        timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <UnreadIndicator />,
       <Message
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
-        timestamp={0}
+        timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <Message
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
-        timestamp={0}
+        timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <EventMessage content={<span>
         <strong style={{color: userDisplayNameColor}}>Sapphire Pineapple</strong> changed their name to <strong style={{color: userDisplayNameColor}}>Snappy Turtle</strong>.

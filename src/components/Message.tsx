@@ -1,4 +1,5 @@
 import "../styles/Message.sass"
+import {timeFormatter} from "../util"
 
 export type MessageProps = {
   authorDisplayName: string
@@ -10,10 +11,7 @@ export type MessageProps = {
 }
 
 export default function Message(props: MessageProps) {
-  const time = new Date(props.timestamp)
-
-  // FIXME: This is temporary. Proper formatting is needed. Will require a specialized library.
-  const localeTimeString = time.toLocaleTimeString()
+  const localeTimeString = timeFormatter(props.timestamp)
 
   return (
     <div className="Message">
