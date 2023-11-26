@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
 import IconButton, {IconButtonProps} from "../components/IconButton"
-import {ReactComponent as SettingsIcon} from "../../public/icons/cog.svg"
+import {faGear} from '@fortawesome/free-solid-svg-icons'
 
 type Story = StoryObj<typeof IconButton>
 
@@ -10,7 +10,7 @@ const render = (args: IconButtonProps) => <IconButton {...args} />
 export const Settings: Story = {
   render,
   args: {
-    icon: SettingsIcon,
+    icon: faGear,
     onClick: () => { },
     tooltip: "Settings",
     tooltipPlacement: "right"

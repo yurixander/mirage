@@ -1,19 +1,14 @@
 import "../styles/ChatContainer.sass"
-import {ReactComponent as LinkIcon} from "../../public/icons/link.svg"
-import {ReactComponent as InfoIcon} from "../../public/icons/info.svg"
-import {ReactComponent as MoreIcon} from "../../public/icons/three-dots.svg"
 import {ReactComponent as HashIcon} from "../../public/icons/hash.svg"
 import {ReactComponent as StarIcon} from "../../public/icons/star.svg"
-import {ReactComponent as AccessibilityIcon} from "../../public/icons/accessibility.svg"
-import {ReactComponent as GlobeIcon} from "../../public/icons/globe.svg"
-import {ReactComponent as ThemeIcon} from "../../public/icons/theme.svg"
-import {ReactComponent as EmojiIcon} from "../../public/icons/emoji.svg"
-import {ReactComponent as PaperclipIcon} from "../../public/icons/paperclip.svg"
 import IconButton from "./IconButton"
 import {RoomType} from "./Room"
 import {assert} from "../util"
 import BottomSmartAction from "./BottomSmartAction"
 import TypingIndicator from "./TypingIndicator"
+import {
+  faPaperclip, faLink, faCircleInfo, faEllipsisV, faFaceSmile, faEarthAmerica, faCircleHalfStroke, faUniversalAccess, faStarOfLife
+} from '@fortawesome/free-solid-svg-icons'
 
 export type ChatContainerProps = {
   name: string,
@@ -44,17 +39,17 @@ export default function ChatContainer(props: ChatContainerProps) {
           onClick={() => {/* TODO: Handle `info` button click. */}}
           tooltip={"Room details"}
           tooltipPlacement={"bottom"}
-          icon={InfoIcon} />
+          icon={faCircleInfo} />
         <IconButton
           onClick={() => {/* TODO: Handle `link` button click. */}}
           tooltip={"Copy link"}
           tooltipPlacement={"bottom"}
-          icon={LinkIcon} />
+          icon={faLink} />
         <IconButton
           onClick={() => {/* TODO: Handle `more` button click. */}}
           tooltip={"More actions"}
           tooltipPlacement={"bottom"}
-          icon={MoreIcon} />
+          icon={faEllipsisV} />
       </div>
       <div className="chat" >
         {props.chatComponents.map(component => component)}
@@ -63,11 +58,11 @@ export default function ChatContainer(props: ChatContainerProps) {
         <IconButton onClick={() => {/* TODO: Handle `emoji` button click. */}}
           tooltip={"Emoji"}
           tooltipPlacement={"top"}
-          icon={EmojiIcon} />
+          icon={faFaceSmile} />
         <IconButton onClick={() => {/* TODO: Handle `attach` button click. */}}
           tooltip={"Attach"}
           tooltipPlacement={"top"}
-          icon={PaperclipIcon} />
+          icon={faPaperclip} />
         <div className="input-typing">
           {/* TODO: Put here Input Component. */}
           <TypingIndicator users={[{
@@ -78,19 +73,19 @@ export default function ChatContainer(props: ChatContainerProps) {
       </div>
       <div className="information">
         <BottomSmartAction
-          icon={StarIcon}
+          icon={faStarOfLife}
           text="Quick menu"
           onClick={() => { }} />
         <BottomSmartAction
-          icon={AccessibilityIcon}
+          icon={faUniversalAccess}
           text="Accessibility"
           onClick={() => { }} />
         <BottomSmartAction
-          icon={ThemeIcon}
+          icon={faCircleHalfStroke}
           text="Switch theme"
           onClick={() => { }} />
         <BottomSmartAction
-          icon={GlobeIcon}
+          icon={faEarthAmerica}
           text="63ms ping"
           onClick={() => { }} />
       </div>

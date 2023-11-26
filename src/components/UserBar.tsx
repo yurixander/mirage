@@ -4,6 +4,7 @@ import "../styles/UserBar.sass"
 import IconButton from "./IconButton"
 import UserProfile, {UserStatus} from "./UserProfile"
 import {trim} from "../util"
+import {faGear} from '@fortawesome/free-solid-svg-icons'
 
 export type UserBarProps = {
   avatarUrl?: string,
@@ -30,7 +31,7 @@ export default function UserBar(props: UserBarProps) {
       {/* TODO: Handle click on settings button. */}
       <IconButton
         onClick={() => { }}
-        icon={SettingsIcon}
+        icon={faGear}
         tooltip="Settings"
         tooltipPlacement="top" />
     </div>

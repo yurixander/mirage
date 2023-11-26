@@ -1,10 +1,6 @@
 import "../styles/QuickActions.sass"
 import IconButton from "./IconButton"
-import {ReactComponent as LogoutIcon} from "../../public/icons/logout.svg"
-import {ReactComponent as NotificationIcon} from "../../public/icons/bell.svg"
-import {ReactComponent as BoxIcon} from "../../public/icons/box.svg"
-import {ReactComponent as PhoneIcon} from "../../public/icons/phone.svg"
-import {ReactComponent as SendIcon} from "../../public/icons/dms.svg"
+import {faPaperPlane, faPhone, faBell, faBox, faRightFromBracket} from '@fortawesome/free-solid-svg-icons'
 
 export type QuickActionsProps = {
   onViewDirectMessages: () => void,
@@ -21,27 +17,27 @@ export default function QuickActions(props: QuickActionsProps) {
         onClick={props.onViewDirectMessages}
         tooltip="Direct messages"
         tooltipPlacement="right"
-        icon={SendIcon} />
+        icon={faPaperPlane} />
       <IconButton
         onClick={props.onViewCalls}
         tooltip="Calls"
         tooltipPlacement="right"
-        icon={PhoneIcon} />
+        icon={faPhone} />
       <IconButton
         onClick={props.onViewNotifications}
         tooltip="Notifications"
         tooltipPlacement="right"
-        icon={NotificationIcon} />
+        icon={faBell} />
       <IconButton
         onClick={props.onOpenExtensions}
         tooltip="Extensions"
         tooltipPlacement="right"
-        icon={BoxIcon} />
+        icon={faBox} />
       <IconButton
         onClick={props.onLogout}
         tooltip="Sign out"
         tooltipPlacement="right"
-        icon={LogoutIcon} />
+        icon={faRightFromBracket} />
     </div>
   )
 }

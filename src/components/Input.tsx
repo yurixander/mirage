@@ -2,6 +2,8 @@ import "../styles/Input.sass"
 import {useState} from "react"
 import Label from "./Label"
 import IconButton from "./IconButton"
+import {IconProp} from "@fortawesome/fontawesome-svg-core"
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
 export type InputConstraint = {
   message: string
@@ -11,7 +13,7 @@ export type InputConstraint = {
 export type InputAction = {
   tooltip: string
   onClick: () => void
-  icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+  icon: IconProp
 }
 
 export type InputProps = {
@@ -25,7 +27,7 @@ export type InputProps = {
   onValueChange?: (value: string) => void
   initialValue?: string
   value?: string
-  icon?: React.ReactNode
+  icon?: IconProp
   actions?: InputAction[]
 }
 
@@ -103,7 +105,9 @@ export default function Input(props: InputProps) {
     <div className={`Input --flex -vertical ${props.className || ""}`.trim()}>
       <div className="container">
         {props.label !== undefined && <Label text={props.label} />}
-        {props.icon && <div className="icon"> {props.icon} </div>}
+        {props.icon && <div className="icon">
+          <FontAwesomeIcon icon={props.icon} />
+        </div>}
         <input
           type="text"
           disabled={props.isDisabled}
