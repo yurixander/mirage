@@ -13,6 +13,7 @@ import IconButton from "./IconButton"
 import {RoomType} from "./Room"
 import {assert} from "../util"
 import BottomSmartAction from "./BottomSmartAction"
+import TypingIndicator from "./TypingIndicator"
 
 export type ChatContainerProps = {
   name: string,
@@ -69,6 +70,10 @@ export default function ChatContainer(props: ChatContainerProps) {
           icon={PaperclipIcon} />
         <div className="input-typing">
           {/* TODO: Put here Input Component. */}
+          <TypingIndicator users={[{
+            displayName: "Emerald Branch",
+            color: "#5CC679"
+          }]} />
         </div>
       </div>
       <div className="information">
