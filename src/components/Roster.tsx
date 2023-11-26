@@ -1,10 +1,10 @@
 import "../styles/Roster.sass"
 import IconButton from "./IconButton"
-import {ReactComponent as PeopleIcon} from "../../public/icons/people.svg"
-import {ReactComponent as SortIcon} from "../../public/icons/sort.svg"
 import Label from "./Label"
 import UserProfile, {UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
+import {faArrowDownShortWide, faUserGroup} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export enum RosterUserCategory {
   Admin,
@@ -27,7 +27,7 @@ export default function Roster(props: RosterProps) {
   return (
     <div className="Roster">
       <div className="header">
-        <PeopleIcon />
+        <FontAwesomeIcon className="icon" icon={faUserGroup} />
         <div className="title">People</div>
         <IconButton
           onClick={() => {
@@ -35,7 +35,7 @@ export default function Roster(props: RosterProps) {
           }}
           tooltip="Sort members"
           tooltipPlacement="right"
-          icon={SortIcon} />
+          icon={faArrowDownShortWide} />
       </div>
       <div className="divider" />
       <div className="scroll-container">

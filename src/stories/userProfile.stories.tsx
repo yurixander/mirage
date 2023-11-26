@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
 import UserProfile, {UserActivity, UserProfileProps, UserStatus} from "../components/UserProfile"
-import {ReactComponent as SpotifyIcon} from "../../public/icons/spotify.svg"
+import {faSpotify} from '@fortawesome/free-brands-svg-icons'
 
 type Story = StoryObj<typeof UserProfile>
 
@@ -48,7 +48,7 @@ export const WithActivityIcon: Story = {
     text: "Listening to Spotify",
     status: UserStatus.Idle,
     activity: UserActivity.Listening,
-    icon: SpotifyIcon,
+    icon: faSpotify,
     platform: "Spotify",
     isLarge: false
   }

@@ -3,12 +3,14 @@ import "../styles/IconButton.sass"
 import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
 import "tippy.js/animations/scale-subtle.css"
+import {IconProp} from "@fortawesome/fontawesome-svg-core"
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
 export type IconButtonProps = {
   onClick: () => void
   tooltip: string
   tooltipPlacement: Placement
-  icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+  icon: IconProp
 }
 
 export default function IconButton(props: IconButtonProps) {
@@ -24,7 +26,7 @@ export default function IconButton(props: IconButtonProps) {
         className="IconButton"
         onClick={props.onClick}
         tabIndex={0}>
-        <props.icon className="icon" />
+        <FontAwesomeIcon className="icon" icon={props.icon} />
       </div>
     </Tippy>
   )

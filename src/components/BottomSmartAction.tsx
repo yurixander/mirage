@@ -1,7 +1,9 @@
+import {IconProp} from "@fortawesome/fontawesome-svg-core"
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import "../styles/BottomSmartAction.sass"
 
 export type BottomSmartActionProps = {
-  icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+  icon: IconProp
   text: string
   onClick: () => void
 }
@@ -9,7 +11,7 @@ export type BottomSmartActionProps = {
 export default function BottomSmartAction(props: BottomSmartActionProps) {
   return (
     <div className="smart-action" onClick={props.onClick}>
-      <props.icon className="icon" />
+      <FontAwesomeIcon className="icon" icon={props.icon} />
       <span>{props.text}</span>
     </div>
   )

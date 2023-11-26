@@ -1,6 +1,8 @@
+import {IconProp} from "@fortawesome/fontawesome-svg-core"
 import "../styles/UserProfile.sass"
 import {assert, trim, validateUrl} from "../util"
 import Avatar from "boring-avatars"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export enum UserActivity {
   Listening = "Listening to"
@@ -19,7 +21,7 @@ export type UserProfileProps = {
   displayNameColor: string,
   status: UserStatus,
   activity?: UserActivity,
-  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
+  icon?: IconProp,
   platform?: string,
   isLarge?: boolean
 }
@@ -88,7 +90,7 @@ export default function UserProfile(props: UserProfileProps) {
           className="display-name">{trim(props.displayName, MAX_DISPLAY_NAME_LENGTH)}
         </div>
         <div className="activity">
-          {props.icon && <props.icon className="activity-icon" />}
+          {props.icon && <FontAwesomeIcon icon={props.icon} className="activity-icon" />}
           {activityOrText}
         </div>
       </div>

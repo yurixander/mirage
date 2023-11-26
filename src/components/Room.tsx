@@ -1,8 +1,10 @@
 import "../styles/Room.sass"
-import {ReactComponent as HashIcon} from "../../public/icons/hash.svg"
-import {ReactComponent as StarIcon} from "../../public/icons/star.svg"
 import NotificationIndicator from "./NotificationIndicator"
 import {assert, trim} from "../util"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faHashtag, faStarOfLife} from '@fortawesome/free-solid-svg-icons'
+import {IconProp} from "@fortawesome/fontawesome-svg-core"
+
 
 export enum RoomType {
   Text,
@@ -23,19 +25,16 @@ export default function Room(props: RoomProps) {
 
   // Determine CSS class to apply based on the active state of the room.
   const classNameActive = props.isActive ? "active" : ""
-  let icon: JSX.Element
-
-  switch (props.type) {
-    case RoomType.Text: icon = <HashIcon className={"icon " + classNameActive} />; break
-    case RoomType.Space: icon = <StarIcon className={"icon " + classNameActive} />; break
-  }
+  let icon: IconProp = props.type === RoomType.Text ? faHashtag : faStarOfLife
 
   const mentionCountProp = props.mentionCount > 0 ? props.mentionCount : undefined
   const MAX_NAME_LENGTH = 16
 
   return (
     <div onClick={props.onClick} className="Room">
-      {icon}
+      <FontAwesomeIcon
+        icon={icon}
+        className={"icon " + classNameActive} />
       <span className={classNameActive}>{trim(props.name, MAX_NAME_LENGTH)}</span>
       {props.containsUnreadMessages && <NotificationIndicator mentionAmount={mentionCountProp} />}
     </div>
