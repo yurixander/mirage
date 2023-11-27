@@ -25,8 +25,8 @@ export default function Roster(props: RosterProps) {
   const members = props.users.filter(user => user.category === RosterUserCategory.Member)
 
   return (
-    <div className="Roster">
-      <div className="header">
+    <section className="Roster">
+      <header className="header">
         <FontAwesomeIcon className="icon" icon={faUserGroup} />
         <div className="title">People</div>
         <IconButton
@@ -36,7 +36,7 @@ export default function Roster(props: RosterProps) {
           tooltip="Sort members"
           tooltipPlacement="right"
           icon={faArrowDownShortWide} />
-      </div>
+      </header>
       <div className="divider" />
       <div className="scroll-container">
         <div className="admins">
@@ -49,6 +49,6 @@ export default function Roster(props: RosterProps) {
         </div>
         <UserProfileGhost count={4} opacityMultiplier={0.20} />
       </div>
-    </div>
+    </section>
   )
 }
