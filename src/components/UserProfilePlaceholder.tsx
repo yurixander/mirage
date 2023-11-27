@@ -1,21 +1,21 @@
-import "../styles/ProfileCharge.sass"
-import WaveCharge from "./WaveCharge"
+import "../styles/UserProfilePlaceholder.sass"
+import LoadingEffect from "./LoadingEffect"
 
-export default function ProfileCharge() {
+export default function UserProfilePlaceholder() {
   return (
     <div>
       <div className="UserProfileGhost">
         <div className="avatar-wrapper-ghost">
           <div className="avatar-ghost">
-            <WaveCharge />
+            <LoadingEffect />
           </div>
           <div className={"status"} />
         </div>
         <div className="info-ghost">
           <div className="display-name-ghost">Emerald branch
-            <WaveCharge /></div>
+            <LoadingEffect /></div>
           <div className="activity-ghost">@emerald
-            <WaveCharge /></div>
+            <LoadingEffect /></div>
         </div>
       </div>
     </div>

@@ -9,7 +9,6 @@ type Story = StoryObj<typeof ChatContainer>
 
 const meta: Meta<typeof ChatContainer> = {component: ChatContainer}
 const render = (args: ChatContainerProps) => <ChatContainer {...args} />
-
 const userDisplayNameColor = "#5CC679"
 
 export const Default: Story = {
