@@ -1,4 +1,5 @@
 import UserProfile, {UserProfileProps} from "./UserProfile"
+import "../styles/RosterUser.sass"
 
 export type RosterUserProps = {
   userProfileProps: UserProfileProps,
@@ -7,6 +8,8 @@ export type RosterUserProps = {
 
 export default function RosterUser(props: RosterUserProps) {
   return (
-    <UserProfile {...props.userProfileProps} />
+    <div className="RosterUser" tabIndex={1}>
+      <UserProfile {...props.userProfileProps} />
+    </div>
   )
 }
