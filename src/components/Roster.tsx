@@ -1,7 +1,8 @@
 import "../styles/Roster.sass"
 import IconButton from "./IconButton"
 import Label from "./Label"
-import UserProfile, {UserProfileProps} from "./UserProfile"
+import RosterUser from "./RosterUser"
+import {UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 import {faArrowDownShortWide, faUserGroup} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
@@ -25,7 +26,7 @@ export default function Roster(props: RosterProps) {
   const members = props.users.filter(user => user.category === RosterUserCategory.Member)
 
   return (
-    <section className="Roster">
+    <div className="Roster">
       <header className="header">
         <FontAwesomeIcon className="icon" icon={faUserGroup} />
         <div className="title">People</div>
@@ -41,14 +42,14 @@ export default function Roster(props: RosterProps) {
       <div className="scroll-container">
         <div className="admins">
           <Label text={"Admin — " + admins.length} />
-          {admins.map(admin => <UserProfile {...admin.userProfileProps} />)}
+          {admins.map(admin => <RosterUser onClick={() => { }} {...admin} />)}
         </div>
         <div className="members">
           <Label text={"Member — " + members.length} />
-          {members.map(member => <UserProfile {...member.userProfileProps} />)}
+          {members.map(member => <RosterUser onClick={() => { }} {...member} />)}
         </div>
         <UserProfileGhost count={4} opacityMultiplier={0.20} />
       </div>
-    </section>
+    </div>
   )
 }
