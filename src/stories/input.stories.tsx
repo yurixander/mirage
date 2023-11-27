@@ -1,7 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react"
 import Input, {InputProps, integerConstraint, InputAction} from "../components/Input"
-import {ReactComponent as LocationIcon} from "../../public/icons/dms.svg"
-import {ReactComponent as SearchIcon} from "../../public/icons/search.svg"
 import {faSearch, faMessage} from '@fortawesome/free-solid-svg-icons'
 
 type Story = StoryObj<typeof Input>

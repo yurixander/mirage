@@ -1,5 +1,5 @@
 import React from "react"
-import dayjs from 'dayjs'
+import dayjs from "dayjs"
 
 export enum Path {
   App = "/",

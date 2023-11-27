@@ -1,5 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
 import Message, {MessageProps} from "../components/Message"
+
 type Story = StoryObj<typeof Message>
 
 const meta: Meta<typeof Message> = {component: Message}
