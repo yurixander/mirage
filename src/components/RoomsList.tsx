@@ -11,8 +11,8 @@ export default function RoomsList(props: RoomsListProps) {
   const textChannels = props.rooms.filter(room => room.type === RoomType.Text)
 
   return (
-    <div className="RoomsList">
-      <div className="spaces">
+    <section className="RoomsList">
+      <nav className="spaces">
         <Label text={"Spaces"} />
         {spaces.map(space =>
           <Room
@@ -22,8 +22,8 @@ export default function RoomsList(props: RoomsListProps) {
             containsUnreadMessages={space.containsUnreadMessages}
             mentionCount={space.mentionCount}
             onClick={space.onClick} />)}
-      </div>
-      <div className="channels">
+      </nav>
+      <nav className="channels">
         <Label text={"Channels"} />
         {textChannels.map(channel =>
           <Room
@@ -33,7 +33,7 @@ export default function RoomsList(props: RoomsListProps) {
             containsUnreadMessages={channel.containsUnreadMessages}
             mentionCount={channel.mentionCount}
             onClick={channel.onClick} />)}
-      </div>
-    </div>
+      </nav>
+    </section>
   )
 }

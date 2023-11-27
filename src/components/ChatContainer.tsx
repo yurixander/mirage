@@ -22,9 +22,9 @@ export default function ChatContainer(props: ChatContainerProps) {
   let icon = props.type === RoomType.Text ? faHashtag : faStarOfLife
 
   return (
-    <div className="ChatContainer">
-      <div className="header">
-        <div className="title">
+    <section className="ChatContainer">
+      <header className="header">
+        <div className="title" >
           <FontAwesomeIcon icon={icon} className="icon" />
           <span className="name">{props.name}</span>
           <span className="text">{props.text}</span>
@@ -44,7 +44,7 @@ export default function ChatContainer(props: ChatContainerProps) {
           tooltip={"More actions"}
           tooltipPlacement={"bottom"}
           icon={faEllipsisV} />
-      </div>
+      </header>
       <div className="chat" >
         {props.chatComponents.map(component => component)}
       </div>
@@ -83,6 +83,6 @@ export default function ChatContainer(props: ChatContainerProps) {
           text="63ms ping"
           onClick={() => { }} />
       </div>
-    </div>
+    </section>
   )
 }

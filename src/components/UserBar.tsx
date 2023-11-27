@@ -18,7 +18,7 @@ export default function UserBar(props: UserBarProps) {
   const MAX_NAME_LENGTH = 18
 
   return (
-    <div className="UserBar">
+    <section className="UserBar">
       <div className="profile-container">
         <UserProfile
           avatarUrl={props.avatarUrl}
@@ -34,6 +34,6 @@ export default function UserBar(props: UserBarProps) {
         icon={faGear}
         tooltip="Settings"
         tooltipPlacement="top" />
-    </div>
+    </section>
   )
 }

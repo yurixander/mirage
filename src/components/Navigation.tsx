@@ -12,10 +12,12 @@ export default function Navigation(props: NavigationProps) {
   return (
     <div className="Navigation">
       <div className="container">
-        <AppLogo onClick={() => {/* TODO:  Handle click on logo. */}} />
+        <AppLogo
+          className="logo"
+          onClick={() => {/* TODO:  Handle click on logo. */}} />
         <div className="app-name">
           <div>Mirage</div>
-          <span>©</span>
+          <span className="copyright">©</span>
         </div>
         <div className="divider" />
         {/* TODO: Check server component. */}

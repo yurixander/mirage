@@ -28,9 +28,9 @@ export default function Message(props: MessageProps) {
           </span>
           <div className="text">{props.text}</div>
         </div>
-        <div className="time">
+        <time className="time">
           {localeTimeString}
-        </div>
+        </time>
       </div>
     </div>
   )

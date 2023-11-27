@@ -12,7 +12,7 @@ export type QuickActionsProps = {
 
 export default function QuickActions(props: QuickActionsProps) {
   return (
-    <div className="QuickActions">
+    <section className="QuickActions">
       <IconButton
         onClick={props.onViewDirectMessages}
         tooltip="Direct messages"
@@ -38,6 +38,6 @@ export default function QuickActions(props: QuickActionsProps) {
         tooltip="Sign out"
         tooltipPlacement="right"
         icon={faRightFromBracket} />
-    </div>
+    </section>
   )
 }

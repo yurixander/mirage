@@ -19,9 +19,9 @@ export default function EventMessage(props: EventMessageProps) {
       <div className="content">
         {props.content}
       </div>
-      <div className="time">
+      <time className="time">
         {localeTimeString}
-      </div>
+      </time>
     </div>
   )
 }
