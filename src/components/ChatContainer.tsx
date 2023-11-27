@@ -1,14 +1,13 @@
 import "../styles/ChatContainer.sass"
-import {ReactComponent as HashIcon} from "../../public/icons/hash.svg"
-import {ReactComponent as StarIcon} from "../../public/icons/star.svg"
 import IconButton from "./IconButton"
 import {RoomType} from "./Room"
 import {assert} from "../util"
 import BottomSmartAction from "./BottomSmartAction"
 import TypingIndicator from "./TypingIndicator"
 import {
-  faPaperclip, faLink, faCircleInfo, faEllipsisV, faFaceSmile, faEarthAmerica, faCircleHalfStroke, faUniversalAccess, faStarOfLife
+  faPaperclip, faLink, faCircleInfo, faEllipsisV, faFaceSmile, faEarthAmerica, faCircleHalfStroke, faUniversalAccess, faStarOfLife, faHashtag
 } from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export type ChatContainerProps = {
   name: string,
@@ -20,18 +19,13 @@ export type ChatContainerProps = {
 export default function ChatContainer(props: ChatContainerProps) {
   assert(props.name.length !== 0, "room name should not be empty")
 
-  let icon: JSX.Element
-
-  switch (props.type) {
-    case RoomType.Text: icon = <HashIcon className="icon" />; break
-    case RoomType.Space: icon = <StarIcon className="icon" />; break
-  }
+  let icon = props.type === RoomType.Text ? faHashtag : faStarOfLife
 
   return (
     <div className="ChatContainer">
       <div className="header">
         <div className="title">
-          {icon}
+          <FontAwesomeIcon icon={icon} className="icon" />
           <span className="name">{props.name}</span>
           <span className="text">{props.text}</span>
         </div>
