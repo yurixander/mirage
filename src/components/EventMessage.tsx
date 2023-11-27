@@ -1,5 +1,6 @@
 import "../styles/EventMessage.sass"
-import {ReactComponent as PencilIcon} from "../../public/icons/pencil.svg"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faPencil} from '@fortawesome/free-solid-svg-icons'
 import {timeFormatter} from "../util"
 
 export type EventMessageProps = {
@@ -13,7 +14,7 @@ export default function EventMessage(props: EventMessageProps) {
   return (
     <div className="EventMessage">
       <div className="pencil-container">
-        <PencilIcon />
+        <FontAwesomeIcon icon={faPencil} className="pencil-icon" />
       </div>
       <div className="content">
         {props.content}

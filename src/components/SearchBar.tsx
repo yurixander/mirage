@@ -1,8 +1,9 @@
 import "../styles/SearchBar.sass"
-import {ReactComponent as SearchIcon} from "../../public/icons/search.svg"
+import {faSearch} from '@fortawesome/free-solid-svg-icons'
 import KeyCue from "./KeyCue"
 import useGlobalHotkey from "../hooks/useGlobalHotkey"
 import React, {useState} from "react"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export type SearchResult = {
   text: string,
@@ -44,7 +45,7 @@ export default function SearchBar(props: SearchBarProps) {
 
   return (
     <div className={"SearchBar " + (results.length > 0 ? "open" : "")}>
-      <SearchIcon />
+      <FontAwesomeIcon className="search-icon" icon={faSearch} />
       <input
         onChange={handleQueryChange}
         ref={inputRef}
