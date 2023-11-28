@@ -9,8 +9,8 @@ export default function WelcomePopup() {
     <Modal
       isOpen={() => { }}
       onClose={() => { }}
-      children={
-        <div className="WelcomePopup">
+      dialogs={
+        [<div className="WelcomePopup">
           <div className="header">
             <h3>Hey you!</h3>
             <h1>You’re beautiful.</h1>
@@ -33,7 +33,7 @@ export default function WelcomePopup() {
               style={ButtonStyle.Default}
               onClick={() => {/* TODO: Handle click on View messages button. */}} />
           </div>
-        </div>}
+        </div>]}
     />
   )
 }
