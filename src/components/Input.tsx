@@ -103,7 +103,7 @@ export default function Input(props: InputProps) {
   return (
     // TODO: Utility classes were removed. Adjust class names accordingly.
     <div className={`Input --flex -vertical ${props.className || ""}`.trim()}>
-      <div className="container">
+      <div className="container" tabIndex={0}>
         {props.label !== undefined && <Label text={props.label} />}
         {props.icon && <div className="icon">
           <FontAwesomeIcon icon={props.icon} />

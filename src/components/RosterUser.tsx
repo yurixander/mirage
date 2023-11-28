@@ -8,7 +8,7 @@ export type RosterUserProps = {
 
 export default function RosterUser(props: RosterUserProps) {
   return (
-    <div className="RosterUser" tabIndex={1}>
+    <div className="RosterUser" >
       <UserProfile {...props.userProfileProps} />
     </div>
   )
