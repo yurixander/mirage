@@ -11,7 +11,7 @@ export type ModalProps = {
   position?: ModalPosition,
   isOpen: () => void,
   onClose: () => void,
-  children: JSX.Element
+  dialogs: JSX.Element[]
 }
 
 const Modal = (props: ModalProps) => {
@@ -19,9 +19,7 @@ const Modal = (props: ModalProps) => {
 
   return (
     <div data-style={props.position} className="modal-overlay">
-      <div className="modal-window">
-        {props.children}
-      </div>
+      {props.dialogs}
     </div>
   )
 }

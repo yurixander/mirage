@@ -2,6 +2,7 @@ import {Meta, StoryObj} from "@storybook/react"
 import Modal, {ModalPosition, ModalProps} from "../components/Modal"
 import UserCard from "../components/UserCard"
 import {UserStatus} from "../components/UserProfile"
+import Button from "../components/Button"
 
 type Story = StoryObj<typeof Modal>
 
@@ -13,7 +14,7 @@ export const Default: Story = {
   args: {
     onClose: () => { },
     isOpen: () => { },
-    children: <UserCard userProfileProps={{
+    dialogs: [<UserCard userProfileProps={{
       avatarUrl: undefined,
       text: "@emerald_branch",
       displayName: "Emerald Branch",
@@ -22,7 +23,22 @@ export const Default: Story = {
     }} aboutMe={""}
       accountCreationTime={0}
       serverJoinTime={0}
-      lastMessageTime={0} />
+      lastMessageTime={0} />]
+  }
+}
+
+export const WithTwoDialogs: Story = {
+  render,
+  args: {
+    onClose: () => { },
+    isOpen: () => { },
+    dialogs: [<div className="TestPopup">
+      <Button onClick={() => { }} text={"showPopup2"} />
+    </div>,
+    <div className="TestPopup">
+      <Button onClick={() => { }} text={"showPopup2"} />
+      <Button onClick={() => { }} text={"close"} />
+    </div>]
   }
 }
 
