@@ -1,13 +1,12 @@
 import "../styles/WelcomePopup.sass"
 import Button, {ButtonStyle} from "./Button"
-import Modal, {ModalPosition} from "./Modal"
+import Modal from "./Modal"
 import {ReactComponent as Stars} from "../../public/icons/stars.svg"
 import {ReactComponent as DotGrid} from "../../public/icons/dot-grid.svg"
 
 export default function WelcomePopup() {
   return (
     <Modal
-      position={ModalPosition.Default}
       isOpen={() => { }}
       onClose={() => { }}
       children={

@@ -1,7 +1,6 @@
 import '../styles/Modal.sass'
 
 export enum ModalPosition {
-  Default = "default",
   Left = "left",
   Right = "right",
   Top = "top",
@@ -9,7 +8,7 @@ export enum ModalPosition {
 }
 
 export type ModalProps = {
-  position: ModalPosition,
+  position?: ModalPosition,
   isOpen: () => void,
   onClose: () => void,
   children: JSX.Element

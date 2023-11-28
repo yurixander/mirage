@@ -11,7 +11,6 @@ const render = (args: ModalProps) => <Modal {...args} />
 export const Default: Story = {
   render,
   args: {
-    position: ModalPosition.Default,
     onClose: () => { },
     isOpen: () => { },
     children: <UserCard userProfileProps={{
