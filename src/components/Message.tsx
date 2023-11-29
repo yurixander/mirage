@@ -1,5 +1,9 @@
+import {useState} from "react"
 import "../styles/Message.sass"
 import {timeFormatter} from "../util"
+import {ControlledMenu, MenuItem} from "@szhsin/react-menu"
+import '@szhsin/react-menu/dist/index.css'
+import useContextMenu from "../hooks/useContextMenu"
 
 export type MessageProps = {
   authorDisplayName: string
@@ -12,11 +16,15 @@ export type MessageProps = {
 
 export default function Message(props: MessageProps) {
   const localeTimeString = timeFormatter(props.timestamp)
+  const {anchorPoint, open, handleContextMenu, setOpen} = useContextMenu()
 
   return (
-    <div className="Message">
+    <div
+      className="Message"
+      onContextMenu={handleContextMenu}>
       <div className="wrapper">
-        <div className="avatar" onClick={() => props.onAuthorClick()}>
+        <div className="avatar"
+          onClick={() => props.onAuthorClick()}>
           <img src={props.authorAvatarUrl} />
         </div>
         <div className="content">
@@ -32,6 +40,17 @@ export default function Message(props: MessageProps) {
           {localeTimeString}
         </time>
       </div>
+      <ControlledMenu
+        className={"Menu"}
+        anchorPoint={anchorPoint}
+        state={open ? 'open' : 'closed'}
+        direction="right"
+        onClose={() => setOpen(false)}
+      >
+        <MenuItem>Reply</MenuItem>
+        <MenuItem>Pin</MenuItem>
+        <MenuItem>Resend</MenuItem>
+      </ControlledMenu>
     </div>
   )
 }
