@@ -1,9 +1,8 @@
-import {useState} from "react"
 import "../styles/Message.sass"
 import {timeFormatter} from "../util"
-import {ControlledMenu, MenuItem} from "@szhsin/react-menu"
-import '@szhsin/react-menu/dist/index.css'
-import useContextMenu from "../hooks/useContextMenu"
+import ContextMenu from "./ContextMenu"
+import {faReply} from '@fortawesome/free-solid-svg-icons'
+
 
 export type MessageProps = {
   authorDisplayName: string
@@ -16,41 +15,46 @@ export type MessageProps = {
 
 export default function Message(props: MessageProps) {
   const localeTimeString = timeFormatter(props.timestamp)
-  const {anchorPoint, open, handleContextMenu, setOpen} = useContextMenu()
+
+  // TODO: This needs to account for other already open context menus, which should be done through global state (once a React state library is added).
 
   return (
-    <div
-      className="Message"
-      onContextMenu={handleContextMenu}>
-      <div className="wrapper">
-        <div className="avatar"
-          onClick={() => props.onAuthorClick()}>
-          <img src={props.authorAvatarUrl} />
-        </div>
-        <div className="content">
-          <span
-            className="author-name"
-            style={{color: props.authorDisplayNameColor}}
+    <ContextMenu items={[
+      {
+        label: "Reply",
+        action: () => { },
+        icon: faReply
+      },
+      {
+        label: "Resend",
+        action: () => { }
+      },
+      {
+        label: "Pin",
+        action: () => { }
+      }
+    ]} children={
+      <div
+        className="Message">
+        <div className="wrapper">
+          <div className="avatar"
             onClick={() => props.onAuthorClick()}>
-            {props.authorDisplayName}
-          </span>
-          <div className="text">{props.text}</div>
+            <img src={props.authorAvatarUrl} />
+          </div>
+          <div className="content">
+            <span
+              className="author-name"
+              style={{color: props.authorDisplayNameColor}}
+              onClick={() => props.onAuthorClick()}>
+              {props.authorDisplayName}
+            </span>
+            <div className="text">{props.text}</div>
+          </div>
+          <time className="time">
+            {localeTimeString}
+          </time>
         </div>
-        <time className="time">
-          {localeTimeString}
-        </time>
       </div>
-      <ControlledMenu
-        className={"Menu"}
-        anchorPoint={anchorPoint}
-        state={open ? 'open' : 'closed'}
-        direction="right"
-        onClose={() => setOpen(false)}
-      >
-        <MenuItem>Reply</MenuItem>
-        <MenuItem>Pin</MenuItem>
-        <MenuItem>Resend</MenuItem>
-      </ControlledMenu>
-    </div>
+    } />
   )
 }

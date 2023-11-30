@@ -1,0 +1,35 @@
+@import "global"
+
+.ContextMenu
+  width: 175px
+  background-color: $color-white
+  border-radius: $size-2px
+  box-shadow: 0px 0px 15px 0px $color-contrast-darker
+
+  > .container
+    display: flex
+    flex-direction: column
+    margin: $size-10px
+    gap: $size-3px
+
+    > .item
+      display: flex
+      gap: $size-10px
+      padding: $size-10px
+      cursor: pointer
+      color: $color-text
+
+      &:hover
+        background-color: $color-primary
+        border-radius: $border-radius-small
+        color: $color-white
+
+        // REVISE: Do not style external components directly.
+        > .icon
+          color: $color-white
+
+      > .text
+        margin-right: auto
+
+      > .icon
+        color: $color-contrast-darker
