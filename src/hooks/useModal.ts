@@ -1,19 +1,16 @@
 import {useState} from 'react'
+import {create} from "zustand"
 
-export const useModal = () => {
-  const [popups, setPopups] = useState<JSX.Element[]>([])
-
-  const showPopup = (popup: JSX.Element) => {
-    setPopups(prevPopups => [popup, ...prevPopups])
-  }
-
-  const hidePopup = (popup: JSX.Element) => {
-    setPopups(prevPopups => prevPopups.filter(p => p !== popup))
-  }
-
-  return {
-    popups,
-    showPopup,
-    hidePopup,
-  }
+interface ModelState {
+  elements: JSX.Element[]
+  showModal: (element: JSX.Element) => void
+  closeModal: (element: JSX.Element) => void
 }
+
+export const useModal = create<ModelState>((set) => ({
+  elements: [],
+  showModal: (element: JSX.Element) => set((state) => ({elements: [element, ...state.elements]})),
+  closeModal: (element: JSX.Element) => set((state) => ({
+    elements: state.elements.filter(el => el !== element)
+  })),
+}))

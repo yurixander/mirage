@@ -12,8 +12,6 @@ const render = (args: ModalProps) => <Modal {...args} />
 export const Default: Story = {
   render,
   args: {
-    onClose: () => { },
-    isOpen: () => { },
     dialogs: [<UserCard userProfileProps={{
       avatarUrl: undefined,
       text: "@emerald_branch",
@@ -30,8 +28,6 @@ export const Default: Story = {
 export const WithTwoDialogs: Story = {
   render,
   args: {
-    onClose: () => { },
-    isOpen: () => { },
     dialogs: [<div className="TestPopup">
       <Button onClick={() => { }} text={"showPopup2"} />
     </div>,

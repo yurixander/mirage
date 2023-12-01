@@ -7,8 +7,6 @@ import {ReactComponent as DotGrid} from "../../public/icons/dot-grid.svg"
 export default function WelcomePopup() {
   return (
     <Modal
-      isOpen={() => { }}
-      onClose={() => { }}
       dialogs={
         [<div className="WelcomePopup">
           <div className="header">
