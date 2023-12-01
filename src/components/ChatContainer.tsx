@@ -8,6 +8,7 @@ import {
   faPaperclip, faLink, faCircleInfo, faEllipsisV, faFaceSmile, faEarthAmerica, faCircleHalfStroke, faUniversalAccess, faStarOfLife, faHashtag
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import ContextMenu from "./ContextMenu"
 
 export type ChatContainerProps = {
   name: string,

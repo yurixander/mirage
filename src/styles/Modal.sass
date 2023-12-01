@@ -1,3 +1,9 @@
+@keyframes enter
+  0%
+    transform: scale(50%)
+  100%
+    transform: scale(100%)
+
 .modal-overlay
   position: fixed
   top: 0
@@ -9,9 +15,8 @@
   align-items: center
   justify-content: center
 
-  > .modal-window
-    display: inline-block
-    position: absolute
+  > .popups
+    animation: enter 200ms
 
   > *
     position: absolute

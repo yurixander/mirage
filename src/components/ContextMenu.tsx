@@ -1,12 +1,8 @@
 import {IconProp} from "@fortawesome/fontawesome-svg-core"
 import "../styles/ContextMenu.sass"
-import {useEffect, useState} from "react"
+import {useEffect} from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-
-type Coordinates = {
-  x: number
-  y: number
-}
+import create from "zustand"
 
 export type ContextMenuItem = {
   label: string,
@@ -19,30 +15,39 @@ export type ContextMenuProps = {
   children: JSX.Element
 }
 
+
+interface ContextMenuState {
+  x: number
+  y: number
+  items: ContextMenuItem[]
+  open: boolean
+  showMenu: (x: number, y: number, items: ContextMenuItem[]) => void
+  hideMenu: () => void
+}
+
+export const useContextMenuStore = create<ContextMenuState>((set) => ({
+  x: 0,
+  y: 0,
+  items: [],
+  open: false,
+  showMenu: (x, y, items) => set({x, y, items, open: true}),
+  hideMenu: () => set({x: 0, y: 0, items: [], open: false}),
+}))
+
+
 export default function ContextMenu(props: ContextMenuProps) {
-  const [anchorPoint, setAnchorPoint] = useState<Coordinates>({x: 0, y: 0})
-  const [open, setOpen] = useState<boolean>(false)
+  const {x, y, items, open, showMenu, hideMenu} = useContextMenuStore()
 
   const handleContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (typeof document.hasFocus === 'function' && !document.hasFocus()) return
-
     e.preventDefault()
-    setAnchorPoint({x: e.clientX, y: e.clientY})
-    setOpen(true)
-  }
-
-  const handleClickOutside = () => {
-    if (open) {
-      setOpen(false)
-    }
+    showMenu(e.clientX, e.clientY, items)
   }
 
   useEffect(() => {
-    window.addEventListener('click', handleClickOutside)
-    return () => {
-      window.removeEventListener('click', handleClickOutside)
-    }
-  }, [open])
+    const handleWindowClick = () => hideMenu()
+    window.addEventListener('click', handleWindowClick)
+    return () => window.removeEventListener('click', handleWindowClick)
+  }, [hideMenu])
 
   return (
     <>
@@ -51,8 +56,8 @@ export default function ContextMenu(props: ContextMenuProps) {
       </div>
       {open && <div className="ContextMenu" style={{
         position: 'absolute',
-        left: `${anchorPoint.x}px`,
-        top: `${anchorPoint.y}px`
+        left: `${x}px`,
+        top: `${y}px`
       }}>
         <div className="container">
           {props.items.map(item =>
