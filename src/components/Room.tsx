@@ -33,7 +33,7 @@ export default function Room(props: RoomProps) {
   return (
     <div onClick={props.onClick} className="Room">
       <div className="container">
-        <div className="anim-container">
+        <div className="animation-container">
           <FontAwesomeIcon
             icon={icon}
             className={"icon " + classNameActive} />

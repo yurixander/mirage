@@ -1,4 +1,3 @@
-import {useState} from 'react'
 import {create} from "zustand"
 
 interface ModelState {
@@ -11,6 +10,6 @@ export const useModal = create<ModelState>((set) => ({
   elements: [],
   showModal: (element: JSX.Element) => set((state) => ({elements: [element, ...state.elements]})),
   closeModal: (element: JSX.Element) => set((state) => ({
-    elements: state.elements.filter(el => el !== element)
+    elements: state.elements.filter(target => target !== element)
   })),
 }))
