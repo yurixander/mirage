@@ -16,11 +16,11 @@ export type ContextMenuProps = {
 }
 
 
-interface ContextMenuState {
+type ContextMenuState = {
   x: number
   y: number
   items: ContextMenuItem[]
-  open: boolean
+  isOpen: boolean
   showMenu: (x: number, y: number, items: ContextMenuItem[]) => void
   hideMenu: () => void
 }
@@ -29,14 +29,14 @@ export const useContextMenuStore = create<ContextMenuState>((set) => ({
   x: 0,
   y: 0,
   items: [],
-  open: false,
-  showMenu: (x, y, items) => set({x, y, items, open: true}),
-  hideMenu: () => set({x: 0, y: 0, items: [], open: false}),
+  isOpen: false,
+  showMenu: (x, y, items) => set({x, y, items, isOpen: true}),
+  hideMenu: () => set({x: 0, y: 0, items: [], isOpen: false}),
 }))
 
 
 export default function ContextMenu(props: ContextMenuProps) {
-  const {x, y, items, open, showMenu, hideMenu} = useContextMenuStore()
+  const {x, y, items, isOpen, showMenu, hideMenu} = useContextMenuStore()
 
   const handleContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault()
@@ -45,7 +45,9 @@ export default function ContextMenu(props: ContextMenuProps) {
 
   useEffect(() => {
     const handleWindowClick = () => hideMenu()
+
     window.addEventListener('click', handleWindowClick)
+
     return () => window.removeEventListener('click', handleWindowClick)
   }, [hideMenu])
 
@@ -54,7 +56,7 @@ export default function ContextMenu(props: ContextMenuProps) {
       <div onContextMenu={(e) => handleContextMenu(e)}>
         {props.children}
       </div>
-      {open && <div className="ContextMenu" style={{
+      {isOpen && <div className="ContextMenu" style={{
         position: 'absolute',
         left: `${x}px`,
         top: `${y}px`
