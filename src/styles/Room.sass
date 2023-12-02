@@ -7,7 +7,7 @@
   align-items: center
 
   &:active
-    > .container > div
+    > .container > .anim-container
       transition: all 400ms
       transform: scale(0.8)
 
@@ -22,8 +22,9 @@
   > .container
     width: 100%
 
-    > div
+    > .anim-container
       width: max-content
+
       > .icon
         margin-right: $size-10px
         color: $color-gray-text
