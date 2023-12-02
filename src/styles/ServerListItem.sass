@@ -7,9 +7,8 @@ $server-size: 47px
   align-items: center
 
   &:active
-    > .indicator-container
-      > .indicator
-        height: 8px
+    > .indicator-container > .indicator
+      height: 8px
 
   > .indicator-container
     display: flex
@@ -43,6 +42,10 @@ $server-size: 47px
     margin-left: $size-5px
     box-sizing: border-box
     cursor: pointer
+
+    &:active
+      transition: all 400ms
+      transform: scale(0.8)
 
     > svg
       position: absolute
