@@ -6,13 +6,31 @@
   flex-direction: row
   align-items: center
 
-  > .icon
-    margin-right: $size-10px
-    color: $color-gray-text
+  &:active
+    > .container > div
+      transition: all 400ms
+      transform: scale(0.8)
 
-  > .active
-    color: $color-primary
+      > .icon
+        transition: color 1s
+        color: $color-primary
 
-  > span
-    color: $color-text
-    margin-right: auto
+      > span
+        transition: color 1s
+        color: $color-primary
+
+  > .container
+    width: 100%
+
+    > div
+      width: max-content
+      > .icon
+        margin-right: $size-10px
+        color: $color-gray-text
+
+      > .active
+        color: $color-primary
+
+      > span
+        color: $color-text
+        margin-right: auto

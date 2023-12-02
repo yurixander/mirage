@@ -32,10 +32,14 @@ export default function Room(props: RoomProps) {
 
   return (
     <div onClick={props.onClick} className="Room">
-      <FontAwesomeIcon
-        icon={icon}
-        className={"icon " + classNameActive} />
-      <span className={classNameActive}>{trim(props.name, MAX_NAME_LENGTH)}</span>
+      <div className="container">
+        <div>
+          <FontAwesomeIcon
+            icon={icon}
+            className={"icon " + classNameActive} />
+          <span className={classNameActive}>{trim(props.name, MAX_NAME_LENGTH)}</span>
+        </div>
+      </div>
       {props.containsUnreadMessages && <NotificationIndicator mentionAmount={mentionCountProp} />}
     </div>
   )

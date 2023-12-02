@@ -11,10 +11,15 @@
   padding: $size-5px
   border-radius: $border-radius
 
+  &:active
+    animation: press 200ms
+    transform: scale(0.8)
+
   &::hover
     background-color: $color-contrast
 
   &:focus-visible
+    transition: all 150ms
     outline: $size-2px solid $color-outline-tab
     border-radius: $border-radius-small
 
