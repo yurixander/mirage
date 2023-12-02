@@ -1,8 +1,6 @@
 import "../styles/ServerListItem.sass"
-import {ReactComponent as IndicatorIcon} from "../../public/icons/server-selected-indicator.svg"
 import Avatar from "boring-avatars"
 import Tippy from "@tippyjs/react"
-import {Placement} from "tippy.js"
 
 export type ServerListItemProps = {
   avatarUrl?: string,
@@ -16,11 +14,13 @@ export default function ServerListItem(props: ServerListItemProps) {
 
   const avatarImage = props.avatarUrl !== undefined
     ? <img src={props.avatarUrl} />
-    : <Avatar variant="beam" />
+    : <Avatar variant="bauhaus" name="Margaret Sanger" />
 
   return (
     <div className="ServerListItem">
-      {props.isActive && <IndicatorIcon className={"indicator"} />}
+      <div className="indicator-container">
+        <div className={"indicator " + selectedClassName} />
+      </div>
       <Tippy
         content={props.tooltip}
         arrow={true}
