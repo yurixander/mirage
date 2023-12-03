@@ -9,7 +9,7 @@ export default function UserProfilePlaceholder() {
           <div className="avatar-ghost">
             <LoadingEffect />
           </div>
-          <div className={"status"} />
+          <div className={"status-ghost"} />
         </div>
         <div className="info-ghost">
           <div className="display-name-ghost">Emerald branch

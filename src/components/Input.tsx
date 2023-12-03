@@ -80,7 +80,6 @@ export const integerConstraint: InputConstraint = {
 
 export default function Input(props: InputProps) {
   // TODO: Handle `alwaysShowAllConstraints` option.
-  // TODO: Handle `icon` and `iconPlacement` options.
 
   const [value, setValue] = useState(props.initialValue || "")
   const [violatedConstraints, setViolatedConstraints] = useState<InputConstraint[]>([])
