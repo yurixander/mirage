@@ -64,7 +64,6 @@ export default function UserProfile(props: UserProfileProps) {
     ? <img src={props.avatarUrl} />
     : <Avatar name={props.text} variant="beam" />
 
-  // TODO: Check font weight of platform text.
   const activityOrText = props.activity !== undefined
     ? <span className="activity-or-text">
       {props.activity + " "}

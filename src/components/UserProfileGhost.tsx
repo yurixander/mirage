@@ -18,7 +18,7 @@ export default function UserProfileGhost(props: UserProfileGhostProps) {
           <div className="avatar-wrapper-ghost">
             <div className="avatar-ghost">
             </div>
-            <div className={"status"} />
+            <div className={"status-ghost"} />
           </div>
           <div className="info-ghost">
             <div className="display-name-ghost">Emerald branch</div>
