@@ -5,6 +5,7 @@ import "tippy.js/dist/tippy.css"
 import "tippy.js/animations/scale-subtle.css"
 import {IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {memo} from "react"
 
 export type IconButtonProps = {
   onClick: () => void
@@ -13,7 +14,7 @@ export type IconButtonProps = {
   icon: IconProp
 }
 
-export default function IconButton(props: IconButtonProps) {
+function IconButton(props: IconButtonProps) {
   return (
     <Tippy
       content={<span className="tooltip-text">{props.tooltip}</span>}
@@ -31,3 +32,5 @@ export default function IconButton(props: IconButtonProps) {
     </Tippy>
   )
 }
+
+export default memo(IconButton)

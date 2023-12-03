@@ -37,7 +37,7 @@ export default function Room(props: RoomProps) {
           <FontAwesomeIcon
             icon={icon}
             className={"icon " + classNameActive} />
-          <span className={classNameActive}>{trim(props.name, MAX_NAME_LENGTH)}</span>
+          <span className={classNameActive + " name"}>{trim(props.name, MAX_NAME_LENGTH)}</span>
         </div>
       </div>
       {props.containsUnreadMessages && <NotificationIndicator mentionAmount={mentionCountProp} />}
