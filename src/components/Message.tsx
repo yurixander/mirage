@@ -16,8 +16,6 @@ export type MessageProps = {
 export default function Message(props: MessageProps) {
   const localeTimeString = timeFormatter(props.timestamp)
 
-  // TODO: This needs to account for other already open context menus, which should be done through global state (once a React state library is added).
-
   return (
     <ContextMenu items={[
       {

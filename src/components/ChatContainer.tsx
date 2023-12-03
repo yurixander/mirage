@@ -8,7 +8,6 @@ import {
   faPaperclip, faLink, faCircleInfo, faEllipsisV, faFaceSmile, faEarthAmerica, faCircleHalfStroke, faUniversalAccess, faStarOfLife, faHashtag
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import ContextMenu from "./ContextMenu"
 
 export type ChatContainerProps = {
   name: string,
@@ -17,10 +16,12 @@ export type ChatContainerProps = {
   chatComponents: JSX.Element[]
 }
 
+const getIcon = (type: RoomType) => type === RoomType.Text ? faHashtag : faStarOfLife
+
 export default function ChatContainer(props: ChatContainerProps) {
   assert(props.name.length !== 0, "room name should not be empty")
 
-  let icon = props.type === RoomType.Text ? faHashtag : faStarOfLife
+  const icon = getIcon(props.type)
 
   return (
     <section className="ChatContainer">
@@ -47,7 +48,7 @@ export default function ChatContainer(props: ChatContainerProps) {
           icon={faEllipsisV} />
       </header>
       <div className="chat" >
-        {props.chatComponents.map(component => component)}
+        {props.chatComponents}
       </div>
       <div className="actions">
         <IconButton onClick={() => {/* TODO: Handle `emoji` button click. */}}

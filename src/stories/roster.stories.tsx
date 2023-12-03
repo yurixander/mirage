@@ -80,6 +80,56 @@ export const Default: Story = {
           status: UserStatus.Idle,
           isLarge: false
         }
+      },
+      {
+        category: RosterUserCategory.Member,
+        userProfileProps: {
+          displayName: "Emerald Branch",
+          displayNameColor: "#5CC679",
+          text: "@emerald_branch",
+          status: UserStatus.Idle,
+          isLarge: false
+        }
+      },
+      {
+        category: RosterUserCategory.Admin,
+        userProfileProps: {
+          displayName: "Emerald Branch",
+          displayNameColor: "#5CC679",
+          text: "@emerald_branch",
+          status: UserStatus.Online,
+          isLarge: false
+        }
+      },
+      {
+        category: RosterUserCategory.Member,
+        userProfileProps: {
+          displayName: "Emerald Branch",
+          displayNameColor: "#5CC679",
+          text: "@emerald_branch",
+          status: UserStatus.Idle,
+          isLarge: false
+        }
+      },
+      {
+        category: RosterUserCategory.Member,
+        userProfileProps: {
+          displayName: "Emerald Branch",
+          displayNameColor: "#5CC679",
+          text: "@emerald_branch",
+          status: UserStatus.Idle,
+          isLarge: false
+        }
+      },
+      {
+        category: RosterUserCategory.Member,
+        userProfileProps: {
+          displayName: "Emerald Branch",
+          displayNameColor: "#5CC679",
+          text: "@emerald_branch",
+          status: UserStatus.Idle,
+          isLarge: false
+        }
       }
     ]
   }

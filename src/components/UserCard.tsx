@@ -1,4 +1,5 @@
 import "../styles/UserCard.sass"
+import {timeFormatter} from "../util"
 import Button, {ButtonStyle} from "./Button"
 import Label from "./Label"
 import UserProfile, {UserProfileProps} from "./UserProfile"
@@ -14,11 +15,6 @@ export type UserCardProps = {
 export default function UserCard(props: UserCardProps) {
   // CONSIDER: Using a floating UI library to handle the positioning of this component.
 
-  // FIXME: This is temporary. Proper formatting is needed. Will require a specialized library.
-  const accountCreationTime = new Date(props.accountCreationTime).toLocaleTimeString()
-  const serverJoinTime = new Date(props.serverJoinTime).toLocaleTimeString()
-  const lastMessageTime = new Date(props.lastMessageTime).toLocaleTimeString()
-
   return (
     <div className="UserCard">
       <div className="header">
@@ -31,9 +27,9 @@ export default function UserCard(props: UserCardProps) {
         </div>
         <div className="account">
           <Label text="Account" />
-          <span>Created <b>{accountCreationTime}</b></span>
-          <span>Joined server <b>{serverJoinTime}</b></span>
-          <span>Last message sent was <b>{lastMessageTime}</b></span>
+          <span>Created <b>{timeFormatter(props.accountCreationTime)}</b></span>
+          <span>Joined server <b>{timeFormatter(props.serverJoinTime)}</b></span>
+          <span>Last message sent was <b>{timeFormatter(props.lastMessageTime)}</b></span>
         </div>
       </div>
       <div className="actions">

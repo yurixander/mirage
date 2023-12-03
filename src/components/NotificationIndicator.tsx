@@ -11,7 +11,7 @@ export default function NotificationIndicator(props: NotificationIndicatorProps)
     assert(Number.isInteger(props.mentionAmount), "mention amount should never be a decimal")
   }
 
-  const classNames = ["NotificationIndicator"]
+  const classNames = ["indicator"]
 
   if (props.mentionAmount !== undefined)
     classNames.push("mention")
@@ -23,8 +23,10 @@ export default function NotificationIndicator(props: NotificationIndicatorProps)
     : undefined
 
   return (
-    <div className={classNames.join(" ")}>
-      {adjustedAmount !== undefined && adjustedAmount}
+    <div className="NotificationIndicator">
+      <div className={classNames.join(" ")}>
+        {adjustedAmount !== undefined && adjustedAmount}
+      </div>
     </div>
   )
 }

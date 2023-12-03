@@ -1,8 +1,8 @@
 import {IconProp} from "@fortawesome/fontawesome-svg-core"
 import "../styles/ContextMenu.sass"
-import {useEffect} from "react"
+import {useCallback, useEffect} from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import create from "zustand"
+import {create} from "zustand"
 
 export type ContextMenuItem = {
   label: string,
@@ -38,10 +38,10 @@ export const useContextMenuStore = create<ContextMenuState>((set) => ({
 export default function ContextMenu(props: ContextMenuProps) {
   const {x, y, items, isOpen, showMenu, hideMenu} = useContextMenuStore()
 
-  const handleContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     showMenu(e.clientX, e.clientY, items)
-  }
+  }, [items])
 
   useEffect(() => {
     const handleWindowClick = () => hideMenu()
@@ -53,7 +53,7 @@ export default function ContextMenu(props: ContextMenuProps) {
 
   return (
     <>
-      <div onContextMenu={(e) => handleContextMenu(e)}>
+      <div onContextMenu={handleContextMenu}>
         {props.children}
       </div>
       {isOpen && <div className="ContextMenu" style={{
@@ -62,8 +62,9 @@ export default function ContextMenu(props: ContextMenuProps) {
         top: `${y}px`
       }}>
         <div className="container">
-          {props.items.map(item =>
+          {props.items.map((item, index) =>
             <div
+              key={index}
               className="item"
               onClick={item.action}>
               <span className="text">{item.label}</span>
