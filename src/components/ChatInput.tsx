@@ -40,7 +40,7 @@ export default function ChatInput() {
         <div className="send">
           <IconButton
             onClick={() => {/* TODO: Handle click for send message. */}}
-            tooltip={"Send message"}
+            tooltip={"Send"}
             tooltipPlacement={"auto"}
             icon={faPaperPlane}
             color="#C463FF" />
