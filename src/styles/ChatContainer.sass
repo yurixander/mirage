@@ -1,5 +1,7 @@
 @import "global"
 
+$size-fill-icon: 24px
+
 .ChatContainer
   display: flex
   flex-direction: column
@@ -46,9 +48,23 @@
 
   > .actions
     display: flex
-    gap: $size-x1
+    flex-direction: column
     margin-left: $size-x1
     margin-right: $size-x1
+    gap: $size-10px
+
+    > .input
+      display: flex
+      align-items: center
+      gap: $size-10px
+
+    > .typing
+      display: flex
+      gap: $size-10px
+
+      > .fill
+        width: $size-fill-icon
+        height: $size-fill-icon
 
   > .information
     display: flex

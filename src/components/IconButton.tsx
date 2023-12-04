@@ -11,7 +11,8 @@ export type IconButtonProps = {
   onClick: () => void
   tooltip: string
   tooltipPlacement: Placement
-  icon: IconProp
+  icon: IconProp,
+  color?: string
 }
 
 function IconButton(props: IconButtonProps) {
@@ -27,7 +28,7 @@ function IconButton(props: IconButtonProps) {
         className="IconButton"
         onClick={props.onClick}
         tabIndex={0}>
-        <FontAwesomeIcon className="icon" icon={props.icon} />
+        <FontAwesomeIcon style={{color: props.color}} className="icon" icon={props.icon} />
       </div>
     </Tippy>
   )

@@ -5,7 +5,13 @@ $animation-delay-increment: 150ms
 .TypingIndicator
   display: inline-flex
   align-items: center
-  gap: $size-3px
+  gap: $size-10px
+
+  > .avatars
+    display: flex
+
+    > .move-left
+      margin-left: -$size-x1
 
   > .dots
     transform: translateY(3px)
