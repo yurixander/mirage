@@ -1,4 +1,5 @@
 import "../styles/TypingIndicator.sass"
+import Avatar from "./Avatar"
 
 export type TypingIndicatorUser = {
   displayName: string,
@@ -16,8 +17,12 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
 
   const names = (
     <>
-      {props.users.map(user =>
-        <span className="name" style={{color: user.color}}>{user.displayName}</span>
+      {props.users.map((user, index, array) =>
+        <span>
+          <span className="name" style={{color: user.color}}>{user.displayName}</span>
+          {index < array.length - 2 ? ', ' : ''}
+          {index === array.length - 2 ? ' and ' : ''}
+        </span>
       )}
     </>
   )
@@ -34,10 +39,14 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
         <div className="dot" />
       </div>
       <div className="avatars">
-        {/* TODO: Create an `Avatar` component (with a `isRounded` prop) and use it here and elsewhere that avatars are currently used, for consistency. */}
-        {props.users.map(user => (
-          <div className="avatar" key={user.displayName}>
-            <img src={user.avatarUrl} />
+        {props.users.map((user, index) => (
+          user.avatarUrl &&
+          <div
+            className={index === 1 || index === 2 ? "move-left" : ""}>
+            <Avatar
+              isRounded={true}
+              displayName={user.displayName}
+              avatarUrl={user.avatarUrl} />
           </div>
         ))}
       </div>

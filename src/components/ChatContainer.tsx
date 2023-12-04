@@ -8,6 +8,8 @@ import {
   faPaperclip, faLink, faCircleInfo, faEllipsisV, faFaceSmile, faEarthAmerica, faCircleHalfStroke, faUniversalAccess, faStarOfLife, faHashtag
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import Input from "./Input"
+import ChatInput from "./ChatInput"
 
 export type ChatContainerProps = {
   name: string,
@@ -51,20 +53,25 @@ export default function ChatContainer(props: ChatContainerProps) {
         {props.chatComponents}
       </div>
       <div className="actions">
-        <IconButton onClick={() => {/* TODO: Handle `emoji` button click. */}}
-          tooltip={"Emoji"}
-          tooltipPlacement={"top"}
-          icon={faFaceSmile} />
-        <IconButton onClick={() => {/* TODO: Handle `attach` button click. */}}
-          tooltip={"Attach"}
-          tooltipPlacement={"top"}
-          icon={faPaperclip} />
-        <div className="input-typing">
-          {/* TODO: Put here Input Component. */}
-          <TypingIndicator users={[{
-            displayName: "Emerald Branch",
-            color: "#5CC679"
-          }]} />
+        <div className="input">
+          <IconButton onClick={() => {/* TODO: Handle `emoji` button click. */}}
+            tooltip={"Emoji"}
+            tooltipPlacement={"top"}
+            icon={faFaceSmile} />
+          <IconButton onClick={() => {/* TODO: Handle `attach` button click. */}}
+            tooltip={"Attach"}
+            tooltipPlacement={"top"}
+            icon={faPaperclip} />
+          <ChatInput />
+        </div>
+        <div className="typing">
+          <div className="fill" />
+          <div className="fill" />
+          <TypingIndicator
+            users={[{
+              displayName: "Emerald Branch",
+              color: "#5CC679"
+            }]} />
         </div>
       </div>
       <div className="information">

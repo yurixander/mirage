@@ -1,0 +1,50 @@
+@import "global"
+
+$placeholder-color: $color-gray-text
+
+.InputContainer
+  display: flex
+  width: 100%
+  align-items: center
+  border: $border-width solid $color-border
+  border-radius: $border-radius-small
+  background-color: $color-contrast
+
+  &:focus-visible
+    outline: $size-2px solid $color-outline-tab
+    border-radius: $border-radius-small
+
+  > .input
+    display: flex
+    max-height: 100px
+    width: 100%
+    padding: $size-10px
+    resize: none
+    border: none
+    background: none
+    overflow-y: auto
+    scrollbar-width: none
+
+    &:focus-visible
+      outline: none
+
+    &::-webkit-scrollbar
+      display: none
+
+    &::-webkit-input-placeholder
+      color: $placeholder-color
+
+    &::-moz-placeholder
+      color: $placeholder-color
+      opacity: 1
+
+    &:-ms-input-placeholder
+      color: $placeholder-color
+
+    &:-moz-placeholder
+      color: $placeholder-color
+
+  > .send
+    height: max-content
+    width: max-content
+    margin-right: $size-10px
