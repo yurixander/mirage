@@ -8,7 +8,6 @@ import {
   faPaperclip, faLink, faCircleInfo, faEllipsisV, faFaceSmile, faEarthAmerica, faCircleHalfStroke, faUniversalAccess, faStarOfLife, faHashtag
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import Input from "./Input"
 import ChatInput from "./ChatInput"
 
 export type ChatContainerProps = {
@@ -54,14 +53,16 @@ export default function ChatContainer(props: ChatContainerProps) {
       </div>
       <div className="actions">
         <div className="input">
-          <IconButton onClick={() => {/* TODO: Handle `emoji` button click. */}}
-            tooltip={"Emoji"}
-            tooltipPlacement={"top"}
-            icon={faFaceSmile} />
-          <IconButton onClick={() => {/* TODO: Handle `attach` button click. */}}
-            tooltip={"Attach"}
-            tooltipPlacement={"top"}
-            icon={faPaperclip} />
+          <div className="buttons">
+            <IconButton onClick={() => {/* TODO: Handle `emoji` button click. */}}
+              tooltip={"Emoji"}
+              tooltipPlacement={"top"}
+              icon={faFaceSmile} />
+            <IconButton onClick={() => {/* TODO: Handle `attach` button click. */}}
+              tooltip={"Attach"}
+              tooltipPlacement={"top"}
+              icon={faPaperclip} />
+          </div>
           <ChatInput />
         </div>
         <div className="typing">

@@ -55,8 +55,14 @@ $size-fill-icon: 24px
 
     > .input
       display: flex
-      align-items: center
       gap: $size-10px
+
+      > .buttons
+        display: flex
+        gap: $size-10px
+        /* TODO: Check margins prefer use some margin-top. */
+        margin: $size-5px
+        height: max-content
 
     > .typing
       display: flex
