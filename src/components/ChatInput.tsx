@@ -20,7 +20,7 @@ export default function ChatInput() {
       if (event.ctrlKey)
         setValue(value + '\n')
       else
-        setValue("") /* TODO: Handle here send message. */
+        event.preventDefault() /* TODO: Handle here send message with enter. */
     }
   }
 
@@ -39,7 +39,7 @@ export default function ChatInput() {
         ></textarea>
         <div className="send">
           <IconButton
-            onClick={() => { }}
+            onClick={() => {/* TODO: Handle click for send message. */}}
             tooltip={"Send message"}
             tooltipPlacement={"auto"}
             icon={faPaperPlane}
