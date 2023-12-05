@@ -13,7 +13,7 @@ export const Default: Story = {
 export const WithResults: Story = {
   render: (args: SearchBarProps) => <SearchBar {...args} />,
   args: {
-    onQueryChange: (query: string) => [
+    onQueryChange: (_query: string) => [
       {
         text: "Result 1",
         onClick: () => { }

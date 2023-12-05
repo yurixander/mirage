@@ -5,9 +5,6 @@ type Story = StoryObj<typeof UserProfilePlaceholder>
 
 const meta: Meta<typeof UserProfilePlaceholder> = {component: UserProfilePlaceholder}
 const render = () => <UserProfilePlaceholder />
-
-export const Default: Story = {
-  render
-}
+export const Default: Story = {render}
 
 export default meta
