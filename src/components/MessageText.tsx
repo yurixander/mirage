@@ -1,7 +1,6 @@
 import "../styles/MessageText.sass"
-import {timeFormatter} from "../util"
 import ContextMenu from "./ContextMenu"
-import {faReply} from '@fortawesome/free-solid-svg-icons'
+import {faReply} from "@fortawesome/free-solid-svg-icons"
 import Message from "./Message"
 
 
