@@ -25,27 +25,25 @@ export default function ChatInput() {
   }
 
   return (
-    <>
-      <div className="InputContainer">
-        <textarea
-          onKeyDown={handleKeyDown}
-          className="input"
-          rows={1}
-          ref={textareaRef}
-          autoFocus={true}
-          placeholder={"Write a message or simply say 👋🏼 hello..."}
-          value={value}
-          onChange={(value) => setValue(value.target.value)}
-        ></textarea>
-        <div className="send">
-          <IconButton
-            onClick={() => {/* TODO: Handle click for send message. */}}
-            tooltip={"Send"}
-            tooltipPlacement={"auto"}
-            icon={faPaperPlane}
-            color="#C463FF" />
-        </div>
+    <div className="InputContainer">
+      <textarea
+        onKeyDown={handleKeyDown}
+        className="input"
+        rows={1}
+        ref={textareaRef}
+        autoFocus={true}
+        placeholder={"Write a message or simply say 👋🏼 hello..."}
+        value={value}
+        onChange={(value) => setValue(value.target.value)}
+      ></textarea>
+      <div className="send">
+        <IconButton
+          onClick={() => {/* TODO: Handle click for send message. */}}
+          tooltip={"Send"}
+          tooltipPlacement={"auto"}
+          icon={faPaperPlane}
+          color="#C463FF" />
       </div>
-    </>
+    </div>
   )
 }

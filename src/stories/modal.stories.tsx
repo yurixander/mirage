@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react"
-import Modal, {ModalPosition, ModalProps} from "../components/Modal"
+import Modal, {ModalProps} from "../components/Modal"
 import Button from "../components/Button"
 
 type Story = StoryObj<typeof Modal>
