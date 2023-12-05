@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react"
 import "../styles/ChatInput.sass"
 import IconButton from "./IconButton"
-import {faPaperPlane} from '@fortawesome/free-solid-svg-icons'
+import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
 
 export default function ChatInput() {
   const [value, setValue] = useState("")
@@ -18,7 +18,7 @@ export default function ChatInput() {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       if (event.ctrlKey)
-        setValue(value + '\n')
+        setValue(value + "\n")
       else
         event.preventDefault() /* TODO: Handle here send message with enter. */
     }

@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
 import IconButton, {IconButtonProps} from "../components/IconButton"
-import {faGear} from '@fortawesome/free-solid-svg-icons'
+import {faGear} from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof IconButton>
 

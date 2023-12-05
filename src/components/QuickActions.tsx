@@ -1,6 +1,6 @@
 import "../styles/QuickActions.sass"
 import IconButton from "./IconButton"
-import {faPaperPlane, faPhone, faBell, faBox, faRightFromBracket} from '@fortawesome/free-solid-svg-icons'
+import {faPaperPlane, faPhone, faBell, faBox, faRightFromBracket} from "@fortawesome/free-solid-svg-icons"
 
 export type QuickActionsProps = {
   onViewDirectMessages: () => void,

@@ -45,9 +45,9 @@ export default function ContextMenu(props: ContextMenuProps) {
   useEffect(() => {
     const handleWindowClick = () => hideMenu()
 
-    window.addEventListener('click', handleWindowClick)
+    window.addEventListener("click", handleWindowClick)
 
-    return () => window.removeEventListener('click', handleWindowClick)
+    return () => window.removeEventListener("click", handleWindowClick)
   }, [hideMenu])
 
   return (
@@ -56,7 +56,7 @@ export default function ContextMenu(props: ContextMenuProps) {
         {props.children}
       </div>
       {isOpen && <div className="ContextMenu" style={{
-        position: 'absolute',
+        position: "absolute",
         left: `${x}px`,
         top: `${y}px`
       }}>

@@ -1,4 +1,4 @@
-import '../styles/Modal.sass'
+import "../styles/Modal.sass"
 
 export enum ModalPosition {
   Left = "left",

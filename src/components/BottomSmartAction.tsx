@@ -1,5 +1,5 @@
 import {IconProp} from "@fortawesome/fontawesome-svg-core"
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import "../styles/BottomSmartAction.sass"
 
 export type BottomSmartActionProps = {

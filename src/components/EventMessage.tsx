@@ -1,6 +1,6 @@
 import "../styles/EventMessage.sass"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faPencil} from '@fortawesome/free-solid-svg-icons'
+import {faPencil} from "@fortawesome/free-solid-svg-icons"
 import {timeFormatter} from "../util"
 
 export type EventMessageProps = {

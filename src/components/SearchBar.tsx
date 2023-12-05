@@ -1,5 +1,5 @@
 import "../styles/SearchBar.sass"
-import {faSearch} from '@fortawesome/free-solid-svg-icons'
+import {faSearch} from "@fortawesome/free-solid-svg-icons"
 import KeyCue from "./KeyCue"
 import useGlobalHotkey from "../hooks/useGlobalHotkey"
 import React, {useState} from "react"
