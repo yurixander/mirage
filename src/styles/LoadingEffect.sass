@@ -2,14 +2,17 @@
 
 $wave-color: $color-contrast-dark
 
-@keyframes charging
+@keyframes loading
   0%
     transform: translate(-75px, 0)
     box-shadow: 0px 0px 40px 30px $wave-color
+
   50%
     box-shadow: 0px 0px 70px 50px $wave-color
+
   75%
     box-shadow: 0px 0px 40px 20px $wave-color
+
   100%
     transform: translate(275px, 0)
     box-shadow: 0px 0px 20px 15px $wave-color
@@ -17,4 +20,4 @@ $wave-color: $color-contrast-dark
 .LoadingEffect
   width: 0px
   height: 100%
-  animation: charging 1.5s infinite ease-in-out
+  animation: loading 1.5s infinite ease-in-out

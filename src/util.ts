@@ -13,11 +13,7 @@ export type Credentials = {
 }
 
 export function timeFormatter(timestamp: number): string {
-  return dayjs(timestamp).format('hh:mm a')
-}
-
-export function reflectInputValue(setter: (_: string) => void) {
-  return (event: React.ChangeEvent<HTMLInputElement>) => setter(event.target.value)
+  return dayjs(timestamp).format("hh:mm a")
 }
 
 export function assert(condition: boolean, reasoning: string): asserts condition {
