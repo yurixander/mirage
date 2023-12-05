@@ -1,7 +1,6 @@
 import "../styles/Message.sass"
 import {timeFormatter} from "../util"
 
-
 export type MessageProps = {
   authorDisplayName: string
   authorDisplayNameColor: string
