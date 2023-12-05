@@ -2,20 +2,7 @@
 
 $avatar-size: 40px
 
-.Message
-  display: flex
-  justify-content: flex-start
-  align-items: flex-start
-  width: 100%
-
-  view-timeline-name: --message
-  view-timeline-axis: block
-
-  animation-timeline: --message
-  animation-name: show
-  animation-range: entry 25% cover 50%
-  animation-fill-mode: both
-
+.ImageMessage
   > .wrapper
     width: 100%
     display: flex
@@ -37,6 +24,10 @@ $avatar-size: 40px
         height: 100%
 
     > .content
+      display: flex
+      flex-direction: column
+      gap: $size-5px
+
       > .text
         max-width: 600px
         user-select: text
@@ -46,8 +37,18 @@ $avatar-size: 40px
         font-weight: $font-weight-strong
         user-select: text
 
+      > .container
+        width: 175px
+        height: 200px
+
+        > .image
+          width: 100%
+          height: 100%
+          border-radius: $border-radius
+          object-fit: cover
+
     > .time
       display: flex
-      align-items: center
+      align-items: flex-end
       margin-left: auto
       color: $color-gray-text
