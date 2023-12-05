@@ -6,7 +6,7 @@ import BottomSmartAction from "./BottomSmartAction"
 import TypingIndicator from "./TypingIndicator"
 import {
   faPaperclip, faLink, faCircleInfo, faEllipsisV, faFaceSmile, faEarthAmerica, faCircleHalfStroke, faUniversalAccess, faStarOfLife, faHashtag
-} from '@fortawesome/free-solid-svg-icons'
+} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import ChatInput from "./ChatInput"
 
