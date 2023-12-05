@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
 import UserProfile, {UserActivity, UserProfileProps, UserStatus} from "../components/UserProfile"
-import {faSpotify} from '@fortawesome/free-brands-svg-icons'
+import {faSpotify} from "@fortawesome/free-brands-svg-icons"
 
 type Story = StoryObj<typeof UserProfile>
 

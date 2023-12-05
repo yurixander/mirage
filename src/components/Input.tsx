@@ -3,7 +3,7 @@ import {useState} from "react"
 import Label from "./Label"
 import IconButton from "./IconButton"
 import {IconProp} from "@fortawesome/fontawesome-svg-core"
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export type InputConstraint = {
   message: string

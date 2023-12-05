@@ -1,7 +1,7 @@
 import {Meta, StoryObj} from "@storybook/react"
 import RosterUser, {RosterUserProps} from "../components/RosterUser"
 import {UserActivity, UserStatus} from "../components/UserProfile"
-import {faSpotify} from '@fortawesome/free-brands-svg-icons'
+import {faSpotify} from "@fortawesome/free-brands-svg-icons"
 
 type Story = StoryObj<typeof RosterUser>
 

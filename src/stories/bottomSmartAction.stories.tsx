@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
 import BottomSmartAction, {BottomSmartActionProps} from "../components/BottomSmartAction"
-import {faStarOfLife} from '@fortawesome/free-solid-svg-icons'
+import {faStarOfLife} from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof BottomSmartAction>
 

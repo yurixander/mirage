@@ -4,7 +4,7 @@ import Label from "./Label"
 import RosterUser from "./RosterUser"
 import {UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
-import {faArrowDownShortWide, faUserGroup} from '@fortawesome/free-solid-svg-icons'
+import {faArrowDownShortWide, faUserGroup} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export enum RosterUserCategory {

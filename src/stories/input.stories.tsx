@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
 import Input, {InputProps, integerConstraint} from "../components/Input"
-import {faSearch, faMessage} from '@fortawesome/free-solid-svg-icons'
+import {faSearch, faMessage} from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof Input>
 

@@ -4,7 +4,7 @@ import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
 import "tippy.js/animations/scale-subtle.css"
 import {IconProp} from "@fortawesome/fontawesome-svg-core"
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {memo} from "react"
 
 export type IconButtonProps = {
