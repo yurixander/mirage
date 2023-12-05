@@ -10,7 +10,7 @@ export type BottomSmartActionProps = {
 
 export default function BottomSmartAction(props: BottomSmartActionProps) {
   return (
-    <div className="smart-action" onClick={props.onClick}>
+    <div className="SmartAction" onClick={props.onClick}>
       <FontAwesomeIcon className="icon" icon={props.icon} />
       <span>{props.text}</span>
     </div>
