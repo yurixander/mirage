@@ -13,7 +13,7 @@ $avatar-size: 40px
 
   animation-timeline: --message
   animation-name: show
-  animation-range: entry 25% cover 50%
+  animation-range: entry -20% cover 50%
   animation-fill-mode: both
 
   > .wrapper
@@ -36,18 +36,17 @@ $avatar-size: 40px
         width: 100%
         height: 100%
 
-    > .content
-      > .text
-        max-width: 600px
-        user-select: text
-        line-height: $line-height-large
+    > .body
+      width: 100%
 
       > .author-name
         font-weight: $font-weight-strong
         user-select: text
 
-    > .time
-      display: flex
-      align-items: center
-      margin-left: auto
-      color: $color-gray-text
+      > .content
+        display: flex
+
+        > .time
+          display: flex
+          margin-left: auto
+          color: $color-gray-text

@@ -5,6 +5,7 @@ import Message from "../components/Message"
 import UnreadIndicator from "../components/UnreadIndicator"
 import EventMessage from "../components/EventMessage"
 import ImageMessage from "../components/ImageMessage"
+import MessageText from "../components/MessageText"
 
 type Story = StoryObj<typeof ChatContainer>
 
@@ -19,14 +20,14 @@ export const Default: Story = {
     text: "— Request assistance from your colleagues.",
     type: RoomType.Text,
     chatComponents: [
-      <Message
+      <MessageText
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <UnreadIndicator />,
-      <Message
+      <MessageText
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
@@ -39,7 +40,7 @@ export const Default: Story = {
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"This image is amazing!"}
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
-      <Message
+      <MessageText
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
