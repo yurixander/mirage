@@ -20,7 +20,6 @@ export default function Navigation(props: NavigationProps) {
           <span className="copyright">©</span>
         </div>
         <div className="divider" />
-        {/* TODO: Check server component. */}
         <div className="servers">
           {props.servers.map(server => <ServerListItem {...server} />)}
           <Tippy
