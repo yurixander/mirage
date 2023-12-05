@@ -15,7 +15,6 @@ export type ContextMenuProps = {
   children: JSX.Element
 }
 
-
 type ContextMenuState = {
   x: number
   y: number

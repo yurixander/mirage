@@ -16,6 +16,7 @@ export const ActiveWithMentions: Story = {
     mentionCount: 99
   }
 }
+
 export const ContainsUnreadMessages: Story = {
   render,
   args: {
