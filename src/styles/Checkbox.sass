@@ -1,0 +1,21 @@
+@import "global"
+
+$toggle-size: 13px
+
+.ToggleButton
+  > .container
+    width: $toggle-size
+    height: $toggle-size
+    border-radius: $size-3px
+    cursor: pointer
+
+    &:active
+      animation: hold 200ms
+      transform: scale(0.8)
+
+  > .selected
+    background-color: $color-primary
+
+  > .default
+    border: 1px solid $color-contrast-darker
+    box-shadow: inset 0 0 $size-5px $color-contrast-darker
