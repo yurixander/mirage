@@ -2,7 +2,7 @@ import "../styles/ChatContainer.sass"
 import IconButton from "./IconButton"
 import {RoomType} from "./Room"
 import {assert} from "../util"
-import BottomSmartAction from "./BottomSmartAction"
+import SmartAction from "./SmartAction"
 import TypingIndicator from "./TypingIndicator"
 import {
   faPaperclip, faLink, faCircleInfo, faEllipsisV, faFaceSmile, faEarthAmerica, faCircleHalfStroke, faUniversalAccess, faStarOfLife, faHashtag
@@ -76,19 +76,19 @@ export default function ChatContainer(props: ChatContainerProps) {
         </div>
       </div>
       <div className="information">
-        <BottomSmartAction
+        <SmartAction
           icon={faStarOfLife}
           text="Quick menu"
           onClick={() => { }} />
-        <BottomSmartAction
+        <SmartAction
           icon={faUniversalAccess}
           text="Accessibility"
           onClick={() => { }} />
-        <BottomSmartAction
+        <SmartAction
           icon={faCircleHalfStroke}
           text="Switch theme"
           onClick={() => { }} />
-        <BottomSmartAction
+        <SmartAction
           icon={faEarthAmerica}
           text="63ms ping"
           onClick={() => { }} />
