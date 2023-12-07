@@ -1,14 +1,14 @@
 import {IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import "../styles/BottomSmartAction.sass"
+import "../styles/SmartAction.sass"
 
-export type BottomSmartActionProps = {
+export type SmartActionProps = {
   icon: IconProp
   text: string
   onClick: () => void
 }
 
-export default function BottomSmartAction(props: BottomSmartActionProps) {
+export default function SmartAction(props: SmartActionProps) {
   return (
     <div className="SmartAction" onClick={props.onClick}>
       <FontAwesomeIcon className="icon" icon={props.icon} />
