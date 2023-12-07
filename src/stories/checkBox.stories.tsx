@@ -1,24 +1,25 @@
 import {Meta, StoryObj} from "@storybook/react"
-import Checkbox, {CheckBoxProps} from "../components/Checkbox"
+import Checkbox, {CheckboxProps} from "../components/Checkbox"
 
 type Story = StoryObj<typeof Checkbox>
 
 const meta: Meta<typeof Checkbox> = {component: Checkbox}
-const render = (args: CheckBoxProps) => <Checkbox {...args} />
+const render = (args: CheckboxProps) => <Checkbox {...args} />
 
-export const Default: Story = {
+export const WithoutLabel: Story = {
   render,
   args: {
-    isSelected: false,
-    onClick: () => { }
+    isInitiallySelected: false,
+    onSelectionChange: _isSelected => { }
   }
 }
 
-export const Selected: Story = {
+export const WithLabel: Story = {
   render,
   args: {
-    isSelected: true,
-    onClick: () => { }
+    isInitiallySelected: false,
+    label: "This is a checkbox",
+    onSelectionChange: _isSelected => { }
   }
 }
 
