@@ -24,8 +24,8 @@ export default function Room(props: RoomProps) {
 
   // Determine CSS class to apply based on the active state of the room.
   const classNameActive = props.isActive ? "active" : ""
-  let icon: IconProp = props.type === RoomType.Text ? faHashtag : faStarOfLife
 
+  const icon = props.type === RoomType.Text ? faHashtag : faStarOfLife
   const mentionCountProp = props.mentionCount > 0 ? props.mentionCount : undefined
   const MAX_NAME_LENGTH = 16
 

@@ -15,6 +15,7 @@ export default function ChatInput(props: ChatInputProps) {
 
   useEffect(() => {
     const textarea = textareaRef.current
+
     if (textarea) {
       textarea.style.height = "auto"
       textarea.style.height = `${textarea.scrollHeight}px`
@@ -22,18 +23,19 @@ export default function ChatInput(props: ChatInputProps) {
   }, [value])
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter")
       if (event.ctrlKey)
         setValue(value + "\n")
       else
-        event.preventDefault() /* TODO: Handle here send message with enter. */
-    }
+        // TODO: Handle here send message with enter.
+        event.preventDefault()
   }
 
   return (
     <div className={`InputContainer ${isDisabledClassName}`}>
       <textarea
         onKeyDown={handleKeyDown}
+        // TODO: Need to add the `.disabled` class, not just the attribute. This will ensure consistency, such as showing the `not-allowed` cursor.
         className="input"
         rows={1}
         ref={textareaRef}
@@ -41,8 +43,8 @@ export default function ChatInput(props: ChatInputProps) {
         placeholder={"Write a message or simply say 👋🏼 hello..."}
         value={value}
         onChange={(value) => setValue(value.target.value)}
-        disabled={props.isDisabled}
-      ></textarea>
+        disabled={props.isDisabled}>
+      </textarea>
       <div className="send">
         <IconButton
           onClick={() => {/* TODO: Handle click for send message. */}}

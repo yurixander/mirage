@@ -1,5 +1,5 @@
 import "../styles/ImageMessage.sass"
-import Message from "./Message"
+import MessageContainer from "./MessageContainer"
 
 export type ImageMessageProps = {
   imageUrl: string,
@@ -12,21 +12,22 @@ export type ImageMessageProps = {
 }
 
 export default function ImageMessage(props: ImageMessageProps) {
+  const content = (
+    <div className="Content">
+      <div className="container">
+        <img className="image" src={props.imageUrl} />
+      </div>
+      <div className="text">{props.text}</div>
+    </div>
+  )
 
   return (
     <div className="ImageMessage">
-      <Message
+      <MessageContainer
         authorDisplayName={props.authorDisplayName}
         authorDisplayNameColor={props.authorDisplayNameColor}
         authorAvatarUrl={props.authorAvatarUrl}
-        content={
-          <div className="Content">
-            <div className="container">
-              <img className="image" src={props.imageUrl} />
-            </div>
-            <div className="text">{props.text}</div>
-          </div>
-        }
+        content={content}
         timestamp={props.timestamp}
         onAuthorClick={props.onAuthorClick} />
     </div>

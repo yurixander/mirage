@@ -1,10 +1,10 @@
 import {Meta, StoryObj} from "@storybook/react"
-import MessageText, {MessageTextProps} from "../components/MessageText"
+import TextMessage, {TextMessageProps} from "../components/TextMessage"
 
-type Story = StoryObj<typeof MessageText>
+type Story = StoryObj<typeof TextMessage>
 
-const meta: Meta<typeof MessageText> = {component: MessageText}
-const render = (args: MessageTextProps) => <MessageText {...args} />
+const meta: Meta<typeof TextMessage> = {component: TextMessage}
+const render = (args: TextMessageProps) => <TextMessage {...args} />
 
 export const Default: Story = {
   render,

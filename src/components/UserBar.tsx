@@ -1,5 +1,4 @@
 import "../styles/UserBar.sass"
-import {ReactComponent as SettingsIcon} from "../../public/icons/cog.svg"
 import "../styles/UserBar.sass"
 import IconButton from "./IconButton"
 import UserProfile, {UserStatus} from "./UserProfile"

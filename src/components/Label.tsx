@@ -6,9 +6,11 @@ export type LabelProps = {
 }
 
 function Label(props: LabelProps) {
-  return <div className="Label">
-    {props.text}
-  </div>
+  return (
+    <div className="Label">
+      {props.text}
+    </div>
+  )
 }
 
 export default memo(Label)

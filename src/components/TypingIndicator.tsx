@@ -13,7 +13,6 @@ export type TypingIndicatorProps = {
 
 export default function TypingIndicator(props: TypingIndicatorProps) {
   const verbForm = props.users.length > 1 ? "are" : "is"
-  const MAX_TYPING_USERS = 3
 
   const names = (
     <>
@@ -27,7 +26,9 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
     </>
   )
 
-  const who = props.users.length > MAX_TYPING_USERS
+  const MAX_VISIBLE_TYPING_USERS = 3
+
+  const who = props.users.length > MAX_VISIBLE_TYPING_USERS
     ? "Several people"
     : names
 

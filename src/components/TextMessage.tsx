@@ -1,10 +1,9 @@
-import "../styles/MessageText.sass"
+import "../styles/TextMessage.sass"
 import ContextMenu from "./ContextMenu"
 import {faReply} from "@fortawesome/free-solid-svg-icons"
-import Message from "./Message"
+import MessageContainer from "./MessageContainer"
 
-
-export type MessageTextProps = {
+export type TextMessageProps = {
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl: string
@@ -13,24 +12,26 @@ export type MessageTextProps = {
   onAuthorClick: () => void
 }
 
-export default function MessageText(props: MessageTextProps) {
+export default function TextMessage(props: TextMessageProps) {
+  const contextMenuItems = [
+    {
+      label: "Reply",
+      action: () => { },
+      icon: faReply
+    },
+    {
+      label: "Resend",
+      action: () => { }
+    },
+    {
+      label: "Pin",
+      action: () => { }
+    }
+  ]
+
   return (
-    <ContextMenu items={[
-      {
-        label: "Reply",
-        action: () => { },
-        icon: faReply
-      },
-      {
-        label: "Resend",
-        action: () => { }
-      },
-      {
-        label: "Pin",
-        action: () => { }
-      }
-    ]} children={
-      <Message
+    <ContextMenu items={contextMenuItems} children={
+      <MessageContainer
         authorDisplayName={props.authorDisplayName}
         authorDisplayNameColor={props.authorDisplayNameColor}
         authorAvatarUrl={props.authorAvatarUrl}

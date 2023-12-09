@@ -1,7 +1,7 @@
-import "../styles/Message.sass"
+import "../styles/MessageContainer.sass"
 import {timeFormatter} from "../util"
 
-export type MessageProps = {
+export type MessageContainerProps = {
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl: string
@@ -10,12 +10,11 @@ export type MessageProps = {
   onAuthorClick: () => void
 }
 
-export default function Message(props: MessageProps) {
+export default function MessageContainer(props: MessageContainerProps) {
   const localeTimeString = timeFormatter(props.timestamp)
 
   return (
-    <div
-      className="Message">
+    <div className="MessageContainer">
       <div className="wrapper">
         <div className="avatar"
           onClick={() => props.onAuthorClick()}>
