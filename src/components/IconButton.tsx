@@ -30,7 +30,7 @@ function IconButton(props: IconButtonProps) {
       <div
         className={`IconButton ${isDisabledClassName}`}
         onClick={props.onClick}
-        tabIndex={0}>
+        tabIndex={props.isDisabled ? undefined : 0}>
         <FontAwesomeIcon style={{color: props.color}} className="icon" icon={props.icon} />
       </div>
     </Tippy>
