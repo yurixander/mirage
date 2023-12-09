@@ -38,6 +38,5 @@ export default function Navigation(props: NavigationProps) {
         </div>
       </div>
     </div>
-
   )
 }
