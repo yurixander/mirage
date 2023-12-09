@@ -28,6 +28,15 @@ export const WithIcon: Story = {
   }
 }
 
+export const Disabled: Story = {
+  render,
+  args: {
+    placeholder: "This is an input",
+    icon: faMessage,
+    isDisabled: true
+  }
+}
+
 export const WithActions: Story = {
   render,
   args: {
