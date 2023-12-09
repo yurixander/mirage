@@ -26,7 +26,7 @@ export default function Button(props: ButtonProps) {
       data-style={props.style}
       disabled={props.isLoading || props.isDisabled}
       autoFocus={props.autoFocus}
-      onClick={props.onClick}
+      onClick={!props.isDisabled ? props.onClick : undefined}
       tabIndex={1}>
       {props.isLoading
         ? <Loader text={props.loadingText || props.text} />

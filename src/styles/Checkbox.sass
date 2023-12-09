@@ -9,17 +9,24 @@ $checkbox-size: 13px
   height: max-content
   width: max-content
 
-  &:focus-visible
-    transition: 150ms
-    outline: $size-2px solid $color-outline-tab
-    outline-offset: $size-2px
-    border-radius: $size-3px
+  &.disabled
+    > .container
+      cursor: not-allowed
+
+      &:active
+        animation: none
+        transform: none
 
   > .container
     width: $checkbox-size
     height: $checkbox-size
     border-radius: $size-3px
     cursor: pointer
+
+    &:focus-visible
+      transition: 150ms
+      outline: $size-2px solid $color-outline-tab
+      outline-offset: 1px
 
     &:active
       animation: hold 200ms

@@ -29,7 +29,7 @@ function IconButton(props: IconButtonProps) {
       placement={props.tooltipPlacement}>
       <div
         className={`IconButton ${isDisabledClassName}`}
-        onClick={props.onClick}
+        onClick={!props.isDisabled ? props.onClick : undefined}
         tabIndex={props.isDisabled ? undefined : 0}>
         <FontAwesomeIcon style={{color: props.color}} className="icon" icon={props.icon} />
       </div>
