@@ -29,6 +29,7 @@ export default function ServerListItem(props: ServerListItemProps) {
         duration={100}
         placement={"right"}>
         <div
+          tabIndex={!props.isActive ? 0 : undefined}
           className={"avatar " + selectedClassName}
           onClick={props.onClick} >
           {avatarImage}
