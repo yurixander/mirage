@@ -1,15 +1,23 @@
 @import "global"
 
-$toggle-size: 13px
+$checkbox-size: 13px
 
 .Checkbox
   display: flex
   gap: $size-5px
   align-items: center
+  height: max-content
+  width: max-content
+
+  &:focus-visible
+    transition: 150ms
+    outline: $size-2px solid $color-outline-tab
+    outline-offset: $size-2px
+    border-radius: $size-3px
 
   > .container
-    width: $toggle-size
-    height: $toggle-size
+    width: $checkbox-size
+    height: $checkbox-size
     border-radius: $size-3px
     cursor: pointer
 

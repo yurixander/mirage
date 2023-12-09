@@ -12,12 +12,24 @@ export default function Checkbox(props: CheckboxProps) {
   const isSelectedClassName = isSelected ? "selected" : "default"
 
   const handleSelectionChanged = () => {
-    setSelected(!isSelected)
-    props.onSelectionChange(isSelected)
+    const isNowSelected = !isSelected
+
+    setSelected(isNowSelected)
+    props.onSelectionChange(isNowSelected)
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      setSelected(!isSelected)
+    }
   }
 
   return (
-    <div className="Checkbox">
+    <div
+      className="Checkbox"
+      tabIndex={0}
+      onFocus={() => { }}
+      onKeyDown={handleKeyDown}>
       <div className={"container " + isSelectedClassName} onClick={handleSelectionChanged} />
       {props.label && <div className="label">{props.label}</div>}
     </div>
