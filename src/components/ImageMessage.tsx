@@ -1,5 +1,7 @@
 import "../styles/ImageMessage.sass"
+import ContextMenu from "./ContextMenu"
 import MessageContainer from "./MessageContainer"
+import {faReply} from "@fortawesome/free-solid-svg-icons"
 
 export type ImageMessageProps = {
   imageUrl: string,
@@ -21,15 +23,48 @@ export default function ImageMessage(props: ImageMessageProps) {
     </div>
   )
 
+  const contextMenuItems = [
+    {
+      label: "Reply",
+      action: () => { },
+      icon: faReply
+    },
+    {
+      label: "Resend",
+      action: () => { }
+    },
+    {
+      label: "Pin",
+      action: () => { }
+    },
+    {
+      label: "Save",
+      action: () => { }
+    },
+    {
+      label: "Delete",
+      action: () => { }
+    }
+  ]
+
   return (
-    <div className="ImageMessage">
-      <MessageContainer
-        authorDisplayName={props.authorDisplayName}
-        authorDisplayNameColor={props.authorDisplayNameColor}
-        authorAvatarUrl={props.authorAvatarUrl}
-        content={content}
-        timestamp={props.timestamp}
-        onAuthorClick={props.onAuthorClick} />
-    </div>
+    <ContextMenu items={contextMenuItems} children={
+      <div className="ImageMessage">
+        <MessageContainer
+          authorDisplayName={props.authorDisplayName}
+          authorDisplayNameColor={props.authorDisplayNameColor}
+          authorAvatarUrl={props.authorAvatarUrl}
+          content={
+            <div className="Content">
+              <div className="container">
+                <img className="image" src={props.imageUrl} />
+              </div>
+              <div className="text">{props.text}</div>
+            </div>
+          }
+          timestamp={props.timestamp}
+          onAuthorClick={props.onAuthorClick} />
+      </div>
+    } />
   )
 }
