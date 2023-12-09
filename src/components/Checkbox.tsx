@@ -28,7 +28,6 @@ export default function Checkbox(props: CheckboxProps) {
     <div
       className="Checkbox"
       tabIndex={0}
-      onFocus={() => { }}
       onKeyDown={handleKeyDown}>
       <div className={"container " + isSelectedClassName} onClick={handleSelectionChanged} />
       {props.label && <div className="label">{props.label}</div>}
