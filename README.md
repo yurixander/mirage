@@ -2,32 +2,17 @@
   <img width="200" alt="Mirage's logo" src="./public/logo-white.svg" />
   <br />
   <br />
-  <img alt="Interface preview" src="./github/preview.png">
+  <img alt="User-interface preview" src="./github/preview.png" />
   <p>A simple, lightweight, and easy-to-use web client for the <a href="https://matrix.org">[Matrix] protocol</a>.</p>
 </div>
 
 🎯 **Goal:** Create a seamless and intuitive web-based client for the \[Matrix\] protocol, that is feature-complete and customizable.
 
-## Technology Stack
-
-* **Programming language**:
-  * [TypeScript](https://www.typescriptlang.org/)
-* **User-interface**:
-  * [React](https://reactjs.org/)
-  * [SCSS/SASS](https://sass-lang.com/)
-  * [Tippy.js: Tooltip library for React](https://atomiks.github.io/tippyjs/)
-* **Additional tooling & frameworks**:
-  * [Matrix JS SDK: Matrix client library](https://github.com/matrix-org/matrix-js-sdk)
-  * [Vite.js: Build tooling](https://vitejs.dev/)
-  * [Boring Avatars: Avatar generator](https://github.com/boringdesigners/boring-avatars)
-  * [DayJS: Date & time formatting library](https://day.js.org/)
-  * [Zustand: React state-management library](https://github.com/pmndrs/zustand)
-
 ## Principles
 
-* 📐 **Simple & consistent UI**: Maintain a clean interface that is consistent in its design, and emphasizes simplicity.<br /><br />
-* ⚡ **Feature-complete**: Make all the features that the Matrix protocol has to offer, available to the user, whilst not polluting the UI or overwhelming the user.<br /><br />
-* ✨ **Customizable**: Allow the user to customize the UI (including fonts and colors).<br /><br />
+* 📐 **Simple & consistent UI**: Maintain a clean interface that is consistent in its design, and emphasizes simplicity.
+* ⚡ **Feature-complete**: Make all the features that the Matrix protocol has to offer, available to the user, whilst not polluting the UI or overwhelming the user.
+* ✨ **Customizable**: Empower the user to customize the UI to their liking (including fonts and colors), enabling the creation of themes for a more personalized experience.
 
 ## Building and running
 
@@ -42,6 +27,22 @@
 npm install
 npm run dev
 ```
+
+## Technology Stack
+
+* **Programming language**:
+  * [TypeScript](https://www.typescriptlang.org/)
+* **User-interface**:
+  * [React](https://reactjs.org/)
+  * [SCSS/SASS](https://sass-lang.com/)
+  * [Tippy.js](https://atomiks.github.io/tippyjs/): Tooltip library for React
+* **Additional tooling & frameworks**:
+  * [Matrix JS SDK](https://github.com/matrix-org/matrix-js-sdk): Matrix client library
+  * [Vite.js](https://vitejs.dev/): Build tooling
+  * [Boring Avatars](https://github.com/boringdesigners/boring-avatars): Avatar generator
+  * [DayJS](https://day.js.org/): Date & time formatting library
+  * [Zustand](https://github.com/pmndrs/zustand): React state-management library
+  * [Storybook.js](https://storybook.js.org/): Isolated component development environment
 
 <hr />
 <div align="center">
