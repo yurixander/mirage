@@ -12,10 +12,8 @@ export default function Checkbox(props: CheckboxProps) {
   const isSelectedClassName = isSelected ? "selected" : "default"
 
   const handleSelectionChanged = () => {
-    const isNowSelected = !isSelected
-
-    setSelected(isNowSelected)
-    props.onSelectionChange(isNowSelected)
+    setSelected(!isSelected)
+    props.onSelectionChange(isSelected)
   }
 
   return (
