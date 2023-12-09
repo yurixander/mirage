@@ -24,6 +24,16 @@ export const Green: Story = {
   }
 }
 
+export const Disabled: Story = {
+  render,
+  args: {
+    text: "This is a button",
+    isDisabled: true,
+    style: ButtonStyle.Default,
+    onClick: () => { },
+  }
+}
+
 export const Default: Story = {
   render,
   args: {

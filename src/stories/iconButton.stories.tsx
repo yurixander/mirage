@@ -17,4 +17,15 @@ export const Settings: Story = {
   }
 }
 
+export const Disabled: Story = {
+  render,
+  args: {
+    icon: faGear,
+    onClick: () => { },
+    tooltip: "Settings",
+    tooltipPlacement: "right",
+    isDisabled: true
+  }
+}
+
 export default meta
