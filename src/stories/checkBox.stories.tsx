@@ -23,4 +23,14 @@ export const WithLabel: Story = {
   }
 }
 
+export const Disabled: Story = {
+  render,
+  args: {
+    isInitiallySelected: false,
+    label: "This is a checkbox",
+    onSelectionChange: _isSelected => { },
+    isDisabled: true
+  }
+}
+
 export default meta
