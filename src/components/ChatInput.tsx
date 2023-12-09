@@ -3,9 +3,15 @@ import "../styles/ChatInput.sass"
 import IconButton from "./IconButton"
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
 
-export default function ChatInput() {
+export type ChatInputProps = {
+  isDisabled?: boolean
+}
+
+export default function ChatInput(props: ChatInputProps) {
   const [value, setValue] = useState("")
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const isDisabledClassName = props.isDisabled ? "disabled" : ""
 
   useEffect(() => {
     const textarea = textareaRef.current
@@ -25,7 +31,7 @@ export default function ChatInput() {
   }
 
   return (
-    <div className="InputContainer">
+    <div className={`InputContainer ${isDisabledClassName}`}>
       <textarea
         onKeyDown={handleKeyDown}
         className="input"
@@ -35,6 +41,7 @@ export default function ChatInput() {
         placeholder={"Write a message or simply say 👋🏼 hello..."}
         value={value}
         onChange={(value) => setValue(value.target.value)}
+        disabled={props.isDisabled}
       ></textarea>
       <div className="send">
         <IconButton
@@ -42,7 +49,8 @@ export default function ChatInput() {
           tooltip={"Send"}
           tooltipPlacement={"auto"}
           icon={faPaperPlane}
-          color="#C463FF" />
+          color="#C463FF"
+          isDisabled={props.isDisabled} />
       </div>
     </div>
   )
