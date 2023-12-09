@@ -12,10 +12,13 @@ export type IconButtonProps = {
   tooltip: string
   tooltipPlacement: Placement
   icon: IconProp,
-  color?: string
+  color?: string,
+  isDisabled?: boolean
 }
 
 function IconButton(props: IconButtonProps) {
+  const isDisabledClassName = props.isDisabled ? "disabled" : ""
+
   return (
     <Tippy
       content={<span className="tooltip-text">{props.tooltip}</span>}
@@ -25,7 +28,7 @@ function IconButton(props: IconButtonProps) {
       duration={100}
       placement={props.tooltipPlacement}>
       <div
-        className="IconButton"
+        className={`IconButton ${isDisabledClassName}`}
         onClick={props.onClick}
         tabIndex={0}>
         <FontAwesomeIcon style={{color: props.color}} className="icon" icon={props.icon} />

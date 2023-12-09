@@ -25,3 +25,13 @@
 
   > .icon
     color: $color-contrast-icon
+
+  &.disabled
+    cursor: not-allowed
+
+    &:active
+      animation: none
+      transform: none
+
+    > .icon
+      color: $color-contrast-dark
