@@ -8,11 +8,12 @@
 
 🎯 **Goal:** Create a seamless and intuitive web-based client for the \[Matrix\] protocol, that is feature-complete and customizable.
 
-## Principles
+## Features
 
-* 📐 **Simple & consistent UI**: Maintain a clean interface that is consistent in its design, and emphasizes simplicity.
-* ⚡ **Feature-complete**: Make all the features that the Matrix protocol has to offer, available to the user, whilst not polluting the UI or overwhelming the user.
-* ✨ **Customizable**: Empower the user to customize the UI to their liking (including fonts and colors), enabling the creation of themes for a more personalized experience.
+* 📐 **Simple & consistent UI**: Maintain a clean interface that is consistent in its design, and emphasizes simplicity.<br /><br />
+* ⚡ **Feature-complete**: Make all the features that the Matrix protocol has to offer, available to the user, whilst not polluting the UI or overwhelming the user. *(Work in progress)*<br /><br />
+* ⚡ **Animations**: The use of animations (where appropriate) provides deeper feedback to user engagement with the UI *(Work in progress)*<br /><br />
+* ✨ **Themes & customization**: Empower the user to customize the UI to their liking (including fonts and colors), enabling the creation of themes for a more personalized experience. *(Work in progress)*<br /><br />
 
 ## Building and running
 

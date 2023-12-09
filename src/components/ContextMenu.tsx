@@ -33,7 +33,6 @@ export const useContextMenuStore = create<ContextMenuState>((set) => ({
   hideMenu: () => set({x: 0, y: 0, items: [], isOpen: false}),
 }))
 
-
 export default function ContextMenu(props: ContextMenuProps) {
   const {x, y, items, isOpen, showMenu, hideMenu} = useContextMenuStore()
 

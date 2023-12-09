@@ -17,7 +17,9 @@ export type ChatContainerProps = {
   chatComponents: JSX.Element[]
 }
 
-const getIcon = (type: RoomType) => type === RoomType.Text ? faHashtag : faStarOfLife
+const getIcon = (type: RoomType) => type === RoomType.Text
+  ? faHashtag
+  : faStarOfLife
 
 export default function ChatContainer(props: ChatContainerProps) {
   assert(props.name.length !== 0, "room name should not be empty")

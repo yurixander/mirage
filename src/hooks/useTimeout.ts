@@ -1,6 +1,6 @@
 import {useEffect, useRef} from "react"
 
-let timeouts: Map<() => void, NodeJS.Timeout> = new Map()
+const timeouts: Map<() => void, NodeJS.Timeout> = new Map()
 
 export function smartTimeout(callback: () => void, delay: number) {
   if (timeouts.has(callback)) {

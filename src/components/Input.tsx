@@ -82,7 +82,6 @@ export default function Input(props: InputProps) {
   // TODO: Handle `alwaysShowAllConstraints` option.
 
   const isDisabledClassName = props.isDisabled ? " disabled" : ""
-
   const [value, setValue] = useState(props.initialValue || "")
   const [violatedConstraints, setViolatedConstraints] = useState<InputConstraint[]>([])
 

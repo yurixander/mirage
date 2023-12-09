@@ -14,7 +14,7 @@ export default function WelcomePopup() {
       </div>
       <div className="body">
         <span className="text">
-          <b>Did you know that?</b> You're a beautiful person, with a charming personality. My grandmother always used to say—”Cows are beautiful cloven-hooved herbivores, and so should you!”
+          <b>Did you know that?</b> You're a beautiful person, with a charming personality. My grandmother always used to say—"Cows are beautiful cloven-hooved herbivores, and so should you!"
         </span>
         <span>
           I hope that resonates with you as much as it did with me.

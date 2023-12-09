@@ -13,16 +13,15 @@ export type ModalProps = {
 }
 
 const Modal = (props: ModalProps) => {
-  const dialogsToShow = [...props.dialogs].slice(0, 5).reverse()
-  const numDialogs = dialogsToShow.length
+  const MAX_DIALOGS = 5
+  const dialogsToShow = [...props.dialogs].slice(0, MAX_DIALOGS).reverse()
 
   return (
     <div data-style={props.position} className="modal-overlay">
       {dialogsToShow.map((dialog, index) => (
         <div
           className="popups"
-          style={{opacity: 1 - 0.2 * (numDialogs - 1 - index)}}
-        >
+          style={{opacity: 1 - 0.2 * (dialogsToShow.length - 1 - index)}}>
           {dialog}
         </div>
       ))}

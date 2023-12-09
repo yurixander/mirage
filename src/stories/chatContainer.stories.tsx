@@ -1,11 +1,11 @@
 import {Meta, StoryObj} from "@storybook/react"
 import ChatContainer, {ChatContainerProps} from "../components/ChatContainer"
 import {RoomType} from "../components/Room"
-import Message from "../components/Message"
+import MessageContainer from "../components/MessageContainer"
 import UnreadIndicator from "../components/UnreadIndicator"
 import EventMessage from "../components/EventMessage"
 import ImageMessage from "../components/ImageMessage"
-import MessageText from "../components/MessageText"
+import TextMessage from "../components/TextMessage"
 
 type Story = StoryObj<typeof ChatContainer>
 
@@ -20,14 +20,14 @@ export const Default: Story = {
     text: "— Request assistance from your colleagues.",
     type: RoomType.Text,
     chatComponents: [
-      <MessageText
+      <TextMessage
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <UnreadIndicator />,
-      <MessageText
+      <TextMessage
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
@@ -40,7 +40,7 @@ export const Default: Story = {
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"This image is amazing!"}
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
-      <MessageText
+      <TextMessage
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}

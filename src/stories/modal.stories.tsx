@@ -25,7 +25,7 @@ export const WithTwoDialogs: Story = {
   }
 }
 
-export const WithWelcomePopup: Story = {
+export const WelcomePopup: Story = {
   render,
   args: {
     dialogs: [

@@ -15,6 +15,8 @@ export default function Checkbox(props: CheckboxProps) {
   const isDisabledClassName = props.isDisabled ? "disabled" : ""
 
   const handleSelectionChanged = () => {
+    // NOTE: An intermediate variable is used here to avoid a possible
+    // logic error, since the `setIsSelected` function is asynchronous.
     const isNowSelected = !isSelected
 
     setSelected(isNowSelected)
@@ -22,9 +24,8 @@ export default function Checkbox(props: CheckboxProps) {
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter")
       setSelected(!isSelected)
-    }
   }
 
   return (
