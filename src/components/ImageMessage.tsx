@@ -14,15 +14,6 @@ export type ImageMessageProps = {
 }
 
 export default function ImageMessage(props: ImageMessageProps) {
-  const content = (
-    <div className="Content">
-      <div className="container">
-        <img className="image" src={props.imageUrl} />
-      </div>
-      <div className="text">{props.text}</div>
-    </div>
-  )
-
   const contextMenuItems = [
     {
       label: "Reply",
@@ -47,6 +38,15 @@ export default function ImageMessage(props: ImageMessageProps) {
     }
   ]
 
+  const content = (
+    <div className="Content">
+      <div className="container">
+        <img className="image" src={props.imageUrl} />
+      </div>
+      <div className="text">{props.text}</div>
+    </div>
+  )
+
   return (
     <ContextMenu items={contextMenuItems} children={
       <div className="ImageMessage">
@@ -54,14 +54,7 @@ export default function ImageMessage(props: ImageMessageProps) {
           authorDisplayName={props.authorDisplayName}
           authorDisplayNameColor={props.authorDisplayNameColor}
           authorAvatarUrl={props.authorAvatarUrl}
-          content={
-            <div className="Content">
-              <div className="container">
-                <img className="image" src={props.imageUrl} />
-              </div>
-              <div className="text">{props.text}</div>
-            </div>
-          }
+          content={content}
           timestamp={props.timestamp}
           onAuthorClick={props.onAuthorClick} />
       </div>
