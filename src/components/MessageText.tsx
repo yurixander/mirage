@@ -28,6 +28,10 @@ export default function MessageText(props: MessageTextProps) {
       {
         label: "Pin",
         action: () => { }
+      },
+      {
+        label: "Delete",
+        action: () => { }
       }
     ]} children={
       <Message
