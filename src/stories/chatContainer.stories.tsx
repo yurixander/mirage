@@ -1,7 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
 import ChatContainer, {ChatContainerProps} from "../components/ChatContainer"
 import {RoomType} from "../components/Room"
-import MessageContainer from "../components/MessageContainer"
 import UnreadIndicator from "../components/UnreadIndicator"
 import EventMessage from "../components/EventMessage"
 import ImageMessage from "../components/ImageMessage"
@@ -50,6 +49,7 @@ export const Default: Story = {
         <strong style={{color: userDisplayNameColor}}>Sapphire Pineapple</strong> changed their name to <strong style={{color: userDisplayNameColor}}>Snappy Turtle</strong>.
       </span>} timestamp={Date.now()} />
     ]
+    // TODO: Check duplicate ContextMenu
   }
 }
 
