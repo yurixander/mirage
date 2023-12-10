@@ -48,16 +48,18 @@ export default function ImageMessage(props: ImageMessageProps) {
   )
 
   return (
-    <ContextMenu items={contextMenuItems} children={
-      <div className="ImageMessage">
-        <MessageContainer
-          authorDisplayName={props.authorDisplayName}
-          authorDisplayNameColor={props.authorDisplayNameColor}
-          authorAvatarUrl={props.authorAvatarUrl}
-          content={content}
-          timestamp={props.timestamp}
-          onAuthorClick={props.onAuthorClick} />
-      </div>
-    } />
+    <ContextMenu
+      id="image-menu"
+      items={contextMenuItems} children={
+        <div className="ImageMessage">
+          <MessageContainer
+            authorDisplayName={props.authorDisplayName}
+            authorDisplayNameColor={props.authorDisplayNameColor}
+            authorAvatarUrl={props.authorAvatarUrl}
+            content={content}
+            timestamp={props.timestamp}
+            onAuthorClick={props.onAuthorClick} />
+        </div>
+      } />
   )
 }

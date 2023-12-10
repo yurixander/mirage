@@ -30,14 +30,16 @@ export default function TextMessage(props: TextMessageProps) {
   ]
 
   return (
-    <ContextMenu items={contextMenuItems} children={
-      <MessageContainer
-        authorDisplayName={props.authorDisplayName}
-        authorDisplayNameColor={props.authorDisplayNameColor}
-        authorAvatarUrl={props.authorAvatarUrl}
-        content={<div className="message-text">{props.text}</div>}
-        timestamp={props.timestamp}
-        onAuthorClick={props.onAuthorClick} />
-    } />
+    <ContextMenu
+      id="text-menu"
+      items={contextMenuItems} children={
+        <MessageContainer
+          authorDisplayName={props.authorDisplayName}
+          authorDisplayNameColor={props.authorDisplayNameColor}
+          authorAvatarUrl={props.authorAvatarUrl}
+          content={<div className="message-text">{props.text}</div>}
+          timestamp={props.timestamp}
+          onAuthorClick={props.onAuthorClick} />
+      } />
   )
 }
