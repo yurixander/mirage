@@ -24,13 +24,11 @@ const getIcon = (type: RoomType) => type === RoomType.Text
 export default function ChatContainer(props: ChatContainerProps) {
   assert(props.name.length !== 0, "room name should not be empty")
 
-  const icon = getIcon(props.type)
-
   return (
     <section className="ChatContainer">
       <header className="header">
         <div className="title" >
-          <FontAwesomeIcon icon={icon} className="icon" />
+          <FontAwesomeIcon icon={getIcon(props.type)} className="icon" />
           <span className="name">{props.name}</span>
           <span className="text">{props.text}</span>
         </div>

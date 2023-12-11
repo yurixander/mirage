@@ -41,11 +41,11 @@ export default function Roster(props: RosterProps) {
       <div className="divider" />
       <div className="scroll-container">
         <div className="admins">
-          <Label text={"Admin — " + admins.length} />
+          <Label className="sticky-header" text={"Admin — " + admins.length} />
           {admins.map(admin => <RosterUser onClick={() => { }} {...admin} />)}
         </div>
         <div className="members">
-          <Label text={"Member — " + members.length} />
+          <Label className="sticky-header" text={"Member — " + members.length} />
           {members.map(member => <RosterUser onClick={() => { }} {...member} />)}
         </div>
         <UserProfileGhost count={4} opacityMultiplier={0.20} />

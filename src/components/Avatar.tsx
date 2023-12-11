@@ -7,14 +7,14 @@ export type AvatarProps = {
 }
 
 export default function Avatar(props: AvatarProps) {
-  const imageClassNames = ["image"]
-
-  if (props.isRounded)
-    imageClassNames.push("rounded")
+  const imageClassNames = `image ${props.isRounded ? "rounded" : ""}`
 
   return (
     <div className="Avatar" key={props.displayName}>
-      <img className={imageClassNames.join(" ")} src={props.avatarUrl} />
+      <img
+        className={imageClassNames}
+        src={props.avatarUrl}
+        alt={props.displayName} />
     </div>
   )
 }

@@ -3,7 +3,6 @@ import NotificationIndicator from "./NotificationIndicator"
 import {assert, trim} from "../util"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faHashtag, faStarOfLife} from "@fortawesome/free-solid-svg-icons"
-import {IconProp} from "@fortawesome/fontawesome-svg-core"
 
 export enum RoomType {
   Text,

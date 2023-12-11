@@ -43,7 +43,6 @@ export default function ContextMenu(props: ContextMenuProps) {
     showMenu(props.id, e.clientX, e.clientY)
   }, [props.id, showMenu])
 
-
   useEffect(() => {
     const handleWindowClick = () => hideMenu()
 
@@ -57,7 +56,12 @@ export default function ContextMenu(props: ContextMenuProps) {
         {props.children}
       </div>
       {isMenuActive && (
-        <div className="ContextMenu" style={{position: "absolute", left: `${x}px`, top: `${y}px`}}>
+        <div
+          className="ContextMenu"
+          style={{
+            position: "absolute",
+            left: `${x}px`, top: `${y}px`
+          }}>
           <div className="container">
             {props.items.map((item, index) => (
               <div key={index} className="item" onClick={item.action}>

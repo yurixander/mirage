@@ -10,9 +10,6 @@ export type CheckboxProps = {
 
 export default function Checkbox(props: CheckboxProps) {
   const [isSelected, setSelected] = useState(props.isInitiallySelected)
-  const isSelectedClassName = isSelected ? "selected" : "default"
-
-  const isDisabledClassName = props.isDisabled ? "disabled" : ""
 
   const handleSelectionChanged = () => {
     // NOTE: An intermediate variable is used here to avoid a possible
@@ -30,10 +27,10 @@ export default function Checkbox(props: CheckboxProps) {
 
   return (
     <div
-      className={"Checkbox " + isDisabledClassName}>
+      className={`Checkbox ${props.isDisabled ? "disabled" : ""}`}>
       <div
-        className={"container " + isSelectedClassName}
-        onClick={!props.isDisabled ? handleSelectionChanged : undefined}
+        className={`container ${isSelected ? "selected" : "default"}`}
+        onClick={props.isDisabled ? undefined : handleSelectionChanged}
         tabIndex={props.isDisabled ? undefined : 0}
         onKeyDown={handleKeyDown} />
       {props.label && <div className="label">{props.label}</div>}
