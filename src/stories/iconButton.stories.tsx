@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react"
 import IconButton, {IconButtonProps} from "../components/IconButton"
-import {faGear} from "@fortawesome/free-solid-svg-icons"
+import {faGear, faBell} from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof IconButton>
 
@@ -25,6 +25,17 @@ export const Disabled: Story = {
     tooltip: "Settings",
     tooltipPlacement: "right",
     isDisabled: true
+  }
+}
+
+export const WithDot: Story = {
+  render,
+  args: {
+    icon: faBell,
+    onClick: () => { },
+    tooltip: "Settings",
+    tooltipPlacement: "right",
+    isDotShowed: true
   }
 }
 

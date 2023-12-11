@@ -27,7 +27,8 @@ export default function QuickActions(props: QuickActionsProps) {
         onClick={props.onViewNotifications}
         tooltip="Notifications"
         tooltipPlacement="right"
-        icon={faBell} />
+        icon={faBell}
+        isDotShowed={true} />
       <IconButton
         onClick={props.onOpenExtensions}
         tooltip="Extensions"
