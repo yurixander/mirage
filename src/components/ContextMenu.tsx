@@ -36,6 +36,7 @@ export const useContextMenuStore = create<ContextMenuState>((set) => ({
 
 export default function ContextMenu(props: ContextMenuProps) {
   const {activeMenuId, showMenu, hideMenu, x, y} = useContextMenuStore()
+  const isMenuActive = activeMenuId === props.id
 
   const handleContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -49,8 +50,6 @@ export default function ContextMenu(props: ContextMenuProps) {
     window.addEventListener("click", handleWindowClick)
     return () => window.removeEventListener("click", handleWindowClick)
   }, [hideMenu])
-
-  const isMenuActive = activeMenuId === props.id
 
   return (
     <>

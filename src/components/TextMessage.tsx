@@ -1,6 +1,6 @@
 import "../styles/TextMessage.sass"
 import ContextMenu from "./ContextMenu"
-import {faReply} from "@fortawesome/free-solid-svg-icons"
+import {faReply, faShare, faThumbTack, faTrash} from "@fortawesome/free-solid-svg-icons"
 import MessageContainer from "./MessageContainer"
 
 export type TextMessageProps = {
@@ -20,12 +20,19 @@ export default function TextMessage(props: TextMessageProps) {
       icon: faReply
     },
     {
-      label: "Resend",
-      action: () => { }
+      label: "Pin",
+      action: () => { },
+      icon: faThumbTack
     },
     {
-      label: "Pin",
-      action: () => { }
+      label: "Resend",
+      action: () => { },
+      icon: faShare
+    },
+    {
+      label: "Delete",
+      action: () => { },
+      icon: faTrash
     }
   ]
 
