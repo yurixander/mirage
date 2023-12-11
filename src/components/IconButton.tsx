@@ -6,6 +6,7 @@ import "tippy.js/animations/scale-subtle.css"
 import {IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {memo} from "react"
+import NotificationDot from "./NotificationDot"
 
 export type IconButtonProps = {
   onClick: () => void
@@ -13,7 +14,8 @@ export type IconButtonProps = {
   tooltipPlacement: Placement
   icon: IconProp,
   color?: string,
-  isDisabled?: boolean
+  isDisabled?: boolean,
+  isDotShowed?: boolean
 }
 
 function IconButton(props: IconButtonProps) {
@@ -31,7 +33,9 @@ function IconButton(props: IconButtonProps) {
         className={`IconButton ${isDisabledClassName}`}
         onClick={!props.isDisabled ? props.onClick : undefined}
         tabIndex={props.isDisabled ? undefined : 0}>
-        <FontAwesomeIcon style={{color: props.color}} className="icon" icon={props.icon} />
+        <NotificationDot children={
+          <FontAwesomeIcon style={{color: props.color}} className="icon" icon={props.icon} />
+        } isShowed={props.isDotShowed ? props.isDotShowed : false} />
       </div>
     </Tippy>
   )
