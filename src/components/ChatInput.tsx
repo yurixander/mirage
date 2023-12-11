@@ -35,7 +35,6 @@ export default function ChatInput(props: ChatInputProps) {
     <div className="InputContainer">
       <textarea
         onKeyDown={handleKeyDown}
-        // TODO: Need to add the `.disabled` class, not just the attribute. This will ensure consistency, such as showing the `not-allowed` cursor.
         className={`input ${isDisabledClassName}`}
         rows={1}
         ref={textareaRef}

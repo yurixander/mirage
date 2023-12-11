@@ -1,10 +1,13 @@
 @import "global"
 
+$color-icon-menu: $color-text
+$color-menu-selected: $color-white
+
 .ContextMenu
   width: 175px
   background-color: $color-white
-  border-radius: $size-2px
-  box-shadow: 0 0 5px 0 $color-contrast-darker
+  border-radius: $border-radius-small
+  box-shadow: 0 0 15px 0 $color-contrast-darker
   animation: fadeIn 0.3s ease-out
   height: max-content
 
@@ -24,14 +27,15 @@
       &:hover
         background-color: $color-primary
         border-radius: $border-radius-small
-        color: $color-white
+        color: $color-menu-selected
 
         // REVISE: Do not style external components directly.
         > .icon
-          color: $color-white
+          color: $color-menu-selected
 
       > .text
         margin-right: auto
+        font-weight: $font-weight-strong
 
       > .icon
-        color: $color-contrast-darker
+        color: $color-icon-menu

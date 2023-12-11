@@ -1,7 +1,7 @@
 import "../styles/ImageMessage.sass"
 import ContextMenu from "./ContextMenu"
 import MessageContainer from "./MessageContainer"
-import {faReply} from "@fortawesome/free-solid-svg-icons"
+import {faReply, faShare, faDownload, faThumbTack, faTrash} from "@fortawesome/free-solid-svg-icons"
 
 export type ImageMessageProps = {
   imageUrl: string,
@@ -21,20 +21,24 @@ export default function ImageMessage(props: ImageMessageProps) {
       icon: faReply
     },
     {
-      label: "Resend",
-      action: () => { }
-    },
-    {
       label: "Pin",
-      action: () => { }
+      action: () => { },
+      icon: faThumbTack
     },
     {
       label: "Save",
-      action: () => { }
+      action: () => { },
+      icon: faDownload
+    },
+    {
+      label: "Resend",
+      action: () => { },
+      icon: faShare
     },
     {
       label: "Delete",
-      action: () => { }
+      action: () => { },
+      icon: faTrash
     }
   ]
 

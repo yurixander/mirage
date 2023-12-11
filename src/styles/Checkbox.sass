@@ -2,6 +2,9 @@
 
 $checkbox-size: 13px
 
+$color-default: $color-contrast-darker
+$color-selected: $color-primary
+
 .Checkbox
   display: flex
   gap: $size-5px
@@ -33,8 +36,8 @@ $checkbox-size: 13px
       transform: scale(0.8)
 
   > .selected
-    background-color: $color-primary
+    background-color: $color-selected
 
   > .default
-    border: 1px solid $color-contrast-darker
-    box-shadow: inset 0 0 $size-5px $color-contrast-darker
+    border: 1px solid $color-default
+    box-shadow: inset 0 0 $size-5px $color-default

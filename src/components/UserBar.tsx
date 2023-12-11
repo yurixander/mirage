@@ -1,5 +1,4 @@
 import "../styles/UserBar.sass"
-import "../styles/UserBar.sass"
 import IconButton from "./IconButton"
 import UserProfile, {UserStatus} from "./UserProfile"
 import {trim} from "../util"
