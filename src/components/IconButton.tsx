@@ -31,11 +31,16 @@ function IconButton(props: IconButtonProps) {
       placement={props.tooltipPlacement}>
       <div
         className={`IconButton ${isDisabledClassName}`}
-        onClick={!props.isDisabled ? props.onClick : undefined}
+        onClick={props.isDisabled ? undefined : props.onClick}
         tabIndex={props.isDisabled ? undefined : 0}>
-        <NotificationDot children={
-          <FontAwesomeIcon style={{color: props.color}} className="icon" icon={props.icon} />
-        } isShowed={props.isDotShowed ? props.isDotShowed : false} />
+        <NotificationDot
+          children={
+            <FontAwesomeIcon
+              style={{color: props.color}}
+              className="icon"
+              icon={props.icon} />
+          }
+          isShowed={props.isDotShowed ? props.isDotShowed : false} />
       </div>
     </Tippy>
   )

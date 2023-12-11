@@ -3,6 +3,7 @@
 .RosterUser
   width: max-content
   cursor: pointer
+  padding: $size-5px
 
   view-timeline-name: --user
   view-timeline-axis: block
@@ -11,4 +12,6 @@
   animation-range: entry 10% cover 25%
   animation-fill-mode: both
 
-// TODO: Create hover style
+  &:hover
+    background-color: $color-contrast-dark
+    border-radius: $border-radius
