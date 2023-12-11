@@ -1,4 +1,4 @@
-import "../styles/UserProfilePlaceholder.sass"
+import "../styles/UserProfileGhost.sass"
 import LoadingEffect from "./LoadingEffect"
 
 export default function UserProfilePlaceholder() {

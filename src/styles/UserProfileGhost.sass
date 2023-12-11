@@ -20,7 +20,8 @@ $avatar-size: 37px
       width: $avatar-size
       height: $avatar-size
       border-radius: $border-radius
-      background-color: $color-contrast-dark
+      background-color: $color-contrast-darker
+      overflow: hidden
 
       > svg
         position: absolute
@@ -39,7 +40,7 @@ $avatar-size: 37px
       transform: translate(25%, 25%)
       right: 0
       bottom: 0
-      background-color: $color-contrast-dark
+      background-color: $color-contrast-darker
 
   > .info-ghost
     display: inline-flex
@@ -52,13 +53,15 @@ $avatar-size: 37px
       border-radius: $border-radius
       font-size: $font-size-large
       font-weight: $font-weight-strong
-      background-color: $color-contrast-dark
+      background-color: $color-contrast-darker
+      overflow: hidden
 
     > .activity-ghost
       color: $color-profile-ghost
       width: min-content
       height: $size-10px
       font-size: $font-size-small
-      background-color: $color-contrast-dark
+      background-color: $color-contrast-darker
       border-radius: $border-radius
       margin-top: $size-3px
+      overflow: hidden
