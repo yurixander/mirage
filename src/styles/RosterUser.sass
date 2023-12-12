@@ -5,12 +5,11 @@
   cursor: pointer
   padding: $size-5px
 
-  view-timeline-name: --user
-  view-timeline-axis: block
-  animation-timeline: --user
-  animation-name: show
-  animation-range: entry 10% cover 25%
-  animation-fill-mode: both
+  &:focus-visible
+    transition: 150ms
+    border: $size-2px solid $color-outline-tab
+    outline: none
+    border-radius: $border-radius
 
   &:hover
     background-color: $color-contrast-dark

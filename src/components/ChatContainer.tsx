@@ -79,19 +79,19 @@ export default function ChatContainer(props: ChatContainerProps) {
         <SmartAction
           icon={faStarOfLife}
           text="Quick menu"
-          onClick={() => { }} />
+          onClick={() => {/* TODO: Handle `Quick menu` click. */}} />
         <SmartAction
           icon={faUniversalAccess}
           text="Accessibility"
-          onClick={() => { }} />
+          onClick={() => {/* TODO: Handle `Accessibility` click. */}} />
         <SmartAction
           icon={faCircleHalfStroke}
           text="Switch theme"
-          onClick={() => { }} />
+          onClick={() => {/* TODO: Handle `Switch theme` click. */}} />
         <SmartAction
           icon={faEarthAmerica}
           text="63ms ping"
-          onClick={() => { }} />
+          onClick={() => {/* TODO: Handle `Ping` click. */}} />
       </div>
     </section>
   )
