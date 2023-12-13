@@ -64,7 +64,11 @@ export default function ContextMenu(props: ContextMenuProps) {
           }}>
           <div className="container">
             {props.items.map((item, index) => (
-              <div key={index} className="item" onClick={item.action}>
+              <div
+                tabIndex={0}
+                key={index}
+                className="item"
+                onClick={item.action}>
                 <span className="text">{item.label}</span>
                 {item.icon && <FontAwesomeIcon className="icon" icon={item.icon} />}
               </div>
