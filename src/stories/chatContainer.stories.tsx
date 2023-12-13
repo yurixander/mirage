@@ -5,6 +5,7 @@ import UnreadIndicator from "../components/UnreadIndicator"
 import EventMessage from "../components/EventMessage"
 import ImageMessage from "../components/ImageMessage"
 import TextMessage from "../components/TextMessage"
+import {randomInt} from "crypto"
 
 type Story = StoryObj<typeof ChatContainer>
 
@@ -20,6 +21,7 @@ export const Default: Story = {
     type: RoomType.Text,
     chatComponents: [
       <TextMessage
+        id={1}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
@@ -27,12 +29,14 @@ export const Default: Story = {
         onAuthorClick={() => { }} />,
       <UnreadIndicator />,
       <TextMessage
+        id={2}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <ImageMessage
+        id={3}
         imageUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
@@ -40,6 +44,7 @@ export const Default: Story = {
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <TextMessage
+        id={4}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
