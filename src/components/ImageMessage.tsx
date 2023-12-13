@@ -4,7 +4,7 @@ import MessageContainer from "./MessageContainer"
 import {faReply, faShare, faDownload, faThumbTack, faTrash} from "@fortawesome/free-solid-svg-icons"
 
 export type ImageMessageProps = {
-  id: number,
+  id: string,
   imageUrl: string,
   authorDisplayName: string
   authorDisplayNameColor: string
@@ -55,7 +55,7 @@ export default function ImageMessage(props: ImageMessageProps) {
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
     <ContextMenu
-      id={"image-menu" + props.id}
+      id={props.id}
       items={contextMenuItems}
       children={
         <div className="ImageMessage">

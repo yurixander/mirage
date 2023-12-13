@@ -34,13 +34,13 @@ function IconButton(props: IconButtonProps) {
         onClick={props.isDisabled ? undefined : props.onClick}
         tabIndex={props.isDisabled ? undefined : 0}>
         <NotificationDot
+          isShowed={props.isDotShowed ? props.isDotShowed : false}
           children={
             <FontAwesomeIcon
               style={{color: props.color}}
               className="icon"
               icon={props.icon} />
-          }
-          isShowed={props.isDotShowed ? props.isDotShowed : false} />
+          } />
       </div>
     </Tippy>
   )

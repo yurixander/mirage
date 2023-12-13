@@ -36,7 +36,7 @@ export const Default: Story = {
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <ImageMessage
-        id={3}
+        id={"3"}
         imageUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
