@@ -4,6 +4,7 @@ import {faReply, faShare, faThumbTack, faTrash} from "@fortawesome/free-solid-sv
 import MessageContainer from "./MessageContainer"
 
 export type TextMessageProps = {
+  id: number,
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl: string
@@ -36,10 +37,12 @@ export default function TextMessage(props: TextMessageProps) {
     }
   ]
 
+  // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
     <ContextMenu
-      id="text-menu"
-      items={contextMenuItems} children={
+      id={"text-menu" + props.id}
+      items={contextMenuItems}
+      children={
         <MessageContainer
           authorDisplayName={props.authorDisplayName}
           authorDisplayNameColor={props.authorDisplayNameColor}
