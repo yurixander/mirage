@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react"
-import Input, {InputProps, integerConstraint} from "../components/Input"
+import Input, {InputProps, integerConstraint, nonEmptyConstraint, urlConstraint, userIdConstraint} from "../components/Input"
 import {faSearch, faMessage} from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof Input>
@@ -12,11 +12,43 @@ export const Default: Story = {
   args: {placeholder: "This is an input"}
 }
 
+export const AllConstraint: Story = {
+  render,
+  args: {
+    placeholder: "All constraint",
+    constraints: [integerConstraint, userIdConstraint, nonEmptyConstraint, urlConstraint]
+  }
+}
+
 export const WithIntegerConstraint: Story = {
   render,
   args: {
     placeholder: "Integers only",
     constraints: [integerConstraint]
+  }
+}
+
+export const WithUserIdConstraint: Story = {
+  render,
+  args: {
+    placeholder: "UserId only",
+    constraints: [userIdConstraint]
+  }
+}
+
+export const WithNonEmptyConstraint: Story = {
+  render,
+  args: {
+    placeholder: "NonEmpty only",
+    constraints: [nonEmptyConstraint]
+  }
+}
+
+export const WithUrlConstraint: Story = {
+  render,
+  args: {
+    placeholder: "Url only",
+    constraints: [urlConstraint]
   }
 }
 

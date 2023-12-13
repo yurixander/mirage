@@ -124,7 +124,7 @@ export default function Input(props: InputProps) {
               icon={action.icon} />)}
         </div>}
       </div>
-      <div className="constraints --flex -vertical -gap-half">
+      <div className="constraints">
         {violatedConstraints.map(constraint => (
           <span
             key={constraint.message}
