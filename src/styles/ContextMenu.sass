@@ -25,6 +25,11 @@ $color-menu-selected: $color-white
       cursor: pointer
       color: $color-text
 
+      &:focus-visible
+        transition: 150ms
+        outline: $size-2px solid $color-outline-tab
+        border-radius: $border-radius-small
+
       &:hover
         background-color: $color-primary
         border-radius: $border-radius-small
