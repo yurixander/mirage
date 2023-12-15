@@ -1,6 +1,8 @@
 import {Meta, StoryObj} from "@storybook/react"
 import Input, {InputProps, integerConstraint, nonEmptyConstraint, urlConstraint, userIdConstraint} from "../components/Input"
-import {faSearch, faMessage} from "@fortawesome/free-solid-svg-icons"
+import {
+  faSearch, faCircleUser, faEyeSlash, faPaste
+} from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof Input>
 
@@ -56,7 +58,7 @@ export const WithIcon: Story = {
   render,
   args: {
     placeholder: "This is an input",
-    icon: faMessage
+    icon: faCircleUser
   }
 }
 
@@ -64,7 +66,7 @@ export const Disabled: Story = {
   render,
   args: {
     placeholder: "This is an input",
-    icon: faMessage,
+    icon: faSearch,
     isDisabled: true
   }
 }
@@ -75,14 +77,14 @@ export const WithActions: Story = {
     placeholder: "This is an input",
     actions: [
       {
-        tooltip: "Search",
+        tooltip: "Paste",
         onClick: () => { },
-        icon: faSearch
+        icon: faPaste
       },
       {
-        tooltip: "Location",
+        tooltip: "Show pass",
         onClick: () => { },
-        icon: faMessage
+        icon: faEyeSlash
       }
     ]
   }
