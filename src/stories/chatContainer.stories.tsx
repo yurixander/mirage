@@ -13,7 +13,7 @@ const meta: Meta<typeof ChatContainer> = {component: ChatContainer}
 const render = (args: ChatContainerProps) => <ChatContainer {...args} />
 const userDisplayNameColor = "#5CC679"
 
-const messageIds = Array.from({length: 5}, () => useUniqueNumber())
+//const messageIds = Array.from({length: 5}, () => useUniqueNumber())
 
 // TODO: Check useUniqueNumber duplicates and select useUniqueNumber or Math.random
 
@@ -34,14 +34,14 @@ export const Default: Story = {
         onAuthorClick={() => { }} />,
       <UnreadIndicator />,
       <TextMessage
-        id={messageIds[1]}
+        id={Math.random()}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <ImageMessage
-        id={messageIds[2]}
+        id={Math.random()}
         imageUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
@@ -49,7 +49,7 @@ export const Default: Story = {
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <TextMessage
-        id={messageIds[3]}
+        id={Math.random()}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
@@ -59,7 +59,6 @@ export const Default: Story = {
         <strong style={{color: userDisplayNameColor}}>Sapphire Pineapple</strong> changed their name to <strong style={{color: userDisplayNameColor}}>Snappy Turtle</strong>.
       </span>} timestamp={Date.now()} />
     ]
-    // TODO: Check duplicate ContextMenu
   }
 }
 
