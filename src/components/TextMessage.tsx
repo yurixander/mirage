@@ -40,7 +40,7 @@ export default function TextMessage(props: TextMessageProps) {
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
     <ContextMenu
-      id={"text-menu" + props.id}
+      id={props.id}
       items={contextMenuItems}
       children={
         <MessageContainer

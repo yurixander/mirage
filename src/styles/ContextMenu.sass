@@ -10,7 +10,7 @@ $color-menu-selected: $color-white
   box-shadow: 0 0 15px 0 $color-contrast-darker
   animation: fadeIn 0.3s ease-out
   height: max-content
-  z-index: 10
+  z-index: 1000
 
   > .container
     display: flex
@@ -33,10 +33,8 @@ $color-menu-selected: $color-white
       &:hover
         background-color: $color-primary
         border-radius: $border-radius-small
-        color: $color-menu-selected
 
-        // REVISE: Do not style external components directly.
-        > .icon
+        > .context-menu-style
           color: $color-menu-selected
 
       > .text
