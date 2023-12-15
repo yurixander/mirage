@@ -18,7 +18,7 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
     <>
       {props.users.map((user, index, array) =>
         <span>
-          <span className="name" style={{color: user.color}}>{user.displayName}</span>
+          <span className="name text-strong" style={{color: user.color}}>{user.displayName}</span>
           {index < array.length - 2 ? ", " : ""}
           {index === array.length - 2 ? " and " : ""}
         </span>
