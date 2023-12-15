@@ -5,13 +5,17 @@ import UnreadIndicator from "../components/UnreadIndicator"
 import EventMessage from "../components/EventMessage"
 import ImageMessage from "../components/ImageMessage"
 import TextMessage from "../components/TextMessage"
-import {randomInt} from "crypto"
+import useUniqueNumber from "../hooks/useUniqueNumber"
 
 type Story = StoryObj<typeof ChatContainer>
 
 const meta: Meta<typeof ChatContainer> = {component: ChatContainer}
 const render = (args: ChatContainerProps) => <ChatContainer {...args} />
 const userDisplayNameColor = "#5CC679"
+
+const messageIds = Array.from({length: 5}, () => useUniqueNumber())
+
+// TODO: Check useUniqueNumber duplicates and select useUniqueNumber or Math.random
 
 export const Default: Story = {
   render,
@@ -21,22 +25,23 @@ export const Default: Story = {
     type: RoomType.Text,
     chatComponents: [
       <TextMessage
-        id={1}
+        id={Math.random()}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
-        authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
+        authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"}
+        text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <UnreadIndicator />,
       <TextMessage
-        id={2}
+        id={messageIds[1]}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <ImageMessage
-        id={"3"}
+        id={messageIds[2]}
         imageUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
@@ -44,7 +49,7 @@ export const Default: Story = {
         timestamp={Date.now()}
         onAuthorClick={() => { }} />,
       <TextMessage
-        id={4}
+        id={messageIds[3]}
         authorDisplayName={"John Doe"}
         authorDisplayNameColor={"rgb(100, 200, 100)"}
         authorAvatarUrl={"https://bestprofilepictures.com/wp-content/uploads/2020/07/Awesome-Profile-Picture-For-Facebook.jpg"} text={"The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"}

@@ -4,7 +4,7 @@ import MessageContainer from "./MessageContainer"
 import {faReply, faShare, faDownload, faThumbTack, faTrash} from "@fortawesome/free-solid-svg-icons"
 
 export type ImageMessageProps = {
-  id: string,
+  id: number,
   imageUrl: string,
   authorDisplayName: string
   authorDisplayNameColor: string

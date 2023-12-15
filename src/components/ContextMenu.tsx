@@ -11,19 +11,18 @@ export type ContextMenuItem = {
 }
 
 export type ContextMenuProps = {
-  id: string
+  id: number
   items: ContextMenuItem[]
   children: JSX.Element
 }
 
 type ContextMenuState = {
-  activeMenuId: string | null
+  activeMenuId: number | null
   x: number
   y: number
-  showMenu: (id: string, x: number, y: number) => void
+  showMenu: (id: number, x: number, y: number) => void
   hideMenu: () => void
 }
-
 
 export const useContextMenuStore = create<ContextMenuState>((set) => ({
   activeMenuId: null,
@@ -32,7 +31,6 @@ export const useContextMenuStore = create<ContextMenuState>((set) => ({
   showMenu: (id, x, y) => set({activeMenuId: id, x, y}),
   hideMenu: () => set({activeMenuId: null, x: 0, y: 0}),
 }))
-
 
 export default function ContextMenu(props: ContextMenuProps) {
   const {activeMenuId, showMenu, hideMenu, x, y} = useContextMenuStore()
@@ -69,8 +67,11 @@ export default function ContextMenu(props: ContextMenuProps) {
                 key={index}
                 className="item"
                 onClick={item.action}>
-                <span className="text">{item.label}</span>
-                {item.icon && <FontAwesomeIcon className="icon" icon={item.icon} />}
+                <span className="text context-menu-style">{item.label}</span>
+                {item.icon &&
+                  <FontAwesomeIcon
+                    className="icon context-menu-style"
+                    icon={item.icon} />}
               </div>
             ))}
           </div>
