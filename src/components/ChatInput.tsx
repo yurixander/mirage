@@ -4,7 +4,8 @@ import IconButton from "./IconButton"
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
 
 export type ChatInputProps = {
-  isDisabled?: boolean
+  isDisabled?: boolean,
+  isReplyMode?: boolean
 }
 
 export default function ChatInput(props: ChatInputProps) {
@@ -32,27 +33,37 @@ export default function ChatInput(props: ChatInputProps) {
   }
 
   return (
-    <div className="InputContainer">
-      <textarea
-        onKeyDown={handleKeyDown}
-        className={`input ${isDisabledClassName}`}
-        rows={1}
-        ref={textareaRef}
-        autoFocus={true}
-        placeholder={"Write a message or simply say 👋🏼 hello..."}
-        value={value}
-        onChange={(value) => setValue(value.target.value)}
-        disabled={props.isDisabled}>
-      </textarea>
-      <div className="send">
-        <IconButton
-          onClick={() => {/* TODO: Handle click for send message. */}}
-          tooltip={"Send"}
-          tooltipPlacement={"auto"}
-          icon={faPaperPlane}
-          color="#C463FF"
-          isDisabled={props.isDisabled} />
+    <div className="Input">
+      {props.isReplyMode &&
+        <div className="reply">
+          <div className="header">
+            <span>Reply to </span> <span className="name">Emerald Branch</span>
+          </div>
+          <span className="content">The database hiccup turned into a full-on dance. We need...</span>
+        </div>}
+      <div className="container">
+        <textarea
+          onKeyDown={handleKeyDown}
+          className={`input ${isDisabledClassName}`}
+          rows={1}
+          ref={textareaRef}
+          autoFocus={true}
+          placeholder={"Write a message or simply say 👋🏼 hello..."}
+          value={value}
+          onChange={(value) => setValue(value.target.value)}
+          disabled={props.isDisabled}>
+        </textarea>
+        <div className="send">
+          <IconButton
+            onClick={() => {/* TODO: Handle click for send message. */}}
+            tooltip={"Send"}
+            tooltipPlacement={"auto"}
+            icon={faPaperPlane}
+            color="#C463FF"
+            isDisabled={props.isDisabled} />
+        </div>
       </div>
     </div>
+
   )
 }

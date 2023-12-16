@@ -17,4 +17,11 @@ export const Disabled: Story = {
   }
 }
 
+export const ReplyMode: Story = {
+  render,
+  args: {
+    isReplyMode: true
+  }
+}
+
 export default meta
