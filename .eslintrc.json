@@ -12,8 +12,7 @@
     "standard-with-typescript",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "eslint-config-prettier",
-    "@storybook/eslint-plugin-storybook"
+    "eslint-config-prettier"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
