@@ -4,11 +4,11 @@ export enum ModalPosition {
   Left = "left",
   Right = "right",
   Top = "top",
-  Bottom = "bottom"
+  Bottom = "bottom",
 }
 
 export type ModalProps = {
-  position?: ModalPosition,
+  position?: ModalPosition
   dialogs: JSX.Element[]
 }
 
@@ -20,12 +20,13 @@ const Modal = (props: ModalProps) => {
     <div data-style={props.position} className="modal-overlay">
       {dialogsToShow.map((dialog, index) => (
         <div
+          key={index}
           className="popups"
           style={{opacity: 1 - 0.2 * (dialogsToShow.length - 1 - index)}}>
           {dialog}
         </div>
       ))}
-    </div >
+    </div>
   )
 }
 

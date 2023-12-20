@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import Button, {ButtonProps, ButtonStyle} from "../components/Button"
+import {type Meta, type StoryObj} from "@storybook/react"
+import Button, {type ButtonProps, ButtonStyle} from "../components/Button"
 
 type Story = StoryObj<typeof Button>
 
@@ -11,8 +11,8 @@ export const Primary: Story = {
   args: {
     text: "This is a button",
     style: ButtonStyle.Primary,
-    onClick: () => { },
-  }
+    onClick: () => {},
+  },
 }
 
 export const Green: Story = {
@@ -20,8 +20,8 @@ export const Green: Story = {
   args: {
     text: "This is a button",
     style: ButtonStyle.Green,
-    onClick: () => { },
-  }
+    onClick: () => {},
+  },
 }
 
 export const Disabled: Story = {
@@ -30,8 +30,8 @@ export const Disabled: Story = {
     text: "This is a button",
     isDisabled: true,
     style: ButtonStyle.Default,
-    onClick: () => { },
-  }
+    onClick: () => {},
+  },
 }
 
 export const Default: Story = {
@@ -39,8 +39,8 @@ export const Default: Story = {
   args: {
     text: "This is a button",
     style: ButtonStyle.Default,
-    onClick: () => { },
-  }
+    onClick: () => {},
+  },
 }
 
 export default meta

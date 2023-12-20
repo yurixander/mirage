@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import QuickActions, {QuickActionsProps} from "../components/QuickActions"
+import {type Meta, type StoryObj} from "@storybook/react"
+import QuickActions, {type QuickActionsProps} from "../components/QuickActions"
 
 type Story = StoryObj<typeof QuickActions>
 
@@ -8,7 +8,7 @@ const render = (args: QuickActionsProps) => <QuickActions {...args} />
 
 export const Default: Story = {
   render,
-  args: {}
+  args: {},
 }
 
 export default meta

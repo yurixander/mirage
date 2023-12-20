@@ -6,10 +6,5 @@ type Props = {
 }
 
 export default function StatusMessage(props: Props) {
-  return (
-    <div
-      className={"StatusMessage " + props.className}>
-      {props.text}
-    </div>
-  )
-};
+  return <div className={"StatusMessage " + props.className}>{props.text}</div>
+}

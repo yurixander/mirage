@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import IconButton, {IconButtonProps} from "../components/IconButton"
+import {type Meta, type StoryObj} from "@storybook/react"
+import IconButton, {type IconButtonProps} from "../components/IconButton"
 import {faGear, faBell} from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof IconButton>
@@ -11,32 +11,32 @@ export const Settings: Story = {
   render,
   args: {
     icon: faGear,
-    onClick: () => { },
+    onClick: () => {},
     tooltip: "Settings",
-    tooltipPlacement: "right"
-  }
+    tooltipPlacement: "right",
+  },
 }
 
 export const Disabled: Story = {
   render,
   args: {
     icon: faGear,
-    onClick: () => { },
+    onClick: () => {},
     tooltip: "Settings",
     tooltipPlacement: "right",
-    isDisabled: true
-  }
+    isDisabled: true,
+  },
 }
 
 export const WithDot: Story = {
   render,
   args: {
     icon: faBell,
-    onClick: () => { },
+    onClick: () => {},
     tooltip: "Settings",
     tooltipPlacement: "right",
-    isDotShowed: true
-  }
+    isDotShowed: true,
+  },
 }
 
 export default meta

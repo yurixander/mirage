@@ -1,5 +1,7 @@
-import {Meta, StoryObj} from "@storybook/react"
-import UserProfileGhost, {UserProfileGhostProps} from "../components/UserProfileGhost"
+import {type Meta, type StoryObj} from "@storybook/react"
+import UserProfileGhost, {
+  type UserProfileGhostProps,
+} from "../components/UserProfileGhost"
 
 type Story = StoryObj<typeof UserProfileGhost>
 
@@ -10,8 +12,8 @@ export const Default: Story = {
   render,
   args: {
     count: 4,
-    opacityMultiplier: 0.20
-  }
+    opacityMultiplier: 0.2,
+  },
 }
 
 export default meta

@@ -15,9 +15,11 @@ export function timeFormatter(timestamp: number): string {
   return dayjs(timestamp).format("hh:mm a")
 }
 
-export function assert(condition: boolean, reasoning: string): asserts condition {
-  if (!condition)
-    throw new Error(`assertion failed: ${reasoning}`)
+export function assert(
+  condition: boolean,
+  reasoning: string
+): asserts condition {
+  if (!condition) throw new Error(`assertion failed: ${reasoning}`)
 }
 
 export function trim(text: string, maxLength: number) {

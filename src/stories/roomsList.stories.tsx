@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import RoomsList, {RoomsListProps} from "../components/RoomsList"
+import {type Meta, type StoryObj} from "@storybook/react"
+import RoomsList, {type RoomsListProps} from "../components/RoomsList"
 import {RoomType} from "../components/Room"
 
 type Story = StoryObj<typeof RoomsList>
@@ -17,7 +17,7 @@ export const Default: Story = {
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         name: "Introductions",
@@ -25,7 +25,7 @@ export const Default: Story = {
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         name: "Lobby",
@@ -33,7 +33,7 @@ export const Default: Story = {
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 2,
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         name: "Invites only",
@@ -41,7 +41,7 @@ export const Default: Story = {
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 0,
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         name: "Help & guides",
@@ -49,7 +49,7 @@ export const Default: Story = {
         isActive: true,
         containsUnreadMessages: false,
         mentionCount: 0,
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         name: "Games",
@@ -57,7 +57,7 @@ export const Default: Story = {
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 0,
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         name: "Off-topic",
@@ -65,7 +65,7 @@ export const Default: Story = {
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         name: "Admin room",
@@ -73,10 +73,10 @@ export const Default: Story = {
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
-        onClick: () => { }
-      }
-    ]
-  }
+        onClick: () => {},
+      },
+    ],
+  },
 }
 
 export default meta

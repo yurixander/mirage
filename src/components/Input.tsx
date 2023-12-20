@@ -2,7 +2,7 @@ import "../styles/Input.sass"
 import {useState} from "react"
 import Label from "./Label"
 import IconButton from "./IconButton"
-import {IconProp} from "@fortawesome/fontawesome-svg-core"
+import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export type InputConstraint = {
@@ -34,18 +34,19 @@ export type InputProps = {
 const urlPattern = new RegExp(
   // Protocol.
   "^(https?:\\/\\/)?" +
-  // Domain name and extension.
-  "((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|" +
-  // Or IP (v4) address.
-  "((\\d{1,3}\\.){3}\\d{1,3}))" +
-  // Port.
-  "(\\:\\d+)?" +
-  // Path.
-  "(\\/[-a-zA-Z\\d%_.~+]*)*" +
-  // Query string.
-  "(\\?[;&a-zA-Z\\d%_.~+=-]*)?" +
-  // Fragment locator.
-  "(\\#[-a-zA-Z\\d_]*)?$", "i"
+    // Domain name and extension.
+    "((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|" +
+    // Or IP (v4) address.
+    "((\\d{1,3}\\.){3}\\d{1,3}))" +
+    // Port.
+    "(\\:\\d+)?" +
+    // Path.
+    "(\\/[-a-zA-Z\\d%_.~+]*)*" +
+    // Query string.
+    "(\\?[;&a-zA-Z\\d%_.~+=-]*)?" +
+    // Fragment locator.
+    "(\\#[-a-zA-Z\\d_]*)?$",
+  "i"
 )
 
 const userIdPattern = new RegExp(
@@ -82,8 +83,10 @@ export default function Input(props: InputProps) {
   // TODO: Handle `alwaysShowAllConstraints` option.
 
   const isDisabledClassName = props.isDisabled ? " disabled" : ""
-  const [value, setValue] = useState(props.initialValue || "")
-  const [violatedConstraints, setViolatedConstraints] = useState<InputConstraint[]>([])
+  const [value, setValue] = useState(props.initialValue ?? "")
+  const [violatedConstraints, setViolatedConstraints] = useState<
+    InputConstraint[]
+  >([])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
@@ -91,38 +94,46 @@ export default function Input(props: InputProps) {
     setValue(value)
 
     if (props.constraints) {
-      const violations = props.constraints.filter(constraint => !constraint.pattern.test(value))
+      const violations = props.constraints.filter(
+        constraint => !constraint.pattern.test(value)
+      )
 
       setViolatedConstraints(violations)
     }
 
-    if (props.onValueChange !== undefined)
-      props.onValueChange(value)
+    if (props.onValueChange !== undefined) props.onValueChange(value)
   }
 
   return (
-    <div className={`Input ${props.className || "" + isDisabledClassName}`.trim()}>
+    <div
+      className={`Input ${props.className ?? "" + isDisabledClassName}`.trim()}>
       <div className="container" tabIndex={props.isDisabled ? undefined : 0}>
         {props.label !== undefined && <Label text={props.label} />}
-        {props.icon && <div className="icon">
-          <FontAwesomeIcon icon={props.icon} />
-        </div>}
+        {props.icon && (
+          <div className="icon">
+            <FontAwesomeIcon icon={props.icon} />
+          </div>
+        )}
         <input
           type="text"
           disabled={props.isDisabled}
           autoFocus={props.autoFocus}
           placeholder={props.placeholder}
           value={props.value ?? value}
-          onChange={handleChange}
-        ></input>
-        {props.actions && <div className="actions">
-          {props.actions?.map(action =>
-            <IconButton
-              onClick={action.onClick}
-              tooltip={action.tooltip}
-              tooltipPlacement={"auto"}
-              icon={action.icon} />)}
-        </div>}
+          onChange={handleChange}></input>
+        {props.actions && (
+          <div className="actions">
+            {props.actions?.map((action, index) => (
+              <IconButton
+                key={index}
+                onClick={action.onClick}
+                tooltip={action.tooltip}
+                tooltipPlacement={"auto"}
+                icon={action.icon}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <div className="constraints">
         {violatedConstraints.map(constraint => (

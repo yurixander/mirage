@@ -5,7 +5,7 @@ export enum ButtonStyle {
   Primary = "primary",
   Green = "green",
   TextLink = "text-link",
-  Default = "default"
+  Default = "default",
 }
 
 export type ButtonProps = {
@@ -24,13 +24,15 @@ export default function Button(props: ButtonProps) {
     <button
       className={props.className}
       data-style={props.style}
-      disabled={props.isLoading || props.isDisabled}
+      disabled={props.isLoading ?? props.isDisabled}
       autoFocus={props.autoFocus}
       onClick={props.isDisabled ? undefined : props.onClick}
       tabIndex={props.isDisabled ? undefined : 0}>
-      {props.isLoading
-        ? <Loader text={props.loadingText || props.text} />
-        : props.text}
+      {props.isLoading ? (
+        <Loader text={props.loadingText ?? props.text} />
+      ) : (
+        props.text
+      )}
     </button>
   )
 }

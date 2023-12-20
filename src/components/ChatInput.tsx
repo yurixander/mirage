@@ -4,7 +4,7 @@ import IconButton from "./IconButton"
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
 
 export type ChatInputProps = {
-  isDisabled?: boolean,
+  isDisabled?: boolean
   isReplyMode?: boolean
 }
 
@@ -25,22 +25,23 @@ export default function ChatInput(props: ChatInputProps) {
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter")
-      if (event.ctrlKey)
-        setValue(value + "\n")
-      else
-        // TODO: Handle here send message with enter.
-        event.preventDefault()
+      if (event.ctrlKey) setValue(value + "\n")
+      // TODO: Handle here send message with enter.
+      else event.preventDefault()
   }
 
   return (
     <div className="Input">
-      {props.isReplyMode &&
+      {props.isReplyMode && (
         <div className="reply">
           <div className="header">
             <span>Reply to </span> <span className="name">Emerald Branch</span>
           </div>
-          <span className="content">The database hiccup turned into a full-on dance. We need...</span>
-        </div>}
+          <span className="content">
+            The database hiccup turned into a full-on dance. We need...
+          </span>
+        </div>
+      )}
       <div className="container">
         <textarea
           onKeyDown={handleKeyDown}
@@ -50,20 +51,23 @@ export default function ChatInput(props: ChatInputProps) {
           autoFocus={true}
           placeholder={"Write a message or simply say 👋🏼 hello..."}
           value={value}
-          onChange={(value) => setValue(value.target.value)}
-          disabled={props.isDisabled}>
-        </textarea>
+          onChange={value => {
+            setValue(value.target.value)
+          }}
+          disabled={props.isDisabled}></textarea>
         <div className="send">
           <IconButton
-            onClick={() => {/* TODO: Handle click for send message. */}}
+            onClick={() => {
+              /* TODO: Handle click for send message. */
+            }}
             tooltip={"Send"}
             tooltipPlacement={"auto"}
             icon={faPaperPlane}
             color="#C463FF"
-            isDisabled={props.isDisabled} />
+            isDisabled={props.isDisabled}
+          />
         </div>
       </div>
     </div>
-
   )
 }

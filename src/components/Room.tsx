@@ -6,7 +6,7 @@ import {faHashtag, faStarOfLife} from "@fortawesome/free-solid-svg-icons"
 
 export enum RoomType {
   Text,
-  Space
+  Space,
 }
 
 export type RoomProps = {
@@ -25,20 +25,23 @@ export default function Room(props: RoomProps) {
   const classNameActive = props.isActive ? "active" : ""
 
   const icon = props.type === RoomType.Text ? faHashtag : faStarOfLife
-  const mentionCountProp = props.mentionCount > 0 ? props.mentionCount : undefined
+  const mentionCountProp =
+    props.mentionCount > 0 ? props.mentionCount : undefined
   const MAX_NAME_LENGTH = 16
 
   return (
     <div onClick={props.onClick} className="Room">
       <div className="container">
         <div className="animation-container">
-          <FontAwesomeIcon
-            icon={icon}
-            className={"icon " + classNameActive} />
-          <span className={classNameActive + " name"}>{trim(props.name, MAX_NAME_LENGTH)}</span>
+          <FontAwesomeIcon icon={icon} className={"icon " + classNameActive} />
+          <span className={classNameActive + " name"}>
+            {trim(props.name, MAX_NAME_LENGTH)}
+          </span>
         </div>
       </div>
-      {props.containsUnreadMessages && <NotificationIndicator mentionAmount={mentionCountProp} />}
+      {props.containsUnreadMessages && (
+        <NotificationIndicator mentionAmount={mentionCountProp} />
+      )}
     </div>
   )
 }

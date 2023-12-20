@@ -1,7 +1,16 @@
-import {Meta, StoryObj} from "@storybook/react"
-import Input, {InputProps, integerConstraint, nonEmptyConstraint, urlConstraint, userIdConstraint} from "../components/Input"
+import {type Meta, type StoryObj} from "@storybook/react"
+import Input, {
+  type InputProps,
+  integerConstraint,
+  nonEmptyConstraint,
+  urlConstraint,
+  userIdConstraint,
+} from "../components/Input"
 import {
-  faSearch, faCircleUser, faEyeSlash, faPaste
+  faSearch,
+  faCircleUser,
+  faEyeSlash,
+  faPaste,
 } from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof Input>
@@ -11,55 +20,60 @@ const render = (args: InputProps) => <Input {...args} />
 
 export const Default: Story = {
   render,
-  args: {placeholder: "This is an input"}
+  args: {placeholder: "This is an input"},
 }
 
 export const AllConstraint: Story = {
   render,
   args: {
     placeholder: "All constraint",
-    constraints: [integerConstraint, userIdConstraint, nonEmptyConstraint, urlConstraint]
-  }
+    constraints: [
+      integerConstraint,
+      userIdConstraint,
+      nonEmptyConstraint,
+      urlConstraint,
+    ],
+  },
 }
 
 export const WithIntegerConstraint: Story = {
   render,
   args: {
     placeholder: "Integers only",
-    constraints: [integerConstraint]
-  }
+    constraints: [integerConstraint],
+  },
 }
 
 export const WithUserIdConstraint: Story = {
   render,
   args: {
     placeholder: "UserId only",
-    constraints: [userIdConstraint]
-  }
+    constraints: [userIdConstraint],
+  },
 }
 
 export const WithNonEmptyConstraint: Story = {
   render,
   args: {
     placeholder: "NonEmpty only",
-    constraints: [nonEmptyConstraint]
-  }
+    constraints: [nonEmptyConstraint],
+  },
 }
 
 export const WithUrlConstraint: Story = {
   render,
   args: {
     placeholder: "Url only",
-    constraints: [urlConstraint]
-  }
+    constraints: [urlConstraint],
+  },
 }
 
 export const WithIcon: Story = {
   render,
   args: {
     placeholder: "This is an input",
-    icon: faCircleUser
-  }
+    icon: faCircleUser,
+  },
 }
 
 export const Disabled: Story = {
@@ -67,8 +81,8 @@ export const Disabled: Story = {
   args: {
     placeholder: "This is an input",
     icon: faSearch,
-    isDisabled: true
-  }
+    isDisabled: true,
+  },
 }
 
 export const WithActions: Story = {
@@ -78,17 +92,16 @@ export const WithActions: Story = {
     actions: [
       {
         tooltip: "Paste",
-        onClick: () => { },
-        icon: faPaste
+        onClick: () => {},
+        icon: faPaste,
       },
       {
         tooltip: "Show pass",
-        onClick: () => { },
-        icon: faEyeSlash
-      }
-    ]
-  }
+        onClick: () => {},
+        icon: faEyeSlash,
+      },
+    ],
+  },
 }
-
 
 export default meta

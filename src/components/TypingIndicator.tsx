@@ -2,8 +2,8 @@ import "../styles/TypingIndicator.sass"
 import Avatar from "./Avatar"
 
 export type TypingIndicatorUser = {
-  displayName: string,
-  color: string,
+  displayName: string
+  color: string
   avatarUrl?: string
 }
 
@@ -16,21 +16,22 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
 
   const names = (
     <>
-      {props.users.map((user, index, array) =>
-        <span>
-          <span className="name text-strong" style={{color: user.color}}>{user.displayName}</span>
+      {props.users.map((user, index, array) => (
+        <span key={index}>
+          <span className="name text-strong" style={{color: user.color}}>
+            {user.displayName}
+          </span>
           {index < array.length - 2 ? ", " : ""}
           {index === array.length - 2 ? " and " : ""}
         </span>
-      )}
+      ))}
     </>
   )
 
   const MAX_VISIBLE_TYPING_USERS = 3
 
-  const who = props.users.length > MAX_VISIBLE_TYPING_USERS
-    ? "Several people"
-    : names
+  const who =
+    props.users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
 
   return (
     <div className="TypingIndicator">
@@ -40,18 +41,24 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
         <div className="dot" />
       </div>
       <div className="avatars">
-        {props.users.map((user, index) => (
-          user.avatarUrl &&
-          <div
-            className={index === 1 || index === 2 ? "move-left" : ""}>
-            <Avatar
-              isRounded={true}
-              displayName={user.displayName}
-              avatarUrl={user.avatarUrl} />
-          </div>
-        ))}
+        {props.users.map(
+          (user, index) =>
+            user.avatarUrl && (
+              <div
+                key={index}
+                className={index === 1 || index === 2 ? "move-left" : ""}>
+                <Avatar
+                  isRounded={true}
+                  displayName={user.displayName}
+                  avatarUrl={user.avatarUrl}
+                />
+              </div>
+            )
+        )}
       </div>
-      <div className="text">{who} {verbForm} typing...</div>
+      <div className="text">
+        {who} {verbForm} typing...
+      </div>
     </div>
   )
 }

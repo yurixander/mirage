@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import Room, {RoomProps, RoomType} from "../components/Room"
+import {type Meta, type StoryObj} from "@storybook/react"
+import Room, {type RoomProps, RoomType} from "../components/Room"
 
 type Story = StoryObj<typeof Room>
 
@@ -13,8 +13,8 @@ export const ActiveWithMentions: Story = {
     type: RoomType.Space,
     isActive: true,
     containsUnreadMessages: true,
-    mentionCount: 99
-  }
+    mentionCount: 99,
+  },
 }
 
 export const ContainsUnreadMessages: Story = {
@@ -24,8 +24,8 @@ export const ContainsUnreadMessages: Story = {
     type: RoomType.Text,
     isActive: true,
     containsUnreadMessages: true,
-    mentionCount: 0
-  }
+    mentionCount: 0,
+  },
 }
 
 export const ZeroNotifications: Story = {
@@ -35,8 +35,8 @@ export const ZeroNotifications: Story = {
     type: RoomType.Text,
     isActive: false,
     containsUnreadMessages: false,
-    mentionCount: 0
-  }
+    mentionCount: 0,
+  },
 }
 
 export default meta

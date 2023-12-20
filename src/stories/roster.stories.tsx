@@ -1,5 +1,8 @@
-import {Meta, StoryObj} from "@storybook/react"
-import Roster, {RosterUserCategory, RosterProps} from "../components/Roster"
+import {type Meta, type StoryObj} from "@storybook/react"
+import Roster, {
+  RosterUserCategory,
+  type RosterProps,
+} from "../components/Roster"
 import {UserStatus} from "../components/UserProfile"
 
 type Story = StoryObj<typeof Roster>
@@ -18,8 +21,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Idle,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Member,
@@ -28,8 +31,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Online,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Member,
@@ -38,8 +41,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Idle,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Admin,
@@ -48,8 +51,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Online,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Member,
@@ -58,8 +61,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Idle,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Member,
@@ -68,8 +71,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Idle,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Member,
@@ -78,8 +81,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Idle,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Member,
@@ -88,8 +91,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Idle,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Admin,
@@ -98,8 +101,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Online,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Member,
@@ -108,8 +111,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Idle,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Member,
@@ -118,8 +121,8 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Idle,
-          isLarge: false
-        }
+          isLarge: false,
+        },
       },
       {
         category: RosterUserCategory.Member,
@@ -128,11 +131,11 @@ export const Default: Story = {
           displayNameColor: "#5CC679",
           text: "@emerald_branch",
           status: UserStatus.Idle,
-          isLarge: false
-        }
-      }
-    ]
-  }
+          isLarge: false,
+        },
+      },
+    ],
+  },
 }
 
 export default meta

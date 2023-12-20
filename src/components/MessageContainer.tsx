@@ -16,22 +16,25 @@ export default function MessageContainer(props: MessageContainerProps) {
   return (
     <div className="MessageContainer">
       <div className="wrapper">
-        <div className="avatar"
-          onClick={() => props.onAuthorClick()}>
+        <div
+          className="avatar"
+          onClick={() => {
+            props.onAuthorClick()
+          }}>
           <img src={props.authorAvatarUrl} />
         </div>
         <div className="body">
           <span
             className="author-name"
             style={{color: props.authorDisplayNameColor}}
-            onClick={() => props.onAuthorClick()}>
+            onClick={() => {
+              props.onAuthorClick()
+            }}>
             {props.authorDisplayName}
           </span>
           <div className="content">
             {props.content}
-            <time className="time">
-              {localeTimeString}
-            </time>
+            <time className="time">{localeTimeString}</time>
           </div>
         </div>
       </div>
