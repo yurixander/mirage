@@ -1,14 +1,14 @@
 import "../styles/UserBar.sass"
 import IconButton from "./IconButton"
-import UserProfile, {UserStatus} from "./UserProfile"
+import UserProfile, {type UserStatus} from "./UserProfile"
 import {trim} from "../util"
 import {faGear} from "@fortawesome/free-solid-svg-icons"
 
 export type UserBarProps = {
-  avatarUrl?: string,
-  username: string,
-  displayName: string,
-  displayNameColor: string,
+  avatarUrl?: string
+  username: string
+  displayName: string
+  displayNameColor: string
   status: UserStatus
 }
 
@@ -24,14 +24,16 @@ export default function UserBar(props: UserBarProps) {
           displayName={trim(props.displayName, MAX_NAME_LENGTH)}
           displayNameColor={props.displayNameColor}
           status={props.status}
-          isLarge={false} />
+          isLarge={false}
+        />
       </div>
       {/* TODO: Handle click on settings button. */}
       <IconButton
-        onClick={() => { }}
+        onClick={() => {}}
         icon={faGear}
         tooltip="Settings"
-        tooltipPlacement="top" />
+        tooltipPlacement="top"
+      />
     </section>
   )
 }

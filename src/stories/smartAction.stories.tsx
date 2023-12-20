@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import SmartAction, {SmartActionProps} from "../components/SmartAction"
+import {type Meta, type StoryObj} from "@storybook/react"
+import SmartAction, {type SmartActionProps} from "../components/SmartAction"
 import {faStarOfLife} from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof SmartAction>
@@ -12,8 +12,8 @@ export const Default: Story = {
   args: {
     icon: faStarOfLife,
     text: "This is a smart action",
-    onClick: () => { }
-  }
+    onClick: () => {},
+  },
 }
 
 export default meta

@@ -1,10 +1,15 @@
 import "../styles/TextMessage.sass"
 import ContextMenu from "./ContextMenu"
-import {faReply, faShare, faThumbTack, faTrash} from "@fortawesome/free-solid-svg-icons"
+import {
+  faReply,
+  faShare,
+  faThumbTack,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons"
 import MessageContainer from "./MessageContainer"
 
 export type TextMessageProps = {
-  id: number,
+  id: number
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl: string
@@ -17,24 +22,24 @@ export default function TextMessage(props: TextMessageProps) {
   const contextMenuItems = [
     {
       label: "Reply",
-      action: () => { },
-      icon: faReply
+      action: () => {},
+      icon: faReply,
     },
     {
       label: "Pin",
-      action: () => { },
-      icon: faThumbTack
+      action: () => {},
+      icon: faThumbTack,
     },
     {
       label: "Resend",
-      action: () => { },
-      icon: faShare
+      action: () => {},
+      icon: faShare,
     },
     {
       label: "Delete",
-      action: () => { },
-      icon: faTrash
-    }
+      action: () => {},
+      icon: faTrash,
+    },
   ]
 
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
@@ -49,7 +54,9 @@ export default function TextMessage(props: TextMessageProps) {
           authorAvatarUrl={props.authorAvatarUrl}
           content={<div className="message-text">{props.text}</div>}
           timestamp={props.timestamp}
-          onAuthorClick={props.onAuthorClick} />
-      } />
+          onAuthorClick={props.onAuthorClick}
+        />
+      }
+    />
   )
 }

@@ -1,5 +1,9 @@
-import {Meta, StoryObj} from "@storybook/react"
-import UserProfile, {UserActivity, UserProfileProps, UserStatus} from "../components/UserProfile"
+import {type Meta, type StoryObj} from "@storybook/react"
+import UserProfile, {
+  UserActivity,
+  type UserProfileProps,
+  UserStatus,
+} from "../components/UserProfile"
 import {faSpotify} from "@fortawesome/free-brands-svg-icons"
 
 type Story = StoryObj<typeof UserProfile>
@@ -14,8 +18,8 @@ export const Offline: Story = {
     displayNameColor: "#5CC679",
     text: "@emerald_branch",
     status: UserStatus.Offline,
-    isLarge: false
-  }
+    isLarge: false,
+  },
 }
 
 export const Online: Story = {
@@ -25,8 +29,8 @@ export const Online: Story = {
     displayNameColor: "#5CC679",
     text: "@emerald_branch",
     status: UserStatus.Online,
-    isLarge: false
-  }
+    isLarge: false,
+  },
 }
 
 export const Idle: Story = {
@@ -36,8 +40,8 @@ export const Idle: Story = {
     displayNameColor: "#5CC679",
     text: "@emerald_branch",
     status: UserStatus.Idle,
-    isLarge: false
-  }
+    isLarge: false,
+  },
 }
 
 export const WithActivityIcon: Story = {
@@ -50,8 +54,8 @@ export const WithActivityIcon: Story = {
     activity: UserActivity.Listening,
     icon: faSpotify,
     platform: "Spotify",
-    isLarge: false
-  }
+    isLarge: false,
+  },
 }
 
 export const Large: Story = {
@@ -61,8 +65,8 @@ export const Large: Story = {
     displayNameColor: "#5CC679",
     text: "Online",
     status: UserStatus.Idle,
-    isLarge: true
-  }
+    isLarge: true,
+  },
 }
 
 export default meta

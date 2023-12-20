@@ -1,5 +1,16 @@
 {
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": true,
+  "files.autoSave": "afterDelay",
+  "files.trimFinalNewlines": true,
+  "[sass]": {
+    "editor.defaultFormatter": "syler.sass-indented"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

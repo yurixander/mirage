@@ -6,9 +6,11 @@ type UniqueNumberState = {
   incrementId: () => void
 }
 
-const useUniqueIdStore = create<UniqueNumberState>((set) => ({
+const useUniqueIdStore = create<UniqueNumberState>(set => ({
   id: 0,
-  incrementId: () => set((state: UniqueNumberState) => ({id: state.id + 1})),
+  incrementId: () => {
+    set((state: UniqueNumberState) => ({id: state.id + 1}))
+  },
 }))
 
 export default function useUniqueNumber() {

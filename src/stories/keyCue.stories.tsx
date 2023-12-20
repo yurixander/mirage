@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import KeyCue, {KeyCueProps} from "../components/KeyCue"
+import {type Meta, type StoryObj} from "@storybook/react"
+import KeyCue, {type KeyCueProps} from "../components/KeyCue"
 
 type Story = StoryObj<typeof KeyCue>
 
@@ -8,7 +8,7 @@ const render = (args: KeyCueProps) => <KeyCue {...args} />
 
 export const KeyOnly: Story = {
   render,
-  args: {char: "A"}
+  args: {char: "A"},
 }
 
 export const AllModifiers: Story = {
@@ -18,7 +18,7 @@ export const AllModifiers: Story = {
     alt: true,
     ctrl: true,
     shift: true,
-  }
+  },
 }
 
 export default meta

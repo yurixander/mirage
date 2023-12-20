@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import SearchBar, {SearchBarProps} from "../components/SearchBar"
+import {type Meta, type StoryObj} from "@storybook/react"
+import SearchBar, {type SearchBarProps} from "../components/SearchBar"
 
 type Story = StoryObj<typeof SearchBar>
 
@@ -7,7 +7,7 @@ const meta: Meta<typeof SearchBar> = {component: SearchBar}
 
 export const Default: Story = {
   render: (args: SearchBarProps) => <SearchBar {...args} />,
-  args: {onQueryChange: () => []}
+  args: {onQueryChange: () => []},
 }
 
 export const WithResults: Story = {
@@ -16,18 +16,18 @@ export const WithResults: Story = {
     onQueryChange: (_query: string) => [
       {
         text: "Result 1",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         text: "Result 2",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         text: "Result 3",
-        onClick: () => { }
-      }
-    ]
-  }
+        onClick: () => {},
+      },
+    ],
+  },
 }
 
 export default meta

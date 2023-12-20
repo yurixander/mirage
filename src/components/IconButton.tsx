@@ -1,9 +1,9 @@
-import {Placement} from "tippy.js"
+import {type Placement} from "tippy.js"
 import "../styles/IconButton.sass"
 import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
 import "tippy.js/animations/scale-subtle.css"
-import {IconProp} from "@fortawesome/fontawesome-svg-core"
+import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {memo} from "react"
 import NotificationDot from "./NotificationDot"
@@ -12,9 +12,9 @@ export type IconButtonProps = {
   onClick: () => void
   tooltip: string
   tooltipPlacement: Placement
-  icon: IconProp,
-  color?: string,
-  isDisabled?: boolean,
+  icon: IconProp
+  color?: string
+  isDisabled?: boolean
   isDotShowed?: boolean
 }
 
@@ -39,8 +39,10 @@ function IconButton(props: IconButtonProps) {
             <FontAwesomeIcon
               style={{color: props.color}}
               className="icon"
-              icon={props.icon} />
-          } />
+              icon={props.icon}
+            />
+          }
+        />
       </div>
     </Tippy>
   )

@@ -7,16 +7,19 @@ type KeyCombination = {
   key: string
 }
 
-const useGlobalHotkey = (keyCombination: KeyCombination, callback: () => void) => {
+const useGlobalHotkey = (
+  keyCombination: KeyCombination,
+  callback: () => void
+) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const {ctrl, shift, alt, key} = keyCombination
 
       if (
-        (event.ctrlKey === !!ctrl) &&
-        (event.shiftKey === !!shift) &&
-        (event.altKey === !!alt) &&
-        (event.key.toLowerCase() === key.toLowerCase())
+        event.ctrlKey === !!ctrl &&
+        event.shiftKey === !!shift &&
+        event.altKey === !!alt &&
+        event.key.toLowerCase() === key.toLowerCase()
       ) {
         event.preventDefault()
         callback()
@@ -25,7 +28,9 @@ const useGlobalHotkey = (keyCombination: KeyCombination, callback: () => void) =
 
     window.addEventListener("keydown", handleKeyDown)
 
-    return () => window.removeEventListener("keydown", handleKeyDown)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+    }
   }, [keyCombination, callback])
 }
 

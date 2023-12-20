@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import Navigation, {NavigationProps} from "../components/Navigation"
+import {type Meta, type StoryObj} from "@storybook/react"
+import Navigation, {type NavigationProps} from "../components/Navigation"
 
 type Story = StoryObj<typeof Navigation>
 
@@ -13,50 +13,50 @@ export const DefaultNav: Story = {
       {
         isActive: true,
         tooltip: "Server 1",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         isActive: false,
         tooltip: "Server 2",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         isActive: false,
         tooltip: "Server 2",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         isActive: false,
         tooltip: "Server 2",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         isActive: false,
         tooltip: "Server 2",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         isActive: false,
         tooltip: "Server 2",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         isActive: false,
         tooltip: "Server 2",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         isActive: false,
         tooltip: "Server 2",
-        onClick: () => { }
+        onClick: () => {},
       },
       {
         isActive: false,
         tooltip: "Server 2",
-        onClick: () => { }
-      }
-    ]
-  }
+        onClick: () => {},
+      },
+    ],
+  },
 }
 
 export default meta

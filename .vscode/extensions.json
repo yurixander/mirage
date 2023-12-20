@@ -4,6 +4,8 @@
     "syler.sass-indented",
     "Gruntfuggly.todo-tree",
     "shardulm94.trailing-spaces",
-    "AntiAntiSepticeye.vscode-color-picker"
+    "AntiAntiSepticeye.vscode-color-picker",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
   ]
 }

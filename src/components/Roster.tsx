@@ -2,18 +2,21 @@ import "../styles/Roster.sass"
 import IconButton from "./IconButton"
 import Label from "./Label"
 import RosterUser from "./RosterUser"
-import {UserProfileProps} from "./UserProfile"
+import {type UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
-import {faArrowDownShortWide, faUserGroup} from "@fortawesome/free-solid-svg-icons"
+import {
+  faArrowDownShortWide,
+  faUserGroup,
+} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export enum RosterUserCategory {
   Admin,
-  Member
+  Member,
 }
 
 export type RosterUserData = {
-  category: RosterUserCategory,
+  category: RosterUserCategory
   userProfileProps: UserProfileProps
 }
 
@@ -22,8 +25,12 @@ export type RosterProps = {
 }
 
 export default function Roster(props: RosterProps) {
-  const admins = props.users.filter(user => user.category === RosterUserCategory.Admin)
-  const members = props.users.filter(user => user.category === RosterUserCategory.Member)
+  const admins = props.users.filter(
+    user => user.category === RosterUserCategory.Admin
+  )
+  const members = props.users.filter(
+    user => user.category === RosterUserCategory.Member
+  )
 
   return (
     <div className="Roster">
@@ -36,19 +43,27 @@ export default function Roster(props: RosterProps) {
           }}
           tooltip="Sort members"
           tooltipPlacement="right"
-          icon={faArrowDownShortWide} />
+          icon={faArrowDownShortWide}
+        />
       </header>
       <div className="divider" />
       <div className="scroll-container">
         <div className="admins">
           <Label className="sticky-header" text={"Admin — " + admins.length} />
-          {admins.map(admin => <RosterUser onClick={() => { }} {...admin} />)}
+          {admins.map((admin, index) => (
+            <RosterUser key={index} onClick={() => {}} {...admin} />
+          ))}
         </div>
         <div className="members">
-          <Label className="sticky-header" text={"Member — " + members.length} />
-          {members.map(member => <RosterUser onClick={() => { }} {...member} />)}
+          <Label
+            className="sticky-header"
+            text={"Member — " + members.length}
+          />
+          {members.map((member, index) => (
+            <RosterUser key={index} onClick={() => {}} {...member} />
+          ))}
         </div>
-        <UserProfileGhost count={4} opacityMultiplier={0.20} />
+        <UserProfileGhost count={4} opacityMultiplier={0.2} />
       </div>
     </div>
   )

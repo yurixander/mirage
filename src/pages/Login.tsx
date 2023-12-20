@@ -3,11 +3,15 @@ import {useEffect, useState} from "react"
 import * as sdk from "matrix-js-sdk"
 import {SyncState} from "matrix-js-sdk/lib/sync"
 import {useNavigate} from "react-router-dom"
-import {Credentials, Path} from "../util"
+import {type Credentials, Path} from "../util"
 import Button, {ButtonStyle} from "../components/Button"
 import {smartTimeout} from "../hooks/useTimeout"
 import Footer from "../components/Footer"
-import Input, {nonEmptyConstraint, urlConstraint, userIdConstraint} from "../components/Input"
+import Input, {
+  nonEmptyConstraint,
+  urlConstraint,
+  userIdConstraint,
+} from "../components/Input"
 import useQueue from "../hooks/useQueue"
 import StatusMessage from "../components/StatusMessage"
 
@@ -21,8 +25,9 @@ export default function LoginPage() {
   const [accessToken, setAccessToken] = useState<string>("")
   const navigate = useNavigate()
 
-  const updateStatus = (newStatus: string) =>
+  const updateStatus = (newStatus: string) => {
     pushStatus(newStatus)
+  }
 
   const cacheCredentials = () => {
     localStorage.setItem(
@@ -36,23 +41,21 @@ export default function LoginPage() {
   }
 
   const login = (credentials: Credentials) => {
-    if (isConnecting)
-      return
+    if (isConnecting) return
 
     setIsConnecting(true)
 
     const client = sdk.createClient(credentials)
 
     smartTimeout(() => {
-      if (!isConnecting)
-        return
+      if (!isConnecting) return
 
       client.stopClient()
       updateStatus("Timed out. Try again later.")
       setIsConnecting(false)
     }, 10_000)
 
-    client.once(sdk.ClientEvent.Sync, function(state, _syncState, res) {
+    client.once(sdk.ClientEvent.Sync, function (state, _syncState, res) {
       if (state === SyncState.Error) {
         client.stopClient()
         updateStatus(`Sync error: ${res?.error?.message}`)
@@ -80,7 +83,9 @@ export default function LoginPage() {
   // Automatically login if credentials are cached. The user should
   // manually logout to clear the cache.
   useEffect(() => {
-    const cachedCredentialsJson = localStorage.getItem(CREDENTIALS_LOCAL_STORAGE_KEY)
+    const cachedCredentialsJson = localStorage.getItem(
+      CREDENTIALS_LOCAL_STORAGE_KEY
+    )
 
     if (cachedCredentialsJson === null) {
       setIsConnecting(false)
@@ -97,7 +102,12 @@ export default function LoginPage() {
     // TODO: Utility classes were removed. Adjust class names accordingly.
     <div className="Login --flex -vertical">
       <img className="--float -left -top" src="/pink-glow.svg" />
-      <img alt="Mirage's logo" width="200" src="/logo-black.svg" className="--margin-x2" />
+      <img
+        alt="Mirage's logo"
+        width="200"
+        src="/logo-black.svg"
+        className="--margin-x2"
+      />
       <div className="login-box --z --margin-x1">
         <div className="--text-center --margin-x1">
           <h4>Just one more thing.</h4>
@@ -128,7 +138,9 @@ export default function LoginPage() {
         />
         <Button
           style={ButtonStyle.Primary}
-          onClick={() => login({baseUrl, accessToken, userId})}
+          onClick={() => {
+            login({baseUrl, accessToken, userId})
+          }}
           text="Continue ⟶"
           isLoading={isConnecting}
         />

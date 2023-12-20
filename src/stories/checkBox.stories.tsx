@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import Checkbox, {CheckboxProps} from "../components/Checkbox"
+import {type Meta, type StoryObj} from "@storybook/react"
+import Checkbox, {type CheckboxProps} from "../components/Checkbox"
 
 type Story = StoryObj<typeof Checkbox>
 
@@ -10,8 +10,8 @@ export const WithoutLabel: Story = {
   render,
   args: {
     isInitiallySelected: false,
-    onSelectionChange: _isSelected => { }
-  }
+    onSelectionChange: _isSelected => {},
+  },
 }
 
 export const WithLabel: Story = {
@@ -19,8 +19,8 @@ export const WithLabel: Story = {
   args: {
     isInitiallySelected: false,
     label: "This is a checkbox",
-    onSelectionChange: _isSelected => { }
-  }
+    onSelectionChange: _isSelected => {},
+  },
 }
 
 export const Disabled: Story = {
@@ -28,9 +28,9 @@ export const Disabled: Story = {
   args: {
     isInitiallySelected: false,
     label: "This is a checkbox",
-    onSelectionChange: _isSelected => { },
-    isDisabled: true
-  }
+    onSelectionChange: _isSelected => {},
+    isDisabled: true,
+  },
 }
 
 export default meta

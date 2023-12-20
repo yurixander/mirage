@@ -1,8 +1,8 @@
-import UserProfile, {UserProfileProps} from "./UserProfile"
+import UserProfile, {type UserProfileProps} from "./UserProfile"
 import "../styles/RosterUser.sass"
 
 export type RosterUserProps = {
-  userProfileProps: UserProfileProps,
+  userProfileProps: UserProfileProps
   onClick: () => void
 }
 

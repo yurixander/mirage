@@ -6,7 +6,7 @@ import React, {useState} from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export type SearchResult = {
-  text: string,
+  text: string
   onClick: () => void
 }
 
@@ -50,15 +50,13 @@ export default function SearchBar(props: SearchBarProps) {
         onChange={handleQueryChange}
         ref={inputRef}
         type="text"
-        placeholder="Search anything..." />
+        placeholder="Search anything..."
+      />
       <KeyCue ctrl char={KEYBOARD_HOTKEY_CHAR} />
       {results.length > 0 && (
         <div className="results">
           {results.map((result, index) => (
-            <div
-              key={index}
-              className="result"
-              onClick={result.onClick}>
+            <div key={index} className="result" onClick={result.onClick}>
               {result.text}
             </div>
           ))}

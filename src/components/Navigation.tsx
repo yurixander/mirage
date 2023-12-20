@@ -1,7 +1,7 @@
 import "../styles/Navigation.sass"
 import {ReactComponent as AppLogo} from "../../public/logo.svg"
 import {ReactComponent as AddServerIcon} from "../../public/icons/add-server.svg"
-import ServerListItem, {ServerListItemProps} from "./ServerListItem"
+import ServerListItem, {type ServerListItemProps} from "./ServerListItem"
 import Tippy from "@tippyjs/react"
 
 export type NavigationProps = {
@@ -14,14 +14,19 @@ export default function Navigation(props: NavigationProps) {
       <div className="container">
         <AppLogo
           className="logo"
-          onClick={() => {/* TODO:  Handle click on logo. */}} />
+          onClick={() => {
+            /* TODO:  Handle click on logo. */
+          }}
+        />
         <div className="app-name">
           <div>Mirage</div>
           <span className="copyright">©</span>
         </div>
         <div className="divider" />
         <div className="servers">
-          {props.servers.map(server => <ServerListItem {...server} />)}
+          {props.servers.map((server, index) => (
+            <ServerListItem key={index} {...server} />
+          ))}
           <Tippy
             content="Add server"
             arrow={true}
@@ -31,7 +36,9 @@ export default function Navigation(props: NavigationProps) {
             placement="right">
             <div
               className="add-server"
-              onClick={() => { /* TODO: Handle click on Add server. */}}>
+              onClick={() => {
+                /* TODO: Handle click on Add server. */
+              }}>
               <AddServerIcon />
             </div>
           </Tippy>

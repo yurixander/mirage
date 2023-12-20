@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import UserCard, {UserCardProps} from "../components/UserCard"
+import {type Meta, type StoryObj} from "@storybook/react"
+import UserCard, {type UserCardProps} from "../components/UserCard"
 import {UserStatus} from "../components/UserProfile"
 
 type Story = StoryObj<typeof UserCard>
@@ -16,13 +16,14 @@ export const Default: Story = {
       displayNameColor: "#5CC679",
       status: UserStatus.Online,
       text: "Online",
-      isLarge: true
+      isLarge: true,
     },
-    aboutMe: "👋 Hey there! I'm a natural born adventurer who loves exploring the intricacies of daily life. I sure hope we can be friends! 🥳",
+    aboutMe:
+      "👋 Hey there! I'm a natural born adventurer who loves exploring the intricacies of daily life. I sure hope we can be friends! 🥳",
     accountCreationTime: date,
     lastMessageTime: date,
-    serverJoinTime: date
-  }
+    serverJoinTime: date,
+  },
 }
 
 export default meta

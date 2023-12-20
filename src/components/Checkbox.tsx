@@ -2,7 +2,7 @@ import {useState} from "react"
 import "../styles/Checkbox.sass"
 
 export type CheckboxProps = {
-  isInitiallySelected: boolean,
+  isInitiallySelected: boolean
   onSelectionChange: (isSelected: boolean) => void
   label?: string
   isDisabled?: boolean
@@ -21,18 +21,17 @@ export default function Checkbox(props: CheckboxProps) {
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter")
-      setSelected(!isSelected)
+    if (event.key === "Enter") setSelected(!isSelected)
   }
 
   return (
-    <div
-      className={`Checkbox ${props.isDisabled ? "disabled" : ""}`}>
+    <div className={`Checkbox ${props.isDisabled ? "disabled" : ""}`}>
       <div
         className={`container ${isSelected ? "selected" : "default"}`}
         onClick={props.isDisabled ? undefined : handleSelectionChanged}
         tabIndex={props.isDisabled ? undefined : 0}
-        onKeyDown={handleKeyDown} />
+        onKeyDown={handleKeyDown}
+      />
       {props.label && <div className="label">{props.label}</div>}
     </div>
   )

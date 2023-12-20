@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react"
-import RosterUser, {RosterUserProps} from "../components/RosterUser"
+import {type Meta, type StoryObj} from "@storybook/react"
+import RosterUser, {type RosterUserProps} from "../components/RosterUser"
 import {UserActivity, UserStatus} from "../components/UserProfile"
 import {faSpotify} from "@fortawesome/free-brands-svg-icons"
 
@@ -19,10 +19,10 @@ export const WithActivity: Story = {
       activity: UserActivity.Listening,
       icon: faSpotify,
       platform: "Spotify",
-      isLarge: false
+      isLarge: false,
     },
-    onClick: () => { }
-  }
+    onClick: () => {},
+  },
 }
 
 export const NoActivity: Story = {
@@ -33,10 +33,10 @@ export const NoActivity: Story = {
       displayNameColor: "#5CC679",
       status: UserStatus.Online,
       text: "Online",
-      isLarge: false
+      isLarge: false,
     },
-    onClick: () => { }
-  }
+    onClick: () => {},
+  },
 }
 
 export default meta

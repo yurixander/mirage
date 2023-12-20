@@ -3,8 +3,8 @@ import Avatar from "boring-avatars"
 import Tippy from "@tippyjs/react"
 
 export type ServerListItemProps = {
-  avatarUrl?: string,
-  isActive: boolean,
+  avatarUrl?: string
+  isActive: boolean
   onClick: () => void
   tooltip: string
 }
@@ -12,9 +12,12 @@ export type ServerListItemProps = {
 export default function ServerListItem(props: ServerListItemProps) {
   const selectedClassName = props.isActive ? "selected" : ""
 
-  const avatarImage = props.avatarUrl !== undefined
-    ? <img src={props.avatarUrl} />
-    : <Avatar variant="bauhaus" name="Margaret Sanger" />
+  const avatarImage =
+    props.avatarUrl !== undefined ? (
+      <img src={props.avatarUrl} />
+    ) : (
+      <Avatar variant="bauhaus" name="Margaret Sanger" />
+    )
 
   return (
     <div className="ServerListItem">
@@ -31,7 +34,7 @@ export default function ServerListItem(props: ServerListItemProps) {
         <div
           tabIndex={!props.isActive ? 0 : undefined}
           className={"avatar " + selectedClassName}
-          onClick={props.onClick} >
+          onClick={props.onClick}>
           {avatarImage}
         </div>
       </Tippy>

@@ -5,11 +5,7 @@
       "label": "Install Yarn Globally",
       "type": "shell",
       "command": "npm",
-      "args": [
-        "i",
-        "-g",
-        "yarn"
-      ],
+      "args": ["i", "-g", "yarn"],
       "presentation": {
         "reveal": "always",
         "panel": "shared"
@@ -20,29 +16,11 @@
       "label": "Install Yarn Dependencies",
       "type": "shell",
       "command": "yarn",
-      "args": [
-        "install"
-      ],
+      "args": ["install"],
       "group": {
         "kind": "build",
         "isDefault": true
       },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Install Prettier",
-      "type": "shell",
-      "command": "npm",
-      "args": [
-        "install",
-        "prettier",
-        "-D",
-        "--save-exact"
-      ],
       "presentation": {
         "reveal": "always",
         "panel": "shared"
