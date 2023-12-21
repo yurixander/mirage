@@ -66,11 +66,10 @@ export default function ContextMenu(props: ContextMenuProps) {
         <div
           className="ContextMenu"
           style={{
-            position: "absolute",
             left: `${x}px`,
             top: `${y}px`,
           }}>
-          <div className="container">
+          <div className="menu-container">
             {props.items.map((item, index) => (
               <div
                 tabIndex={0}
