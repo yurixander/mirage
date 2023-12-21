@@ -12,12 +12,18 @@
     "standard-with-typescript",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "eslint-config-prettier"
+    "eslint-config-prettier",
+    "plugin:storybook/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "overrides": [
+    {
+      "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)"]
+    }
+  ],
   "plugins": ["react"],
   "rules": {
     "@typescript-eslint/quotes": "off",
