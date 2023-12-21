@@ -8,5 +8,7 @@
   "files.trimFinalNewlines": true,
   "[sass]": {
     "editor.defaultFormatter": "syler.sass-indented"
-  }
+  },
+  "stylelint.snippet": ["css", "less", "postcss", "sass"],
+  "stylelint.validate": ["css", "less", "postcss", "sass"]
 }
