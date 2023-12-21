@@ -4,3 +4,4 @@ github
 vite.config.ts
 !.storybook
 src/types/svgDeclaration.ts
+commitlint.config.js

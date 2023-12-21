@@ -37,9 +37,13 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "format": "prettier --write .",
-    "lint": "eslint --fix . --ext .ts,.tsx"
+    "lint": "eslint --fix . --ext .ts,.tsx",
+    "commit": "commit"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@commitlint/prompt-cli": "^18.4.3",
     "@storybook/addon-essentials": "^7.6.6",
     "@storybook/addon-interactions": "^7.6.6",
     "@storybook/addon-links": "^7.6.6",
