@@ -1,7 +1,7 @@
 import "../styles/GuideArrow.sass"
-import BigStarIcon from "../../public/icons/big-star.svg"
+import {ReactComponent as BigStarIcon} from "../../public/icons/big-star.svg"
 import arrow from "../../public/icons/arrow.svg"
-import DotIcon from "../../public/icons/dot.svg"
+import {ReactComponent as DotIcon} from "../../public/icons/dot.svg"
 import {ReactComponent as LittleStartIcon} from "../../public/icons/little-star.svg"
 
 export enum GuideArrowOrientation {
@@ -29,12 +29,12 @@ export default function GuideArrow(props: GuideArrowProps) {
 
   return (
     <div style={{transform: rotation}} className="GuideArrow">
-      <img src={LittleStartIcon} className="little-star" />
-      <img src={LittleStartIcon} className="little-star" />
-      <img src={LittleStartIcon} className="little-start" />
-      <img src={DotIcon} className="dot" />
-      <img src={DotIcon} className="dot" />
-      <img src={BigStarIcon} className="big-star" />
+      <LittleStartIcon className="little-star" />
+      <LittleStartIcon className="little-star" />
+      <LittleStartIcon className="little-start" />
+      <DotIcon className="dot" />
+      <DotIcon className="dot" />
+      <BigStarIcon className="big-star" />
       <span className="text">{props.text}</span>
       <img style={{transform: arrowTransform}} src={arrow} className="arrow" />
     </div>

@@ -4,6 +4,7 @@ $color-icon-menu: $color-text
 $color-menu-selected: $color-white
 
 .ContextMenu
+  position: absolute
   width: 175px
   background-color: $color-white
   border-radius: $border-radius-small
@@ -12,7 +13,7 @@ $color-menu-selected: $color-white
   height: max-content
   z-index: 1000
 
-  > .container
+  > .menu-container
     display: flex
     flex-direction: column
     margin: $size-10px
