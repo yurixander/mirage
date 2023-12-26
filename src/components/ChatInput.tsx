@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react"
+import {useCallback, useEffect, useRef, useState} from "react"
 import "../styles/ChatInput.sass"
 import IconButton from "./IconButton"
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
@@ -23,12 +23,12 @@ export default function ChatInput(props: ChatInputProps) {
     }
   }, [value])
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
     if (event.key === "Enter")
       if (event.ctrlKey) setValue(value + "\n")
       // TODO: Handle here send message with enter.
       else event.preventDefault()
-  }
+  }, [])
 
   return (
     <div className="input-container">

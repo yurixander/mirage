@@ -18,6 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import ChatInput from "./ChatInput"
+import {useCallback} from "react"
 
 export type ChatContainerProps = {
   name: string
@@ -26,11 +27,13 @@ export type ChatContainerProps = {
   chatComponents: JSX.Element[]
 }
 
-const getIcon = (type: RoomType) =>
-  type === RoomType.Text ? faHashtag : faStarOfLife
-
 export default function ChatContainer(props: ChatContainerProps) {
   assert(props.name.length !== 0, "room name should not be empty")
+
+  const getIcon = useCallback(
+    (type: RoomType) => (type === RoomType.Text ? faHashtag : faStarOfLife),
+    [props.type]
+  )
 
   return (
     <section className="ChatContainer">

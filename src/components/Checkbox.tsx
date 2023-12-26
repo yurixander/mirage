@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useCallback, useState} from "react"
 import "../styles/Checkbox.sass"
 
 export type CheckboxProps = {
@@ -11,18 +11,21 @@ export type CheckboxProps = {
 export default function Checkbox(props: CheckboxProps) {
   const [isSelected, setSelected] = useState(props.isInitiallySelected)
 
-  const handleSelectionChanged = () => {
+  const handleSelectionChanged = useCallback(() => {
     // NOTE: An intermediate variable is used here to avoid a possible
     // logic error, since the `setIsSelected` function is asynchronous.
     const isNowSelected = !isSelected
 
     setSelected(isNowSelected)
     props.onSelectionChange(isNowSelected)
-  }
+  }, [])
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") setSelected(!isSelected)
-  }
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === "Enter") setSelected(!isSelected)
+    },
+    [isSelected]
+  )
 
   return (
     <div className={`Checkbox ${props.isDisabled ? "disabled" : ""}`}>
