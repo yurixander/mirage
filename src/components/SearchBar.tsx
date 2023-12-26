@@ -32,6 +32,7 @@ export default function SearchBar(props: SearchBarProps) {
 
   const MINIMUM_QUERY_LENGTH = 3
 
+  // TODO: Consider using useCallback
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length < MINIMUM_QUERY_LENGTH) {
       setResults([])
