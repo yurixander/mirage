@@ -1,4 +1,4 @@
-import Loader from "./Loader"
+import Loader from "@/components/Loader"
 import "../styles/Button.sass"
 
 export enum ButtonStyle {
