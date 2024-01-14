@@ -7,4 +7,9 @@ export default defineConfig({
     jsxFactory: "h",
     jsxFragment: "Fragment",
   },
+  resolve: {
+    alias: {
+      "@": "src/*",
+    },
+  },
 })
