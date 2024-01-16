@@ -1,4 +1,5 @@
 {
+  "root": true,
   "env": {
     "browser": true,
     "es2021": true
@@ -13,7 +14,8 @@
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "eslint-config-prettier",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
+    "plugin:tailwindcss/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -21,7 +23,7 @@
   },
   "overrides": [
     {
-      "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)"]
+      "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)", "*.ts', '*.tsx', '*.js"]
     }
   ],
   "plugins": ["react"],
