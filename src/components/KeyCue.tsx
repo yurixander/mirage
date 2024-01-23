@@ -14,8 +14,11 @@ export default function KeyCue(props: KeyCueProps) {
   return (
     <div className="KeyCue">
       {props.ctrl && "⌃"}
+
       {props.alt && "⌥"}
+
       {props.shift && "⇧"}
+
       {props.char}
     </div>
   )

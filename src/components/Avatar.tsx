@@ -1,3 +1,4 @@
+import {twMerge} from "tailwind-merge"
 import "../styles/Avatar.sass"
 
 export type AvatarProps = {
@@ -7,11 +8,12 @@ export type AvatarProps = {
 }
 
 export default function Avatar(props: AvatarProps) {
-  const imageClassNames = `image ${props.isRounded ? "rounded" : ""}`
+  const roundedClass = props.isRounded ? "rounded" : ""
+
   return (
-    <div className="" key={props.displayName}>
+    <div key={props.displayName}>
       <img
-        className={imageClassNames}
+        className={twMerge("image", roundedClass)}
         src={props.avatarUrl}
         alt={props.displayName}
       />

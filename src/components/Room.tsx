@@ -22,23 +22,27 @@ export default function Room(props: RoomProps) {
   assert(props.name.length !== 0, "room name should not be empty")
 
   // Determine CSS class to apply based on the active state of the room.
-  const classNameActive = props.isActive ? "active" : ""
+  const activeClass = props.isActive ? "active" : ""
 
   const icon = props.type === RoomType.Text ? faHashtag : faStarOfLife
+
   const mentionCountProp =
     props.mentionCount > 0 ? props.mentionCount : undefined
+
   const MAX_NAME_LENGTH = 16
 
   return (
     <div onClick={props.onClick} className="Room">
       <div className="container">
         <div className="animation-container">
-          <FontAwesomeIcon icon={icon} className={"icon " + classNameActive} />
-          <span className={classNameActive + " name"}>
+          <FontAwesomeIcon icon={icon} className={"icon " + activeClass} />
+
+          <span className={activeClass + " name"}>
             {trim(props.name, MAX_NAME_LENGTH)}
           </span>
         </div>
       </div>
+
       {props.containsUnreadMessages && (
         <NotificationIndicator mentionAmount={mentionCountProp} />
       )}

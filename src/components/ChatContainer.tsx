@@ -40,9 +40,12 @@ export default function ChatContainer(props: ChatContainerProps) {
       <header className="header">
         <div className="title">
           <FontAwesomeIcon icon={getIcon(props.type)} className="icon" />
+
           <span className="name">{props.name}</span>
+
           <span className="text">{props.text}</span>
         </div>
+
         <IconButton
           onClick={() => {
             /* TODO: Handle `info` button click. */
@@ -51,6 +54,7 @@ export default function ChatContainer(props: ChatContainerProps) {
           tooltipPlacement={"bottom"}
           icon={faCircleInfo}
         />
+
         <IconButton
           onClick={() => {
             /* TODO: Handle `link` button click. */
@@ -59,6 +63,7 @@ export default function ChatContainer(props: ChatContainerProps) {
           tooltipPlacement={"bottom"}
           icon={faLink}
         />
+
         <IconButton
           onClick={() => {
             /* TODO: Handle `more` button click. */
@@ -68,7 +73,9 @@ export default function ChatContainer(props: ChatContainerProps) {
           icon={faEllipsisV}
         />
       </header>
+
       <div className="chat">{props.chatComponents}</div>
+
       <div className="actions">
         <div className="input">
           <div className="buttons">
@@ -80,6 +87,7 @@ export default function ChatContainer(props: ChatContainerProps) {
               tooltipPlacement={"top"}
               icon={faFaceSmile}
             />
+
             <IconButton
               onClick={() => {
                 /* TODO: Handle `attach` button click. */
@@ -89,11 +97,14 @@ export default function ChatContainer(props: ChatContainerProps) {
               icon={faPaperclip}
             />
           </div>
+
           <ChatInput />
         </div>
         <div className="typing">
           <div className="fill" />
+
           <div className="fill" />
+
           <TypingIndicator
             users={[
               {
@@ -112,6 +123,7 @@ export default function ChatContainer(props: ChatContainerProps) {
             /* TODO: Handle `Quick menu` click. */
           }}
         />
+
         <SmartAction
           icon={faUniversalAccess}
           text="Accessibility"
@@ -119,6 +131,7 @@ export default function ChatContainer(props: ChatContainerProps) {
             /* TODO: Handle `Accessibility` click. */
           }}
         />
+
         <SmartAction
           icon={faCircleHalfStroke}
           text="Switch theme"
@@ -126,6 +139,7 @@ export default function ChatContainer(props: ChatContainerProps) {
             /* TODO: Handle `Switch theme` click. */
           }}
         />
+
         <SmartAction
           icon={faEarthAmerica}
           text="63ms ping"

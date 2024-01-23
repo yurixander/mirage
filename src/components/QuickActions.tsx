@@ -25,12 +25,14 @@ export default function QuickActions(props: QuickActionsProps) {
         tooltipPlacement="right"
         icon={faPaperPlane}
       />
+
       <IconButton
         onClick={props.onViewCalls}
         tooltip="Calls"
         tooltipPlacement="right"
         icon={faPhone}
       />
+
       <IconButton
         onClick={props.onViewNotifications}
         tooltip="Notifications"
@@ -38,12 +40,14 @@ export default function QuickActions(props: QuickActionsProps) {
         icon={faBell}
         isDotShowed={true}
       />
+
       <IconButton
         onClick={props.onOpenExtensions}
         tooltip="Extensions"
         tooltipPlacement="right"
         icon={faBox}
       />
+
       <IconButton
         onClick={props.onLogout}
         tooltip="Sign out"

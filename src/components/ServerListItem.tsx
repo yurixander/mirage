@@ -10,7 +10,7 @@ export type ServerListItemProps = {
 }
 
 export default function ServerListItem(props: ServerListItemProps) {
-  const selectedClassName = props.isActive ? "selected" : ""
+  const selectedClass = props.isActive ? "selected" : ""
 
   const avatarImage =
     props.avatarUrl !== undefined ? (
@@ -22,8 +22,9 @@ export default function ServerListItem(props: ServerListItemProps) {
   return (
     <div className="ServerListItem">
       <div className="indicator-container">
-        <div className={"indicator " + selectedClassName} />
+        <div className={"indicator " + selectedClass} />
       </div>
+
       <Tippy
         content={props.tooltip}
         arrow={true}
@@ -33,7 +34,7 @@ export default function ServerListItem(props: ServerListItemProps) {
         placement={"right"}>
         <div
           tabIndex={!props.isActive ? 0 : undefined}
-          className={"avatar " + selectedClassName}
+          className={"avatar " + selectedClass}
           onClick={props.onClick}>
           {avatarImage}
         </div>

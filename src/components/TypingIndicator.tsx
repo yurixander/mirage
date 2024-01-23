@@ -37,9 +37,12 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
     <div className="TypingIndicator">
       <div className="dots">
         <div className="dot" />
+
         <div className="dot" />
+
         <div className="dot" />
       </div>
+
       <div className="avatars">
         {props.users.map(
           (user, index) =>
@@ -56,6 +59,7 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
             )
         )}
       </div>
+
       <div className="text">
         {who} {verbForm} typing...
       </div>

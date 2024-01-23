@@ -9,6 +9,7 @@ export default function NotificationDot(props: NotificationDotProps) {
   return (
     <div className="NotificationDot">
       <div className="children">{props.children}</div>
+
       {props.isShowed && <div className="dot" />}
     </div>
   )

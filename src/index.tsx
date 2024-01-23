@@ -1,23 +1,19 @@
 import "./styles/global.sass"
 import "./polyfills"
-import LoginPage from "./pages/Login"
-import {BrowserRouter, Route, Routes} from "react-router-dom"
-import AppPage from "./pages/App"
+import {BrowserRouter, Routes} from "react-router-dom"
 import {createRoot} from "react-dom/client"
 import {StrictMode} from "react"
-import {Path, assert} from "./util"
+import {assert} from "./util"
 
 const $root = document.getElementById("root")
 
 assert($root !== null, "root element should exist")
 
+// TODO: Add routes for the login and app pages.
 createRoot($root).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path={Path.App} element={<AppPage />} />
-        <Route path={Path.Login} caseSensitive element={<LoginPage />} />
-      </Routes>
+      <Routes></Routes>
     </BrowserRouter>
   </StrictMode>
 )

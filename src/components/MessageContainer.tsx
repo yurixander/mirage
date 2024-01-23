@@ -23,6 +23,7 @@ export default function MessageContainer(props: MessageContainerProps) {
           }}>
           <img src={props.authorAvatarUrl} />
         </div>
+
         <div className="body">
           <span
             className="author-name"
@@ -32,8 +33,10 @@ export default function MessageContainer(props: MessageContainerProps) {
             }}>
             {props.authorDisplayName}
           </span>
+
           <div className="content">
             {props.content}
+
             <time className="time">{localeTimeString}</time>
           </div>
         </div>

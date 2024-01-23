@@ -27,6 +27,7 @@ export default function UserBar(props: UserBarProps) {
           isLarge={false}
         />
       </div>
+
       {/* TODO: Handle click on settings button. */}
       <IconButton
         onClick={() => {}}

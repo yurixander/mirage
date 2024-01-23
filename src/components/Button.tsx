@@ -1,7 +1,7 @@
 import Loader from "@/components/Loader"
 import "../styles/Button.sass"
 
-export enum ButtonStyle {
+export enum ButtonVariant {
   Primary = "primary",
   Green = "green",
   TextLink = "text-link",
@@ -15,7 +15,7 @@ export type ButtonProps = {
   text: string
   isLoading?: boolean
   loadingText?: string
-  style?: ButtonStyle
+  variant?: ButtonVariant
   isDisabled?: boolean
 }
 
@@ -23,7 +23,7 @@ export default function Button(props: ButtonProps) {
   return (
     <button
       className={props.className}
-      data-style={props.style}
+      data-style={props.variant}
       disabled={props.isLoading ?? props.isDisabled}
       autoFocus={props.autoFocus}
       onClick={props.isDisabled ? undefined : props.onClick}

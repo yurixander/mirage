@@ -14,6 +14,7 @@ export default function RoomsList(props: RoomsListProps) {
     <section className="RoomsList">
       <nav className="spaces">
         <Label text={"Spaces"} />
+
         {spaces.map((space, index) => (
           <Room
             key={index}
@@ -26,8 +27,10 @@ export default function RoomsList(props: RoomsListProps) {
           />
         ))}
       </nav>
+
       <nav className="channels">
         <Label text={"Channels"} />
+
         {textChannels.map((channel, index) => (
           <Room
             key={index}
