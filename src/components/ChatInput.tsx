@@ -2,6 +2,7 @@ import {useCallback, useEffect, useRef, useState} from "react"
 import "../styles/ChatInput.sass"
 import IconButton from "./IconButton"
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
+import {twMerge} from "tailwind-merge"
 
 export type ChatInputProps = {
   isDisabled?: boolean
@@ -11,13 +12,12 @@ export type ChatInputProps = {
 export default function ChatInput(props: ChatInputProps) {
   const [value, setValue] = useState("")
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-  const isDisabledClassName = props.isDisabled ? "disabled" : ""
+  const isDisabledClass = props.isDisabled ? "disabled" : ""
 
   useEffect(() => {
     const textarea = textareaRef.current
 
-    if (textarea) {
+    if (textarea !== null) {
       textarea.style.height = "auto"
       textarea.style.height = `${textarea.scrollHeight}px`
     }
@@ -34,7 +34,7 @@ export default function ChatInput(props: ChatInputProps) {
     <div className="input-container">
       <textarea
         onKeyDown={handleKeyDown}
-        className={`input ${isDisabledClassName}`}
+        className={twMerge("input", isDisabledClass)}
         rows={1}
         ref={textareaRef}
         autoFocus={true}
@@ -44,6 +44,7 @@ export default function ChatInput(props: ChatInputProps) {
           setValue(value.target.value)
         }}
         disabled={props.isDisabled}></textarea>
+
       <div className="send">
         <IconButton
           onClick={() => {

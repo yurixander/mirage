@@ -22,7 +22,9 @@ export default function Checkbox(props: CheckboxProps) {
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      if (event.key === "Enter") setSelected(!isSelected)
+      if (event.key === "Enter") {
+        setSelected(!isSelected)
+      }
     },
     [isSelected]
   )
@@ -35,6 +37,7 @@ export default function Checkbox(props: CheckboxProps) {
         tabIndex={props.isDisabled ? undefined : 0}
         onKeyDown={handleKeyDown}
       />
+
       {props.label && <div className="label">{props.label}</div>}
     </div>
   )

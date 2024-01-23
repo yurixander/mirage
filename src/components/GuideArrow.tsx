@@ -30,12 +30,19 @@ export default function GuideArrow(props: GuideArrowProps) {
   return (
     <div style={{transform: rotation}} className="GuideArrow">
       <LittleStartIcon className="little-star" />
+
       <LittleStartIcon className="little-star" />
+
       <LittleStartIcon className="little-start" />
+
       <DotIcon className="dot" />
+
       <DotIcon className="dot" />
+
       <BigStarIcon className="big-star" />
+
       <span className="text">{props.text}</span>
+
       <img style={{transform: arrowTransform}} src={arrow} className="arrow" />
     </div>
   )

@@ -12,6 +12,7 @@ export default function SmartAction(props: SmartActionProps) {
   return (
     <div className="SmartAction" onClick={props.onClick}>
       <FontAwesomeIcon className="icon" icon={props.icon} />
+
       <span>{props.text}</span>
     </div>
   )

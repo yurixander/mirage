@@ -41,27 +41,25 @@ export default function ContextMenu(props: ContextMenuProps) {
   const isMenuActive = activeMenuId === props.id
 
   const handleContextMenu = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      e.preventDefault()
-      showMenu(props.id, e.clientX, e.clientY)
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      showMenu(props.id, event.clientX, event.clientY)
     },
     [props.id, showMenu]
   )
 
   useEffect(() => {
-    const handleWindowClick = () => {
-      hideMenu()
-    }
+    window.addEventListener("click", hideMenu)
 
-    window.addEventListener("click", handleWindowClick)
     return () => {
-      window.removeEventListener("click", handleWindowClick)
+      window.removeEventListener("click", hideMenu)
     }
   }, [hideMenu])
 
   return (
     <>
       <div onContextMenu={handleContextMenu}>{props.children}</div>
+
       {isMenuActive && (
         <div
           className="ContextMenu"

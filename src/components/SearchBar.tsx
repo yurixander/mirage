@@ -1,7 +1,7 @@
 import "../styles/SearchBar.sass"
 import {faSearch} from "@fortawesome/free-solid-svg-icons"
 import KeyCue from "./KeyCue"
-import useGlobalHotkey from "../hooks/useGlobalHotkey"
+import useGlobalHotkey from "../hooks/util/useGlobalHotkey"
 import React, {useState} from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
@@ -47,13 +47,16 @@ export default function SearchBar(props: SearchBarProps) {
   return (
     <div className={"SearchBar " + (results.length > 0 ? "open" : "")}>
       <FontAwesomeIcon className="search-icon" icon={faSearch} />
+
       <input
         onChange={handleQueryChange}
         ref={inputRef}
         type="text"
         placeholder="Search anything..."
       />
+
       <KeyCue ctrl char={KEYBOARD_HOTKEY_CHAR} />
+
       {results.length > 0 && (
         <div className="results">
           {results.map((result, index) => (

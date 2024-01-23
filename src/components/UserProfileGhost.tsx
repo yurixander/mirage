@@ -1,3 +1,4 @@
+import {useMemo} from "react"
 import "../styles/UserProfileGhost.sass"
 
 export type UserProfileGhostProps = {
@@ -6,10 +7,15 @@ export type UserProfileGhostProps = {
 }
 
 export default function UserProfileGhost(props: UserProfileGhostProps) {
-  const ghosts = []
+  const ghosts = useMemo(() => {
+    const ghosts = []
 
-  for (let i = 1; i <= props.count; i++)
-    ghosts.push(i * props.opacityMultiplier)
+    // REVISE: Simplify by using `Array.from` or `Array().fill`.
+    for (let i = 1; i <= props.count; i++)
+      ghosts.push(i * props.opacityMultiplier)
+
+    return ghosts
+  }, [])
 
   return (
     <div className="user-ghost-container">
@@ -20,10 +26,13 @@ export default function UserProfileGhost(props: UserProfileGhostProps) {
           className="UserProfileGhost">
           <div className="avatar-wrapper-ghost">
             <div className="avatar-ghost"></div>
+
             <div className={"status-ghost"} />
           </div>
+
           <div className="info-ghost">
             <div className="display-name-ghost">Emerald branch</div>
+
             <div className="activity-ghost">@emerald</div>
           </div>
         </div>

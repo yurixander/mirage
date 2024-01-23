@@ -99,7 +99,9 @@ export default function Input(props: InputProps) {
       setViolatedConstraints(violations)
     }
 
-    if (props.onValueChange !== undefined) props.onValueChange(value)
+    if (props.onValueChange !== undefined) {
+      props.onValueChange(value)
+    }
   }
 
   return (
@@ -107,18 +109,22 @@ export default function Input(props: InputProps) {
       className={`Input ${props.className ?? "" + isDisabledClassName}`.trim()}>
       <div className="container" tabIndex={props.isDisabled ? undefined : 0}>
         {props.label !== undefined && <Label text={props.label} />}
+
         {props.icon && (
           <div className="icon">
             <FontAwesomeIcon icon={props.icon} />
           </div>
         )}
+
         <input
           type="text"
           disabled={props.isDisabled}
           autoFocus={props.autoFocus}
           placeholder={props.placeholder}
           value={props.value ?? value}
-          onChange={handleChange}></input>
+          onChange={handleChange}
+        />
+
         {props.actions && (
           <div className="actions">
             {props.actions?.map((action, index) => (
@@ -133,6 +139,7 @@ export default function Input(props: InputProps) {
           </div>
         )}
       </div>
+
       <div className="constraints">
         {violatedConstraints.map(constraint => (
           <span

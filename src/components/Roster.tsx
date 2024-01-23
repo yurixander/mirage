@@ -1,3 +1,4 @@
+import {useMemo} from "react"
 import "../styles/Roster.sass"
 import IconButton from "./IconButton"
 import Label from "./Label"
@@ -25,18 +26,25 @@ export type RosterProps = {
 }
 
 export default function Roster(props: RosterProps) {
-  const admins = props.users.filter(
-    user => user.category === RosterUserCategory.Admin
+  const admins = useMemo(
+    () =>
+      props.users.filter(user => user.category === RosterUserCategory.Admin),
+    [props.users]
   )
-  const members = props.users.filter(
-    user => user.category === RosterUserCategory.Member
+
+  const members = useMemo(
+    () =>
+      props.users.filter(user => user.category === RosterUserCategory.Member),
+    [props.users]
   )
 
   return (
     <div className="Roster">
       <header className="header">
         <FontAwesomeIcon className="icon" icon={faUserGroup} />
+
         <div className="title">People</div>
+
         <IconButton
           onClick={() => {
             // TODO: Handle `sort` button click.
@@ -46,23 +54,29 @@ export default function Roster(props: RosterProps) {
           icon={faArrowDownShortWide}
         />
       </header>
+
       <div className="divider" />
+
       <div className="scroll-container">
         <div className="admins">
           <Label className="sticky-header" text={"Admin — " + admins.length} />
+
           {admins.map((admin, index) => (
             <RosterUser key={index} onClick={() => {}} {...admin} />
           ))}
         </div>
+
         <div className="members">
           <Label
             className="sticky-header"
             text={"Member — " + members.length}
           />
+
           {members.map((member, index) => (
             <RosterUser key={index} onClick={() => {}} {...member} />
           ))}
         </div>
+
         <UserProfileGhost count={4} opacityMultiplier={0.2} />
       </div>
     </div>

@@ -16,7 +16,9 @@ export default function EventMessage(props: EventMessageProps) {
       <div className="pencil-container">
         <FontAwesomeIcon icon={faPencil} className="pencil-icon" />
       </div>
+
       <div className="content">{props.content}</div>
+
       <time className="time">{localeTimeString}</time>
     </div>
   )

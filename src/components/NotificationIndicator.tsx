@@ -21,7 +21,9 @@ export default function NotificationIndicator(
 
   const classNames = ["indicator"]
 
-  if (props.mentionAmount !== undefined) classNames.push("mention")
+  if (props.mentionAmount !== undefined) {
+    classNames.push("mention")
+  }
 
   const adjustedAmount =
     props.mentionAmount !== undefined

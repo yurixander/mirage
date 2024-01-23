@@ -28,6 +28,7 @@ export type UserProfileProps = {
 
 export default function UserProfile(props: UserProfileProps) {
   assert(props.displayName.length > 0, "display name should not be empty")
+
   assert(
     props.text !== undefined && props.text.length > 0,
     "username should not be undefined or empty"
@@ -62,12 +63,15 @@ export default function UserProfile(props: UserProfileProps) {
   switch (props.status) {
     case UserStatus.Online:
       userStatusClassName = "online"
+
       break
     case UserStatus.Offline:
       userStatusClassName = "offline"
+
       break
     case UserStatus.Idle:
       userStatusClassName = "idle"
+
       break
   }
 
@@ -82,6 +86,7 @@ export default function UserProfile(props: UserProfileProps) {
     props.activity !== undefined ? (
       <span className="activity-or-text">
         {props.activity + " "}
+
         <span className="platform">{props.platform}</span>
       </span>
     ) : (
@@ -95,16 +100,20 @@ export default function UserProfile(props: UserProfileProps) {
     <div className="UserProfile">
       <div className={"avatar-wrapper " + isLargeClassName}>
         <div className={"avatar"}>{avatarImage}</div>
+
         <div className={"status " + userStatusClassName} />
       </div>
+
       <div className="info">
         <div style={{color: props.displayNameColor}} className="display-name">
           {trim(props.displayName, MAX_DISPLAY_NAME_LENGTH)}
         </div>
+
         <div className="activity">
           {props.icon && (
             <FontAwesomeIcon icon={props.icon} className="activity-icon" />
           )}
+
           {activityOrText}
         </div>
       </div>
