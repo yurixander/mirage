@@ -31,10 +31,15 @@ const GuideArrow: FC<GuideArrowProps> = ({orientation, text}) => {
   return (
     <div style={{transform: rotation}} className="GuideArrow">
       <LittleStartIcon className="little-star" />
+
       <LittleStartIcon className="little-star" />
+
       <LittleStartIcon className="little-start" />
+
       <DotIcon className="dot" />
+
       <DotIcon className="dot" />
+
       <BigStarIcon className="big-star" />
       <span className="text">{text}</span>
       <img style={{transform: arrowTransform}} src={arrow} className="arrow" />

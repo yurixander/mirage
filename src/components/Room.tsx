@@ -30,22 +30,26 @@ const Room: FC<RoomProps> = ({
   assert(name.length !== 0, "room name should not be empty")
 
   // Determine CSS class to apply based on the active state of the room.
-  const classNameActive = isActive ? "active" : ""
+  const activeClass = isActive ? "active" : ""
 
   const icon = type === RoomType.Text ? faHashtag : faStarOfLife
+
   const mentionCountProp = mentionCount > 0 ? mentionCount : undefined
+
   const MAX_NAME_LENGTH = 16
 
   return (
     <div onClick={onClick} className="Room">
       <div className="container">
         <div className="animation-container">
-          <FontAwesomeIcon icon={icon} className={"icon " + classNameActive} />
-          <span className={classNameActive + " name"}>
+          <FontAwesomeIcon icon={icon} className={"icon " + activeClass} />
+
+          <span className={activeClass + " name"}>
             {trim(name, MAX_NAME_LENGTH)}
           </span>
         </div>
       </div>
+
       {containsUnreadMessages && (
         <NotificationIndicator mentionAmount={mentionCountProp} />
       )}

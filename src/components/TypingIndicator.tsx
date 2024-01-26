@@ -37,9 +37,12 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
     <div className="TypingIndicator">
       <div className="dots">
         <div className="dot" />
+
         <div className="dot" />
+
         <div className="dot" />
       </div>
+
       <div className="avatars">
         {users.map(
           (user, index) =>
@@ -56,6 +59,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
             )
         )}
       </div>
+
       <div className="text">
         {who} {verbForm} typing...
       </div>

@@ -49,6 +49,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           <span className="name">{name}</span>
           <span className="text">{text}</span>
         </div>
+
         <IconButton
           onClick={() => {
             /* TODO: Handle `info` button click. */
@@ -57,6 +58,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           tooltipPlacement={"bottom"}
           icon={faCircleInfo}
         />
+
         <IconButton
           onClick={() => {
             /* TODO: Handle `link` button click. */
@@ -65,6 +67,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           tooltipPlacement={"bottom"}
           icon={faLink}
         />
+
         <IconButton
           onClick={() => {
             /* TODO: Handle `more` button click. */
@@ -86,6 +89,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
               tooltipPlacement={"top"}
               icon={faFaceSmile}
             />
+
             <IconButton
               onClick={() => {
                 /* TODO: Handle `attach` button click. */
@@ -95,11 +99,14 @@ const ChatContainer: FC<ChatContainerProps> = ({
               icon={faPaperclip}
             />
           </div>
+
           <ChatInput />
         </div>
         <div className="typing">
           <div className="fill" />
+
           <div className="fill" />
+
           <TypingIndicator
             users={[
               {
@@ -118,6 +125,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
             /* TODO: Handle `Quick menu` click. */
           }}
         />
+
         <SmartAction
           icon={faUniversalAccess}
           text="Accessibility"
@@ -125,6 +133,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
             /* TODO: Handle `Accessibility` click. */
           }}
         />
+
         <SmartAction
           icon={faCircleHalfStroke}
           text="Switch theme"
@@ -132,6 +141,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
             /* TODO: Handle `Switch theme` click. */
           }}
         />
+
         <SmartAction
           icon={faEarthAmerica}
           text="63ms ping"

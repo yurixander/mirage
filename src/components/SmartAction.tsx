@@ -13,6 +13,7 @@ const SmartAction: FC<SmartActionProps> = ({icon, text, onClick}) => {
   return (
     <div className="SmartAction" onClick={onClick}>
       <FontAwesomeIcon className="icon" icon={icon} />
+
       <span>{text}</span>
     </div>
   )

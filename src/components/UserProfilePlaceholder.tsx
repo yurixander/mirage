@@ -9,6 +9,7 @@ const UserProfilePlaceholder = () => {
           <div className="avatar-ghost">
             <LoadingEffect />
           </div>
+
           <div className={"status-ghost"} />
         </div>
         <div className="info-ghost">
@@ -16,6 +17,7 @@ const UserProfilePlaceholder = () => {
             Emerald branch
             <LoadingEffect />
           </div>
+
           <div className="activity-ghost">
             @emerald
             <LoadingEffect />

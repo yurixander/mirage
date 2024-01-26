@@ -124,6 +124,7 @@ const Input: FC<InputProps> = ({
             <FontAwesomeIcon icon={icon} />
           </div>
         )}
+
         <input
           type="text"
           disabled={isDisabled}
@@ -145,6 +146,7 @@ const Input: FC<InputProps> = ({
           </div>
         )}
       </div>
+
       <div className="constraints">
         {violatedConstraints.map(constraint => (
           <span

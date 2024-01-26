@@ -5,6 +5,7 @@ type Story = StoryObj<typeof ChatInput>
 
 const meta: Meta<typeof ChatInput> = {component: ChatInput}
 const render = (args: ChatInputProps) => <ChatInput {...args} />
+
 export const Default: Story = {
   render,
   args: {},

@@ -1,4 +1,5 @@
 import {type FC} from "react"
+import {useMemo} from "react"
 import "../styles/Modal.sass"
 
 export enum ModalPosition {
@@ -15,7 +16,15 @@ export type ModalProps = {
 
 const Modal: FC<ModalProps> = ({position, dialogs}) => {
   const MAX_DIALOGS = 5
-  const dialogsToShow = [...dialogs].slice(0, MAX_DIALOGS).reverse()
+
+  const dialogsToShow = useMemo(
+    () => [...dialogs].slice(0, MAX_DIALOGS).reverse(),
+    [dialogs]
+  )
+
+  const calculateOpacity = (index: number) => {
+    return 1 - 0.2 * (dialogsToShow.length - 1 - index)
+  }
 
   return (
     <div data-style={position} className="modal-overlay">
@@ -23,7 +32,7 @@ const Modal: FC<ModalProps> = ({position, dialogs}) => {
         <div
           key={index}
           className="popups"
-          style={{opacity: 1 - 0.2 * (dialogsToShow.length - 1 - index)}}>
+          style={{opacity: calculateOpacity(index)}}>
           {dialog}
         </div>
       ))}
