@@ -5,7 +5,7 @@ import "tippy.js/dist/tippy.css"
 import "tippy.js/animations/scale-subtle.css"
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {memo} from "react"
+import {type FC, memo} from "react"
 import NotificationDot from "./NotificationDot"
 
 export type IconButtonProps = {
@@ -18,28 +18,36 @@ export type IconButtonProps = {
   isDotShowed?: boolean
 }
 
-function IconButton(props: IconButtonProps) {
-  const isDisabledClassName = props.isDisabled ? "disabled" : ""
+const IconButton: FC<IconButtonProps> = ({
+  icon,
+  tooltip,
+  tooltipPlacement,
+  onClick,
+  color,
+  isDisabled,
+  isDotShowed,
+}) => {
+  const isDisabledClassName = isDisabled ? "disabled" : ""
 
   return (
     <Tippy
-      content={<span className="tooltip-text">{props.tooltip}</span>}
+      content={<span className="tooltip-text">{tooltip}</span>}
       arrow={true}
       inertia={true}
       animation="scale-subtle"
       duration={100}
-      placement={props.tooltipPlacement}>
+      placement={tooltipPlacement}>
       <div
         className={`IconButton ${isDisabledClassName}`}
-        onClick={props.isDisabled ? undefined : props.onClick}
-        tabIndex={props.isDisabled ? undefined : 0}>
+        onClick={isDisabled ? undefined : onClick}
+        tabIndex={isDisabled ? undefined : 0}>
         <NotificationDot
-          isShowed={props.isDotShowed ? props.isDotShowed : false}
+          isShowed={isDotShowed ?? false}
           children={
             <FontAwesomeIcon
-              style={{color: props.color}}
+              style={{color: color}}
               className="icon"
-              icon={props.icon}
+              icon={icon}
             />
           }
         />

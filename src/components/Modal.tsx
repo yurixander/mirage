@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/Modal.sass"
 
 export enum ModalPosition {
@@ -12,12 +13,12 @@ export type ModalProps = {
   dialogs: JSX.Element[]
 }
 
-const Modal = (props: ModalProps) => {
+const Modal: FC<ModalProps> = ({position, dialogs}) => {
   const MAX_DIALOGS = 5
-  const dialogsToShow = [...props.dialogs].slice(0, MAX_DIALOGS).reverse()
+  const dialogsToShow = [...dialogs].slice(0, MAX_DIALOGS).reverse()
 
   return (
-    <div data-style={props.position} className="modal-overlay">
+    <div data-style={position} className="modal-overlay">
       {dialogsToShow.map((dialog, index) => (
         <div
           key={index}

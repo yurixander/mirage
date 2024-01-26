@@ -3,6 +3,7 @@ import IconButton from "./IconButton"
 import UserProfile, {type UserStatus} from "./UserProfile"
 import {trim} from "../util"
 import {faGear} from "@fortawesome/free-solid-svg-icons"
+import {type FC} from "react"
 
 export type UserBarProps = {
   avatarUrl?: string
@@ -12,18 +13,24 @@ export type UserBarProps = {
   status: UserStatus
 }
 
-export default function UserBar(props: UserBarProps) {
+const UserBar: FC<UserBarProps> = ({
+  displayName,
+  displayNameColor,
+  status,
+  username,
+  avatarUrl,
+}) => {
   const MAX_NAME_LENGTH = 18
 
   return (
     <section className="UserBar">
       <div className="profile-container">
         <UserProfile
-          avatarUrl={props.avatarUrl}
-          text={trim(props.username, MAX_NAME_LENGTH)}
-          displayName={trim(props.displayName, MAX_NAME_LENGTH)}
-          displayNameColor={props.displayNameColor}
-          status={props.status}
+          avatarUrl={avatarUrl}
+          text={trim(username, MAX_NAME_LENGTH)}
+          displayName={trim(displayName, MAX_NAME_LENGTH)}
+          displayNameColor={displayNameColor}
+          status={status}
           isLarge={false}
         />
       </div>
@@ -37,3 +44,5 @@ export default function UserBar(props: UserBarProps) {
     </section>
   )
 }
+
+export default UserBar

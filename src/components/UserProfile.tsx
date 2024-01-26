@@ -3,6 +3,7 @@ import "../styles/UserProfile.sass"
 import {assert, trim, validateUrl} from "../util"
 import Avatar from "boring-avatars"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {type FC} from "react"
 
 export enum UserActivity {
   Listening = "Listening to",
@@ -26,40 +27,47 @@ export type UserProfileProps = {
   isLarge?: boolean
 }
 
-export default function UserProfile(props: UserProfileProps) {
-  assert(props.displayName.length > 0, "display name should not be empty")
+const UserProfile: FC<UserProfileProps> = ({
+  displayName,
+  displayNameColor,
+  status,
+  text,
+  activity,
+  avatarUrl,
+  icon,
+  isLarge,
+  platform,
+}) => {
+  assert(displayName.length > 0, "display name should not be empty")
   assert(
-    props.text !== undefined && props.text.length > 0,
+    text !== undefined && text.length > 0,
     "username should not be undefined or empty"
   )
 
   // TODO: check undefined values of the activity, platform and icon.
-  if (props.icon !== undefined)
+  if (icon !== undefined)
     assert(
-      props.activity !== undefined || props.platform !== undefined,
+      activity !== undefined || platform !== undefined,
       "User activity and platform should not be undefined"
     )
-  else if (props.activity !== undefined)
+  else if (activity !== undefined)
     assert(
-      props.icon !== undefined || props.platform !== undefined,
+      icon !== undefined || platform !== undefined,
       "icon and platform should not be undefined or empty"
     )
-  else if (props.platform !== undefined)
+  else if (platform !== undefined)
     assert(
-      props.icon !== undefined || props.activity !== undefined,
+      icon !== undefined || activity !== undefined,
       "icon and activity should not be undefined"
     )
 
-  if (props.avatarUrl !== undefined)
-    assert(
-      validateUrl(props.avatarUrl),
-      "avatar URL should be valid if defined"
-    )
+  if (avatarUrl !== undefined)
+    assert(validateUrl(avatarUrl), "avatar URL should be valid if defined")
 
   const MAX_DISPLAY_NAME_LENGTH = 18
   let userStatusClassName: string
 
-  switch (props.status) {
+  switch (status) {
     case UserStatus.Online:
       userStatusClassName = "online"
       break
@@ -72,24 +80,23 @@ export default function UserProfile(props: UserProfileProps) {
   }
 
   const avatarImage =
-    props.avatarUrl !== undefined ? (
-      <img src={props.avatarUrl} />
+    avatarUrl !== undefined ? (
+      <img src={avatarUrl} />
     ) : (
-      <Avatar name={props.text} variant="beam" />
+      <Avatar name={text} variant="beam" />
     )
 
   const activityOrText =
-    props.activity !== undefined ? (
+    activity !== undefined ? (
       <span className="activity-or-text">
-        {props.activity + " "}
-        <span className="platform">{props.platform}</span>
+        {activity + " "}
+        <span className="platform">{platform}</span>
       </span>
     ) : (
-      <span className="activity-or-text">{props.text}</span>
+      <span className="activity-or-text">{text}</span>
     )
 
-  const isLargeClassName =
-    props.isLarge !== undefined && props.isLarge ? "large" : ""
+  const isLargeClassName = isLarge !== undefined && isLarge ? "large" : ""
 
   return (
     <div className="UserProfile">
@@ -98,16 +105,16 @@ export default function UserProfile(props: UserProfileProps) {
         <div className={"status " + userStatusClassName} />
       </div>
       <div className="info">
-        <div style={{color: props.displayNameColor}} className="display-name">
-          {trim(props.displayName, MAX_DISPLAY_NAME_LENGTH)}
+        <div style={{color: displayNameColor}} className="display-name">
+          {trim(displayName, MAX_DISPLAY_NAME_LENGTH)}
         </div>
         <div className="activity">
-          {props.icon && (
-            <FontAwesomeIcon icon={props.icon} className="activity-icon" />
-          )}
+          {icon && <FontAwesomeIcon icon={icon} className="activity-icon" />}
           {activityOrText}
         </div>
       </div>
     </div>
   )
 }
+
+export default UserProfile

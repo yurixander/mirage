@@ -1,7 +1,7 @@
 import "../styles/UserProfileGhost.sass"
 import LoadingEffect from "./LoadingEffect"
 
-export default function UserProfilePlaceholder() {
+const UserProfilePlaceholder = () => {
   return (
     <div>
       <div className="UserProfileGhost">
@@ -25,3 +25,5 @@ export default function UserProfilePlaceholder() {
     </div>
   )
 }
+
+export default UserProfilePlaceholder

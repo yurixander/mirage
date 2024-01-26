@@ -1,5 +1,8 @@
+import {type FC} from "react"
 import "../styles/LoadingEffect.sass"
 
-export default function LoadingEffect() {
+const LoadingEffect: FC = () => {
   return <div className="LoadingEffect" />
 }
+
+export default LoadingEffect

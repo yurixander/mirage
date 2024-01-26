@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/ImageMessage.sass"
 import ContextMenu from "./ContextMenu"
 import MessageContainer from "./MessageContainer"
@@ -20,7 +21,16 @@ export type ImageMessageProps = {
   onAuthorClick: () => void
 }
 
-export default function ImageMessage(props: ImageMessageProps) {
+const ImageMessage: FC<ImageMessageProps> = ({
+  id,
+  imageUrl,
+  authorDisplayName,
+  authorDisplayNameColor,
+  authorAvatarUrl,
+  text,
+  timestamp,
+  onAuthorClick,
+}) => {
   const contextMenuItems = [
     {
       label: "Reply",
@@ -52,29 +62,31 @@ export default function ImageMessage(props: ImageMessageProps) {
   const content = (
     <div className="Content">
       <div className="container">
-        <img className="image" src={props.imageUrl} />
+        <img className="image" src={imageUrl} />
       </div>
-      <div className="text">{props.text}</div>
+      <div className="text">{text}</div>
     </div>
   )
 
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
     <ContextMenu
-      id={props.id}
+      id={id}
       items={contextMenuItems}
       children={
         <div className="ImageMessage">
           <MessageContainer
-            authorDisplayName={props.authorDisplayName}
-            authorDisplayNameColor={props.authorDisplayNameColor}
-            authorAvatarUrl={props.authorAvatarUrl}
+            authorDisplayName={authorDisplayName}
+            authorDisplayNameColor={authorDisplayNameColor}
+            authorAvatarUrl={authorAvatarUrl}
             content={content}
-            timestamp={props.timestamp}
-            onAuthorClick={props.onAuthorClick}
+            timestamp={timestamp}
+            onAuthorClick={onAuthorClick}
           />
         </div>
       }
     />
   )
 }
+
+export default ImageMessage

@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/QuickActions.sass"
 import IconButton from "./IconButton"
 import {
@@ -16,36 +17,42 @@ export type QuickActionsProps = {
   onLogout: () => void
 }
 
-export default function QuickActions(props: QuickActionsProps) {
+const QuickActions: FC<QuickActionsProps> = ({
+  onViewDirectMessages,
+  onViewCalls,
+  onViewNotifications,
+  onOpenExtensions,
+  onLogout,
+}) => {
   return (
     <section className="QuickActions">
       <IconButton
-        onClick={props.onViewDirectMessages}
+        onClick={onViewDirectMessages}
         tooltip="Direct messages"
         tooltipPlacement="right"
         icon={faPaperPlane}
       />
       <IconButton
-        onClick={props.onViewCalls}
+        onClick={onViewCalls}
         tooltip="Calls"
         tooltipPlacement="right"
         icon={faPhone}
       />
       <IconButton
-        onClick={props.onViewNotifications}
+        onClick={onViewNotifications}
         tooltip="Notifications"
         tooltipPlacement="right"
         icon={faBell}
         isDotShowed={true}
       />
       <IconButton
-        onClick={props.onOpenExtensions}
+        onClick={onOpenExtensions}
         tooltip="Extensions"
         tooltipPlacement="right"
         icon={faBox}
       />
       <IconButton
-        onClick={props.onLogout}
+        onClick={onLogout}
         tooltip="Sign out"
         tooltipPlacement="right"
         icon={faRightFromBracket}
@@ -53,3 +60,5 @@ export default function QuickActions(props: QuickActionsProps) {
     </section>
   )
 }
+
+export default QuickActions

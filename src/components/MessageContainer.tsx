@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/MessageContainer.sass"
 import {timeFormatter} from "../util"
 
@@ -10,8 +11,15 @@ export type MessageContainerProps = {
   onAuthorClick: () => void
 }
 
-export default function MessageContainer(props: MessageContainerProps) {
-  const localeTimeString = timeFormatter(props.timestamp)
+const MessageContainer: FC<MessageContainerProps> = ({
+  authorDisplayName,
+  authorDisplayNameColor,
+  authorAvatarUrl,
+  content,
+  timestamp,
+  onAuthorClick,
+}) => {
+  const localeTimeString = timeFormatter(timestamp)
 
   return (
     <div className="MessageContainer">
@@ -19,21 +27,21 @@ export default function MessageContainer(props: MessageContainerProps) {
         <div
           className="avatar"
           onClick={() => {
-            props.onAuthorClick()
+            onAuthorClick()
           }}>
-          <img src={props.authorAvatarUrl} />
+          <img src={authorAvatarUrl} />
         </div>
         <div className="body">
           <span
             className="author-name"
-            style={{color: props.authorDisplayNameColor}}
+            style={{color: authorDisplayNameColor}}
             onClick={() => {
-              props.onAuthorClick()
+              onAuthorClick()
             }}>
-            {props.authorDisplayName}
+            {authorDisplayName}
           </span>
           <div className="content">
-            {props.content}
+            {content}
             <time className="time">{localeTimeString}</time>
           </div>
         </div>
@@ -41,3 +49,5 @@ export default function MessageContainer(props: MessageContainerProps) {
     </div>
   )
 }
+
+export default MessageContainer

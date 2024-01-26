@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/KeyCue.sass"
 import {assert} from "../util"
 
@@ -8,15 +9,17 @@ export type KeyCueProps = {
   char: string
 }
 
-export default function KeyCue(props: KeyCueProps) {
-  assert(props.char.length === 1, "key should be a single character")
+const KeyCue: FC<KeyCueProps> = ({alt, ctrl, shift, char}) => {
+  assert(char.length === 1, "key should be a single character")
 
   return (
     <div className="KeyCue">
-      {props.ctrl && "⌃"}
-      {props.alt && "⌥"}
-      {props.shift && "⇧"}
-      {props.char}
+      {ctrl && "⌃"}
+      {alt && "⌥"}
+      {shift && "⇧"}
+      {char}
     </div>
   )
 }
+
+export default KeyCue

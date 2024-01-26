@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/StatusMessage.sass"
 
 type Props = {
@@ -5,6 +6,8 @@ type Props = {
   text: string
 }
 
-export default function StatusMessage(props: Props) {
-  return <div className={"StatusMessage " + props.className}>{props.text}</div>
+const StatusMessage: FC<Props> = ({className, text}) => {
+  return <div className={"StatusMessage " + className}>{text}</div>
 }
+
+export default StatusMessage

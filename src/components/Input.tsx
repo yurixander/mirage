@@ -1,5 +1,5 @@
 import "../styles/Input.sass"
-import {useState} from "react"
+import {type FC, useState} from "react"
 import Label from "./Label"
 import IconButton from "./IconButton"
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
@@ -26,7 +26,7 @@ export type InputProps = {
   alwaysShowAllConstraints?: boolean
   onValueChange?: (value: string) => void
   initialValue?: string
-  value?: string
+  parentValue?: string
   icon?: IconProp
   actions?: InputAction[]
 }
@@ -79,9 +79,22 @@ export const integerConstraint: InputConstraint = {
   pattern: integerPattern,
 }
 
-export default function Input(props: InputProps) {
-  const isDisabledClassName = props.isDisabled ? " disabled" : ""
-  const [value, setValue] = useState(props.initialValue ?? "")
+const Input: FC<InputProps> = ({
+  isDisabled,
+  label,
+  className,
+  autoFocus,
+  placeholder,
+  constraints,
+  alwaysShowAllConstraints,
+  onValueChange,
+  initialValue,
+  parentValue,
+  icon,
+  actions,
+}) => {
+  const isDisabledClassName = isDisabled ? " disabled" : ""
+  const [value, setValue] = useState(initialValue ?? "")
   const [violatedConstraints, setViolatedConstraints] = useState<
     InputConstraint[]
   >([])
@@ -91,37 +104,36 @@ export default function Input(props: InputProps) {
 
     setValue(value)
 
-    if (props.constraints) {
-      const violations = props.constraints.filter(
+    if (constraints) {
+      const violations = constraints.filter(
         constraint => !constraint.pattern.test(value)
       )
 
       setViolatedConstraints(violations)
     }
 
-    if (props.onValueChange !== undefined) props.onValueChange(value)
+    if (onValueChange !== undefined) onValueChange(value)
   }
 
   return (
-    <div
-      className={`Input ${props.className ?? "" + isDisabledClassName}`.trim()}>
-      <div className="container" tabIndex={props.isDisabled ? undefined : 0}>
-        {props.label !== undefined && <Label text={props.label} />}
-        {props.icon && (
+    <div className={`Input ${className ?? "" + isDisabledClassName}`.trim()}>
+      <div className="container" tabIndex={isDisabled ? undefined : 0}>
+        {label !== undefined && <Label text={label} />}
+        {icon && (
           <div className="icon">
-            <FontAwesomeIcon icon={props.icon} />
+            <FontAwesomeIcon icon={icon} />
           </div>
         )}
         <input
           type="text"
-          disabled={props.isDisabled}
-          autoFocus={props.autoFocus}
-          placeholder={props.placeholder}
-          value={props.value ?? value}
+          disabled={isDisabled}
+          autoFocus={autoFocus}
+          placeholder={placeholder}
+          value={parentValue ?? value}
           onChange={handleChange}></input>
-        {props.actions && (
+        {actions && (
           <div className="actions">
-            {props.actions?.map((action, index) => (
+            {actions?.map((action, index) => (
               <IconButton
                 key={index}
                 onClick={action.onClick}
@@ -146,3 +158,5 @@ export default function Input(props: InputProps) {
     </div>
   )
 }
+
+export default Input

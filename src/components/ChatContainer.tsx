@@ -19,6 +19,7 @@ import {
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import ChatInput from "./ChatInput"
 import {useCallback} from "react"
+import {type FC} from "react"
 
 export type ChatContainerProps = {
   name: string
@@ -27,21 +28,26 @@ export type ChatContainerProps = {
   chatComponents: JSX.Element[]
 }
 
-export default function ChatContainer(props: ChatContainerProps) {
-  assert(props.name.length !== 0, "room name should not be empty")
+const ChatContainer: FC<ChatContainerProps> = ({
+  name,
+  text,
+  type,
+  chatComponents,
+}) => {
+  assert(name.length !== 0, "room name should not be empty")
 
   const getIcon = useCallback(
     (type: RoomType) => (type === RoomType.Text ? faHashtag : faStarOfLife),
-    [props.type]
+    [type]
   )
 
   return (
     <section className="ChatContainer">
       <header className="header">
         <div className="title">
-          <FontAwesomeIcon icon={getIcon(props.type)} className="icon" />
-          <span className="name">{props.name}</span>
-          <span className="text">{props.text}</span>
+          <FontAwesomeIcon icon={getIcon(type)} className="icon" />
+          <span className="name">{name}</span>
+          <span className="text">{text}</span>
         </div>
         <IconButton
           onClick={() => {
@@ -68,7 +74,7 @@ export default function ChatContainer(props: ChatContainerProps) {
           icon={faEllipsisV}
         />
       </header>
-      <div className="chat">{props.chatComponents}</div>
+      <div className="chat">{chatComponents}</div>
       <div className="actions">
         <div className="input">
           <div className="buttons">
@@ -137,3 +143,5 @@ export default function ChatContainer(props: ChatContainerProps) {
     </section>
   )
 }
+
+export default ChatContainer

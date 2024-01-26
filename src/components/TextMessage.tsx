@@ -7,6 +7,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons"
 import MessageContainer from "./MessageContainer"
+import {type FC} from "react"
 
 export type TextMessageProps = {
   id: number
@@ -18,7 +19,15 @@ export type TextMessageProps = {
   onAuthorClick: () => void
 }
 
-export default function TextMessage(props: TextMessageProps) {
+const TextMessage: FC<TextMessageProps> = ({
+  authorAvatarUrl,
+  authorDisplayName,
+  authorDisplayNameColor,
+  id,
+  onAuthorClick,
+  text,
+  timestamp,
+}) => {
   const contextMenuItems = [
     {
       label: "Reply",
@@ -45,18 +54,20 @@ export default function TextMessage(props: TextMessageProps) {
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
     <ContextMenu
-      id={props.id}
+      id={id}
       items={contextMenuItems}
       children={
         <MessageContainer
-          authorDisplayName={props.authorDisplayName}
-          authorDisplayNameColor={props.authorDisplayNameColor}
-          authorAvatarUrl={props.authorAvatarUrl}
-          content={<div className="message-text">{props.text}</div>}
-          timestamp={props.timestamp}
-          onAuthorClick={props.onAuthorClick}
+          authorDisplayName={authorDisplayName}
+          authorDisplayNameColor={authorDisplayNameColor}
+          authorAvatarUrl={authorAvatarUrl}
+          content={<div className="message-text">{text}</div>}
+          timestamp={timestamp}
+          onAuthorClick={onAuthorClick}
         />
       }
     />
   )
 }
+
+export default TextMessage

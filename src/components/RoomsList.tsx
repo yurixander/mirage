@@ -1,14 +1,15 @@
 import Room, {type RoomProps, RoomType} from "./Room"
 import "../styles/RoomsList.sass"
 import Label from "./Label"
+import {type FC} from "react"
 
 export type RoomsListProps = {
   rooms: RoomProps[]
 }
 
-export default function RoomsList(props: RoomsListProps) {
-  const spaces = props.rooms.filter(room => room.type === RoomType.Space)
-  const textChannels = props.rooms.filter(room => room.type === RoomType.Text)
+const RoomsList: FC<RoomsListProps> = ({rooms}) => {
+  const spaces = rooms.filter(room => room.type === RoomType.Space)
+  const textChannels = rooms.filter(room => room.type === RoomType.Text)
 
   return (
     <section className="RoomsList">
@@ -43,3 +44,5 @@ export default function RoomsList(props: RoomsListProps) {
     </section>
   )
 }
+
+export default RoomsList

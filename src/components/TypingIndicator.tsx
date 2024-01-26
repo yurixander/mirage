@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/TypingIndicator.sass"
 import Avatar from "./Avatar"
 
@@ -11,12 +12,12 @@ export type TypingIndicatorProps = {
   users: TypingIndicatorUser[]
 }
 
-export default function TypingIndicator(props: TypingIndicatorProps) {
-  const verbForm = props.users.length > 1 ? "are" : "is"
+const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
+  const verbForm = users.length > 1 ? "are" : "is"
 
   const names = (
     <>
-      {props.users.map((user, index, array) => (
+      {users.map((user, index, array) => (
         <span key={index}>
           <span className="name text-strong" style={{color: user.color}}>
             {user.displayName}
@@ -30,8 +31,7 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
 
   const MAX_VISIBLE_TYPING_USERS = 3
 
-  const who =
-    props.users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
+  const who = users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
 
   return (
     <div className="TypingIndicator">
@@ -41,7 +41,7 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
         <div className="dot" />
       </div>
       <div className="avatars">
-        {props.users.map(
+        {users.map(
           (user, index) =>
             user.avatarUrl && (
               <div
@@ -62,3 +62,5 @@ export default function TypingIndicator(props: TypingIndicatorProps) {
     </div>
   )
 }
+
+export default TypingIndicator
