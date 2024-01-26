@@ -16,7 +16,7 @@ const ServerListItem: FC<ServerListItemProps> = ({
   onClick,
   tooltip,
 }) => {
-  const selectedClassName = isActive ? "selected" : ""
+  const selectedClass = isActive ? "selected" : ""
 
   const avatarImage =
     avatarUrl !== undefined ? (
@@ -28,8 +28,9 @@ const ServerListItem: FC<ServerListItemProps> = ({
   return (
     <div className="ServerListItem">
       <div className="indicator-container">
-        <div className={"indicator " + selectedClassName} />
+        <div className={"indicator " + selectedClass} />
       </div>
+
       <Tippy
         content={tooltip}
         arrow={true}
@@ -39,7 +40,7 @@ const ServerListItem: FC<ServerListItemProps> = ({
         placement={"right"}>
         <div
           tabIndex={!isActive ? 0 : undefined}
-          className={"avatar " + selectedClassName}
+          className={"avatar " + selectedClass}
           onClick={onClick}>
           {avatarImage}
         </div>

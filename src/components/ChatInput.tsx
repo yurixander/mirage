@@ -2,6 +2,7 @@ import {type FC, useCallback, useEffect, useRef, useState} from "react"
 import "../styles/ChatInput.sass"
 import IconButton from "./IconButton"
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
+import {twMerge} from "tailwind-merge"
 
 export type ChatInputProps = {
   isDisabled?: boolean
@@ -17,7 +18,7 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
   useEffect(() => {
     const textarea = textareaRef.current
 
-    if (textarea) {
+    if (textarea !== null) {
       textarea.style.height = "auto"
       textarea.style.height = `${textarea.scrollHeight}px`
     }
@@ -34,7 +35,7 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
     <div className="input-container">
       <textarea
         onKeyDown={handleKeyDown}
-        className={`input ${isDisabledClassName}`}
+        className={twMerge("input", isDisabledClassName)}
         rows={1}
         ref={textareaRef}
         autoFocus={true}

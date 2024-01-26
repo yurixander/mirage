@@ -2,7 +2,7 @@ import Loader from "@/components/Loader"
 import "../styles/Button.sass"
 import {type FC} from "react"
 
-export enum ButtonStyle {
+export enum ButtonVariant {
   Primary = "primary",
   Green = "green",
   TextLink = "text-link",
@@ -16,7 +16,7 @@ export type ButtonProps = {
   text: string
   isLoading?: boolean
   loadingText?: string
-  style?: ButtonStyle
+  variant?: ButtonVariant
   isDisabled?: boolean
 }
 
@@ -27,13 +27,13 @@ const Button: FC<ButtonProps> = ({
   text,
   isLoading,
   loadingText,
-  style,
   isDisabled,
+  variant,
 }) => {
   return (
     <button
       className={className}
-      data-style={style}
+      data-style={variant}
       disabled={isLoading ?? isDisabled}
       autoFocus={autoFocus}
       onClick={isDisabled ? undefined : onClick}

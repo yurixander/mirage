@@ -21,44 +21,44 @@ export type ImageMessageProps = {
   onAuthorClick: () => void
 }
 
+const contextMenuItems = [
+  {
+    label: "Reply",
+    action: () => {},
+    icon: faReply,
+  },
+  {
+    label: "Pin",
+    action: () => {},
+    icon: faThumbTack,
+  },
+  {
+    label: "Save",
+    action: () => {},
+    icon: faDownload,
+  },
+  {
+    label: "Resend",
+    action: () => {},
+    icon: faShare,
+  },
+  {
+    label: "Delete",
+    action: () => {},
+    icon: faTrash,
+  },
+]
+
 const ImageMessage: FC<ImageMessageProps> = ({
-  id,
-  imageUrl,
+  authorAvatarUrl,
   authorDisplayName,
   authorDisplayNameColor,
-  authorAvatarUrl,
+  id,
+  imageUrl,
+  onAuthorClick,
   text,
   timestamp,
-  onAuthorClick,
 }) => {
-  const contextMenuItems = [
-    {
-      label: "Reply",
-      action: () => {},
-      icon: faReply,
-    },
-    {
-      label: "Pin",
-      action: () => {},
-      icon: faThumbTack,
-    },
-    {
-      label: "Save",
-      action: () => {},
-      icon: faDownload,
-    },
-    {
-      label: "Resend",
-      action: () => {},
-      icon: faShare,
-    },
-    {
-      label: "Delete",
-      action: () => {},
-      icon: faTrash,
-    },
-  ]
-
   const content = (
     <div className="Content">
       <div className="container">

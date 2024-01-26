@@ -6,7 +6,9 @@ function useQueue<T>(delay: number = 10_000) {
   const timeoutRef = useRef<number | null>(null)
 
   const processQueue = useCallback(() => {
-    if (queue.current.length === 0) return
+    if (queue.current.length === 0) {
+      return
+    }
 
     // Set the current item to the first item in the queue.
     const nextItem = queue.current.shift() ?? null
@@ -27,7 +29,9 @@ function useQueue<T>(delay: number = 10_000) {
       queue.current.push(message)
 
       // If nothing is currently shown, process the next item immediately.
-      if (!current) processQueue()
+      if (!current) {
+        processQueue()
+      }
     },
     [current, processQueue]
   )
@@ -47,7 +51,9 @@ function useQueue<T>(delay: number = 10_000) {
   // Clear timeout on unmount to prevent memory leaks.
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current)
+      }
     }
   }, [])
 

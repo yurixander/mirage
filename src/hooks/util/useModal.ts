@@ -1,6 +1,6 @@
 import {create} from "zustand"
 
-interface ModelState {
+type ModelState = {
   elements: JSX.Element[]
   showModal: (element: JSX.Element) => void
   closeModal: (element: JSX.Element) => void

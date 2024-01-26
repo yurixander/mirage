@@ -15,6 +15,7 @@ const RoomsList: FC<RoomsListProps> = ({rooms}) => {
     <section className="RoomsList">
       <nav className="spaces">
         <Label text={"Spaces"} />
+
         {spaces.map((space, index) => (
           <Room
             key={index}
@@ -27,8 +28,10 @@ const RoomsList: FC<RoomsListProps> = ({rooms}) => {
           />
         ))}
       </nav>
+
       <nav className="channels">
         <Label text={"Channels"} />
+
         {textChannels.map((channel, index) => (
           <Room
             key={index}

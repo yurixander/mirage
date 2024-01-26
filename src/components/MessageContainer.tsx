@@ -31,6 +31,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
           }}>
           <img src={authorAvatarUrl} />
         </div>
+
         <div className="body">
           <span
             className="author-name"
@@ -40,6 +41,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
             }}>
             {authorDisplayName}
           </span>
+
           <div className="content">
             {content}
             <time className="time">{localeTimeString}</time>

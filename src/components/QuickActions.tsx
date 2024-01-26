@@ -32,12 +32,14 @@ const QuickActions: FC<QuickActionsProps> = ({
         tooltipPlacement="right"
         icon={faPaperPlane}
       />
+
       <IconButton
         onClick={onViewCalls}
         tooltip="Calls"
         tooltipPlacement="right"
         icon={faPhone}
       />
+
       <IconButton
         onClick={onViewNotifications}
         tooltip="Notifications"
@@ -45,12 +47,14 @@ const QuickActions: FC<QuickActionsProps> = ({
         icon={faBell}
         isDotShowed={true}
       />
+
       <IconButton
         onClick={onOpenExtensions}
         tooltip="Extensions"
         tooltipPlacement="right"
         icon={faBox}
       />
+
       <IconButton
         onClick={onLogout}
         tooltip="Sign out"

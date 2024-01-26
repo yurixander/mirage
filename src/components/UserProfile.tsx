@@ -70,12 +70,15 @@ const UserProfile: FC<UserProfileProps> = ({
   switch (status) {
     case UserStatus.Online:
       userStatusClassName = "online"
+
       break
     case UserStatus.Offline:
       userStatusClassName = "offline"
+
       break
     case UserStatus.Idle:
       userStatusClassName = "idle"
+
       break
   }
 
@@ -102,12 +105,15 @@ const UserProfile: FC<UserProfileProps> = ({
     <div className="UserProfile">
       <div className={"avatar-wrapper " + isLargeClassName}>
         <div className={"avatar"}>{avatarImage}</div>
+
         <div className={"status " + userStatusClassName} />
       </div>
+
       <div className="info">
         <div style={{color: displayNameColor}} className="display-name">
           {trim(displayName, MAX_DISPLAY_NAME_LENGTH)}
         </div>
+
         <div className="activity">
           {icon && <FontAwesomeIcon icon={icon} className="activity-icon" />}
           {activityOrText}

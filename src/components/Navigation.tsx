@@ -19,15 +19,20 @@ const Navigation: FC<NavigationProps> = ({servers}) => {
             /* TODO:  Handle click on logo. */
           }}
         />
+
         <div className="app-name">
           <div>Mirage</div>
+
           <span className="copyright">©</span>
         </div>
+
         <div className="divider" />
+
         <div className="servers">
           {servers.map((server, index) => (
             <ServerListItem key={index} {...server} />
           ))}
+
           <Tippy
             content="Add server"
             arrow={true}

@@ -15,8 +15,11 @@ const KeyCue: FC<KeyCueProps> = ({alt, ctrl, shift, char}) => {
   return (
     <div className="KeyCue">
       {ctrl && "⌃"}
+
       {alt && "⌥"}
+
       {shift && "⇧"}
+
       {char}
     </div>
   )

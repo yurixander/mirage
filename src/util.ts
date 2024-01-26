@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 
-export enum Path {
+export enum ViewPath {
   App = "/",
   Login = "/login",
 }

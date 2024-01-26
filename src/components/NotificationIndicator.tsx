@@ -22,7 +22,9 @@ const NotificationIndicator: FC<NotificationIndicatorProps> = ({
 
   const classNames = ["indicator"]
 
-  if (mentionAmount !== undefined) classNames.push("mention")
+  if (mentionAmount !== undefined) {
+    classNames.push("mention")
+  }
 
   const adjustedAmount =
     mentionAmount !== undefined

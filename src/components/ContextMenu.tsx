@@ -49,13 +49,10 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
   )
 
   useEffect(() => {
-    const handleWindowClick = () => {
-      hideMenu()
-    }
+    window.addEventListener("click", hideMenu)
 
-    window.addEventListener("click", handleWindowClick)
     return () => {
-      window.removeEventListener("click", handleWindowClick)
+      window.removeEventListener("click", hideMenu)
     }
   }, [hideMenu])
 
