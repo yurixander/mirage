@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/Avatar.sass"
 
 export type AvatarProps = {
@@ -6,15 +7,13 @@ export type AvatarProps = {
   avatarUrl?: string
 }
 
-export default function Avatar(props: AvatarProps) {
-  const imageClassNames = `image ${props.isRounded ? "rounded" : ""}`
+const Avatar: FC<AvatarProps> = ({isRounded, displayName, avatarUrl}) => {
+  const imageClassNames = `image ${isRounded ? "rounded" : ""}`
   return (
-    <div className="" key={props.displayName}>
-      <img
-        className={imageClassNames}
-        src={props.avatarUrl}
-        alt={props.displayName}
-      />
+    <div className="Avatar" key={displayName}>
+      <img className={imageClassNames} src={avatarUrl} alt={displayName} />
     </div>
   )
 }
+
+export default Avatar

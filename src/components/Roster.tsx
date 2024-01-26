@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/Roster.sass"
 import IconButton from "./IconButton"
 import Label from "./Label"
@@ -24,11 +25,11 @@ export type RosterProps = {
   users: RosterUserData[]
 }
 
-export default function Roster(props: RosterProps) {
-  const admins = props.users.filter(
+const Roster: FC<RosterProps> = ({users}) => {
+  const admins = users.filter(
     user => user.category === RosterUserCategory.Admin
   )
-  const members = props.users.filter(
+  const members = users.filter(
     user => user.category === RosterUserCategory.Member
   )
 
@@ -68,3 +69,5 @@ export default function Roster(props: RosterProps) {
     </div>
   )
 }
+
+export default Roster

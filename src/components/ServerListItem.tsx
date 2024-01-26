@@ -1,6 +1,7 @@
 import "../styles/ServerListItem.sass"
 import Avatar from "boring-avatars"
 import Tippy from "@tippyjs/react"
+import {type FC} from "react"
 
 export type ServerListItemProps = {
   avatarUrl?: string
@@ -9,12 +10,17 @@ export type ServerListItemProps = {
   tooltip: string
 }
 
-export default function ServerListItem(props: ServerListItemProps) {
-  const selectedClassName = props.isActive ? "selected" : ""
+const ServerListItem: FC<ServerListItemProps> = ({
+  avatarUrl,
+  isActive,
+  onClick,
+  tooltip,
+}) => {
+  const selectedClassName = isActive ? "selected" : ""
 
   const avatarImage =
-    props.avatarUrl !== undefined ? (
-      <img src={props.avatarUrl} />
+    avatarUrl !== undefined ? (
+      <img src={avatarUrl} />
     ) : (
       <Avatar variant="bauhaus" name="Margaret Sanger" />
     )
@@ -25,19 +31,21 @@ export default function ServerListItem(props: ServerListItemProps) {
         <div className={"indicator " + selectedClassName} />
       </div>
       <Tippy
-        content={props.tooltip}
+        content={tooltip}
         arrow={true}
         inertia={true}
         animation="scale-subtle"
         duration={100}
         placement={"right"}>
         <div
-          tabIndex={!props.isActive ? 0 : undefined}
+          tabIndex={!isActive ? 0 : undefined}
           className={"avatar " + selectedClassName}
-          onClick={props.onClick}>
+          onClick={onClick}>
           {avatarImage}
         </div>
       </Tippy>
     </div>
   )
 }
+
+export default ServerListItem

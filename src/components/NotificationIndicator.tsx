@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/NotificationIndicator.sass"
 import {assert} from "../util"
 
@@ -5,31 +6,31 @@ export type NotificationIndicatorProps = {
   mentionAmount?: number
 }
 
-export default function NotificationIndicator(
-  props: NotificationIndicatorProps
-) {
-  if (props.mentionAmount !== undefined) {
+const NotificationIndicator: FC<NotificationIndicatorProps> = ({
+  mentionAmount,
+}) => {
+  if (mentionAmount !== undefined) {
     assert(
-      props.mentionAmount > 0,
+      mentionAmount > 0,
       "mention amount should be greater than zero if it's defined"
     )
     assert(
-      Number.isInteger(props.mentionAmount),
+      Number.isInteger(mentionAmount),
       "mention amount should never be a decimal"
     )
   }
 
   const classNames = ["indicator"]
 
-  if (props.mentionAmount !== undefined) classNames.push("mention")
+  if (mentionAmount !== undefined) classNames.push("mention")
 
   const adjustedAmount =
-    props.mentionAmount !== undefined
+    mentionAmount !== undefined
       ? // If there's too many notifications to display, just show "99+"
         // to avoid overflowing the dot to a larger width.
-        props.mentionAmount > 99
+        mentionAmount > 99
         ? "99+"
-        : props.mentionAmount.toString()
+        : mentionAmount.toString()
       : undefined
 
   return (
@@ -40,3 +41,5 @@ export default function NotificationIndicator(
     </div>
   )
 }
+
+export default NotificationIndicator

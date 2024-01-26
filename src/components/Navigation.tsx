@@ -3,12 +3,13 @@ import {ReactComponent as AppLogo} from "../../public/logo.svg"
 import {ReactComponent as AddServerIcon} from "../../public/icons/add-server.svg"
 import ServerListItem, {type ServerListItemProps} from "./ServerListItem"
 import Tippy from "@tippyjs/react"
+import {type FC} from "react"
 
 export type NavigationProps = {
   servers: ServerListItemProps[]
 }
 
-export default function Navigation(props: NavigationProps) {
+const Navigation: FC<NavigationProps> = ({servers}) => {
   return (
     <div className="Navigation">
       <div className="container">
@@ -24,7 +25,7 @@ export default function Navigation(props: NavigationProps) {
         </div>
         <div className="divider" />
         <div className="servers">
-          {props.servers.map((server, index) => (
+          {servers.map((server, index) => (
             <ServerListItem key={index} {...server} />
           ))}
           <Tippy
@@ -47,3 +48,5 @@ export default function Navigation(props: NavigationProps) {
     </div>
   )
 }
+
+export default Navigation

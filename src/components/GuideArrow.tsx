@@ -3,6 +3,7 @@ import {ReactComponent as BigStarIcon} from "../../public/icons/big-star.svg"
 import arrow from "../../public/icons/arrow.svg"
 import {ReactComponent as DotIcon} from "../../public/icons/dot.svg"
 import {ReactComponent as LittleStartIcon} from "../../public/icons/little-star.svg"
+import {type FC} from "react"
 
 export enum GuideArrowOrientation {
   Left,
@@ -14,15 +15,15 @@ export type GuideArrowProps = {
   orientation: GuideArrowOrientation
 }
 
-export default function GuideArrow(props: GuideArrowProps) {
+const GuideArrow: FC<GuideArrowProps> = ({orientation, text}) => {
   const ROTATION_DEGREE_AMOUNT = 15
 
   const rotation =
-    props.orientation === GuideArrowOrientation.Left
+    orientation === GuideArrowOrientation.Left
       ? `rotate(-${ROTATION_DEGREE_AMOUNT}deg)`
       : `rotate(${ROTATION_DEGREE_AMOUNT}deg)`
 
-  const arrowFlip = props.orientation === GuideArrowOrientation.Left ? 1 : -1
+  const arrowFlip = orientation === GuideArrowOrientation.Left ? 1 : -1
 
   // TODO: `translate` part should be in the SASS file.
   const arrowTransform = `scaleX(${arrowFlip})`
@@ -35,8 +36,10 @@ export default function GuideArrow(props: GuideArrowProps) {
       <DotIcon className="dot" />
       <DotIcon className="dot" />
       <BigStarIcon className="big-star" />
-      <span className="text">{props.text}</span>
+      <span className="text">{text}</span>
       <img style={{transform: arrowTransform}} src={arrow} className="arrow" />
     </div>
   )
 }
+
+export default GuideArrow

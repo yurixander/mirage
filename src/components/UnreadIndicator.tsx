@@ -1,6 +1,6 @@
 import "../styles/UnreadIndicator.sass"
 
-export default function UnreadIndicator() {
+const UnreadIndicator = () => {
   return (
     <div className="UnreadIndicator">
       <div className="line" />
@@ -9,3 +9,5 @@ export default function UnreadIndicator() {
     </div>
   )
 }
+
+export default UnreadIndicator

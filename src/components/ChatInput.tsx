@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from "react"
+import {type FC, useCallback, useEffect, useRef, useState} from "react"
 import "../styles/ChatInput.sass"
 import IconButton from "./IconButton"
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
@@ -8,11 +8,11 @@ export type ChatInputProps = {
   isReplyMode?: boolean
 }
 
-export default function ChatInput(props: ChatInputProps) {
+const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
   const [value, setValue] = useState("")
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  const isDisabledClassName = props.isDisabled ? "disabled" : ""
+  const isDisabledClassName = isDisabled ? "disabled" : ""
 
   useEffect(() => {
     const textarea = textareaRef.current
@@ -43,7 +43,7 @@ export default function ChatInput(props: ChatInputProps) {
         onChange={value => {
           setValue(value.target.value)
         }}
-        disabled={props.isDisabled}></textarea>
+        disabled={isDisabled}></textarea>
       <div className="send">
         <IconButton
           onClick={() => {
@@ -53,9 +53,11 @@ export default function ChatInput(props: ChatInputProps) {
           tooltipPlacement={"auto"}
           icon={faPaperPlane}
           color="#C463FF"
-          isDisabled={props.isDisabled}
+          isDisabled={isDisabled}
         />
       </div>
     </div>
   )
 }
+
+export default ChatInput

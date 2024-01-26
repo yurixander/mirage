@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/UserProfileGhost.sass"
 
 export type UserProfileGhostProps = {
@@ -5,11 +6,13 @@ export type UserProfileGhostProps = {
   opacityMultiplier: number
 }
 
-export default function UserProfileGhost(props: UserProfileGhostProps) {
+const UserProfileGhost: FC<UserProfileGhostProps> = ({
+  count,
+  opacityMultiplier,
+}) => {
   const ghosts = []
 
-  for (let i = 1; i <= props.count; i++)
-    ghosts.push(i * props.opacityMultiplier)
+  for (let i = 1; i <= count; i++) ghosts.push(i * opacityMultiplier)
 
   return (
     <div className="user-ghost-container">
@@ -31,3 +34,5 @@ export default function UserProfileGhost(props: UserProfileGhostProps) {
     </div>
   )
 }
+
+export default UserProfileGhost

@@ -2,7 +2,7 @@ import "../styles/SearchBar.sass"
 import {faSearch} from "@fortawesome/free-solid-svg-icons"
 import KeyCue from "./KeyCue"
 import useGlobalHotkey from "../hooks/useGlobalHotkey"
-import React, {useState} from "react"
+import React, {type FC, useState} from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export type SearchResult = {
@@ -14,7 +14,7 @@ export type SearchBarProps = {
   onQueryChange: (query: string) => SearchResult[]
 }
 
-export default function SearchBar(props: SearchBarProps) {
+const SearchBar: FC<SearchBarProps> = ({onQueryChange}) => {
   const KEYBOARD_HOTKEY_CHAR = "s"
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [results, setResults] = useState<SearchResult[]>([])
@@ -41,7 +41,7 @@ export default function SearchBar(props: SearchBarProps) {
     }
 
     // OPTIMIZE: In the future, this can be optimized by caching the results, and also using a trie data structure to handle character-by-character changes in the query.
-    setResults(props.onQueryChange(event.target.value))
+    setResults(onQueryChange(event.target.value))
   }
 
   return (
@@ -66,3 +66,5 @@ export default function SearchBar(props: SearchBarProps) {
     </div>
   )
 }
+
+export default SearchBar

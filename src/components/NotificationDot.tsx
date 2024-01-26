@@ -1,3 +1,4 @@
+import {type FC} from "react"
 import "../styles/NotificationDot.sass"
 
 export type NotificationDotProps = {
@@ -5,11 +6,13 @@ export type NotificationDotProps = {
   isShowed: boolean
 }
 
-export default function NotificationDot(props: NotificationDotProps) {
+const NotificationDot: FC<NotificationDotProps> = ({children, isShowed}) => {
   return (
     <div className="NotificationDot">
-      <div className="children">{props.children}</div>
-      {props.isShowed && <div className="dot" />}
+      <div className="children">{children}</div>
+      {isShowed && <div className="dot" />}
     </div>
   )
 }
+
+export default NotificationDot
