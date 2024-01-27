@@ -51,6 +51,7 @@ module.exports = {
         "avatarSize": "40px",
         "dotSize": "6px",
         "checkBoxSize": "13px",
+        "loaderSize": "1rem",
       },
       fontSize: {
         small: "10px",
@@ -70,18 +71,24 @@ module.exports = {
         10: "10px", // rounded-10
         5: "5px",
         3: "3px",
+        50: "50%",
       },
       borderWidth: {
         1: "1px", // border-1
+        3: "3px",
       },
       lineHeight: {
         100: "100%", // leading-100
         160: "160%",
       },
     },
+    margin: {
+      "1ch": "1ch",
+    },
     animation: {
       hold: "hold 200ms",
       fadeIn: "fadeIn 0.3s ease-out",
+      spin: "rotate 0.6s infinite linear",
     },
     keyframes: {
       // Usage: animate-[keyframe-name]
@@ -136,6 +143,10 @@ module.exports = {
           opacity: "1",
           transform: "translateY(0)",
         },
+      },
+      "rotate": {
+        "50%": {opacity: "0.5", filter: "blur(1px)"},
+        "100%": {transform: "rotate(360deg)"},
       },
     },
   },
