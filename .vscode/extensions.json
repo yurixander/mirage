@@ -6,7 +6,6 @@
     "shardulm94.trailing-spaces",
     "AntiAntiSepticeye.vscode-color-picker",
     "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "stylelint.vscode-stylelint"
+    "dbaeumer.vscode-eslint"
   ]
 }
