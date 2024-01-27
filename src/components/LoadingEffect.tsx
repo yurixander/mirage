@@ -1,8 +1,7 @@
 import {type FC} from "react"
-import "../styles/LoadingEffect.sass"
 
 const LoadingEffect: FC = () => {
-  return <div className="LoadingEffect" />
+  return <div className="h-full w-0 animate-loading" />
 }
 
 export default LoadingEffect

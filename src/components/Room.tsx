@@ -1,9 +1,9 @@
 import {faHashtag, faStarOfLife} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {type FC} from "react"
-import "../styles/Room.sass"
 import {assert, trim} from "../utils/util"
 import NotificationIndicator from "./NotificationIndicator"
+import {twMerge} from "tailwind-merge"
 
 export enum RoomType {
   Text,
@@ -30,19 +30,32 @@ const Room: FC<RoomProps> = ({
   assert(name.length !== 0, "room name should not be empty")
 
   // Determine CSS class to apply based on the active state of the room.
-  const activeClass = isActive ? "active" : ""
+  const activeClass = isActive ? "text-primary" : "text-grayText"
 
   const icon = type === RoomType.Text ? faHashtag : faStarOfLife
   const mentionCountProp = mentionCount > 0 ? mentionCount : undefined
   const MAX_NAME_LENGTH = 16
 
   return (
-    <div onClick={onClick} className="Room">
-      <div className="container">
-        <div className="animation-container">
-          <FontAwesomeIcon icon={icon} className={"icon " + activeClass} />
+    <div
+      onClick={onClick}
+      className="group flex cursor-pointer flex-row items-center">
+      <div className="w-full">
+        <div className="group w-max group-active:scale-90 group-active:transition group-active:duration-300">
+          <FontAwesomeIcon
+            icon={icon}
+            className={twMerge(
+              "mr-10px group-active:transition-colors group-active:duration-1000 group-active:text-primary",
+              activeClass
+            )}
+          />
 
-          <span className={activeClass + " name"}>
+          <span
+            className={twMerge(
+              "mr-auto",
+              isActive ? "text-primary" : "text-textColorDefault",
+              "group-active:transition-colors group-active:duration-1000 group-active:text-primary"
+            )}>
             {trim(name, MAX_NAME_LENGTH)}
           </span>
         </div>

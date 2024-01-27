@@ -13,7 +13,7 @@ const Avatar: FC<AvatarProps> = ({isRounded, displayName, avatarUrl}) => {
   return (
     <div key={displayName}>
       <img
-        className={twMerge("size-x2", isRoundedClass)}
+        className={twMerge("w-x2 h-x2", isRoundedClass)}
         src={avatarUrl}
         alt={displayName}
       />

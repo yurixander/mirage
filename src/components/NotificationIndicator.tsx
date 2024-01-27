@@ -1,6 +1,7 @@
+/* eslint-disable tailwindcss/enforces-shorthand */
 import {type FC} from "react"
-import "../styles/NotificationIndicator.sass"
 import {assert} from "../utils/util"
+import {twMerge} from "tailwind-merge"
 
 export type NotificationIndicatorProps = {
   mentionAmount?: number
@@ -21,11 +22,10 @@ const NotificationIndicator: FC<NotificationIndicatorProps> = ({
     )
   }
 
-  const classNames = ["indicator"]
-
-  if (mentionAmount !== undefined) {
-    classNames.push("mention")
-  }
+  const isMentionClass =
+    mentionAmount !== undefined
+      ? "h-auto w-auto rounded-5 bg-red px-3px py-6px"
+      : "rounded-50 bg-contrastDarker h-10px w-10px"
 
   const adjustedAmount =
     mentionAmount !== undefined
@@ -37,8 +37,8 @@ const NotificationIndicator: FC<NotificationIndicatorProps> = ({
       : undefined
 
   return (
-    <div className="NotificationIndicator">
-      <div className={classNames.join(" ")}>
+    <div className="flex h-10px w-10px items-center justify-center">
+      <div className={twMerge("inline-block text-contrast", isMentionClass)}>
         {adjustedAmount !== undefined && adjustedAmount}
       </div>
     </div>

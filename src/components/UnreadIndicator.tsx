@@ -1,13 +1,15 @@
-import "../styles/UnreadIndicator.sass"
-
 const UnreadIndicator = () => {
+  const lineTwClassName = "h-1px grow bg-red"
+
   return (
-    <div className="UnreadIndicator">
-      <div className="line" />
+    <div className="flex flex-row items-center justify-center">
+      <div className={lineTwClassName} />
 
-      <span className="uppercase">New messages</span>
+      <span className="mx-10px text-small uppercase text-red">
+        New messages
+      </span>
 
-      <div className="line" />
+      <div className={lineTwClassName} />
     </div>
   )
 }

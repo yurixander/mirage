@@ -1,5 +1,5 @@
+/* eslint-disable tailwindcss/enforces-shorthand */
 import {type FC} from "react"
-import "../styles/MessageContainer.sass"
 import {timeFormatter} from "../utils/util"
 
 export type MessageContainerProps = {
@@ -22,19 +22,20 @@ const MessageContainer: FC<MessageContainerProps> = ({
   const localeTimeString = timeFormatter(timestamp)
 
   return (
-    <div className="MessageContainer">
-      <div className="wrapper">
+    <div className="flex w-full items-start justify-start">
+      <div className="flex w-full gap-10px">
         <div
-          className="avatar"
+          className="flex h-avatarSize w-avatarSize cursor-pointer items-center
+          justify-center overflow-hidden rounded-10 bg-contrast"
           onClick={() => {
             onAuthorClick()
           }}>
-          <img src={authorAvatarUrl} />
+          <img className="size-full" src={authorAvatarUrl} />
         </div>
 
-        <div className="body">
+        <div className="w-full">
           <span
-            className="author-name"
+            className="select-text font-strong"
             style={{color: authorDisplayNameColor}}
             onClick={() => {
               onAuthorClick()
@@ -42,10 +43,12 @@ const MessageContainer: FC<MessageContainerProps> = ({
             {authorDisplayName}
           </span>
 
-          <div className="content">
+          <div className="flex">
             {content}
 
-            <time className="time">{localeTimeString}</time>
+            <time className="ml-auto flex text-grayText">
+              {localeTimeString}
+            </time>
           </div>
         </div>
       </div>
