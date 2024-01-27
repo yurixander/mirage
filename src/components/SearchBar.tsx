@@ -2,7 +2,6 @@ import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import {faSearch} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import React, {useState, type FC} from "react"
-import "../styles/SearchBar.sass"
 import KeyCue from "./KeyCue"
 
 export type SearchResult = {
@@ -45,10 +44,15 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange}) => {
   }
 
   return (
-    <div className={"SearchBar " + (results.length > 0 ? "open" : "")}>
-      <FontAwesomeIcon className="search-icon" icon={faSearch} />
+    <div
+      className={
+        "relative p-10px inline-flex justify-start items-center gap-5px bg-contrastDark rounded-10 " +
+        (results.length > 0 ? "rounded-bl-none rounded-br-none" : "")
+      }>
+      <FontAwesomeIcon className="text-contrastIcon" icon={faSearch} />
 
       <input
+        className="p-0"
         onChange={handleQueryChange}
         ref={inputRef}
         type="text"
@@ -58,9 +62,12 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange}) => {
       <KeyCue ctrl char={KEYBOARD_HOTKEY_CHAR} />
 
       {results.length > 0 && (
-        <div className="results">
+        <div className="absolute left-0 top-full w-full rounded-b-10 border-t border-solid border-contrastDarker bg-contrastDark p-10px">
           {results.map((result, index) => (
-            <div key={index} className="result" onClick={result.onClick}>
+            <div
+              key={index}
+              className="cursor-pointer rounded-5 p-10px hover:bg-contrastDarker"
+              onClick={result.onClick}>
               {result.text}
             </div>
           ))}

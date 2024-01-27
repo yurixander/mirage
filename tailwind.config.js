@@ -1,3 +1,5 @@
+const {transform} = require("typescript")
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -9,6 +11,7 @@ module.exports = {
     extend: {
       backgroundColor: {
         statusMessageBg: "transparentize(#e53e3e, 0.9)",
+        modalOverlay: "rgba(0, 0, 0, 0.5)",
       },
       maxWidth: {
         "size-600": "600px",
@@ -16,6 +19,7 @@ module.exports = {
       boxShadow: {
         checkBox: "inset 0 0 5px #D9D9D9",
         contextMenu: "0 0 15px 0 #D9D9D9",
+        userCard: "0 0 5px #D9D9D9",
       },
       colors: {
         textColorDefault: "#4B5563",
@@ -44,14 +48,18 @@ module.exports = {
         "x1": "15px", // m-x1 or w-x1
         "x2": "30px",
         "10px": "10px",
+        "6px": "6px",
         "5px": "5px",
         "3px": "3px",
         "2px": "2px",
+        "1px": "1px",
         "icon": "18px",
+        "1ch": "1ch",
         "avatarSize": "40px",
         "dotSize": "6px",
         "checkBoxSize": "13px",
         "loaderSize": "1rem",
+        "userCardSize": "250px",
       },
       fontSize: {
         small: "10px",
@@ -71,6 +79,7 @@ module.exports = {
         10: "10px", // rounded-10
         5: "5px",
         3: "3px",
+        1: "1px",
         50: "50%",
       },
       borderWidth: {
@@ -82,13 +91,13 @@ module.exports = {
         160: "160%",
       },
     },
-    margin: {
-      "1ch": "1ch",
-    },
     animation: {
-      hold: "hold 200ms",
-      fadeIn: "fadeIn 0.3s ease-out",
-      spin: "rotate 0.6s infinite linear",
+      "hold": "hold 200ms",
+      "fadeIn": "fadeIn 0.3s ease-out",
+      "spin": "rotate 0.6s infinite linear",
+      "enter": "enter 200ms",
+      "dot-jump": "dot-jump 400ms ease-in-out infinite alternate",
+      "loading": "loading 1.5s infinite ease-in-out",
     },
     keyframes: {
       // Usage: animate-[keyframe-name]
@@ -98,6 +107,22 @@ module.exports = {
         },
         to: {
           transform: "scale(0.8)",
+        },
+      },
+      "loading": {
+        "0%": {
+          transform: "translate(-75px, 0)",
+          boxShadow: "0 0 40px 30px #E9EBED",
+        },
+        "50%": {
+          boxShadow: "0 0 70px 50px #E9EBED",
+        },
+        "75%": {
+          boxShadow: "0 0 40px 20px #E9EBED",
+        },
+        "100%": {
+          transform: "translate(275px, 0)",
+          boxShadow: "0 0 20px 15px #E9EBED",
         },
       },
       "indicator": {
@@ -150,5 +175,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animation-delay")],
 }

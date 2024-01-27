@@ -1,5 +1,5 @@
 import {useMemo, type FC} from "react"
-import "../styles/Modal.sass"
+import {twMerge} from "tailwind-merge"
 
 export enum ModalPosition {
   Left = "left",
@@ -11,6 +11,23 @@ export enum ModalPosition {
 export type ModalProps = {
   position?: ModalPosition
   dialogs: JSX.Element[]
+}
+
+const popupPosition = (position?: ModalPosition): string => {
+  switch (position) {
+    case ModalPosition.Left:
+      return "items-center justify-start"
+    case ModalPosition.Right:
+      return "items-center justify-end"
+    case ModalPosition.Top:
+      return "items-start justify-center"
+    case ModalPosition.Bottom:
+      return "items-end justify-center"
+    case undefined:
+      return "items-center justify-center"
+    default:
+      return "items-center justify-center"
+  }
 }
 
 const Modal: FC<ModalProps> = ({position, dialogs}) => {
@@ -26,11 +43,15 @@ const Modal: FC<ModalProps> = ({position, dialogs}) => {
   }
 
   return (
-    <div data-style={position} className="modal-overlay">
+    <div
+      className={twMerge(
+        "fixed inset-0 flex content-center items-center bg-modalOverlay *:absolute",
+        popupPosition(position)
+      )}>
       {dialogsToShow.map((dialog, index) => (
         <div
           key={index}
-          className="popups"
+          className="animate-enter"
           style={{opacity: calculateOpacity(index)}}>
           {dialog}
         </div>

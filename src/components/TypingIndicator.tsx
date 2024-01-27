@@ -1,6 +1,6 @@
 import {type FC} from "react"
-import "../styles/TypingIndicator.sass"
 import Avatar from "./Avatar"
+import {twMerge} from "tailwind-merge"
 
 export type TypingIndicatorUser = {
   displayName: string
@@ -19,7 +19,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
     <>
       {users.map((user, index, array) => (
         <span key={index}>
-          <span className="name text-strong" style={{color: user.color}}>
+          <span className="font-strong" style={{color: user.color}}>
             {user.displayName}
           </span>
           {index < array.length - 2 ? ", " : ""}
@@ -32,23 +32,26 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   const MAX_VISIBLE_TYPING_USERS = 3
   const who = users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
 
+  const dotTwClassName =
+    "h-10px w-10px animate-dot-jump rounded-50 bg-contrastDarker"
+
   return (
-    <div className="TypingIndicator">
-      <div className="dots">
-        <div className="dot" />
+    <div className="inline-flex items-center gap-10px">
+      <div className="inline-flex translate-y-3 gap-2px">
+        <div className={dotTwClassName} />
 
-        <div className="dot" />
+        <div className={twMerge(dotTwClassName, "animation-delay-150")} />
 
-        <div className="dot" />
+        <div className={twMerge(dotTwClassName, "animation-delay-300")} />
       </div>
 
-      <div className="avatars">
+      <div className="flex">
         {users.map(
           (user, index) =>
             user.avatarUrl && (
               <div
                 key={index}
-                className={index === 1 || index === 2 ? "move-left" : ""}>
+                className={index === 1 || index === 2 ? "-ml-x1" : ""}>
                 <Avatar
                   isRounded={true}
                   displayName={user.displayName}
@@ -59,7 +62,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
         )}
       </div>
 
-      <div className="text">
+      <div>
         {who} {verbForm} typing...
       </div>
     </div>
