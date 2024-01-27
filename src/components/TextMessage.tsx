@@ -1,4 +1,3 @@
-import "../styles/TextMessage.sass"
 import ContextMenu from "./ContextMenu"
 import {
   faReply,
@@ -61,7 +60,9 @@ const TextMessage: FC<TextMessageProps> = ({
           authorDisplayName={authorDisplayName}
           authorDisplayNameColor={authorDisplayNameColor}
           authorAvatarUrl={authorAvatarUrl}
-          content={<div className="message-text">{text}</div>}
+          content={
+            <div className="max-w-size-600 select-text leading-160">{text}</div>
+          }
           timestamp={timestamp}
           onAuthorClick={onAuthorClick}
         />

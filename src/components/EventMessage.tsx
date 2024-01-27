@@ -1,4 +1,3 @@
-import "../styles/EventMessage.sass"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faPencil} from "@fortawesome/free-solid-svg-icons"
 import {timeFormatter} from "../util"
@@ -13,12 +12,12 @@ const EventMessage: FC<EventMessageProps> = ({content, timestamp}) => {
   const localeTimeString = timeFormatter(timestamp)
 
   return (
-    <div className="EventMessage">
-      <div className="pencil-container">
-        <FontAwesomeIcon icon={faPencil} className="pencil-icon" />
+    <div className="flex items-center gap-10px">
+      <div className="flex w-avatarSize items-center justify-end">
+        <FontAwesomeIcon icon={faPencil} className="text-contrastIcon" />
       </div>
-      <div className="content">{content}</div>
-      <time className="time">{localeTimeString}</time>
+      <div className="select-text italic leading-160">{content}</div>
+      <time className="ml-auto text-grayText">{localeTimeString}</time>
     </div>
   )
 }

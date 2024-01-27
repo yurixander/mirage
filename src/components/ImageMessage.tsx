@@ -1,5 +1,4 @@
 import {type FC} from "react"
-import "../styles/ImageMessage.sass"
 import ContextMenu from "./ContextMenu"
 import MessageContainer from "./MessageContainer"
 import {
@@ -60,11 +59,14 @@ const ImageMessage: FC<ImageMessageProps> = ({
   timestamp,
 }) => {
   const content = (
-    <div className="Content">
-      <div className="container">
-        <img className="image" src={imageUrl} />
+    <div className="pt-3px">
+      <div className="h-52 w-44">
+        <img
+          className="size-full cursor-pointer rounded-10 object-cover"
+          src={imageUrl}
+        />
       </div>
-      <div className="text">{text}</div>
+      <div className="max-w-size-600 select-text leading-160">{text}</div>
     </div>
   )
 

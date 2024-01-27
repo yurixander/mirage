@@ -1,4 +1,3 @@
-import "../styles/UserBar.sass"
 import IconButton from "./IconButton"
 import UserProfile, {type UserStatus} from "./UserProfile"
 import {trim} from "../util"
@@ -23,8 +22,8 @@ const UserBar: FC<UserBarProps> = ({
   const MAX_NAME_LENGTH = 18
 
   return (
-    <section className="UserBar">
-      <div className="profile-container">
+    <section className="flex gap-5px p-x1">
+      <div className="m-auto">
         <UserProfile
           avatarUrl={avatarUrl}
           text={trim(username, MAX_NAME_LENGTH)}

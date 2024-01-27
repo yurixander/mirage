@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import "../styles/NotificationDot.sass"
+import {twMerge} from "tailwind-merge"
 
 export type NotificationDotProps = {
   children: JSX.Element
@@ -8,9 +8,16 @@ export type NotificationDotProps = {
 
 const NotificationDot: FC<NotificationDotProps> = ({children, isShowed}) => {
   return (
-    <div className="NotificationDot">
-      <div className="children">{children}</div>
-      {isShowed && <div className="dot" />}
+    <div className="relative inline">
+      <div>{children}</div>
+      {isShowed && (
+        <div
+          className={twMerge(
+            "absolute top-0 right-0 size-dotSize",
+            "bg-red rounded-10 border-1 border-solid border-contrast"
+          )}
+        />
+      )}
     </div>
   )
 }

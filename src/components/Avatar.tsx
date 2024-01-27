@@ -1,5 +1,4 @@
 import {type FC} from "react"
-import "../styles/Avatar.sass"
 
 export type AvatarProps = {
   isRounded: boolean
@@ -8,9 +7,10 @@ export type AvatarProps = {
 }
 
 const Avatar: FC<AvatarProps> = ({isRounded, displayName, avatarUrl}) => {
-  const imageClassNames = `image ${isRounded ? "rounded" : ""}`
+  const imageClassNames = `size-x2 ${isRounded ? "rounded-[50%]" : ""}`
+
   return (
-    <div className="Avatar" key={displayName}>
+    <div key={displayName}>
       <img className={imageClassNames} src={avatarUrl} alt={displayName} />
     </div>
   )
