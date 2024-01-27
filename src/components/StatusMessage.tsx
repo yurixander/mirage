@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import "../styles/StatusMessage.sass"
+import {twMerge} from "tailwind-merge"
 
 type Props = {
   className?: string
@@ -7,7 +7,11 @@ type Props = {
 }
 
 const StatusMessage: FC<Props> = ({className, text}) => {
-  return <div className={"StatusMessage " + className}>{text}</div>
+  const twClassName = twMerge(
+    "p-2 bg-statusMessageBg text-red text-center",
+    "border-1 border-solid border-statusMessageColor rounded-10"
+  )
+  return <div className={twClassName + className}>{text}</div>
 }
 
 export default StatusMessage

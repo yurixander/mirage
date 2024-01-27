@@ -1,8 +1,8 @@
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
-import "../styles/ContextMenu.sass"
 import {type FC, useCallback, useEffect} from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {create} from "zustand"
+import {twMerge} from "tailwind-merge"
 
 export type ContextMenuItem = {
   label: string
@@ -56,27 +56,38 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
     }
   }, [hideMenu])
 
+  const contextMenuTwClassName = twMerge(
+    "absolute h-max w-44 rounded-5 z-50 bg-white",
+    "animate-fadeIn shadow-contextMenu"
+  )
+  const containerTwClassName = "flex flex-col m-10px gap-3px"
+  const itemTwClassName = twMerge(
+    "flex gap-10px p-10px cursor-pointer text-textColorDefault",
+    "focus-visible:transition focus-visible:duration-150",
+    "focus-visible:outline-2 focus-visible:text-outlineTab focus-visible:rounded-5",
+    "hover:bg-primary hover:rounded-5 hover:text-white group"
+  )
   return (
     <>
       <div onContextMenu={handleContextMenu}>{children}</div>
       {isMenuActive && (
         <div
-          className="ContextMenu"
+          className={contextMenuTwClassName}
           style={{
             left: `${x}px`,
             top: `${y}px`,
           }}>
-          <div className="menu-container">
+          <div className={containerTwClassName}>
             {items.map((item, index) => (
               <div
                 tabIndex={0}
                 key={index}
-                className="item"
+                className={itemTwClassName}
                 onClick={item.action}>
-                <span className="text context-menu-style">{item.label}</span>
+                <span className="mr-auto font-strong">{item.label}</span>
                 {item.icon && (
                   <FontAwesomeIcon
-                    className="icon context-menu-style"
+                    className="text-textColorDefault group-hover:text-white"
                     icon={item.icon}
                   />
                 )}

@@ -7,6 +7,16 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundColor: {
+        statusMessageBg: "transparentize(#e53e3e, 0.9)",
+      },
+      maxWidth: {
+        "size-600": "600px",
+      },
+      boxShadow: {
+        checkBox: "inset 0 0 5px #D9D9D9",
+        contextMenu: "0 0 15px 0 #D9D9D9",
+      },
       colors: {
         textColorDefault: "#4B5563",
         red: "#FF6D6D",
@@ -27,6 +37,8 @@ module.exports = {
         cardActionsBg: "#F7F7F7",
         outlineTab: "#56b0ff",
         profileGhost: "#ffffff00",
+        keyCueBorderColor: "darken(#D9D9D9, 15%)",
+        statusMessageColor: "transparentize(#e53e3e, 0.7)",
       },
       spacing: {
         "x1": "15px", // m-x1 or w-x1
@@ -36,6 +48,9 @@ module.exports = {
         "3px": "3px",
         "2px": "2px",
         "icon": "18px",
+        "avatarSize": "40px",
+        "dotSize": "6px",
+        "checkBoxSize": "13px",
       },
       fontSize: {
         small: "10px",
@@ -54,6 +69,7 @@ module.exports = {
       borderRadius: {
         10: "10px", // rounded-10
         5: "5px",
+        3: "3px",
       },
       borderWidth: {
         1: "1px", // border-1
@@ -62,6 +78,10 @@ module.exports = {
         100: "100%", // leading-100
         160: "160%",
       },
+    },
+    animation: {
+      hold: "hold 200ms",
+      fadeIn: "fadeIn 0.3s ease-out",
     },
     keyframes: {
       // Usage: animate-[keyframe-name]

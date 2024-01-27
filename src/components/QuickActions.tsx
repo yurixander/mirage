@@ -1,5 +1,4 @@
 import {type FC} from "react"
-import "../styles/QuickActions.sass"
 import IconButton from "./IconButton"
 import {
   faPaperPlane,
@@ -25,7 +24,7 @@ const QuickActions: FC<QuickActionsProps> = ({
   onLogout,
 }) => {
   return (
-    <section className="QuickActions">
+    <section className="inline-flex flex-col gap-x1">
       <IconButton
         onClick={onViewDirectMessages}
         tooltip="Direct messages"
