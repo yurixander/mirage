@@ -1,6 +1,6 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import RoomsList, {type RoomsListProps} from "../components/RoomsList"
 import {RoomType} from "../components/Room"
+import RoomsList, {type RoomsListProps} from "../containers/RoomsList"
 
 type Story = StoryObj<typeof RoomsList>
 

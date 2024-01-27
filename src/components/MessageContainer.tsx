@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import "../styles/MessageContainer.sass"
-import {timeFormatter} from "../util"
+import {timeFormatter} from "../utils/util"
 
 export type MessageContainerProps = {
   authorDisplayName: string
@@ -44,6 +44,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
 
           <div className="content">
             {content}
+
             <time className="time">{localeTimeString}</time>
           </div>
         </div>

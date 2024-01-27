@@ -1,8 +1,7 @@
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
-import {type FC, useCallback, useEffect} from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {useCallback, useEffect, type FC} from "react"
 import {create} from "zustand"
-import {twMerge} from "tailwind-merge"
 
 export type ContextMenuItem = {
   label: string
@@ -41,9 +40,9 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
   const isMenuActive = activeMenuId === id
 
   const handleContextMenu = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      e.preventDefault()
-      showMenu(id, e.clientX, e.clientY)
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      showMenu(id, event.clientX, event.clientY)
     },
     [id, showMenu]
   )
@@ -56,23 +55,15 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
     }
   }, [hideMenu])
 
-  const contextMenuTwClassName = twMerge(
-    "absolute h-max w-44 rounded-5 z-50 bg-white",
-    "animate-fadeIn shadow-contextMenu"
-  )
   const containerTwClassName = "flex flex-col m-10px gap-3px"
-  const itemTwClassName = twMerge(
-    "flex gap-10px p-10px cursor-pointer text-textColorDefault",
-    "focus-visible:transition focus-visible:duration-150",
-    "focus-visible:outline-2 focus-visible:text-outlineTab focus-visible:rounded-5",
-    "hover:bg-primary hover:rounded-5 hover:text-white group"
-  )
+
   return (
     <>
       <div onContextMenu={handleContextMenu}>{children}</div>
+
       {isMenuActive && (
         <div
-          className={contextMenuTwClassName}
+          className="absolute z-50 h-max w-44 animate-fadeIn rounded-5 bg-white shadow-contextMenu"
           style={{
             left: `${x}px`,
             top: `${y}px`,
@@ -82,9 +73,10 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
               <div
                 tabIndex={0}
                 key={index}
-                className={itemTwClassName}
+                className="group flex cursor-pointer gap-10px p-10px text-textColorDefault hover:rounded-5 hover:bg-primary hover:text-white focus-visible:rounded-5 focus-visible:text-outlineTab focus-visible:outline-2 focus-visible:transition focus-visible:duration-150"
                 onClick={item.action}>
                 <span className="mr-auto font-strong">{item.label}</span>
+
                 {item.icon && (
                   <FontAwesomeIcon
                     className="text-textColorDefault group-hover:text-white"

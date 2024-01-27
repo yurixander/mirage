@@ -1,9 +1,9 @@
-import "../styles/Input.sass"
-import {type FC, useState} from "react"
-import Label from "./Label"
-import IconButton from "./IconButton"
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {useState, type FC} from "react"
+import "../styles/Input.sass"
+import IconButton from "./IconButton"
+import Label from "./Label"
 
 export type InputConstraint = {
   message: string
@@ -93,8 +93,9 @@ const Input: FC<InputProps> = ({
   icon,
   actions,
 }) => {
-  const isDisabledClassName = isDisabled ? " disabled" : ""
+  const isDisabledClass = isDisabled ? " disabled" : ""
   const [value, setValue] = useState(initialValue ?? "")
+
   const [violatedConstraints, setViolatedConstraints] = useState<
     InputConstraint[]
   >([])
@@ -112,11 +113,13 @@ const Input: FC<InputProps> = ({
       setViolatedConstraints(violations)
     }
 
-    if (onValueChange !== undefined) onValueChange(value)
+    if (onValueChange !== undefined) {
+      onValueChange(value)
+    }
   }
 
   return (
-    <div className={`Input ${className ?? "" + isDisabledClassName}`.trim()}>
+    <div className={`Input ${className ?? "" + isDisabledClass}`.trim()}>
       <div className="container" tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
         {icon && (
@@ -132,6 +135,7 @@ const Input: FC<InputProps> = ({
           placeholder={placeholder}
           value={parentValue ?? value}
           onChange={handleChange}></input>
+
         {actions && (
           <div className="actions">
             {actions?.map((action, index) => (

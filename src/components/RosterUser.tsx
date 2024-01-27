@@ -1,6 +1,5 @@
-import UserProfile, {type UserProfileProps} from "./UserProfile"
 import {type FC} from "react"
-import {twMerge} from "tailwind-merge"
+import UserProfile, {type UserProfileProps} from "./UserProfile"
 
 export type RosterUserProps = {
   userProfileProps: UserProfileProps
@@ -8,12 +7,9 @@ export type RosterUserProps = {
 }
 
 const RosterUser: FC<RosterUserProps> = ({userProfileProps, onClick}) => {
-  const focusVisible =
-    "focus-visible:outline-none focus-visible:border-2 focus-visible:border-solid focus-visible:border-outlineTab focus-visible:rounded-5 focus-visible:transition focus-visible:duration-150"
-
   return (
     <div
-      className={twMerge("w-max cursor-pointer p-5px", focusVisible)}
+      className="w-max cursor-pointer p-5px focus-visible:rounded-5 focus-visible:border-2 focus-visible:border-solid focus-visible:border-outlineTab focus-visible:outline-none focus-visible:transition focus-visible:duration-150"
       tabIndex={0}>
       <UserProfile {...userProfileProps} />
     </div>

@@ -1,9 +1,9 @@
-import "./styles/global.sass"
-import "./polyfills"
-import {BrowserRouter, Routes} from "react-router-dom"
-import {createRoot} from "react-dom/client"
 import {StrictMode} from "react"
-import {assert} from "./util"
+import {createRoot} from "react-dom/client"
+import {BrowserRouter, Routes} from "react-router-dom"
+import "./polyfills"
+import "./styles/global.sass"
+import {assert} from "./utils/util"
 
 const $root = document.getElementById("root")
 

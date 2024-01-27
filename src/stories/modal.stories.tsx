@@ -1,8 +1,8 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import Modal, {type ModalProps} from "../components/Modal"
-import Button, {ButtonVariant} from "../components/Button"
-import {ReactComponent as Stars} from "../../public/icons/stars.svg"
 import {ReactComponent as DotGrid} from "../../public/icons/dot-grid.svg"
+import {ReactComponent as Stars} from "../../public/icons/stars.svg"
+import Button, {ButtonVariant} from "../components/Button"
+import Modal, {type ModalProps} from "../components/Modal"
 import "../styles/WelcomePopup.sass"
 
 type Story = StoryObj<typeof Modal>
@@ -15,12 +15,12 @@ export const WithTwoDialogs: Story = {
   args: {
     dialogs: [
       <div className="TestPopup" key={0}>
-        <Button onClick={() => {}} text={"showPopup2"} />
+        <Button onClick={() => {}} label={"showPopup2"} />
       </div>,
       <div className="TestPopup" key={1}>
-        <Button onClick={() => {}} text={"showPopup2"} />
+        <Button onClick={() => {}} label={"showPopup2"} />
 
-        <Button onClick={() => {}} text={"close"} />
+        <Button onClick={() => {}} label={"close"} />
       </div>,
     ],
   },
@@ -55,7 +55,7 @@ export const WelcomePopup: Story = {
 
         <div className="actions">
           <Button
-            text="Got it, thanks ⟶"
+            label="Got it, thanks ⟶"
             variant={ButtonVariant.Default}
             onClick={() => {
               /* TODO: Handle click on View messages button. */

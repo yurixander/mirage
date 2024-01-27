@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import "../styles/UserCard.sass"
-import {timeFormatter} from "../util"
+import {timeFormatter} from "../utils/util"
 import Button, {ButtonVariant} from "./Button"
 import Label from "./Label"
 import UserProfile, {type UserProfileProps} from "./UserProfile"
@@ -53,7 +53,7 @@ const UserCard: FC<UserCardProps> = ({
 
       <div className="actions">
         <Button
-          text="View messages ⟶"
+          label="View messages ⟶"
           variant={ButtonVariant.Default}
           onClick={() => {
             /* TODO: Handle click on View messages button. */

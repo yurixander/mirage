@@ -1,9 +1,9 @@
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
-import "../styles/UserProfile.sass"
-import {assert, trim, validateUrl} from "../util"
-import Avatar from "boring-avatars"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import Avatar from "boring-avatars"
 import {type FC} from "react"
+import "../styles/UserProfile.sass"
+import {assert, trim, validateUrl} from "../utils/util"
 
 export enum UserActivity {
   Listening = "Listening to",
@@ -45,24 +45,26 @@ const UserProfile: FC<UserProfileProps> = ({
   )
 
   // TODO: check undefined values of the activity, platform and icon.
-  if (icon !== undefined)
+  if (icon !== undefined) {
     assert(
       activity !== undefined || platform !== undefined,
       "User activity and platform should not be undefined"
     )
-  else if (activity !== undefined)
+  } else if (activity !== undefined) {
     assert(
       icon !== undefined || platform !== undefined,
       "icon and platform should not be undefined or empty"
     )
-  else if (platform !== undefined)
+  } else if (platform !== undefined) {
     assert(
       icon !== undefined || activity !== undefined,
       "icon and activity should not be undefined"
     )
+  }
 
-  if (avatarUrl !== undefined)
+  if (avatarUrl !== undefined) {
     assert(validateUrl(avatarUrl), "avatar URL should be valid if defined")
+  }
 
   const MAX_DISPLAY_NAME_LENGTH = 18
   let userStatusClassName: string
@@ -93,6 +95,7 @@ const UserProfile: FC<UserProfileProps> = ({
     activity !== undefined ? (
       <span className="activity-or-text">
         {activity + " "}
+
         <span className="platform">{platform}</span>
       </span>
     ) : (
@@ -116,6 +119,7 @@ const UserProfile: FC<UserProfileProps> = ({
 
         <div className="activity">
           {icon && <FontAwesomeIcon icon={icon} className="activity-icon" />}
+
           {activityOrText}
         </div>
       </div>

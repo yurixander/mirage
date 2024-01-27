@@ -30,7 +30,6 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   )
 
   const MAX_VISIBLE_TYPING_USERS = 3
-
   const who = users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
 
   return (

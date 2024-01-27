@@ -5,7 +5,7 @@ const UnreadIndicator = () => {
     <div className="UnreadIndicator">
       <div className="line" />
 
-      <span>NEW MESSAGES</span>
+      <span className="uppercase">New messages</span>
 
       <div className="line" />
     </div>

@@ -1,12 +1,12 @@
-import {type FC} from "react"
-import IconButton from "./IconButton"
 import {
-  faPaperPlane,
-  faPhone,
   faBell,
   faBox,
+  faPaperPlane,
+  faPhone,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons"
+import {type FC} from "react"
+import IconButton from "./IconButton"
 
 export type QuickActionsProps = {
   onViewDirectMessages: () => void

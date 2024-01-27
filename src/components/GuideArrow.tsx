@@ -1,9 +1,9 @@
-import "../styles/GuideArrow.sass"
-import {ReactComponent as BigStarIcon} from "../../public/icons/big-star.svg"
+import {type FC} from "react"
 import arrow from "../../public/icons/arrow.svg"
+import {ReactComponent as BigStarIcon} from "../../public/icons/big-star.svg"
 import {ReactComponent as DotIcon} from "../../public/icons/dot.svg"
 import {ReactComponent as LittleStartIcon} from "../../public/icons/little-star.svg"
-import {type FC} from "react"
+import "../styles/GuideArrow.sass"
 
 export enum GuideArrowOrientation {
   Left,
@@ -41,7 +41,9 @@ const GuideArrow: FC<GuideArrowProps> = ({orientation, text}) => {
       <DotIcon className="dot" />
 
       <BigStarIcon className="big-star" />
+
       <span className="text">{text}</span>
+
       <img style={{transform: arrowTransform}} src={arrow} className="arrow" />
     </div>
   )

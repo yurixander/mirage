@@ -1,13 +1,13 @@
-import {type FC} from "react"
-import ContextMenu from "./ContextMenu"
-import MessageContainer from "./MessageContainer"
 import {
+  faDownload,
   faReply,
   faShare,
-  faDownload,
   faThumbTack,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons"
+import {type FC} from "react"
+import ContextMenu from "./ContextMenu"
+import MessageContainer from "./MessageContainer"
 
 export type ImageMessageProps = {
   id: number
@@ -66,6 +66,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
           src={imageUrl}
         />
       </div>
+
       <div className="max-w-size-600 select-text leading-160">{text}</div>
     </div>
   )
@@ -76,16 +77,14 @@ const ImageMessage: FC<ImageMessageProps> = ({
       id={id}
       items={contextMenuItems}
       children={
-        <div className="ImageMessage">
-          <MessageContainer
-            authorDisplayName={authorDisplayName}
-            authorDisplayNameColor={authorDisplayNameColor}
-            authorAvatarUrl={authorAvatarUrl}
-            content={content}
-            timestamp={timestamp}
-            onAuthorClick={onAuthorClick}
-          />
-        </div>
+        <MessageContainer
+          authorDisplayName={authorDisplayName}
+          authorDisplayNameColor={authorDisplayNameColor}
+          authorAvatarUrl={authorAvatarUrl}
+          content={content}
+          timestamp={timestamp}
+          onAuthorClick={onAuthorClick}
+        />
       }
     />
   )

@@ -1,7 +1,7 @@
-import "../styles/ServerListItem.sass"
-import Avatar from "boring-avatars"
 import Tippy from "@tippyjs/react"
+import Avatar from "boring-avatars"
 import {type FC} from "react"
+import "../styles/ServerListItem.sass"
 
 export type ServerListItemProps = {
   avatarUrl?: string
