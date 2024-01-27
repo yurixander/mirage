@@ -1,12 +1,12 @@
-import {type Placement} from "tippy.js"
-import Tippy from "@tippyjs/react"
-import "tippy.js/dist/tippy.css"
-import "tippy.js/animations/scale-subtle.css"
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {type FC, memo} from "react"
-import NotificationDot from "./NotificationDot"
+import Tippy from "@tippyjs/react"
+import {memo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import {type Placement} from "tippy.js"
+import "tippy.js/animations/scale-subtle.css"
+import "tippy.js/dist/tippy.css"
+import NotificationDot from "./NotificationDot"
 
 export type IconButtonProps = {
   onClick: () => void
@@ -27,15 +27,9 @@ const IconButton: FC<IconButtonProps> = ({
   isDisabled,
   isDotShowed,
 }) => {
-  const iconButtonTwClassName = twMerge(
-    "inline-block self-center cursor-pointer p-5px rounded-10",
-    "focus-visible:transition focus-visible:duration-150 focus-visible:outline-2 focus-visible:outline-outlineTab",
-    "focus-visible:rounded-5",
-    "hover:bg-contrast",
-    isDisabled
-      ? "active:animate-none active:transform-none cursor-not-allowed"
-      : "active:animate-hold active:scale-90"
-  )
+  const isDisabledClass = isDisabled
+    ? "active:animate-none active:transform-none cursor-not-allowed"
+    : "active:animate-hold active:scale-90"
 
   return (
     <Tippy
@@ -46,7 +40,10 @@ const IconButton: FC<IconButtonProps> = ({
       duration={100}
       placement={tooltipPlacement}>
       <div
-        className={iconButtonTwClassName}
+        className={twMerge(
+          "inline-block self-center cursor-pointer p-5px rounded-10 focus-visible:transition focus-visible:duration-150 focus-visible:outline-2 focus-visible:outline-outlineTab focus-visible:rounded-5 hover:bg-contrast",
+          isDisabledClass
+        )}
         onClick={isDisabled ? undefined : onClick}
         tabIndex={isDisabled ? undefined : 0}>
         <NotificationDot

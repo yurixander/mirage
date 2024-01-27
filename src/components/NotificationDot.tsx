@@ -10,6 +10,7 @@ const NotificationDot: FC<NotificationDotProps> = ({children, isShowed}) => {
   return (
     <div className="relative inline">
       <div>{children}</div>
+
       {isShowed && (
         <div
           className={twMerge(

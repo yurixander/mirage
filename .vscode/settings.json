@@ -9,6 +9,19 @@
   "[sass]": {
     "editor.defaultFormatter": "syler.sass-indented"
   },
-  "stylelint.snippet": ["css", "less", "postcss", "sass"],
-  "stylelint.validate": ["css", "less", "postcss", "sass"]
+  "stylelint.snippet": [
+    "css",
+    "less",
+    "postcss",
+    "sass"
+  ],
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "sass"
+  ],
+  "cSpell.words": [
+    "tippyjs"
+  ]
 }

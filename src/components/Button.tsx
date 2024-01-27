@@ -1,5 +1,5 @@
 import Loader from "@/components/Loader"
-import "../styles/Button.sass"
+import "@/styles/Button.sass"
 import {type FC} from "react"
 
 export enum ButtonVariant {
@@ -13,7 +13,7 @@ export type ButtonProps = {
   className?: string
   autoFocus?: boolean
   onClick: () => void
-  text: string
+  label: string
   isLoading?: boolean
   loadingText?: string
   variant?: ButtonVariant
@@ -24,7 +24,7 @@ const Button: FC<ButtonProps> = ({
   className,
   autoFocus,
   onClick,
-  text,
+  label: text,
   isLoading,
   loadingText,
   isDisabled,

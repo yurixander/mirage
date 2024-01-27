@@ -1,8 +1,8 @@
-import IconButton from "./IconButton"
-import UserProfile, {type UserStatus} from "./UserProfile"
-import {trim} from "../util"
 import {faGear} from "@fortawesome/free-solid-svg-icons"
 import {type FC} from "react"
+import {trim} from "../utils/util"
+import IconButton from "./IconButton"
+import UserProfile, {type UserStatus} from "./UserProfile"
 
 export type UserBarProps = {
   avatarUrl?: string

@@ -1,9 +1,9 @@
-import "../styles/Room.sass"
-import NotificationIndicator from "./NotificationIndicator"
-import {assert, trim} from "../util"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faHashtag, faStarOfLife} from "@fortawesome/free-solid-svg-icons"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {type FC} from "react"
+import "../styles/Room.sass"
+import {assert, trim} from "../utils/util"
+import NotificationIndicator from "./NotificationIndicator"
 
 export enum RoomType {
   Text,
@@ -33,9 +33,7 @@ const Room: FC<RoomProps> = ({
   const activeClass = isActive ? "active" : ""
 
   const icon = type === RoomType.Text ? faHashtag : faStarOfLife
-
   const mentionCountProp = mentionCount > 0 ? mentionCount : undefined
-
   const MAX_NAME_LENGTH = 16
 
   return (

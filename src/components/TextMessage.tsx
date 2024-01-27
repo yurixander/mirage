@@ -1,12 +1,12 @@
-import ContextMenu from "./ContextMenu"
 import {
   faReply,
   faShare,
   faThumbTack,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons"
-import MessageContainer from "./MessageContainer"
 import {type FC} from "react"
+import ContextMenu from "./ContextMenu"
+import MessageContainer from "./MessageContainer"
 
 export type TextMessageProps = {
   id: number

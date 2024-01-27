@@ -1,3 +1,8 @@
+import {
+  faArrowDownShortWide,
+  faUserGroup,
+} from "@fortawesome/free-solid-svg-icons"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {useMemo, type FC} from "react"
 import "../styles/Roster.sass"
 import IconButton from "./IconButton"
@@ -5,11 +10,6 @@ import Label from "./Label"
 import RosterUser from "./RosterUser"
 import {type UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
-import {
-  faArrowDownShortWide,
-  faUserGroup,
-} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export enum RosterUserCategory {
   Admin,
@@ -34,6 +34,14 @@ const Roster: FC<RosterProps> = ({users}) => {
   const members = useMemo(
     () => users.filter(user => user.category === RosterUserCategory.Member),
     [users]
+  )
+
+  const memberElements = useMemo(
+    () =>
+      members.map((member, index) => (
+        <RosterUser key={index} onClick={() => {}} {...member} />
+      )),
+    [members]
   )
 
   return (
@@ -70,9 +78,7 @@ const Roster: FC<RosterProps> = ({users}) => {
             text={"Member — " + members.length}
           />
 
-          {members.map((member, index) => (
-            <RosterUser key={index} onClick={() => {}} {...member} />
-          ))}
+          {memberElements}
         </div>
 
         <UserProfileGhost count={4} opacityMultiplier={0.2} />

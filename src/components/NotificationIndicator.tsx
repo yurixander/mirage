@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import "../styles/NotificationIndicator.sass"
-import {assert} from "../util"
+import {assert} from "../utils/util"
 
 export type NotificationIndicatorProps = {
   mentionAmount?: number
@@ -14,6 +14,7 @@ const NotificationIndicator: FC<NotificationIndicatorProps> = ({
       mentionAmount > 0,
       "mention amount should be greater than zero if it's defined"
     )
+
     assert(
       Number.isInteger(mentionAmount),
       "mention amount should never be a decimal"

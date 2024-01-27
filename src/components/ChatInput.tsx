@@ -1,8 +1,8 @@
-import {type FC, useCallback, useEffect, useRef, useState} from "react"
+import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
+import {useCallback, useEffect, useRef, useState, type FC} from "react"
+import {twMerge} from "tailwind-merge"
 import "../styles/ChatInput.sass"
 import IconButton from "./IconButton"
-import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
-import {twMerge} from "tailwind-merge"
 
 export type ChatInputProps = {
   isDisabled?: boolean
@@ -12,7 +12,6 @@ export type ChatInputProps = {
 const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
   const [value, setValue] = useState("")
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-
   const isDisabledClassName = isDisabled ? "disabled" : ""
 
   useEffect(() => {

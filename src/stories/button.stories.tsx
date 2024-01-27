@@ -1,5 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import Button, {type ButtonProps, ButtonVariant} from "../components/Button"
+import Button, {ButtonVariant, type ButtonProps} from "../components/Button"
 
 type Story = StoryObj<typeof Button>
 
@@ -9,7 +9,7 @@ const render = (args: ButtonProps) => <Button {...args} />
 export const Primary: Story = {
   render,
   args: {
-    text: "This is a button",
+    label: "This is a button",
     variant: ButtonVariant.Primary,
     onClick: () => {},
   },
@@ -18,7 +18,7 @@ export const Primary: Story = {
 export const Green: Story = {
   render,
   args: {
-    text: "This is a button",
+    label: "This is a button",
     variant: ButtonVariant.Green,
     onClick: () => {},
   },
@@ -27,7 +27,7 @@ export const Green: Story = {
 export const Disabled: Story = {
   render,
   args: {
-    text: "This is a button",
+    label: "This is a button",
     isDisabled: true,
     variant: ButtonVariant.Default,
     onClick: () => {},
@@ -37,7 +37,7 @@ export const Disabled: Story = {
 export const Default: Story = {
   render,
   args: {
-    text: "This is a button",
+    label: "This is a button",
     variant: ButtonVariant.Default,
     onClick: () => {},
   },

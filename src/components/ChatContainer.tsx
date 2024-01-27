@@ -1,25 +1,24 @@
-import "../styles/ChatContainer.sass"
-import IconButton from "./IconButton"
-import {RoomType} from "./Room"
-import {assert} from "../util"
-import SmartAction from "./SmartAction"
-import TypingIndicator from "./TypingIndicator"
 import {
-  faPaperclip,
-  faLink,
+  faCircleHalfStroke,
   faCircleInfo,
+  faEarthAmerica,
   faEllipsisV,
   faFaceSmile,
-  faEarthAmerica,
-  faCircleHalfStroke,
-  faUniversalAccess,
-  faStarOfLife,
   faHashtag,
+  faLink,
+  faPaperclip,
+  faStarOfLife,
+  faUniversalAccess,
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {useCallback, type FC} from "react"
+import "../styles/ChatContainer.sass"
+import {assert} from "../utils/util"
 import ChatInput from "./ChatInput"
-import {useCallback} from "react"
-import {type FC} from "react"
+import IconButton from "./IconButton"
+import {RoomType} from "./Room"
+import SmartAction from "./SmartAction"
+import TypingIndicator from "./TypingIndicator"
 
 export type ChatContainerProps = {
   name: string

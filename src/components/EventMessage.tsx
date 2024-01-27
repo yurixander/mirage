@@ -1,7 +1,7 @@
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faPencil} from "@fortawesome/free-solid-svg-icons"
-import {timeFormatter} from "../util"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {type FC} from "react"
+import {timeFormatter} from "../utils/util"
 
 export type EventMessageProps = {
   content: JSX.Element
@@ -16,7 +16,9 @@ const EventMessage: FC<EventMessageProps> = ({content, timestamp}) => {
       <div className="flex w-avatarSize items-center justify-end">
         <FontAwesomeIcon icon={faPencil} className="text-contrastIcon" />
       </div>
+
       <div className="select-text italic leading-160">{content}</div>
+
       <time className="ml-auto text-grayText">{localeTimeString}</time>
     </div>
   )

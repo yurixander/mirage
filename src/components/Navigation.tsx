@@ -1,9 +1,9 @@
-import "../styles/Navigation.sass"
-import {ReactComponent as AppLogo} from "../../public/logo.svg"
-import {ReactComponent as AddServerIcon} from "../../public/icons/add-server.svg"
-import ServerListItem, {type ServerListItemProps} from "./ServerListItem"
 import Tippy from "@tippyjs/react"
 import {type FC} from "react"
+import {ReactComponent as AddServerIcon} from "../../public/icons/add-server.svg"
+import {ReactComponent as AppLogo} from "../../public/logo.svg"
+import "../styles/Navigation.sass"
+import ServerListItem, {type ServerListItemProps} from "./ServerListItem"
 
 export type NavigationProps = {
   servers: ServerListItemProps[]

@@ -1,9 +1,9 @@
-import "../styles/SearchBar.sass"
-import {faSearch} from "@fortawesome/free-solid-svg-icons"
-import KeyCue from "./KeyCue"
-import React, {type FC, useState} from "react"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
+import {faSearch} from "@fortawesome/free-solid-svg-icons"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import React, {useState, type FC} from "react"
+import "../styles/SearchBar.sass"
+import KeyCue from "./KeyCue"
 
 export type SearchResult = {
   text: string

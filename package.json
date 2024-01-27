@@ -17,6 +17,7 @@
     "boring-avatars": "^1.10.1",
     "buffer": "^6.0.3",
     "dayjs": "^1.11.10",
+    "immutable": "^5.0.0-beta.5",
     "matrix-js-sdk": "^31.1.0",
     "postcss": "^8.4.33",
     "react": "^18.2.0",

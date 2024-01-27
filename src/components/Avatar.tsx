@@ -1,4 +1,5 @@
 import {type FC} from "react"
+import {twMerge} from "tailwind-merge"
 
 export type AvatarProps = {
   isRounded: boolean
@@ -7,11 +8,15 @@ export type AvatarProps = {
 }
 
 const Avatar: FC<AvatarProps> = ({isRounded, displayName, avatarUrl}) => {
-  const imageClassNames = `size-x2 ${isRounded ? "rounded-[50%]" : ""}`
+  const isRoundedClass = isRounded && "rounded-[50%]"
 
   return (
     <div key={displayName}>
-      <img className={imageClassNames} src={avatarUrl} alt={displayName} />
+      <img
+        className={twMerge("size-x2", isRoundedClass)}
+        src={avatarUrl}
+        alt={displayName}
+      />
     </div>
   )
 }
