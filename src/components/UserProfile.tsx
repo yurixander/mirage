@@ -1,9 +1,10 @@
+/* eslint-disable tailwindcss/enforces-shorthand */
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import Avatar from "boring-avatars"
 import {type FC} from "react"
-import "../styles/UserProfile.sass"
 import {assert, trim, validateUrl} from "../utils/util"
+import {twMerge} from "tailwind-merge"
 
 export enum UserActivity {
   Listening = "Listening to",
@@ -71,54 +72,80 @@ const UserProfile: FC<UserProfileProps> = ({
 
   switch (status) {
     case UserStatus.Online:
-      userStatusClassName = "online"
+      userStatusClassName = "bg-greenLight"
 
       break
     case UserStatus.Offline:
-      userStatusClassName = "offline"
+      userStatusClassName = "bg-grayText"
 
       break
     case UserStatus.Idle:
-      userStatusClassName = "idle"
+      userStatusClassName = "bg-yellow"
 
       break
   }
 
   const avatarImage =
     avatarUrl !== undefined ? (
-      <img src={avatarUrl} />
+      <img
+        className={twMerge(
+          "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+          isLarge
+            ? "h-userProfileAvatarSizeLarge w-userProfileAvatarSizeLarge"
+            : "h-userProfileAvatarSize w-userProfileAvatarSize"
+        )}
+        src={avatarUrl}
+      />
     ) : (
-      <Avatar name={text} variant="beam" />
+      <Avatar size={isLarge ? 60 : 40} square name={text} variant="beam" />
     )
 
   const activityOrText =
     activity !== undefined ? (
-      <span className="activity-or-text">
+      <span className="text-small">
         {activity + " "}
 
-        <span className="platform">{platform}</span>
+        <span className="font-strong">{platform}</span>
       </span>
     ) : (
-      <span className="activity-or-text">{text}</span>
+      <span className="text-small">{text}</span>
     )
 
-  const isLargeClassName = isLarge !== undefined && isLarge ? "large" : ""
-
   return (
-    <div className="UserProfile">
-      <div className={"avatar-wrapper " + isLargeClassName}>
-        <div className={"avatar"}>{avatarImage}</div>
+    <div className="flex gap-10px">
+      <div className="relative">
+        <div
+          className={twMerge(
+            "relative overflow-hidden rounded-10 bg-red",
+            isLarge
+              ? "h-avatarSizeLarge w-avatarSizeLarge"
+              : "h-avatarSizeDefault w-avatarSizeDefault"
+          )}>
+          {avatarImage}
+        </div>
 
-        <div className={"status " + userStatusClassName} />
+        <div
+          className={twMerge(
+            "absolute rounded-50 border-2 border-solid border-contrast translate-x-1/4 translate-y-1/4 right-0 bottom-0",
+            isLarge
+              ? "h-avatarStatusSizeLarge w-avatarStatusSizeLarge"
+              : "h-avatarStatusSize w-avatarStatusSize",
+            userStatusClassName
+          )}
+        />
       </div>
 
-      <div className="info">
-        <div style={{color: displayNameColor}} className="display-name">
+      <div className="mr-auto inline-flex flex-col gap-3px">
+        <div
+          style={{color: displayNameColor}}
+          className="text-large font-strong">
           {trim(displayName, MAX_DISPLAY_NAME_LENGTH)}
         </div>
 
-        <div className="activity">
-          {icon && <FontAwesomeIcon icon={icon} className="activity-icon" />}
+        <div className="flex items-center">
+          {icon && (
+            <FontAwesomeIcon icon={icon} className="mr-3px h-10px w-10px" />
+          )}
 
           {activityOrText}
         </div>

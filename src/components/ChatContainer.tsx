@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/enforces-shorthand */
 import {
   faCircleHalfStroke,
   faCircleInfo,
@@ -12,7 +13,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {useCallback, type FC} from "react"
-import "../styles/ChatContainer.sass"
 import {assert} from "../utils/util"
 import ChatInput from "./ChatInput"
 import IconButton from "./IconButton"
@@ -41,12 +41,12 @@ const ChatContainer: FC<ChatContainerProps> = ({
   )
 
   return (
-    <section className="ChatContainer">
-      <header className="header">
-        <div className="title">
-          <FontAwesomeIcon icon={getIcon(type)} className="icon" />
-          <span className="name">{name}</span>
-          <span className="text">{text}</span>
+    <section className="flex h-full flex-col gap-x1 border-1 border-solid border-border">
+      <header className="flex items-center gap-x1 border-b-1 border-solid border-b-border p-x1">
+        <div className="flex w-full gap-5px">
+          <FontAwesomeIcon icon={getIcon(type)} className="text-primary" />
+          <span className="text-primary">{name}</span>
+          <span className="text-grayText">{text}</span>
         </div>
 
         <IconButton
@@ -76,10 +76,12 @@ const ChatContainer: FC<ChatContainerProps> = ({
           icon={faEllipsisV}
         />
       </header>
-      <div className="chat">{chatComponents}</div>
-      <div className="actions">
-        <div className="input">
-          <div className="buttons">
+      <div className="ml-x1 mr-x1 flex grow flex-col gap-x1 overflow-hidden overflow-y-scroll scrollbar-hide">
+        {chatComponents}
+      </div>
+      <div className="ml-x1 mr-x1 flex flex-col gap-10px">
+        <div className="flex gap-10px">
+          <div className="mt-5px flex h-max gap-10px ">
             <IconButton
               onClick={() => {
                 /* TODO: Handle `emoji` button click. */
@@ -101,10 +103,10 @@ const ChatContainer: FC<ChatContainerProps> = ({
 
           <ChatInput />
         </div>
-        <div className="typing">
-          <div className="fill" />
+        <div className="flex gap-10px">
+          <div className="h-fillIcon w-fillIcon" />
 
-          <div className="fill" />
+          <div className="h-fillIcon w-fillIcon" />
 
           <TypingIndicator
             users={[
@@ -116,7 +118,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           />
         </div>
       </div>
-      <div className="information">
+      <div className="flex items-center justify-end gap-x1 border-t-1 border-solid border-t-border bg-contrast p-5px">
         <SmartAction
           icon={faStarOfLife}
           text="Quick menu"

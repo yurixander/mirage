@@ -1,5 +1,3 @@
-const {transform} = require("typescript")
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -23,6 +21,8 @@ module.exports = {
         checkBox: "inset 0 0 5px #D9D9D9",
         contextMenu: "0 0 15px 0 #D9D9D9",
         userCard: "0 0 5px #D9D9D9",
+        constraint: "0 0 8px 0",
+        serverSelected: "0 3px 5px 2px #D9D9D9",
       },
       backgroundImage: {
         buttonPrimaryBg: "linear-gradient(to top, #C463FF, #da9eff)",
@@ -63,13 +63,25 @@ module.exports = {
         "2px": "2px",
         "1px": "1px",
         "icon": "18px",
+        "fillIcon": "24px",
         "1ch": "1ch",
         "avatarSize": "40px",
+        "avatarSizeDefault": "37px",
+        "avatarSizeLarge": "50px",
+        "serverSize": "47px",
         "dotSize": "6px",
         "checkBoxSize": "13px",
         "loaderSize": "1rem",
         "userCardSize": "250px",
         "statusSize": "13px",
+        "popupSize": "342px",
+        "constraintSize": "1.2ch",
+        "serverAvatarSize": "calc(47px * sqrt(2))",
+        "userProfileAvatarSize": "calc(37px * sqrt(2))",
+        "userProfileAvatarSizeLarge": "calc(50px * sqrt(2))",
+        "indicatorSize": "8px",
+        "avatarStatusSize": "13px",
+        "avatarStatusSizeLarge": "17px",
       },
       fontFamily: {
         iowan: ["Iowan Old Style", "serif"],
@@ -79,6 +91,7 @@ module.exports = {
         medium: "12px",
         normal: "1rem",
         large: "16px",
+        constraintSize: "0.8rem",
       },
       fontWeight: {
         default: 300,
@@ -111,6 +124,7 @@ module.exports = {
       "enter": "enter 200ms",
       "dot-jump": "dot-jump 400ms ease-in-out infinite alternate",
       "loading": "loading 1.5s infinite ease-in-out",
+      "indicator": "indicator 300ms",
     },
     keyframes: {
       // Usage: animate-[keyframe-name]

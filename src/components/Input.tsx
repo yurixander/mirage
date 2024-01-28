@@ -1,9 +1,10 @@
+/* eslint-disable tailwindcss/enforces-shorthand */
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {useState, type FC} from "react"
-import "../styles/Input.sass"
 import IconButton from "./IconButton"
 import Label from "./Label"
+import {twMerge} from "tailwind-merge"
 
 export type InputConstraint = {
   message: string
@@ -119,16 +120,19 @@ const Input: FC<InputProps> = ({
   }
 
   return (
-    <div className={`Input ${className ?? "" + isDisabledClass}`.trim()}>
-      <div className="container" tabIndex={isDisabled ? undefined : 0}>
+    <div className={(className ?? "" + isDisabledClass).trim()}>
+      <div
+        className="flex items-center rounded-10 border-1 border-solid border-border focus-visible:rounded-5 focus-visible:outline-2 focus-visible:outline-outlineTab"
+        tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
         {icon && (
-          <div className="icon">
+          <div className="ml-10px h-icon w-icon text-contrastIcon">
             <FontAwesomeIcon icon={icon} />
           </div>
         )}
 
         <input
+          className="w-full border-none"
           type="text"
           disabled={isDisabled}
           autoFocus={autoFocus}
@@ -137,7 +141,7 @@ const Input: FC<InputProps> = ({
           onChange={handleChange}></input>
 
         {actions && (
-          <div className="actions">
+          <div className="mr-5px flex fill-contrastIcon">
             {actions?.map((action, index) => (
               <IconButton
                 key={index}
@@ -151,12 +155,15 @@ const Input: FC<InputProps> = ({
         )}
       </div>
 
-      <div className="constraints">
+      <div className="mt-5px flex flex-row gap-5px pl-5px">
         {violatedConstraints.map(constraint => (
           <span
             key={constraint.message}
-            className="constraint"
-            data-is-met={constraint.pattern.test(value)}>
+            className={twMerge(
+              "text-constraintSize flex",
+              constraint.pattern.test(value) ? "text-green" : "text-red"
+            )}>
+            <div className="before:mr-1ch before:inline-block before:h-constraintSize before:w-constraintSize before:rounded-50 before:bg-current before:shadow-constraint before:shadow-current"></div>
             {constraint.message}
           </span>
         ))}
