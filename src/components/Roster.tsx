@@ -4,7 +4,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {useMemo, type FC} from "react"
-import "../styles/Roster.sass"
 import IconButton from "./IconButton"
 import Label from "./Label"
 import RosterUser from "./RosterUser"
@@ -45,11 +44,11 @@ const Roster: FC<RosterProps> = ({users}) => {
   )
 
   return (
-    <div className="Roster">
-      <header className="header">
-        <FontAwesomeIcon className="icon" icon={faUserGroup} />
+    <div className="flex h-full flex-col">
+      <header className="m-5px flex items-center">
+        <FontAwesomeIcon className="text-contrastIcon" icon={faUserGroup} />
 
-        <div className="title">People</div>
+        <div className="ml-5px w-full">People</div>
 
         <IconButton
           onClick={() => {
@@ -61,22 +60,19 @@ const Roster: FC<RosterProps> = ({users}) => {
         />
       </header>
 
-      <div className="divider" />
+      <div className="h-1px w-full bg-contrastDark" />
 
-      <div className="scroll-container">
-        <div className="admins">
-          <Label className="sticky-header" text={"Admin — " + admins.length} />
+      <div className="flex h-full grow flex-col gap-5px overflow-y-scroll scrollbar-hide">
+        <div className="mt-10px flex flex-col gap-3px">
+          <Label className="p-5px" text={"Admin — " + admins.length} />
 
           {admins.map((admin, index) => (
             <RosterUser key={index} onClick={() => {}} {...admin} />
           ))}
         </div>
 
-        <div className="members">
-          <Label
-            className="sticky-header"
-            text={"Member — " + members.length}
-          />
+        <div className="flex flex-col gap-3px">
+          <Label className="p-5px" text={"Member — " + members.length} />
 
           {memberElements}
         </div>

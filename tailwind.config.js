@@ -16,20 +16,29 @@ module.exports = {
       maxWidth: {
         "size-600": "600px",
       },
+      maxHeight: {
+        "100px": "100px",
+      },
       boxShadow: {
         checkBox: "inset 0 0 5px #D9D9D9",
         contextMenu: "0 0 15px 0 #D9D9D9",
         userCard: "0 0 5px #D9D9D9",
+      },
+      backgroundImage: {
+        buttonPrimaryBg: "linear-gradient(to top, #C463FF, #da9eff)",
+        buttonGreenBg: "linear-gradient(to top, #4CA464, #7AED9A)",
       },
       colors: {
         textColorDefault: "#4B5563",
         red: "#FF6D6D",
         green: "#5CC679",
         greenDark: "#4CA464",
+        greenDarken: "#2d723f",
         greenLight: "#7AED9A",
         yellow: "#FFE500",
         primary: "#C463FF",
         primaryLight: "#da9eff",
+        primaryDarken: "#8233b3",
         white: "#FFF",
         contrast: "#F9FBFC",
         contrastDark: "#E9EBED",
@@ -60,6 +69,10 @@ module.exports = {
         "checkBoxSize": "13px",
         "loaderSize": "1rem",
         "userCardSize": "250px",
+        "statusSize": "13px",
+      },
+      fontFamily: {
+        iowan: ["Iowan Old Style", "serif"],
       },
       fontSize: {
         small: "10px",
@@ -175,5 +188,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animation-delay")],
+  plugins: [
+    require("tailwindcss-animation-delay"),
+    require("tailwind-scrollbar-hide"),
+  ],
 }
