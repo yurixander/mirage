@@ -2,7 +2,6 @@ import Tippy from "@tippyjs/react"
 import {type FC} from "react"
 import {ReactComponent as AddServerIcon} from "../../public/icons/add-server.svg"
 import {ReactComponent as AppLogo} from "../../public/logo.svg"
-import "../styles/Navigation.sass"
 import ServerListItem, {type ServerListItemProps} from "./ServerListItem"
 
 export type NavigationProps = {
@@ -11,24 +10,24 @@ export type NavigationProps = {
 
 const Navigation: FC<NavigationProps> = ({servers}) => {
   return (
-    <div className="Navigation">
-      <div className="container">
+    <div className="h-full overflow-y-scroll scrollbar-hide">
+      <div className="flex flex-col items-center justify-center">
         <AppLogo
-          className="logo"
+          className="cursor-pointer"
           onClick={() => {
             /* TODO:  Handle click on logo. */
           }}
         />
 
-        <div className="app-name">
+        <div className="flex items-end font-iowan">
           <div>Mirage</div>
 
-          <span className="copyright">©</span>
+          <span className="ml-2px text-small italic">©</span>
         </div>
 
-        <div className="divider" />
+        <div className="m-x1 h-1px w-full bg-contrastDark" />
 
-        <div className="servers">
+        <div className="flex flex-col items-end justify-center gap-x1">
           {servers.map((server, index) => (
             <ServerListItem key={index} {...server} />
           ))}
@@ -41,7 +40,7 @@ const Navigation: FC<NavigationProps> = ({servers}) => {
             duration={100}
             placement="right">
             <div
-              className="add-server"
+              className="cursor-pointer"
               onClick={() => {
                 /* TODO: Handle click on Add server. */
               }}>

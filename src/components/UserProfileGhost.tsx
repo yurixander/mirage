@@ -1,14 +1,16 @@
+/* eslint-disable tailwindcss/enforces-shorthand */
 import {useMemo, type FC} from "react"
-import "../styles/UserProfileGhost.sass"
 
 export type UserProfileGhostProps = {
   count: number
   opacityMultiplier: number
+  className?: string
 }
 
 const UserProfileGhost: FC<UserProfileGhostProps> = ({
   count,
   opacityMultiplier,
+  className,
 }) => {
   const ghosts = useMemo(() => {
     const ghosts = []
@@ -19,23 +21,33 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
     return ghosts
   }, [])
 
+  const containerTwClassName = className ?? "flex flex-col gap-10px p-5px"
+
   return (
-    <div className="user-ghost-container">
+    <div className={containerTwClassName}>
       {ghosts.map((multiplier, index) => (
         <div
           key={index}
           style={{opacity: 1 - multiplier}}
-          className="UserProfileGhost">
-          <div className="avatar-wrapper-ghost">
-            <div className="avatar-ghost"></div>
+          className="flex gap-5px">
+          <div className="relative">
+            <div className="relative h-avatarSize w-avatarSize overflow-hidden rounded-10 bg-contrastDarker"></div>
 
-            <div className={"status-ghost"} />
+            <div
+              className={
+                "absolute bottom-0 right-0 h-statusSize w-statusSize translate-x-1/4 translate-y-1/4 rounded-50 border-2 border-solid border-contrast bg-contrastDarker"
+              }
+            />
           </div>
 
-          <div className="info-ghost">
-            <div className="display-name-ghost">Emerald branch</div>
+          <div className="mr-auto inline-flex flex-col gap-3px">
+            <div className="overflow-hidden rounded-10 bg-contrastDarker text-large font-strong text-profileGhost">
+              Emerald branch
+            </div>
 
-            <div className="activity-ghost">@emerald</div>
+            <div className="mt-3px h-10px w-min overflow-hidden rounded-10 bg-contrastDarker text-xs text-profileGhost">
+              @emerald
+            </div>
           </div>
         </div>
       ))}
