@@ -1,6 +1,7 @@
 import Loader from "@/components/Loader"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import {Theme, Button} from "@radix-ui/themes"
 
 export enum ButtonVariant {
   Primary = "primary",
@@ -10,7 +11,6 @@ export enum ButtonVariant {
 }
 
 export type ButtonProps = {
-  className?: string
   autoFocus?: boolean
   onClick: () => void
   label: string
@@ -35,8 +35,7 @@ const extractVariant = (variant?: ButtonVariant): string => {
   }
 }
 
-const Button: FC<ButtonProps> = ({
-  className,
+const ButtonComponent: FC<ButtonProps> = ({
   autoFocus,
   onClick,
   label: text,
@@ -46,18 +45,23 @@ const Button: FC<ButtonProps> = ({
   variant,
 }) => {
   return (
-    <button
-      className={twMerge(
-        "flex active:translate-y-1px origin-center cursor-pointer items-center justify-center rounded-10 border-1 border-b-4 border-solid border-red p-10px font-strong outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outlineTab disabled:translate-y-1px",
-        extractVariant(variant)
-      )}
-      disabled={isLoading ?? isDisabled}
-      autoFocus={autoFocus}
-      onClick={isDisabled ? undefined : onClick}
-      tabIndex={isDisabled ? undefined : 0}>
-      {isLoading ? <Loader text={loadingText ?? text} /> : text}
-    </button>
+    <>
+      <Theme>
+        <Button
+          className={twMerge(
+            "flex active:translate-y-1px origin-center cursor-pointer items-center justify-center rounded-10 border-1 border-b-4 border-solid border-red p-10px font-strong outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outlineTab disabled:translate-y-1px",
+            extractVariant(variant)
+          )}
+          radius="large"
+          disabled={isLoading ?? isDisabled}
+          autoFocus={autoFocus}
+          onClick={isDisabled ? undefined : onClick}
+          tabIndex={isDisabled ? undefined : 0}>
+          {isLoading ? <Loader text={loadingText ?? text} /> : text}
+        </Button>
+      </Theme>
+    </>
   )
 }
 
-export default Button
+export default ButtonComponent
