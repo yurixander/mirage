@@ -14,7 +14,7 @@ const NotificationDot: FC<NotificationDotProps> = ({children, isShowed}) => {
       {isShowed && (
         <div
           className={twMerge(
-            "absolute top-0 right-0 size-dotSize",
+            "absolute top-0 right-0 h-dotSize w-dotSize",
             "bg-red rounded-10 border-1 border-solid border-contrast"
           )}
         />
