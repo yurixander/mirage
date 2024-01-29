@@ -13,6 +13,7 @@ module.exports = {
       },
       maxWidth: {
         "size-600": "600px",
+        "size-300": "300px",
       },
       maxHeight: {
         "100px": "100px",
@@ -27,6 +28,7 @@ module.exports = {
       backgroundImage: {
         buttonPrimaryBg: "linear-gradient(to top, #C463FF, #da9eff)",
         buttonGreenBg: "linear-gradient(to top, #4CA464, #7AED9A)",
+        rainbow: "linear-gradient(to top right,#ED7EFF, #7EC1FF)",
       },
       colors: {
         textColorDefault: "#4B5563",
@@ -46,7 +48,6 @@ module.exports = {
         contrastIcon: "#DBDBDB",
         grayText: "#BABABA",
         border: "$color-contrast-dark",
-        rainbow: "linear-gradient(to top right,#ED7EFF, #7EC1FF)",
         cardActionsBg: "#F7F7F7",
         outlineTab: "#56b0ff",
         profileGhost: "#ffffff00",
@@ -82,6 +83,9 @@ module.exports = {
         "indicatorSize": "8px",
         "avatarStatusSize": "13px",
         "avatarStatusSizeLarge": "17px",
+        "arrowSize": "calc(100% + 10px)",
+        "bigStarSize": "calc(100% + 5px)",
+        "littleStartBottom": "calc(100% + 5px)",
       },
       fontFamily: {
         iowan: ["Iowan Old Style", "serif"],
@@ -205,5 +209,13 @@ module.exports = {
   plugins: [
     require("tailwindcss-animation-delay"),
     require("tailwind-scrollbar-hide"),
+    function ({addUtilities}) {
+      const newUtilities = {
+        ".bg-clip-text": {
+          "-webkit-background-clip": "text",
+        },
+      }
+      addUtilities(newUtilities, ["responsive", "hover"])
+    },
   ],
 }
