@@ -25,6 +25,7 @@ export const WithTwoDialogs: Story = {
   },
 }
 
+// TODO: Fix problem with width overflow
 export const WelcomePopup: Story = {
   render,
   args: {
