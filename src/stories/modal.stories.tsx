@@ -3,7 +3,6 @@ import {ReactComponent as DotGrid} from "../../public/icons/dot-grid.svg"
 import {ReactComponent as Stars} from "../../public/icons/stars.svg"
 import Button, {ButtonVariant} from "../components/Button"
 import Modal, {type ModalProps} from "../components/Modal"
-import "../styles/WelcomePopup.sass"
 
 type Story = StoryObj<typeof Modal>
 
@@ -30,17 +29,23 @@ export const WelcomePopup: Story = {
   render,
   args: {
     dialogs: [
-      <div className="WelcomePopup" key={0}>
-        <div className="header">
-          <h3>Hey you!</h3>
+      <div
+        className="flex max-w-popupSize flex-col rounded-10 bg-white"
+        key={0}>
+        <div className="relative flex flex-col items-center p-x1">
+          <h3 className="bg-rainbow bg-clip-text text-center text-small text-transparent">
+            Hey you!
+          </h3>
 
-          <h1>You&apos;re beautiful.</h1>
+          <h1 className="bg-rainbow bg-clip-text text-center text-transparent">
+            You&apos;re beautiful.
+          </h1>
 
-          <Stars className="stars" />
+          <Stars className="absolute right-0 -translate-y-1/2 translate-x-3/4" />
         </div>
 
-        <div className="body">
-          <span className="text">
+        <div className="flex grow flex-col gap-x1 p-x1 text-medium leading-160">
+          <span className="leading-160">
             <b>Did you know that?</b> You&apos;re a beautiful person, with a
             charming personality. My grandmother always used to say—”Cows are
             beautiful cloven-hooved herbivores, and so should you!”
@@ -48,12 +53,12 @@ export const WelcomePopup: Story = {
 
           <span>I hope that resonates with you as much as it did with me.</span>
 
-          <div className="dot-grid">
+          <div className="flex grow items-end justify-center gap-5px">
             <DotGrid />
           </div>
         </div>
 
-        <div className="actions">
+        <div className="flex flex-row justify-end rounded-b-10 border-1 border-solid border-border bg-cardActionsBg p-10px">
           <Button
             label="Got it, thanks ⟶"
             variant={ButtonVariant.Default}

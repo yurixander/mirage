@@ -5,7 +5,6 @@
 // import {useMemo, type FC} from "react"
 import {type FC} from "react"
 import Label from "../components/Label"
-import "../styles/RoomsList.sass"
 
 const RoomsList: FC = () => {
   // TODO: Continue implementation.
@@ -73,14 +72,14 @@ const RoomsList: FC = () => {
   // )
 
   return (
-    <section className="RoomsList">
-      <nav className="spaces">
+    <section className="flex h-full flex-col gap-x2 p-5px scrollbar-hide">
+      <nav className="flex flex-col gap-x1">
         <Label text="Spaces" />
 
         {/* {spaceElements} */}
       </nav>
 
-      <nav className="channels">
+      <nav className="flex flex-col gap-x1">
         <Label text="Channels" />
 
         {/* {roomElements} */}
