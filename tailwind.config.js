@@ -89,6 +89,7 @@ module.exports = {
       },
       fontFamily: {
         iowan: ["Iowan Old Style", "serif"],
+        noto: ["Noto sans", "sans-serif"],
       },
       fontSize: {
         small: "10px",

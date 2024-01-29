@@ -48,7 +48,7 @@ const Button: FC<ButtonProps> = ({
   return (
     <button
       className={twMerge(
-        "flex active:translate-y-1px origin-center cursor-pointer items-center justify-center rounded-10 border-1 border-b-4 border-solid border-red p-x1 font-strong outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outlineTab disabled:translate-y-1px",
+        "flex active:translate-y-1px origin-center cursor-pointer items-center justify-center rounded-10 border-1 border-b-4 border-solid border-red p-10px font-strong outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outlineTab disabled:translate-y-1px",
         extractVariant(variant)
       )}
       disabled={isLoading ?? isDisabled}
