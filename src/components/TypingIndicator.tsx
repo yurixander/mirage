@@ -37,7 +37,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
 
   return (
     <div className="inline-flex items-center gap-10px">
-      <div className="inline-flex translate-y-3 gap-2px">
+      <div className="flex gap-2px">
         <div className={dotTwClassName} />
 
         <div className={twMerge(dotTwClassName, "animation-delay-150")} />

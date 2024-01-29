@@ -20,7 +20,7 @@ module.exports = {
       },
       boxShadow: {
         checkBox: "inset 0 0 5px #D9D9D9",
-        contextMenu: "0 0 15px 0 #D9D9D9",
+        contextMenu: "0 0 15px 0 #d9d9d971",
         userCard: "0 0 5px #D9D9D9",
         constraint: "0 0 8px 0",
         serverSelected: "0 3px 5px 2px #D9D9D9",
@@ -51,11 +51,11 @@ module.exports = {
         cardActionsBg: "#F7F7F7",
         outlineTab: "#56b0ff",
         profileGhost: "#ffffff00",
-        keyCueBorderColor: "darken(#D9D9D9, 15%)",
+        keyCueBorderColor: "#929292",
         statusMessageColor: "transparentize(#e53e3e, 0.7)",
       },
       spacing: {
-        "x1": "15px", // m-x1 or w-x1
+        "x1": "15px",
         "x2": "30px",
         "10px": "10px",
         "6px": "6px",

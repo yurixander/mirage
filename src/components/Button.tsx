@@ -29,9 +29,9 @@ const extractVariant = (variant?: ButtonVariant): string => {
     case ButtonVariant.TextLink:
       return ""
     case ButtonVariant.Default:
-      return "p-6px bg-green text-xs border-1 border-solid border-greenDark rounded-5 text-white font-strong"
+      return "p-5px bg-green text-xs border-1 border-solid border-greenDark rounded-3 text-white font-strong"
     case undefined:
-      return "p-10px bg-green text-xs border-1 border-solid border-greenDark rounded-5 text-white font-strong"
+      return "p-5px bg-green text-xs border-1 border-solid border-greenDark rounded-3 text-white font-strong"
   }
 }
 
