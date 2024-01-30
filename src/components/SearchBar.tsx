@@ -46,13 +46,13 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange}) => {
   return (
     <div
       className={
-        "relative p-10px inline-flex justify-start items-center gap-5px bg-contrastDark rounded-10 " +
+        "relative p-10px inline-flex justify-start items-center gap-5px bg-neutral-300 rounded-10 " +
         (results.length > 0 ? "rounded-bl-none rounded-br-none" : "")
       }>
-      <FontAwesomeIcon className="text-contrastIcon" icon={faSearch} />
+      <FontAwesomeIcon className="text-neutral-400" icon={faSearch} />
 
       <input
-        className="p-0"
+        className="bg-neutral-300 p-0"
         onChange={handleQueryChange}
         ref={inputRef}
         type="text"
@@ -62,11 +62,11 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange}) => {
       <KeyCue ctrl char={KEYBOARD_HOTKEY_CHAR} />
 
       {results.length > 0 && (
-        <div className="absolute left-0 top-full w-full rounded-b-10 border-t border-solid border-contrastDarker bg-contrastDark p-10px">
+        <div className="absolute left-0 top-full w-full rounded-b-10 border-t border-solid border-neutral-300 bg-neutral-300 p-10px">
           {results.map((result, index) => (
             <div
               key={index}
-              className="cursor-pointer rounded-5 p-10px hover:bg-contrastDarker"
+              className="cursor-pointer rounded-5 p-10px hover:bg-neutral-300"
               onClick={result.onClick}>
               {result.text}
             </div>

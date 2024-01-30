@@ -7,7 +7,7 @@ type Props = {
 
 const StatusMessage: FC<Props> = ({className, text}) => {
   return (
-    <div className="rounded-10 border-1 border-solid border-statusMessageColor bg-statusMessageBg p-2 text-center text-red">
+    <div className="rounded-10 border-1 border-solid border-statusMessageColor bg-statusMessageBg p-2 text-center text-red-500">
       {text}
     </div>
   )

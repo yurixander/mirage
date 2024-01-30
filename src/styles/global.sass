@@ -12,13 +12,20 @@ body,
 #storybook-root
   @apply h-full
 
+input
+  @apply border-none p-10px outline-none
+
 body
   @apply relative m-0  antialiased select-none overflow-hidden
-  @apply font-noto font-default text-textColorDefault
+  @apply font-noto font-default text-stone-600
 
 button:disabled,
-input:disabled
+input:disabled,
+textarea:disabled
   @apply opacity-50 cursor-not-allowed
 
 ::selection
-  @apply bg-primary text-white
+  @apply bg-purple-500 text-white
+
+:focus-visible:not(input)
+  @apply outline-2 outline-offset-2 outline-blue-500 transition-all

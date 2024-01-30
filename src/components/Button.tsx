@@ -1,13 +1,14 @@
-import Loader from "@/components/Loader"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
-import {Theme, Button} from "@radix-ui/themes"
 
 export enum ButtonVariant {
-  Primary = "primary",
-  Green = "green",
-  TextLink = "text-link",
-  Default = "default",
+  Primary = "bg-purple-800 border-purple-900 text-white",
+  Secondary = "bg-purple-100 text-purple-800 border-none hover:bg-purple-200",
+  TextLink = "bg-none text-purple-800 hover:bg-purple-100 border-none underline",
+}
+
+export enum ButtonSize {
+  Small = "p-5px text-xs rounded-5 border-1",
 }
 
 export type ButtonProps = {
@@ -17,51 +18,33 @@ export type ButtonProps = {
   isLoading?: boolean
   loadingText?: string
   variant?: ButtonVariant
+  size?: ButtonSize
   isDisabled?: boolean
 }
 
-const extractVariant = (variant?: ButtonVariant): string => {
-  switch (variant) {
-    case ButtonVariant.Primary:
-      return "bg-buttonPrimaryBg text-white border-primaryDarken"
-    case ButtonVariant.Green:
-      return "bg-buttonGreenBg text-white border-greenDarken"
-    case ButtonVariant.TextLink:
-      return ""
-    case ButtonVariant.Default:
-      return "p-5px bg-green text-xs border-1 border-solid border-greenDark rounded-3 text-white font-strong"
-    case undefined:
-      return "p-5px bg-green text-xs border-1 border-solid border-greenDark rounded-3 text-white font-strong"
-  }
-}
-
-const ButtonComponent: FC<ButtonProps> = ({
+const Button: FC<ButtonProps> = ({
   autoFocus,
   onClick,
   label: text,
   isLoading,
-  loadingText,
   isDisabled,
   variant,
+  size,
 }) => {
   return (
-    <>
-      <Theme>
-        <Button
-          className={twMerge(
-            "flex active:translate-y-1px origin-center cursor-pointer items-center justify-center rounded-10 border-1 border-b-4 border-solid border-red p-10px font-strong outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outlineTab disabled:translate-y-1px",
-            extractVariant(variant)
-          )}
-          radius="large"
-          disabled={isLoading ?? isDisabled}
-          autoFocus={autoFocus}
-          onClick={isDisabled ? undefined : onClick}
-          tabIndex={isDisabled ? undefined : 0}>
-          {isLoading ? <Loader text={loadingText ?? text} /> : text}
-        </Button>
-      </Theme>
-    </>
+    <button
+      className={twMerge(
+        "flex box-border active:translate-y-1px origin-center cursor-pointer items-center justify-center border-solid font-strong outline-none disabled:translate-y-1px",
+        variant ?? "bg-purple-800 border-purple-900 text-white",
+        size ?? "rounded-10 border-2 p-10px"
+      )}
+      disabled={isLoading ?? isDisabled}
+      autoFocus={autoFocus}
+      onClick={isDisabled ? undefined : onClick}
+      tabIndex={isDisabled ? undefined : 0}>
+      {text}
+    </button>
   )
 }
 
-export default ButtonComponent
+export default Button

@@ -73,13 +73,13 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
               <div
                 tabIndex={0}
                 key={index}
-                className="group flex cursor-pointer gap-10px p-10px text-textColorDefault hover:rounded-5 hover:bg-primary hover:text-white focus-visible:rounded-5 focus-visible:text-outlineTab focus-visible:outline-2 focus-visible:transition focus-visible:duration-150"
+                className="group flex cursor-pointer gap-10px p-10px text-stone-600 hover:rounded-5 hover:bg-purple-500 hover:text-white focus-visible:rounded-5 focus-visible:text-outlineTab focus-visible:outline-2 focus-visible:transition focus-visible:duration-150"
                 onClick={item.action}>
                 <span className="mr-auto font-strong">{item.label}</span>
 
                 {item.icon && (
                   <FontAwesomeIcon
-                    className="text-textColorDefault group-hover:text-white"
+                    className="text-stone-600 group-hover:text-white"
                     icon={item.icon}
                   />
                 )}

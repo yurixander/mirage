@@ -22,8 +22,8 @@ const UserBar: FC<UserBarProps> = ({
   const MAX_NAME_LENGTH = 18
 
   return (
-    <section className="flex gap-5px p-x1">
-      <div className="m-auto">
+    <div className="flex p-x1">
+      <div className="mr-auto">
         <UserProfile
           avatarUrl={avatarUrl}
           text={trim(username, MAX_NAME_LENGTH)}
@@ -41,7 +41,7 @@ const UserBar: FC<UserBarProps> = ({
         tooltip="Settings"
         tooltipPlacement="top"
       />
-    </section>
+    </div>
   )
 }
 

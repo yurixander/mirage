@@ -72,15 +72,15 @@ const UserProfile: FC<UserProfileProps> = ({
 
   switch (status) {
     case UserStatus.Online:
-      userStatusClassName = "bg-greenLight"
+      userStatusClassName = "bg-green-400"
 
       break
     case UserStatus.Offline:
-      userStatusClassName = "bg-grayText"
+      userStatusClassName = "bg-gray-300"
 
       break
     case UserStatus.Idle:
-      userStatusClassName = "bg-yellow"
+      userStatusClassName = "bg-yellow-500"
 
       break
   }
@@ -116,7 +116,7 @@ const UserProfile: FC<UserProfileProps> = ({
       <div className="relative">
         <div
           className={twMerge(
-            "relative overflow-hidden rounded-10 bg-red",
+            "relative overflow-hidden rounded-10 bg-red-500",
             isLarge
               ? "h-avatarSizeLarge w-avatarSizeLarge"
               : "h-avatarSizeDefault w-avatarSizeDefault"
@@ -126,7 +126,7 @@ const UserProfile: FC<UserProfileProps> = ({
 
         <div
           className={twMerge(
-            "absolute rounded-50 border-2 border-solid border-contrast translate-x-1/4 translate-y-1/4 right-0 bottom-0",
+            "absolute rounded-50 border-2 border-solid border-neutral-50 translate-x-1/4 translate-y-1/4 right-0 bottom-0",
             isLarge
               ? "h-avatarStatusSizeLarge w-avatarStatusSizeLarge"
               : "h-avatarStatusSize w-avatarStatusSize",

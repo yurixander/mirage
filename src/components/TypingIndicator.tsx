@@ -33,7 +33,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   const who = users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
 
   const dotTwClassName =
-    "h-10px w-10px animate-dot-jump rounded-50 bg-contrastDarker"
+    "h-10px w-10px animate-dot-jump rounded-50 bg-neutral-300"
 
   return (
     <div className="inline-flex items-center gap-10px">

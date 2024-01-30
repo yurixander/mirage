@@ -37,8 +37,8 @@ const Checkbox: FC<CheckboxProps> = ({
     : "cursor-pointer active:scale-90 active:animate-hold"
 
   const isSelectedClass = isSelected
-    ? "bg-primary"
-    : "border border-solid border-contrastDarker"
+    ? "bg-purple-500"
+    : "border border-solid border-neutral-300"
 
   return (
     <div className="flex size-max items-center gap-5px">
