@@ -41,12 +41,12 @@ const ChatContainer: FC<ChatContainerProps> = ({
   )
 
   return (
-    <section className="flex h-full flex-col gap-x1 border-1 border-solid border-border">
-      <header className="flex items-center gap-x1 border-b-1 border-solid border-b-border p-x1">
+    <section className="flex h-full flex-col gap-x1 border-1 border-solid border-stone-200">
+      <header className="flex items-center gap-x1 border-b-1 border-solid border-b-stone-200 p-x1">
         <div className="flex w-full gap-5px">
-          <FontAwesomeIcon icon={getIcon(type)} className="text-primary" />
-          <span className="text-primary">{name}</span>
-          <span className="text-grayText">{text}</span>
+          <FontAwesomeIcon icon={getIcon(type)} className="text-purple-500" />
+          <span className="text-purple-500">{name}</span>
+          <span className="text-stone-600">{text}</span>
         </div>
 
         <IconButton
@@ -118,7 +118,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           />
         </div>
       </div>
-      <div className="flex items-center justify-end gap-x1 border-t-1 border-solid border-t-border bg-contrast p-5px">
+      <div className="flex items-center justify-end gap-x1 border-t-1 border-solid border-t-stone-200 bg-neutral-50 p-5px">
         <SmartAction
           icon={faStarOfLife}
           text="Quick menu"

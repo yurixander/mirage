@@ -25,7 +25,7 @@ const Navigation: FC<NavigationProps> = ({servers}) => {
           <span className="ml-2px text-small italic">©</span>
         </div>
 
-        <div className="m-x1 h-1px w-full bg-contrastDark" />
+        <div className="m-x1 h-1px w-full bg-neutral-300" />
 
         <div className="flex flex-col items-end justify-center gap-x1">
           {servers.map((server, index) => (

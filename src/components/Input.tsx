@@ -94,7 +94,6 @@ const Input: FC<InputProps> = ({
   icon,
   actions,
 }) => {
-  const isDisabledClass = isDisabled ? " disabled" : ""
   const [value, setValue] = useState(initialValue ?? "")
 
   const [violatedConstraints, setViolatedConstraints] = useState<
@@ -120,19 +119,19 @@ const Input: FC<InputProps> = ({
   }
 
   return (
-    <div className={(className ?? "" + isDisabledClass).trim()}>
+    <div className={className?.trim()}>
       <div
-        className="flex items-center rounded-10 border-1 border-solid border-border focus-visible:rounded-5 focus-visible:outline-2 focus-visible:outline-outlineTab"
+        className="flex items-center rounded-10 border-1 border-solid border-neutral-300"
         tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
         {icon && (
-          <div className="ml-10px h-icon w-icon text-contrastIcon">
+          <div className="ml-10px h-icon w-icon text-neutral-200">
             <FontAwesomeIcon icon={icon} />
           </div>
         )}
 
         <input
-          className="w-full border-none"
+          className="w-full rounded-10"
           type="text"
           disabled={isDisabled}
           autoFocus={autoFocus}
@@ -141,7 +140,7 @@ const Input: FC<InputProps> = ({
           onChange={handleChange}></input>
 
         {actions && (
-          <div className="mr-5px flex fill-contrastIcon">
+          <div className="mr-5px flex fill-neutral-200">
             {actions?.map((action, index) => (
               <IconButton
                 key={index}
@@ -161,7 +160,7 @@ const Input: FC<InputProps> = ({
             key={constraint.message}
             className={twMerge(
               "text-constraintSize flex",
-              constraint.pattern.test(value) ? "text-green" : "text-red"
+              constraint.pattern.test(value) ? "text-green-500" : "text-red-500"
             )}>
             <div className="before:mr-1ch before:inline-block before:h-constraintSize before:w-constraintSize before:rounded-50 before:bg-current before:shadow-constraint before:shadow-current"></div>
             {constraint.message}

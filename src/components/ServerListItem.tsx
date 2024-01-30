@@ -33,7 +33,7 @@ const ServerListItem: FC<ServerListItemProps> = ({
           className={twMerge(
             "w-indicatorSize transition-all duration-300 ease-in-out -translate-x-3px group-active:h-2",
             isActive
-              ? "h-6 animate-indicator bg-primary rounded-10"
+              ? "h-6 animate-indicator bg-purple-500 rounded-10"
               : "h-indicatorSize rounded-50"
           )}
         />
@@ -49,9 +49,9 @@ const ServerListItem: FC<ServerListItemProps> = ({
         <div
           tabIndex={!isActive ? 0 : undefined}
           className={twMerge(
-            "relative overflow-hidden rounded-10 bg-red ml-5px box-border cursor-pointer h-serverSize w-serverSize focus-visible:outline-2 focus-visible:outline-outlineTab focus-visible:outline-offset-2 focus-visible:rounded-5 group-active:animate-hold group-active:transform group-active:scale-75",
+            "relative overflow-hidden rounded-10 bg-red-500 ml-5px box-border cursor-pointer h-serverSize w-serverSize focus-visible:rounded-5 group-active:animate-hold group-active:transform group-active:scale-75",
             isActive
-              ? "border-3 border-solid border-primary box-border duration-200 transition shadow-serverSelected"
+              ? "border-3 border-solid border-purple-500 box-border duration-200 transition shadow-serverSelected"
               : ""
           )}
           onClick={onClick}>

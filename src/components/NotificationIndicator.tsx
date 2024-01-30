@@ -24,8 +24,8 @@ const NotificationIndicator: FC<NotificationIndicatorProps> = ({
 
   const isMentionClass =
     mentionAmount !== undefined
-      ? "h-auto w-auto rounded-5 bg-red px-3px py-6px"
-      : "rounded-50 bg-contrastDarker h-10px w-10px"
+      ? "h-auto w-auto rounded-5 bg-red-500 px-3px py-6px"
+      : "rounded-50 bg-neutral-300 h-10px w-10px"
 
   const adjustedAmount =
     mentionAmount !== undefined
@@ -38,7 +38,7 @@ const NotificationIndicator: FC<NotificationIndicatorProps> = ({
 
   return (
     <div className="flex h-10px w-10px items-center justify-center">
-      <div className={twMerge("inline-block text-contrast", isMentionClass)}>
+      <div className={twMerge("inline-block text-neutral-50", isMentionClass)}>
         {adjustedAmount !== undefined && adjustedAmount}
       </div>
     </div>

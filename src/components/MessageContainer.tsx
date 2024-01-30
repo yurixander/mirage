@@ -26,7 +26,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
       <div className="flex w-full gap-10px">
         <div
           className="flex h-avatarSize w-avatarSize cursor-pointer items-center
-          justify-center overflow-hidden rounded-10 bg-contrast"
+          justify-center overflow-hidden rounded-10 bg-neutral-50"
           onClick={() => {
             onAuthorClick()
           }}>
@@ -46,7 +46,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
           <div className="flex">
             {content}
 
-            <time className="ml-auto flex text-grayText">
+            <time className="ml-auto flex text-gray-300">
               {localeTimeString}
             </time>
           </div>

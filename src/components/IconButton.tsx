@@ -28,8 +28,8 @@ const IconButton: FC<IconButtonProps> = ({
   isDotShowed,
 }) => {
   const isDisabledClass = isDisabled
-    ? "active:animate-none active:transform-none cursor-not-allowed"
-    : "active:animate-hold active:scale-90"
+    ? "active:animate-none active:transform-none cursor-not-allowed opacity-50 hover:bg-none"
+    : "active:animate-hold active:scale-90 hover:bg-neutral-50"
 
   return (
     <Tippy
@@ -41,7 +41,7 @@ const IconButton: FC<IconButtonProps> = ({
       placement={tooltipPlacement}>
       <div
         className={twMerge(
-          "inline-block self-center cursor-pointer p-5px rounded-10 focus-visible:transition focus-visible:duration-150 focus-visible:outline-2 focus-visible:outline-outlineTab focus-visible:rounded-5 hover:bg-contrast",
+          "inline-block self-center cursor-pointer p-5px rounded-10 focus-visible:duration-150 focus-visible:rounded-5",
           isDisabledClass
         )}
         onClick={isDisabled ? undefined : onClick}
@@ -51,7 +51,7 @@ const IconButton: FC<IconButtonProps> = ({
           children={
             <FontAwesomeIcon
               style={{color}}
-              className="text-contrastIcon"
+              className="text-neutral-300"
               icon={icon}
             />
           }

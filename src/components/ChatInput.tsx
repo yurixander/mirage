@@ -12,7 +12,6 @@ export type ChatInputProps = {
 const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
   const [value, setValue] = useState("")
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const isDisabledClassName = isDisabled ? "disabled" : ""
 
   useEffect(() => {
     const textarea = textareaRef.current
@@ -31,12 +30,11 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
   }
 
   return (
-    <div className="flex w-full rounded-5 border-1 border-solid border-border bg-contrast focus-visible:outline-2 focus-visible:outline-outlineTab">
+    <div className="flex w-full rounded-5 border-1 border-solid border-neutral-300 bg-neutral-50">
       <textarea
         onKeyDown={handleKeyDown}
         className={twMerge(
-          "flex max-h-100px w-full p-10px resize-none border-none bg-transparent overflow-y-auto scrollbar-hide focus-visible:outline-none ",
-          isDisabledClassName
+          "flex max-h-100px w-full p-10px resize-none border-none bg-transparent overflow-y-auto scrollbar-hide focus-visible:outline-none "
         )}
         rows={1}
         ref={textareaRef}

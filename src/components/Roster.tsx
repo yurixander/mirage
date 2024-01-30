@@ -46,7 +46,7 @@ const Roster: FC<RosterProps> = ({users}) => {
   return (
     <div className="flex h-full flex-col">
       <header className="m-5px flex items-center">
-        <FontAwesomeIcon className="text-contrastIcon" icon={faUserGroup} />
+        <FontAwesomeIcon className="text-neutral-200" icon={faUserGroup} />
 
         <div className="ml-5px w-full">People</div>
 
@@ -60,7 +60,7 @@ const Roster: FC<RosterProps> = ({users}) => {
         />
       </header>
 
-      <div className="h-1px w-full bg-contrastDark" />
+      <div className="h-1px w-full bg-neutral-300" />
 
       <div className="flex h-full grow flex-col gap-5px overflow-y-scroll scrollbar-hide">
         <div className="mt-10px flex flex-col gap-3px">
