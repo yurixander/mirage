@@ -1,5 +1,6 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Button, {
+  ButtonColor,
   ButtonSize,
   ButtonVariant,
   type ButtonProps,
@@ -15,6 +16,16 @@ export const Primary: Story = {
   args: {
     label: "Primary button",
     variant: ButtonVariant.Primary,
+    onClick: () => {},
+  },
+}
+
+export const PrimaryBlack: Story = {
+  render,
+  args: {
+    label: "Primary button",
+    variant: ButtonVariant.Primary,
+    color: ButtonColor.Black,
     onClick: () => {},
   },
 }
@@ -52,6 +63,17 @@ export const Small: Story = {
   args: {
     label: "Small button",
     variant: ButtonVariant.Primary,
+    size: ButtonSize.Small,
+    onClick: () => {},
+  },
+}
+
+export const SmallBlack: Story = {
+  render,
+  args: {
+    label: "Small button",
+    variant: ButtonVariant.Primary,
+    color: ButtonColor.Black,
     size: ButtonSize.Small,
     onClick: () => {},
   },
