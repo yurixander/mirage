@@ -1,0 +1,25 @@
+{
+  "Storybook Component Story No Props": {
+    "prefix": "storyTemp",
+    "scope": "typescript,typescriptreact",
+    "body": [
+      "import { type Meta, type StoryObj } from \"@storybook/react\";",
+      "import $1 from \"../components/$1\";",
+      "",
+      "type Story = StoryObj<typeof $1>;",
+      "",
+      "const meta: Meta<typeof $1> = {",
+      "  component: $1,",
+      "}",
+      "const render = () => <$1 />",
+      "",
+      "export const Default: Story = {",
+      "  render,",
+      "  args: {},",
+      "}",
+      "",
+      "export default meta"
+    ],
+    "description": "Snippet for creating a Storybook story for a React component without props"
+  }
+}

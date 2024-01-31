@@ -1,0 +1,29 @@
+{
+  "Storybook Component Story": {
+    "prefix": "storyProps",
+    "scope": "typescript,typescriptreact",
+    "body": [
+      "import { type Meta, type StoryObj } from \"@storybook/react\";",
+      "import $1, {",
+      "  type $2Props,",
+      "} from \"../components/$1\";",
+      "",
+      "type Story = StoryObj<typeof $1>;",
+      "",
+      "const meta: Meta<typeof $1> = {",
+      "  component: $1,",
+      "}",
+      "const render = (args: $2Props) => (",
+      "  <$1 {...args} />",
+      ")",
+      "",
+      "export const Default: Story = {",
+      "  render,",
+      "  args: {},",
+      "}",
+      "",
+      "export default meta"
+    ],
+    "description": "Snippet for creating a Storybook story for a React component"
+  }
+}
