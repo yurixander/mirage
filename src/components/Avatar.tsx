@@ -8,12 +8,10 @@ export type AvatarProps = {
 }
 
 const Avatar: FC<AvatarProps> = ({isRounded, displayName, avatarUrl}) => {
-  const isRoundedClass = isRounded && "rounded-[50%]"
-
   return (
     <div key={displayName}>
       <img
-        className={twMerge("w-x2 h-x2", isRoundedClass)}
+        className={twMerge("w-x2 h-x2", isRounded && "rounded-50")}
         src={avatarUrl}
         alt={displayName}
       />
