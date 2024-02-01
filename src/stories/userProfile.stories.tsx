@@ -17,7 +17,7 @@ export const Offline: Story = {
     displayName: "Emerald Branch",
     displayNameColor: "#5CC679",
     text: "@emerald_branch",
-    status: UserStatus.Offline,
+    status: UserStatus.OFFLINE,
     isLarge: false,
   },
 }
@@ -28,7 +28,7 @@ export const Online: Story = {
     displayName: "Emerald Branch",
     displayNameColor: "#5CC679",
     text: "@emerald_branch",
-    status: UserStatus.Online,
+    status: UserStatus.ONLINE,
     isLarge: false,
   },
 }
@@ -39,7 +39,7 @@ export const Idle: Story = {
     displayName: "Emerald Branch",
     displayNameColor: "#5CC679",
     text: "@emerald_branch",
-    status: UserStatus.Idle,
+    status: UserStatus.IDLE,
     isLarge: false,
   },
 }
@@ -50,8 +50,8 @@ export const WithActivityIcon: Story = {
     displayName: "Emerald Branch",
     displayNameColor: "#5CC679",
     text: "Listening to Spotify",
-    status: UserStatus.Idle,
-    activity: UserActivity.Listening,
+    status: UserStatus.IDLE,
+    activity: UserActivity.LISTENING,
     icon: faSpotify,
     platform: "Spotify",
     isLarge: false,
@@ -64,7 +64,7 @@ export const Large: Story = {
     displayName: "Emerald Branch",
     displayNameColor: "#5CC679",
     text: "Online",
-    status: UserStatus.Idle,
+    status: UserStatus.IDLE,
     isLarge: true,
   },
 }

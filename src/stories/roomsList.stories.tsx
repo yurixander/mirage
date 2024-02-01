@@ -1,11 +1,11 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import {RoomType} from "../components/Room"
-import RoomsList, {type RoomsListProps} from "../containers/RoomsList"
+import RoomsList from "../containers/RoomsList"
 
 type Story = StoryObj<typeof RoomsList>
 
 const meta: Meta<typeof RoomsList> = {component: RoomsList}
-const render = (args: RoomsListProps) => <RoomsList {...args} />
+const render = () => <RoomsList />
 
 export const Default: Story = {
   render,
@@ -13,7 +13,7 @@ export const Default: Story = {
     rooms: [
       {
         name: "Welcome",
-        type: RoomType.Space,
+        type: RoomType.SPACE,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -21,7 +21,7 @@ export const Default: Story = {
       },
       {
         name: "Introductions",
-        type: RoomType.Space,
+        type: RoomType.SPACE,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -29,7 +29,7 @@ export const Default: Story = {
       },
       {
         name: "Lobby",
-        type: RoomType.Text,
+        type: RoomType.TEXT,
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 2,
@@ -37,7 +37,7 @@ export const Default: Story = {
       },
       {
         name: "Invites only",
-        type: RoomType.Text,
+        type: RoomType.TEXT,
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 0,
@@ -45,7 +45,7 @@ export const Default: Story = {
       },
       {
         name: "Help & guides",
-        type: RoomType.Text,
+        type: RoomType.TEXT,
         isActive: true,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -53,7 +53,7 @@ export const Default: Story = {
       },
       {
         name: "Games",
-        type: RoomType.Text,
+        type: RoomType.TEXT,
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 0,
@@ -61,7 +61,7 @@ export const Default: Story = {
       },
       {
         name: "Off-topic",
-        type: RoomType.Text,
+        type: RoomType.TEXT,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -69,7 +69,7 @@ export const Default: Story = {
       },
       {
         name: "Admin room",
-        type: RoomType.Text,
+        type: RoomType.TEXT,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,

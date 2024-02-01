@@ -1,7 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import {ReactComponent as DotGrid} from "../../public/icons/dot-grid.svg"
-import {ReactComponent as Stars} from "../../public/icons/stars.svg"
-import Button, {ButtonVariant} from "../components/Button"
+import Button from "../components/Button"
 import Modal, {type ModalProps} from "../components/Modal"
 
 type Story = StoryObj<typeof Modal>

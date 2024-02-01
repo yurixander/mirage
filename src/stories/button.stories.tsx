@@ -15,7 +15,7 @@ export const Primary: Story = {
   render,
   args: {
     label: "Primary button",
-    variant: ButtonVariant.Primary,
+    variant: ButtonVariant.PRIMARY,
     onClick: () => {},
   },
 }
@@ -24,8 +24,8 @@ export const PrimaryBlack: Story = {
   render,
   args: {
     label: "Primary button",
-    variant: ButtonVariant.Primary,
-    color: ButtonColor.Black,
+    variant: ButtonVariant.PRIMARY,
+    color: ButtonColor.BLACK,
     onClick: () => {},
   },
 }
@@ -34,7 +34,7 @@ export const Secondary: Story = {
   render,
   args: {
     label: "Secondary button",
-    variant: ButtonVariant.Secondary,
+    variant: ButtonVariant.SECONDARY,
     onClick: () => {},
   },
 }
@@ -44,7 +44,7 @@ export const Disabled: Story = {
   args: {
     label: "Button disabled",
     isDisabled: true,
-    variant: ButtonVariant.Primary,
+    variant: ButtonVariant.PRIMARY,
     onClick: () => {},
   },
 }
@@ -53,7 +53,7 @@ export const Link: Story = {
   render,
   args: {
     label: "Link button",
-    variant: ButtonVariant.TextLink,
+    variant: ButtonVariant.TEXT_LINK,
     onClick: () => {},
   },
 }
@@ -62,8 +62,8 @@ export const Small: Story = {
   render,
   args: {
     label: "Small button",
-    variant: ButtonVariant.Primary,
-    size: ButtonSize.Small,
+    variant: ButtonVariant.PRIMARY,
+    size: ButtonSize.SMALL,
     onClick: () => {},
   },
 }
@@ -72,9 +72,9 @@ export const SmallBlack: Story = {
   render,
   args: {
     label: "Small button",
-    variant: ButtonVariant.Primary,
-    color: ButtonColor.Black,
-    size: ButtonSize.Small,
+    variant: ButtonVariant.PRIMARY,
+    color: ButtonColor.BLACK,
+    size: ButtonSize.SMALL,
     onClick: () => {},
   },
 }
