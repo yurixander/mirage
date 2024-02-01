@@ -1,4 +1,5 @@
-import {useCallback, useState, type FC} from "react"
+import useSelectionToggle from "@/hooks/util/useSelectionToggle"
+import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type CheckboxProps = {
@@ -14,23 +15,8 @@ const Checkbox: FC<CheckboxProps> = ({
   label,
   isDisabled,
 }) => {
-  const [isSelected, setSelected] = useState(isInitiallySelected)
-
-  const handleSelectionChanged = () => {
-    const nextIsSelected = !isSelected
-
-    setSelected(previous => !previous)
-    onSelectionChange(nextIsSelected)
-  }
-
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (event.key === "Enter") {
-        setSelected(!isSelected)
-      }
-    },
-    [isSelected]
-  )
+  const {isSelected, handleSelectionChanged, handleKeyDown} =
+    useSelectionToggle(isInitiallySelected, onSelectionChange)
 
   const isDisabledClass = isDisabled
     ? "cursor-not-allowed active:animate-none active:transform-none"

@@ -1,5 +1,6 @@
 /* eslint-disable tailwindcss/enforces-shorthand */
-import {useCallback, useState, type FC} from "react"
+import useSelectionToggle from "@/hooks/util/useSelectionToggle"
+import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type SwitchButtonProps = {
@@ -15,23 +16,8 @@ const SwitchButton: FC<SwitchButtonProps> = ({
   isDisabled,
   label,
 }) => {
-  const [isSelected, setSelected] = useState(isInitiallySelected)
-
-  const handleSelectionChanged = () => {
-    const nextIsSelected = !isSelected
-
-    setSelected(previous => !previous)
-    onSelectionChange(nextIsSelected)
-  }
-
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (event.key === "Enter") {
-        setSelected(!isSelected)
-      }
-    },
-    [isSelected]
-  )
+  const {isSelected, handleSelectionChanged, handleKeyDown} =
+    useSelectionToggle(isInitiallySelected, onSelectionChange)
 
   return (
     <>
@@ -42,8 +28,9 @@ const SwitchButton: FC<SwitchButtonProps> = ({
         )}>
         <div
           className={twMerge(
-            "flex h-6 w-11 cursor-pointer items-center rounded-full p-1",
-            isSelected ? "bg-purple-500 justify-end" : "bg-gray-300"
+            "flex h-6 w-11 items-center rounded-full p-1",
+            isSelected ? "bg-purple-500 justify-end" : "bg-gray-300",
+            isDisabled ? "cursor-not-allowed" : "cursor-pointer"
           )}
           onClick={isDisabled ? undefined : handleSelectionChanged}
           tabIndex={isDisabled ? undefined : 0}
