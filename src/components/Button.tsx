@@ -2,18 +2,18 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export enum ButtonVariant {
-  Primary,
-  Secondary,
-  TextLink,
+  PRIMARY,
+  SECONDARY,
+  TEXT_LINK,
 }
 
 export enum ButtonSize {
-  Small = "p-5px text-xs rounded-5 border-1 px-2",
+  SMALL = "p-5px text-xs rounded-5 border-1 px-2",
 }
 
 export enum ButtonColor {
-  Purple,
-  Black,
+  PURPLE,
+  BLACK,
 }
 
 export type ButtonProps = {
@@ -37,17 +37,17 @@ const STYLES = {
 }
 
 const buildStyle = (
-  color: ButtonColor = ButtonColor.Purple,
-  variant: ButtonVariant = ButtonVariant.Primary
+  color: ButtonColor = ButtonColor.PURPLE,
+  variant: ButtonVariant = ButtonVariant.PRIMARY
 ): string => {
   switch (variant) {
-    case ButtonVariant.Primary:
-      return color === ButtonColor.Black
+    case ButtonVariant.PRIMARY:
+      return color === ButtonColor.BLACK
         ? STYLES.PRIMARY_BLACK
         : STYLES.PRIMARY_PURPLE
-    case ButtonVariant.Secondary:
+    case ButtonVariant.SECONDARY:
       return STYLES.SECONDARY
-    case ButtonVariant.TextLink:
+    case ButtonVariant.TEXT_LINK:
       return STYLES.TEXT_LINK
     default:
       return STYLES.PRIMARY_PURPLE

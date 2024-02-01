@@ -1,8 +1,8 @@
 import dayjs from "dayjs"
 
 export enum ViewPath {
-  App = "/",
-  Login = "/login",
+  APP = "/",
+  LOGIN = "/login",
 }
 
 export type Credentials = {

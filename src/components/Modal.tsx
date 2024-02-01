@@ -2,10 +2,10 @@ import {useMemo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export enum ModalPosition {
-  Left = "left",
-  Right = "right",
-  Top = "top",
-  Bottom = "bottom",
+  LEFT = "left",
+  RIGHT = "right",
+  TOP = "top",
+  BOTTOM = "bottom",
 }
 
 export type ModalProps = {
@@ -15,13 +15,13 @@ export type ModalProps = {
 
 const popupPosition = (position?: ModalPosition): string => {
   switch (position) {
-    case ModalPosition.Left:
+    case ModalPosition.LEFT:
       return "items-center justify-start"
-    case ModalPosition.Right:
+    case ModalPosition.RIGHT:
       return "items-center justify-end"
-    case ModalPosition.Top:
+    case ModalPosition.TOP:
       return "items-start justify-center"
-    case ModalPosition.Bottom:
+    case ModalPosition.BOTTOM:
       return "items-end justify-center"
     case undefined:
       return "items-center justify-center"

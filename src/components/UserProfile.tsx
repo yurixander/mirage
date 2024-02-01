@@ -7,13 +7,13 @@ import {assert, trim, validateUrl} from "../utils/util"
 import {twMerge} from "tailwind-merge"
 
 export enum UserActivity {
-  Listening = "Listening to",
+  LISTENING = "Listening to",
 }
 
 export enum UserStatus {
-  Online,
-  Offline,
-  Idle,
+  ONLINE,
+  OFFLINE,
+  IDLE,
 }
 
 export type UserProfileProps = {
@@ -71,15 +71,15 @@ const UserProfile: FC<UserProfileProps> = ({
   let userStatusClassName: string
 
   switch (status) {
-    case UserStatus.Online:
+    case UserStatus.ONLINE:
       userStatusClassName = "bg-green-400"
 
       break
-    case UserStatus.Offline:
+    case UserStatus.OFFLINE:
       userStatusClassName = "bg-gray-300"
 
       break
-    case UserStatus.Idle:
+    case UserStatus.IDLE:
       userStatusClassName = "bg-yellow-500"
 
       break

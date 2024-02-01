@@ -12,7 +12,7 @@ import {
   faUniversalAccess,
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {useCallback, type FC} from "react"
+import {type FC} from "react"
 import {assert} from "../utils/util"
 import ChatInput from "./ChatInput"
 import IconButton from "./IconButton"
@@ -35,16 +35,13 @@ const ChatContainer: FC<ChatContainerProps> = ({
 }) => {
   assert(name.length !== 0, "room name should not be empty")
 
-  const getIcon = useCallback(
-    (type: RoomType) => (type === RoomType.Text ? faHashtag : faStarOfLife),
-    [type]
-  )
+  const icon = type === RoomType.TEXT ? faHashtag : faStarOfLife
 
   return (
     <section className="flex h-full flex-col gap-x1 border-1 border-solid border-stone-200">
       <header className="flex items-center gap-x1 border-b-1 border-solid border-b-stone-200 p-x1">
         <div className="flex w-full gap-5px">
-          <FontAwesomeIcon icon={getIcon(type)} className="text-purple-500" />
+          <FontAwesomeIcon icon={icon} className="text-purple-500" />
           <span className="text-purple-500">{name}</span>
           <span className="text-stone-600">{text}</span>
         </div>
