@@ -16,13 +16,13 @@ const RadioGroup: FC<RadioGroupProps> = ({
   items,
   isColum = RadioGroupDirection.COLUMN,
 }) => {
-  const initialSelectedIndex = items.findIndex(item => item.isChecked)
-  const [selectedItem, setSelectedItem] = useState<number | null>(
-    initialSelectedIndex !== -1 ? initialSelectedIndex : null
+  const initialSelectedItem = items.find(item => item.isChecked) ?? null
+  const [selectedItem, setSelectedItem] = useState<RadioButtonProps | null>(
+    initialSelectedItem
   )
 
-  const handleSelectionChange = (index: number) => {
-    setSelectedItem(index)
+  const handleSelectionChange = (item: RadioButtonProps) => {
+    setSelectedItem(item)
   }
 
   return (
@@ -36,9 +36,9 @@ const RadioGroup: FC<RadioGroupProps> = ({
           <RadioButton
             key={index}
             {...item}
-            isChecked={index === selectedItem}
+            isChecked={item === selectedItem}
             onClick={() => {
-              handleSelectionChange(index)
+              handleSelectionChange(item)
             }}
           />
         ))}
