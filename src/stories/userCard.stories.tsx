@@ -14,7 +14,7 @@ export const Default: Story = {
     userProfileProps: {
       displayName: "Emerald Branch",
       displayNameColor: "#5CC679",
-      status: UserStatus.ONLINE,
+      status: UserStatus.Online,
       text: "Online",
       isLarge: true,
     },

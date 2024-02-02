@@ -9,13 +9,13 @@ export type RadioGroupProps = {
 }
 
 export enum RadioGroupDirection {
-  COLUMN,
-  ROW,
+  Column,
+  Row,
 }
 
 const RadioGroup: FC<RadioGroupProps> = ({
   items,
-  isColum = RadioGroupDirection.COLUMN,
+  isColum = RadioGroupDirection.Column,
 }) => {
   const {selectedItem, handleSelectionChange} = useSelection<RadioButtonProps>(
     items,
@@ -27,7 +27,7 @@ const RadioGroup: FC<RadioGroupProps> = ({
       <div
         className={twMerge(
           "flex gap-10px",
-          isColum === RadioGroupDirection.COLUMN ? " flex-col" : " flex-row"
+          isColum === RadioGroupDirection.Column ? " flex-col" : " flex-row"
         )}>
         {items.map((item, index) => (
           <RadioButton

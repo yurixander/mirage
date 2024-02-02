@@ -4,7 +4,6 @@ import {twMerge} from "tailwind-merge"
 export type TypographyProps = {
   className?: string
   variant: "h1" | "h2" | "h3" | "p" | "span"
-  fontWeight: "default" | "strong" | "stronger"
   children?: React.ReactNode
 }
 
