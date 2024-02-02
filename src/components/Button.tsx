@@ -8,7 +8,7 @@ export enum ButtonVariant {
 }
 
 export enum ButtonSize {
-  Small = "p-5px text-xs rounded-5 border-1 px-2",
+  Small = "p-[5px] text-xs rounded-[5px] border-[1px] px-2",
 }
 
 export enum ButtonColor {
@@ -66,9 +66,9 @@ const Button: FC<ButtonProps> = ({
   return (
     <button
       className={twMerge(
-        "flex box-border active:translate-y-1px origin-center cursor-pointer items-center justify-center border-solid font-strong outline-none disabled:translate-y-1px",
+        "flex box-border active:translate-y-[1px] origin-center cursor-pointer items-center justify-center border-solid font-strong outline-none disabled:translate-y-[1px]",
         buildStyle(color, variant),
-        size ?? "rounded-10 border-2 p-10px"
+        size ?? "rounded-[10px] border-[2px] p-[10px]"
       )}
       disabled={isLoading ?? isDisabled}
       autoFocus={autoFocus}

@@ -121,17 +121,17 @@ const Input: FC<InputProps> = ({
   return (
     <div className={className?.trim()}>
       <div
-        className="flex items-center rounded-10 border-1 border-solid border-neutral-300"
+        className="flex items-center rounded-[10px] border-[1px] border-solid border-neutral-300"
         tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
         {icon && (
-          <div className="ml-10px h-icon w-icon text-neutral-200">
+          <div className="ml-[10px] h-[18px] w-[18px] text-neutral-200">
             <FontAwesomeIcon icon={icon} />
           </div>
         )}
 
         <input
-          className="w-full rounded-10"
+          className="w-full rounded-[10px]"
           type="text"
           disabled={isDisabled}
           autoFocus={autoFocus}
@@ -141,7 +141,7 @@ const Input: FC<InputProps> = ({
         />
 
         {actions && (
-          <div className="mr-5px flex fill-neutral-200">
+          <div className="mr-[5px] flex fill-neutral-200">
             {actions?.map(action => (
               <IconButton
                 key={action.tooltip}
@@ -155,7 +155,7 @@ const Input: FC<InputProps> = ({
         )}
       </div>
 
-      <div className="mt-5px flex flex-row gap-5px pl-5px">
+      <div className="mt-1 flex flex-row gap-1 pl-1">
         {violatedConstraints.map(constraint => (
           <span
             key={constraint.pattern.source}
@@ -163,7 +163,7 @@ const Input: FC<InputProps> = ({
               "text-constraintSize flex",
               constraint.pattern.test(value) ? "text-green-500" : "text-red-500"
             )}>
-            <div className="before:mr-1ch before:inline-block before:h-constraintSize before:w-constraintSize before:rounded-50 before:bg-current before:shadow-constraint before:shadow-current" />
+            <div className="before:mr-[1ch] before:inline-block before:h-[1.2ch] before:w-[1.2ch] before:rounded-[50%] before:bg-current before:shadow-constraint before:shadow-current" />
             {constraint.message}
           </span>
         ))}

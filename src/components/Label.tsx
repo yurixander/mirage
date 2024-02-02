@@ -10,7 +10,7 @@ const Label: FC<LabelProps> = ({className, text}) => {
   return (
     <div
       className={twMerge(
-        "text-xs font-strong uppercase text-gray-300",
+        "text-xs font-semibold uppercase text-gray-300",
         className
       )}>
       {text}

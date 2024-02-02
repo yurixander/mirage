@@ -22,7 +22,7 @@ const UserBar: FC<UserBarProps> = ({
   const MAX_NAME_LENGTH = 18
 
   return (
-    <div className="flex p-x1">
+    <div className="flex p-[x1]">
       <div className="mr-auto">
         <UserProfile
           avatarUrl={avatarUrl}

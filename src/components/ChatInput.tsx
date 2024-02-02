@@ -30,7 +30,7 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
   }
 
   return (
-    <div className="flex w-full rounded-5 border-1 border-solid border-neutral-300 bg-neutral-50">
+    <div className="flex w-full rounded-[5px] border-[1px] border-solid border-neutral-300 bg-neutral-50">
       <textarea
         onKeyDown={handleKeyDown}
         rows={1}
@@ -43,10 +43,10 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
           setValue(value.target.value)
         }}
         className={twMerge(
-          "flex max-h-100px w-full p-10px resize-none border-none bg-transparent overflow-y-auto scrollbar-hide focus-visible:outline-none "
+          "flex max-h-[100px] w-full p-3 resize-none border-none bg-transparent overflow-y-auto scrollbar-hide focus-visible:outline-none "
         )}
       />
-      <div className="m-5px h-max w-max">
+      <div className="m-[5px] h-max w-max">
         <IconButton
           tooltip="Send"
           tooltipPlacement="auto"

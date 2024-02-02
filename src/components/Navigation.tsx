@@ -22,12 +22,12 @@ const Navigation: FC<NavigationProps> = ({servers}) => {
         <div className="flex items-end font-iowan">
           <div>Mirage</div>
 
-          <span className="ml-2px text-small italic">©</span>
+          <span className="ml-[2px] text-xs italic">©</span>
         </div>
 
-        <div className="m-x1 h-1px w-full bg-neutral-300" />
+        <div className="m-4 h-[1px] w-full bg-neutral-300" />
 
-        <div className="flex flex-col items-end justify-center gap-x1">
+        <div className="flex flex-col items-end justify-center gap-4">
           {servers.map((server, index) => (
             <ServerListItem key={index} {...server} />
           ))}

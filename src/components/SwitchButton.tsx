@@ -23,7 +23,7 @@ const SwitchButton: FC<SwitchButtonProps> = ({
     <>
       <div
         className={twMerge(
-          "flex items-center gap-10px",
+          "flex items-center gap-3",
           isDisabled ? "opacity-50 cursor-not-allowed" : ""
         )}>
         <div

@@ -45,7 +45,7 @@ const Room: FC<RoomProps> = ({
           <FontAwesomeIcon
             icon={icon}
             className={twMerge(
-              "mr-10px group-active:transition-colors group-active:duration-1000 group-active:text-purple-500",
+              "mr-3 group-active:transition-colors group-active:duration-1000 group-active:text-purple-500",
               activeClass
             )}
           />

@@ -102,50 +102,44 @@ const UserProfile: FC<UserProfileProps> = ({
 
   const activityOrText =
     activity !== undefined ? (
-      <span className="text-small">
+      <span className="text-xs">
         {activity + " "}
 
-        <span className="font-strong">{platform}</span>
+        <span className="font-semibold">{platform}</span>
       </span>
     ) : (
-      <span className="text-small">{text}</span>
+      <span className="text-xs">{text}</span>
     )
 
   return (
-    <div className="flex gap-10px">
+    <div className="flex gap-3">
       <div className="relative">
         <div
           className={twMerge(
-            "relative overflow-hidden rounded-10 bg-red-500",
-            isLarge
-              ? "h-avatarSizeLarge w-avatarSizeLarge"
-              : "h-avatarSizeDefault w-avatarSizeDefault"
+            "relative overflow-hidden rounded-[3px] bg-red-500",
+            isLarge ? "h-[50px] w-[50px]" : "h-[37px] w-[37px]"
           )}>
           {avatarImage}
         </div>
 
         <div
           className={twMerge(
-            "absolute rounded-50 border-2 border-solid border-neutral-50 translate-x-1/4 translate-y-1/4 right-0 bottom-0",
-            isLarge
-              ? "h-avatarStatusSizeLarge w-avatarStatusSizeLarge"
-              : "h-avatarStatusSize w-avatarStatusSize",
+            "absolute rounded-[50%] border-[2px] border-solid border-neutral-50 translate-x-1/4 translate-y-1/4 right-0 bottom-0",
+            isLarge ? "h-[17px] w-[17px]" : "h-[13px] w-[13px]",
             userStatusClassName
           )}
         />
       </div>
 
-      <div className="mr-auto inline-flex flex-col gap-3px">
+      <div className="mr-auto inline-flex flex-col gap-1">
         <div
           style={{color: displayNameColor}}
-          className="text-large font-strong">
+          className="text-base font-semibold">
           {trim(displayName, MAX_DISPLAY_NAME_LENGTH)}
         </div>
 
         <div className="flex items-center">
-          {icon && (
-            <FontAwesomeIcon icon={icon} className="mr-3px h-10px w-10px" />
-          )}
+          {icon && <FontAwesomeIcon icon={icon} className="mr-1 h-3 w-3" />}
 
           {activityOrText}
         </div>

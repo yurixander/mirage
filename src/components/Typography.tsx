@@ -14,11 +14,11 @@ const buildVariant = (variant: "h1" | "h2" | "h3" | "p" | "span"): string => {
     case "h2":
       return "text-2xl"
     case "h3":
-      return "text-1xl"
+      return "text-xl"
     case "p":
-      return "text-small"
+      return "text-xs"
     case "span":
-      return "text-medium"
+      return "text-sm"
   }
 }
 
