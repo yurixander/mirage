@@ -13,7 +13,7 @@ export const Default: Story = {
     rooms: [
       {
         name: "Welcome",
-        type: RoomType.SPACE,
+        type: RoomType.Space,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -21,7 +21,7 @@ export const Default: Story = {
       },
       {
         name: "Introductions",
-        type: RoomType.SPACE,
+        type: RoomType.Space,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -29,7 +29,7 @@ export const Default: Story = {
       },
       {
         name: "Lobby",
-        type: RoomType.TEXT,
+        type: RoomType.Text,
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 2,
@@ -37,7 +37,7 @@ export const Default: Story = {
       },
       {
         name: "Invites only",
-        type: RoomType.TEXT,
+        type: RoomType.Text,
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 0,
@@ -45,7 +45,7 @@ export const Default: Story = {
       },
       {
         name: "Help & guides",
-        type: RoomType.TEXT,
+        type: RoomType.Text,
         isActive: true,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -53,7 +53,7 @@ export const Default: Story = {
       },
       {
         name: "Games",
-        type: RoomType.TEXT,
+        type: RoomType.Text,
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 0,
@@ -61,7 +61,7 @@ export const Default: Story = {
       },
       {
         name: "Off-topic",
-        type: RoomType.TEXT,
+        type: RoomType.Text,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -69,7 +69,7 @@ export const Default: Story = {
       },
       {
         name: "Admin room",
-        type: RoomType.TEXT,
+        type: RoomType.Text,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
