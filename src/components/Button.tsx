@@ -2,18 +2,18 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export enum ButtonVariant {
-  PRIMARY,
-  SECONDARY,
-  TEXT_LINK,
+  Primary,
+  Secondary,
+  TextLink,
 }
 
 export enum ButtonSize {
-  SMALL = "p-5px text-xs rounded-5 border-1 px-2",
+  Small = "p-5px text-xs rounded-5 border-1 px-2",
 }
 
 export enum ButtonColor {
-  PURPLE,
-  BLACK,
+  Purple,
+  Black,
 }
 
 export type ButtonProps = {
@@ -29,28 +29,27 @@ export type ButtonProps = {
 }
 
 const STYLES = {
-  PRIMARY_PURPLE: "bg-purple-700 border-purple-900 text-white",
-  PRIMARY_BLACK: "bg-black border-none text-white",
-  SECONDARY: "bg-purple-100 text-purple-800 border-none hover:bg-purple-200",
-  TEXT_LINK:
-    "bg-none text-purple-800 hover:bg-purple-100 border-none underline",
+  PrimaryPurple: "bg-purple-700 border-purple-900 text-white",
+  PrimaryBlack: "bg-black border-none text-white",
+  Secondary: "bg-purple-100 text-purple-800 border-none hover:bg-purple-200",
+  TextLink: "bg-none text-purple-800 hover:bg-purple-100 border-none underline",
 }
 
 const buildStyle = (
-  color: ButtonColor = ButtonColor.PURPLE,
-  variant: ButtonVariant = ButtonVariant.PRIMARY
+  color: ButtonColor = ButtonColor.Purple,
+  variant: ButtonVariant = ButtonVariant.Primary
 ): string => {
   switch (variant) {
-    case ButtonVariant.PRIMARY:
-      return color === ButtonColor.BLACK
-        ? STYLES.PRIMARY_BLACK
-        : STYLES.PRIMARY_PURPLE
-    case ButtonVariant.SECONDARY:
-      return STYLES.SECONDARY
-    case ButtonVariant.TEXT_LINK:
-      return STYLES.TEXT_LINK
+    case ButtonVariant.Primary:
+      return color === ButtonColor.Black
+        ? STYLES.PrimaryBlack
+        : STYLES.PrimaryPurple
+    case ButtonVariant.Secondary:
+      return STYLES.Secondary
+    case ButtonVariant.TextLink:
+      return STYLES.TextLink
     default:
-      return STYLES.PRIMARY_PURPLE
+      return STYLES.PrimaryPurple
   }
 }
 
