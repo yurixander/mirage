@@ -28,8 +28,8 @@ export const Default: Story = {
       <TextMessage
         key={0}
         id={Math.random()}
-        authorDisplayName={"John Doe"}
-        authorDisplayNameColor={"rgb(100, 200, 100)"}
+        authorDisplayName="John Doe"
+        authorDisplayNameColor="rgb(100, 200, 100)"
         authorAvatarUrl={
           "https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
@@ -43,43 +43,31 @@ export const Default: Story = {
       <TextMessage
         key={2}
         id={Math.random()}
-        authorDisplayName={"John Doe"}
-        authorDisplayNameColor={"rgb(100, 200, 100)"}
-        authorAvatarUrl={
-          "https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        }
-        text={
-          "The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"
-        }
+        authorDisplayName="John Doe"
+        authorDisplayNameColor="rgb(100, 200, 100)"
+        authorAvatarUrl="https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        text="The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"
         timestamp={Date.now()}
         onAuthorClick={() => {}}
       />,
       <ImageMessage
         key={3}
         id={Math.random()}
-        imageUrl={
-          "https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        }
-        authorDisplayName={"John Doe"}
-        authorDisplayNameColor={"rgb(100, 200, 100)"}
-        authorAvatarUrl={
-          "https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        }
-        text={"This image is amazing!"}
+        imageUrl="https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        authorDisplayName="John Doe"
+        authorDisplayNameColor="rgb(100, 200, 100)"
+        authorAvatarUrl="https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        text="This image is amazing!"
         timestamp={Date.now()}
         onAuthorClick={() => {}}
       />,
       <TextMessage
         key={4}
         id={Math.random()}
-        authorDisplayName={"John Doe"}
-        authorDisplayNameColor={"rgb(100, 200, 100)"}
-        authorAvatarUrl={
-          "https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        }
-        text={
-          "The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"
-        }
+        authorDisplayName="John Doe"
+        authorDisplayNameColor="rgb(100, 200, 100)"
+        authorAvatarUrl="https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        text="The database hiccup turned into a full-on dance. We need to streamline our queries and possibly rethink our indexing strategy. Anyone up for a deep dive into our SQL?"
         timestamp={Date.now()}
         onAuthorClick={() => {}}
       />,

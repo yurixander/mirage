@@ -35,6 +35,19 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   const dotTwClassName =
     "h-10px w-10px animate-dot-jump rounded-50 bg-neutral-300"
 
+  const typingUserElements = users.map(
+    (user, index) =>
+      user.avatarUrl && (
+        <div key={index} className={index === 1 || index === 2 ? "-ml-x1" : ""}>
+          <Avatar
+            isRounded
+            displayName={user.displayName}
+            avatarUrl={user.avatarUrl}
+          />
+        </div>
+      )
+  )
+
   return (
     <div className="inline-flex items-center gap-10px">
       <div className="flex gap-2px">
@@ -45,22 +58,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
         <div className={twMerge(dotTwClassName, "animation-delay-300")} />
       </div>
 
-      <div className="flex">
-        {users.map(
-          (user, index) =>
-            user.avatarUrl && (
-              <div
-                key={index}
-                className={index === 1 || index === 2 ? "-ml-x1" : ""}>
-                <Avatar
-                  isRounded={true}
-                  displayName={user.displayName}
-                  avatarUrl={user.avatarUrl}
-                />
-              </div>
-            )
-        )}
-      </div>
+      <div className="flex">{typingUserElements}</div>
 
       <div>
         {who} {verbForm} typing...

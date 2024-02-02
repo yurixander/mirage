@@ -44,7 +44,7 @@ const QuickActions: FC<QuickActionsProps> = ({
         tooltip="Notifications"
         tooltipPlacement="right"
         icon={faBell}
-        isDotShowed={true}
+        isDotVisible
       />
 
       <IconButton

@@ -12,12 +12,12 @@ export const WithTwoDialogs: Story = {
   args: {
     dialogs: [
       <div key={0}>
-        <Button onClick={() => {}} label={"showPopup2"} />
+        <Button onClick={() => {}} label="showPopup2" />
       </div>,
       <div key={1}>
-        <Button onClick={() => {}} label={"showPopup2"} />
+        <Button onClick={() => {}} label="showPopup2" />
 
-        <Button onClick={() => {}} label={"close"} />
+        <Button onClick={() => {}} label="close" />
       </div>,
     ],
   },

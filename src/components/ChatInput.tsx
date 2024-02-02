@@ -33,28 +33,29 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
     <div className="flex w-full rounded-5 border-1 border-solid border-neutral-300 bg-neutral-50">
       <textarea
         onKeyDown={handleKeyDown}
-        className={twMerge(
-          "flex max-h-100px w-full p-10px resize-none border-none bg-transparent overflow-y-auto scrollbar-hide focus-visible:outline-none "
-        )}
         rows={1}
         ref={textareaRef}
-        autoFocus={true}
-        placeholder={"Write a message or simply say 👋🏼 hello..."}
+        autoFocus
+        placeholder="Write a message or simply say 👋🏼 hello..."
         value={value}
+        disabled={isDisabled}
         onChange={value => {
           setValue(value.target.value)
         }}
-        disabled={isDisabled}></textarea>
+        className={twMerge(
+          "flex max-h-100px w-full p-10px resize-none border-none bg-transparent overflow-y-auto scrollbar-hide focus-visible:outline-none "
+        )}
+      />
       <div className="m-5px h-max w-max">
         <IconButton
-          onClick={() => {
-            /* TODO: Handle click for send message. */
-          }}
-          tooltip={"Send"}
-          tooltipPlacement={"auto"}
+          tooltip="Send"
+          tooltipPlacement="auto"
           icon={faPaperPlane}
           color="#C463FF"
           isDisabled={isDisabled}
+          onClick={() => {
+            /* TODO: Handle click for send message. */
+          }}
         />
       </div>
     </div>
