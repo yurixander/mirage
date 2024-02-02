@@ -54,7 +54,7 @@ export const IsRow: Story = {
         onClick: () => {},
       },
     ],
-    isColum: RadioGroupDirection.ROW,
+    isColum: RadioGroupDirection.Row,
   },
 }
 

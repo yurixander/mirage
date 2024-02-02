@@ -10,7 +10,7 @@ export const ActiveWithMentions: Story = {
   render,
   args: {
     name: "Space room",
-    type: RoomType.SPACE,
+    type: RoomType.Space,
     isActive: true,
     containsUnreadMessages: true,
     mentionCount: 99,
@@ -21,7 +21,7 @@ export const ContainsUnreadMessages: Story = {
   render,
   args: {
     name: "Text room",
-    type: RoomType.TEXT,
+    type: RoomType.Text,
     isActive: true,
     containsUnreadMessages: true,
     mentionCount: 0,
@@ -32,7 +32,7 @@ export const ZeroNotifications: Story = {
   render,
   args: {
     name: "Text room",
-    type: RoomType.TEXT,
+    type: RoomType.Text,
     isActive: false,
     containsUnreadMessages: false,
     mentionCount: 0,

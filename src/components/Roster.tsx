@@ -11,8 +11,8 @@ import {type UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 
 export enum RosterUserCategory {
-  ADMIN,
-  MEMBER,
+  Admin,
+  Member,
 }
 
 export type RosterUserData = {
@@ -26,12 +26,12 @@ export type RosterProps = {
 
 const Roster: FC<RosterProps> = ({users}) => {
   const admins = useMemo(
-    () => users.filter(user => user.category === RosterUserCategory.ADMIN),
+    () => users.filter(user => user.category === RosterUserCategory.Admin),
     [users]
   )
 
   const members = useMemo(
-    () => users.filter(user => user.category === RosterUserCategory.MEMBER),
+    () => users.filter(user => user.category === RosterUserCategory.Member),
     [users]
   )
 

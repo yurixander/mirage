@@ -6,8 +6,8 @@ import NotificationIndicator from "./NotificationIndicator"
 import {twMerge} from "tailwind-merge"
 
 export enum RoomType {
-  TEXT,
-  SPACE,
+  Text,
+  Space,
 }
 
 export type RoomProps = {
@@ -32,7 +32,7 @@ const Room: FC<RoomProps> = ({
   // Determine CSS class to apply based on the active state of the room.
   const activeClass = isActive ? "text-purple-500" : "text-gray-300"
 
-  const icon = type === RoomType.TEXT ? faHashtag : faStarOfLife
+  const icon = type === RoomType.Text ? faHashtag : faStarOfLife
   const mentionCountProp = mentionCount > 0 ? mentionCount : undefined
   const MAX_NAME_LENGTH = 16
 
