@@ -35,10 +35,7 @@ const SwitchButton: FC<SwitchButtonProps> = ({
           onClick={isDisabled ? undefined : handleSelectionChanged}
           tabIndex={isDisabled ? undefined : 0}
           onKeyDown={handleKeyDown}>
-          <div
-            className={
-              "relative h-4 w-4 rounded-full bg-white shadow-md"
-            }></div>
+          <div className="relative h-4 w-4 rounded-full bg-white shadow-md" />
         </div>
         {label}
       </div>

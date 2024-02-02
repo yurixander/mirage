@@ -1,19 +1,23 @@
 import {StrictMode} from "react"
 import {createRoot} from "react-dom/client"
-import {BrowserRouter, Routes} from "react-router-dom"
+import {BrowserRouter, Route, Routes} from "react-router-dom"
 import "./polyfills"
 import "./styles/global.sass"
 import {assert} from "./utils/util"
+import AppView from "./views/app.jsx"
+import LoginView from "./views/login"
 
 const $root = document.getElementById("root")
 
-assert($root !== null, "root element should exist")
+assert($root !== null, "Root element should exist")
 
-// TODO: Add routes for the login and app pages.
 createRoot($root).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes></Routes>
+      <Routes>
+        <Route path="/" element={<AppView />} />
+        <Route path="/login" element={<LoginView />} />
+      </Routes>
     </BrowserRouter>
   </StrictMode>
 )

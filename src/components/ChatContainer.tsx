@@ -50,8 +50,8 @@ const ChatContainer: FC<ChatContainerProps> = ({
           onClick={() => {
             /* TODO: Handle `info` button click. */
           }}
-          tooltip={"Room details"}
-          tooltipPlacement={"bottom"}
+          tooltip="Room details"
+          tooltipPlacement="bottom"
           icon={faCircleInfo}
         />
 
@@ -59,8 +59,8 @@ const ChatContainer: FC<ChatContainerProps> = ({
           onClick={() => {
             /* TODO: Handle `link` button click. */
           }}
-          tooltip={"Copy link"}
-          tooltipPlacement={"bottom"}
+          tooltip="Copy link"
+          tooltipPlacement="bottom"
           icon={faLink}
         />
 
@@ -68,8 +68,8 @@ const ChatContainer: FC<ChatContainerProps> = ({
           onClick={() => {
             /* TODO: Handle `more` button click. */
           }}
-          tooltip={"More actions"}
-          tooltipPlacement={"bottom"}
+          tooltip="More actions"
+          tooltipPlacement="bottom"
           icon={faEllipsisV}
         />
       </header>
@@ -83,8 +83,8 @@ const ChatContainer: FC<ChatContainerProps> = ({
               onClick={() => {
                 /* TODO: Handle `emoji` button click. */
               }}
-              tooltip={"Emoji"}
-              tooltipPlacement={"top"}
+              tooltip="Emoji"
+              tooltipPlacement="top"
               icon={faFaceSmile}
             />
 
@@ -92,8 +92,8 @@ const ChatContainer: FC<ChatContainerProps> = ({
               onClick={() => {
                 /* TODO: Handle `attach` button click. */
               }}
-              tooltip={"Attach"}
-              tooltipPlacement={"top"}
+              tooltip="Attach"
+              tooltipPlacement="top"
               icon={faPaperclip}
             />
           </div>

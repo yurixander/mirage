@@ -34,8 +34,8 @@ const Navigation: FC<NavigationProps> = ({servers}) => {
 
           <Tippy
             content="Add server"
-            arrow={true}
-            inertia={true}
+            arrow
+            inertia
             animation="scale-subtle"
             duration={100}
             placement="right">

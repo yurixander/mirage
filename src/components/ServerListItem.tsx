@@ -41,11 +41,11 @@ const ServerListItem: FC<ServerListItemProps> = ({
 
       <Tippy
         content={tooltip}
-        arrow={true}
-        inertia={true}
+        arrow
+        inertia
         animation="scale-subtle"
         duration={100}
-        placement={"right"}>
+        placement="right">
         <div
           tabIndex={!isActive ? 0 : undefined}
           className={twMerge(

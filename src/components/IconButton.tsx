@@ -15,7 +15,7 @@ export type IconButtonProps = {
   icon: IconProp
   color?: string
   isDisabled?: boolean
-  isDotShowed?: boolean
+  isDotVisible?: boolean
 }
 
 const IconButton: FC<IconButtonProps> = ({
@@ -25,7 +25,7 @@ const IconButton: FC<IconButtonProps> = ({
   onClick,
   color,
   isDisabled,
-  isDotShowed,
+  isDotVisible,
 }) => {
   const isDisabledClass = isDisabled
     ? "active:animate-none active:transform-none cursor-not-allowed opacity-50 hover:bg-none"
@@ -34,8 +34,8 @@ const IconButton: FC<IconButtonProps> = ({
   return (
     <Tippy
       content={<span className="text-normal font-default">{tooltip}</span>}
-      arrow={true}
-      inertia={true}
+      arrow
+      inertia
       animation="scale-subtle"
       duration={100}
       placement={tooltipPlacement}>
@@ -47,7 +47,7 @@ const IconButton: FC<IconButtonProps> = ({
         onClick={isDisabled ? undefined : onClick}
         tabIndex={isDisabled ? undefined : 0}>
         <NotificationDot
-          isShowed={isDotShowed ?? false}
+          isVisible={isDotVisible ?? false}
           children={
             <FontAwesomeIcon
               style={{color}}

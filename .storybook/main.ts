@@ -1,9 +1,7 @@
 import type {StorybookConfig} from "@storybook/react-webpack5"
-import {resolve} from "path";
-import {resolveConfig} from "prettier";
-const path = require('path');
+import * as path from "node:path"
 
-const config: StorybookConfig = {
+export default {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
@@ -24,20 +22,19 @@ const config: StorybookConfig = {
     if (!config.resolve) {
       config.resolve = {};
     }
+
     if (!config.resolve.alias) {
       config.resolve.alias = {};
     }
-    config.resolve.alias["@"] = path.resolve(__dirname, '../src');
 
+    config.resolve.alias["@"] = path.resolve(__dirname, '../src');
 
     config.module?.rules?.push({
       test: /\.scss$/,
-      use: ['style-loader', 'css-loader', 'sass-loader'],
+      use: ["style-loader", "css-loader", "sass-loader"],
       include: path.resolve(__dirname, '../'),
     });
 
     return config;
   },
-}
-
-export default config
+} satisfies StorybookConfig

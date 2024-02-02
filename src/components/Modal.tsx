@@ -50,7 +50,7 @@ const Modal: FC<ModalProps> = ({position, dialogs}) => {
       )}>
       {dialogsToShow.map((dialog, index) => (
         <div
-          key={index}
+          key={dialog.key ?? index}
           className="animate-enter"
           style={{opacity: calculateOpacity(index)}}>
           {dialog}

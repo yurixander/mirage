@@ -35,7 +35,7 @@ export const WithDot: Story = {
     onClick: () => {},
     tooltip: "Settings",
     tooltipPlacement: "right",
-    isDotShowed: true,
+    isDotVisible: true,
   },
 }
 

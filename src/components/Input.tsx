@@ -137,16 +137,17 @@ const Input: FC<InputProps> = ({
           autoFocus={autoFocus}
           placeholder={placeholder}
           value={parentValue ?? value}
-          onChange={handleChange}></input>
+          onChange={handleChange}
+        />
 
         {actions && (
           <div className="mr-5px flex fill-neutral-200">
-            {actions?.map((action, index) => (
+            {actions?.map(action => (
               <IconButton
-                key={index}
+                key={action.tooltip}
                 onClick={action.onClick}
                 tooltip={action.tooltip}
-                tooltipPlacement={"auto"}
+                tooltipPlacement="auto"
                 icon={action.icon}
               />
             ))}
@@ -157,12 +158,12 @@ const Input: FC<InputProps> = ({
       <div className="mt-5px flex flex-row gap-5px pl-5px">
         {violatedConstraints.map(constraint => (
           <span
-            key={constraint.message}
+            key={constraint.pattern.source}
             className={twMerge(
               "text-constraintSize flex",
               constraint.pattern.test(value) ? "text-green-500" : "text-red-500"
             )}>
-            <div className="before:mr-1ch before:inline-block before:h-constraintSize before:w-constraintSize before:rounded-50 before:bg-current before:shadow-constraint before:shadow-current"></div>
+            <div className="before:mr-1ch before:inline-block before:h-constraintSize before:w-constraintSize before:rounded-50 before:bg-current before:shadow-constraint before:shadow-current" />
             {constraint.message}
           </span>
         ))}

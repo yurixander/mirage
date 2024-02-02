@@ -1,4 +1,5 @@
-/** @type {import('tailwindcss').Config} */
+import {Config} from "tailwindcss"
+
 module.exports = {
   content: [
     "./src/components/*.{ts,tsx}",
@@ -52,7 +53,7 @@ module.exports = {
         "avatarSizeDefault": "37px",
         "avatarSizeLarge": "50px",
         "serverSize": "47px",
-        "dotSize": "6px",
+        "dotSize": "30px",
         "checkBoxSize": "13px",
         "loaderSize": "1rem",
         "userCardSize": "250px",
@@ -81,8 +82,8 @@ module.exports = {
         constraintSize: "0.8rem",
       },
       fontWeight: {
-        default: 300,
-        strong: 500,
+        default: "300",
+        strong: "500",
         stronger: "bold",
       },
       gradientColorStops: {
@@ -201,4 +202,4 @@ module.exports = {
       addUtilities(newUtilities, ["responsive", "hover"])
     },
   ],
-}
+} satisfies Config

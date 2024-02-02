@@ -3,15 +3,15 @@ import {twMerge} from "tailwind-merge"
 
 export type NotificationDotProps = {
   children: JSX.Element
-  isShowed: boolean
+  isVisible: boolean
 }
 
-const NotificationDot: FC<NotificationDotProps> = ({children, isShowed}) => {
+const NotificationDot: FC<NotificationDotProps> = ({children, isVisible}) => {
   return (
     <div className="relative inline">
       <div>{children}</div>
 
-      {isShowed && (
+      {isVisible && (
         <div
           className={twMerge(
             "absolute top-0 right-0 h-dotSize w-dotSize",
