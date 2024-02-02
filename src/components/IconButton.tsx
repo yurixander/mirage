@@ -33,7 +33,7 @@ const IconButton: FC<IconButtonProps> = ({
 
   return (
     <Tippy
-      content={<span className="text-normal font-default">{tooltip}</span>}
+      content={<span className="font-normal">{tooltip}</span>}
       arrow
       inertia
       animation="scale-subtle"
@@ -41,7 +41,7 @@ const IconButton: FC<IconButtonProps> = ({
       placement={tooltipPlacement}>
       <div
         className={twMerge(
-          "inline-block self-center cursor-pointer p-5px rounded-10 focus-visible:duration-150 focus-visible:rounded-5",
+          "inline-block self-center cursor-pointer p-1 rounded-[10px] focus-visible:duration-150 focus-visible:rounded-[5px]",
           isDisabledClass
         )}
         onClick={isDisabled ? undefined : onClick}

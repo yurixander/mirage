@@ -45,10 +45,10 @@ const Roster: FC<RosterProps> = ({users}) => {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="m-5px flex items-center">
+      <header className="m-[5px] flex items-center">
         <FontAwesomeIcon className="text-neutral-200" icon={faUserGroup} />
 
-        <div className="ml-5px w-full">People</div>
+        <div className="ml-[5px] w-full">People</div>
 
         <IconButton
           onClick={() => {
@@ -60,19 +60,19 @@ const Roster: FC<RosterProps> = ({users}) => {
         />
       </header>
 
-      <div className="h-1px w-full bg-neutral-300" />
+      <div className="h-[1px] w-full bg-neutral-300" />
 
-      <div className="flex h-full grow flex-col gap-5px overflow-y-scroll scrollbar-hide">
-        <div className="mt-10px flex flex-col gap-3px">
-          <Label className="p-5px" text={"Admin — " + admins.length} />
+      <div className="flex h-full grow flex-col gap-[5px] overflow-y-scroll scrollbar-hide">
+        <div className="mt-[10px] flex flex-col gap-1">
+          <Label className="p-[5px]" text={"Admin — " + admins.length} />
 
           {admins.map((admin, index) => (
             <RosterUser key={index} onClick={() => {}} {...admin} />
           ))}
         </div>
 
-        <div className="flex flex-col gap-3px">
-          <Label className="p-5px" text={"Member — " + members.length} />
+        <div className="flex flex-col gap-1">
+          <Label className="p-[5px]" text={"Member — " + members.length} />
 
           {memberElements}
         </div>

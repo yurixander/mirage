@@ -33,12 +33,12 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   const who = users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
 
   const dotTwClassName =
-    "h-10px w-10px animate-dot-jump rounded-50 bg-neutral-300"
+    "h-[10px] w-[10px] animate-dot-jump rounded-[50%] bg-neutral-300"
 
   const typingUserElements = users.map(
     (user, index) =>
       user.avatarUrl && (
-        <div key={index} className={index === 1 || index === 2 ? "-ml-x1" : ""}>
+        <div key={index} className={index === 1 || index === 2 ? "-ml-4" : ""}>
           <Avatar
             isRounded
             displayName={user.displayName}
@@ -49,8 +49,8 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   )
 
   return (
-    <div className="inline-flex items-center gap-10px">
-      <div className="flex gap-2px">
+    <div className="inline-flex items-center gap-3">
+      <div className="flex gap-[2px]">
         <div className={dotTwClassName} />
 
         <div className={twMerge(dotTwClassName, "animation-delay-150")} />

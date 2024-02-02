@@ -23,10 +23,10 @@ const MessageContainer: FC<MessageContainerProps> = ({
 
   return (
     <div className="flex w-full items-start justify-start">
-      <div className="flex w-full gap-10px">
+      <div className="flex w-full gap-3">
         <div
-          className="flex h-avatarSize w-avatarSize cursor-pointer items-center
-          justify-center overflow-hidden rounded-10 bg-neutral-50"
+          className="flex h-[40px] w-[40px] cursor-pointer items-center
+          justify-center overflow-hidden rounded-lg bg-neutral-50"
           onClick={() => {
             onAuthorClick()
           }}>
@@ -35,7 +35,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
 
         <div className="w-full">
           <span
-            className="select-text font-strong"
+            className="select-text font-semibold"
             style={{color: authorDisplayNameColor}}
             onClick={() => {
               onAuthorClick()

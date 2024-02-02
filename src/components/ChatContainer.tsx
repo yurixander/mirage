@@ -35,12 +35,12 @@ const ChatContainer: FC<ChatContainerProps> = ({
 }) => {
   assert(name.length !== 0, "room name should not be empty")
 
-  const icon = type === RoomType.TEXT ? faHashtag : faStarOfLife
+  const icon = type === RoomType.Text ? faHashtag : faStarOfLife
 
   return (
-    <section className="flex h-full flex-col gap-x1 border-1 border-solid border-stone-200">
-      <header className="flex items-center gap-x1 border-b-1 border-solid border-b-stone-200 p-x1">
-        <div className="flex w-full gap-5px">
+    <section className="flex h-full flex-col gap-4 border-[1px] border-solid border-stone-200">
+      <header className="flex items-center gap-4 border-b-[1px] border-solid border-b-stone-200 p-4">
+        <div className="flex w-full gap-1">
           <FontAwesomeIcon icon={icon} className="text-purple-500" />
           <span className="text-purple-500">{name}</span>
           <span className="text-stone-600">{text}</span>
@@ -73,12 +73,12 @@ const ChatContainer: FC<ChatContainerProps> = ({
           icon={faEllipsisV}
         />
       </header>
-      <div className="ml-x1 mr-x1 flex grow flex-col gap-x1 overflow-hidden overflow-y-scroll scrollbar-hide">
+      <div className="ml-4 mr-4 flex grow flex-col gap-4 overflow-hidden overflow-y-scroll scrollbar-hide">
         {chatComponents}
       </div>
-      <div className="ml-x1 mr-x1 flex flex-col gap-10px">
-        <div className="flex gap-10px">
-          <div className="mt-5px flex h-max gap-10px ">
+      <div className="ml-4 mr-4 flex flex-col gap-3">
+        <div className="flex gap-3">
+          <div className="mt-[5px] flex h-max gap-3 ">
             <IconButton
               onClick={() => {
                 /* TODO: Handle `emoji` button click. */
@@ -100,10 +100,10 @@ const ChatContainer: FC<ChatContainerProps> = ({
 
           <ChatInput />
         </div>
-        <div className="flex gap-10px">
-          <div className="h-fillIcon w-fillIcon" />
+        <div className="flex gap-3">
+          <div className="h-6 w-6" />
 
-          <div className="h-fillIcon w-fillIcon" />
+          <div className="h-6 w-6" />
 
           <TypingIndicator
             users={[
@@ -115,7 +115,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           />
         </div>
       </div>
-      <div className="flex items-center justify-end gap-x1 border-t-1 border-solid border-t-stone-200 bg-neutral-50 p-5px">
+      <div className="flex items-center justify-end gap-4 border-t-[1px] border-solid border-t-stone-200 bg-neutral-50 p-[5px]">
         <SmartAction
           icon={faStarOfLife}
           text="Quick menu"

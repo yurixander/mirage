@@ -61,7 +61,9 @@ const TextMessage: FC<TextMessageProps> = ({
           authorDisplayNameColor={authorDisplayNameColor}
           authorAvatarUrl={authorAvatarUrl}
           content={
-            <div className="max-w-size-600 select-text leading-160">{text}</div>
+            <div className="max-w-[600px] select-text leading-[160%]">
+              {text}
+            </div>
           }
           timestamp={timestamp}
           onAuthorClick={onAuthorClick}

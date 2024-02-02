@@ -10,7 +10,7 @@ const StatusMessage: FC<Props> = ({className, text}) => {
   return (
     <div
       className={twMerge(
-        "rounded-10 border-1 border-solid border-statusMessageColor bg-statusMessageBg p-2 text-center text-red-500",
+        "rounded-xl border-[1px] border-solid border-statusMessageColor bg-statusMessageBg p-2 text-center text-red-500",
         className
       )}>
       {text}

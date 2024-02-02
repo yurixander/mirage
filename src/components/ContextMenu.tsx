@@ -55,7 +55,7 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
     }
   }, [hideMenu])
 
-  const containerTwClassName = "flex flex-col m-10px gap-3px"
+  const containerTwClassName = "flex flex-col m-3 gap-1"
 
   return (
     <>
@@ -63,7 +63,7 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
 
       {isMenuActive && (
         <div
-          className="absolute z-50 h-max w-44 animate-fadeIn rounded-5 bg-white shadow-contextMenu"
+          className="absolute z-50 h-max w-44 animate-fadeIn rounded-[5px] bg-white shadow-contextMenu"
           style={{
             left: `${x}px`,
             top: `${y}px`,
@@ -73,9 +73,9 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
               <div
                 tabIndex={0}
                 key={index}
-                className="group flex cursor-pointer gap-10px p-10px text-stone-600 hover:rounded-5 hover:bg-purple-500 hover:text-white focus-visible:rounded-5 focus-visible:text-outlineTab focus-visible:outline-2 focus-visible:transition focus-visible:duration-150"
+                className="group flex cursor-pointer gap-3 p-3 text-stone-600 hover:rounded-[5px] hover:bg-purple-500 hover:text-white focus-visible:rounded-[5px] focus-visible:text-outlineTab focus-visible:outline-[2px] focus-visible:transition focus-visible:duration-150"
                 onClick={item.action}>
-                <span className="mr-auto font-strong">{item.label}</span>
+                <span className="mr-auto font-semibold">{item.label}</span>
 
                 {item.icon && (
                   <FontAwesomeIcon

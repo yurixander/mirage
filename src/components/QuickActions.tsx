@@ -24,7 +24,7 @@ const QuickActions: FC<QuickActionsProps> = ({
   onLogout,
 }) => {
   return (
-    <section className="inline-flex flex-col gap-x1">
+    <section className="inline-flex flex-col gap-4">
       <IconButton
         onClick={onViewDirectMessages}
         tooltip="Direct messages"

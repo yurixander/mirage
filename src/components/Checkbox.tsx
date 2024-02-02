@@ -27,10 +27,10 @@ const Checkbox: FC<CheckboxProps> = ({
     : "border border-solid border-neutral-300"
 
   return (
-    <div className="flex size-max items-center gap-5px">
+    <div className="flex size-max items-center gap-[5px]">
       <div
         className={twMerge(
-          "w-checkBoxSize h-checkBoxSize rounded-3 focus-visible:outline-2 focus-visible:outline-outlineTab focus-visible:duration-150 focus-visible:outline-offset-1",
+          "w-[13px] h-[13px] rounded-[3px] focus-visible:outline-[2px] focus-visible:outline-outlineTab focus-visible:duration-150 focus-visible:outline-offset-[1px]",
           isSelectedClass,
           isDisabledClass
         )}

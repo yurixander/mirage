@@ -26,7 +26,7 @@ const RadioGroup: FC<RadioGroupProps> = ({
     <>
       <div
         className={twMerge(
-          "flex gap-10px",
+          "flex gap-3",
           isColum === RadioGroupDirection.Column ? " flex-col" : " flex-row"
         )}>
         {items.map((item, index) => (

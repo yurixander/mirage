@@ -31,10 +31,10 @@ const ServerListItem: FC<ServerListItemProps> = ({
       <div className="flex h-auto w-2 flex-col justify-center overflow-hidden">
         <div
           className={twMerge(
-            "w-indicatorSize transition-all duration-300 ease-in-out -translate-x-3px group-active:h-2",
+            "w-[8px] transition-all duration-300 ease-in-out -translate-x-[3px] group-active:h-2",
             isActive
-              ? "h-6 animate-indicator bg-purple-500 rounded-10"
-              : "h-indicatorSize rounded-50"
+              ? "h-6 animate-indicator bg-purple-500 rounded-xl"
+              : "h-[8px] rounded-[50%]"
           )}
         />
       </div>

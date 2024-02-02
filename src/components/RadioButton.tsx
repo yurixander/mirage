@@ -28,14 +28,14 @@ const RadioButton: FC<RadioButtonProps> = ({
         )}>
         <div
           className={twMerge(
-            "h-4 w-4 cursor-pointer box-border border-2 border-purple-500 rounded-full flex justify-center items-center",
+            "h-4 w-4 cursor-pointer box-border border-[2px] border-purple-500 rounded-full flex justify-center items-center",
             isDisabledClass
           )}
           onClick={isDisabled ? undefined : onClick}
           tabIndex={isDisabled ? undefined : 0}>
           {isChecked && <div className="h-2 w-2 rounded-full bg-purple-500" />}
         </div>
-        <div className="ml-3px">{label}</div>
+        <div className="ml-[3px]">{label}</div>
       </div>
     </>
   )

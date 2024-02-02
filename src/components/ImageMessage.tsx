@@ -59,13 +59,13 @@ const ImageMessage: FC<ImageMessageProps> = ({
   timestamp,
 }) => {
   const content = (
-    <div className="flex flex-col pt-3px">
+    <div className="flex flex-col pt-[3px]">
       <img
-        className="h-52 w-44 cursor-pointer rounded-10 object-cover"
+        className="h-52 w-44 cursor-pointer rounded-[10px] object-cover"
         src={imageUrl}
       />
 
-      <div className="max-w-size-600 select-text leading-160">{text}</div>
+      <div className="max-w-[600px] select-text leading-[160%]">{text}</div>
     </div>
   )
 

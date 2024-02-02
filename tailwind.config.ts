@@ -13,13 +13,6 @@ module.exports = {
         statusMessageBg: "transparentize(#e53e3e, 0.9)",
         modalOverlay: "rgba(0, 0, 0, 0.5)",
       },
-      maxWidth: {
-        "size-600": "600px",
-        "size-300": "300px",
-      },
-      maxHeight: {
-        "100px": "100px",
-      },
       boxShadow: {
         checkBox: "inset 0 0 5px #D9D9D9",
         contextMenu: "0 0 15px 0 #8f8f8f71",
@@ -39,71 +32,13 @@ module.exports = {
         statusMessageColor: "#e53e3eb2",
       },
       spacing: {
-        "x1": "15px",
-        "x2": "30px",
-        "10px": "10px",
-        "6px": "6px",
-        "5px": "5px",
-        "3px": "3px",
-        "2px": "2px",
-        "1px": "1px",
-        "icon": "18px",
-        "fillIcon": "24px",
-        "1ch": "1ch",
-        "avatarSize": "40px",
-        "avatarSizeDefault": "37px",
-        "avatarSizeLarge": "50px",
-        "serverSize": "47px",
-        "dotSize": "30px",
-        "checkBoxSize": "13px",
-        "loaderSize": "1rem",
-        "userCardSize": "250px",
-        "statusSize": "13px",
-        "popupSize": "342px",
-        "constraintSize": "1.2ch",
-        "serverAvatarSize": "calc(47px * sqrt(2))",
-        "userProfileAvatarSize": "calc(37px * sqrt(2))",
-        "userProfileAvatarSizeLarge": "calc(50px * sqrt(2))",
-        "indicatorSize": "8px",
-        "avatarStatusSize": "13px",
-        "avatarStatusSizeLarge": "17px",
-        "arrowSize": "calc(100% + 10px)",
-        "bigStarSize": "calc(100% + 5px)",
-        "littleStartBottom": "calc(100% + 5px)",
+        serverAvatarSize: "calc(47px * sqrt(2))",
+        userProfileAvatarSize: "calc(37px * sqrt(2))",
+        userProfileAvatarSizeLarge: "calc(50px * sqrt(2))",
       },
       fontFamily: {
         iowan: ["Iowan Old Style", "serif"],
         noto: ["Noto sans", "sans-serif"],
-      },
-      fontSize: {
-        small: "10px",
-        medium: "12px",
-        normal: "1rem",
-        large: "16px",
-        constraintSize: "0.8rem",
-      },
-      fontWeight: {
-        default: "300",
-        strong: "500",
-        stronger: "bold",
-      },
-      gradientColorStops: {
-        15: "15%", // bg-gradient-to-[15]
-      },
-      borderRadius: {
-        10: "10px", // rounded-10
-        5: "5px",
-        3: "3px",
-        1: "1px",
-        50: "50%",
-      },
-      borderWidth: {
-        1: "1px", // border-1
-        3: "3px",
-      },
-      lineHeight: {
-        100: "100%", // leading-100
-        160: "160%",
       },
     },
     animation: {
