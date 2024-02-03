@@ -11,7 +11,7 @@ const useClient = () => {
     accessToken: string,
     userId: string
   ) => {
-    if (clientSingleton === null) {
+    if (clientSingleton !== null) {
       return
     }
 
