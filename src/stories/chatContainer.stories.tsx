@@ -23,7 +23,7 @@ export const Default: Story = {
   args: {
     name: "Help & guides",
     text: "— Request assistance from your colleagues.",
-    type: RoomType.TEXT,
+    type: RoomType.Text,
     chatComponents: [
       <TextMessage
         key={0}

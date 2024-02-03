@@ -1,4 +1,3 @@
-import Tippy from "@tippyjs/react"
 import {type FC} from "react"
 import {ReactComponent as AddServerIcon} from "../../public/icons/add-server.svg"
 import {ReactComponent as AppLogo} from "../../public/logo.svg"
@@ -32,21 +31,13 @@ const Navigation: FC<NavigationProps> = ({servers}) => {
             <ServerListItem key={index} {...server} />
           ))}
 
-          <Tippy
-            content="Add server"
-            arrow
-            inertia
-            animation="scale-subtle"
-            duration={100}
-            placement="right">
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                /* TODO: Handle click on Add server. */
-              }}>
-              <AddServerIcon />
-            </div>
-          </Tippy>
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              /* TODO: Handle click on Add server. */
+            }}>
+            <AddServerIcon />
+          </div>
         </div>
       </div>
     </div>

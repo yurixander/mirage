@@ -72,14 +72,14 @@ const RoomsList: FC = () => {
   // )
 
   return (
-    <section className="flex h-full flex-col gap-x2 p-5px scrollbar-hide">
-      <nav className="flex flex-col gap-x1">
+    <section className="flex h-full flex-col gap-8 p-1 scrollbar-hide">
+      <nav className="flex flex-col gap-4">
         <Label text="Spaces" />
 
         {/* {spaceElements} */}
       </nav>
 
-      <nav className="flex flex-col gap-x1">
+      <nav className="flex flex-col gap-4">
         <Label text="Channels" />
 
         {/* {roomElements} */}

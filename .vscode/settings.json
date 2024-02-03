@@ -8,6 +8,5 @@
   "files.trimFinalNewlines": true,
   "[sass]": {
     "editor.defaultFormatter": "syler.sass-indented"
-  },
-  "cSpell.words": ["tippyjs"]
+  }
 }

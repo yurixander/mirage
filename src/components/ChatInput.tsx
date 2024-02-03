@@ -49,7 +49,6 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
       <div className="m-[5px] h-max w-max">
         <IconButton
           tooltip="Send"
-          tooltipPlacement="auto"
           icon={faPaperPlane}
           color="#C463FF"
           isDisabled={isDisabled}

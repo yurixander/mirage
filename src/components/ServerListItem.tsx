@@ -1,4 +1,3 @@
-import Tippy from "@tippyjs/react"
 import Avatar from "boring-avatars"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
@@ -39,25 +38,17 @@ const ServerListItem: FC<ServerListItemProps> = ({
         />
       </div>
 
-      <Tippy
-        content={tooltip}
-        arrow
-        inertia
-        animation="scale-subtle"
-        duration={100}
-        placement="right">
-        <div
-          tabIndex={!isActive ? 0 : undefined}
-          className={twMerge(
-            "relative overflow-hidden rounded-10 bg-red-500 ml-5px box-border cursor-pointer h-serverSize w-serverSize focus-visible:rounded-5 group-active:animate-hold group-active:transform group-active:scale-75",
-            isActive
-              ? "border-3 border-solid border-purple-500 box-border duration-200 transition shadow-serverSelected"
-              : ""
-          )}
-          onClick={onClick}>
-          {avatarImage}
-        </div>
-      </Tippy>
+      <div
+        tabIndex={!isActive ? 0 : undefined}
+        className={twMerge(
+          "relative overflow-hidden rounded-xl bg-red-500 ml-[5px] box-border cursor-pointer h-serverSize w-serverSize focus-visible:rounded-lg group-active:animate-hold group-active:transform group-active:scale-75",
+          isActive
+            ? "border-[3px] border-solid border-purple-500 box-border duration-200 transition shadow-serverSelected"
+            : ""
+        )}
+        onClick={onClick}>
+        {avatarImage}
+      </div>
     </div>
   )
 }

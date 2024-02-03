@@ -16,8 +16,8 @@ const UserProfilePlaceholder = () => {
             }
           />
         </div>
-        <div className="mr-auto inline-flex flex-col gap-1">
-          <div className="overflow-hidden rounded-[10px] bg-neutral-300 text-base font-semibold text-profileGhost">
+        <div className="mr-auto inline-flex flex-col gap-[2px]">
+          <div className="overflow-hidden rounded-[10px] bg-neutral-300 text-base font-semibold leading-[100%] text-profileGhost">
             Emerald branch
             <LoadingEffect />
           </div>

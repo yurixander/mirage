@@ -19,7 +19,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
     <>
       {users.map((user, index, array) => (
         <span key={index}>
-          <span className="font-strong" style={{color: user.color}}>
+          <span className="font-semibold" style={{color: user.color}}>
             {user.displayName}
           </span>
           {index < array.length - 2 ? ", " : ""}
