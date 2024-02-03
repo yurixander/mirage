@@ -13,7 +13,6 @@ export const Settings: Story = {
     icon: faGear,
     onClick: () => {},
     tooltip: "Settings",
-    tooltipPlacement: "right",
   },
 }
 
@@ -23,7 +22,6 @@ export const Disabled: Story = {
     icon: faGear,
     onClick: () => {},
     tooltip: "Settings",
-    tooltipPlacement: "right",
     isDisabled: true,
   },
 }
@@ -34,7 +32,6 @@ export const WithDot: Story = {
     icon: faBell,
     onClick: () => {},
     tooltip: "Settings",
-    tooltipPlacement: "right",
     isDotVisible: true,
   },
 }

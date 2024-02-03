@@ -1,0 +1,37 @@
+@import url("tailwindcss/base");
+@import url("tailwindcss/components");
+@import url("tailwindcss/utilities");
+
+* {
+  @apply box-border leading-[100%];
+}
+
+html,
+body,
+#root,
+#storybook-root {
+  @apply h-full font-noto;
+}
+
+input {
+  @apply border-none p-[10px] outline-none;
+}
+
+body {
+  @apply relative m-0  antialiased select-none overflow-hidden;
+  @apply font-noto font-normal text-stone-600;
+}
+
+button:disabled,
+input:disabled,
+textarea:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+::selection {
+  @apply bg-purple-500 text-white;
+}
+
+:focus-visible:not(input) {
+  @apply outline-2 outline-offset-2 outline-blue-500 transition-all;
+}

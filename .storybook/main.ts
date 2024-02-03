@@ -9,32 +9,7 @@ export default {
     "@storybook/preset-create-react-app",
     "@storybook/addon-onboarding",
     "@storybook/addon-interactions",
-    "@storybook/addon-styling-webpack",
-    ({
-      name: "@storybook/addon-styling-webpack",
-
-      options: {
-        rules: [{
-      test: /\.css$/,
-      sideEffects: true,
-      use: [
-          require.resolve("style-loader"),
-          {
-              loader: require.resolve("css-loader"),
-              options: {
-                  
-                  importLoaders: 1,
-              },
-          },{
-    loader: require.resolve("postcss-loader"),
-    options: {
-    implementation: require.resolve("postcss"),
-    },
-    },
-      ],
-    },],
-      }
-    })
+    "@storybook/addon-styling-webpack"
   ],
   framework: {
     name: "@storybook/react-webpack5",
@@ -56,8 +31,8 @@ export default {
     config.resolve.alias["@"] = path.resolve(__dirname, '../src');
 
     config.module?.rules?.push({
-      test: /\.scss$/,
-      use: ["style-loader", "css-loader", "sass-loader"],
+      test: /\.css$/,
+      use: ["postcss-loader"],
       include: path.resolve(__dirname, '../'),
     });
 

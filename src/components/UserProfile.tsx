@@ -105,18 +105,18 @@ const UserProfile: FC<UserProfileProps> = ({
       <span className="text-xs">
         {activity + " "}
 
-        <span className="font-semibold">{platform}</span>
+        <span className="font-semibold leading-[100%]">{platform}</span>
       </span>
     ) : (
       <span className="text-xs">{text}</span>
     )
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-2">
       <div className="relative">
         <div
           className={twMerge(
-            "relative overflow-hidden rounded-[3px] bg-red-500",
+            "relative overflow-hidden rounded-lg bg-red-500",
             isLarge ? "h-[50px] w-[50px]" : "h-[37px] w-[37px]"
           )}>
           {avatarImage}
@@ -131,15 +131,20 @@ const UserProfile: FC<UserProfileProps> = ({
         />
       </div>
 
-      <div className="mr-auto inline-flex flex-col gap-1">
+      <div className="mr-auto inline-flex flex-col gap-[2px]">
         <div
           style={{color: displayNameColor}}
-          className="text-base font-semibold">
+          className="text-base font-semibold leading-[100%]">
           {trim(displayName, MAX_DISPLAY_NAME_LENGTH)}
         </div>
 
         <div className="flex items-center">
-          {icon && <FontAwesomeIcon icon={icon} className="mr-1 h-3 w-3" />}
+          {icon && (
+            <FontAwesomeIcon
+              icon={icon}
+              className="mr-[3px] h-[10px] w-[10px]"
+            />
+          )}
 
           {activityOrText}
         </div>

@@ -147,7 +147,6 @@ const Input: FC<InputProps> = ({
                 key={action.tooltip}
                 onClick={action.onClick}
                 tooltip={action.tooltip}
-                tooltipPlacement="auto"
                 icon={action.icon}
               />
             ))}

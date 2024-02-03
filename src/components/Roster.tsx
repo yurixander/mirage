@@ -55,7 +55,6 @@ const Roster: FC<RosterProps> = ({users}) => {
             // TODO: Handle `sort` button click.
           }}
           tooltip="Sort members"
-          tooltipPlacement="right"
           icon={faArrowDownShortWide}
         />
       </header>

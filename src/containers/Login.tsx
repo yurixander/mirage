@@ -25,8 +25,8 @@ const Login: FC = () => {
 
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <div className="flex w-80 flex-col items-center justify-center gap-x1">
-        <div className="flex w-72 flex-col gap-x1 p-4">
+      <div className="flex w-80 flex-col items-center justify-center gap-4">
+        <div className="flex w-72 flex-col gap-4 p-4">
           <Typography variant={"h3"}>Sign In Now!</Typography>
           <Input
             constraints={[urlConstraint]}
@@ -58,7 +58,7 @@ const Login: FC = () => {
           />
 
           <Button
-            variant={ButtonVariant.TEXT_LINK}
+            variant={ButtonVariant.TextLink}
             onClick={function (): void {
               throw new Error("Function not implemented.")
             }}
@@ -66,15 +66,15 @@ const Login: FC = () => {
           />
         </div>
 
-        <div className="h-1px w-full bg-neutral-300" />
+        <div className="h-[1px] w-full bg-neutral-300" />
 
         <div className="flex flex-row items-center">
           <Typography variant={"span"} className="font-medium">
             Dont have an account?
           </Typography>
           <Button
-            variant={ButtonVariant.TEXT_LINK}
-            size={ButtonSize.SMALL}
+            variant={ButtonVariant.TextLink}
+            size={ButtonSize.Small}
             onClick={() => {
               void handleSignIn()
             }}

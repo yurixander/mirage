@@ -35,12 +35,7 @@ const UserBar: FC<UserBarProps> = ({
       </div>
 
       {/* TODO: Handle click on settings button. */}
-      <IconButton
-        onClick={() => {}}
-        icon={faGear}
-        tooltip="Settings"
-        tooltipPlacement="top"
-      />
+      <IconButton onClick={() => {}} icon={faGear} tooltip="Settings" />
     </div>
   )
 }
