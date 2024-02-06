@@ -1,22 +1,18 @@
-import {type MatrixClient, type Room} from "matrix-js-sdk"
-import {useState} from "react"
+import useMatrixQuery from "@/hooks/matrix/useMatrixQuery"
+import {useCallback} from "react"
 
 const useRooms = () => {
-  const [rooms, setRooms] = useState<Room[]>([])
+  const rooms = useMatrixQuery(
+    useCallback(client => {
+      if (!client.isLoggedIn()) {
+        return null
+      }
 
-  const refreshRooms = (client: MatrixClient) => {
-    if (!client.isLoggedIn()) {
-      return
-    }
+      return Object.values(client.getRooms())
+    }, [])
+  )
 
-    const rooms: Room[] = Object.values(
-      client.store.rooms as Record<string, Room>
-    )
-
-    setRooms(rooms)
-  }
-
-  return {rooms, refreshRooms}
+  return {rooms}
 }
 
 export default useRooms

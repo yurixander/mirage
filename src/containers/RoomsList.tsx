@@ -7,7 +7,7 @@ import useRooms from "@/hooks/matrix/useRooms"
 const RoomsList: FC = () => {
   const {connect, client, isConnected} = useClient()
   const {credentials} = useCredentials()
-  const {rooms, refreshRooms} = useRooms()
+  const {rooms} = useRooms()
 
   useEffect(() => {
     if (credentials === undefined || (client !== null && client.isLoggedIn())) {
@@ -16,14 +16,6 @@ const RoomsList: FC = () => {
 
     void connect(credentials)
   }, [])
-
-  useEffect(() => {
-    if (client === null || !isConnected) {
-      return
-    }
-
-    refreshRooms(client)
-  }, [isConnected, client])
 
   // TODO: Continue implementation.
 
