@@ -30,8 +30,7 @@ const LoginView: FC = () => {
         return
       }
 
-      console.debug("ROOMS2", client.getRooms())
-
+      console.log(client.getRooms())
       saveCredentials({accessToken, baseUrl: serverUrl, userId})
       void disconnect()
 
