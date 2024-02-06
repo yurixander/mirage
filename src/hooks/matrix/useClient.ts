@@ -1,4 +1,5 @@
-import {MatrixClient} from "matrix-js-sdk"
+import {type Credentials} from "@/utils/util"
+import {type MatrixClient, createClient} from "matrix-js-sdk"
 import {useState} from "react"
 
 let clientSingleton: MatrixClient | null = null
@@ -6,20 +7,16 @@ let clientSingleton: MatrixClient | null = null
 const useClient = () => {
   const [isConnected, setIsConnected] = useState(false)
 
-  const connect = async (
-    baseUrl: string,
-    accessToken: string,
-    userId: string
-  ) => {
+  const connect = async ({baseUrl, accessToken, userId}: Credentials) => {
     if (clientSingleton !== null) {
+      if (clientSingleton.isLoggedIn()) {
+        setIsConnected(true)
+      }
+
       return
     }
 
-    clientSingleton = new MatrixClient({
-      baseUrl,
-      accessToken,
-      userId,
-    })
+    clientSingleton = createClient({baseUrl, accessToken, userId})
 
     // TODO: Handle errors.
     await clientSingleton.startClient()
