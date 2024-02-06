@@ -35,3 +35,15 @@ export function validateUrl(url: string): boolean {
     return false
   }
 }
+
+export function checkCredentials({accessToken, baseUrl, userId}: Credentials) {
+  if (accessToken.length === 0) {
+    throw new Error("Access token should not be empty")
+  }
+  if (baseUrl.length === 0) {
+    throw new Error("Server url should not be empty")
+  }
+  if (userId.length === 0) {
+    throw new Error("User id should not be empty")
+  }
+}

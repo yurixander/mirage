@@ -1,17 +1,31 @@
-// import {type MatrixEventCallback} from "@/hooks/matrix/useEventListener"
-// import useMatrix from "@/hooks/matrix/useMatrix"
-// import useSyncedMap from "@/hooks/matrix/useSyncedMap"
-// import {ClientEvent, Room, RoomType} from "matrix-js-sdk"
-// import {useMemo, type FC} from "react"
-import {type FC} from "react"
+import {useEffect, type FC} from "react"
 import Label from "../components/Label"
+import useClient from "@/hooks/matrix/useClient"
+import useCredentials from "@/hooks/matrix/useCredentials"
+import useRooms from "@/hooks/matrix/useRooms"
 
 const RoomsList: FC = () => {
-  // TODO: Continue implementation.
+  const {connect, client, isConnected} = useClient()
+  const {credentials} = useCredentials()
+  const {rooms, refreshRooms} = useRooms()
 
-  // const fetchRooms = useMatrix(
-  //   async client => await Promise.resolve(client.getRooms())
-  // )
+  useEffect(() => {
+    if (credentials === undefined || (client !== null && client.isLoggedIn())) {
+      return
+    }
+
+    void connect(credentials)
+  }, [])
+
+  useEffect(() => {
+    if (client === null || !isConnected) {
+      return
+    }
+
+    refreshRooms(client)
+  }, [isConnected, client])
+
+  // TODO: Continue implementation.
 
   // const handleAddRoom: MatrixEventCallback<string | Room> = () => {
   //   return fetchRooms
@@ -26,16 +40,8 @@ const RoomsList: FC = () => {
   //   handleRemoveRoom
   // )
 
-  // const spaces = useMemo(
-  //   () =>
-  //     Array.from(rooms.values()).filter(
-  //       room => room.getType() === RoomType.Space
-  //     ),
-  //   [rooms]
-  // )
-
   // const textChannels = useMemo(
-  //   () => rooms.filter(room => room.type === RoomType.Text),
+  //   () => rooms.filter(room => room.getType === RoomType.Text),
   //   [rooms]
   // )
 
