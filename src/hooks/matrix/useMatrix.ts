@@ -1,9 +1,9 @@
 import {type MatrixClient} from "matrix-js-sdk"
-import useClient from "./useClient"
+import useConnection from "./useConnection"
 import {useCallback} from "react"
 
-function useMatrixAction<T>(action: (client: MatrixClient) => Promise<T> | T) {
-  const {client, isConnected} = useClient()
+function useMatrix<T>(action: (client: MatrixClient) => Promise<T> | T) {
+  const {client, isConnected} = useConnection()
 
   const perform = useCallback(async () => {
     if (client === null || !isConnected) {
@@ -16,4 +16,4 @@ function useMatrixAction<T>(action: (client: MatrixClient) => Promise<T> | T) {
   return perform
 }
 
-export default useMatrixAction
+export default useMatrix
