@@ -2,7 +2,7 @@ import {type EmittedEvents} from "matrix-js-sdk"
 import {useState} from "react"
 import useEventListener, {type MatrixEventCallback} from "./useEventListener"
 
-function useEventStream<T>(
+function useSyncedValue<T>(
   event: EmittedEvents,
   defaultValue: T,
   chooseValue: MatrixEventCallback<T>
@@ -16,4 +16,4 @@ function useEventStream<T>(
   return value
 }
 
-export default useEventStream
+export default useSyncedValue

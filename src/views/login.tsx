@@ -4,7 +4,7 @@ import {useEffect, useState, type FC} from "react"
 import {faEyeSlash, faEye} from "@fortawesome/free-solid-svg-icons"
 import Button, {ButtonSize, ButtonVariant} from "@/components/Button"
 import useCredentials from "@/hooks/matrix/useCredentials"
-import useClient from "@/hooks/matrix/useClient"
+import useConnection from "@/hooks/matrix/useConnection"
 import {checkCredentials} from "@/utils/util"
 import {ClientEvent, SyncState} from "matrix-js-sdk"
 import {useNavigate} from "react-router-dom"
@@ -12,7 +12,7 @@ import {useNavigate} from "react-router-dom"
 const LoginView: FC = () => {
   const navigate = useNavigate()
   const {credentials, saveCredentials} = useCredentials()
-  const {connect, disconnect, client} = useClient()
+  const {connect, disconnect, client} = useConnection()
   const [serverUrl, setServerUrl] = useState("https://matrix-client.matrix.org")
   const [accessToken, setAccessToken] = useState(
     "syt_dGhlY3Jpc3M_yBPDvDMuDeMKQFonYlQM_09tZYX"
