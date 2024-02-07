@@ -6,7 +6,6 @@ import Button, {ButtonSize, ButtonVariant} from "@/components/Button"
 import useCredentials from "@/hooks/matrix/useCredentials"
 import useConnection from "@/hooks/matrix/useConnection"
 import {checkCredentials} from "@/utils/util"
-import {ClientEvent, SyncState} from "matrix-js-sdk"
 import {useNavigate} from "react-router-dom"
 
 const LoginView: FC = () => {

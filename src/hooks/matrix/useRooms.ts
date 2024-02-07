@@ -1,28 +1,43 @@
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
-import useMatrix from "@/hooks/matrix/useMatrix"
 import {ClientEvent, type Room} from "matrix-js-sdk"
-import {useCallback, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
+import useCredentials from "./useCredentials"
 
 const useRooms = () => {
   // CONSIDER: Replacing this logic with usage of `useSyncedMap`.
 
+  const {credentials} = useCredentials()
   const [rooms, setRooms] = useState<Room[] | null>(null)
-  const {isConnected} = useConnection()
+  const {isConnected, connect, checkConnection} = useConnection()
+
+  const getRooms = () => {
+    console.log("Getting rooms...")
+
+    void checkConnection(client => {
+      const rooms = client.getRooms()
+      setRooms(rooms)
+    })
+  }
 
   // Initial gathering of rooms, when a connection is
   // established or re-established.
-  useCallback(() => {
-    if (!isConnected) {
-      return
-    }
+  useEffect(
+    useCallback(() => {
+      if (credentials === undefined) {
+        return
+      }
 
-    useMatrix(client => {
-      const rooms = client.getRooms()
+      void connect(credentials)
+      getRooms()
+      // useMatrix(client => {
+      //   const rooms = client.getRooms()
 
-      setRooms(rooms)
-    })
-  }, [isConnected])
+      //   setRooms(rooms)
+      // })
+    }, [isConnected]),
+    []
+  )
 
   // REVIEW: Should this be inside a `useEffect`? Or does it automatically handle cleanup (ie. removing the event listener) when this hook is unmounted?
   // Listen for room updates, and update the state accordingly.
@@ -30,7 +45,7 @@ const useRooms = () => {
     // TODO: Add or remove rooms from the state based on the event.
   })
 
-  return rooms
+  return {rooms}
 }
 
 export default useRooms

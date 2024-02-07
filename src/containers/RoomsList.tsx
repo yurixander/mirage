@@ -1,28 +1,10 @@
-import {useEffect, type FC} from "react"
+import {useMemo, type FC} from "react"
 import Label from "../components/Label"
-import useConnection from "@/hooks/matrix/useConnection"
-import useCredentials from "@/hooks/matrix/useCredentials"
+import useRooms from "@/hooks/matrix/useRooms"
+import Room, {RoomType} from "@/components/Room"
 
 const RoomsList: FC = () => {
-  const {connect, checkConnection} = useConnection()
-  const {credentials} = useCredentials()
-
-  const getRooms = () => {
-    console.log("Getting rooms...")
-
-    void checkConnection(clientC => {
-      console.log(clientC.getRooms())
-    })
-  }
-
-  useEffect(() => {
-    if (credentials === undefined) {
-      return
-    }
-
-    void connect(credentials)
-    getRooms()
-  }, [])
+  const {rooms} = useRooms()
 
   // TODO: Continue implementation.
 
@@ -60,6 +42,23 @@ const RoomsList: FC = () => {
   //   [textChannels]
   // )
 
+  const roomElements = useMemo(
+    () =>
+      rooms?.map((room, index) => (
+        <Room
+          key={index}
+          name={room.name}
+          type={RoomType.Text}
+          isActive={false}
+          containsUnreadMessages={false}
+          mentionCount={0}
+          onClick={function (): void {
+            throw new Error("Function not implemented.")
+          }}
+        />
+      )),
+    [rooms]
+  )
   // const spaceElements = useMemo(
   //   () =>
   //     spaces.map((space, index) => (
@@ -86,7 +85,7 @@ const RoomsList: FC = () => {
 
       <nav className="flex flex-col gap-4">
         <Label text="Channels" />
-
+        {roomElements}
         {/* {roomElements} */}
       </nav>
     </section>
