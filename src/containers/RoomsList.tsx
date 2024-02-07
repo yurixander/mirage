@@ -2,19 +2,26 @@ import {useEffect, type FC} from "react"
 import Label from "../components/Label"
 import useConnection from "@/hooks/matrix/useConnection"
 import useCredentials from "@/hooks/matrix/useCredentials"
-import useRooms from "@/hooks/matrix/useRooms"
 
 const RoomsList: FC = () => {
-  const {connect, client, isConnected} = useConnection()
+  const {connect, checkConnection} = useConnection()
   const {credentials} = useCredentials()
-  const rooms = useRooms()
+
+  const getRooms = () => {
+    console.log("Getting rooms...")
+
+    void checkConnection(clientC => {
+      console.log(clientC.getRooms())
+    })
+  }
 
   useEffect(() => {
-    if (credentials === undefined || (client !== null && client.isLoggedIn())) {
+    if (credentials === undefined) {
       return
     }
 
     void connect(credentials)
+    getRooms()
   }, [])
 
   // TODO: Continue implementation.

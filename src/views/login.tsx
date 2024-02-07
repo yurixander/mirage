@@ -12,7 +12,7 @@ import {useNavigate} from "react-router-dom"
 const LoginView: FC = () => {
   const navigate = useNavigate()
   const {credentials, saveCredentials} = useCredentials()
-  const {connect, disconnect, client} = useConnection()
+  const {connect, disconnect, checkConnection} = useConnection()
   const [serverUrl, setServerUrl] = useState("https://matrix-client.matrix.org")
   const [accessToken, setAccessToken] = useState(
     "syt_dGhlY3Jpc3M_yBPDvDMuDeMKQFonYlQM_09tZYX"
@@ -22,15 +22,7 @@ const LoginView: FC = () => {
   const [isPassShowed, setIsPassShowed] = useState(false)
 
   const login = () => {
-    client?.once(ClientEvent.Sync, (state, _syncState, res) => {
-      if (state === SyncState.Error) {
-        void disconnect()
-        console.error(`Sync error: ${res?.error?.message}`)
-
-        return
-      }
-
-      console.log(client.getRooms())
+    void checkConnection(client => {
       saveCredentials({accessToken, baseUrl: serverUrl, userId})
       void disconnect()
 

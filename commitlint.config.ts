@@ -8,15 +8,14 @@ export default {
       [
         {
           name: "auth",
-          description: "Authentication related changes",
         },
         {
           name: "ui",
-          description: "User interface related changes",
+        },
+        {
+          name: "storybook",
         },
       ],
     ],
-    "scope-case": "lowerCase",
-    "scope-pattern": "^[a-z0-9-]+$",
   },
 }
