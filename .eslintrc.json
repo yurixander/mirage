@@ -15,7 +15,8 @@
     "plugin:react/jsx-runtime",
     "eslint-config-prettier",
     "plugin:storybook/recommended",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -23,15 +24,10 @@
   },
   "overrides": [
     {
-      "files": [
-        "*.stories.@(ts|tsx|js|jsx|mjs|cjs)",
-        "*.ts', '*.tsx', '*.js"
-      ]
+      "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)", "*.ts', '*.tsx', '*.js"]
     }
   ],
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "rules": {
     "@typescript-eslint/quotes": "off",
     "@typescript-eslint/no-unused-vars": "warn",
