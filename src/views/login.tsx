@@ -1,6 +1,6 @@
 import Input, {urlConstraint, userIdConstraint} from "@/components/Input"
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {useEffect, useState, type FC} from "react"
+import {useCallback, useEffect, useState, type FC} from "react"
 import {faEyeSlash, faEye} from "@fortawesome/free-solid-svg-icons"
 import Button, {ButtonSize, ButtonVariant} from "@/components/Button"
 import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
@@ -11,7 +11,7 @@ import {useNavigate} from "react-router-dom"
 const LoginView: FC = () => {
   const navigate = useNavigate()
   const {credentials, saveCredentials} = useCachedCredentials()
-  const {connect, disconnect, isSynced, syncError} = useConnection()
+  const {connect, disconnect, syncState, lastSyncError} = useConnection()
   const [serverUrl, setServerUrl] = useState("https://matrix-client.matrix.org")
 
   const [accessToken, setAccessToken] = useState(
@@ -22,7 +22,7 @@ const LoginView: FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
 
-  const login = async () => {
+  const login = useCallback(async () => {
     setIsConnecting(true)
 
     const connectedAndSynced = await connect({
@@ -40,16 +40,24 @@ const LoginView: FC = () => {
     saveCredentials({accessToken, baseUrl: serverUrl, userId})
     await disconnect()
     navigate(ViewPath.Development)
-  }
+  }, [
+    accessToken,
+    connect,
+    disconnect,
+    navigate,
+    saveCredentials,
+    serverUrl,
+    userId,
+  ])
 
   // Automatically login if credentials are cached.
   useEffect(() => {
-    if (credentials === null || !isSynced) {
+    if (credentials === null) {
       return
     }
 
     void login()
-  }, [credentials, isSynced])
+  }, [credentials, login])
 
   return (
     <div className="flex size-full items-center justify-center">
@@ -88,7 +96,7 @@ const LoginView: FC = () => {
 
           <Button
             label={isConnecting ? "Connecting..." : "Sign in"}
-            isDisabled={isSynced}
+            isDisabled={syncState !== null}
             isLoading={isConnecting}
             onClick={() => {
               void login()
@@ -96,7 +104,7 @@ const LoginView: FC = () => {
           />
 
           {/* FIXME: This is temporary. Remove later on. */}
-          <div>{syncError?.message ?? "Waiting for login."}</div>
+          <div>{lastSyncError?.message ?? "Waiting for login."}</div>
 
           <Button
             variant={ButtonVariant.TextLink}

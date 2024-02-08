@@ -1,4 +1,4 @@
-import {useEffect, useMemo, type FC} from "react"
+import {useEffect, type FC} from "react"
 import Label from "../components/Label"
 import useRooms from "@/hooks/matrix/useRooms"
 import Room, {RoomType} from "@/components/Room"
@@ -8,7 +8,7 @@ import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 
 const RoomsList: FC = () => {
   const {rooms} = useRooms()
-  const {connect, syncError} = useConnection()
+  const {connect, syncState} = useConnection()
   const {credentials} = useCachedCredentials()
 
   // Connect on startup.
@@ -18,60 +18,43 @@ const RoomsList: FC = () => {
     }
 
     void connect(credentials)
-  }, [connect, credentials])
+  }, [connect, credentials, syncState])
 
-  // TODO: Continue implementation.
+  const spaceElements = rooms
+    ?.filter(room => room.isSpaceRoom())
+    .map((room, index) => (
+      <Room
+        key={index}
+        name={room.name}
+        type={RoomType.Space}
+        isActive={false}
+        containsUnreadMessages={
+          room.getUnreadNotificationCount(NotificationCountType.Total) > 0
+        }
+        mentionCount={room.getUnreadNotificationCount(
+          NotificationCountType.Highlight
+        )}
+        onClick={() => {}}
+      />
+    ))
 
-  // const rooms = useSyncedMap<string, Room>(
-  //   ClientEvent.Room,
-  //   ClientEvent.DeleteRoom,
-  //   handleAddRoom,
-  //   handleRemoveRoom
-  // )
-
-  const spaceElements = useMemo(
-    () =>
-      rooms
-        ?.filter(room => room.isSpaceRoom())
-        .map((room, index) => (
-          <Room
-            key={index}
-            name={room.name}
-            type={RoomType.Space}
-            isActive={false}
-            containsUnreadMessages={
-              room.getUnreadNotificationCount(NotificationCountType.Total) > 0
-            }
-            mentionCount={room.getUnreadNotificationCount(
-              NotificationCountType.Highlight
-            )}
-            onClick={() => {}}
-          />
-        )),
-    [rooms]
-  )
-
-  const roomElements = useMemo(
-    () =>
-      rooms
-        ?.filter(room => !room.isSpaceRoom())
-        .map((room, index) => (
-          <Room
-            key={index}
-            name={room.name}
-            type={RoomType.Text}
-            isActive={false}
-            containsUnreadMessages={
-              room.getUnreadNotificationCount(NotificationCountType.Total) > 0
-            }
-            mentionCount={room.getUnreadNotificationCount(
-              NotificationCountType.Highlight
-            )}
-            onClick={() => {}}
-          />
-        )),
-    [rooms]
-  )
+  const roomElements = rooms
+    ?.filter(room => !room.isSpaceRoom())
+    .map((room, index) => (
+      <Room
+        key={index}
+        name={room.name}
+        type={RoomType.Text}
+        isActive={false}
+        containsUnreadMessages={
+          room.getUnreadNotificationCount(NotificationCountType.Total) > 0
+        }
+        mentionCount={room.getUnreadNotificationCount(
+          NotificationCountType.Highlight
+        )}
+        onClick={() => {}}
+      />
+    ))
 
   return (
     <section className="flex h-full flex-col gap-8 p-1 scrollbar-hide">
