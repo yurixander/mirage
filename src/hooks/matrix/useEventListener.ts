@@ -12,7 +12,11 @@ export type MatrixEventCallback<T = void> = (
   previousStateEvent: MatrixEvent | null
 ) => T
 
-function useEventListener(event: EmittedEvents, listener: MatrixEventCallback) {
+function useEventListener(
+  event: EmittedEvents,
+  listener: MatrixEventCallback,
+  isContinuous = true
+) {
   const {client} = useConnection()
 
   useEffect(() => {
@@ -20,12 +24,16 @@ function useEventListener(event: EmittedEvents, listener: MatrixEventCallback) {
       return
     }
 
-    client.on(event, listener)
+    if (isContinuous) {
+      client.on(event, listener)
+    } else {
+      client.once(event, listener)
+    }
 
     return () => {
       client.removeListener(event, listener)
     }
-  }, [event, listener])
+  }, [client, event, listener])
 }
 
 export default useEventListener

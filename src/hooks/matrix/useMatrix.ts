@@ -3,15 +3,15 @@ import useConnection from "./useConnection"
 import {useCallback} from "react"
 
 function useMatrix<T>(action: (client: MatrixClient) => Promise<T> | T) {
-  const {client, isConnected} = useConnection()
+  const {client} = useConnection()
 
   const perform = useCallback(async () => {
-    if (client === null || !isConnected) {
+    if (client === null) {
       return null
     }
 
     return await action(client)
-  }, [client, isConnected, action])
+  }, [client, action])
 
   return perform
 }

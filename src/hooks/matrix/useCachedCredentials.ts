@@ -8,8 +8,9 @@ export type Credentials = {
 
 const CREDENTIALS_LOCAL_STORAGE_KEY = "credentials"
 
-const useCredentials = () => {
-  const [credentials, setCredentials] = useState<Credentials>()
+// TODO: Abstract based off `useLocalStorage` for this.
+const useCachedCredentials = () => {
+  const [credentials, setCredentials] = useState<Credentials | null>(null)
 
   useEffect(() => {
     const storedCredentials = localStorage.getItem(
@@ -21,6 +22,7 @@ const useCredentials = () => {
     }
 
     const cachedCredentials: Credentials = JSON.parse(storedCredentials)
+
     setCredentials(cachedCredentials)
   }, [])
 
@@ -29,10 +31,11 @@ const useCredentials = () => {
       CREDENTIALS_LOCAL_STORAGE_KEY,
       JSON.stringify(credentials)
     )
+
     setCredentials(credentials)
   }
 
   return {credentials, saveCredentials}
 }
 
-export default useCredentials
+export default useCachedCredentials
