@@ -1,24 +1,24 @@
 import {useEffect} from "react"
 import {create} from "zustand"
 
-type UniqueNumberState = {
+type ZustandUniqueIdStore = {
   id: number
-  incrementId: () => void
+  increment: () => void
 }
 
-const useUniqueIdStore = create<UniqueNumberState>(set => ({
+const useUniqueIdStore = create<ZustandUniqueIdStore>(set => ({
   id: 0,
-  incrementId: () => {
-    set((state: UniqueNumberState) => ({id: state.id + 1}))
+  increment: () => {
+    set((state: ZustandUniqueIdStore) => ({id: state.id + 1}))
   },
 }))
 
-export default function useUniqueNumber() {
-  const {id, incrementId} = useUniqueIdStore()
+export default function useUniqueId() {
+  const {id, increment} = useUniqueIdStore()
 
   useEffect(() => {
-    incrementId()
-  }, [incrementId])
+    increment()
+  }, [increment])
 
   return id
 }

@@ -33,7 +33,7 @@ function useEventListener(
     return () => {
       client.removeListener(event, listener)
     }
-  }, [client, event, listener])
+  }, [client, event, isContinuous, listener])
 }
 
 export default useEventListener

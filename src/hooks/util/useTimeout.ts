@@ -5,7 +5,7 @@ const useTimeout = (callback: () => void, delay: number | null) => {
 
   useEffect(() => {
     cachedCallback.current = callback
-  }, [cachedCallback])
+  }, [cachedCallback, callback])
 
   useEffect(() => {
     if (delay === null) {
