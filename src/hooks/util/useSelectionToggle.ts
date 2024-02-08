@@ -15,11 +15,11 @@ const useSelectionToggle: SelectionToggleHook = (
 ) => {
   const [isSelected, setSelected] = useState(isInitiallySelected)
 
-  const handleSelectionChanged = () => {
+  const handleSelectionChanged = useCallback(() => {
     const nextIsSelected = !isSelected
     setSelected(nextIsSelected)
     onSelectionChange(nextIsSelected)
-  }
+  }, [isSelected, onSelectionChange])
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -27,7 +27,7 @@ const useSelectionToggle: SelectionToggleHook = (
         handleSelectionChanged()
       }
     },
-    [isSelected, handleSelectionChanged]
+    [handleSelectionChanged]
   )
 
   return {isSelected, handleSelectionChanged, handleKeyDown}
