@@ -1,5 +1,8 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import Typography, {type TypographyProps} from "../components/Typography"
+import Typography, {
+  TypographyVariant,
+  type TypographyProps,
+} from "../components/Typography"
 
 type Story = StoryObj<typeof Typography>
 
@@ -11,8 +14,8 @@ const render = (args: TypographyProps) => <Typography {...args} />
 export const Default: Story = {
   render,
   args: {
-    children: "Este es un parrafo",
-    variant: "h1",
+    children: "This is a default typography component.",
+    variant: TypographyVariant.H1,
   },
 }
 

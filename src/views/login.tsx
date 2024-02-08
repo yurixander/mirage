@@ -1,102 +1,122 @@
 import Input, {urlConstraint, userIdConstraint} from "@/components/Input"
-import Typography from "@/components/Typography"
+import Typography, {TypographyVariant} from "@/components/Typography"
 import {useEffect, useState, type FC} from "react"
 import {faEyeSlash, faEye} from "@fortawesome/free-solid-svg-icons"
 import Button, {ButtonSize, ButtonVariant} from "@/components/Button"
-import useCredentials from "@/hooks/matrix/useCredentials"
+import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 import useConnection from "@/hooks/matrix/useConnection"
-import {checkCredentials} from "@/utils/util"
+import {ViewPath} from "@/utils/util"
 import {useNavigate} from "react-router-dom"
 
 const LoginView: FC = () => {
   const navigate = useNavigate()
-  const {credentials, saveCredentials} = useCredentials()
-  const {connect, disconnect, checkConnection} = useConnection()
+  const {credentials, saveCredentials} = useCachedCredentials()
+  const {connect, disconnect, isSynced, syncError} = useConnection()
   const [serverUrl, setServerUrl] = useState("https://matrix-client.matrix.org")
+
   const [accessToken, setAccessToken] = useState(
     "syt_dGhlY3Jpc3M_yBPDvDMuDeMKQFonYlQM_09tZYX"
   )
 
   const [userId, setUserId] = useState("@thecriss:matrix.org")
-  const [isPassShowed, setIsPassShowed] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isConnecting, setIsConnecting] = useState(false)
 
-  const login = () => {
-    void checkConnection(client => {
-      saveCredentials({accessToken, baseUrl: serverUrl, userId})
-      void disconnect()
+  const login = async () => {
+    setIsConnecting(true)
 
-      navigate("/rooms")
+    const connectedAndSynced = await connect({
+      accessToken,
+      baseUrl: serverUrl,
+      userId,
     })
+
+    if (!connectedAndSynced) {
+      setIsConnecting(false)
+
+      return
+    }
+
+    saveCredentials({accessToken, baseUrl: serverUrl, userId})
+    await disconnect()
+    navigate(ViewPath.Development)
   }
 
   // Automatically login if credentials are cached.
   useEffect(() => {
-    if (credentials === undefined) {
+    if (credentials === null || !isSynced) {
       return
     }
 
-    void connect(credentials)
-    login()
-  }, [])
+    void login()
+  }, [credentials, isSynced])
 
   return (
     <div className="flex size-full items-center justify-center">
       <div className="flex w-80 flex-col items-center justify-center gap-4">
         <div className="flex w-72 flex-col gap-4 p-4">
-          <Typography variant={"h3"}>Sign In Now!</Typography>
+          <Typography variant={TypographyVariant.H3}>Sign In Now!</Typography>
+
           <Input
             initialValue={serverUrl}
             constraints={[urlConstraint]}
-            placeholder={"Server url"}
-            onValueChange={setServerUrl}></Input>
+            placeholder="Server URL"
+            onValueChange={setServerUrl}
+          />
+
           <Input
-            placeholder={"Access token"}
+            placeholder="Access token"
             initialValue={accessToken}
+            onValueChange={setAccessToken}
             actions={[
               {
-                tooltip: isPassShowed ? "Hide pass" : "Show pass",
+                tooltip: isPasswordVisible ? "Hide password" : "Show password",
+                icon: isPasswordVisible ? faEyeSlash : faEye,
                 onClick: () => {
-                  setIsPassShowed(!isPassShowed)
+                  setIsPasswordVisible(!isPasswordVisible)
                 },
-                icon: isPassShowed ? faEyeSlash : faEye,
               },
             ]}
-            onValueChange={setAccessToken}
           />
+
           <Input
             initialValue={userId}
             constraints={[userIdConstraint]}
-            placeholder={"User ID"}
-            onValueChange={setUserId}></Input>
+            placeholder="User ID"
+            onValueChange={setUserId}
+          />
 
           <Button
+            label={isConnecting ? "Connecting..." : "Sign in"}
+            isDisabled={isSynced}
+            isLoading={isConnecting}
             onClick={() => {
-              checkCredentials({accessToken, baseUrl: serverUrl, userId})
-
-              void connect({accessToken, baseUrl: serverUrl, userId})
-              login()
+              void login()
             }}
-            label={"Sign In"}
           />
+
+          {/* FIXME: This is temporary. Remove later on. */}
+          <div>{syncError?.message ?? "Waiting for login."}</div>
 
           <Button
             variant={ButtonVariant.TextLink}
             onClick={() => {}}
-            label={"Forgot password?"}
+            label="Forgot password?"
           />
         </div>
 
         <div className="h-[1px] w-full bg-neutral-300" />
 
         <div className="flex flex-row items-center">
-          <Typography variant={"span"} className="font-medium">
-            Dont have an account?
+          <Typography className="font-medium">
+            Don&apos;t have an account?
           </Typography>
+
           <Button
             variant={ButtonVariant.TextLink}
             size={ButtonSize.Small}
             onClick={() => {}}
-            label={"Sign up"}
+            label="Sign up"
           />
         </div>
       </div>

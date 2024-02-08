@@ -1,11 +1,24 @@
-import {useMemo, type FC} from "react"
+import {useEffect, useMemo, type FC} from "react"
 import Label from "../components/Label"
 import useRooms from "@/hooks/matrix/useRooms"
 import Room, {RoomType} from "@/components/Room"
 import {NotificationCountType} from "matrix-js-sdk"
+import useConnection from "@/hooks/matrix/useConnection"
+import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 
 const RoomsList: FC = () => {
   const {rooms} = useRooms()
+  const {connect, syncError} = useConnection()
+  const {credentials} = useCachedCredentials()
+
+  // Connect on startup.
+  useEffect(() => {
+    if (credentials === null) {
+      return
+    }
+
+    void connect(credentials)
+  }, [connect, credentials])
 
   // TODO: Continue implementation.
 

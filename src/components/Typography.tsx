@@ -1,41 +1,44 @@
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
+export enum TypographyVariant {
+  H1 = "text-3xl",
+  H2 = "text-2xl",
+  H3 = "text-xl",
+  P = "text-xs",
+  Span = "text-sm",
+}
+
 export type TypographyProps = {
   className?: string
-  variant: "h1" | "h2" | "h3" | "p" | "span"
+  variant?: TypographyVariant
   children?: React.ReactNode
 }
 
-const buildVariant = (variant: "h1" | "h2" | "h3" | "p" | "span"): string => {
+// TODO: Add proper return type.
+function getTagFromVariant(variant: TypographyVariant) {
   switch (variant) {
-    case "h1":
-      return "text-3xl"
-    case "h2":
-      return "text-2xl"
-    case "h3":
-      return "text-xl"
-    case "p":
-      return "text-xs"
-    case "span":
-      return "text-sm"
+    case TypographyVariant.H1:
+      return "h1"
+    case TypographyVariant.H2:
+      return "h2"
+    case TypographyVariant.H3:
+      return "h3"
+    case TypographyVariant.P:
+      return "p"
+    case TypographyVariant.Span:
+      return "span"
   }
 }
 
 const Typography: FC<TypographyProps> = ({
-  variant = "span",
+  variant = TypographyVariant.Span,
   className,
   children,
 }) => {
-  const Component = variant
+  const Component = getTagFromVariant(variant)
 
-  return (
-    <>
-      <Component className={twMerge(buildVariant(variant), className)}>
-        {children}
-      </Component>
-    </>
-  )
+  return <Component className={twMerge(className)}>{children}</Component>
 }
 
 export default Typography

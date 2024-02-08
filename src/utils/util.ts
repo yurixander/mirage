@@ -3,6 +3,7 @@ import dayjs from "dayjs"
 export enum ViewPath {
   App = "/",
   Login = "/login",
+  Development = "/dev",
 }
 
 export type Credentials = {
@@ -33,17 +34,5 @@ export function validateUrl(url: string): boolean {
     return true
   } catch {
     return false
-  }
-}
-
-export function checkCredentials({accessToken, baseUrl, userId}: Credentials) {
-  if (accessToken.length === 0) {
-    throw new Error("Access token should not be empty")
-  }
-  if (baseUrl.length === 0) {
-    throw new Error("Server url should not be empty")
-  }
-  if (userId.length === 0) {
-    throw new Error("User id should not be empty")
   }
 }
