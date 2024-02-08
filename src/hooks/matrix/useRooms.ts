@@ -7,9 +7,7 @@ const useRooms = () => {
   // CONSIDER: Replacing this logic with usage of `useSyncedMap`.
 
   const [rooms, setRooms] = useState<Room[] | null>(null)
-  const {client, isSynced} = useConnection()
-
-  console.log(isSynced, client)
+  const {client, syncState} = useConnection()
 
   // Initial gathering of rooms, when a connection is
   // established or re-established.
@@ -20,9 +18,8 @@ const useRooms = () => {
       return
     }
 
-    alert("Updated rooms")
     setRooms(client.getRooms())
-  }, [client, setRooms])
+  }, [client, syncState])
 
   // REVIEW: Should this be inside a `useEffect`? Or does it automatically handle cleanup (ie. removing the event listener) when this hook is unmounted?
   // Listen for room updates, and update the state accordingly.
