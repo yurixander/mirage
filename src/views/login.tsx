@@ -11,19 +11,21 @@ import {useNavigate} from "react-router-dom"
 const LoginView: FC = () => {
   const navigate = useNavigate()
   const {credentials, saveCredentials} = useCachedCredentials()
-  const {connect, disconnect, syncState, lastSyncError} = useConnection()
+  const [userId, setUserId] = useState("@thecriss:matrix.org")
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [serverUrl, setServerUrl] = useState("https://matrix-client.matrix.org")
+
+  const {connect, disconnect, syncState, lastSyncError, isConnecting} =
+    useConnection()
 
   const [accessToken, setAccessToken] = useState(
     "syt_dGhlY3Jpc3M_yBPDvDMuDeMKQFonYlQM_09tZYX"
   )
 
-  const [userId, setUserId] = useState("@thecriss:matrix.org")
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-  const [isConnecting, setIsConnecting] = useState(false)
-
   const login = useCallback(async () => {
-    setIsConnecting(true)
+    if (isConnecting) {
+      return
+    }
 
     const connectedAndSynced = await connect({
       accessToken,
@@ -32,8 +34,6 @@ const LoginView: FC = () => {
     })
 
     if (!connectedAndSynced) {
-      setIsConnecting(false)
-
       return
     }
 
@@ -44,6 +44,7 @@ const LoginView: FC = () => {
     accessToken,
     connect,
     disconnect,
+    isConnecting,
     navigate,
     saveCredentials,
     serverUrl,

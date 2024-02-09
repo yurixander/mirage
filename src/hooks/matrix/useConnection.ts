@@ -12,6 +12,8 @@ type ZustandClientStore = {
   client: MatrixClient | null
   syncState: SyncState | null
   lastSyncError: Error | null
+  isConnecting: boolean
+  setIsConnecting: (isConnecting: boolean) => void
   setClient: (client: MatrixClient) => void
   setSyncState: (syncState: SyncState) => void
   setLastSyncError: (error: Error | null) => void
@@ -21,6 +23,13 @@ const useClientStore = create<ZustandClientStore>(set => ({
   client: null,
   syncState: null,
   lastSyncError: null,
+  // A flag to prevent multiple connection attempts. This is needed apart from
+  // the sync state, as the sync state is not set until the client is prepared.
+  // This is used as an immediate lock to prevent multiple connection attempts.
+  isConnecting: false,
+  setIsConnecting: (isConnecting: boolean) => {
+    set({isConnecting})
+  },
   setClient: (client: MatrixClient) => {
     set({client})
   },
@@ -37,6 +46,8 @@ const useConnection = () => {
     client,
     setClient,
     syncState,
+    isConnecting,
+    setIsConnecting,
     setSyncState,
     lastSyncError,
     setLastSyncError,
@@ -46,9 +57,14 @@ const useConnection = () => {
     async (credentials: Credentials): Promise<boolean> => {
       // The client is already connected or is in the process of
       // connecting; don't attempt another connection.
-      if (![SyncState.Stopped, SyncState.Error, null].includes(syncState)) {
+      if (
+        ![SyncState.Stopped, SyncState.Error, null].includes(syncState) ||
+        isConnecting
+      ) {
         return true
       }
+
+      setIsConnecting(true)
 
       return await new Promise(resolve => {
         setLastSyncError(null)
@@ -65,8 +81,10 @@ const useConnection = () => {
               const error = data?.error ?? new Error("Unknown sync error")
 
               setLastSyncError(error)
+              setIsConnecting(false)
               resolve(false)
             } else if (syncState === SyncState.Prepared) {
+              setIsConnecting(false)
               resolve(true)
             }
           }
@@ -91,7 +109,14 @@ const useConnection = () => {
         })
       })
     },
-    [setClient, setLastSyncError, setSyncState, syncState]
+    [
+      isConnecting,
+      setClient,
+      setIsConnecting,
+      setLastSyncError,
+      setSyncState,
+      syncState,
+    ]
   )
 
   const disconnect = useCallback(async () => {
@@ -110,6 +135,7 @@ const useConnection = () => {
     connect,
     disconnect,
     lastSyncError,
+    isConnecting,
   }
 }
 
