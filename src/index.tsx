@@ -6,7 +6,7 @@ import "./styles/tailwind.css"
 import {ViewPath, assert} from "./utils/util"
 import AppView from "./views/app.jsx"
 import LoginView from "./views/login"
-import RoomsList from "./containers/RoomsList"
+import DevPreview from "./containers/DevPreview"
 
 const $root = document.getElementById("root")
 
@@ -18,7 +18,7 @@ createRoot($root).render(
       <Routes>
         <Route path={ViewPath.App} element={<AppView />} />
         <Route path={ViewPath.Login} element={<LoginView />} />
-        <Route path={ViewPath.Development} element={<RoomsList />} />
+        <Route path={ViewPath.Development} element={<DevPreview />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
