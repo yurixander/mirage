@@ -8,7 +8,7 @@ import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 
 const RoomsList: FC = () => {
   const {rooms} = useRooms()
-  const {connect, syncState} = useConnection()
+  const {connect} = useConnection()
   const {credentials} = useCachedCredentials()
 
   // Connect on startup.
@@ -18,7 +18,7 @@ const RoomsList: FC = () => {
     }
 
     void connect(credentials)
-  }, [connect, credentials, syncState])
+  }, [connect, credentials])
 
   const spaceElements = rooms
     ?.filter(room => room.isSpaceRoom())
