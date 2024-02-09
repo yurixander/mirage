@@ -24,12 +24,14 @@ export type RosterUserData = {
 
 export type RosterProps = {
   users: RosterUserData[]
+  className: string
 }
 
 const Roster: FC<RosterProps> = ({users, className}) => {
+  // TODO: Prefer use roomId with client.getRoom(roomID)
   const {selectedRoom} = useRoomSelector()
 
-  // console.log("Hey this room is selected: ", selectedRoom)
+  console.log("Hey this room is selected: ", selectedRoom)
 
   const joinedMembers = useMemo(
     () => selectedRoom?.getMembers(),
@@ -87,7 +89,7 @@ const Roster: FC<RosterProps> = ({users, className}) => {
   // )
 
   return (
-    <div className="flex h-full flex-col">
+    <div className={twMerge("flex h-full flex-col", className)}>
       <header className="m-[5px] flex items-center">
         <FontAwesomeIcon className="text-neutral-200" icon={faUserGroup} />
 
