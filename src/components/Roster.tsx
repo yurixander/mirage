@@ -7,8 +7,10 @@ import {useMemo, type FC} from "react"
 import IconButton from "./IconButton"
 import Label from "./Label"
 import RosterUser from "./RosterUser"
-import {type UserProfileProps} from "./UserProfile"
+import {UserStatus, type UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
+import {twMerge} from "tailwind-merge"
+import useRoomSelector from "@/hooks/matrix/useRoomSelector"
 
 export enum RosterUserCategory {
   Admin,
@@ -24,7 +26,48 @@ export type RosterProps = {
   users: RosterUserData[]
 }
 
-const Roster: FC<RosterProps> = ({users}) => {
+const Roster: FC<RosterProps> = ({users, className}) => {
+  const {selectedRoom} = useRoomSelector()
+
+  // console.log("Hey this room is selected: ", selectedRoom)
+
+  const joinedMembers = useMemo(
+    () => selectedRoom?.getMembers(),
+    [selectedRoom]
+  )
+
+  const joinedMembersElement = useMemo(
+    () =>
+      joinedMembers?.map((member, index) => (
+        <RosterUser
+          key={index}
+          userProfileProps={{
+            avatarUrl:
+              member.getAvatarUrl(
+                "https://matrix-client.matrix.org",
+                64,
+                64,
+                "scale",
+                true,
+                false
+              ) ?? undefined,
+            text: "Online",
+            displayName: member.name,
+            displayNameColor: "",
+            status: UserStatus.Online,
+            activity: undefined,
+            icon: undefined,
+            platform: undefined,
+            isLarge: undefined,
+          }}
+          onClick={function (): void {
+            throw new Error("Function not implemented.")
+          }}
+        />
+      )),
+    [joinedMembers]
+  )
+
   const admins = useMemo(
     () => users.filter(user => user.category === RosterUserCategory.Admin),
     [users]
@@ -35,13 +78,13 @@ const Roster: FC<RosterProps> = ({users}) => {
     [users]
   )
 
-  const memberElements = useMemo(
-    () =>
-      members.map((member, index) => (
-        <RosterUser key={index} onClick={() => {}} {...member} />
-      )),
-    [members]
-  )
+  // const memberElements = useMemo(
+  //   () =>
+  //     members.map((member, index) => (
+  //       <RosterUser key={index} onClick={() => {}} {...member} />
+  //     )),
+  //   [members]
+  // )
 
   return (
     <div className="flex h-full flex-col">
@@ -73,7 +116,7 @@ const Roster: FC<RosterProps> = ({users}) => {
         <div className="flex flex-col gap-1">
           <Label className="p-[5px]" text={"Member — " + members.length} />
 
-          {memberElements}
+          {joinedMembersElement}
         </div>
 
         <UserProfileGhost count={4} opacityMultiplier={0.2} />
