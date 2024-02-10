@@ -5,8 +5,8 @@ import {twMerge} from "tailwind-merge"
 export type ServerListItemProps = {
   avatarUrl?: string
   isActive: boolean
-  onClick: () => void
   tooltip: string
+  onClick: () => void
 }
 
 const ServerListItem: FC<ServerListItemProps> = ({

@@ -15,7 +15,7 @@ const RadioButton: FC<RadioButtonProps> = ({
   label,
   onClick,
 }) => {
-  const isDisabledClass = isDisabled
+  const isDisabledClassName = isDisabled
     ? "cursor-not-allowed active:animate-none active:transform-none opacity-50"
     : "cursor-pointer active:scale-90 active:animate-hold"
 
@@ -29,7 +29,7 @@ const RadioButton: FC<RadioButtonProps> = ({
         <div
           className={twMerge(
             "h-4 w-4 cursor-pointer box-border border-[2px] border-purple-500 rounded-full flex justify-center items-center",
-            isDisabledClass
+            isDisabledClassName
           )}
           onClick={isDisabled ? undefined : onClick}
           tabIndex={isDisabled ? undefined : 0}>

@@ -21,6 +21,7 @@ const DevPreview: FC = () => {
   return (
     <div className="flex">
       <RoomsList />
+
       <Roster
         className="ml-auto"
         users={[

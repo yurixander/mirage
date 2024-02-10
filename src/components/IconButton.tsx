@@ -26,22 +26,19 @@ const IconButton: FC<IconButtonProps> = ({
 
   return (
     <div
+      onClick={isDisabled ? undefined : onClick}
+      tabIndex={isDisabled ? undefined : 0}
       className={twMerge(
         "inline-block self-center cursor-pointer p-1 rounded-[10px] focus-visible:duration-150 focus-visible:rounded-[5px]",
         isDisabledClass
-      )}
-      onClick={isDisabled ? undefined : onClick}
-      tabIndex={isDisabled ? undefined : 0}>
-      <NotificationDot
-        isVisible={isDotVisible ?? false}
-        children={
-          <FontAwesomeIcon
-            style={{color}}
-            className="text-neutral-300"
-            icon={icon}
-          />
-        }
-      />
+      )}>
+      <NotificationDot isVisible={isDotVisible ?? false}>
+        <FontAwesomeIcon
+          style={{color}}
+          className="text-neutral-300"
+          icon={icon}
+        />
+      </NotificationDot>
     </div>
   )
 }

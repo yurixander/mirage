@@ -8,7 +8,7 @@ type RoomSelectedState = {
 
 const useRoomSelector = create<RoomSelectedState>(set => ({
   selectRoom: roomId => {
-    set(_ => ({selectedRoom: roomId}))
+    set(_state => ({selectedRoom: roomId}))
   },
 }))
 

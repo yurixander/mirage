@@ -1,5 +1,6 @@
 /* eslint-disable tailwindcss/enforces-shorthand */
 import {useMemo, type FC} from "react"
+import {twMerge} from "tailwind-merge"
 
 export type UserProfileGhostProps = {
   count: number
@@ -16,15 +17,15 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
     const ghosts = []
 
     // REVISE: Simplify by using `Array.from` or `Array().fill`.
-    for (let i = 1; i <= count; i++) ghosts.push(i * opacityMultiplier)
+    for (let i = 1; i <= count; i++) {
+      ghosts.push(i * opacityMultiplier)
+    }
 
     return ghosts
-  }, [])
-
-  const containerTwClassName = className ?? "flex flex-col gap-3 p-1"
+  }, [count, opacityMultiplier])
 
   return (
-    <div className={containerTwClassName}>
+    <div className={twMerge("flex flex-col gap-3 p-1", className)}>
       {ghosts.map((multiplier, index) => (
         <div
           key={index}

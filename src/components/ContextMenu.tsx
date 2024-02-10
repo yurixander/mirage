@@ -55,8 +55,6 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
     }
   }, [hideMenu])
 
-  const containerTwClassName = "flex flex-col m-3 gap-1"
-
   return (
     <>
       <div onContextMenu={handleContextMenu}>{children}</div>
@@ -68,7 +66,7 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
             left: `${x}px`,
             top: `${y}px`,
           }}>
-          <div className={containerTwClassName}>
+          <div className="m-3 flex flex-col gap-1">
             {items.map((item, index) => (
               <div
                 tabIndex={0}

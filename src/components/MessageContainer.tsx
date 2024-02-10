@@ -6,7 +6,7 @@ export type MessageContainerProps = {
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl: string
-  content: JSX.Element
+  children: JSX.Element
   timestamp: number
   onAuthorClick: () => void
 }
@@ -15,7 +15,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
   authorDisplayName,
   authorDisplayNameColor,
   authorAvatarUrl,
-  content,
+  children,
   timestamp,
   onAuthorClick,
 }) => {
@@ -44,7 +44,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
           </span>
 
           <div className="flex">
-            {content}
+            {children}
 
             <time className="ml-auto flex text-gray-300">
               {localeTimeString}
