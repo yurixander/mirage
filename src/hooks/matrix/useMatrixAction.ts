@@ -11,7 +11,7 @@ function useMatrixAction<T>(action: (client: MatrixClient) => Promise<T> | T) {
     }
 
     return await action(client)
-  }, [client, action])
+  }, [action, client])
 
   // Only provide the action if the client is available.
   // This is useful because it forces the consumer to handle
