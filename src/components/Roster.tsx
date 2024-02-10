@@ -11,6 +11,7 @@ import {UserStatus, type UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 import {twMerge} from "tailwind-merge"
 import useRoomSelector from "@/hooks/matrix/useRoomSelector"
+import useRoomMembers from "@/hooks/matrix/useRoomMembers"
 
 export enum RosterUserCategory {
   Admin,
@@ -28,19 +29,12 @@ export type RosterProps = {
 }
 
 const Roster: FC<RosterProps> = ({users, className}) => {
-  // TODO: Prefer use roomId with client.getRoom(roomID)
   const {selectedRoom} = useRoomSelector()
-
-  console.log("Hey this room is selected: ", selectedRoom)
-
-  const joinedMembers = useMemo(
-    () => selectedRoom?.getMembers(),
-    [selectedRoom]
-  )
+  const {members} = useRoomMembers(selectedRoom)
 
   const joinedMembersElement = useMemo(
     () =>
-      joinedMembers?.map((member, index) => (
+      members?.map((member, index) => (
         <RosterUser
           key={index}
           userProfileProps={{
@@ -67,7 +61,7 @@ const Roster: FC<RosterProps> = ({users, className}) => {
           }}
         />
       )),
-    [joinedMembers]
+    [members]
   )
 
   const admins = useMemo(
@@ -75,10 +69,10 @@ const Roster: FC<RosterProps> = ({users, className}) => {
     [users]
   )
 
-  const members = useMemo(
-    () => users.filter(user => user.category === RosterUserCategory.Member),
-    [users]
-  )
+  // const members = useMemo(
+  //   () => users.filter(user => user.category === RosterUserCategory.Member),
+  //   [users]
+  // )
 
   // const memberElements = useMemo(
   //   () =>
@@ -116,7 +110,10 @@ const Roster: FC<RosterProps> = ({users, className}) => {
         </div>
 
         <div className="flex flex-col gap-1">
-          <Label className="p-[5px]" text={"Member — " + members.length} />
+          <Label
+            className="p-[5px]"
+            text={"Member — " + (joinedMembersElement?.length ?? "0")}
+          />
 
           {joinedMembersElement}
         </div>
