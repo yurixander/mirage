@@ -1,9 +1,8 @@
-import {type Room} from "matrix-js-sdk"
 import {create} from "zustand"
 
 type RoomSelectedState = {
-  selectedRoom?: Room
-  selectRoom: (room: Room) => void
+  selectedRoom?: string
+  selectRoom: (room: string) => void
 }
 
 const useRoomSelector = create<RoomSelectedState>(set => ({

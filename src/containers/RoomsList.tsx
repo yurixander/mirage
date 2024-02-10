@@ -18,7 +18,7 @@ const RoomsList: FC = () => {
             key={index}
             name={room.name}
             type={RoomType.Space}
-            isActive={selectedRoom === room}
+            isActive={selectedRoom === room.roomId}
             containsUnreadMessages={
               room.getUnreadNotificationCount(NotificationCountType.Total) > 0
             }
@@ -26,7 +26,7 @@ const RoomsList: FC = () => {
               NotificationCountType.Highlight
             )}
             onClick={() => {
-              selectRoom(room)
+              selectRoom(room.roomId)
             }}
           />
         )),
@@ -42,7 +42,7 @@ const RoomsList: FC = () => {
             key={index}
             name={room.name}
             type={RoomType.Text}
-            isActive={selectedRoom === room}
+            isActive={selectedRoom === room.roomId}
             containsUnreadMessages={
               room.getUnreadNotificationCount(NotificationCountType.Total) > 0
             }
@@ -50,7 +50,7 @@ const RoomsList: FC = () => {
               NotificationCountType.Highlight
             )}
             onClick={() => {
-              selectRoom(room)
+              selectRoom(room.roomId)
             }}
           />
         )),
