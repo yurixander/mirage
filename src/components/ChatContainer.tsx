@@ -42,7 +42,9 @@ const ChatContainer: FC<ChatContainerProps> = ({
       <header className="flex items-center gap-4 border-b-[1px] border-solid border-b-stone-200 p-4">
         <div className="flex w-full gap-1">
           <FontAwesomeIcon icon={icon} className="text-purple-500" />
+
           <span className="text-purple-500">{name}</span>
+
           <span className="text-stone-600">{text}</span>
         </div>
 
@@ -70,9 +72,11 @@ const ChatContainer: FC<ChatContainerProps> = ({
           icon={faEllipsisV}
         />
       </header>
+
       <div className="ml-4 mr-4 flex grow flex-col gap-4 overflow-hidden overflow-y-scroll scrollbar-hide">
         {chatComponents}
       </div>
+
       <div className="ml-4 mr-4 flex flex-col gap-3">
         <div className="flex gap-3">
           <div className="mt-[5px] flex h-max gap-3 ">

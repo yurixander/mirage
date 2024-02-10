@@ -9,53 +9,57 @@ const RoomsList: FC = () => {
   const {rooms} = useRooms()
   const {selectRoom, selectedRoom} = useRoomSelector()
 
-  const spaceElements = useMemo(
-    () =>
-      rooms
-        ?.filter(room => room.isSpaceRoom())
-        .map((room, index) => (
-          <Room
-            key={index}
-            name={room.name}
-            type={RoomType.Space}
-            isActive={selectedRoom === room}
-            containsUnreadMessages={
-              room.getUnreadNotificationCount(NotificationCountType.Total) > 0
-            }
-            mentionCount={room.getUnreadNotificationCount(
-              NotificationCountType.Highlight
-            )}
-            onClick={() => {
-              selectRoom(room)
-            }}
-          />
-        )),
-    [rooms, selectRoom, selectedRoom]
-  )
+  const spaceElements = useMemo(() => {
+    if (rooms === null) {
+      return null
+    }
 
-  const roomElements = useMemo(
-    () =>
-      rooms
-        ?.filter(room => !room.isSpaceRoom())
-        .map((room, index) => (
-          <Room
-            key={index}
-            name={room.name}
-            type={RoomType.Text}
-            isActive={selectedRoom === room}
-            containsUnreadMessages={
-              room.getUnreadNotificationCount(NotificationCountType.Total) > 0
-            }
-            mentionCount={room.getUnreadNotificationCount(
-              NotificationCountType.Highlight
-            )}
-            onClick={() => {
-              selectRoom(room)
-            }}
-          />
-        )),
-    [rooms, selectRoom, selectedRoom]
-  )
+    rooms
+      .filter(room => room.isSpaceRoom())
+      .map((room, index) => (
+        <Room
+          key={index}
+          name={room.name}
+          type={RoomType.Space}
+          isActive={selectedRoom === room}
+          containsUnreadMessages={
+            room.getUnreadNotificationCount(NotificationCountType.Total) > 0
+          }
+          mentionCount={room.getUnreadNotificationCount(
+            NotificationCountType.Highlight
+          )}
+          onClick={() => {
+            selectRoom(room)
+          }}
+        />
+      ))
+  }, [rooms, selectRoom, selectedRoom])
+
+  const roomElements = useMemo(() => {
+    if (rooms === null) {
+      return null
+    }
+
+    return rooms
+      .filter(room => !room.isSpaceRoom())
+      .map((room, index) => (
+        <Room
+          key={index}
+          name={room.name}
+          type={RoomType.Text}
+          isActive={selectedRoom === room}
+          containsUnreadMessages={
+            room.getUnreadNotificationCount(NotificationCountType.Total) > 0
+          }
+          mentionCount={room.getUnreadNotificationCount(
+            NotificationCountType.Highlight
+          )}
+          onClick={() => {
+            selectRoom(room)
+          }}
+        />
+      ))
+  }, [rooms, selectRoom, selectedRoom])
 
   return (
     <section className="flex h-full flex-col gap-8 p-1 scrollbar-hide">
@@ -67,6 +71,7 @@ const RoomsList: FC = () => {
 
       <nav className="flex flex-col gap-4">
         <Label text="Rooms" />
+
         {roomElements}
       </nav>
     </section>

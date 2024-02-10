@@ -96,11 +96,11 @@ const Roster: FC<RosterProps> = ({users, className}) => {
         <div className="ml-[5px] w-full">People</div>
 
         <IconButton
+          tooltip="Sort members"
+          icon={faArrowDownShortWide}
           onClick={() => {
             // TODO: Handle `sort` button click.
           }}
-          tooltip="Sort members"
-          icon={faArrowDownShortWide}
         />
       </header>
 

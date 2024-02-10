@@ -5,9 +5,9 @@ import {twMerge} from "tailwind-merge"
 
 export type SwitchButtonProps = {
   isInitiallySelected: boolean
-  onSelectionChange: (isSelected: boolean) => void
   label?: string
   isDisabled?: boolean
+  onSelectionChange: (isSelected: boolean) => void
 }
 
 const SwitchButton: FC<SwitchButtonProps> = ({
@@ -27,14 +27,14 @@ const SwitchButton: FC<SwitchButtonProps> = ({
           isDisabled ? "opacity-50 cursor-not-allowed" : ""
         )}>
         <div
+          onClick={isDisabled ? undefined : handleSelectionChanged}
+          tabIndex={isDisabled ? undefined : 0}
+          onKeyDown={handleKeyDown}
           className={twMerge(
             "flex h-6 w-11 items-center rounded-full p-1",
             isSelected ? "bg-purple-500 justify-end" : "bg-gray-300",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer"
-          )}
-          onClick={isDisabled ? undefined : handleSelectionChanged}
-          tabIndex={isDisabled ? undefined : 0}
-          onKeyDown={handleKeyDown}>
+          )}>
           <div className="relative h-4 w-4 rounded-full bg-white shadow-md" />
         </div>
         {label}

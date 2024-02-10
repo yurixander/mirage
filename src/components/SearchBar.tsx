@@ -29,10 +29,10 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange}) => {
     inputRef.current?.select()
   })
 
-  const MINIMUM_QUERY_LENGTH = 3
-
   // TODO: Consider using useCallback
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const MINIMUM_QUERY_LENGTH = 3
+
     if (event.target.value.length < MINIMUM_QUERY_LENGTH) {
       setResults([])
 

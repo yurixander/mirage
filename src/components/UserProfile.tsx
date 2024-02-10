@@ -40,6 +40,7 @@ const UserProfile: FC<UserProfileProps> = ({
   platform,
 }) => {
   assert(displayName.length > 0, "display name should not be empty")
+
   assert(
     text !== undefined && text.length > 0,
     "username should not be undefined or empty"
@@ -88,13 +89,13 @@ const UserProfile: FC<UserProfileProps> = ({
   const avatarImage =
     avatarUrl !== undefined ? (
       <img
+        src={avatarUrl}
         className={twMerge(
           "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
           isLarge
             ? "h-userProfileAvatarSizeLarge w-userProfileAvatarSizeLarge"
             : "h-userProfileAvatarSize w-userProfileAvatarSize"
         )}
-        src={avatarUrl}
       />
     ) : (
       <Avatar size={isLarge ? 60 : 40} square name={text} variant="beam" />

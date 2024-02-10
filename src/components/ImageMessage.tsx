@@ -71,20 +71,16 @@ const ImageMessage: FC<ImageMessageProps> = ({
 
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
-    <ContextMenu
-      id={id}
-      items={contextMenuItems}
-      children={
-        <MessageContainer
-          authorDisplayName={authorDisplayName}
-          authorDisplayNameColor={authorDisplayNameColor}
-          authorAvatarUrl={authorAvatarUrl}
-          content={content}
-          timestamp={timestamp}
-          onAuthorClick={onAuthorClick}
-        />
-      }
-    />
+    <ContextMenu id={id} items={contextMenuItems}>
+      <MessageContainer
+        authorDisplayName={authorDisplayName}
+        authorDisplayNameColor={authorDisplayNameColor}
+        authorAvatarUrl={authorAvatarUrl}
+        children={content}
+        timestamp={timestamp}
+        onAuthorClick={onAuthorClick}
+      />
+    </ContextMenu>
   )
 }
 

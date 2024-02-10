@@ -1,7 +1,8 @@
 /* eslint-disable tailwindcss/enforces-shorthand */
+import {type FC} from "react"
 import LoadingEffect from "./LoadingEffect"
 
-const UserProfilePlaceholder = () => {
+const UserProfilePlaceholder: FC = () => {
   return (
     <div>
       <div className="flex gap-1">

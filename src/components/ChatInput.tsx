@@ -1,7 +1,6 @@
 /* eslint-disable tailwindcss/enforces-shorthand */
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
 import {useEffect, useRef, useState, type FC} from "react"
-import {twMerge} from "tailwind-merge"
 import IconButton from "./IconButton"
 
 export type ChatInputProps = {
@@ -42,10 +41,9 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
         onChange={value => {
           setValue(value.target.value)
         }}
-        className={twMerge(
-          "flex max-h-[100px] w-full p-3 resize-none border-none bg-transparent overflow-y-auto scrollbar-hide focus-visible:outline-none "
-        )}
+        className="flex max-h-[100px] w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none"
       />
+
       <div className="m-[5px] h-max w-max">
         <IconButton
           tooltip="Send"

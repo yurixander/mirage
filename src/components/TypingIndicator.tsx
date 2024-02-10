@@ -15,24 +15,22 @@ export type TypingIndicatorProps = {
 const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   const verbForm = users.length > 1 ? "are" : "is"
 
-  const names = (
-    <>
-      {users.map((user, index, array) => (
-        <span key={index}>
-          <span className="font-semibold" style={{color: user.color}}>
-            {user.displayName}
-          </span>
-          {index < array.length - 2 ? ", " : ""}
-          {index === array.length - 2 ? " and " : ""}
-        </span>
-      ))}
-    </>
-  )
+  const names = users.map((user, index, array) => (
+    <span key={index}>
+      <span className="font-semibold" style={{color: user.color}}>
+        {user.displayName}
+      </span>
+
+      {index < array.length - 2 ? ", " : ""}
+
+      {index === array.length - 2 ? " and " : ""}
+    </span>
+  ))
 
   const MAX_VISIBLE_TYPING_USERS = 3
   const who = users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
 
-  const dotTwClassName =
+  const dotClass =
     "h-[10px] w-[10px] animate-dot-jump rounded-[50%] bg-neutral-300"
 
   const typingUserElements = users.map(
@@ -51,11 +49,11 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   return (
     <div className="inline-flex items-center gap-3">
       <div className="flex gap-[2px]">
-        <div className={dotTwClassName} />
+        <div className={dotClass} />
 
-        <div className={twMerge(dotTwClassName, "animation-delay-150")} />
+        <div className={twMerge(dotClass, "animation-delay-150")} />
 
-        <div className={twMerge(dotTwClassName, "animation-delay-300")} />
+        <div className={twMerge(dotClass, "animation-delay-300")} />
       </div>
 
       <div className="flex">{typingUserElements}</div>

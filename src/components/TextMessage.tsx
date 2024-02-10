@@ -52,24 +52,16 @@ const TextMessage: FC<TextMessageProps> = ({
 
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
-    <ContextMenu
-      id={id}
-      items={contextMenuItems}
-      children={
-        <MessageContainer
-          authorDisplayName={authorDisplayName}
-          authorDisplayNameColor={authorDisplayNameColor}
-          authorAvatarUrl={authorAvatarUrl}
-          content={
-            <div className="max-w-[600px] select-text leading-[160%]">
-              {text}
-            </div>
-          }
-          timestamp={timestamp}
-          onAuthorClick={onAuthorClick}
-        />
-      }
-    />
+    <ContextMenu id={id} items={contextMenuItems}>
+      <MessageContainer
+        authorDisplayName={authorDisplayName}
+        authorDisplayNameColor={authorDisplayNameColor}
+        authorAvatarUrl={authorAvatarUrl}
+        timestamp={timestamp}
+        onAuthorClick={onAuthorClick}>
+        <div className="max-w-[600px] select-text leading-[160%]">{text}</div>
+      </MessageContainer>
+    </ContextMenu>
   )
 }
 

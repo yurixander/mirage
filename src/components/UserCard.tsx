@@ -32,6 +32,7 @@ const UserCard: FC<UserCardProps> = ({
       <div className="flex grow flex-col gap-4 bg-neutral-50 p-4">
         <div>
           <Label text="About me" />
+          
           <span className="select-text text-xs">{aboutMe}</span>
         </div>
 
