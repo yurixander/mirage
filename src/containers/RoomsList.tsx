@@ -3,11 +3,12 @@ import Label from "../components/Label"
 import useRooms from "@/hooks/matrix/useRooms"
 import Room, {RoomType} from "@/components/Room"
 import {NotificationCountType} from "matrix-js-sdk"
-import useRoomSelector from "@/hooks/matrix/useRoomSelector"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoom"
 
 const RoomsList: FC = () => {
   const {rooms} = useRooms()
-  const {selectRoom, selectedRoom} = useRoomSelector()
+  const {setActiveRoomId: selectRoom, activeRoomId: selectedRoom} =
+    useActiveRoomIdStore()
 
   const spaceElements = useMemo(
     () =>

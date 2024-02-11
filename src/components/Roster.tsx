@@ -10,8 +10,7 @@ import RosterUser from "./RosterUser"
 import {UserStatus, type UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 import {twMerge} from "tailwind-merge"
-import useRoomSelector from "@/hooks/matrix/useRoomSelector"
-import useRoomMembers from "@/hooks/matrix/useRoomMembers"
+import useActiveRoom from "@/hooks/matrix/useActiveRoom"
 
 export enum RosterUserCategory {
   Admin,
@@ -29,40 +28,37 @@ export type RosterProps = {
 }
 
 const Roster: FC<RosterProps> = ({users, className}) => {
-  const {selectedRoom} = useRoomSelector()
-  const {members} = useRoomMembers(selectedRoom)
+  const {activeRoom} = useActiveRoom()
 
-  const joinedMembersElement = useMemo(
-    () =>
-      members?.map((member, index) => (
-        <RosterUser
-          key={index}
-          userProfileProps={{
-            avatarUrl:
-              member.getAvatarUrl(
-                "https://matrix-client.matrix.org",
-                64,
-                64,
-                "scale",
-                true,
-                false
-              ) ?? undefined,
-            text: "Online",
-            displayName: member.name,
-            displayNameColor: "",
-            status: UserStatus.Online,
-            activity: undefined,
-            icon: undefined,
-            platform: undefined,
-            isLarge: undefined,
-          }}
-          onClick={function (): void {
-            throw new Error("Function not implemented.")
-          }}
-        />
-      )),
-    [members]
-  )
+  const joinedMembersElement = useMemo(() => {
+    if (activeRoom === null) {
+      return null
+    }
+
+    return activeRoom.getJoinedMembers().map((member, index) => (
+      <RosterUser
+        key={index}
+        userProfileProps={{
+          avatarUrl:
+            member.getAvatarUrl(
+              "https://matrix-client.matrix.org",
+              64,
+              64,
+              "scale",
+              true,
+              false
+            ) ?? undefined,
+          text: "Online",
+          displayName: member.name,
+          displayNameColor: "",
+          status: UserStatus.Online,
+        }}
+        onClick={function (): void {
+          throw new Error("Function not implemented.")
+        }}
+      />
+    ))
+  }, [activeRoom])
 
   const admins = useMemo(
     () => users.filter(user => user.category === RosterUserCategory.Admin),
