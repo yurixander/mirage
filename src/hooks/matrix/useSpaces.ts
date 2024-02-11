@@ -2,25 +2,37 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {ClientEvent, type Room} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
-import useActiveRoom from "./useActiveRoom"
+import {create} from "zustand"
 
-const useRooms = () => {
+type ActiveSpaceIdStore = {
+  activeSpaceId: string | null
+  setActiveSpaceId: (spaceId?: string) => void
+}
+
+export const useActiveRoomIdStore = create<ActiveSpaceIdStore>(set => ({
+  activeSpaceId: null,
+  setActiveSpaceId: spaceId => {
+    set(_ => ({activeSpaceId: spaceId}))
+  },
+}))
+
+const useSpaces = () => {
   // CONSIDER: Replacing this logic with usage of `useSyncedMap`.
 
-  const [rooms, setRooms] = useState<Room[] | null>(null)
+  const [spaces, setSpace] = useState<Room[] | null>(null)
   const {client, syncState} = useConnection()
-  const {setActiveRoomId, activeRoomId} = useActiveRoom()
+  const {activeSpaceId, setActiveSpaceId} = useActiveRoomIdStore()
 
   // Initial gathering of rooms, when a connection is
   // established or re-established.
   useEffect(() => {
     if (client === null) {
-      console.info("Client is null; cannot fetch rooms.")
+      console.info("Client is null; cannot fetch spaces.")
 
       return
     }
 
-    setRooms(client.getRooms())
+    setSpace(client.getRooms().filter(room => room.isSpaceRoom()))
   }, [client, syncState])
 
   // REVIEW: Should this be inside a `useEffect`? Or does it automatically handle cleanup (ie. removing the event listener) when this hook is unmounted?
@@ -30,7 +42,7 @@ const useRooms = () => {
     console.log("Room event:", event, state, previousStateEvent)
   })
 
-  return {rooms, activeRoomId, setActiveRoomId}
+  return {spaces, activeSpaceId, setActiveSpaceId}
 }
 
-export default useRooms
+export default useSpaces

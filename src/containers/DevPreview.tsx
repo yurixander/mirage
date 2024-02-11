@@ -1,3 +1,4 @@
+import Navigation from "@/components/Navigation"
 import Roster, {RosterUserCategory} from "@/components/Roster"
 import {UserStatus} from "@/components/UserProfile"
 import RoomsList from "@/containers/RoomsList"
@@ -20,6 +21,7 @@ const DevPreview: FC = () => {
 
   return (
     <div className="flex">
+      <Navigation />
       <RoomsList />
 
       <Roster

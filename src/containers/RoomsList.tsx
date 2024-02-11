@@ -3,47 +3,22 @@ import Label from "../components/Label"
 import useRooms from "@/hooks/matrix/useRooms"
 import Room, {RoomType} from "@/components/Room"
 import {NotificationCountType} from "matrix-js-sdk"
-import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoom"
+import useSpaceRooms from "@/hooks/matrix/useSpaceRooms"
 
 const RoomsList: FC = () => {
-  const {rooms} = useRooms()
-  const {setActiveRoomId: selectRoom, activeRoomId: selectedRoom} =
-    useActiveRoomIdStore()
-
-  const spaceElements = useMemo(
-    () =>
-      rooms
-        ?.filter(room => room.isSpaceRoom())
-        .map((room, index) => (
-          <Room
-            key={index}
-            name={room.name}
-            type={RoomType.Space}
-            isActive={selectedRoom === room.roomId}
-            containsUnreadMessages={
-              room.getUnreadNotificationCount(NotificationCountType.Total) > 0
-            }
-            mentionCount={room.getUnreadNotificationCount(
-              NotificationCountType.Highlight
-            )}
-            onClick={() => {
-              selectRoom(room.roomId)
-            }}
-          />
-        )),
-    [rooms, selectRoom, selectedRoom]
-  )
+  const {rooms, activeRoomId, setActiveRoomId} = useRooms()
+  const {childRooms, activeSpaceId} = useSpaceRooms()
 
   const roomElements = useMemo(
     () =>
-      rooms
+      (activeSpaceId === undefined ? rooms : childRooms)
         ?.filter(room => !room.isSpaceRoom())
         .map((room, index) => (
           <Room
             key={index}
             name={room.name}
             type={RoomType.Text}
-            isActive={selectedRoom === room.roomId}
+            isActive={activeRoomId === room.roomId}
             containsUnreadMessages={
               room.getUnreadNotificationCount(NotificationCountType.Total) > 0
             }
@@ -51,20 +26,16 @@ const RoomsList: FC = () => {
               NotificationCountType.Highlight
             )}
             onClick={() => {
-              selectRoom(room.roomId)
+              setActiveRoomId(room.roomId)
             }}
           />
         )),
-    [rooms, selectRoom, selectedRoom]
+    [childRooms, rooms, activeRoomId, setActiveRoomId, activeSpaceId]
   )
 
   return (
     <section className="flex h-full flex-col gap-8 p-1 scrollbar-hide">
-      <nav className="flex flex-col gap-4">
-        <Label text="Spaces" />
-
-        {spaceElements}
-      </nav>
+      <nav className="flex flex-col gap-4">{/* <Label text="Spaces" /> */}</nav>
 
       <nav className="flex flex-col gap-4">
         <Label text="Rooms" />
