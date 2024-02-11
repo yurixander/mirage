@@ -30,53 +30,38 @@ export type RosterProps = {
 const Roster: FC<RosterProps> = ({users, className}) => {
   const {activeRoom} = useActiveRoom()
 
-  const joinedMembersElement = useMemo(() => {
-    if (activeRoom === null) {
-      return null
-    }
-
-    return activeRoom.getJoinedMembers().map((member, index) => (
-      <RosterUser
-        key={index}
-        userProfileProps={{
-          avatarUrl:
-            member.getAvatarUrl(
-              "https://matrix-client.matrix.org",
-              64,
-              64,
-              "scale",
-              true,
-              false
-            ) ?? undefined,
-          text: "Online",
-          displayName: member.name,
-          displayNameColor: "",
-          status: UserStatus.Online,
-        }}
-        onClick={function (): void {
-          throw new Error("Function not implemented.")
-        }}
-      />
-    ))
-  }, [activeRoom])
+  const joinedMembersElement = useMemo(
+    () =>
+      activeRoom?.getMembers()?.map((member, index) => (
+        <RosterUser
+          key={index}
+          userProfileProps={{
+            avatarUrl:
+              member.getAvatarUrl(
+                "https://matrix-client.matrix.org",
+                64,
+                64,
+                "scale",
+                true,
+                false
+              ) ?? undefined,
+            text: "Online",
+            displayName: member.name,
+            displayNameColor: "",
+            status: UserStatus.Online,
+          }}
+          onClick={function (): void {
+            throw new Error("Function not implemented.")
+          }}
+        />
+      )),
+    [activeRoom]
+  )
 
   const admins = useMemo(
     () => users.filter(user => user.category === RosterUserCategory.Admin),
     [users]
   )
-
-  // const members = useMemo(
-  //   () => users.filter(user => user.category === RosterUserCategory.Member),
-  //   [users]
-  // )
-
-  // const memberElements = useMemo(
-  //   () =>
-  //     members.map((member, index) => (
-  //       <RosterUser key={index} onClick={() => {}} {...member} />
-  //     )),
-  //   [members]
-  // )
 
   return (
     <div className={twMerge("flex h-full flex-col", className)}>
