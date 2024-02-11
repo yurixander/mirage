@@ -16,32 +16,35 @@ import {type FC} from "react"
 import {assert} from "../utils/util"
 import ChatInput from "./ChatInput"
 import IconButton from "./IconButton"
-import {RoomType} from "./Room"
 import SmartAction from "./SmartAction"
 import TypingIndicator from "./TypingIndicator"
+import useActiveRoom from "@/hooks/matrix/useActiveRoom"
+import {EventTimeline} from "matrix-js-sdk"
+import TextMessage from "./TextMessage"
 
 export type ChatContainerProps = {
   name: string
   text: string
-  type: RoomType
   chatComponents: JSX.Element[]
 }
 
-const ChatContainer: FC<ChatContainerProps> = ({
-  name,
-  text,
-  type,
-  chatComponents,
-}) => {
-  assert(name.length !== 0, "room name should not be empty")
+const ChatContainer: FC<ChatContainerProps> = ({text, chatComponents}) => {
+  const {activeRoom, messages} = useActiveRoom()
 
-  const icon = type === RoomType.Text ? faHashtag : faStarOfLife
+  if (activeRoom === null) {
+    // TODO: Handle here when first open App (activeRoom is null), should show a skeleton or empty component
+    return
+  }
+
+  const name = activeRoom.name
+
+  assert(name.length !== 0, "room name should not be empty")
 
   return (
     <section className="flex h-full flex-col gap-4 border-[1px] border-solid border-stone-200">
       <header className="flex items-center gap-4 border-b-[1px] border-solid border-b-stone-200 p-4">
         <div className="flex w-full gap-1">
-          <FontAwesomeIcon icon={icon} className="text-purple-500" />
+          <FontAwesomeIcon icon={faHashtag} className="text-purple-500" />
 
           <span className="text-purple-500">{name}</span>
 
@@ -75,6 +78,9 @@ const ChatContainer: FC<ChatContainerProps> = ({
 
       <div className="ml-4 mr-4 flex grow flex-col gap-4 overflow-hidden overflow-y-scroll scrollbar-hide">
         {chatComponents}
+        {messages.map((message, index) => (
+          <TextMessage key={index} {...message} />
+        ))}
       </div>
 
       <div className="ml-4 mr-4 flex flex-col gap-3">

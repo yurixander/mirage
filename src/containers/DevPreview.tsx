@@ -1,4 +1,6 @@
+import ChatContainer from "@/components/ChatContainer"
 import Navigation from "@/components/Navigation"
+import {RoomType} from "@/components/Room"
 import Roster, {RosterUserCategory} from "@/components/Roster"
 import {UserStatus} from "@/components/UserProfile"
 import RoomsList from "@/containers/RoomsList"
@@ -23,7 +25,11 @@ const DevPreview: FC = () => {
     <div className="flex">
       <Navigation />
       <RoomsList />
-
+      <ChatContainer
+        name={"Developer section"}
+        text={"Testing the get messages"}
+        chatComponents={[]}
+      />
       <Roster
         className="ml-auto"
         users={[
