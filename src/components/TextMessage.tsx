@@ -12,7 +12,7 @@ export type TextMessageProps = {
   id: number
   authorDisplayName: string
   authorDisplayNameColor: string
-  authorAvatarUrl: string
+  authorAvatarUrl?: string
   text: string
   timestamp: number
   onAuthorClick: () => void

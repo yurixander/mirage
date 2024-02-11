@@ -5,7 +5,7 @@ import {timeFormatter} from "../utils/util"
 export type MessageContainerProps = {
   authorDisplayName: string
   authorDisplayNameColor: string
-  authorAvatarUrl: string
+  authorAvatarUrl?: string
   children: JSX.Element
   timestamp: number
   onAuthorClick: () => void
