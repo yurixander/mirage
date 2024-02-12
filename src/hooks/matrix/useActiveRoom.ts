@@ -1,3 +1,4 @@
+import {type EventMessageProps} from "@/components/EventMessage"
 import {type ImageMessageProps} from "@/components/ImageMessage"
 import {type TextMessageProps} from "@/components/TextMessage"
 import useConnection from "@/hooks/matrix/useConnection"
@@ -27,11 +28,14 @@ const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
 export enum MessageKind {
   Text,
   Image,
+  Event,
 }
 
 type MessageOf<T extends MessageKind> = T extends MessageKind.Text
   ? TextMessageProps
-  : ImageMessageProps
+  : T extends MessageKind.Image
+    ? ImageMessageProps
+    : EventMessageProps
 
 type Message<T extends MessageKind> = {
   kind: T
@@ -60,7 +64,7 @@ const useActiveRoom = () => {
 
     setActiveRoom(room)
 
-    void handleMessagesEvent(client, activeRoomId)
+    void handleRoomEvents(client, activeRoomId)
       .then(messagesProp => {
         setMessages(messagesProp)
       })
@@ -72,68 +76,82 @@ const useActiveRoom = () => {
   return {activeRoomId, activeRoom, setActiveRoomId, messages}
 }
 
-const handleMessagesEvent = async (
+const handleRoomEvents = async (
   client: MatrixClient,
   activeRoomId: string
 ): Promise<MessageProps[]> => {
-  const messages = (
-    await client.roomInitialSync(activeRoomId, 30)
-  ).messages?.chunk.filter(
-    message =>
-      (message.type === EventType.RoomMessage &&
-        message.content.msgtype === MsgType.Text) ||
-      MsgType.Image
-  )
+  const events = (await client.roomInitialSync(activeRoomId, 30)).messages
+    ?.chunk
 
-  const messagesProp: MessageProps[] = []
-
-  if (messages === undefined) {
+  if (events === undefined) {
     return []
   }
 
-  for (const message of messages) {
-    const user = client.getUser(message.sender)
-    const timestamp = message.unsigned?.age
+  const messagesProp: MessageProps[] = []
 
-    if (user === null || timestamp === undefined) {
-      continue
-    }
+  for (const message of events) {
+    switch (message.type) {
+      case EventType.RoomMessage: {
+        const messageProp = await handleMessagesEvent(message, client)
 
-    switch (message.content.msgtype) {
-      case MsgType.Text: {
-        const messageTextProp = transformToTextMessage(
-          client,
-          message,
-          user,
-          timestamp
-        )
-
-        if (messageTextProp === null) {
+        if (messageProp === null) {
           break
         }
 
-        messagesProp.push({kind: MessageKind.Text, data: messageTextProp})
+        messagesProp.push(messageProp)
         break
       }
-      case MsgType.Image: {
-        const messageImgProp = transformToImageMessage(
-          client,
-          message,
-          user,
-          timestamp
-        )
-
-        if (messageImgProp === null) {
-          break
-        }
-
-        messagesProp.push({kind: MessageKind.Image, data: messageImgProp})
+      default:
         break
-      }
     }
   }
 
   return messagesProp
+}
+
+const handleMessagesEvent = async (
+  message: IEventWithRoomId,
+  client: MatrixClient
+): Promise<MessageProps | null> => {
+  const user = client.getUser(message.sender)
+  const timestamp = message.unsigned?.age
+
+  if (user === null || timestamp === undefined) {
+    return null
+  }
+
+  switch (message.content.msgtype) {
+    case MsgType.Text: {
+      const messageTextProp = transformToTextMessage(
+        client,
+        message,
+        user,
+        timestamp
+      )
+
+      if (messageTextProp === null) {
+        return null
+      }
+
+      return {kind: MessageKind.Text, data: messageTextProp}
+    }
+    case MsgType.Image: {
+      const messageImgProp = transformToImageMessage(
+        client,
+        message,
+        user,
+        timestamp
+      )
+
+      if (messageImgProp === null) {
+        return null
+      }
+
+      return {kind: MessageKind.Image, data: messageImgProp}
+    }
+    default:
+      return null
+  }
 }
 
 const transformToImageMessage = (
