@@ -25,25 +25,8 @@ const DevPreview: FC = () => {
     <div className="flex">
       <Navigation />
       <RoomsList />
-      <ChatContainer
-        name={"Developer section"}
-        text={"Testing the get messages"}
-        chatComponents={[]}
-      />
-      <Roster
-        className="ml-auto"
-        users={[
-          {
-            category: RosterUserCategory.Member,
-            userProfileProps: {
-              displayName: "Emerald branch",
-              status: UserStatus.Offline,
-              text: "Hello",
-              displayNameColor: "#D5D5D5",
-            },
-          },
-        ]}
-      />
+      <ChatContainer />
+      <Roster className="min-w-max" />
     </div>
   )
 }

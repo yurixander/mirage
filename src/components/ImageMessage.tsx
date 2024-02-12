@@ -14,7 +14,7 @@ export type ImageMessageProps = {
   imageUrl: string
   authorDisplayName: string
   authorDisplayNameColor: string
-  authorAvatarUrl: string
+  authorAvatarUrl?: string
   text: string
   timestamp: number
   onAuthorClick: () => void

@@ -18,8 +18,8 @@ import ChatInput from "./ChatInput"
 import IconButton from "./IconButton"
 import SmartAction from "./SmartAction"
 import TypingIndicator from "./TypingIndicator"
-import useActiveRoom from "@/hooks/matrix/useActiveRoom"
-import {EventTimeline} from "matrix-js-sdk"
+import useActiveRoom, {MessageKind} from "@/hooks/matrix/useActiveRoom"
+import ImageMessage, {type ImageMessageProps} from "./ImageMessage"
 import TextMessage from "./TextMessage"
 
 export type ChatContainerProps = {
@@ -28,7 +28,7 @@ export type ChatContainerProps = {
   chatComponents: JSX.Element[]
 }
 
-const ChatContainer: FC<ChatContainerProps> = ({text, chatComponents}) => {
+const ChatContainer: FC = () => {
   const {activeRoom, messages} = useActiveRoom()
 
   if (activeRoom === null) {
@@ -36,19 +36,27 @@ const ChatContainer: FC<ChatContainerProps> = ({text, chatComponents}) => {
     return
   }
 
+  const chatComponents = messages.map((message, index) =>
+    message.kind === MessageKind.Text ? (
+      <TextMessage key={index} {...message.data} />
+    ) : (
+      <ImageMessage key={index} {...(message.data as ImageMessageProps)} />
+    )
+  )
+
   const name = activeRoom.name
 
   assert(name.length !== 0, "room name should not be empty")
 
   return (
-    <section className="flex h-full flex-col gap-4 border-[1px] border-solid border-stone-200">
+    <section className="flex h-screen w-full flex-col gap-4 border-[1px] border-solid border-stone-200">
       <header className="flex items-center gap-4 border-b-[1px] border-solid border-b-stone-200 p-4">
         <div className="flex w-full gap-1">
           <FontAwesomeIcon icon={faHashtag} className="text-purple-500" />
 
           <span className="text-purple-500">{name}</span>
 
-          <span className="text-stone-600">{text}</span>
+          {/* <span className="text-stone-600">{text}</span> */}
         </div>
 
         <IconButton
@@ -76,11 +84,8 @@ const ChatContainer: FC<ChatContainerProps> = ({text, chatComponents}) => {
         />
       </header>
 
-      <div className="ml-4 mr-4 flex grow flex-col gap-4 overflow-hidden overflow-y-scroll scrollbar-hide">
+      <div className="ml-4 mr-4 flex max-h-full grow flex-col gap-4 overflow-y-scroll scroll-smooth scrollbar-hide">
         {chatComponents}
-        {messages.map((message, index) => (
-          <TextMessage key={index} {...message} />
-        ))}
       </div>
 
       <div className="ml-4 mr-4 flex flex-col gap-3">
