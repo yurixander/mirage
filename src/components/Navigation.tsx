@@ -6,7 +6,7 @@ const Navigation: FC = () => {
   const {spaces, activeSpaceId, setActiveSpaceId} = useSpaces()
 
   return (
-    <div className="h-full overflow-y-scroll scrollbar-hide">
+    <div className="h-full min-w-max grow overflow-y-scroll scrollbar-hide">
       <div className="flex flex-col items-center justify-center">
         {/* <AppLogo className="cursor-pointer" onClick={() => {}} /> */}
 

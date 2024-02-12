@@ -23,11 +23,10 @@ export type RosterUserData = {
 }
 
 export type RosterProps = {
-  users: RosterUserData[]
-  className: string
+  className?: string
 }
 
-const Roster: FC<RosterProps> = ({users, className}) => {
+const Roster: FC<RosterProps> = ({className}) => {
   const {activeRoom} = useActiveRoom()
 
   const joinedMembersElement = useMemo(
@@ -58,11 +57,6 @@ const Roster: FC<RosterProps> = ({users, className}) => {
     [activeRoom]
   )
 
-  const admins = useMemo(
-    () => users.filter(user => user.category === RosterUserCategory.Admin),
-    [users]
-  )
-
   return (
     <div className={twMerge("flex h-full flex-col", className)}>
       <header className="m-[5px] flex items-center">
@@ -83,11 +77,7 @@ const Roster: FC<RosterProps> = ({users, className}) => {
 
       <div className="flex h-full grow flex-col gap-[5px] overflow-y-scroll scrollbar-hide">
         <div className="mt-[10px] flex flex-col gap-1">
-          <Label className="p-[5px]" text={"Admin — " + admins.length} />
-
-          {admins.map((admin, index) => (
-            <RosterUser key={index} onClick={() => {}} {...admin} />
-          ))}
+          <Label className="p-[5px]" text={"Admin — " + "0"} />
         </div>
 
         <div className="flex flex-col gap-1">
