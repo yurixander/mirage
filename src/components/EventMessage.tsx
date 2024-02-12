@@ -4,11 +4,12 @@ import {type FC} from "react"
 import {timeFormatter} from "../utils/util"
 
 export type EventMessageProps = {
-  content: JSX.Element
+  content?: JSX.Element
   timestamp: number
+  text: string
 }
 
-const EventMessage: FC<EventMessageProps> = ({content, timestamp}) => {
+const EventMessage: FC<EventMessageProps> = ({content, timestamp, text}) => {
   const localeTimeString = timeFormatter(timestamp)
 
   return (
@@ -17,7 +18,7 @@ const EventMessage: FC<EventMessageProps> = ({content, timestamp}) => {
         <FontAwesomeIcon icon={faPencil} className="text-neutral-200" />
       </div>
 
-      <div className="select-text italic leading-[160%]">{content}</div>
+      <div className="select-text italic leading-[160%]">{text}</div>
 
       <time className="ml-auto text-gray-300">{localeTimeString}</time>
     </div>

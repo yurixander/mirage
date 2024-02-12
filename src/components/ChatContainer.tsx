@@ -20,7 +20,8 @@ import SmartAction from "./SmartAction"
 import TypingIndicator from "./TypingIndicator"
 import useActiveRoom, {MessageKind} from "@/hooks/matrix/useActiveRoom"
 import ImageMessage, {type ImageMessageProps} from "./ImageMessage"
-import TextMessage from "./TextMessage"
+import TextMessage, {type TextMessageProps} from "./TextMessage"
+import EventMessage from "./EventMessage"
 
 export type ChatContainerProps = {
   name: string
@@ -38,9 +39,11 @@ const ChatContainer: FC = () => {
 
   const chatComponents = messages.map((message, index) =>
     message.kind === MessageKind.Text ? (
-      <TextMessage key={index} {...message.data} />
-    ) : (
+      <TextMessage key={index} {...(message.data as TextMessageProps)} />
+    ) : message.kind === MessageKind.Image ? (
       <ImageMessage key={index} {...(message.data as ImageMessageProps)} />
+    ) : (
+      <EventMessage key={index} {...message.data} />
     )
   )
 
