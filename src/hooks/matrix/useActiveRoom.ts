@@ -65,11 +65,11 @@ const useActiveRoom = () => {
     setActiveRoom(room)
 
     void handleRoomEvents(client, activeRoomId)
-      .then(messagesProp => {
-        setMessages(messagesProp)
+      .then(messagesAndEvents => {
+        setMessages(messagesAndEvents)
       })
       .catch(error => {
-        console.error("Error fetching messages:", error)
+        console.error("Error fetching events:", error)
       })
   }, [client, activeRoomId])
 
@@ -89,24 +89,48 @@ const handleRoomEvents = async (
 
   const messagesProp: MessageProps[] = []
 
-  for (const message of events) {
-    switch (message.type) {
-      case EventType.RoomMessage: {
-        const messageProp = await handleMessagesEvent(message, client)
+  for (const event of events) {
+    const messageProp = await handleEvents(event, client)
 
-        if (messageProp === null) {
-          break
-        }
-
-        messagesProp.push(messageProp)
-        break
-      }
-      default:
-        break
+    if (messageProp === null) {
+      continue
     }
+
+    messagesProp.push(messageProp)
   }
 
   return messagesProp
+}
+
+const handleEvents = async (
+  event: IEventWithRoomId,
+  client: MatrixClient
+): Promise<MessageProps | null> => {
+  const timestamp = event.unsigned?.age
+  const user = client.getUser(event.sender)?.displayName
+
+  if (timestamp === undefined || user === undefined) {
+    return null
+  }
+
+  switch (event.type) {
+    case EventType.RoomMessage:
+      return await handleMessagesEvent(event, client)
+    case EventType.RoomMember:
+      return await roomMemberEventTransformer(event, user, timestamp)
+    case EventType.RoomTopic:
+      return await roomTopicTransformer(event, user, timestamp)
+    case EventType.RoomGuestAccess:
+      return await roomGuestAccessTransformer(event, user, timestamp)
+    case EventType.RoomHistoryVisibility:
+      return await roomHistoryVisibilityTransformer(event, user, timestamp)
+    case EventType.RoomJoinRules:
+      return await roomJoinRulesTransformer(event, user, timestamp)
+    case EventType.RoomCanonicalAlias:
+      return await roomCanonicalAliasTransformer(event, user, timestamp)
+  }
+
+  return null
 }
 
 const handleMessagesEvent = async (
@@ -206,6 +230,144 @@ const transformToTextMessage = (
     onAuthorClick: () => {},
     text: message.content.body,
     timestamp,
+  }
+}
+
+const roomMemberEventTransformer = async (
+  event: IEventWithRoomId,
+  user: string,
+  timestamp: number
+): Promise<MessageProps | null> => {
+  const membership = event.content.membership
+  let content: string | null = null
+
+  switch (membership) {
+    // TODO: Handle here other types of RoomMember events
+    case "join":
+      if (event.content.avatar_url !== undefined) {
+        content = `${event.content.displayname} has change to the profile photo`
+      } else {
+        content = `${event.content.displayname} has joined to the room`
+      }
+      break
+    case "invite":
+      content = `${user} invited ${event.content.displayname}`
+      break
+  }
+
+  if (content === null) {
+    return null
+  }
+
+  return {
+    kind: MessageKind.Event,
+    data: {text: content, timestamp},
+  }
+}
+
+const roomGuestAccessTransformer = async (
+  event: IEventWithRoomId,
+  user: string,
+  timestamp: number
+): Promise<MessageProps | null> => {
+  let content: string | null = null
+
+  // TODO: Handle here other types of guest_access
+  switch (event.content.guest_access) {
+    case "can_join":
+      content = `${user} authorized anyone to join the room`
+  }
+
+  if (content === null) {
+    return null
+  }
+
+  return {
+    kind: MessageKind.Event,
+    data: {
+      text: content,
+      timestamp,
+    },
+  }
+}
+
+const roomJoinRulesTransformer = async (
+  event: IEventWithRoomId,
+  user: string,
+  timestamp: number
+): Promise<MessageProps | null> => {
+  let content: string | null = null
+
+  // TODO: Handle here other types of join_rule
+  switch (event.content.join_rule) {
+    case "invite":
+      content = `${user} restricted the room to guests`
+  }
+
+  if (content === null) {
+    return null
+  }
+
+  return {
+    kind: MessageKind.Event,
+    data: {
+      text: content,
+      timestamp,
+    },
+  }
+}
+
+const roomTopicTransformer = async (
+  event: IEventWithRoomId,
+  user: string,
+  timestamp: number
+): Promise<MessageProps | null> => {
+  return {
+    kind: MessageKind.Event,
+    data: {
+      text: `${user} has change to the topic to ${event.content.topic}`,
+      timestamp,
+    },
+  }
+}
+
+const roomHistoryVisibilityTransformer = async (
+  event: IEventWithRoomId,
+  user: string,
+  timestamp: number
+): Promise<MessageProps | null> => {
+  let content: string | null = null
+
+  // TODO: Handle here other types of history_visibility
+  switch (event.content.history_visibility) {
+    case "shared":
+      content = `${user} made the future history of the room visible to all members of the room`
+  }
+
+  if (content === null) {
+    return null
+  }
+
+  return {
+    kind: MessageKind.Event,
+    data: {
+      text: content,
+      timestamp,
+    },
+  }
+}
+
+const roomCanonicalAliasTransformer = async (
+  event: IEventWithRoomId,
+  user: string,
+  timestamp: number
+): Promise<MessageProps | null> => {
+  return {
+    kind: MessageKind.Event,
+    data: {
+      text: `${user} set the main address for this room as ${event.content.alias}`,
+      timestamp,
+    },
   }
 }
 
