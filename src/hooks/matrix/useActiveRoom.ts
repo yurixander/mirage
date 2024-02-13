@@ -117,7 +117,7 @@ const handleEvents = async (
     case EventType.RoomMessage:
       return await handleMessagesEvent(event, client)
     case EventType.RoomMember:
-      return await roomMemberEventTransformer(event, user, timestamp)
+      return await roomMemberEventTransformer(event, user, timestamp, client)
     case EventType.RoomTopic:
       return await roomTopicTransformer(event, user, timestamp)
     case EventType.RoomGuestAccess:
@@ -128,6 +128,8 @@ const handleEvents = async (
       return await roomJoinRulesTransformer(event, user, timestamp)
     case EventType.RoomCanonicalAlias:
       return await roomCanonicalAliasTransformer(event, user, timestamp)
+    case EventType.RoomAvatar:
+      return await roomAvatarTransformer(event, user, timestamp)
   }
 
   return null
@@ -236,23 +238,50 @@ const transformToTextMessage = (
 const roomMemberEventTransformer = async (
   event: IEventWithRoomId,
   user: string,
-  timestamp: number
+  timestamp: number,
+  client: MatrixClient
 ): Promise<MessageProps | null> => {
   const membership = event.content.membership
   let content: string | null = null
 
   switch (membership) {
     // TODO: Handle here other types of RoomMember events
-    case "join":
+    case "join": {
       if (event.content.avatar_url !== undefined) {
         content = `${event.content.displayname} has change to the profile photo`
-      } else {
+      } else if (
+        event.content.avatar_url === undefined &&
+        event.unsigned?.prev_content?.avatar_url !== undefined
+      ) {
+        content = `${event.content.displayname} has remove the profile photo`
+      } else if (event.unsigned?.prev_content?.membership === "invite") {
         content = `${event.content.displayname} has joined to the room`
       }
       break
+    }
     case "invite":
       content = `${user} invited ${event.content.displayname}`
       break
+    case "ban": {
+      content = `${user} has banned ${event.unsigned?.prev_content?.displayname}: ${event.content.reason}`
+      break
+    }
+    case "leave": {
+      switch (event.unsigned?.prev_content?.membership) {
+        case "invite":
+          content = `${user} has canceled the invitation to ${event.unsigned?.prev_content?.displayname}`
+          break
+        case "ban":
+          // TODO: Check here why state_key not exists
+          content = `${user} has removed the ban from ${client.getUser(event.state_key as string)?.displayName}`
+          break
+        case "join":
+          content = `${user} has left the room`
+          break
+        default:
+          break
+      }
+    }
   }
 
   if (content === null) {
@@ -276,6 +305,10 @@ const roomGuestAccessTransformer = async (
   switch (event.content.guest_access) {
     case "can_join":
       content = `${user} authorized anyone to join the room`
+      break
+    case "forbidden":
+      content = `${user} has prohibited guests from joining the room`
+      break
   }
 
   if (content === null) {
@@ -302,6 +335,10 @@ const roomJoinRulesTransformer = async (
   switch (event.content.join_rule) {
     case "invite":
       content = `${user} restricted the room to guests`
+      break
+    case "public":
+      content = `${user} made the room public to anyone who knows the link.`
+      break
   }
 
   if (content === null) {
@@ -325,7 +362,7 @@ const roomTopicTransformer = async (
   return {
     kind: MessageKind.Event,
     data: {
-      text: `${user} has change to the topic to ${event.content.topic}`,
+      text: `${user} has change to the topic to <<${event.content.topic}>>`,
       timestamp,
     },
   }
@@ -338,10 +375,19 @@ const roomHistoryVisibilityTransformer = async (
 ): Promise<MessageProps | null> => {
   let content: string | null = null
 
-  // TODO: Handle here other types of history_visibility
   switch (event.content.history_visibility) {
     case "shared":
       content = `${user} made the future history of the room visible to all members of the room`
+      break
+    case "invited":
+      content = `${user} made the room future history visible to all room members, from the moment they are invited.`
+      break
+    case "joined":
+      content = `${user} made the room future history visible to all room members, from the moment they are joined.`
+      break
+    case "world_readable":
+      content = `${user} made the future history of the room visible to anyone people.`
+      break
   }
 
   if (content === null) {
@@ -362,10 +408,34 @@ const roomCanonicalAliasTransformer = async (
   user: string,
   timestamp: number
 ): Promise<MessageProps | null> => {
+  const content =
+    event.content.alias === undefined
+      ? `${user} has remove the main address for this room`
+      : `${user} set the main address for this room as ${event.content.alias}`
+
   return {
     kind: MessageKind.Event,
     data: {
-      text: `${user} set the main address for this room as ${event.content.alias}`,
+      text: content,
+      timestamp,
+    },
+  }
+}
+
+const roomAvatarTransformer = async (
+  event: IEventWithRoomId,
+  user: string,
+  timestamp: number
+): Promise<MessageProps | null> => {
+  const content =
+    event.content.url === undefined
+      ? `${user} has remove the avatar for this room`
+      : `${user} changed the avatar of the room`
+
+  return {
+    kind: MessageKind.Event,
+    data: {
+      text: content,
       timestamp,
     },
   }
