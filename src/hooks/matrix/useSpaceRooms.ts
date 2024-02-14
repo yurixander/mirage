@@ -1,12 +1,12 @@
 import {EventTimeline, type Room} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import useConnection from "./useConnection"
-import {useActiveRoomIdStore} from "./useSpaces"
+import {useActiveSpaceIdStore} from "./useSpaces"
 
 const useSpaceRooms = () => {
   const [childRooms, setChildRooms] = useState<Room[]>([])
   const {client, syncState} = useConnection()
-  const {activeSpaceId} = useActiveRoomIdStore()
+  const {activeSpaceId} = useActiveSpaceIdStore()
 
   useEffect(() => {
     if (client === null || activeSpaceId === null) {

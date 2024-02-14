@@ -6,13 +6,13 @@ import {create} from "zustand"
 
 type ActiveSpaceIdStore = {
   activeSpaceId: string | null
-  setActiveSpaceId: (spaceId?: string) => void
+  setActiveSpaceId: (spaceId: string | null) => void
 }
 
-export const useActiveRoomIdStore = create<ActiveSpaceIdStore>(set => ({
+export const useActiveSpaceIdStore = create<ActiveSpaceIdStore>(set => ({
   activeSpaceId: null,
   setActiveSpaceId: spaceId => {
-    set(_ => ({activeSpaceId: spaceId}))
+    set(() => ({activeSpaceId: spaceId}))
   },
 }))
 
@@ -21,7 +21,7 @@ const useSpaces = () => {
 
   const [spaces, setSpace] = useState<Room[] | null>(null)
   const {client, syncState} = useConnection()
-  const {activeSpaceId, setActiveSpaceId} = useActiveRoomIdStore()
+  const {activeSpaceId, setActiveSpaceId} = useActiveSpaceIdStore()
 
   // Initial gathering of rooms, when a connection is
   // established or re-established.

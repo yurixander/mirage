@@ -11,7 +11,7 @@ const RoomsList: FC = () => {
 
   const roomElements = useMemo(
     () =>
-      (activeSpaceId === undefined ? rooms : childRooms)
+      (activeSpaceId === null ? rooms : childRooms)
         ?.filter(room => !room.isSpaceRoom())
         .map((room, index) => (
           <Room

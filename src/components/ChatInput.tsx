@@ -2,15 +2,17 @@
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
 import {useEffect, useRef, useState, type FC} from "react"
 import IconButton from "./IconButton"
+import {MsgType} from "matrix-js-sdk"
+import useActiveRoom from "@/hooks/matrix/useActiveRoom"
 
 export type ChatInputProps = {
   isDisabled?: boolean
-  isReplyMode?: boolean
 }
 
-const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
+const ChatInput: FC<ChatInputProps> = ({isDisabled}) => {
   const [value, setValue] = useState("")
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const {sendMessage, sendEventTyping} = useActiveRoom()
 
   useEffect(() => {
     const textarea = textareaRef.current
@@ -40,6 +42,12 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
         disabled={isDisabled}
         onChange={value => {
           setValue(value.target.value)
+
+          if (value.target.value === "") {
+            return
+          }
+
+          void sendEventTyping()
         }}
         className="flex max-h-[100px] w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none"
       />
@@ -51,7 +59,8 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled, isReplyMode}) => {
           color="#C463FF"
           isDisabled={isDisabled}
           onClick={() => {
-            /* TODO: Handle click for send message. */
+            void sendMessage(MsgType.Text, value)
+            setValue("")
           }}
         />
       </div>

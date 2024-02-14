@@ -9,6 +9,7 @@ import {
   type Room,
   type MatrixClient,
   type User,
+  RoomMemberEvent,
 } from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import {create} from "zustand"
@@ -18,7 +19,7 @@ type ActiveRoomIdStore = {
   setActiveRoomId: (roomId: string) => void
 }
 
-const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
+export const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
   activeRoomId: null,
   setActiveRoomId: roomId => {
     set(_state => ({activeRoomId: roomId}))
@@ -50,6 +51,7 @@ const useActiveRoom = () => {
   const {client} = useConnection()
   const [activeRoom, setActiveRoom] = useState<Room | null>(null)
   const [messages, setMessages] = useState<MessageProps[]>([])
+  const [usersTyping, setUserTyping] = useState<string[]>([])
 
   useEffect(() => {
     if (client === null || activeRoomId === null) {
@@ -73,7 +75,46 @@ const useActiveRoom = () => {
       })
   }, [client, activeRoomId])
 
-  return {activeRoomId, activeRoom, setActiveRoomId, messages}
+  const sendMessage = async (msgtype: MsgType, body: string) => {
+    if (activeRoomId === null) {
+      return
+    }
+
+    await client?.sendMessage(activeRoomId, {body, msgtype})
+  }
+
+  const userId = client?.getUserId()
+  client?.on(RoomMemberEvent.Typing, (event, member) => {
+    if (member.userId === userId) {
+      return
+    }
+
+    if (member.typing) {
+      setUserTyping([member.name, ...usersTyping])
+    } else {
+      setUserTyping(usersTyping.filter(user => user !== member.name))
+    }
+  })
+
+  // client?.on(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {})
+
+  const sendEventTyping = async () => {
+    if (activeRoomId === null) {
+      return
+    }
+
+    await client?.sendTyping(activeRoomId, true, 2000)
+  }
+
+  return {
+    activeRoomId,
+    activeRoom,
+    setActiveRoomId,
+    messages,
+    sendMessage,
+    usersTyping,
+    sendEventTyping,
+  }
 }
 
 const handleRoomEvents = async (
@@ -117,19 +158,19 @@ const handleEvents = async (
     case EventType.RoomMessage:
       return await handleMessagesEvent(event, client)
     case EventType.RoomMember:
-      return await roomMemberEventTransformer(event, user, timestamp, client)
+      return await handleMemberEvent(event, user, timestamp, client)
     case EventType.RoomTopic:
-      return await roomTopicTransformer(event, user, timestamp)
+      return await handleRoomTopicEvent(event, user, timestamp)
     case EventType.RoomGuestAccess:
-      return await roomGuestAccessTransformer(event, user, timestamp)
+      return await handleGuestAccessEvent(event, user, timestamp)
     case EventType.RoomHistoryVisibility:
-      return await roomHistoryVisibilityTransformer(event, user, timestamp)
+      return await handleHistoryVisibilityEvent(event, user, timestamp)
     case EventType.RoomJoinRules:
-      return await roomJoinRulesTransformer(event, user, timestamp)
+      return await handleJoinRulesEvent(event, user, timestamp)
     case EventType.RoomCanonicalAlias:
-      return await roomCanonicalAliasTransformer(event, user, timestamp)
+      return await handleRoomCanonicalAliasEvent(event, user, timestamp)
     case EventType.RoomAvatar:
-      return await roomAvatarTransformer(event, user, timestamp)
+      return await handleRoomAvatarEvent(event, user, timestamp)
   }
 
   return null
@@ -235,7 +276,7 @@ const transformToTextMessage = (
   }
 }
 
-const roomMemberEventTransformer = async (
+const handleMemberEvent = async (
   event: IEventWithRoomId,
   user: string,
   timestamp: number,
@@ -247,15 +288,31 @@ const roomMemberEventTransformer = async (
   switch (membership) {
     // TODO: Handle here other types of RoomMember events
     case "join": {
-      if (event.content.avatar_url !== undefined) {
+      if (
+        event.unsigned?.prev_content?.membership === "invite" ||
+        event.unsigned?.prev_content?.membership !== "join"
+      ) {
+        content = `${event.content.displayname} has joined to the room`
+      } else if (
+        event.unsigned?.prev_content?.displayname !== undefined &&
+        event.content.displayname !== event.unsigned?.prev_content?.displayname
+      ) {
+        content = `${event.unsigned?.prev_content?.displayname} has change the name to ${event.content.displayname}`
+      } else if (
+        event.content.avatar_url !== undefined &&
+        event.unsigned?.prev_content?.avatar_url === undefined
+      ) {
+        content = `${event.content.displayname} has put a profile photo`
+      } else if (
+        event.content.avatar_url !== undefined &&
+        event.content.avatar_url !== event.unsigned?.prev_content?.avatar_url
+      ) {
         content = `${event.content.displayname} has change to the profile photo`
       } else if (
         event.content.avatar_url === undefined &&
         event.unsigned?.prev_content?.avatar_url !== undefined
       ) {
         content = `${event.content.displayname} has remove the profile photo`
-      } else if (event.unsigned?.prev_content?.membership === "invite") {
-        content = `${event.content.displayname} has joined to the room`
       }
       break
     }
@@ -271,10 +328,10 @@ const roomMemberEventTransformer = async (
         case "invite":
           content = `${user} has canceled the invitation to ${event.unsigned?.prev_content?.displayname}`
           break
-        case "ban":
-          // TODO: Check here why state_key not exists
-          content = `${user} has removed the ban from ${client.getUser(event.state_key as string)?.displayName}`
-          break
+        // case "ban":
+        //   // TODO: Check here why state_key not exists
+        //   content = `${user} has removed the ban from ${client.getUser(event.state_key as string)?.displayName}`
+        //   break
         case "join":
           content = `${user} has left the room`
           break
@@ -294,7 +351,7 @@ const roomMemberEventTransformer = async (
   }
 }
 
-const roomGuestAccessTransformer = async (
+const handleGuestAccessEvent = async (
   event: IEventWithRoomId,
   user: string,
   timestamp: number
@@ -324,7 +381,7 @@ const roomGuestAccessTransformer = async (
   }
 }
 
-const roomJoinRulesTransformer = async (
+const handleJoinRulesEvent = async (
   event: IEventWithRoomId,
   user: string,
   timestamp: number
@@ -354,7 +411,7 @@ const roomJoinRulesTransformer = async (
   }
 }
 
-const roomTopicTransformer = async (
+const handleRoomTopicEvent = async (
   event: IEventWithRoomId,
   user: string,
   timestamp: number
@@ -368,7 +425,7 @@ const roomTopicTransformer = async (
   }
 }
 
-const roomHistoryVisibilityTransformer = async (
+const handleHistoryVisibilityEvent = async (
   event: IEventWithRoomId,
   user: string,
   timestamp: number
@@ -403,7 +460,7 @@ const roomHistoryVisibilityTransformer = async (
   }
 }
 
-const roomCanonicalAliasTransformer = async (
+const handleRoomCanonicalAliasEvent = async (
   event: IEventWithRoomId,
   user: string,
   timestamp: number
@@ -422,7 +479,7 @@ const roomCanonicalAliasTransformer = async (
   }
 }
 
-const roomAvatarTransformer = async (
+const handleRoomAvatarEvent = async (
   event: IEventWithRoomId,
   user: string,
   timestamp: number
