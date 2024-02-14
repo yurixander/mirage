@@ -20,9 +20,9 @@ const Navigation: FC = () => {
 
         <div className="flex flex-col items-end justify-center gap-4">
           <ServerListItem
-            isActive={activeSpaceId === undefined}
+            isActive={activeSpaceId === null}
             onClick={() => {
-              setActiveSpaceId(undefined)
+              setActiveSpaceId(null)
             }}
             tooltip="All rooms"
           />

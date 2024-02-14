@@ -12,7 +12,7 @@ import {
   faUniversalAccess,
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {type FC} from "react"
+import {useMemo, type FC} from "react"
 import {assert} from "../utils/util"
 import ChatInput from "./ChatInput"
 import IconButton from "./IconButton"
@@ -30,24 +30,39 @@ export type ChatContainerProps = {
 }
 
 const ChatContainer: FC = () => {
-  const {activeRoom, messages} = useActiveRoom()
+  const {activeRoom, messages, usersTyping} = useActiveRoom()
 
-  if (activeRoom === null) {
-    // TODO: Handle here when first open App (activeRoom is null), should show a skeleton or empty component
-    return
-  }
-
-  const chatComponents = messages.map((message, index) =>
-    message.kind === MessageKind.Text ? (
-      <TextMessage key={index} {...(message.data as TextMessageProps)} />
-    ) : message.kind === MessageKind.Image ? (
-      <ImageMessage key={index} {...(message.data as ImageMessageProps)} />
-    ) : (
-      <EventMessage key={index} {...message.data} />
-    )
+  const usersTypingElement = useMemo(
+    () =>
+      usersTyping.map((user, index) => (
+        <TypingIndicator
+          key={index}
+          users={[
+            {
+              displayName: user,
+              color: "#5CC679",
+            },
+          ]}
+        />
+      )),
+    [usersTyping]
   )
 
-  const name = activeRoom.name
+  const chatComponents = useMemo(
+    () =>
+      messages.map((message, index) =>
+        message.kind === MessageKind.Text ? (
+          <TextMessage key={index} {...(message.data as TextMessageProps)} />
+        ) : message.kind === MessageKind.Image ? (
+          <ImageMessage key={index} {...(message.data as ImageMessageProps)} />
+        ) : (
+          <EventMessage key={index} {...message.data} />
+        )
+      ),
+    [messages]
+  )
+
+  const name = activeRoom?.name ?? " "
 
   assert(name.length !== 0, "room name should not be empty")
 
@@ -118,14 +133,7 @@ const ChatContainer: FC = () => {
 
           <div className="h-6 w-6" />
 
-          <TypingIndicator
-            users={[
-              {
-                displayName: "Emerald Branch",
-                color: "#5CC679",
-              },
-            ]}
-          />
+          {usersTypingElement}
         </div>
       </div>
       <div className="flex items-center justify-end gap-4 border-t-[1px] border-solid border-t-stone-200 bg-neutral-50 p-[5px]">
