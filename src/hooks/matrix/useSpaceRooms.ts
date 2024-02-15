@@ -30,7 +30,7 @@ const useSpaceRooms = () => {
     }
 
     const rooms: Room[] = []
-    for (const [stateKey, _] of childEvents) {
+    for (const [stateKey] of childEvents) {
       const room = client.getRoom(stateKey)
 
       if (room !== null) {
