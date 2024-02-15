@@ -10,9 +10,11 @@ import {
   type MatrixClient,
   type User,
   RoomMemberEvent,
+  RoomEvent,
 } from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import {create} from "zustand"
+import useEventListener from "./useEventListener"
 
 type ActiveRoomIdStore = {
   activeRoomId: string | null
@@ -75,6 +77,53 @@ const useActiveRoom = () => {
       })
   }, [client, activeRoomId])
 
+  // TODO: Abstract logic on a function and the listeners should be called before the client.startClient()
+  useEventListener(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {
+    // TODO: Check why event here is not equals with event for `client.roomInitialSync`
+    if (
+      room.roomId !== activeRoomId ||
+      event.getContent().msgtype !== MsgType.Text ||
+      client === null
+    ) {
+      return
+    }
+
+    const sender = event.getSender()
+
+    if (sender === undefined) {
+      return
+    }
+
+    const user = client.getUser(sender)
+    const timestamp = event.localTimestamp
+    const eventID = event.getAge() ?? timestamp
+
+    if (user === null) {
+      return
+    }
+
+    const avatarUrl =
+      user.avatarUrl === undefined
+        ? undefined
+        : client.mxcUrlToHttp(user.avatarUrl) ?? undefined
+
+    setMessages([
+      ...messages,
+      {
+        kind: MessageKind.Text,
+        data: {
+          authorAvatarUrl: avatarUrl,
+          authorDisplayName: user.displayName ?? user.userId,
+          authorDisplayNameColor: "",
+          id: eventID,
+          onAuthorClick: () => {},
+          text: event.getContent().body,
+          timestamp,
+        },
+      },
+    ])
+  })
+
   const sendMessage = async (msgtype: MsgType, body: string) => {
     if (activeRoomId === null) {
       return
@@ -84,6 +133,7 @@ const useActiveRoom = () => {
   }
 
   const userId = client?.getUserId()
+
   client?.on(RoomMemberEvent.Typing, (event, member) => {
     if (member.userId === userId) {
       return
@@ -95,8 +145,6 @@ const useActiveRoom = () => {
       setUserTyping(usersTyping.filter(user => user !== member.name))
     }
   })
-
-  // client?.on(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {})
 
   const sendEventTyping = async () => {
     if (activeRoomId === null) {
@@ -121,6 +169,7 @@ const handleRoomEvents = async (
   client: MatrixClient,
   activeRoomId: string
 ): Promise<MessageProps[]> => {
+  // TODO: Check why event here is not equals with event for ´RoomEvent.Timeline´ listener
   const events = (await client.roomInitialSync(activeRoomId, 30)).messages
     ?.chunk
 
@@ -143,6 +192,7 @@ const handleRoomEvents = async (
   return messagesProp
 }
 
+// TODO: This functions can move to a separate file
 const handleEvents = async (
   event: IEventWithRoomId,
   client: MatrixClient
