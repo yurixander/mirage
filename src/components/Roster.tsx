@@ -59,10 +59,10 @@ const Roster: FC<RosterProps> = ({className}) => {
 
   return (
     <div className={twMerge("flex h-full flex-col", className)}>
-      <header className="m-[5px] flex items-center">
+      <header className="flex items-center p-4">
         <FontAwesomeIcon className="text-neutral-200" icon={faUserGroup} />
 
-        <div className="ml-[5px] w-full">People</div>
+        <div className="ml-[5px] w-full text-neutral-600">People</div>
 
         <IconButton
           tooltip="Sort members"
@@ -89,7 +89,7 @@ const Roster: FC<RosterProps> = ({className}) => {
           {joinedMembersElement}
         </div>
 
-        <UserProfileGhost count={4} opacityMultiplier={0.2} />
+        <UserProfileGhost className="w-max" count={4} opacityMultiplier={0.2} />
       </div>
     </div>
   )

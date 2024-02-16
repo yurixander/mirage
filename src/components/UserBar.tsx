@@ -1,8 +1,10 @@
 import {faGear} from "@fortawesome/free-solid-svg-icons"
-import {type FC} from "react"
+import {useMemo, type FC} from "react"
 import {trim} from "../utils/util"
 import IconButton from "./IconButton"
-import UserProfile, {type UserStatus} from "./UserProfile"
+import UserProfile, {UserStatus} from "./UserProfile"
+import {twMerge} from "tailwind-merge"
+import useConnection from "@/hooks/matrix/useConnection"
 
 export type UserBarProps = {
   avatarUrl?: string
@@ -10,19 +12,29 @@ export type UserBarProps = {
   displayName: string
   displayNameColor: string
   status: UserStatus
+  className?: string
 }
 
 const UserBar: FC<UserBarProps> = ({
   displayName,
   displayNameColor,
-  status,
   username,
   avatarUrl,
+  className,
 }) => {
   const MAX_NAME_LENGTH = 18
+  const {client, isConnecting} = useConnection()
+
+  const status = useMemo(() => {
+    if (isConnecting) return UserStatus.Idle
+
+    if (client?.isLoggedIn()) return UserStatus.Online
+
+    return UserStatus.Offline
+  }, [client, isConnecting])
 
   return (
-    <div className="flex p-[x1]">
+    <div className={twMerge("flex p-[x1]", className)}>
       <div className="mr-auto">
         <UserProfile
           avatarUrl={avatarUrl}

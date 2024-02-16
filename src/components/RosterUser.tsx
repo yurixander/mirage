@@ -9,7 +9,7 @@ export type RosterUserProps = {
 const RosterUser: FC<RosterUserProps> = ({userProfileProps, onClick}) => {
   return (
     <div
-      className="w-max cursor-pointer p-[5px] hover:rounded-xl hover:bg-neutral-100 focus-visible:rounded-md focus-visible:border-[2px] focus-visible:border-solid focus-visible:border-outlineTab focus-visible:outline-none focus-visible:transition focus-visible:duration-150"
+      className="w-full cursor-pointer p-[5px] hover:rounded-xl hover:bg-neutral-100 focus-visible:rounded-md focus-visible:border-[2px] focus-visible:border-solid focus-visible:border-outlineTab focus-visible:outline-none focus-visible:transition focus-visible:duration-150"
       tabIndex={0}>
       <UserProfile {...userProfileProps} />
     </div>

@@ -27,7 +27,11 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled}) => {
     if (event.key === "Enter")
       if (event.ctrlKey) setValue(value + "\n")
       // TODO: Handle here send message with enter.
-      else event.preventDefault()
+      else {
+        event.preventDefault()
+        void sendMessage(MsgType.Text, value)
+        setValue("")
+      }
   }
 
   return (
@@ -49,7 +53,7 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled}) => {
 
           void sendEventTyping()
         }}
-        className="flex max-h-[100px] w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none"
+        className="flex max-h-[100px] w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
       />
 
       <div className="m-[5px] h-max w-max">
