@@ -12,7 +12,7 @@ import {
   faUniversalAccess,
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {useMemo, type FC} from "react"
+import {useEffect, useMemo, useRef, type FC} from "react"
 import {assert} from "../utils/util"
 import ChatInput from "./ChatInput"
 import IconButton from "./IconButton"
@@ -22,14 +22,13 @@ import useActiveRoom, {MessageKind} from "@/hooks/matrix/useActiveRoom"
 import ImageMessage, {type ImageMessageProps} from "./ImageMessage"
 import TextMessage, {type TextMessageProps} from "./TextMessage"
 import EventMessage from "./EventMessage"
+import {twMerge} from "tailwind-merge"
 
 export type ChatContainerProps = {
-  name: string
-  text: string
-  chatComponents: JSX.Element[]
+  className?: string
 }
 
-const ChatContainer: FC = () => {
+const ChatContainer: FC<ChatContainerProps> = ({className}) => {
   const {activeRoom, messages, usersTyping} = useActiveRoom()
 
   const usersTypingElement = useMemo(
@@ -67,7 +66,11 @@ const ChatContainer: FC = () => {
   assert(name.length !== 0, "room name should not be empty")
 
   return (
-    <section className="flex h-screen w-full flex-col gap-4 border-[1px] border-solid border-stone-200">
+    <section
+      className={twMerge(
+        "flex h-screen w-full flex-col gap-4 border-[1px] border-solid border-stone-200",
+        className
+      )}>
       <header className="flex items-center gap-4 border-b-[1px] border-solid border-b-stone-200 p-4">
         <div className="flex w-full gap-1">
           <FontAwesomeIcon icon={faHashtag} className="text-purple-500" />
@@ -102,7 +105,18 @@ const ChatContainer: FC = () => {
         />
       </header>
 
-      <div className="ml-4 mr-4 flex max-h-full grow flex-col gap-4 overflow-y-scroll scroll-smooth scrollbar-hide">
+      <div
+        ref={scrollRef => {
+          if (scrollRef === null) {
+            return
+          }
+
+          scrollRef.scrollTo({
+            top: scrollRef.scrollHeight - scrollRef.clientHeight,
+            behavior: "smooth",
+          })
+        }}
+        className="ml-4 mr-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
         {chatComponents}
       </div>
 

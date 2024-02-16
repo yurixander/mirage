@@ -3,6 +3,7 @@ import {faSearch} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import React, {useState, type FC} from "react"
 import KeyCue from "./KeyCue"
+import {twMerge} from "tailwind-merge"
 
 export type SearchResult = {
   text: string
@@ -11,9 +12,10 @@ export type SearchResult = {
 
 export type SearchBarProps = {
   onQueryChange: (query: string) => SearchResult[]
+  className?: string
 }
 
-const SearchBar: FC<SearchBarProps> = ({onQueryChange}) => {
+const SearchBar: FC<SearchBarProps> = ({onQueryChange, className}) => {
   const KEYBOARD_HOTKEY_CHAR = "s"
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [results, setResults] = useState<SearchResult[]>([])
@@ -45,14 +47,15 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange}) => {
 
   return (
     <div
-      className={
-        "relative p-3 inline-flex justify-start items-center gap-[5px] bg-neutral-300 rounded-xl " +
-        (results.length > 0 ? "rounded-bl-none rounded-br-none" : "")
-      }>
-      <FontAwesomeIcon className="text-neutral-400" icon={faSearch} />
+      className={twMerge(
+        "relative p-2 inline-flex justify-start items-center gap-1 bg-neutral-300 rounded-lg",
+        results.length > 0 ? "rounded-bl-none rounded-br-none" : "",
+        className
+      )}>
+      <FontAwesomeIcon className="size-3 text-neutral-400" icon={faSearch} />
 
       <input
-        className="bg-neutral-300 p-0"
+        className="bg-neutral-300 p-0 text-xs"
         onChange={handleQueryChange}
         ref={inputRef}
         type="text"

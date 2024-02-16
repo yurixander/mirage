@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import {type FC} from "react"
 import IconButton from "./IconButton"
+import {twMerge} from "tailwind-merge"
 
 export type QuickActionsProps = {
   onViewDirectMessages: () => void
@@ -14,6 +15,7 @@ export type QuickActionsProps = {
   onViewNotifications: () => void
   onOpenExtensions: () => void
   onLogout: () => void
+  className?: string
 }
 
 const QuickActions: FC<QuickActionsProps> = ({
@@ -22,9 +24,10 @@ const QuickActions: FC<QuickActionsProps> = ({
   onViewNotifications,
   onOpenExtensions,
   onLogout,
+  className,
 }) => {
   return (
-    <section className="inline-flex flex-col gap-4">
+    <section className={twMerge("inline-flex flex-col gap-4", className)}>
       <IconButton
         onClick={onViewDirectMessages}
         tooltip="Direct messages"
