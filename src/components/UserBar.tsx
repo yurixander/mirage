@@ -1,27 +1,17 @@
 import {faGear} from "@fortawesome/free-solid-svg-icons"
 import {useMemo, type FC} from "react"
-import {trim} from "../utils/util"
+import {getImageUrl, getUsernameByUserID, trim} from "../utils/util"
 import IconButton from "./IconButton"
-import UserProfile, {UserStatus} from "./UserProfile"
+import UserProfile, {type UserProfileProps, UserStatus} from "./UserProfile"
 import {twMerge} from "tailwind-merge"
 import useConnection from "@/hooks/matrix/useConnection"
+import UserProfilePlaceholder from "./UserProfilePlaceholder"
 
 export type UserBarProps = {
-  avatarUrl?: string
-  username: string
-  displayName: string
-  displayNameColor: string
-  status: UserStatus
   className?: string
 }
 
-const UserBar: FC<UserBarProps> = ({
-  displayName,
-  displayNameColor,
-  username,
-  avatarUrl,
-  className,
-}) => {
+const UserBar: FC<UserBarProps> = ({className}) => {
   const MAX_NAME_LENGTH = 18
   const {client, isConnecting} = useConnection()
 
@@ -35,17 +25,38 @@ const UserBar: FC<UserBarProps> = ({
     return UserStatus.Offline
   }, [client, isConnecting])
 
+  const userData = useMemo(() => {
+    const userID = client?.getUserId() ?? null
+
+    if (userID === null || client === null) return
+
+    const user = client?.getUser(userID)
+    const avatarUrl = user?.avatarUrl
+
+    if (avatarUrl === undefined) return
+
+    const imgUrl = getImageUrl(avatarUrl, client)
+    const displayName = user?.displayName ?? userID
+
+    const userBarProps: UserProfileProps = {
+      avatarUrl: imgUrl,
+      displayName: trim(displayName, MAX_NAME_LENGTH),
+      text: trim(getUsernameByUserID(userID), MAX_NAME_LENGTH),
+      displayNameColor: "",
+      status,
+    }
+
+    return userBarProps
+  }, [client, status])
+
   return (
     <div className={twMerge("flex p-[x1]", className)}>
       <div className="mr-auto">
-        <UserProfile
-          avatarUrl={avatarUrl}
-          text={trim(username, MAX_NAME_LENGTH)}
-          displayName={trim(displayName, MAX_NAME_LENGTH)}
-          displayNameColor={displayNameColor}
-          status={status}
-          isLarge={false}
-        />
+        {userData ? (
+          <UserProfile {...userData} isLarge={false} />
+        ) : (
+          <UserProfilePlaceholder />
+        )}
       </div>
 
       {/* TODO: Handle click on settings button. */}

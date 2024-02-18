@@ -34,7 +34,14 @@ const useSpaces = () => {
     setSpace(client.getRooms().filter(room => room.isSpaceRoom()))
   }, [client, syncState])
 
-  return {spaces, activeSpaceId, setActiveSpaceId}
+  // REVIEW: Should this be inside a `useEffect`? Or does it automatically handle cleanup (ie. removing the event listener) when this hook is unmounted?
+  // Listen for room updates, and update the state accordingly.
+  // addEventListener(ClientEvent.Room, (event, state, previousStateEvent) => {
+  //   // TODO: Add or remove rooms from the state based on the event.
+  //   console.log("Room event:", event, state, previousStateEvent)
+  // })
+
+  return {spaces, activeSpaceId, setActiveSpaceId, client}
 }
 
 export default useSpaces
