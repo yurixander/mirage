@@ -1,6 +1,5 @@
 import useConnection from "@/hooks/matrix/useConnection"
-import useEventListener from "@/hooks/matrix/useEventListener"
-import {ClientEvent, type Room} from "matrix-js-sdk"
+import {type Room} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import {create} from "zustand"
 
@@ -37,10 +36,10 @@ const useSpaces = () => {
 
   // REVIEW: Should this be inside a `useEffect`? Or does it automatically handle cleanup (ie. removing the event listener) when this hook is unmounted?
   // Listen for room updates, and update the state accordingly.
-  useEventListener(ClientEvent.Room, (event, state, previousStateEvent) => {
-    // TODO: Add or remove rooms from the state based on the event.
-    console.log("Room event:", event, state, previousStateEvent)
-  })
+  // addEventListener(ClientEvent.Room, (event, state, previousStateEvent) => {
+  //   // TODO: Add or remove rooms from the state based on the event.
+  //   console.log("Room event:", event, state, previousStateEvent)
+  // })
 
   return {spaces, activeSpaceId, setActiveSpaceId, client}
 }

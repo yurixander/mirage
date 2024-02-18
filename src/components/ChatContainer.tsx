@@ -12,7 +12,7 @@ import {
   faUniversalAccess,
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {useEffect, useMemo, useRef, type FC} from "react"
+import {useMemo, type FC} from "react"
 import {assert} from "../utils/util"
 import ChatInput from "./ChatInput"
 import IconButton from "./IconButton"
@@ -29,7 +29,7 @@ export type ChatContainerProps = {
 }
 
 const ChatContainer: FC<ChatContainerProps> = ({className}) => {
-  const {activeRoom, messages, usersTyping} = useActiveRoom()
+  const {activeRoom, messages: messageProps, usersTyping} = useActiveRoom()
 
   const usersTypingElement = useMemo(
     () =>
@@ -47,9 +47,9 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     [usersTyping]
   )
 
-  const chatComponents = useMemo(
+  const messages = useMemo(
     () =>
-      messages.map((message, index) =>
+      messageProps.map((message, index) =>
         message.kind === MessageKind.Text ? (
           <TextMessage key={index} {...(message.data as TextMessageProps)} />
         ) : message.kind === MessageKind.Image ? (
@@ -58,7 +58,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           <EventMessage key={index} {...message.data} />
         )
       ),
-    [messages]
+    [messageProps]
   )
 
   const name = activeRoom?.name ?? " "
@@ -117,7 +117,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           })
         }}
         className="ml-4 mr-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
-        {chatComponents}
+        {messages}
       </div>
 
       <div className="ml-4 mr-4 flex flex-col gap-3">
