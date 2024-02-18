@@ -23,7 +23,7 @@ type ContextMenuState = {
   hideMenu: () => void
 }
 
-export const useContextMenuStore = create<ContextMenuState>(set => ({
+const useContextMenuStore = create<ContextMenuState>(set => ({
   activeMenuId: null,
   x: 0,
   y: 0,
@@ -37,7 +37,7 @@ export const useContextMenuStore = create<ContextMenuState>(set => ({
 
 const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
   const {activeMenuId, showMenu, hideMenu, x, y} = useContextMenuStore()
-  const isMenuActive = activeMenuId === id
+  const isActive = activeMenuId === id
 
   const handleContextMenu = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -48,10 +48,12 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
   )
 
   useEffect(() => {
-    window.addEventListener("click", hideMenu)
+    const EVENT = "click"
+
+    window.addEventListener(EVENT, hideMenu)
 
     return () => {
-      window.removeEventListener("click", hideMenu)
+      window.removeEventListener(EVENT, hideMenu)
     }
   }, [hideMenu])
 
@@ -59,7 +61,7 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
     <>
       <div onContextMenu={handleContextMenu}>{children}</div>
 
-      {isMenuActive && (
+      {isActive && (
         <div
           className="absolute z-50 h-max w-44 animate-fadeIn rounded-[5px] bg-white shadow-contextMenu"
           style={{
