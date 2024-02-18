@@ -29,11 +29,11 @@ export type ChatContainerProps = {
 }
 
 const ChatContainer: FC<ChatContainerProps> = ({className}) => {
-  const {activeRoom, messages: messageProps, usersTyping} = useActiveRoom()
+  const {activeRoom, messages: messageProps, typingUsers} = useActiveRoom()
 
-  const usersTypingElement = useMemo(
+  const typingUsersElement = useMemo(
     () =>
-      usersTyping.map((user, index) => (
+      typingUsers.map((user, index) => (
         <TypingIndicator
           key={index}
           users={[
@@ -44,7 +44,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           ]}
         />
       )),
-    [usersTyping]
+    [typingUsers]
   )
 
   const messages = useMemo(
@@ -147,7 +147,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
           <div className="h-6 w-6" />
 
-          {usersTypingElement}
+          {typingUsersElement}
         </div>
       </div>
       <div className="flex items-center justify-end gap-4 border-t-[1px] border-solid border-t-stone-200 bg-neutral-50 p-[5px]">
