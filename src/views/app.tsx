@@ -61,13 +61,7 @@ const AppView: FC = () => {
           />
         </div>
         <RoomsList />
-        <UserBar
-          className="border-t border-t-stone-200 p-3"
-          username={"@thecriss"}
-          displayName={"Tokyoto"}
-          displayNameColor={"#5CC679"}
-          status={UserStatus.Online}
-        />
+        <UserBar className="border-t border-t-stone-200 p-3" />
       </div>
 
       <ChatContainer className="w-full" />
