@@ -42,7 +42,7 @@ const useSpaces = () => {
     console.log("Room event:", event, state, previousStateEvent)
   })
 
-  return {spaces, activeSpaceId, setActiveSpaceId}
+  return {spaces, activeSpaceId, setActiveSpaceId, client}
 }
 
 export default useSpaces

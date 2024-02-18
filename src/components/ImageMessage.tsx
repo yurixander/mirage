@@ -61,7 +61,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
   const content = (
     <div className="flex flex-col pt-[3px]">
       <img
-        className="h-52 w-44 cursor-pointer rounded-[10px] object-cover"
+        className="h-52 w-44 cursor-pointer rounded-[10px] object-contain"
         src={imageUrl}
       />
 
