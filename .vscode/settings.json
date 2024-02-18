@@ -8,5 +8,15 @@
   "files.trimFinalNewlines": true,
   "[sass]": {
     "editor.defaultFormatter": "syler.sass-indented"
+  },
+  "todo-tree.highlights.customHighlight": {
+    "FIXME": {
+      "foreground": "#000000",
+      "background": "#bbbe1d",
+      "gutterIcon": true
+    }
+  },
+  "todo-tree.general.tagGroups": {
+    "FIXME": ["FIXME", "FIXIT", "FIX"]
   }
 }

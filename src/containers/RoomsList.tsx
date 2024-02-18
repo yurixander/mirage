@@ -35,7 +35,9 @@ const RoomsList: FC = () => {
 
   return (
     <section className="flex h-full flex-col gap-8 p-4 scrollbar-hide">
-      {/* <nav className="flex flex-col gap-4"><Label text="Spaces" /></nav> */}
+      {/* <nav className="flex flex-col gap-4">
+        <Label text="Spaces" />
+      </nav> */}
 
       <nav className="flex flex-col gap-4">
         <Label text="Rooms" />

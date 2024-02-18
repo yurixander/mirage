@@ -1,6 +1,6 @@
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
-import {ClientEvent, type Room} from "matrix-js-sdk"
+import {ClientEvent, type MatrixClient, type Room} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import useActiveRoom from "./useActiveRoom"
 
