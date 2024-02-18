@@ -133,7 +133,7 @@ const useActiveRoom = () => {
     setActiveRoomId,
     messages,
     sendTextMessage,
-    usersTyping: typingUsers,
+    typingUsers,
     sendEventTyping,
   }
 }
