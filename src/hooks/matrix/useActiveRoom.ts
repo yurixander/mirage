@@ -22,7 +22,7 @@ type ActiveRoomIdStore = {
   setActiveRoomId: (roomId: string) => void
 }
 
-export const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
+const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
   activeRoomId: null,
   setActiveRoomId: roomId => {
     set(_state => ({activeRoomId: roomId}))
@@ -35,15 +35,15 @@ export enum MessageKind {
   Event,
 }
 
-type MessageOf<T extends MessageKind> = T extends MessageKind.Text
+type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
   ? TextMessageProps
-  : T extends MessageKind.Image
+  : Kind extends MessageKind.Image
     ? ImageMessageProps
     : EventMessageProps
 
-type Message<T extends MessageKind> = {
-  kind: T
-  data: MessageOf<T>
+type Message<Kind extends MessageKind> = {
+  kind: Kind
+  data: MessageOf<Kind>
 }
 
 // TODO: Make the compiler recognize when it is one and when it is another.
@@ -79,9 +79,9 @@ const useActiveRoom = () => {
   }, [client, activeRoomId])
 
   // TODO: Abstract logic on a function and the listeners should be called before the client.startClient()
-  useEventListener(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {
+  useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
     // TODO: Check why event here is not equals with event for `client.roomInitialSync`
-    if (room.roomId !== activeRoomId || client === null) {
+    if (room === undefined || room.roomId !== activeRoomId || client === null) {
       return
     }
 
@@ -102,7 +102,7 @@ const useActiveRoom = () => {
 
   const userId = client?.getUserId()
 
-  client?.on(RoomMemberEvent.Typing, (event, member) => {
+  useEventListener(RoomMemberEvent.Typing, (event, member) => {
     if (member.userId === userId) {
       return
     }
@@ -276,12 +276,12 @@ const transformToImageMessage = (
 ): ImageMessageProps | null => {
   const content = roomEvent !== null ? roomEvent.content : event?.getContent()
 
-  const eventID =
+  const eventId =
     roomEvent !== null
       ? parseInt(roomEvent.event_id)
       : event?.getAge() ?? event?.localTimestamp
 
-  if (content === undefined || eventID === undefined) {
+  if (content === undefined || eventId === undefined) {
     return null
   }
 
@@ -302,7 +302,7 @@ const transformToImageMessage = (
     authorAvatarUrl: avatarUrl,
     authorDisplayName: user.displayName ?? user.userId,
     authorDisplayNameColor: "",
-    id: eventID,
+    id: eventId,
     onAuthorClick: () => {},
     text: "",
     timestamp,

@@ -3,18 +3,21 @@ import {
   type EmittedEvents,
   type MatrixEvent,
   type RoomState,
+  type Listener,
+  type ClientEventHandlerMap,
+  type EventEmitterEvents,
 } from "matrix-js-sdk"
 import {useEffect} from "react"
 
-export type MatrixEventCallback<T = void> = (
+export type MatrixEventCallback<Return = void> = (
   event: MatrixEvent,
   state: RoomState,
   previousStateEvent: MatrixEvent | null
-) => T
+) => Return
 
-function useEventListener(
-  event: EmittedEvents,
-  listener: MatrixEventCallback,
+function useEventListener<Event extends EmittedEvents | EventEmitterEvents>(
+  event: Event,
+  listener: Listener<EmittedEvents, ClientEventHandlerMap, Event>,
   isContinuous = true
 ) {
   const {client} = useConnection()
