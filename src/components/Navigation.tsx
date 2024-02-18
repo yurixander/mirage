@@ -1,15 +1,32 @@
-import {type FC} from "react"
+import {useMemo, type FC} from "react"
 import ServerListItem from "./ServerListItem"
 import useSpaces from "@/hooks/matrix/useSpaces"
 import {twMerge} from "tailwind-merge"
 import AppLogo from "./AppLogo"
+import {getImageUrl} from "@/utils/util"
 
 export type NavigationProps = {
   className?: string
 }
 
 const Navigation: FC<NavigationProps> = ({className}) => {
-  const {spaces, activeSpaceId, setActiveSpaceId} = useSpaces()
+  const {spaces, activeSpaceId, setActiveSpaceId, client} = useSpaces()
+
+  const spaceElements = useMemo(() => {
+    if (client === null) return
+
+    return spaces?.map((server, index) => (
+      <ServerListItem
+        avatarUrl={getImageUrl(server.getMxcAvatarUrl(), client)}
+        key={index}
+        isActive={server.roomId === activeSpaceId}
+        onClick={() => {
+          setActiveSpaceId(server.roomId)
+        }}
+        tooltip={server.normalizedName}
+      />
+    ))
+  }, [activeSpaceId, client, setActiveSpaceId, spaces])
 
   return (
     <div
@@ -38,16 +55,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
             }}
             tooltip="All rooms"
           />
-          {spaces?.map((server, index) => (
-            <ServerListItem
-              key={index}
-              isActive={server.roomId === activeSpaceId}
-              onClick={() => {
-                setActiveSpaceId(server.roomId)
-              }}
-              tooltip={server.normalizedName}
-            />
-          ))}
+          {spaceElements}
           <div
             className="cursor-pointer"
             onClick={() => {

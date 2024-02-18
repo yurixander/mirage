@@ -22,7 +22,7 @@ const ServerListItem: FC<ServerListItemProps> = ({
         src={avatarUrl}
       />
     ) : (
-      <Avatar size={50} square variant="bauhaus" name="Margaret Sanger" />
+      <Avatar size={47} square variant="bauhaus" name="Margaret Sanger" />
     )
 
   return (
@@ -41,9 +41,9 @@ const ServerListItem: FC<ServerListItemProps> = ({
       <div
         tabIndex={!isActive ? 0 : undefined}
         className={twMerge(
-          "relative overflow-hidden rounded-xl bg-red-500 ml-[5px] box-border cursor-pointer h-serverSize w-serverSize focus-visible:rounded-lg group-active:animate-hold group-active:transform group-active:scale-75",
+          "relative overflow-hidden box-border rounded-xl bg-red-500 ml-1 cursor-pointer size-serverSize focus-visible:rounded-lg group-active:animate-hold group-active:transform group-active:scale-75",
           isActive
-            ? "border-[3px] border-solid border-purple-500 box-border duration-200 transition shadow-serverSelected"
+            ? "border-[3px] border-solid border-purple-500 duration-200 transition shadow-serverSelected"
             : ""
         )}
         onClick={onClick}>
