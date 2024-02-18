@@ -13,7 +13,7 @@ export type ModalProps = {
   dialogs: JSX.Element[]
 }
 
-const popupPosition = (position?: ModalPosition): string => {
+const getPopupPositionClassName = (position?: ModalPosition): string => {
   switch (position) {
     case ModalPosition.Left:
       return "items-center justify-start"
@@ -46,7 +46,7 @@ const Modal: FC<ModalProps> = ({position, dialogs}) => {
     <div
       className={twMerge(
         "fixed inset-0 flex content-center items-center bg-modalOverlay *:absolute",
-        popupPosition(position)
+        getPopupPositionClassName(position)
       )}>
       {dialogsToShow.map((dialog, index) => (
         <div

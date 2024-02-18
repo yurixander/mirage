@@ -37,9 +37,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
           <span
             className="select-text font-semibold"
             style={{color: authorDisplayNameColor}}
-            onClick={() => {
-              onAuthorClick()
-            }}>
+            onClick={onAuthorClick}>
             {authorDisplayName}
           </span>
 

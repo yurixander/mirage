@@ -124,6 +124,7 @@ const Input: FC<InputProps> = ({
         className="flex items-center rounded-[10px] border-[1px] border-solid border-neutral-300"
         tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
+
         {icon && (
           <div className="ml-[10px] h-[18px] w-[18px] text-neutral-200">
             <FontAwesomeIcon icon={icon} />

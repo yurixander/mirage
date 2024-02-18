@@ -69,7 +69,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
     </div>
   )
 
-  // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
+  // NOTE: `id` attribute should be unique to avoid duplicate context menus.
   return (
     <ContextMenu id={id} items={contextMenuItems}>
       <MessageContainer
