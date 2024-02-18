@@ -19,7 +19,7 @@ const useSpaceRooms = () => {
       return
     }
 
-    // Handle that not repeat the rooms
+    // TODO: Handle that not repeat the rooms
     const childEvents = space
       .getLiveTimeline()
       .getState(EventTimeline.FORWARDS)
