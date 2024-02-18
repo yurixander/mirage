@@ -26,9 +26,11 @@ const UserBar: FC<UserBarProps> = ({
   const {client, isConnecting} = useConnection()
 
   const status = useMemo(() => {
-    if (isConnecting) return UserStatus.Idle
-
-    if (client?.isLoggedIn()) return UserStatus.Online
+    if (isConnecting) {
+      return UserStatus.Idle
+    } else if (client?.isLoggedIn()) {
+      return UserStatus.Online
+    }
 
     return UserStatus.Offline
   }, [client, isConnecting])

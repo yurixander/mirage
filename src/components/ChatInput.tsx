@@ -12,7 +12,7 @@ export type ChatInputProps = {
 const ChatInput: FC<ChatInputProps> = ({isDisabled}) => {
   const [value, setValue] = useState("")
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const {sendMessage, sendEventTyping} = useActiveRoom()
+  const {sendTextMessage, sendEventTyping} = useActiveRoom()
 
   useEffect(() => {
     const textarea = textareaRef.current
@@ -29,7 +29,7 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled}) => {
       // TODO: Handle here send message with enter.
       else {
         event.preventDefault()
-        void sendMessage(MsgType.Text, value)
+        void sendTextMessage(MsgType.Text, value)
         setValue("")
       }
   }
@@ -63,7 +63,7 @@ const ChatInput: FC<ChatInputProps> = ({isDisabled}) => {
           color="#C463FF"
           isDisabled={isDisabled}
           onClick={() => {
-            void sendMessage(MsgType.Text, value)
+            void sendTextMessage(MsgType.Text, value)
             setValue("")
           }}
         />
