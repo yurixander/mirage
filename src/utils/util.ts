@@ -46,6 +46,9 @@ export function getImageUrl(
   url: string | null,
   client: MatrixClient
 ): string | undefined {
-  if (url === null) return undefined
+  if (url === null) {
+    return undefined
+  }
+
   return client.mxcUrlToHttp(url, 48, 48, "scale") ?? undefined
 }
