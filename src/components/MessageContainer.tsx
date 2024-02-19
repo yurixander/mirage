@@ -1,6 +1,7 @@
 /* eslint-disable tailwindcss/enforces-shorthand */
 import {type FC} from "react"
 import {timeFormatter} from "../utils/util"
+import Avatar from "boring-avatars"
 
 export type MessageContainerProps = {
   authorDisplayName: string
@@ -21,6 +22,13 @@ const MessageContainer: FC<MessageContainerProps> = ({
 }) => {
   const localeTimeString = timeFormatter(timestamp)
 
+  const avatarImage =
+    authorAvatarUrl !== undefined ? (
+      <img src={authorAvatarUrl} className="size-full" />
+    ) : (
+      <Avatar size={40} square name={authorDisplayName} variant="beam" />
+    )
+
   return (
     <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">
@@ -30,7 +38,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
           onClick={() => {
             onAuthorClick()
           }}>
-          <img className="size-full" src={authorAvatarUrl} />
+          {avatarImage}
         </div>
 
         <div className="w-full">

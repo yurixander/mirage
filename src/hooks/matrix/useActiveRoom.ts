@@ -11,11 +11,12 @@ import {
   type User,
   RoomMemberEvent,
   RoomEvent,
-  type MatrixEvent,
+  MatrixEvent,
 } from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import {create} from "zustand"
 import useEventListener from "./useEventListener"
+import useMatrixAction from "./useMatrixAction"
 
 type ActiveRoomIdStore = {
   activeRoomId: string | null
@@ -91,6 +92,8 @@ const useActiveRoom = () => {
       }
 
       setMessages(messages => [...messages, messageOrEvent])
+      // Mask as read
+      void client.sendReadReceipt(event)
     })
   })
 
@@ -160,6 +163,8 @@ const handleRoomEvents = async (
     }
 
     allMessageProps.push(messageProps)
+    // Mask as read
+    void client.sendReadReceipt(new MatrixEvent({...event}))
   }
 
   return allMessageProps
@@ -171,7 +176,11 @@ const handleEvents = async (
   roomEvent: IEventWithRoomId | null,
   event: MatrixEvent | null
 ): Promise<AnyMessage | null> => {
-  const timestamp = roomEvent?.unsigned?.age ?? event?.localTimestamp ?? null
+  const timestamp =
+    roomEvent?.unsigned?.age ??
+    roomEvent?.origin_server_ts ??
+    event?.localTimestamp ??
+    null
   const sender = roomEvent?.sender ?? event?.sender?.userId ?? null
   const eventType = roomEvent?.type ?? event?.getType() ?? null
 
