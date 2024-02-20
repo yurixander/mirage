@@ -62,9 +62,17 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     () =>
       messageProps.map((message, index) =>
         message.kind === MessageKind.Text ? (
-          <TextMessage key={index} {...(message.data as TextMessageProps)} />
+          <TextMessage
+            key={index}
+            {...(message.data as TextMessageProps)}
+            id={index}
+          />
         ) : message.kind === MessageKind.Image ? (
-          <ImageMessage key={index} {...(message.data as ImageMessageProps)} />
+          <ImageMessage
+            key={index}
+            {...(message.data as ImageMessageProps)}
+            id={index}
+          />
         ) : (
           <EventMessage key={index} {...message.data} />
         )
@@ -77,7 +85,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
   assert(name.length !== 0, "room name should not be empty")
 
   return (
-    <section
+    <div
       className={twMerge(
         "flex h-screen w-full flex-col gap-4 border-[1px] border-solid border-stone-200",
         className
@@ -203,7 +211,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           }}
         />
       </div>
-    </section>
+    </div>
   )
 }
 
