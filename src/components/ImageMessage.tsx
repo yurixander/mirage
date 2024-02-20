@@ -8,6 +8,7 @@ import {
 import {type FC} from "react"
 import ContextMenu from "./ContextMenu"
 import MessageContainer from "./MessageContainer"
+import {saveAs} from "file-saver"
 
 export type ImageMessageProps = {
   id: number
@@ -20,34 +21,6 @@ export type ImageMessageProps = {
   onAuthorClick: () => void
 }
 
-const contextMenuItems = [
-  {
-    label: "Reply",
-    action: () => {},
-    icon: faReply,
-  },
-  {
-    label: "Pin",
-    action: () => {},
-    icon: faThumbTack,
-  },
-  {
-    label: "Save",
-    action: () => {},
-    icon: faDownload,
-  },
-  {
-    label: "Resend",
-    action: () => {},
-    icon: faShare,
-  },
-  {
-    label: "Delete",
-    action: () => {},
-    icon: faTrash,
-  },
-]
-
 const ImageMessage: FC<ImageMessageProps> = ({
   authorAvatarUrl,
   authorDisplayName,
@@ -58,6 +31,36 @@ const ImageMessage: FC<ImageMessageProps> = ({
   text,
   timestamp,
 }) => {
+  const contextMenuItems = [
+    {
+      label: "Reply",
+      action: () => {},
+      icon: faReply,
+    },
+    {
+      label: "Pin",
+      action: () => {},
+      icon: faThumbTack,
+    },
+    {
+      label: "Save",
+      action: () => {
+        saveAs(imageUrl, text)
+      },
+      icon: faDownload,
+    },
+    {
+      label: "Resend",
+      action: () => {},
+      icon: faShare,
+    },
+    {
+      label: "Delete",
+      action: () => {},
+      icon: faTrash,
+    },
+  ]
+
   const content = (
     <div className="flex flex-col pt-[3px]">
       <img

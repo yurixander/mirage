@@ -296,7 +296,6 @@ const convertEventToImageMessageProps = (
     return null
   }
 
-  // TODO: Check why not scale the Img and prefer remove content.info
   const imgUrl = client.mxcUrlToHttp(
     content.url as string,
     content.info.w as number,
