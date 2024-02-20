@@ -138,6 +138,7 @@ const useActiveRoom = () => {
     sendTextMessage,
     typingUsers,
     sendEventTyping,
+    client,
   }
 }
 
@@ -176,11 +177,7 @@ const handleEvents = async (
   roomEvent: IEventWithRoomId | null,
   event: MatrixEvent | null
 ): Promise<AnyMessage | null> => {
-  const timestamp =
-    roomEvent?.unsigned?.age ??
-    roomEvent?.origin_server_ts ??
-    event?.localTimestamp ??
-    null
+  const timestamp = roomEvent?.origin_server_ts ?? event?.localTimestamp ?? null
   const sender = roomEvent?.sender ?? event?.sender?.userId ?? null
   const eventType = roomEvent?.type ?? event?.getType() ?? null
 

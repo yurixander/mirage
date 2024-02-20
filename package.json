@@ -25,6 +25,7 @@
     "@testing-library/jest-dom": "^6.4.1",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
+    "axios": "^1.6.7",
     "boring-avatars": "^1.10.1",
     "buffer": "^6.0.3",
     "dayjs": "^1.11.10",
@@ -41,6 +42,7 @@
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animation-delay": "^1.2.0",
     "url": "^0.11.3",
+    "use-file-picker": "^2.1.1",
     "web-vitals": "^3.5.2",
     "zustand": "^4.5.0"
   },
