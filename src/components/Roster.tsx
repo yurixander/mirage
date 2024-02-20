@@ -31,7 +31,7 @@ const Roster: FC<RosterProps> = ({className}) => {
 
   const joinedMembersElement = useMemo(
     () =>
-      activeRoom?.getMembers()?.map((member, index) => (
+      activeRoom?.getJoinedMembers()?.map((member, index) => (
         <RosterUser
           key={index}
           userProfileProps={{

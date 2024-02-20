@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/enforces-shorthand */
 import {
   faCircleHalfStroke,
   faCircleInfo,
@@ -13,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {useMemo, type FC} from "react"
-import {assert} from "../utils/util"
+import {assert, sendImageMessageFromFile} from "../utils/util"
 import ChatInput from "./ChatInput"
 import IconButton from "./IconButton"
 import SmartAction from "./SmartAction"
@@ -23,13 +22,25 @@ import ImageMessage, {type ImageMessageProps} from "./ImageMessage"
 import TextMessage, {type TextMessageProps} from "./TextMessage"
 import EventMessage from "./EventMessage"
 import {twMerge} from "tailwind-merge"
+import {useFilePicker} from "use-file-picker"
 
 export type ChatContainerProps = {
   className?: string
 }
 
 const ChatContainer: FC<ChatContainerProps> = ({className}) => {
-  const {activeRoom, messages: messageProps, typingUsers} = useActiveRoom()
+  const {
+    activeRoom,
+    messages: messageProps,
+    typingUsers,
+    client,
+    activeRoomId,
+  } = useActiveRoom()
+  const {openFilePicker, filesContent} = useFilePicker({
+    accept: "image/*",
+    multiple: false,
+    readAs: "DataURL",
+  })
 
   const typingUsersElement = useMemo(
     () =>
@@ -116,11 +127,11 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
             behavior: "smooth",
           })
         }}
-        className="ml-4 mr-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
+        className="mx-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
         {messages}
       </div>
 
-      <div className="ml-4 mr-4 flex flex-col gap-3">
+      <div className="mx-4 flex flex-col gap-3">
         <div className="flex gap-3">
           <div className="mt-[5px] flex h-max gap-3 ">
             <IconButton
@@ -133,7 +144,16 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
             <IconButton
               onClick={() => {
-                /* TODO: Handle `attach` button click. */
+                openFilePicker()
+                if (filesContent.length <= 0) {
+                  return
+                }
+
+                void sendImageMessageFromFile(
+                  filesContent[0],
+                  client,
+                  activeRoomId
+                )
               }}
               tooltip="Attach"
               icon={faPaperclip}
@@ -143,9 +163,9 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           <ChatInput />
         </div>
         <div className="flex gap-3">
-          <div className="h-6 w-6" />
+          <div className="size-6" />
 
-          <div className="h-6 w-6" />
+          <div className="size-6" />
 
           {typingUsersElement}
         </div>
