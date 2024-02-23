@@ -32,7 +32,9 @@ const STYLES = {
   PrimaryPurple: "bg-purple-700 border-purple-900 text-white",
   PrimaryBlack: "bg-black border-none text-white",
   Secondary: "bg-purple-100 text-purple-800 border-none hover:bg-purple-200",
-  TextLink: "bg-none text-purple-800 hover:bg-purple-100 border-none underline",
+  TextLinkPurple:
+    "bg-none text-purple-800 hover:bg-purple-100 border-none underline",
+  TextLinkBlack: "bg-none text-black hover:bg-stone-100 border-none underline",
 }
 
 const buildStyle = (
@@ -47,7 +49,9 @@ const buildStyle = (
     case ButtonVariant.Secondary:
       return STYLES.Secondary
     case ButtonVariant.TextLink:
-      return STYLES.TextLink
+      return color === ButtonColor.Black
+        ? STYLES.TextLinkBlack
+        : STYLES.TextLinkPurple
     default:
       return STYLES.PrimaryPurple
   }
