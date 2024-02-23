@@ -51,7 +51,7 @@ const useRooms = () => {
     }
 
     updateRoom(activeRoom)
-  }, [activeRoom, activeRoomId, updateRoom])
+  }, [activeRoom, activeRoomId])
 
   useEventListener(RoomEvent.Timeline, (_event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId === activeRoomId || client === null) {

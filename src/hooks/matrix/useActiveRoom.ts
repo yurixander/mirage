@@ -12,11 +12,13 @@ import {
   RoomMemberEvent,
   RoomEvent,
   MatrixEvent,
+  type RoomMember,
+  EventTimeline,
 } from "matrix-js-sdk"
-import {useEffect, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
 import {create} from "zustand"
 import useEventListener from "./useEventListener"
-import useMatrixAction from "./useMatrixAction"
+import {getJustAdminsForRoom} from "@/utils/util"
 
 type ActiveRoomIdStore = {
   activeRoomId: string | null
@@ -50,12 +52,16 @@ type Message<Kind extends MessageKind> = {
 // TODO: Make the compiler recognize when it is one and when it is another.
 type AnyMessage = Message<MessageKind>
 
+const ADMIN_LEVEL = 100
+
 const useActiveRoom = () => {
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const {client} = useConnection()
   const [activeRoom, setActiveRoom] = useState<Room | null>(null)
   const [messages, setMessages] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<string[]>([])
+  const [adminMembers, setAdminMembers] = useState<User[]>()
+  const [defaultMembers, setDefaultMembers] = useState<RoomMember[]>()
 
   useEffect(() => {
     if (client === null || activeRoomId === null) {
@@ -69,6 +75,7 @@ const useActiveRoom = () => {
     }
 
     setActiveRoom(room)
+    handleMembers(activeRoom)
 
     void handleRoomEvents(client, activeRoomId)
       .then(messagesAndEvents => {
@@ -77,7 +84,7 @@ const useActiveRoom = () => {
       .catch(error => {
         console.error("Error fetching events:", error)
       })
-  }, [client, activeRoomId])
+  }, [client, activeRoomId, activeRoom])
 
   // TODO: Abstract logic on a function and the listeners should be called before the `client.startClient()`.
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
@@ -96,6 +103,41 @@ const useActiveRoom = () => {
       void client.sendReadReceipt(event)
     })
   })
+
+  const handleMembers = (room: Room | null) => {
+    if (room === null) {
+      return
+    }
+
+    const joinedMembers = room.getJoinedMembers()
+
+    const powerLevelsEvent = room
+      .getLiveTimeline()
+      .getState(EventTimeline.FORWARDS)
+      ?.getStateEvents("m.room.power_levels", "")
+
+    if (
+      powerLevelsEvent === null ||
+      powerLevelsEvent === undefined ||
+      client === null
+    ) {
+      return
+    }
+
+    const powerLevels = powerLevelsEvent.getContent().users as string[]
+    const users = Object.keys(powerLevels)
+
+    const adminMembers: User[] = users
+      .map((user: string) => client.getUser(user) ?? null)
+      .filter((user): user is User => user !== null)
+
+    const defaultMembers = joinedMembers.filter(
+      member => !users.includes(member.userId)
+    )
+
+    setAdminMembers(adminMembers)
+    setDefaultMembers(defaultMembers)
+  }
 
   const sendTextMessage = async (type: MsgType, body: string) => {
     if (activeRoomId === null) {
@@ -139,6 +181,8 @@ const useActiveRoom = () => {
     typingUsers,
     sendEventTyping,
     client,
+    adminMembers,
+    defaultMembers,
   }
 }
 
