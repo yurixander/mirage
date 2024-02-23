@@ -48,7 +48,7 @@ const DevPreview: FC = () => {
               <Input
                 className="w-full"
                 icon={faLink}
-                placeholder={"https://matrix-client.matrix.org"}
+                placeholder="https://matrix-client.matrix.org"
                 constraints={[urlConstraint, nonEmptyConstraint]}
               />
             </div>
@@ -59,7 +59,7 @@ const DevPreview: FC = () => {
 
               <Input
                 className="w-full"
-                placeholder={"syt_dGhlY3Jpc3M_PAmQdRhKFWPaexp_0iK0SN"}
+                placeholder="syt_dGhlY3Jpc3M_PAmQdRhKFWPaexp_0iK0SN"
                 icon={faKey}
                 actions={[
                   {
@@ -76,21 +76,21 @@ const DevPreview: FC = () => {
               <Input
                 className="w-full"
                 icon={faUserCircle}
-                placeholder={"@userId:matrix.org"}
+                placeholder="@userId:matrix.org"
                 constraints={[userIdConstraint, nonEmptyConstraint]}
               />
             </div>
 
             <div className="flex flex-col gap-1">
               <Button
-                label={"Sign in →"}
+                label="Sign in →"
                 onClick={() => {}}
                 color={ButtonColor.Black}
               />
 
               <Button
                 onClick={() => {}}
-                label={"Forgot password?"}
+                label="Forgot password?"
                 variant={ButtonVariant.TextLink}
                 color={ButtonColor.Black}
               />
@@ -100,7 +100,7 @@ const DevPreview: FC = () => {
           <div className="flex w-full items-center justify-center gap-1">
             <Typography>Don&apos;t have an account?</Typography>
 
-            <Link to={""}>
+            <Link to="">
               <Typography className="font-bold">Sign up</Typography>
             </Link>
           </div>

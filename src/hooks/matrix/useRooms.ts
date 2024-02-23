@@ -1,6 +1,6 @@
 import useConnection from "@/hooks/matrix/useConnection"
 import {RoomEvent, type Room} from "matrix-js-sdk"
-import {useEffect, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
 import useActiveRoom from "./useActiveRoom"
 import useEventListener from "./useEventListener"
 import {getJustDirectRooms} from "@/utils/util"
@@ -10,7 +10,21 @@ const useRooms = () => {
   const [rooms, setRooms] = useState<Room[] | null>(null)
   const [directRooms, setDirectRooms] = useState<Room[] | null>(null)
   const {client, syncState} = useConnection()
-  const {setActiveRoomId, activeRoomId} = useActiveRoom()
+  const {setActiveRoomId, activeRoomId, activeRoom} = useActiveRoom()
+
+  const updateRoom = useCallback(
+    (updatedRoom: Room) => {
+      const roomsUpdated =
+        rooms?.map(room => {
+          if (room.roomId === updatedRoom.roomId) {
+            return updatedRoom
+          }
+          return room
+        }) ?? null
+      setRooms(roomsUpdated)
+    },
+    [rooms]
+  )
 
   // Initial gathering of rooms, when a connection is
   // established or re-established.
@@ -31,13 +45,20 @@ const useRooms = () => {
     setRooms(defaultRooms)
   }, [client, syncState])
 
-  useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
+  useEffect(() => {
+    if (activeRoom === null) {
+      return
+    }
+
+    updateRoom(activeRoom)
+  }, [activeRoom, activeRoomId, updateRoom])
+
+  useEventListener(RoomEvent.Timeline, (_event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId === activeRoomId || client === null) {
       return
     }
 
-    // TODO: Just refresh the room with has this event with ´useSyncedMap´
-    setRooms(client.getRooms())
+    updateRoom(room)
   })
 
   return {rooms, directRooms, activeRoomId, setActiveRoomId}

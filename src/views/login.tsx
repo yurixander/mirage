@@ -99,7 +99,7 @@ const LoginView: FC = () => {
             <Input
               className="w-full"
               icon={faLink}
-              placeholder={"https://matrix-client.matrix.org"}
+              placeholder="https://matrix-client.matrix.org"
               constraints={[urlConstraint, nonEmptyConstraint]}
               initialValue={serverUrl}
               onValueChange={setServerUrl}
@@ -112,7 +112,7 @@ const LoginView: FC = () => {
 
             <Input
               className="w-full"
-              placeholder={"syt_dGhlY3Jpc3M_PAmQdRhKFWPaexp_0iK0SN"}
+              placeholder="syt_dGhlY3Jpc3M_PAmQdRhKFWPaexp_0iK0SN"
               initialValue={accessToken}
               onValueChange={setAccessToken}
               actions={[
@@ -133,7 +133,7 @@ const LoginView: FC = () => {
               initialValue={userId}
               className="w-full"
               icon={faUserCircle}
-              placeholder={"@userId:matrix.org"}
+              placeholder="@userId:matrix.org"
               constraints={[userIdConstraint, nonEmptyConstraint]}
               onValueChange={setUserId}
             />
@@ -155,7 +155,7 @@ const LoginView: FC = () => {
 
             <Button
               onClick={() => {}}
-              label={"Forgot password?"}
+              label="Forgot password?"
               variant={ButtonVariant.TextLink}
               color={ButtonColor.Black}
             />
@@ -165,7 +165,7 @@ const LoginView: FC = () => {
         <div className="flex w-full items-center justify-center gap-1">
           <Typography>Don&apos;t have an account?</Typography>
 
-          <Link to={""}>
+          <Link to="">
             <Typography className="font-bold">Sign up</Typography>
           </Link>
         </div>
