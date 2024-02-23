@@ -109,7 +109,7 @@ const useActiveRoom = () => {
 
   // When users begin typing, add them to the list of typing users.
   useEventListener(RoomMemberEvent.Typing, (_event, member) => {
-    if (member.userId === userId) {
+    if (member.userId === userId || member.roomId !== activeRoomId) {
       return
     }
 
