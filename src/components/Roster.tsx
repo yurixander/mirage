@@ -11,6 +11,7 @@ import {UserStatus, type UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 import {twMerge} from "tailwind-merge"
 import useActiveRoom from "@/hooks/matrix/useActiveRoom"
+import {getImageUrl} from "@/utils/util"
 
 export enum RosterUserCategory {
   Admin,
@@ -27,11 +28,11 @@ export type RosterProps = {
 }
 
 const Roster: FC<RosterProps> = ({className}) => {
-  const {activeRoom} = useActiveRoom()
+  const {defaultMembers, adminMembers, client} = useActiveRoom()
 
   const joinedMembersElement = useMemo(
     () =>
-      activeRoom?.getJoinedMembers()?.map((member, index) => (
+      defaultMembers?.map((member, index) => (
         <RosterUser
           key={index}
           userProfileProps={{
@@ -54,7 +55,28 @@ const Roster: FC<RosterProps> = ({className}) => {
           }}
         />
       )),
-    [activeRoom]
+    [defaultMembers]
+  )
+
+  const adminMembersElement = useMemo(
+    () =>
+      adminMembers?.map((member, index) => (
+        <RosterUser
+          key={index}
+          userProfileProps={{
+            avatarUrl:
+              getImageUrl(member.avatarUrl ?? null, client) ?? undefined,
+            text: "Online",
+            displayName: member.displayName ?? member.userId,
+            displayNameColor: "",
+            status: UserStatus.Online,
+          }}
+          onClick={function (): void {
+            throw new Error("Function not implemented.")
+          }}
+        />
+      )),
+    [adminMembers, client]
   )
 
   return (
@@ -77,13 +99,18 @@ const Roster: FC<RosterProps> = ({className}) => {
 
       <div className="flex h-full grow flex-col gap-[5px] overflow-y-scroll scrollbar-hide">
         <div className="mt-[10px] flex flex-col gap-1">
-          <Label className="p-[5px]" text={"Admin — " + "0"} />
+          <Label
+            className="p-[5px]"
+            text={"Admin — " + (adminMembers?.length ?? "0")}
+          />
+
+          {adminMembersElement}
         </div>
 
         <div className="flex flex-col gap-1">
           <Label
             className="p-[5px]"
-            text={"Member — " + (joinedMembersElement?.length ?? "0")}
+            text={"Member — " + (defaultMembers?.length ?? "0")}
           />
 
           {joinedMembersElement}
