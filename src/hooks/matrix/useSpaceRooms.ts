@@ -2,9 +2,11 @@ import {EventTimeline, type Room} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import useConnection from "./useConnection"
 import {useActiveSpaceIdStore} from "./useSpaces"
+import {getJustDirectRooms} from "@/utils/util"
 
 const useSpaceRooms = () => {
   const [childRooms, setChildRooms] = useState<Room[]>([])
+  const [childDirectRooms, setChildDirectRooms] = useState<Room[]>([])
   const {client, syncState} = useConnection()
   const {activeSpaceId} = useActiveSpaceIdStore()
 
@@ -38,10 +40,16 @@ const useSpaceRooms = () => {
       }
     }
 
-    setChildRooms(rooms)
+    const directChildRooms = getJustDirectRooms(rooms, client)
+    const defaultChildRooms = rooms.filter(
+      room => !room.isSpaceRoom() && !directChildRooms.includes(room)
+    )
+
+    setChildDirectRooms(directChildRooms)
+    setChildRooms(defaultChildRooms)
   }, [activeSpaceId, client, syncState])
 
-  return {childRooms, activeSpaceId}
+  return {childRooms, childDirectRooms, activeSpaceId}
 }
 
 export default useSpaceRooms
