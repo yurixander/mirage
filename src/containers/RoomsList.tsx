@@ -6,14 +6,13 @@ import {NotificationCountType} from "matrix-js-sdk"
 import useSpaceRooms from "@/hooks/matrix/useSpaceRooms"
 
 const RoomsList: FC = () => {
-  const {rooms, activeRoomId, setActiveRoomId} = useRooms()
-  const {childRooms, activeSpaceId} = useSpaceRooms()
+  const {rooms, directRooms, activeRoomId, setActiveRoomId} = useRooms()
+  const {childRooms, childDirectRooms, activeSpaceId} = useSpaceRooms()
 
-  const roomElements = useMemo(
+  const directRoomElements = useMemo(
     () =>
-      (activeSpaceId === null ? rooms : childRooms)
-        ?.filter(room => !room.isSpaceRoom())
-        .map((room, index) => (
+      (activeSpaceId === null ? directRooms : childDirectRooms)?.map(
+        (room, index) => (
           <Room
             key={index}
             name={room.name}
@@ -29,15 +28,46 @@ const RoomsList: FC = () => {
               setActiveRoomId(room.roomId)
             }}
           />
-        )),
+        )
+      ),
+    [
+      activeRoomId,
+      activeSpaceId,
+      childDirectRooms,
+      directRooms,
+      setActiveRoomId,
+    ]
+  )
+
+  const roomElements = useMemo(
+    () =>
+      (activeSpaceId === null ? rooms : childRooms)?.map((room, index) => (
+        <Room
+          key={index}
+          name={room.name}
+          type={RoomType.Text}
+          isActive={activeRoomId === room.roomId}
+          containsUnreadMessages={
+            room.getUnreadNotificationCount(NotificationCountType.Total) > 0
+          }
+          mentionCount={room.getUnreadNotificationCount(
+            NotificationCountType.Highlight
+          )}
+          onClick={() => {
+            setActiveRoomId(room.roomId)
+          }}
+        />
+      )),
     [childRooms, rooms, activeRoomId, setActiveRoomId, activeSpaceId]
   )
 
   return (
     <section className="flex h-full flex-col gap-8 p-4 scrollbar-hide">
-      {/* <nav className="flex flex-col gap-4">
-        <Label text="Spaces" />
-      </nav> */}
+      <nav className="flex flex-col gap-4">
+        <Label text="Direct" />
+
+        {directRoomElements}
+      </nav>
 
       <nav className="flex flex-col gap-4">
         <Label text="Rooms" />

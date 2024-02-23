@@ -3,10 +3,12 @@ import {RoomEvent, type Room} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import useActiveRoom from "./useActiveRoom"
 import useEventListener from "./useEventListener"
+import {getJustDirectRooms} from "@/utils/util"
 
 const useRooms = () => {
   // CONSIDER: Replacing this logic with usage of `useSyncedMap`.
   const [rooms, setRooms] = useState<Room[] | null>(null)
+  const [directRooms, setDirectRooms] = useState<Room[] | null>(null)
   const {client, syncState} = useConnection()
   const {setActiveRoomId, activeRoomId} = useActiveRoom()
 
@@ -19,7 +21,14 @@ const useRooms = () => {
       return
     }
 
-    setRooms(client.getRooms())
+    const storeRooms = client.getRooms()
+    const directRooms = getJustDirectRooms(storeRooms, client)
+    const defaultRooms = storeRooms.filter(
+      room => !room.isSpaceRoom() && !directRooms.includes(room)
+    )
+
+    setDirectRooms(directRooms)
+    setRooms(defaultRooms)
   }, [client, syncState])
 
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
@@ -31,7 +40,7 @@ const useRooms = () => {
     setRooms(client.getRooms())
   })
 
-  return {rooms, activeRoomId, setActiveRoomId}
+  return {rooms, directRooms, activeRoomId, setActiveRoomId}
 }
 
 export default useRooms

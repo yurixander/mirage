@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import {type MatrixClient} from "matrix-js-sdk"
+import {type Room, type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -133,4 +133,27 @@ export async function getImageDimensions(
 
     img.src = data
   })
+}
+
+export function getJustDirectRooms(
+  rooms: Room[],
+  client: MatrixClient
+): Room[] {
+  const roomsDirect: Room[] = []
+  const directRooms = client.getAccountData("m.direct")
+  const content = directRooms?.event.content
+
+  if (content === undefined) {
+    return roomsDirect
+  }
+
+  const directRoomIds = Object.values(content).flat()
+
+  for (const room of rooms) {
+    if (directRoomIds.includes(room.roomId) && !room.isSpaceRoom()) {
+      roomsDirect.push(room)
+    }
+  }
+
+  return roomsDirect
 }
