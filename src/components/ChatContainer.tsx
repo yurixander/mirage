@@ -42,22 +42,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     readAs: "DataURL",
   })
 
-  const typingUsersElement = useMemo(
-    () =>
-      typingUsers.map((user, index) => (
-        <TypingIndicator
-          key={index}
-          users={[
-            {
-              displayName: user,
-              color: "#5CC679",
-            },
-          ]}
-        />
-      )),
-    [typingUsers]
-  )
-
   const messages = useMemo(
     () =>
       messageProps.map((message, index) =>
@@ -175,7 +159,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
           <div className="size-6" />
 
-          {typingUsersElement}
+          {typingUsers.length > 0 && <TypingIndicator users={typingUsers} />}
         </div>
       </div>
       <div className="flex items-center justify-end gap-4 border-t-[1px] border-solid border-t-stone-200 bg-neutral-50 p-[5px]">
