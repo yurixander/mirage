@@ -38,7 +38,9 @@ const Typography: FC<TypographyProps> = ({
 }) => {
   const Component = getTagFromVariant(variant)
 
-  return <Component className={twMerge(className)}>{children}</Component>
+  return (
+    <Component className={twMerge(className, variant)}>{children}</Component>
+  )
 }
 
 export default Typography
