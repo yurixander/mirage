@@ -49,13 +49,11 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           <TextMessage
             key={index}
             {...(message.data as TextMessageProps)}
-            id={index}
           />
         ) : message.kind === MessageKind.Image ? (
           <ImageMessage
             key={index}
             {...(message.data as ImageMessageProps)}
-            id={index}
           />
         ) : (
           <EventMessage key={index} {...message.data} />

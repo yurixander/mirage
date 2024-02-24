@@ -9,13 +9,14 @@ import ContextMenu from "./ContextMenu"
 import MessageContainer from "./MessageContainer"
 
 export type TextMessageProps = {
-  id: number
+  id: string
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl?: string
   text: string
   timestamp: number
   onAuthorClick: () => void
+  onDeleteMessage?: () => void
 }
 
 const TextMessage: FC<TextMessageProps> = ({
@@ -26,6 +27,7 @@ const TextMessage: FC<TextMessageProps> = ({
   onAuthorClick,
   text,
   timestamp,
+  onDeleteMessage,
 }) => {
   const contextMenuItems = [
     {
@@ -45,14 +47,14 @@ const TextMessage: FC<TextMessageProps> = ({
     },
     {
       label: "Delete",
-      action: () => {},
+      action: onDeleteMessage ?? (() => {}),
       icon: faTrash,
     },
   ]
 
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
-    <ContextMenu id={id} items={contextMenuItems}>
+    <ContextMenu id={timestamp} items={contextMenuItems}>
       <MessageContainer
         authorDisplayName={authorDisplayName}
         authorDisplayNameColor={authorDisplayNameColor}
