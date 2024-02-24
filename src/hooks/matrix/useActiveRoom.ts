@@ -14,11 +14,11 @@ import {
   type RoomMember,
   EventTimeline,
 } from "matrix-js-sdk"
-import {useEffect, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
 import {create} from "zustand"
 import useEventListener from "./useEventListener"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
-import {getImageUrl} from "@/utils/util"
+import {deleteMessage, getImageUrl} from "@/utils/util"
 
 type ActiveRoomIdStore = {
   activeRoomId: string | null
@@ -73,8 +73,10 @@ const useActiveRoom = () => {
     }
 
     setActiveRoom(room)
+  }, [client, activeRoomId])
 
-    if (activeRoom === null) {
+  useEffect(() => {
+    if (activeRoom === null || client === null) {
       return
     }
 
@@ -85,11 +87,7 @@ const useActiveRoom = () => {
       .getState(EventTimeline.FORWARDS)
       ?.getStateEvents("m.room.power_levels", "")
 
-    if (
-      powerLevelsEvent === null ||
-      powerLevelsEvent === undefined ||
-      client === null
-    ) {
+    if (powerLevelsEvent === null || powerLevelsEvent === undefined) {
       return
     }
 
@@ -107,45 +105,67 @@ const useActiveRoom = () => {
     setAdminMembers(adminMembers)
     setDefaultMembers(defaultMembers)
 
-    void handleRoomEvents(client, activeRoom)
-      .then(messagesAndEvents => {
-        setMessages(messagesAndEvents)
-      })
-      .catch(error => {
-        console.error("Error fetching events:", error)
-      })
-  }, [client, activeRoomId, activeRoom])
+    void handleRoomEvents(client, activeRoom).then(messagesAndEvents => {
+      setMessages(messagesAndEvents)
+    })
+  }, [activeRoom, client])
 
-  // TODO: Abstract logic on a function and the listeners should be called before the `client.startClient()`.
+  const updateEvent = useCallback(
+    async (event: MatrixEvent, client: MatrixClient, roomId: string) => {
+      const newMessages: AnyMessage[] = []
+
+      for (const message of messages) {
+        if (message.data.id === event.event.event_id) {
+          const newMessage = await handleEvents(client, event, roomId)
+
+          if (newMessage === null) {
+            continue
+          }
+
+          newMessages.push(newMessage)
+        }
+
+        newMessages.push(message)
+      }
+
+      setMessages(newMessages)
+    },
+    [messages]
+  )
+
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
-    // TODO: Check why event here is not equals with event for `client.roomInitialSync`.
     if (room === undefined || room.roomId !== activeRoomId || client === null) {
       return
     }
 
-    void handleEvents(client, event).then(messageOrEvent => {
+    void handleEvents(client, event, activeRoomId).then(messageOrEvent => {
       if (messageOrEvent === null) {
         return
       }
 
       setMessages(messages => [...messages, messageOrEvent])
-      // Mask as read
       void client.sendReadReceipt(event)
     })
   })
 
-  const sendTextMessage = async (type: MsgType, body: string) => {
-    if (activeRoomId === null) {
+  useEventListener(RoomEvent.Redaction, (event, room, _toStartOfTimeline) => {
+    if (room === undefined || room.roomId !== activeRoomId || client === null) {
       return
     }
 
-    await client?.sendMessage(activeRoomId, {body, msgtype: type})
-  }
+    const eventContent = event.getContent()
 
-  const userId = client?.getUserId()
+    if (eventContent.msgtype !== undefined) {
+      return
+    }
+
+    void updateEvent(event, client, room.roomId)
+  })
 
   // When users begin typing, add them to the list of typing users.
   useEventListener(RoomMemberEvent.Typing, (_event, member) => {
+    const userId = client?.getUserId()
+
     if (member.userId === userId || member.roomId !== activeRoomId) {
       return
     }
@@ -169,13 +189,24 @@ const useActiveRoom = () => {
     }
   })
 
-  const sendEventTyping = async () => {
-    if (activeRoomId === null) {
+  const sendTextMessage = useCallback(
+    async (type: MsgType, body: string) => {
+      if (activeRoomId === null || client === null) {
+        return
+      }
+
+      await client.sendMessage(activeRoomId, {body, msgtype: type})
+    },
+    [activeRoomId, client]
+  )
+
+  const sendEventTyping = useCallback(async () => {
+    if (activeRoomId === null || client === null) {
       return
     }
 
-    await client?.sendTyping(activeRoomId, true, 2000)
-  }
+    await client.sendTyping(activeRoomId, true, 2000)
+  }, [activeRoomId, client])
 
   return {
     activeRoomId,
@@ -188,6 +219,7 @@ const useActiveRoom = () => {
     client,
     adminMembers,
     defaultMembers,
+    deleteMessage,
   }
 }
 
@@ -195,15 +227,14 @@ const handleRoomEvents = async (
   client: MatrixClient,
   activeRoom: Room
 ): Promise<AnyMessage[]> => {
-  const scrollback = await client.scrollback(activeRoom, 100)
+  const scrollback = await client.scrollback(activeRoom, 30)
   const events = scrollback.getLiveTimeline().getEvents()
   const allMessageProps: AnyMessage[] = []
 
   for (const event of events) {
-    const messageProps = await handleEvents(client, event)
+    const messageProps = await handleEvents(client, event, scrollback.roomId)
 
     if (messageProps === null) {
-      // console.log("Event not handled: ", event)
       continue
     }
 
@@ -215,10 +246,10 @@ const handleRoomEvents = async (
   return allMessageProps
 }
 
-// TODO: This functions can move to a separate file.
 const handleEvents = async (
   client: MatrixClient,
-  event: MatrixEvent
+  event: MatrixEvent,
+  roomId: string
 ): Promise<AnyMessage | null> => {
   const timestamp = event.localTimestamp
   const sender = event.sender?.userId ?? null
@@ -236,7 +267,7 @@ const handleEvents = async (
 
   switch (eventType) {
     case EventType.RoomMessage:
-      return await handleMessagesEvent(client, timestamp, event)
+      return await handleMessagesEvent(client, timestamp, event, roomId)
     case EventType.RoomMember:
       return handleMemberEvent(user, timestamp, client, event)
     case EventType.RoomTopic:
@@ -263,19 +294,22 @@ const handleRoomNameEvent = async (
   timestamp: number,
   event: MatrixEvent
 ): Promise<AnyMessage | null> => {
-  const eventContent = event.getContent()
+  const content = `${user} has changed the room name to ${
+    event.getContent().name
+  }`
 
-  if (eventContent.name === undefined) {
+  const eventId = event.event.event_id
+
+  if (eventId === undefined) {
     return null
   }
-
-  const content = `${user} has changed the room name to ${eventContent.name}`
 
   return {
     kind: MessageKind.Event,
     data: {
       text: content,
       timestamp,
+      id: eventId,
     },
   }
 }
@@ -283,7 +317,8 @@ const handleRoomNameEvent = async (
 const handleMessagesEvent = async (
   client: MatrixClient,
   timestamp: number,
-  event: MatrixEvent
+  event: MatrixEvent,
+  roomId: string
 ): Promise<AnyMessage | null> => {
   const eventContent = event.getContent()
   const sender = event.sender?.userId ?? null
@@ -298,13 +333,27 @@ const handleMessagesEvent = async (
     return null
   }
 
+  if (eventContent.msgtype === undefined) {
+    const message = messageDeletedProps(client, user, timestamp, event)
+
+    if (message === null) {
+      return null
+    }
+
+    return {
+      kind: MessageKind.Text,
+      data: message,
+    }
+  }
+
   switch (eventContent.msgtype) {
     case MsgType.Text: {
       const messageTextProp = convertEventToTextMessageProps(
         client,
         user,
         timestamp,
-        event
+        event,
+        roomId
       )
 
       if (messageTextProp === null) {
@@ -318,7 +367,8 @@ const handleMessagesEvent = async (
         client,
         user,
         timestamp,
-        event
+        event,
+        roomId
       )
 
       if (messageImgProp === null) {
@@ -336,15 +386,10 @@ const convertEventToImageMessageProps = (
   client: MatrixClient,
   user: User,
   timestamp: number,
-  event: MatrixEvent
+  event: MatrixEvent,
+  roomId: string
 ): ImageMessageProps | null => {
   const content = event.getContent()
-
-  if (event.event.event_id === undefined) {
-    return null
-  }
-
-  const eventId = parseInt(event.event.event_id)
 
   const imgUrl = client.mxcUrlToHttp(
     content.url as string,
@@ -358,6 +403,12 @@ const convertEventToImageMessageProps = (
       ? undefined
       : client.mxcUrlToHttp(user.avatarUrl) ?? undefined
 
+  const eventId = event.event.event_id
+
+  if (eventId === undefined) {
+    return null
+  }
+
   return {
     authorAvatarUrl: avatarUrl,
     authorDisplayName: user.displayName ?? user.userId,
@@ -367,6 +418,48 @@ const convertEventToImageMessageProps = (
     text: "",
     timestamp,
     imageUrl: imgUrl ?? "",
+    onDeleteMessage: () => {
+      deleteMessage(client, roomId, eventId)
+    },
+  }
+}
+
+const messageDeletedProps = (
+  client: MatrixClient,
+  user: User,
+  timestamp: number,
+  event: MatrixEvent
+): TextMessageProps | null => {
+  const eventId = event.event.event_id
+  const deletedBy = event.getUnsigned().redacted_because?.sender
+
+  if (eventId === undefined || deletedBy === undefined) {
+    return null
+  }
+
+  const deletedByUser = client.getUser(deletedBy)?.displayName
+
+  if (deletedByUser === undefined) {
+    return null
+  }
+
+  const reason = event.getUnsigned().redacted_because?.content.reason
+  const content = `${deletedByUser} has delete this message`
+  const contentByReason = `${deletedByUser} has delete this message because <<${reason}>>`
+
+  const avatarUrl =
+    user.avatarUrl === undefined
+      ? undefined
+      : client.mxcUrlToHttp(user.avatarUrl) ?? undefined
+
+  return {
+    authorAvatarUrl: avatarUrl,
+    authorDisplayName: user.displayName ?? user.userId,
+    authorDisplayNameColor: "",
+    id: eventId,
+    onAuthorClick: () => {},
+    text: reason !== undefined ? contentByReason : content,
+    timestamp,
   }
 }
 
@@ -374,13 +467,14 @@ const convertEventToTextMessageProps = (
   client: MatrixClient,
   user: User,
   timestamp: number,
-  event: MatrixEvent
+  event: MatrixEvent,
+  roomId: string
 ): TextMessageProps | null => {
-  if (event.event.event_id === undefined) {
+  const eventId = event.event.event_id
+
+  if (eventId === undefined) {
     return null
   }
-
-  const eventId = parseInt(event.event.event_id)
 
   const avatarUrl =
     user.avatarUrl === undefined
@@ -395,6 +489,9 @@ const convertEventToTextMessageProps = (
     onAuthorClick: () => {},
     text: event.getContent().body,
     timestamp,
+    onDeleteMessage: () => {
+      deleteMessage(client, roomId, eventId)
+    },
   }
 }
 
@@ -408,13 +505,13 @@ const handleMemberEvent = (
   const eventContent = event.getContent()
   const stateKey = event.getStateKey()
 
-  if (prevContent === undefined || stateKey === undefined) {
+  if (stateKey === undefined) {
     return null
   }
 
   const displayName = eventContent.displayname
-  const prevMembership = prevContent.membership
-  const prevDisplayName = prevContent.displayname
+  const prevMembership = prevContent?.membership
+  const prevDisplayName = prevContent?.displayname
 
   let content: string | null = null
 
@@ -475,13 +572,15 @@ const handleMemberEvent = (
     }
   }
 
-  if (content === null) {
+  const eventId = event.event.event_id
+
+  if (content === null || eventId === undefined) {
     return null
   }
 
   return {
     kind: MessageKind.Event,
-    data: {text: content, timestamp},
+    data: {text: content, timestamp, id: eventId},
   }
 }
 
@@ -502,7 +601,9 @@ const handleGuestAccessEvent = async (
       break
   }
 
-  if (content === null) {
+  const eventId = event.event.event_id
+
+  if (content === null || eventId === undefined) {
     return null
   }
 
@@ -511,6 +612,7 @@ const handleGuestAccessEvent = async (
     data: {
       text: content,
       timestamp,
+      id: eventId,
     },
   }
 }
@@ -532,7 +634,9 @@ const handleJoinRulesEvent = async (
       break
   }
 
-  if (content === null) {
+  const eventId = event.event.event_id
+
+  if (content === null || eventId === undefined) {
     return null
   }
 
@@ -541,6 +645,7 @@ const handleJoinRulesEvent = async (
     data: {
       text: content,
       timestamp,
+      id: eventId,
     },
   }
 }
@@ -552,11 +657,18 @@ const handleRoomTopicEvent = async (
 ): Promise<AnyMessage | null> => {
   const topic = event.getContent().topic
 
+  const eventId = event.event.event_id
+
+  if (eventId === undefined) {
+    return null
+  }
+
   return {
     kind: MessageKind.Event,
     data: {
       text: `${user} has change to the topic to <<${topic}>>`,
       timestamp,
+      id: eventId,
     },
   }
 }
@@ -583,7 +695,9 @@ const handleHistoryVisibilityEvent = async (
       break
   }
 
-  if (content === null) {
+  const eventId = event.event.event_id
+
+  if (content === null || eventId === undefined) {
     return null
   }
 
@@ -592,6 +706,7 @@ const handleHistoryVisibilityEvent = async (
     data: {
       text: content,
       timestamp,
+      id: eventId,
     },
   }
 }
@@ -608,11 +723,18 @@ const handleRoomCanonicalAliasEvent = async (
       ? `${user} has remove the main address for this room`
       : `${user} set the main address for this room as ${alias}`
 
+  const eventId = event.event.event_id
+
+  if (eventId === undefined) {
+    return null
+  }
+
   return {
     kind: MessageKind.Event,
     data: {
       text: content,
       timestamp,
+      id: eventId,
     },
   }
 }
@@ -627,11 +749,18 @@ const handleRoomAvatarEvent = async (
       ? `${user} has remove the avatar for this room`
       : `${user} changed the avatar of the room`
 
+  const eventId = event.event.event_id
+
+  if (eventId === undefined) {
+    return null
+  }
+
   return {
     kind: MessageKind.Event,
     data: {
       text: content,
       timestamp,
+      id: eventId,
     },
   }
 }

@@ -157,3 +157,14 @@ export function getJustDirectRooms(
 
   return roomsDirect
 }
+
+// TODO: Handle that can delete message just the administrators or the user
+export function deleteMessage(
+  client: MatrixClient,
+  roomId: string,
+  eventId: string
+) {
+  client.redactEvent(roomId, eventId).catch(error => {
+    console.error("Error deleting message", error)
+  })
+}

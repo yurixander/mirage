@@ -11,7 +11,7 @@ import MessageContainer from "./MessageContainer"
 import {saveAs} from "file-saver"
 
 export type ImageMessageProps = {
-  id: number
+  id: string
   imageUrl: string
   authorDisplayName: string
   authorDisplayNameColor: string
@@ -19,6 +19,7 @@ export type ImageMessageProps = {
   text: string
   timestamp: number
   onAuthorClick: () => void
+  onDeleteMessage?: () => void
 }
 
 const ImageMessage: FC<ImageMessageProps> = ({
@@ -30,6 +31,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
   onAuthorClick,
   text,
   timestamp,
+  onDeleteMessage,
 }) => {
   const contextMenuItems = [
     {
@@ -56,7 +58,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
     },
     {
       label: "Delete",
-      action: () => {},
+      action: onDeleteMessage ?? (() => {}),
       icon: faTrash,
     },
   ]
@@ -74,7 +76,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
 
   // NOTE: `id` attribute should be unique to avoid duplicate context menus.
   return (
-    <ContextMenu id={id} items={contextMenuItems}>
+    <ContextMenu id={timestamp} items={contextMenuItems}>
       <MessageContainer
         authorDisplayName={authorDisplayName}
         authorDisplayNameColor={authorDisplayNameColor}

@@ -7,6 +7,7 @@ export type EventMessageProps = {
   content?: JSX.Element
   timestamp: number
   text: string
+  id: string
 }
 
 const EventMessage: FC<EventMessageProps> = ({content, timestamp, text}) => {
