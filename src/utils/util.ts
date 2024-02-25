@@ -1,5 +1,7 @@
+import {type RosterUserProps, UserPowerLevel} from "@/components/RosterUser"
+import {UserStatus} from "@/components/UserProfile"
 import dayjs from "dayjs"
-import {type Room, type MatrixClient} from "matrix-js-sdk"
+import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -167,4 +169,46 @@ export function deleteMessage(
   client.redactEvent(roomId, eventId).catch(error => {
     console.error("Error deleting message", error)
   })
+}
+
+export function getRoomMembers(
+  client: MatrixClient,
+  activeRoom: Room
+): RosterUserProps[] {
+  const membersProp: RosterUserProps[] = []
+
+  const powerLevelsEvent = activeRoom
+    .getLiveTimeline()
+    .getState(EventTimeline.FORWARDS)
+    ?.getStateEvents("m.room.power_levels", "")
+
+  if (powerLevelsEvent === null) {
+    return []
+  }
+
+  const joinedMembers = activeRoom.getJoinedMembers()
+  const powerLevels = powerLevelsEvent?.getContent().users as string[]
+  const adminUsersId = Object.keys(powerLevels)
+
+  for (const member of joinedMembers) {
+    const powerLevel = adminUsersId.includes(member.userId)
+      ? UserPowerLevel.Admin
+      : UserPowerLevel.Member
+
+    membersProp.push({
+      userProfileProps: {
+        avatarUrl:
+          getImageUrl(member.getMxcAvatarUrl() ?? null, client) ?? undefined,
+        text: "Online",
+        displayName: member.name,
+        displayNameColor: "",
+        status: UserStatus.Online,
+      },
+      powerLevel,
+      onClick: () => {},
+      userId: member.userId,
+    })
+  }
+
+  return membersProp
 }

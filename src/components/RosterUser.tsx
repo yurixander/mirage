@@ -1,8 +1,16 @@
 import {type FC} from "react"
 import UserProfile, {type UserProfileProps} from "./UserProfile"
 
+export enum UserPowerLevel {
+  Admin,
+  Moderator,
+  Member,
+}
+
 export type RosterUserProps = {
   userProfileProps: UserProfileProps
+  powerLevel: UserPowerLevel
+  userId: string
   onClick: () => void
 }
 
