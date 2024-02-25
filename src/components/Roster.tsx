@@ -6,12 +6,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {useMemo, type FC} from "react"
 import IconButton from "./IconButton"
 import Label from "./Label"
-import RosterUser from "./RosterUser"
-import {UserStatus, type UserProfileProps} from "./UserProfile"
+import RosterUser, {UserPowerLevel} from "./RosterUser"
+import {type UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 import {twMerge} from "tailwind-merge"
 import useActiveRoom from "@/hooks/matrix/useActiveRoom"
-import {getImageUrl} from "@/utils/util"
 
 export enum RosterUserCategory {
   Admin,
@@ -28,55 +27,22 @@ export type RosterProps = {
 }
 
 const Roster: FC<RosterProps> = ({className}) => {
-  const {defaultMembers, adminMembers, client} = useActiveRoom()
+  const {members} = useActiveRoom()
 
   const joinedMembersElement = useMemo(
     () =>
-      defaultMembers?.map((member, index) => (
-        <RosterUser
-          key={index}
-          userProfileProps={{
-            avatarUrl:
-              member.getAvatarUrl(
-                "https://matrix-client.matrix.org",
-                64,
-                64,
-                "scale",
-                true,
-                false
-              ) ?? undefined,
-            text: "Online",
-            displayName: member.name,
-            displayNameColor: "",
-            status: UserStatus.Online,
-          }}
-          onClick={function (): void {
-            throw new Error("Function not implemented.")
-          }}
-        />
-      )),
-    [defaultMembers]
+      members
+        .filter(member => member.powerLevel === UserPowerLevel.Member)
+        ?.map((member, index) => <RosterUser key={index} {...member} />),
+    [members]
   )
 
   const adminMembersElement = useMemo(
     () =>
-      adminMembers?.map((member, index) => (
-        <RosterUser
-          key={index}
-          userProfileProps={{
-            avatarUrl:
-              getImageUrl(member.avatarUrl ?? null, client) ?? undefined,
-            text: "Online",
-            displayName: member.displayName ?? member.userId,
-            displayNameColor: "",
-            status: UserStatus.Online,
-          }}
-          onClick={function (): void {
-            throw new Error("Function not implemented.")
-          }}
-        />
-      )),
-    [adminMembers, client]
+      members
+        .filter(member => member.powerLevel === UserPowerLevel.Admin)
+        ?.map((member, index) => <RosterUser key={index} {...member} />),
+    [members]
   )
 
   return (
@@ -101,7 +67,7 @@ const Roster: FC<RosterProps> = ({className}) => {
         <div className="mt-[10px] flex flex-col gap-1">
           <Label
             className="p-[5px]"
-            text={"Admin — " + (adminMembers?.length ?? "0")}
+            text={"Admin — " + (adminMembersElement?.length ?? "0")}
           />
 
           {adminMembersElement}
@@ -110,7 +76,7 @@ const Roster: FC<RosterProps> = ({className}) => {
         <div className="flex flex-col gap-1">
           <Label
             className="p-[5px]"
-            text={"Member — " + (defaultMembers?.length ?? "0")}
+            text={"Member — " + (joinedMembersElement?.length ?? "0")}
           />
 
           {joinedMembersElement}
