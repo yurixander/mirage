@@ -42,6 +42,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     sendTextMessage,
     sendEventTyping,
   } = useActiveRoom()
+
   const {openFilePicker, filesContent} = useFilePicker({
     accept: "image/*",
     multiple: false,
@@ -74,7 +75,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter")
       if (event.ctrlKey) setValue(value + "\n")
-      // TODO: Handle here send message with enter.
       else {
         event.preventDefault()
         void sendTextMessage(MsgType.Text, value)

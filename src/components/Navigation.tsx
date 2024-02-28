@@ -4,6 +4,7 @@ import useSpaces from "@/hooks/matrix/useSpaces"
 import {twMerge} from "tailwind-merge"
 import AppLogo from "./AppLogo"
 import {getImageUrl} from "@/utils/util"
+import AddServerIcon from "./AddServerIcon"
 
 export type NavigationProps = {
   className?: string
@@ -56,12 +57,13 @@ const Navigation: FC<NavigationProps> = ({className}) => {
             tooltip="All rooms"
           />
           {spaceElements}
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              /* TODO: Handle click on Add server. */
-            }}>
-            {/* <AddServerIcon /> */}
+          <div className="flex w-full justify-center">
+            <AddServerIcon
+              className="size-serverSize"
+              onClick={function (): void {
+                throw new Error("Function not implemented.")
+              }}
+            />
           </div>
         </div>
       </div>
