@@ -46,45 +46,51 @@ const Roster: FC<RosterProps> = ({className}) => {
   )
 
   return (
-    <div className={twMerge("flex h-full flex-col", className)}>
-      <header className="flex items-center p-4">
-        <FontAwesomeIcon className="text-neutral-200" icon={faUserGroup} />
+    <>
+      <div className={twMerge("flex h-full flex-col", className)}>
+        <header className="flex items-center p-4">
+          <FontAwesomeIcon className="text-neutral-200" icon={faUserGroup} />
 
-        <div className="ml-[5px] w-full text-neutral-600">People</div>
+          <div className="ml-[5px] w-full text-neutral-600">People</div>
 
-        <IconButton
-          tooltip="Sort members"
-          icon={faArrowDownShortWide}
-          onClick={() => {
-            // TODO: Handle `sort` button click.
-          }}
-        />
-      </header>
-
-      <div className="h-[1px] w-full bg-neutral-300" />
-
-      <div className="flex h-full grow flex-col gap-[5px] overflow-y-scroll scrollbar-hide">
-        <div className="mt-[10px] flex flex-col gap-1">
-          <Label
-            className="p-[5px]"
-            text={"Admin — " + (adminMembersElement?.length ?? "0")}
+          <IconButton
+            tooltip="Sort members"
+            icon={faArrowDownShortWide}
+            onClick={() => {
+              // TODO: Handle `sort` button click.
+            }}
           />
+        </header>
 
-          {adminMembersElement}
-        </div>
+        <div className="h-[1px] w-full bg-neutral-300" />
 
-        <div className="flex flex-col gap-1">
-          <Label
-            className="p-[5px]"
-            text={"Member — " + (joinedMembersElement?.length ?? "0")}
+        <div className="flex h-full grow flex-col gap-[5px] overflow-y-scroll scrollbar-hide">
+          <div className="mt-[10px] flex flex-col gap-1">
+            <Label
+              className="p-[5px]"
+              text={"Admin — " + (adminMembersElement?.length ?? "0")}
+            />
+
+            {adminMembersElement}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <Label
+              className="p-[5px]"
+              text={"Member — " + (joinedMembersElement?.length ?? "0")}
+            />
+
+            {joinedMembersElement}
+          </div>
+
+          <UserProfileGhost
+            className="w-max"
+            count={4}
+            opacityMultiplier={0.2}
           />
-
-          {joinedMembersElement}
         </div>
-
-        <UserProfileGhost className="w-max" count={4} opacityMultiplier={0.2} />
       </div>
-    </div>
+    </>
   )
 }
 

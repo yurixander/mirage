@@ -6,14 +6,14 @@ import {
   faFaceSmile,
   faHashtag,
   faLink,
+  faPaperPlane,
   faPaperclip,
   faStarOfLife,
   faUniversalAccess,
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {useMemo, type FC} from "react"
+import {useEffect, useMemo, useRef, useState, type FC} from "react"
 import {assert, sendImageMessageFromFile} from "../utils/util"
-import ChatInput from "./ChatInput"
 import IconButton from "./IconButton"
 import SmartAction from "./SmartAction"
 import TypingIndicator from "./TypingIndicator"
@@ -23,18 +23,24 @@ import TextMessage, {type TextMessageProps} from "./TextMessage"
 import EventMessage from "./EventMessage"
 import {twMerge} from "tailwind-merge"
 import {useFilePicker} from "use-file-picker"
+import {MsgType} from "matrix-js-sdk"
 
 export type ChatContainerProps = {
   className?: string
 }
 
 const ChatContainer: FC<ChatContainerProps> = ({className}) => {
+  const [value, setValue] = useState("")
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
   const {
     activeRoom,
     messages: messageProps,
     typingUsers,
     client,
     activeRoomId,
+    sendTextMessage,
+    sendEventTyping,
   } = useActiveRoom()
   const {openFilePicker, filesContent} = useFilePicker({
     accept: "image/*",
@@ -46,21 +52,35 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     () =>
       messageProps.map((message, index) =>
         message.kind === MessageKind.Text ? (
-          <TextMessage
-            key={index}
-            {...(message.data as TextMessageProps)}
-          />
+          <TextMessage key={index} {...(message.data as TextMessageProps)} />
         ) : message.kind === MessageKind.Image ? (
-          <ImageMessage
-            key={index}
-            {...(message.data as ImageMessageProps)}
-          />
+          <ImageMessage key={index} {...(message.data as ImageMessageProps)} />
         ) : (
           <EventMessage key={index} {...message.data} />
         )
       ),
     [messageProps]
   )
+
+  useEffect(() => {
+    const textarea = textareaRef.current
+
+    if (textarea !== null) {
+      textarea.style.height = "auto"
+      textarea.style.height = `${textarea.scrollHeight}px`
+    }
+  }, [value])
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter")
+      if (event.ctrlKey) setValue(value + "\n")
+      // TODO: Handle here send message with enter.
+      else {
+        event.preventDefault()
+        void sendTextMessage(MsgType.Text, value)
+        setValue("")
+      }
+  }
 
   const name = activeRoom?.name ?? " "
 
@@ -69,7 +89,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
   return (
     <div
       className={twMerge(
-        "flex h-screen w-full flex-col gap-4 border-[1px] border-solid border-stone-200",
+        "flex h-screen flex-col gap-4 border-[1px] border-solid border-stone-200",
         className
       )}>
       <header className="flex items-center gap-4 border-b-[1px] border-solid border-b-stone-200 p-4">
@@ -105,7 +125,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           icon={faEllipsisV}
         />
       </header>
-
       <div
         ref={scrollRef => {
           if (scrollRef === null) {
@@ -150,7 +169,40 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
             />
           </div>
 
-          <ChatInput />
+          <div className="flex w-full rounded-[5px] border-[1px] border-solid border-neutral-300 bg-neutral-50">
+            <textarea
+              onKeyDown={handleKeyDown}
+              rows={1}
+              ref={textareaRef}
+              autoFocus
+              placeholder="Write a message or simply say 👋🏼 hello..."
+              value={value}
+              disabled={false}
+              onChange={value => {
+                setValue(value.target.value)
+
+                if (value.target.value === "") {
+                  return
+                }
+
+                void sendEventTyping()
+              }}
+              className="flex max-h-[100px] w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
+            />
+
+            <div className="m-[5px] size-max">
+              <IconButton
+                tooltip="Send"
+                icon={faPaperPlane}
+                color="#C463FF"
+                isDisabled={false}
+                onClick={() => {
+                  void sendTextMessage(MsgType.Text, value)
+                  setValue("")
+                }}
+              />
+            </div>
+          </div>
         </div>
         <div className="flex gap-3">
           <div className="size-6" />

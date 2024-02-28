@@ -46,10 +46,10 @@ export function getUsernameByUserID(userId: string): string {
 }
 
 export function getImageUrl(
-  url: string | null,
+  url: string | null | undefined,
   client: MatrixClient | null
 ): string | undefined {
-  if (url === null || client === null) {
+  if (url === null || url === undefined || client === null) {
     return undefined
   }
 

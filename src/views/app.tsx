@@ -63,8 +63,9 @@ const AppView: FC = () => {
         <UserBar className="border-t border-t-stone-200 p-3" />
       </div>
 
-      <ChatContainer className="w-full" />
-      <Roster className="w-max" />
+      {/* TODO: Check why the chat list is becoming overflowing */}
+      <ChatContainer className="w-full grow" />
+      <Roster className="max-w-max grow" />
     </div>
   )
 }
