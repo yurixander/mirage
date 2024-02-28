@@ -85,29 +85,6 @@ const useActiveRoom = () => {
     })
   }, [activeRoom, client])
 
-  const updateEvent = useCallback(
-    async (event: MatrixEvent, client: MatrixClient, roomId: string) => {
-      const newMessages: AnyMessage[] = []
-
-      for (const message of messages) {
-        if (message.data.id === event.event.event_id) {
-          const newMessage = await handleEvents(client, event, roomId)
-
-          if (newMessage === null) {
-            continue
-          }
-
-          newMessages.push(newMessage)
-        }
-
-        newMessages.push(message)
-      }
-
-      setMessages(newMessages)
-    },
-    [messages]
-  )
-
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId !== activeRoomId || client === null) {
       return
@@ -130,11 +107,18 @@ const useActiveRoom = () => {
 
     const eventContent = event.getContent()
 
-    if (eventContent.msgtype !== undefined) {
+    if (eventContent.msgtype !== undefined || activeRoom === null) {
       return
     }
 
-    void updateEvent(event, client, room.roomId)
+    void handleRoomEvents(client, activeRoom).then(messagesOrEvents => {
+      if (messagesOrEvents === null) {
+        return
+      }
+
+      setMessages(messagesOrEvents)
+      void client.sendReadReceipt(event)
+    })
   })
 
   // When users begin typing, add them to the list of typing users.

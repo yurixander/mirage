@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/enforces-shorthand */
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import Avatar from "boring-avatars"
@@ -68,7 +67,7 @@ const UserProfile: FC<UserProfileProps> = ({
     assert(validateUrl(avatarUrl), "avatar URL should be valid if defined")
   }
 
-  const MAX_DISPLAY_NAME_LENGTH = 18
+  const MAX_DISPLAY_NAME_LENGTH = 12
   let userStatusClassName: string
 
   switch (status) {
@@ -141,10 +140,7 @@ const UserProfile: FC<UserProfileProps> = ({
 
         <div className="flex items-center">
           {icon && (
-            <FontAwesomeIcon
-              icon={icon}
-              className="mr-[3px] h-[10px] w-[10px]"
-            />
+            <FontAwesomeIcon icon={icon} className="mr-[3px] size-[10px]" />
           )}
 
           {activityOrText}
