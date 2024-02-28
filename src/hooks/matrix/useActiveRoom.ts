@@ -16,7 +16,12 @@ import {useCallback, useEffect, useState} from "react"
 import {create} from "zustand"
 import useEventListener from "./useEventListener"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
-import {deleteMessage, getImageUrl, getRoomMembers} from "@/utils/util"
+import {
+  deleteMessage,
+  getImageUrl,
+  getRoomMembers,
+  stringToColor,
+} from "@/utils/util"
 import {type RosterUserProps} from "@/components/RosterUser"
 
 type ActiveRoomIdStore = {
@@ -312,6 +317,7 @@ const convertEventToImageMessageProps = (
   roomId: string
 ): AnyMessage | null => {
   const eventId = event.event.event_id
+  const authorDisplayName = user.displayName ?? user.userId
 
   if (eventId === undefined) {
     return null
@@ -320,15 +326,13 @@ const convertEventToImageMessageProps = (
   return {
     kind: MessageKind.Image,
     data: {
-      authorAvatarUrl: getImageUrl(user.avatarUrl ?? null, client),
-      authorDisplayName: user.displayName ?? user.userId,
-      authorDisplayNameColor: "",
-      id: eventId,
+      authorAvatarUrl: getImageUrl(user.avatarUrl, client),
+      authorDisplayName,
+      authorDisplayNameColor: stringToColor(authorDisplayName),
       onAuthorClick: () => {},
       text: "",
       timestamp,
-      // TODO: Handle here when the image url is undefined.
-      imageUrl: getImageUrl(event.getContent().url as string, client) ?? "",
+      imageUrl: getImageUrl(event.getContent().url as string, client),
       onDeleteMessage: () => {
         deleteMessage(client, roomId, eventId)
       },
