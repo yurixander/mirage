@@ -15,7 +15,7 @@ module.exports = {
       },
       boxShadow: {
         checkBox: "inset 0 0 5px #D9D9D9",
-        contextMenu: "0 0 15px 0 #8f8f8f71",
+        contextMenu: "0 0 15px 0 #bbbbbb71",
         userCard: "0 0 5px 0 #bebebe71",
         constraint: "0 0 8px 0",
         serverSelected: "0 3px 5px 2px #D9D9D9",
@@ -36,6 +36,7 @@ module.exports = {
         userProfileAvatarSize: "calc(37px * sqrt(2))",
         userProfileAvatarSizeLarge: "calc(50px * sqrt(2))",
         serverSize: "47px",
+        messageMaxWidth: "450px",
       },
       fontFamily: {
         iowan: ["Iowan Old Style", "serif"],
