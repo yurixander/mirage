@@ -61,7 +61,9 @@ const TextMessage: FC<TextMessageProps> = ({
         authorAvatarUrl={authorAvatarUrl}
         timestamp={timestamp}
         onAuthorClick={onAuthorClick}>
-        <div className="max-w-[600px] select-text leading-[160%]">{text}</div>
+        <div className="max-w-messageMaxWidth select-text break-words leading-[160%]">
+          {text}
+        </div>
       </MessageContainer>
     </ContextMenu>
   )

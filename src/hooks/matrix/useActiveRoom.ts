@@ -429,7 +429,7 @@ const handleMemberEvent = (
     // TODO: Handle here other types of RoomMember events
     case "join": {
       if (prevMembership === "invite" || prevMembership !== "join") {
-        text = `${displayName} has joined to the room`
+        text = `${user} has joined to the room`
       } else if (
         prevDisplayName !== undefined &&
         displayName !== prevDisplayName
