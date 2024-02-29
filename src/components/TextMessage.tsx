@@ -1,15 +1,9 @@
-import {
-  faReply,
-  faShare,
-  faThumbTack,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons"
-import {type FC} from "react"
+import {faReply, faShare, faTrash} from "@fortawesome/free-solid-svg-icons"
+import {useMemo, type FC} from "react"
 import ContextMenu from "./ContextMenu"
 import MessageContainer from "./MessageContainer"
 
 export type TextMessageProps = {
-  id: string
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl?: string
@@ -23,34 +17,37 @@ const TextMessage: FC<TextMessageProps> = ({
   authorAvatarUrl,
   authorDisplayName,
   authorDisplayNameColor,
-  id,
   onAuthorClick,
   text,
   timestamp,
   onDeleteMessage,
 }) => {
-  const contextMenuItems = [
-    {
+  const contextMenuItems = useMemo(() => {
+    const items = []
+
+    items.push({
       label: "Reply",
       action: () => {},
       icon: faReply,
-    },
-    {
-      label: "Pin",
-      action: () => {},
-      icon: faThumbTack,
-    },
-    {
-      label: "Resend",
-      action: () => {},
-      icon: faShare,
-    },
-    {
-      label: "Delete",
-      action: onDeleteMessage ?? (() => {}),
-      icon: faTrash,
-    },
-  ]
+    })
+
+    if (onDeleteMessage !== undefined) {
+      items.push(
+        {
+          label: "Resend",
+          action: () => {},
+          icon: faShare,
+        },
+        {
+          label: "Delete",
+          action: onDeleteMessage,
+          icon: faTrash,
+        }
+      )
+    }
+
+    return items
+  }, [onDeleteMessage])
 
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
