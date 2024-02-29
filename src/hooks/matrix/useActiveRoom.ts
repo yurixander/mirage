@@ -348,6 +348,7 @@ const convertEventToTextMessageProps = (
   roomId: string
 ): AnyMessage | null => {
   const eventId = event.event.event_id
+  const authorDisplayName = user.displayName ?? user.userId
 
   if (eventId === undefined) {
     return null
@@ -356,9 +357,9 @@ const convertEventToTextMessageProps = (
   return {
     kind: MessageKind.Text,
     data: {
-      authorAvatarUrl: getImageUrl(user.avatarUrl ?? null, client),
-      authorDisplayName: user.displayName ?? user.userId,
-      authorDisplayNameColor: "",
+      authorAvatarUrl: getImageUrl(user.avatarUrl, client),
+      authorDisplayName,
+      authorDisplayNameColor: stringToColor(authorDisplayName),
       id: eventId,
       onAuthorClick: () => {},
       text: event.getContent().body,
@@ -378,6 +379,7 @@ const convertToMessageDeletedProps = (
 ): AnyMessage | null => {
   const eventId = event.event.event_id
   const deletedBy = event.getUnsigned().redacted_because?.sender
+  const authorDisplayName = user.displayName ?? user.userId
 
   if (eventId === undefined || deletedBy === undefined) {
     return null
@@ -398,10 +400,9 @@ const convertToMessageDeletedProps = (
   return {
     kind: MessageKind.Text,
     data: {
-      authorAvatarUrl: getImageUrl(user.avatarUrl ?? null, client),
-      authorDisplayName: user.displayName ?? user.userId,
-      authorDisplayNameColor: "",
-      id: eventId,
+      authorAvatarUrl: getImageUrl(user.avatarUrl, client),
+      authorDisplayName,
+      authorDisplayNameColor: stringToColor(authorDisplayName),
       onAuthorClick: () => {},
       text,
       timestamp,

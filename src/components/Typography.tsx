@@ -2,11 +2,11 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export enum TypographyVariant {
-  H1 = "text-3xl",
-  H2 = "text-2xl",
-  H3 = "text-xl",
-  P = "text-xs",
-  Span = "text-sm",
+  H1,
+  H2,
+  H3,
+  P,
+  Span,
 }
 
 export type TypographyProps = {
@@ -15,8 +15,7 @@ export type TypographyProps = {
   children?: React.ReactNode
 }
 
-// TODO: Add proper return type.
-function getTagFromVariant(variant: TypographyVariant) {
+function getTagFromVariant(variant: TypographyVariant): JSX.ElementType {
   switch (variant) {
     case TypographyVariant.H1:
       return "h1"
@@ -39,7 +38,21 @@ const Typography: FC<TypographyProps> = ({
   const Component = getTagFromVariant(variant)
 
   return (
-    <Component className={twMerge(className, variant)}>{children}</Component>
+    <Component
+      className={twMerge(
+        className,
+        variant === TypographyVariant.H1
+          ? "text-3xl"
+          : variant === TypographyVariant.H2
+            ? "text-2xl"
+            : variant === TypographyVariant.H3
+              ? "text-xl"
+              : variant === TypographyVariant.P
+                ? "text-xs"
+                : "text-sm"
+      )}>
+      {children}
+    </Component>
   )
 }
 
