@@ -64,6 +64,20 @@ const useActiveRoom = () => {
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [members, setMembers] = useState<RosterUserProps[]>([])
 
+  const fetchRoomData = useCallback(async () => {
+    if (activeRoom === null || client === null) {
+      return
+    }
+
+    setMembers([])
+    const newMembers = await getRoomMembers(client, activeRoom)
+    setMembers(newMembers)
+
+    setMessages([])
+    const newMessages = await handleRoomEvents(client, activeRoom)
+    setMessages(newMessages)
+  }, [activeRoom, client])
+
   useEffect(() => {
     if (client === null || activeRoomId === null) {
       return
@@ -76,19 +90,8 @@ const useActiveRoom = () => {
     }
 
     setActiveRoom(room)
-  }, [client, activeRoomId])
-
-  useEffect(() => {
-    if (activeRoom === null || client === null) {
-      return
-    }
-
-    setMembers(getRoomMembers(client, activeRoom))
-
-    void handleRoomEvents(client, activeRoom).then(messagesAndEvents => {
-      setMessages(messagesAndEvents)
-    })
-  }, [activeRoom, client])
+    void fetchRoomData()
+  }, [client, activeRoomId, fetchRoomData])
 
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId !== activeRoomId || client === null) {
@@ -499,15 +502,23 @@ const handleGuestAccessEvent = async (
   event: MatrixEvent
 ): Promise<AnyMessage | null> => {
   let text: string | null = null
+  const guestAccess = event.getContent().guest_access
 
-  // TODO: Handle here other types of guest_access
-  switch (event.getContent().guest_access) {
+  switch (guestAccess) {
     case "can_join":
       text = `${user} authorized anyone to join the room`
       break
     case "forbidden":
       text = `${user} has prohibited guests from joining the room`
       break
+    case "restricted":
+      text = `${user} restricted guest access to the room. Only guests with valid tokens can join.`
+      break
+    case "knock":
+      text = `${user} enabled "knocking" for guests. Guests must request access to join.`
+      break
+    default:
+      console.warn("Unknown guest access type:", guestAccess)
   }
 
   const eventId = event.event.event_id
@@ -533,7 +544,6 @@ const handleJoinRulesEvent = async (
 ): Promise<AnyMessage | null> => {
   let text: string | null = null
 
-  // TODO: Handle here other types of join_rule
   switch (event.getContent().join_rule) {
     case "invite":
       text = `${user} restricted the room to guests`
@@ -541,6 +551,11 @@ const handleJoinRulesEvent = async (
     case "public":
       text = `${user} made the room public to anyone who knows the link.`
       break
+    case "private":
+      text = `${user} made the room private. Only admins can invite now.`
+      break
+    default:
+      console.warn("Unknown join rule:", event.getContent().join_rule)
   }
 
   const eventId = event.event.event_id

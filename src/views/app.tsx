@@ -7,6 +7,7 @@ import UserBar from "@/components/UserBar"
 import RoomsList from "@/containers/RoomsList"
 import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 import useConnection from "@/hooks/matrix/useConnection"
+import {ViewPath} from "@/utils/util"
 import {useEffect, type FC} from "react"
 import {useNavigate} from "react-router-dom"
 
@@ -21,8 +22,14 @@ const AppView: FC = () => {
       return
     }
 
-    void connect(credentials)
-  }, [connect, credentials])
+    void connect(credentials).then(async connectedAndSynced => {
+      if (connectedAndSynced) {
+        return
+      }
+
+      navigate(ViewPath.Login)
+    })
+  }, [connect, credentials, disconnect, navigate])
 
   return (
     <div className="flex size-full flex-row">
