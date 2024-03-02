@@ -99,7 +99,7 @@ export async function uploadFileToMatrix(
   const content = file.content
   const response = await fetch(content)
   const blob = await response.blob()
-  const dimensions = await getImageDimensions(content)
+  const image = await getImage(content)
 
   try {
     const uploadResponse = await client.uploadContent(blob, {
@@ -109,7 +109,12 @@ export async function uploadFileToMatrix(
     return {
       matrixUrl: uploadResponse.content_uri,
       filename: file.name,
-      info: {...dimensions, mimetype: blob.type, size: blob.size},
+      info: {
+        w: image.width,
+        h: image.height,
+        mimetype: blob.type,
+        size: blob.size,
+      },
     }
   } catch (error) {
     console.error("Error uploading image:", error)
@@ -118,19 +123,12 @@ export async function uploadFileToMatrix(
   return null
 }
 
-export type ImageDimensions = {
-  w: number
-  h: number
-}
-
-export async function getImageDimensions(
-  data: string
-): Promise<ImageDimensions> {
+export async function getImage(data: string): Promise<HTMLImageElement> {
   return await new Promise(resolve => {
     const img = new Image()
 
     img.onload = () => {
-      resolve({w: img.width, h: img.height})
+      resolve(img)
     }
 
     img.src = data
@@ -171,43 +169,77 @@ export function deleteMessage(
   })
 }
 
-export function getRoomMembers(
+export async function getRoomMembers(
   client: MatrixClient,
   activeRoom: Room
-): RosterUserProps[] {
+): Promise<RosterUserProps[]> {
   const membersProp: RosterUserProps[] = []
+  const joinedMembers = await client.getJoinedRoomMembers(activeRoom.roomId)
 
-  const powerLevelsEvent = activeRoom
+  const roomState = activeRoom
     .getLiveTimeline()
     .getState(EventTimeline.FORWARDS)
-    ?.getStateEvents("m.room.power_levels", "")
 
-  if (powerLevelsEvent === null) {
+  if (roomState === null || roomState === undefined) {
     return []
   }
 
-  const joinedMembers = activeRoom.getJoinedMembers()
-  const powerLevels = powerLevelsEvent?.getContent().users as string[]
+  const powerLevels = roomState
+    .getStateEvents("m.room.power_levels", "")
+    ?.getContent().users as string[]
+
   const adminUsersId = Object.keys(powerLevels)
 
-  for (const member of joinedMembers) {
-    const powerLevel = adminUsersId.includes(member.userId)
-      ? UserPowerLevel.Admin
-      : UserPowerLevel.Member
+  for (const adminId of adminUsersId) {
+    const user = client.getUser(adminId)
+    const displayName = user?.displayName ?? user?.userId
+
+    if (user === null || displayName === undefined) {
+      continue
+    }
 
     membersProp.push({
       userProfileProps: {
-        avatarUrl:
-          getImageUrl(member.getMxcAvatarUrl() ?? null, client) ?? undefined,
+        avatarUrl: getImageUrl(user.avatarUrl, client),
         text: "Online",
-        displayName: member.name,
-        displayNameColor: "",
+        displayName,
+        displayNameColor: stringToColor(displayName),
         status: UserStatus.Online,
       },
-      powerLevel,
+      powerLevel: UserPowerLevel.Admin,
       onClick: () => {},
-      userId: member.userId,
+      userId: adminId,
     })
+  }
+
+  let memberCount = 0
+
+  for (const userId in joinedMembers.joined) {
+    if (memberCount >= 20) {
+      break
+    }
+
+    if (adminUsersId.includes(userId)) {
+      continue
+    }
+
+    const member = joinedMembers.joined[userId]
+    const displayName = member.display_name ?? userId
+
+    membersProp.push({
+      userProfileProps: {
+        avatarUrl: getImageUrl(member.avatar_url, client),
+        text: "Online",
+        displayName,
+        displayNameColor: stringToColor(displayName),
+        status: UserStatus.Online,
+      },
+      powerLevel: UserPowerLevel.Member,
+      onClick: () => {},
+      userId,
+    })
+
+    memberCount++
   }
 
   return membersProp
@@ -225,4 +257,13 @@ export function stringToColor(str: string): string {
     color += ("00" + value.toString(16)).slice(-2)
   }
   return color
+}
+
+export function processDisplayname(displayname: string): string {
+  return displayname
+    .trim()
+    .toLowerCase()
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
 }

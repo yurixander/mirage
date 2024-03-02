@@ -2,7 +2,7 @@ import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import Avatar from "boring-avatars"
 import {type FC} from "react"
-import {assert, trim, validateUrl} from "../utils/util"
+import {assert, processDisplayname, trim, validateUrl} from "../utils/util"
 import {twMerge} from "tailwind-merge"
 
 export enum UserActivity {
@@ -135,7 +135,7 @@ const UserProfile: FC<UserProfileProps> = ({
         <div
           style={{color: displayNameColor}}
           className="text-base font-semibold leading-[100%]">
-          {trim(displayName, MAX_DISPLAY_NAME_LENGTH)}
+          {trim(processDisplayname(displayName), MAX_DISPLAY_NAME_LENGTH)}
         </div>
 
         <div className="flex items-center">
