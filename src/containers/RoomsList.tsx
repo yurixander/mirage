@@ -2,63 +2,24 @@ import {useMemo, type FC} from "react"
 import Label from "../components/Label"
 import useRooms from "@/hooks/matrix/useRooms"
 import Room, {RoomType} from "@/components/Room"
-import {NotificationCountType} from "matrix-js-sdk"
-import useSpaceRooms from "@/hooks/matrix/useSpaceRooms"
 
 const RoomsList: FC = () => {
-  const {rooms, directRooms, activeRoomId, setActiveRoomId} = useRooms()
-  const {childRooms, childDirectRooms, activeSpaceId} = useSpaceRooms()
-
-  const directRoomElements = useMemo(
-    () =>
-      (activeSpaceId === null ? directRooms : childDirectRooms)?.map(
-        (room, index) => (
-          <Room
-            key={index}
-            name={room.name}
-            type={RoomType.Text}
-            isActive={activeRoomId === room.roomId}
-            containsUnreadMessages={
-              room.getUnreadNotificationCount(NotificationCountType.Total) > 0
-            }
-            mentionCount={room.getUnreadNotificationCount(
-              NotificationCountType.Highlight
-            )}
-            onClick={() => {
-              setActiveRoomId(room.roomId)
-            }}
-          />
-        )
-      ),
-    [
-      activeRoomId,
-      activeSpaceId,
-      childDirectRooms,
-      directRooms,
-      setActiveRoomId,
-    ]
-  )
+  const {rooms} = useRooms()
 
   const roomElements = useMemo(
     () =>
-      (activeSpaceId === null ? rooms : childRooms)?.map((room, index) => (
-        <Room
-          key={index}
-          name={room.name}
-          type={RoomType.Text}
-          isActive={activeRoomId === room.roomId}
-          containsUnreadMessages={
-            room.getUnreadNotificationCount(NotificationCountType.Total) > 0
-          }
-          mentionCount={room.getUnreadNotificationCount(
-            NotificationCountType.Highlight
-          )}
-          onClick={() => {
-            setActiveRoomId(room.roomId)
-          }}
-        />
-      )),
-    [childRooms, rooms, activeRoomId, setActiveRoomId, activeSpaceId]
+      rooms
+        .filter(room => room.type === RoomType.Group)
+        .map((room, index) => <Room key={index} {...room} />),
+    [rooms]
+  )
+
+  const directRoomElements = useMemo(
+    () =>
+      rooms
+        .filter(room => room.type === RoomType.Direct)
+        .map((room, index) => <Room key={index} {...room} />),
+    [rooms]
   )
 
   return (

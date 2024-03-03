@@ -19,17 +19,15 @@ import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {
   deleteMessage,
   getImageUrl,
-  getRoomMembers,
   stringToColor,
 } from "@/utils/util"
-import {type RosterUserProps} from "@/components/RosterUser"
 
 type ActiveRoomIdStore = {
   activeRoomId: string | null
   setActiveRoomId: (roomId: string) => void
 }
 
-const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
+export const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
   activeRoomId: null,
   setActiveRoomId: roomId => {
     set(_state => ({activeRoomId: roomId}))
@@ -62,21 +60,6 @@ const useActiveRoom = () => {
   const [activeRoom, setActiveRoom] = useState<Room | null>(null)
   const [messages, setMessages] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
-  const [members, setMembers] = useState<RosterUserProps[]>([])
-
-  const fetchRoomData = useCallback(async () => {
-    if (activeRoom === null || client === null) {
-      return
-    }
-
-    setMembers([])
-    const newMembers = await getRoomMembers(client, activeRoom)
-    setMembers(newMembers)
-
-    setMessages([])
-    const newMessages = await handleRoomEvents(client, activeRoom)
-    setMessages(newMessages)
-  }, [activeRoom, client])
 
   useEffect(() => {
     if (client === null || activeRoomId === null) {
@@ -90,8 +73,12 @@ const useActiveRoom = () => {
     }
 
     setActiveRoom(room)
-    void fetchRoomData()
-  }, [client, activeRoomId, fetchRoomData])
+    setMessages([])
+
+    void handleRoomEvents(client, room).then(newMessages => {
+      setMessages(newMessages)
+    })
+  }, [client, activeRoomId])
 
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId !== activeRoomId || client === null) {
@@ -181,7 +168,6 @@ const useActiveRoom = () => {
     typingUsers,
     sendEventTyping,
     client,
-    members,
     deleteMessage,
   }
 }

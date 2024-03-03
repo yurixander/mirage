@@ -14,17 +14,19 @@ const Navigation: FC<NavigationProps> = ({className}) => {
   const {spaces, activeSpaceId, setActiveSpaceId, client} = useSpaces()
 
   const spaceElements = useMemo(() => {
-    if (client === null) return
+    if (client === null || spaces === null) {
+      return []
+    }
 
-    return spaces?.map((server, index) => (
+    return spaces.map((server, index) => (
       <ServerListItem
         avatarUrl={getImageUrl(server.getMxcAvatarUrl(), client)}
         key={index}
         isActive={server.roomId === activeSpaceId}
+        tooltip={server.normalizedName}
         onClick={() => {
           setActiveSpaceId(server.roomId)
         }}
-        tooltip={server.normalizedName}
       />
     ))
   }, [activeSpaceId, client, setActiveSpaceId, spaces])
@@ -37,7 +39,11 @@ const Navigation: FC<NavigationProps> = ({className}) => {
       )}>
       <div className="flex flex-col">
         <div className="m-2 flex flex-col items-center">
-          <AppLogo onClick={() => {}} />
+          <AppLogo
+            onClick={() => {
+              /* TODO: Handle here logo onClick */
+            }}
+          />
 
           <div className="flex items-end font-iowan">
             <div>Mirage</div>
@@ -56,7 +62,9 @@ const Navigation: FC<NavigationProps> = ({className}) => {
             }}
             tooltip="All rooms"
           />
+
           {spaceElements}
+
           <div className="flex w-full justify-center">
             <AddServerIcon
               className="size-serverSize"
