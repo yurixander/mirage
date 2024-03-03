@@ -1,4 +1,4 @@
-import {faHashtag, faStarOfLife} from "@fortawesome/free-solid-svg-icons"
+import {faHashtag} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {type FC} from "react"
 import {assert, trim} from "../utils/util"
@@ -6,11 +6,13 @@ import NotificationIndicator from "./NotificationIndicator"
 import {twMerge} from "tailwind-merge"
 
 export enum RoomType {
-  Text,
+  Direct,
+  Group,
   Space,
 }
 
 export type RoomProps = {
+  roomId: string
   name: string
   type: RoomType
   isActive: boolean
@@ -21,7 +23,6 @@ export type RoomProps = {
 
 const Room: FC<RoomProps> = ({
   name,
-  type,
   isActive,
   containsUnreadMessages,
   mentionCount,
@@ -31,8 +32,6 @@ const Room: FC<RoomProps> = ({
 
   // Determine CSS class to apply based on the active state of the room.
   const activeClass = isActive ? "text-purple-500" : "text-gray-300"
-
-  const icon = type === RoomType.Text ? faHashtag : faStarOfLife
   const mentionCountProp = mentionCount > 0 ? mentionCount : undefined
   const MAX_NAME_LENGTH = 16
 
@@ -43,7 +42,7 @@ const Room: FC<RoomProps> = ({
       <div className="w-full">
         <div className="group w-max group-active:scale-90 group-active:transition group-active:duration-300">
           <FontAwesomeIcon
-            icon={icon}
+            icon={faHashtag}
             className={twMerge(
               "mr-3 group-active:transition-colors group-active:duration-1000 group-active:text-purple-500",
               activeClass

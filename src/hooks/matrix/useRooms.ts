@@ -1,30 +1,40 @@
 import useConnection from "@/hooks/matrix/useConnection"
-import {RoomEvent, type Room} from "matrix-js-sdk"
+import {NotificationCountType, type Room, RoomEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
-import useActiveRoom from "./useActiveRoom"
+import {useActiveRoomIdStore} from "./useActiveRoom"
 import useEventListener from "./useEventListener"
-import {getJustDirectRooms} from "@/utils/util"
+import {getJustDirectRoomsId, getRoomsFromSpace} from "@/utils/util"
+import {RoomType, type RoomProps} from "@/components/Room"
+import {useActiveSpaceIdStore} from "./useSpaces"
 
 const useRooms = () => {
-  // CONSIDER: Replacing this logic with usage of `useSyncedMap`.
-  const [rooms, setRooms] = useState<Room[] | null>(null)
-  const [directRooms, setDirectRooms] = useState<Room[] | null>(null)
-  const {client, syncState} = useConnection()
-  const {setActiveRoomId, activeRoomId, activeRoom} = useActiveRoom()
+  const [rooms, setRooms] = useState<RoomProps[]>([])
+  const {client} = useConnection()
+  const {activeSpaceId} = useActiveSpaceIdStore()
+  const {setActiveRoomId, activeRoomId} = useActiveRoomIdStore()
 
-  const updateRoom = useCallback(
-    (updatedRoom: Room) => {
-      const roomsUpdated =
-        rooms?.map(room => {
-          if (room.roomId === updatedRoom.roomId) {
-            return updatedRoom
+  const updateRoom = useCallback((updatedRoom: Room) => {
+    setRooms(prevRooms => {
+      const roomsUpdated = prevRooms.map(room => {
+        if (room.roomId === updatedRoom.roomId) {
+          return {
+            ...room,
+            name: updatedRoom.name,
+            containsUnreadMessages:
+              updatedRoom.getUnreadNotificationCount(
+                NotificationCountType.Total
+              ) > 0,
+            mentionCount: updatedRoom.getUnreadNotificationCount(
+              NotificationCountType.Highlight
+            ),
           }
-          return room
-        }) ?? null
-      setRooms(roomsUpdated)
-    },
-    [rooms]
-  )
+        }
+
+        return room
+      })
+      return roomsUpdated
+    })
+  }, [])
 
   // Initial gathering of rooms, when a connection is
   // established or re-established.
@@ -35,23 +45,42 @@ const useRooms = () => {
       return
     }
 
-    const storeRooms = client.getRooms()
-    const directRooms = getJustDirectRooms(storeRooms, client)
-    const defaultRooms = storeRooms.filter(
-      room => !room.isSpaceRoom() && !directRooms.includes(room)
-    )
+    const storeRooms =
+      activeSpaceId === null
+        ? client.getRooms()
+        : getRoomsFromSpace(activeSpaceId, client)
 
-    setDirectRooms(directRooms)
-    setRooms(defaultRooms)
-  }, [client, syncState])
+    const directRoomIds = getJustDirectRoomsId(client)
+    setRooms([])
 
-  useEffect(() => {
-    if (activeRoom === null) {
-      return
+    for (const room of storeRooms) {
+      if (room.isSpaceRoom()) {
+        continue
+      }
+
+      const roomType = directRoomIds.includes(room.roomId)
+        ? RoomType.Direct
+        : RoomType.Group
+
+      setRooms(prevOtherRooms => [
+        ...prevOtherRooms,
+        {
+          roomId: room.roomId,
+          name: room.name,
+          containsUnreadMessages:
+            room.getUnreadNotificationCount(NotificationCountType.Total) > 0,
+          mentionCount: room.getUnreadNotificationCount(
+            NotificationCountType.Highlight
+          ),
+          isActive: activeRoomId === room.roomId,
+          type: roomType,
+          onClick: () => {
+            setActiveRoomId(room.roomId)
+          },
+        },
+      ])
     }
-
-    updateRoom(activeRoom)
-  }, [activeRoom, activeRoomId])
+  }, [activeRoomId, activeSpaceId, client, setActiveRoomId])
 
   useEventListener(RoomEvent.Timeline, (_event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId === activeRoomId || client === null) {
@@ -61,7 +90,7 @@ const useRooms = () => {
     updateRoom(room)
   })
 
-  return {rooms, directRooms, activeRoomId, setActiveRoomId}
+  return {rooms, activeRoomId, setActiveRoomId}
 }
 
 export default useRooms

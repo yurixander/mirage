@@ -10,7 +10,7 @@ import RosterUser, {UserPowerLevel} from "./RosterUser"
 import {type UserProfileProps} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 import {twMerge} from "tailwind-merge"
-import useActiveRoom from "@/hooks/matrix/useActiveRoom"
+import useRoomMembers from "@/hooks/matrix/useRoomMembers"
 
 export enum RosterUserCategory {
   Admin,
@@ -27,7 +27,7 @@ export type RosterProps = {
 }
 
 const Roster: FC<RosterProps> = ({className}) => {
-  const {members} = useActiveRoom()
+  const {members} = useRoomMembers()
 
   const joinedMembersElement = useMemo(
     () =>

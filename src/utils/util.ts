@@ -135,27 +135,46 @@ export async function getImage(data: string): Promise<HTMLImageElement> {
   })
 }
 
-export function getJustDirectRooms(
-  rooms: Room[],
-  client: MatrixClient
-): Room[] {
-  const roomsDirect: Room[] = []
+export function getJustDirectRoomsId(client: MatrixClient): string[] {
   const directRooms = client.getAccountData("m.direct")
   const content = directRooms?.event.content
 
   if (content === undefined) {
-    return roomsDirect
+    return []
   }
 
-  const directRoomIds = Object.values(content).flat()
+  return Object.values(content).flat()
+}
 
-  for (const room of rooms) {
-    if (directRoomIds.includes(room.roomId) && !room.isSpaceRoom()) {
-      roomsDirect.push(room)
+export function getRoomsFromSpace(
+  spaceId: string,
+  client: MatrixClient
+): Room[] {
+  const space = client.getRoom(spaceId)
+
+  if (space === null || !space.isSpaceRoom()) {
+    throw new Error("The space is not valid.")
+  }
+
+  const childEvents = space
+    .getLiveTimeline()
+    .getState(EventTimeline.FORWARDS)
+    ?.events.get("m.space.child")
+
+  if (childEvents === undefined) {
+    throw new Error("The selected space does not have associated child rooms.")
+  }
+
+  const rooms: Room[] = []
+  for (const [stateKey] of childEvents) {
+    const room = client.getRoom(stateKey)
+
+    if (room !== null) {
+      rooms.push(room)
     }
   }
 
-  return roomsDirect
+  return rooms
 }
 
 // TODO: Handle that can delete message just the administrators or the user

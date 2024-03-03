@@ -38,21 +38,21 @@ const AppView: FC = () => {
 
         <QuickActions
           className="p-4"
-          onViewDirectMessages={function (): void {
+          onViewDirectMessages={() => {
             throw new Error("Function not implemented.")
           }}
-          onViewCalls={function (): void {
+          onViewCalls={() => {
             throw new Error("Function not implemented.")
           }}
-          onViewNotifications={function (): void {
+          onViewNotifications={() => {
             throw new Error("Function not implemented.")
           }}
-          onOpenExtensions={function (): void {
+          onOpenExtensions={() => {
             throw new Error("Function not implemented.")
           }}
-          onLogout={function (): void {
+          onLogout={() => {
             void disconnect()
-            navigate("/login")
+            navigate(ViewPath.Login)
           }}
         />
       </div>
@@ -66,11 +66,11 @@ const AppView: FC = () => {
             }}
           />
         </div>
+
         <RoomsList />
         <UserBar className="border-t border-t-stone-200 p-3" />
       </div>
 
-      {/* TODO: Check why the chat list is becoming overflowing */}
       <ChatContainer className="w-full grow" />
       <Roster className="max-w-max grow" />
     </div>
