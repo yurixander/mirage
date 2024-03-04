@@ -22,18 +22,18 @@ const RadioGroup: FC<RadioGroupProps> = ({
     item => item.isChecked
   )
 
-  const directionClassName =
+  const directionClass =
     isColum === RadioGroupDirection.Column ? "flex-col" : "flex-row"
 
   return (
-    <div className={twMerge("flex gap-3", directionClassName)}>
-      {items.map((item, index) => (
+    <div className={twMerge("flex gap-3", directionClass)}>
+      {items.map((props, index) => (
         <RadioButton
           key={index}
-          {...item}
-          isChecked={item === selectedItem}
+          {...props}
+          isChecked={props === selectedItem}
           onClick={() => {
-            handleSelectionChange(item)
+            handleSelectionChange(props)
           }}
         />
       ))}

@@ -22,7 +22,7 @@ const useSpaces = () => {
 
   useEffect(() => {
     if (client === null) {
-      console.info("Client is null; cannot fetch spaces.")
+      console.debug("Client is null; cannot fetch spaces.")
 
       return
     }

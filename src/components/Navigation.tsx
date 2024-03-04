@@ -4,7 +4,7 @@ import useSpaces from "@/hooks/matrix/useSpaces"
 import {twMerge} from "tailwind-merge"
 import AppLogo from "./AppLogo"
 import {getImageUrl} from "@/utils/util"
-import AddServerIcon from "./AddServerIcon"
+import AddServerIcon from "../icons/AddServerIcon"
 
 export type NavigationProps = {
   className?: string

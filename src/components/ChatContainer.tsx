@@ -53,7 +53,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   const sendImageMessage = useCallback(async () => {
     await sendImageMessageFromFile(filesContent[0], client, activeRoomId)
-
     clear()
   }, [activeRoomId, clear, client, filesContent])
 
@@ -82,8 +81,9 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter")
-      if (event.ctrlKey) setValue(value + "\n")
-      else {
+      if (event.ctrlKey) {
+        setValue(value + "\n")
+      } else {
         event.preventDefault()
         void sendTextMessage(MsgType.Text, value)
         setValue("")
@@ -129,7 +129,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           "flex h-screen flex-col gap-4 border-[1px] border-solid border-stone-200",
           className
         )}>
-        <header className="flex items-center gap-4 border-b-[1px] border-solid border-b-stone-200 p-4">
+        <header className="flex items-center gap-4 border-b border-solid border-b-stone-200 p-4">
           <div className="flex w-full gap-1">
             <FontAwesomeIcon icon={faHashtag} className="text-purple-500" />
 
@@ -162,6 +162,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
             icon={faEllipsisV}
           />
         </header>
+
         <div
           ref={scrollRef => {
             if (scrollRef === null) {
@@ -240,7 +241,8 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
             {typingUsers.length > 0 && <TypingIndicator users={typingUsers} />}
           </div>
         </div>
-        <div className="flex items-center justify-end gap-4 border-t-[1px] border-solid border-t-stone-200 bg-neutral-50 p-[5px]">
+
+        <div className="flex items-center justify-end gap-4 border-t border-solid border-t-stone-200 bg-neutral-50 p-[5px]">
           <SmartAction
             icon={faStarOfLife}
             text="Quick menu"

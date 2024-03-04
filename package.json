@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build:storybook": "storybook build",
     "format": "prettier --write .",
     "lint": "eslint --fix . --ext .ts,.tsx",
     "commit": "commit",

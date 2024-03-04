@@ -55,6 +55,7 @@ const DevPreview: FC = () => {
                 className="h-auto w-full rounded-lg object-cover shadow-md"
                 src={filesContent[0].content}
               />
+
               <div className="flex w-full items-center justify-end gap-1">
                 <Button
                   variant={ButtonVariant.Secondary}
@@ -63,6 +64,7 @@ const DevPreview: FC = () => {
                   }}
                   label={"Cancel"}
                 />
+
                 <Button
                   onClick={() => {
                     void sendImageMessage()
@@ -74,6 +76,7 @@ const DevPreview: FC = () => {
           </div>,
           document.getElementById("root") ?? document.body
         )}
+
       <IconButton
         onClick={() => {
           openFilePicker()

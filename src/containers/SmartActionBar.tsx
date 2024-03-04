@@ -4,7 +4,7 @@ import {faGlobeAmericas} from "@fortawesome/free-solid-svg-icons"
 import {SyncState} from "matrix-js-sdk"
 import {type FC} from "react"
 
-function getSyncStateText(syncState: SyncState | null): string {
+function getSyncStateText(syncState: SyncState | null) {
   // Haven't started initial connection yet.
   if (syncState === null) {
     return "Waiting"

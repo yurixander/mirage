@@ -30,7 +30,6 @@ const Room: FC<RoomProps> = ({
 }) => {
   assert(name.length !== 0, "room name should not be empty")
 
-  // Determine CSS class to apply based on the active state of the room.
   const activeClass = isActive ? "text-purple-500" : "text-gray-300"
   const mentionCountProp = mentionCount > 0 ? mentionCount : undefined
   const MAX_NAME_LENGTH = 16

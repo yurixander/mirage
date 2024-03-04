@@ -1,6 +1,6 @@
 /* eslint-disable tailwindcss/enforces-shorthand */
 import {type FC} from "react"
-import {processDisplayname, timeFormatter} from "../utils/util"
+import {cleanDisplayName, timeFormatter} from "../utils/util"
 import Avatar from "boring-avatars"
 
 export type MessageContainerProps = {
@@ -29,7 +29,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
       <Avatar
         size={40}
         square
-        name={processDisplayname(authorDisplayName)}
+        name={cleanDisplayName(authorDisplayName)}
         variant="beam"
       />
     )

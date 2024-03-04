@@ -2,7 +2,7 @@ import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import Avatar from "boring-avatars"
 import {type FC} from "react"
-import {assert, processDisplayname, trim, validateUrl} from "../utils/util"
+import {assert, cleanDisplayName, trim, validateUrl} from "../utils/util"
 import {twMerge} from "tailwind-merge"
 
 export enum UserActivity {
@@ -68,19 +68,19 @@ const UserProfile: FC<UserProfileProps> = ({
   }
 
   const MAX_DISPLAY_NAME_LENGTH = 12
-  let userStatusClassName: string
+  let userStatusClass: string
 
   switch (status) {
     case UserStatus.Online:
-      userStatusClassName = "bg-green-400"
+      userStatusClass = "bg-green-400"
 
       break
     case UserStatus.Offline:
-      userStatusClassName = "bg-gray-300"
+      userStatusClass = "bg-gray-300"
 
       break
     case UserStatus.Idle:
-      userStatusClassName = "bg-yellow-500"
+      userStatusClass = "bg-yellow-500"
 
       break
   }
@@ -126,7 +126,7 @@ const UserProfile: FC<UserProfileProps> = ({
           className={twMerge(
             "absolute rounded-[50%] border-[2px] border-solid border-neutral-50 translate-x-1/4 translate-y-1/4 right-0 bottom-0",
             isLarge ? "h-[17px] w-[17px]" : "h-[13px] w-[13px]",
-            userStatusClassName
+            userStatusClass
           )}
         />
       </div>
@@ -135,7 +135,7 @@ const UserProfile: FC<UserProfileProps> = ({
         <div
           style={{color: displayNameColor}}
           className="text-base font-semibold leading-[100%]">
-          {trim(processDisplayname(displayName), MAX_DISPLAY_NAME_LENGTH)}
+          {trim(cleanDisplayName(displayName), MAX_DISPLAY_NAME_LENGTH)}
         </div>
 
         <div className="flex items-center">
