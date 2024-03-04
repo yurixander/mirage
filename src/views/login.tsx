@@ -17,8 +17,8 @@ import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 import useConnection from "@/hooks/matrix/useConnection"
 import {ViewPath} from "@/utils/util"
 import {Link, useNavigate} from "react-router-dom"
-import AppLogo from "@/components/AppLogo"
 import {SyncState} from "matrix-js-sdk"
+import {ReactSVG} from "react-svg"
 
 const LoginView: FC = () => {
   const navigate = useNavigate()
@@ -82,7 +82,7 @@ const LoginView: FC = () => {
         <div className="flex grow flex-col justify-center gap-6 p-3">
           <div className="flex w-full justify-center">
             <div className="m-2 flex items-center">
-              <AppLogo className="size-6" onClick={() => {}} />
+              <ReactSVG src="public/logo-small.svg" />
 
               <div className="flex items-end font-iowan">
                 <div>Mirage</div>
@@ -187,7 +187,7 @@ const LoginView: FC = () => {
         </div>
 
         <div className="flex grow overflow-hidden rounded-xl">
-          <img className="object-fill" src="../../public/LoginPhoto.png" />
+          <img className="object-fill" src="public/LoginPhoto.png" />
         </div>
       </div>
     </div>
