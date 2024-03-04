@@ -2,9 +2,8 @@ import {useMemo, type FC} from "react"
 import ServerListItem from "./ServerListItem"
 import useSpaces from "@/hooks/matrix/useSpaces"
 import {twMerge} from "tailwind-merge"
-import AppLogo from "./AppLogo"
 import {getImageUrl} from "@/utils/util"
-import AddServerIcon from "../icons/AddServerIcon"
+import {ReactSVG} from "react-svg"
 
 export type NavigationProps = {
   className?: string
@@ -39,10 +38,9 @@ const Navigation: FC<NavigationProps> = ({className}) => {
       )}>
       <div className="flex flex-col">
         <div className="m-2 flex flex-col items-center">
-          <AppLogo
-            onClick={() => {
-              /* TODO: Handle here logo onClick */
-            }}
+          <ReactSVG
+            className="cursor-pointer"
+            src="public/logo.svg"
           />
 
           <div className="flex items-end font-iowan">
@@ -66,8 +64,9 @@ const Navigation: FC<NavigationProps> = ({className}) => {
           {spaceElements}
 
           <div className="flex w-full justify-center">
-            <AddServerIcon
-              className="size-serverSize"
+            <ReactSVG
+              className="size-serverSize cursor-pointer"
+              src="/public/icons/add-server.svg"
               onClick={function (): void {
                 throw new Error("Function not implemented.")
               }}
