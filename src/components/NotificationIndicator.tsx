@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/enforces-shorthand */
 import {type FC} from "react"
 import {assert} from "../utils/util"
 import {twMerge} from "tailwind-merge"
@@ -37,7 +36,7 @@ const NotificationIndicator: FC<NotificationIndicatorProps> = ({
       : undefined
 
   return (
-    <div className="flex h-[10px] w-[10px] items-center justify-center">
+    <div className="flex size-[10px] items-center justify-center">
       <div className={twMerge("inline-block text-neutral-50", isMentionClass)}>
         {adjustedAmount !== undefined && adjustedAmount}
       </div>

@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/enforces-shorthand */
 import {type FC} from "react"
 import LoadingEffect from "./LoadingEffect"
 
@@ -7,13 +6,13 @@ const UserProfilePlaceholder: FC = () => {
     <div>
       <div className="flex gap-1">
         <div className="relative">
-          <div className="relative h-[40px] w-[40px] overflow-hidden rounded-[10px] bg-neutral-300">
+          <div className="relative size-[40px] overflow-hidden rounded-[10px] bg-neutral-300">
             <LoadingEffect />
           </div>
 
           <div
             className={
-              "absolute bottom-0 right-0 h-[13px] w-[13px] translate-x-1/4 translate-y-1/4 rounded-[50%] border-[2px] border-solid border-neutral-50 bg-neutral-300"
+              "absolute bottom-0 right-0 size-[13px] translate-x-1/4 translate-y-1/4 rounded-[50%] border-[2px] border-solid border-neutral-50 bg-neutral-300"
             }
           />
         </div>

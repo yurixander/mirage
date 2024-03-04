@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/enforces-shorthand */
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {useState, type FC} from "react"
@@ -126,7 +125,7 @@ const Input: FC<InputProps> = ({
         {label !== undefined && <Label text={label} />}
 
         {icon && (
-          <div className="ml-[10px] h-[18px] w-[18px] text-neutral-200">
+          <div className="ml-[10px] size-[18px] text-neutral-200">
             <FontAwesomeIcon icon={icon} />
           </div>
         )}
@@ -163,7 +162,7 @@ const Input: FC<InputProps> = ({
               "text-constraintSize flex",
               constraint.pattern.test(value) ? "text-green-500" : "text-red-500"
             )}>
-            <div className="before:mr-[1ch] before:inline-block before:h-[1.2ch] before:w-[1.2ch] before:rounded-[50%] before:bg-current before:shadow-constraint before:shadow-current" />
+            <div className="before:mr-[1ch] before:inline-block before:size-[1.2ch] before:rounded-[50%] before:bg-current before:shadow-constraint before:shadow-current" />
             {constraint.message}
           </span>
         ))}
