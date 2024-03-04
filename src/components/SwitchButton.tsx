@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/enforces-shorthand */
 import useSelectionToggle from "@/hooks/util/useSelectionToggle"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
@@ -34,7 +33,7 @@ const SwitchButton: FC<SwitchButtonProps> = ({
           isSelected ? "bg-purple-500 justify-end" : "bg-gray-300",
           isDisabled ? "cursor-not-allowed" : "cursor-pointer"
         )}>
-        <div className="relative h-4 w-4 rounded-full bg-white shadow-md" />
+        <div className="relative size-4 rounded-full bg-white shadow-md" />
       </div>
       {label}
     </div>
