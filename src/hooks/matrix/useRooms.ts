@@ -51,6 +51,7 @@ const useRooms = () => {
         : getRoomsFromSpace(activeSpaceId, client)
 
     const directRoomIds = getDirectRoomsIds(client)
+    const newRooms: RoomProps[] = []
 
     for (const room of storeRooms) {
       if (room.isSpaceRoom()) {
@@ -61,24 +62,23 @@ const useRooms = () => {
         ? RoomType.Direct
         : RoomType.Group
 
-      setRooms(prev => [
-        ...prev,
-        {
-          roomId: room.roomId,
-          name: room.name,
-          containsUnreadMessages:
-            room.getUnreadNotificationCount(NotificationCountType.Total) > 0,
-          mentionCount: room.getUnreadNotificationCount(
-            NotificationCountType.Highlight
-          ),
-          isActive: activeRoomId === room.roomId,
-          type: roomType,
-          onClick: () => {
-            setActiveRoomId(room.roomId)
-          },
+      newRooms.push({
+        roomId: room.roomId,
+        name: room.name,
+        containsUnreadMessages:
+          room.getUnreadNotificationCount(NotificationCountType.Total) > 0,
+        mentionCount: room.getUnreadNotificationCount(
+          NotificationCountType.Highlight
+        ),
+        isActive: activeRoomId === room.roomId,
+        type: roomType,
+        onClick: () => {
+          setActiveRoomId(room.roomId)
         },
-      ])
+      })
     }
+
+    setRooms(newRooms)
   }, [activeRoomId, activeSpaceId, client, setActiveRoomId])
 
   useEventListener(RoomEvent.Timeline, (_event, room, _toStartOfTimeline) => {

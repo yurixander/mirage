@@ -1,7 +1,7 @@
 import {faReply, faShare, faTrash} from "@fortawesome/free-solid-svg-icons"
 import {useMemo, type FC} from "react"
 import ContextMenu from "./ContextMenu"
-import MessageContainer from "./MessageContainer"
+import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 
 export type TextMessageProps = {
   authorDisplayName: string
@@ -13,7 +13,7 @@ export type TextMessageProps = {
   onDeleteMessage?: () => void
 }
 
-const TextMessage: FC<TextMessageProps> = ({
+const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
   authorDisplayName,
   authorDisplayNameColor,
@@ -58,7 +58,7 @@ const TextMessage: FC<TextMessageProps> = ({
         authorAvatarUrl={authorAvatarUrl}
         timestamp={timestamp}
         onAuthorClick={onAuthorClick}>
-        <div className="max-w-messageMaxWidth select-text break-words leading-[160%]">
+        <div className="max-w-messageMaxWidth select-text break-words leading-160">
           {text}
         </div>
       </MessageContainer>

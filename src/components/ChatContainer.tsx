@@ -71,6 +71,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
   )
 
   useEffect(() => {
+    // Move scroll to last message.
     const textarea = textareaRef.current
 
     if (textarea !== null) {
