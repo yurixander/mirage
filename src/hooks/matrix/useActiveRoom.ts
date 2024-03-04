@@ -18,6 +18,7 @@ import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {deleteMessage, getImageUrl, stringToColor} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
+import {type MessageBaseProps} from "@/components/MessageContainer"
 
 export enum MessageKind {
   Text,
@@ -259,91 +260,48 @@ const handleMessagesEvent = async (
     return null
   }
 
+  const eventId = event.event.event_id
+  const authorDisplayName = user.displayName ?? user.userId
+
+  if (eventId === undefined) {
+    return null
+  }
+
+  const messageBaseProps: MessageBaseProps = {
+    authorAvatarUrl: getImageUrl(user.avatarUrl, client),
+    authorDisplayName,
+    authorDisplayNameColor: stringToColor(authorDisplayName),
+    id: eventId,
+    onAuthorClick: () => {},
+    text: eventContent.body,
+    timestamp,
+    onDeleteMessage: () => {
+      deleteMessage(client, roomId, eventId)
+    },
+  }
+
   switch (eventContent.msgtype) {
     case MsgType.Text: {
-      return convertEventToTextMessageProps(
-        client,
-        user,
-        timestamp,
-        event,
-        roomId
-      )
+      return {
+        kind: MessageKind.Text,
+        data: {
+          ...messageBaseProps,
+        },
+      }
     }
     case MsgType.Image: {
-      return convertEventToImageMessageProps(
-        client,
-        user,
-        timestamp,
-        event,
-        roomId
-      )
+      return {
+        kind: MessageKind.Image,
+        data: {
+          ...messageBaseProps,
+          imageUrl: getImageUrl(eventContent.url as string, client),
+        },
+      }
     }
     case undefined:
       return convertToMessageDeletedProps(client, user, timestamp, event)
     default:
       return null
-  }
-}
-
-const convertEventToImageMessageProps = (
-  client: MatrixClient,
-  user: User,
-  timestamp: number,
-  event: MatrixEvent,
-  roomId: string
-): AnyMessage | null => {
-  const eventId = event.event.event_id
-  const authorDisplayName = user.displayName ?? user.userId
-
-  if (eventId === undefined) {
-    return null
-  }
-
-  return {
-    kind: MessageKind.Image,
-    data: {
-      authorAvatarUrl: getImageUrl(user.avatarUrl, client),
-      authorDisplayName,
-      authorDisplayNameColor: stringToColor(authorDisplayName),
-      onAuthorClick: () => {},
-      text: "",
-      timestamp,
-      imageUrl: getImageUrl(event.getContent().url as string, client),
-      onDeleteMessage: () => {
-        deleteMessage(client, roomId, eventId)
-      },
-    },
-  }
-}
-
-const convertEventToTextMessageProps = (
-  client: MatrixClient,
-  user: User,
-  timestamp: number,
-  event: MatrixEvent,
-  roomId: string
-): AnyMessage | null => {
-  const eventId = event.event.event_id
-  const authorDisplayName = user.displayName ?? user.userId
-
-  if (eventId === undefined) {
-    return null
-  }
-
-  return {
-    kind: MessageKind.Text,
-    data: {
-      authorAvatarUrl: getImageUrl(user.avatarUrl, client),
-      authorDisplayName,
-      authorDisplayNameColor: stringToColor(authorDisplayName),
-      id: eventId,
-      onAuthorClick: () => {},
-      text: event.getContent().body,
-      timestamp,
-      onDeleteMessage: () => {
-        deleteMessage(client, roomId, eventId)
-      },
-    },
   }
 }
 
@@ -463,6 +421,7 @@ const handleMemberEvent = (
   }
 
   if (text === null) {
+    // If event is not handled or the event has error.
     return null
   }
 

@@ -7,19 +7,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import {useMemo, type FC} from "react"
 import ContextMenu from "./ContextMenu"
-import MessageContainer from "./MessageContainer"
+import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import {saveAs} from "file-saver"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
-export type ImageMessageProps = {
+export type ImageMessageProps = MessageBaseProps & {
   imageUrl?: string
-  authorDisplayName: string
-  authorDisplayNameColor: string
-  authorAvatarUrl?: string
-  text: string
-  timestamp: number
-  onAuthorClick: () => void
-  onDeleteMessage?: () => void
 }
 
 const ImageMessage: FC<ImageMessageProps> = ({
@@ -81,13 +74,13 @@ const ImageMessage: FC<ImageMessageProps> = ({
             className="text-red-500"
             icon={faCircleExclamation}
           />
-          <div className="leading-[160%]">
+          <div className="leading-160">
             The image uploaded by the user is currently unavailable.
           </div>
         </div>
       )}
 
-      <div className="max-w-messageMaxWidth select-text leading-[160%]">
+      <div className="max-w-messageMaxWidth select-text leading-160">
         {text}
       </div>
     </div>

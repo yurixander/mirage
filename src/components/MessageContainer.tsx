@@ -1,7 +1,17 @@
-/* eslint-disable tailwindcss/enforces-shorthand */
 import {type FC} from "react"
 import {cleanDisplayName, timeFormatter} from "../utils/util"
 import Avatar from "boring-avatars"
+
+export type MessageBaseProps = {
+  authorAvatarUrl?: string
+  authorDisplayName: string
+  authorDisplayNameColor: string
+  timestamp: number
+  id: string
+  text: string
+  onDeleteMessage: () => void
+  onAuthorClick: () => void
+}
 
 export type MessageContainerProps = {
   authorDisplayName: string
@@ -38,8 +48,8 @@ const MessageContainer: FC<MessageContainerProps> = ({
     <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">
         <div
-          className="flex h-[40px] w-[40px] cursor-pointer items-center
-          justify-center overflow-hidden rounded-lg bg-neutral-50"
+          className="flex size-[40px] cursor-pointer items-center justify-center
+          overflow-hidden rounded-lg bg-neutral-50"
           onClick={() => {
             onAuthorClick()
           }}>

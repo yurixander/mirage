@@ -18,7 +18,7 @@ const EventMessage: FC<EventMessageProps> = ({timestamp, text}) => {
         <FontAwesomeIcon icon={faPencil} className="text-neutral-200" />
       </div>
 
-      <div className="max-w-messageMaxWidth select-text whitespace-pre-line break-words italic leading-[160%]">
+      <div className="max-w-messageMaxWidth select-text whitespace-pre-line break-words italic leading-160">
         {text}
       </div>
 

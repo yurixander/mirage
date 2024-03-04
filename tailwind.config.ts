@@ -42,6 +42,9 @@ module.exports = {
         iowan: ["Iowan Old Style", "serif"],
         noto: ["Noto sans", "sans-serif"],
       },
+      lineHeight: {
+        "160": "160%",
+      },
     },
     animation: {
       "hold": "hold 200ms",
