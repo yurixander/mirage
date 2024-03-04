@@ -1,6 +1,6 @@
 import {faGear} from "@fortawesome/free-solid-svg-icons"
 import {useMemo, type FC} from "react"
-import {getImageUrl, getUsernameByUserID, trim} from "../utils/util"
+import {getImageUrl, trim} from "../utils/util"
 import IconButton from "./IconButton"
 import UserProfile, {type UserProfileProps, UserStatus} from "./UserProfile"
 import {twMerge} from "tailwind-merge"
@@ -9,6 +9,10 @@ import UserProfilePlaceholder from "./UserProfilePlaceholder"
 
 export type UserBarProps = {
   className?: string
+}
+
+export function getUsernameByUserId(userId: string): string {
+  return userId.replace(":matrix.org", "")
 }
 
 const UserBar: FC<UserBarProps> = ({className}) => {
@@ -28,12 +32,16 @@ const UserBar: FC<UserBarProps> = ({className}) => {
   const userData = useMemo(() => {
     const userID = client?.getUserId() ?? null
 
-    if (userID === null || client === null) return
+    if (userID === null || client === null) {
+      return
+    }
 
     const user = client?.getUser(userID)
     const avatarUrl = user?.avatarUrl
 
-    if (avatarUrl === undefined) return
+    if (avatarUrl === undefined) {
+      return
+    }
 
     const imgUrl = getImageUrl(avatarUrl, client)
     const displayName = user?.displayName ?? userID
@@ -41,7 +49,8 @@ const UserBar: FC<UserBarProps> = ({className}) => {
     const userBarProps: UserProfileProps = {
       avatarUrl: imgUrl,
       displayName: trim(displayName, MAX_NAME_LENGTH),
-      text: trim(getUsernameByUserID(userID), MAX_NAME_LENGTH),
+      text: trim(getUsernameByUserId(userID), MAX_NAME_LENGTH),
+      // TODO: Calculate color from the user's id.
       displayNameColor: "",
       status,
     }

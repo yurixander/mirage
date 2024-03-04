@@ -37,20 +37,19 @@ const Typography: FC<TypographyProps> = ({
 }) => {
   const Component = getTagFromVariant(variant)
 
+  const variantClass =
+    variant === TypographyVariant.H1
+      ? "text-3xl"
+      : variant === TypographyVariant.H2
+        ? "text-2xl"
+        : variant === TypographyVariant.H3
+          ? "text-xl"
+          : variant === TypographyVariant.P
+            ? "text-xs"
+            : "text-sm"
+
   return (
-    <Component
-      className={twMerge(
-        className,
-        variant === TypographyVariant.H1
-          ? "text-3xl"
-          : variant === TypographyVariant.H2
-            ? "text-2xl"
-            : variant === TypographyVariant.H3
-              ? "text-xl"
-              : variant === TypographyVariant.P
-                ? "text-xs"
-                : "text-sm"
-      )}>
+    <Component className={twMerge(className, variantClass)}>
       {children}
     </Component>
   )

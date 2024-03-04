@@ -96,9 +96,13 @@ const LoginView: FC = () => {
               Welcome Back
             </Typography>
 
-            <Typography>Enter your email and password to</Typography>
-            <Typography>access your account</Typography>
+            <Typography>
+              Enter your email and password to
+              <br />
+              access your account
+            </Typography>
           </div>
+
           <div className="flex size-full flex-col justify-center gap-2">
             <div className="flex w-full flex-col gap-1">
               <Typography variant={TypographyVariant.Span}>
@@ -114,6 +118,7 @@ const LoginView: FC = () => {
                 onValueChange={setBaseUrl}
               />
             </div>
+
             <div className="flex flex-col gap-1">
               <Typography variant={TypographyVariant.Span}>
                 Access token
@@ -124,6 +129,7 @@ const LoginView: FC = () => {
                 placeholder="syt_dGhlY3Jpc3M_PAmQdRhKFWPaexp_0iK0SN"
                 initialValue={accessToken}
                 onValueChange={setAccessToken}
+                icon={faKey}
                 actions={[
                   {
                     tooltip: isPasswordVisible ? "Hide token" : "Show token",
@@ -133,9 +139,9 @@ const LoginView: FC = () => {
                     },
                   },
                 ]}
-                icon={faKey}
               />
             </div>
+
             <div className="flex flex-col gap-1">
               <Typography variant={TypographyVariant.Span}>User ID</Typography>
 

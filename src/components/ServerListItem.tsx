@@ -42,9 +42,8 @@ const ServerListItem: FC<ServerListItemProps> = ({
         tabIndex={!isActive ? 0 : undefined}
         className={twMerge(
           "relative overflow-hidden box-border rounded-xl bg-red-500 ml-1 cursor-pointer size-serverSize focus-visible:rounded-lg group-active:animate-hold group-active:transform group-active:scale-75",
-          isActive
-            ? "border-[3px] border-solid border-purple-500 duration-200 transition shadow-serverSelected"
-            : ""
+          isActive &&
+            "border-[3px] border-solid border-purple-500 duration-200 transition shadow-serverSelected"
         )}
         onClick={onClick}>
         {avatarImage}

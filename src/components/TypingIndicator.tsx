@@ -30,9 +30,6 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   const MAX_VISIBLE_TYPING_USERS = 3
   const who = users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
 
-  const dotClass =
-    "h-[10px] w-[10px] animate-dot-jump rounded-[50%] bg-neutral-300"
-
   const typingUserElements = users.map(
     (user, index) =>
       user.avatarUrl && (
@@ -45,6 +42,9 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
         </div>
       )
   )
+
+  const dotClass =
+    "h-[10px] w-[10px] animate-dot-jump rounded-[50%] bg-neutral-300"
 
   return (
     <div className="inline-flex items-center gap-3">

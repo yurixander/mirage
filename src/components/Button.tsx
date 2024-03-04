@@ -38,24 +38,30 @@ const Button: FC<ButtonProps> = ({
   color,
   size,
 }) => {
+  const sizeClass =
+    size === ButtonSize.Small
+      ? "p-[5px] text-xs rounded-[5px] border-[1px] px-2"
+      : "rounded-[10px] border-[2px] p-[10px]"
+
+  const variantClass =
+    variant === ButtonVariant.Primary
+      ? color === ButtonColor.Black
+        ? "bg-black border-none text-white"
+        : "bg-purple-700 border-purple-900 text-white"
+      : variant === ButtonVariant.Secondary
+        ? "bg-purple-100 text-purple-800 border-none hover:bg-purple-200"
+        : variant === ButtonVariant.TextLink
+          ? color === ButtonColor.Black
+            ? "bg-none text-black hover:bg-stone-100 border-none underline"
+            : "bg-none text-purple-800 hover:bg-purple-100 border-none underline"
+          : "bg-purple-700 border-purple-900 text-white"
+
   return (
     <button
       className={twMerge(
         "flex box-border active:translate-y-[1px] origin-center cursor-pointer items-center justify-center border-solid font-strong outline-none disabled:translate-y-[1px]",
-        size === ButtonSize.Small
-          ? "p-[5px] text-xs rounded-[5px] border-[1px] px-2"
-          : "rounded-[10px] border-[2px] p-[10px]",
-        variant === ButtonVariant.Primary
-          ? color === ButtonColor.Black
-            ? "bg-black border-none text-white"
-            : "bg-purple-700 border-purple-900 text-white"
-          : variant === ButtonVariant.Secondary
-            ? "bg-purple-100 text-purple-800 border-none hover:bg-purple-200"
-            : variant === ButtonVariant.TextLink
-              ? color === ButtonColor.Black
-                ? "bg-none text-black hover:bg-stone-100 border-none underline"
-                : "bg-none text-purple-800 hover:bg-purple-100 border-none underline"
-              : "bg-purple-700 border-purple-900 text-white"
+        sizeClass,
+        variantClass
       )}
       disabled={isLoading ?? isDisabled}
       autoFocus={autoFocus}

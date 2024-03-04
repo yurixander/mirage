@@ -35,6 +35,7 @@ const RadioButton: FC<RadioButtonProps> = ({
           tabIndex={isDisabled ? undefined : 0}>
           {isChecked && <div className="h-2 w-2 rounded-full bg-purple-500" />}
         </div>
+
         <div className="ml-[3px]">{label}</div>
       </div>
     </>

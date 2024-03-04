@@ -38,6 +38,7 @@ const UserCard: FC<UserCardProps> = ({
           <div className="flex grow flex-col gap-4 bg-neutral-50 p-4">
             <div>
               <Label text="About me" />
+
               <span className="select-text text-xs">{aboutMe}</span>
             </div>
 
@@ -65,12 +66,13 @@ const UserCard: FC<UserCardProps> = ({
               size={ButtonSize.Small}
               onClick={onCancel}
             />
+
             <Button
               label="View messages ⟶"
               variant={ButtonVariant.Primary}
               size={ButtonSize.Small}
               onClick={() => {
-                /* TODO: Handle click on View messages button. */
+                // TODO: Handle click on View messages button.
               }}
             />
           </div>

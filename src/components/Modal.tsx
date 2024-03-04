@@ -25,8 +25,6 @@ const getPopupPositionClassName = (position?: ModalPosition): string => {
       return "items-end justify-center"
     case undefined:
       return "items-center justify-center"
-    default:
-      return "items-center justify-center"
   }
 }
 

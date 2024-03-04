@@ -1,11 +1,11 @@
 import useConnection from "@/hooks/matrix/useConnection"
 import {NotificationCountType, type Room, RoomEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
-import {useActiveRoomIdStore} from "./useActiveRoom"
 import useEventListener from "./useEventListener"
-import {getJustDirectRoomsId, getRoomsFromSpace} from "@/utils/util"
+import {getDirectRoomsIds, getRoomsFromSpace} from "@/utils/util"
 import {RoomType, type RoomProps} from "@/components/Room"
 import {useActiveSpaceIdStore} from "./useSpaces"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 
 const useRooms = () => {
   const [rooms, setRooms] = useState<RoomProps[]>([])
@@ -50,8 +50,7 @@ const useRooms = () => {
         ? client.getRooms()
         : getRoomsFromSpace(activeSpaceId, client)
 
-    const directRoomIds = getJustDirectRoomsId(client)
-    setRooms([])
+    const directRoomIds = getDirectRoomsIds(client)
 
     for (const room of storeRooms) {
       if (room.isSpaceRoom()) {
@@ -62,8 +61,8 @@ const useRooms = () => {
         ? RoomType.Direct
         : RoomType.Group
 
-      setRooms(prevOtherRooms => [
-        ...prevOtherRooms,
+      setRooms(prev => [
+        ...prev,
         {
           roomId: room.roomId,
           name: room.name,

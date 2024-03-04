@@ -13,26 +13,11 @@ import {
   type MatrixEvent,
 } from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
-import {create} from "zustand"
 import useEventListener from "./useEventListener"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
-import {
-  deleteMessage,
-  getImageUrl,
-  stringToColor,
-} from "@/utils/util"
-
-type ActiveRoomIdStore = {
-  activeRoomId: string | null
-  setActiveRoomId: (roomId: string) => void
-}
-
-export const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
-  activeRoomId: null,
-  setActiveRoomId: roomId => {
-    set(_state => ({activeRoomId: roomId}))
-  },
-}))
+import {deleteMessage, getImageUrl, stringToColor} from "@/utils/util"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 
 export enum MessageKind {
   Text,
@@ -55,14 +40,15 @@ type Message<Kind extends MessageKind> = {
 type AnyMessage = Message<MessageKind>
 
 const useActiveRoom = () => {
-  const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
+  const {activeRoomId} = useActiveRoomIdStore()
   const {client} = useConnection()
   const [activeRoom, setActiveRoom] = useState<Room | null>(null)
   const [messages, setMessages] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
+  const isMountedRef = useIsMountedRef()
 
   useEffect(() => {
-    if (client === null || activeRoomId === null) {
+    if (client === null || activeRoomId === null || !isMountedRef.current) {
       return
     }
 
@@ -73,12 +59,13 @@ const useActiveRoom = () => {
     }
 
     setActiveRoom(room)
-    setMessages([])
 
     void handleRoomEvents(client, room).then(newMessages => {
-      setMessages(newMessages)
+      if (isMountedRef.current) {
+        setMessages(newMessages)
+      }
     })
-  }, [client, activeRoomId])
+  }, [client, activeRoomId, isMountedRef])
 
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId !== activeRoomId || client === null) {
@@ -129,6 +116,7 @@ const useActiveRoom = () => {
         ...typingUsers,
         {
           displayName: member.name,
+          // TODO: Avoid using hard-coded color. Use a function to generate a color from the user ID.
           color: "#5CC679",
           avatarUrl: getImageUrl(member.getMxcAvatarUrl() ?? null, client),
         },
@@ -162,7 +150,6 @@ const useActiveRoom = () => {
   return {
     activeRoomId,
     activeRoom,
-    setActiveRoomId,
     messages,
     sendTextMessage,
     typingUsers,
@@ -381,6 +368,7 @@ const convertToMessageDeletedProps = (
   }
 
   const reason = event.getUnsigned().redacted_because?.content.reason
+
   const text =
     reason !== undefined
       ? `${deletedByUser} has delete this message because <<${reason}>>`
@@ -405,8 +393,6 @@ const handleMemberEvent = (
   client: MatrixClient,
   event: MatrixEvent
 ): AnyMessage | null => {
-  let text: string | null = null
-
   const prevContent = event.getUnsigned().prev_content
   const eventContent = event.getContent()
   const stateKey = event.getStateKey()
@@ -414,13 +400,14 @@ const handleMemberEvent = (
   const displayName = eventContent.displayname
   const prevMembership = prevContent?.membership
   const prevDisplayName = prevContent?.displayname
+  let text: string | null = null
 
   if (stateKey === undefined || eventId === undefined) {
     return null
   }
 
   switch (eventContent.membership) {
-    // TODO: Handle here other types of RoomMember events
+    // TODO: Handle here other types of RoomMember events.
     case "join": {
       if (prevMembership === "invite" || prevMembership !== "join") {
         text = `${user} has joined to the room`
@@ -450,23 +437,26 @@ const handleMemberEvent = (
     }
     case "invite":
       text = `${user} invited ${displayName}`
+
       break
     case "ban": {
       text = `${user} has banned ${prevDisplayName}: ${eventContent.reason}`
+
       break
     }
     case "leave": {
       switch (prevMembership) {
         case "invite":
           text = `${user} has canceled the invitation to ${prevDisplayName}`
+
           break
         case "ban":
           text = `${user} has removed the ban from ${client.getUser(stateKey)?.displayName}`
+
           break
         case "join":
           text = `${user} has left the room`
-          break
-        default:
+
           break
       }
     }
@@ -493,15 +483,19 @@ const handleGuestAccessEvent = async (
   switch (guestAccess) {
     case "can_join":
       text = `${user} authorized anyone to join the room`
+
       break
     case "forbidden":
       text = `${user} has prohibited guests from joining the room`
+
       break
     case "restricted":
       text = `${user} restricted guest access to the room. Only guests with valid tokens can join.`
+
       break
     case "knock":
       text = `${user} enabled "knocking" for guests. Guests must request access to join.`
+
       break
     default:
       console.warn("Unknown guest access type:", guestAccess)
@@ -533,12 +527,15 @@ const handleJoinRulesEvent = async (
   switch (event.getContent().join_rule) {
     case "invite":
       text = `${user} restricted the room to guests`
+
       break
     case "public":
       text = `${user} made the room public to anyone who knows the link.`
+
       break
     case "private":
       text = `${user} made the room private. Only admins can invite now.`
+
       break
     default:
       console.warn("Unknown join rule:", event.getContent().join_rule)
@@ -597,15 +594,19 @@ const handleHistoryVisibilityEvent = async (
   switch (event.getContent().history_visibility) {
     case "shared":
       content = `${user} made the future history of the room visible to all members of the room`
+
       break
     case "invited":
       content = `${user} made the room future history visible to all room members, from the moment they are invited.`
+
       break
     case "joined":
       content = `${user} made the room future history visible to all room members, from the moment they are joined.`
+
       break
     case "world_readable":
       content = `${user} made the future history of the room visible to anyone people.`
+
       break
   }
 
