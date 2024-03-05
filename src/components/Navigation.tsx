@@ -2,7 +2,7 @@ import {useMemo, type FC} from "react"
 import ServerListItem from "./ServerListItem"
 import useSpaces from "@/hooks/matrix/useSpaces"
 import {twMerge} from "tailwind-merge"
-import {getImageUrl} from "@/utils/util"
+import {StaticAssetPath, getImageUrl} from "@/utils/util"
 import {ReactSVG} from "react-svg"
 
 export type NavigationProps = {
@@ -38,10 +38,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
       )}>
       <div className="flex flex-col">
         <div className="m-2 flex flex-col items-center">
-          <ReactSVG
-            className="cursor-pointer"
-            src="public/logo.svg"
-          />
+          <ReactSVG className="cursor-pointer" src={StaticAssetPath.AppLogo} />
 
           <div className="flex items-end font-iowan">
             <div>Mirage</div>
@@ -66,7 +63,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
           <div className="flex w-full justify-center">
             <ReactSVG
               className="size-serverSize cursor-pointer"
-              src="/public/icons/add-server.svg"
+              src={StaticAssetPath.AddServerIcon}
               onClick={function (): void {
                 throw new Error("Function not implemented.")
               }}
