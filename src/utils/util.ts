@@ -10,6 +10,12 @@ export enum ViewPath {
   Development = "/dev",
 }
 
+export enum StaticAssetPath {
+  AppLogo = "public/logo.svg",
+  AppLogoSmall = "public/logo-small.svg",
+  AddServerIcon = "/public/icons/add-server.svg",
+}
+
 export type Credentials = {
   baseUrl: string
   accessToken: string
@@ -193,7 +199,8 @@ export async function getRoomMembers(
   activeRoom: Room
 ): Promise<RosterUserProps[]> {
   const membersProp: RosterUserProps[] = []
-  const joinedMembers = await client.getJoinedRoomMembers(activeRoom.roomId)
+  const joinedMembers = (await client.getJoinedRoomMembers(activeRoom.roomId))
+    .joined
 
   const roomState = activeRoom
     .getLiveTimeline()
@@ -207,20 +214,24 @@ export async function getRoomMembers(
     .getStateEvents("m.room.power_levels", "")
     ?.getContent().users as string[]
 
-  const adminUsersId = Object.keys(powerLevels)
+  const users = Object.entries(powerLevels)
+  const adminUsersId: string[] = []
 
-  for (const adminId of adminUsersId) {
-    const user = client.getUser(adminId)
-    const displayName = user?.displayName ?? user?.userId
+  const MIN_ADMIN_POWER_LEVEL = 50
 
-    if (user === null || displayName === undefined) {
+  for (const [adminId, powerLevel] of users) {
+    if (typeof powerLevel !== "number" || powerLevel < MIN_ADMIN_POWER_LEVEL) {
       continue
     }
+
+    adminUsersId.push(adminId)
+    const member = joinedMembers[adminId]
+    const displayName = member.display_name
 
     membersProp.push({
       // TODO: Use actual props instead of dummy data.
       userProfileProps: {
-        avatarUrl: getImageUrl(user.avatarUrl, client),
+        avatarUrl: getImageUrl(member.avatar_url, client),
         text: "Online",
         displayName,
         displayNameColor: stringToColor(displayName),
@@ -234,7 +245,7 @@ export async function getRoomMembers(
 
   let memberCount = 0
 
-  for (const userId in joinedMembers.joined) {
+  for (const userId in joinedMembers) {
     if (memberCount >= 20) {
       break
     }
@@ -243,7 +254,7 @@ export async function getRoomMembers(
       continue
     }
 
-    const member = joinedMembers.joined[userId]
+    const member = joinedMembers[userId]
     const displayName = member.display_name ?? userId
 
     membersProp.push({
