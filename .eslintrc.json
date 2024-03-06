@@ -11,8 +11,6 @@
   },
   "extends": [
     "standard-with-typescript",
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
     "eslint-config-prettier",
     "plugin:storybook/recommended",
     "plugin:tailwindcss/recommended",
@@ -27,7 +25,6 @@
       "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)", "*.ts', '*.tsx', '*.js"]
     }
   ],
-  "plugins": ["react"],
   "rules": {
     "@typescript-eslint/quotes": "off",
     "@typescript-eslint/no-unused-vars": "warn",

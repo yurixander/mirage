@@ -4,7 +4,9 @@ import TextMessage, {type TextMessageProps} from "../components/TextMessage"
 type Story = StoryObj<typeof TextMessage>
 
 const meta: Meta<typeof TextMessage> = {component: TextMessage}
-const render = (args: TextMessageProps) => <TextMessage {...args} />
+const render = (args: TextMessageProps) => (
+  <TextMessage {...args} onDeleteMessage={() => {}} />
+)
 
 export const Default: Story = {
   render,
@@ -16,6 +18,7 @@ export const Default: Story = {
     text: "Hello world!",
     timestamp: Date.now(),
     onAuthorClick: () => {},
+    onDeleteMessage() {},
   },
 }
 

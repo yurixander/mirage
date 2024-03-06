@@ -34,6 +34,13 @@ export default {
       test: /\.css$/,
       use: ["postcss-loader"],
       include: path.resolve(__dirname, '../'),
+      exclude: /node_modules/
+    });
+
+    config.module?.rules?.push({
+      test: /\.ts?$/,
+      use: "ts-loader",
+      exclude: /node_modules\/(?!matrix-js-sdk)/,
     });
 
     return config;

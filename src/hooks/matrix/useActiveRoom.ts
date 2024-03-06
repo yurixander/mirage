@@ -341,6 +341,7 @@ const convertToMessageDeletedProps = (
       onAuthorClick: () => {},
       text,
       timestamp,
+      id: eventId
     },
   }
 }

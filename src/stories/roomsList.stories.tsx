@@ -29,7 +29,7 @@ export const Default: Story = {
       },
       {
         name: "Lobby",
-        type: RoomType.Text,
+        type: RoomType.Direct,
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 2,
@@ -37,7 +37,7 @@ export const Default: Story = {
       },
       {
         name: "Invites only",
-        type: RoomType.Text,
+        type: RoomType.Group,
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 0,
@@ -45,7 +45,7 @@ export const Default: Story = {
       },
       {
         name: "Help & guides",
-        type: RoomType.Text,
+        type: RoomType.Group,
         isActive: true,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -53,7 +53,7 @@ export const Default: Story = {
       },
       {
         name: "Games",
-        type: RoomType.Text,
+        type: RoomType.Group,
         isActive: false,
         containsUnreadMessages: true,
         mentionCount: 0,
@@ -61,7 +61,7 @@ export const Default: Story = {
       },
       {
         name: "Off-topic",
-        type: RoomType.Text,
+        type: RoomType.Group,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,
@@ -69,7 +69,7 @@ export const Default: Story = {
       },
       {
         name: "Admin room",
-        type: RoomType.Text,
+        type: RoomType.Group,
         isActive: false,
         containsUnreadMessages: false,
         mentionCount: 0,

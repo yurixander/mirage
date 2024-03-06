@@ -3,7 +3,7 @@ import {useMemo, type FC} from "react"
 import ContextMenu from "./ContextMenu"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 
-export type TextMessageProps = {
+export type TextMessageProps = MessageBaseProps & {
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl?: string

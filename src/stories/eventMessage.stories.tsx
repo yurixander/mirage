@@ -9,25 +9,15 @@ const render = (args: EventMessageProps) => <EventMessage {...args} />
 export const Default: Story = {
   render,
   args: {
-    content: <span>This is an event message.</span>,
+    text: "",
     timestamp: Date.now(),
   },
 }
 
-const userDisplayNameColor = "#5CC679"
-
 export const NameChange: Story = {
   render,
   args: {
-    content: (
-      <span>
-        <strong style={{color: userDisplayNameColor}}>
-          Sapphire Pineapple
-        </strong>{" "}
-        <span>changed their name to</span>{" "}
-        <strong style={{color: userDisplayNameColor}}>Snappy Turtle</strong>.
-      </span>
-    ),
+    text: "Sapphire Pineapple changed their name to Snappy Turtle",
     timestamp: Date.now(),
   },
 }
