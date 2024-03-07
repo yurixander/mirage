@@ -194,19 +194,44 @@ export function deleteMessage(
   })
 }
 
+export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
+  const MIN_ADMIN_POWER_LEVEL = 50
+  const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
+  const userId = client.getUserId()
+
+  if (roomState === undefined || userId === null) {
+    return false
+  }
+
+  const powerLevels = roomState
+    .getStateEvents("m.room.power_levels", "")
+    ?.getContent().users as string[]
+
+  const users = Object.entries(powerLevels)
+
+  for (const [adminId, powerLevel] of users) {
+    if (typeof powerLevel !== "number" || powerLevel < MIN_ADMIN_POWER_LEVEL) {
+      continue
+    }
+
+    if (adminId === userId) {
+      return true
+    }
+  }
+
+  return false
+}
+
 export async function getRoomMembers(
   client: MatrixClient,
-  activeRoom: Room
+  room: Room
 ): Promise<RosterUserProps[]> {
   const membersProp: RosterUserProps[] = []
-  const joinedMembers = (await client.getJoinedRoomMembers(activeRoom.roomId))
-    .joined
+  const joinedMembers = (await client.getJoinedRoomMembers(room.roomId)).joined
 
-  const roomState = activeRoom
-    .getLiveTimeline()
-    .getState(EventTimeline.FORWARDS)
+  const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
 
-  if (roomState === null || roomState === undefined) {
+  if (roomState === undefined) {
     return []
   }
 

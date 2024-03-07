@@ -9,7 +9,7 @@ export type MessageBaseProps = {
   timestamp: number
   id: string
   text: string
-  onDeleteMessage: () => void
+  onDeleteMessage?: () => void
   onAuthorClick: () => void
 }
 
