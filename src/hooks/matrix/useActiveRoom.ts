@@ -15,22 +15,31 @@ import {
 import {useCallback, useEffect, useState} from "react"
 import useEventListener from "./useEventListener"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
-import {deleteMessage, getImageUrl, stringToColor} from "@/utils/util"
+import {
+  deleteMessage,
+  getImageUrl,
+  getLastReadEventIdFromRoom,
+  stringToColor,
+} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {type MessageBaseProps} from "@/components/MessageContainer"
+import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 
 export enum MessageKind {
   Text,
   Image,
   Event,
+  Unread,
 }
 
 type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
   ? TextMessageProps
   : Kind extends MessageKind.Image
     ? ImageMessageProps
-    : EventMessageProps
+    : Kind extends MessageKind.Event
+      ? EventMessageProps
+      : UnreadIndicatorProps
 
 type Message<Kind extends MessageKind> = {
   kind: Kind
@@ -166,9 +175,11 @@ const handleRoomEvents = async (
 ): Promise<AnyMessage[]> => {
   const roomHistory = await client.scrollback(activeRoom, 30)
   const events = roomHistory.getLiveTimeline().getEvents()
+  const lastReadEventId = getLastReadEventIdFromRoom(activeRoom, client)
   const allMessageProps: AnyMessage[] = []
 
-  for (const event of events) {
+  for (let i = 0; i < events.length; i++) {
+    const event = events[i]
     const messageProps = await handleEvents(client, event, roomHistory.roomId)
 
     if (messageProps === null) {
@@ -176,6 +187,14 @@ const handleRoomEvents = async (
     }
 
     allMessageProps.push(messageProps)
+
+    if (lastReadEventId === event.getId() && i !== events.length - 1) {
+      allMessageProps.push({
+        kind: MessageKind.Unread,
+        data: {lastReadEventId},
+      })
+    }
+
     void client.sendReadReceipt(event)
   }
 
@@ -341,7 +360,7 @@ const convertToMessageDeletedProps = (
       onAuthorClick: () => {},
       text,
       timestamp,
-      id: eventId
+      id: eventId,
     },
   }
 }

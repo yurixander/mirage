@@ -303,3 +303,22 @@ export function cleanDisplayName(displayName: string): string {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ")
 }
+
+export function getLastReadEventIdFromRoom(
+  room: Room,
+  client: MatrixClient
+): string | null {
+  const userId = client.getUserId()
+
+  if (userId === null) {
+    return null
+  }
+
+  const eventReadUpTo = room.getEventReadUpTo(userId)
+
+  if (eventReadUpTo === null) {
+    return null
+  }
+
+  return room.findEventById(eventReadUpTo)?.getId() ?? null
+}
