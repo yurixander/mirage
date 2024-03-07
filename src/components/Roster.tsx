@@ -33,7 +33,15 @@ const Roster: FC<RosterProps> = ({className}) => {
     () =>
       members
         .filter(member => member.powerLevel === UserPowerLevel.Member)
-        ?.map((member, index) => <RosterUser key={index} {...member} />),
+        .map((member, index) => <RosterUser key={index} {...member} />),
+    [members]
+  )
+
+  const moderatorMembersElement = useMemo(
+    () =>
+      members
+        .filter(member => member.powerLevel === UserPowerLevel.Moderator)
+        .map((member, index) => <RosterUser key={index} {...member} />),
     [members]
   )
 
@@ -41,7 +49,7 @@ const Roster: FC<RosterProps> = ({className}) => {
     () =>
       members
         .filter(member => member.powerLevel === UserPowerLevel.Admin)
-        ?.map((member, index) => <RosterUser key={index} {...member} />),
+        .map((member, index) => <RosterUser key={index} {...member} />),
     [members]
   )
 
@@ -68,16 +76,27 @@ const Roster: FC<RosterProps> = ({className}) => {
           <div className="mt-[10px] flex flex-col gap-1">
             <Label
               className="p-[5px]"
-              text={"Admin — " + (adminMembersElement?.length ?? "0")}
+              text={"Admin — " + adminMembersElement.length}
             />
 
             {adminMembersElement}
           </div>
 
+          {moderatorMembersElement.length > 0 && (
+            <div className="flex flex-col gap-1">
+              <Label
+                className="p-[5px]"
+                text={"Moderator — " + moderatorMembersElement.length}
+              />
+
+              {moderatorMembersElement}
+            </div>
+          )}
+
           <div className="flex flex-col gap-1">
             <Label
               className="p-[5px]"
-              text={"Member — " + (joinedMembersElement?.length ?? "0")}
+              text={"Member — " + joinedMembersElement.length}
             />
 
             {joinedMembersElement}
