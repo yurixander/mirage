@@ -19,6 +19,7 @@ import {
   deleteMessage,
   getImageUrl,
   getLastReadEventIdFromRoom,
+  isUserRoomAdmin,
   stringToColor,
 } from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
@@ -82,14 +83,18 @@ const useActiveRoom = () => {
       return
     }
 
-    void handleEvents(client, event, activeRoomId).then(messageOrEvent => {
-      if (messageOrEvent === null) {
-        return
-      }
+    const isAdminOrModerator = isUserRoomAdmin(room, client)
 
-      setMessages(messages => [...messages, messageOrEvent])
-      void client.sendReadReceipt(event)
-    })
+    void handleEvents(client, event, room.roomId, isAdminOrModerator).then(
+      messageOrEvent => {
+        if (messageOrEvent === null) {
+          return
+        }
+
+        setMessages(messages => [...messages, messageOrEvent])
+        void client.sendReadReceipt(event)
+      }
+    )
   })
 
   useEventListener(RoomEvent.Redaction, (event, room, _toStartOfTimeline) => {
@@ -126,9 +131,8 @@ const useActiveRoom = () => {
         ...typingUsers,
         {
           displayName: member.name,
-          // TODO: Avoid using hard-coded color. Use a function to generate a color from the user ID.
-          color: "#5CC679",
-          avatarUrl: getImageUrl(member.getMxcAvatarUrl() ?? null, client),
+          color: stringToColor(member.userId),
+          avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
         },
       ])
     } else {
@@ -176,11 +180,18 @@ const handleRoomEvents = async (
   const roomHistory = await client.scrollback(activeRoom, 30)
   const events = roomHistory.getLiveTimeline().getEvents()
   const lastReadEventId = getLastReadEventIdFromRoom(activeRoom, client)
+  const isAdminOrModerator = isUserRoomAdmin(activeRoom, client)
   const allMessageProps: AnyMessage[] = []
 
   for (let i = 0; i < events.length; i++) {
     const event = events[i]
-    const messageProps = await handleEvents(client, event, roomHistory.roomId)
+
+    const messageProps = await handleEvents(
+      client,
+      event,
+      roomHistory.roomId,
+      isAdminOrModerator
+    )
 
     if (messageProps === null) {
       continue
@@ -204,7 +215,8 @@ const handleRoomEvents = async (
 const handleEvents = async (
   client: MatrixClient,
   event: MatrixEvent,
-  roomId: string
+  roomId: string,
+  isAdminOrModerator: boolean
 ): Promise<AnyMessage | null> => {
   const timestamp = event.localTimestamp
   const sender = event.sender?.userId ?? null
@@ -221,7 +233,14 @@ const handleEvents = async (
 
   switch (event.getType()) {
     case EventType.RoomMessage:
-      return await handleMessagesEvent(client, timestamp, event, roomId, sender)
+      return await handleMessagesEvent(
+        client,
+        timestamp,
+        event,
+        roomId,
+        sender,
+        isAdminOrModerator
+      )
     case EventType.RoomMember:
       return handleMemberEvent(user, timestamp, client, event)
     case EventType.RoomTopic:
@@ -270,10 +289,12 @@ const handleMessagesEvent = async (
   timestamp: number,
   event: MatrixEvent,
   roomId: string,
-  sender: string
+  sender: string,
+  isAdmin: boolean
 ): Promise<AnyMessage | null> => {
   const eventContent = event.getContent()
   const user = client.getUser(sender)
+  const isMessageOfMyUser = client.getUserId() === sender
 
   if (user === null) {
     return null
@@ -294,9 +315,12 @@ const handleMessagesEvent = async (
     onAuthorClick: () => {},
     text: eventContent.body,
     timestamp,
-    onDeleteMessage: () => {
-      deleteMessage(client, roomId, eventId)
-    },
+    onDeleteMessage:
+      isMessageOfMyUser || isAdmin
+        ? () => {
+            deleteMessage(client, roomId, eventId)
+          }
+        : undefined,
   }
 
   switch (eventContent.msgtype) {

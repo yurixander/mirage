@@ -25,25 +25,25 @@ const TextMessage: FC<MessageBaseProps> = ({
   const contextMenuItems = useMemo(() => {
     const items = []
 
-    items.push({
-      label: "Reply",
-      action: () => {},
-      icon: faReply,
-    })
+    items.push(
+      {
+        label: "Reply",
+        action: () => {},
+        icon: faReply,
+      },
+      {
+        label: "Resend",
+        action: () => {},
+        icon: faShare,
+      }
+    )
 
     if (onDeleteMessage !== undefined) {
-      items.push(
-        {
-          label: "Resend",
-          action: () => {},
-          icon: faShare,
-        },
-        {
-          label: "Delete",
-          action: onDeleteMessage,
-          icon: faTrash,
-        }
-      )
+      items.push({
+        label: "Delete",
+        action: onDeleteMessage,
+        icon: faTrash,
+      })
     }
 
     return items
