@@ -65,7 +65,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
     <div className="flex flex-col pt-[3px]">
       {imageUrl !== null ? (
         <img
-          className="h-52 w-44 cursor-pointer rounded-[10px] object-contain"
+          className="h-52 w-44 cursor-pointer rounded-xl object-contain"
           src={imageUrl}
         />
       ) : (
