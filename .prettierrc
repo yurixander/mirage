@@ -5,5 +5,6 @@
   "bracketSpacing": false,
   "bracketSameLine": true,
   "arrowParens": "avoid",
-  "quoteProps": "consistent"
+  "quoteProps": "consistent",
+  "plugins": ["prettier-plugin-tailwindcss"]
 }
