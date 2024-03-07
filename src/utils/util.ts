@@ -242,16 +242,18 @@ export async function getRoomMembers(
   const users = Object.entries(powerLevels)
   const adminUsersId: string[] = []
 
-  const MIN_ADMIN_POWER_LEVEL = 50
+  const MIN_MOD_POWER_LEVEL = 50
+  const MIN_ADMIN_POWER_LEVEL = 100
 
   for (const [adminId, powerLevel] of users) {
-    if (typeof powerLevel !== "number" || powerLevel < MIN_ADMIN_POWER_LEVEL) {
+    if (typeof powerLevel !== "number" || powerLevel < MIN_MOD_POWER_LEVEL) {
       continue
     }
 
     adminUsersId.push(adminId)
     const member = joinedMembers[adminId]
     const displayName = member.display_name
+    const isAdmin = powerLevel === MIN_ADMIN_POWER_LEVEL
 
     membersProp.push({
       // TODO: Use actual props instead of dummy data.
@@ -262,7 +264,7 @@ export async function getRoomMembers(
         displayNameColor: stringToColor(displayName),
         status: UserStatus.Online,
       },
-      powerLevel: UserPowerLevel.Admin,
+      powerLevel: isAdmin ? UserPowerLevel.Admin : UserPowerLevel.Moderator,
       onClick: () => {},
       userId: adminId,
     })
