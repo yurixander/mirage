@@ -26,6 +26,7 @@ import {useFilePicker} from "use-file-picker"
 import {MsgType} from "matrix-js-sdk"
 import {createPortal} from "react-dom"
 import Button, {ButtonVariant} from "./Button"
+import UnreadIndicator, {type UnreadIndicatorProps} from "./UnreadIndicator"
 
 export type ChatContainerProps = {
   className?: string
@@ -63,8 +64,13 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           <TextMessage key={index} {...(message.data as TextMessageProps)} />
         ) : message.kind === MessageKind.Image ? (
           <ImageMessage key={index} {...(message.data as ImageMessageProps)} />
-        ) : (
+        ) : message.kind === MessageKind.Event ? (
           <EventMessage key={index} {...(message.data as EventMessageProps)} />
+        ) : (
+          <UnreadIndicator
+            key={index}
+            {...(message.data as UnreadIndicatorProps)}
+          />
         )
       ),
     [messageProps]
