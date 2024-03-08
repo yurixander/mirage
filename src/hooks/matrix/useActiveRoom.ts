@@ -389,6 +389,32 @@ const convertToMessageDeletedProps = (
   }
 }
 
+function handleMemberLeave(
+  user: string,
+  displayName?: string,
+  prevDisplayName?: string,
+  prevMembership?: string
+): string | null {
+  if (
+    displayName === undefined ||
+    prevDisplayName === undefined ||
+    prevMembership === undefined
+  ) {
+    return null
+  }
+
+  switch (prevMembership) {
+    case "invite":
+      return `${user} has canceled the invitation to ${prevDisplayName}`
+    case "ban":
+      return `${user} has removed the ban from ${displayName}`
+    case "join":
+      return `${user} has left the room`
+    default:
+      return null
+  }
+}
+
 const handleMemberEvent = (
   user: string,
   timestamp: number,
@@ -447,20 +473,14 @@ const handleMemberEvent = (
       break
     }
     case "leave": {
-      switch (prevMembership) {
-        case "invite":
-          text = `${user} has canceled the invitation to ${prevDisplayName}`
+      text = handleMemberLeave(
+        user,
+        client.getUser(stateKey)?.displayName,
+        prevDisplayName,
+        prevMembership
+      )
 
-          break
-        case "ban":
-          text = `${user} has removed the ban from ${client.getUser(stateKey)?.displayName}`
-
-          break
-        case "join":
-          text = `${user} has left the room`
-
-          break
-      }
+      break
     }
   }
 

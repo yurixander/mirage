@@ -38,6 +38,10 @@ const UserProfile: FC<UserProfileProps> = ({
   isLarge,
   platform,
 }) => {
+  const hasIcon = icon !== undefined
+  const hasActivity = activity !== undefined
+  const hasPlatform = platform !== undefined
+
   assert(displayName.length > 0, "display name should not be empty")
 
   assert(
@@ -46,21 +50,18 @@ const UserProfile: FC<UserProfileProps> = ({
   )
 
   // TODO: check undefined values of the activity, platform and icon.
-  if (icon !== undefined) {
+  if (hasIcon) {
     assert(
-      activity !== undefined || platform !== undefined,
+      hasActivity || hasPlatform,
       "User activity and platform should not be undefined"
     )
-  } else if (activity !== undefined) {
+  } else if (hasActivity) {
     assert(
-      icon !== undefined || platform !== undefined,
+      hasIcon || hasPlatform,
       "icon and platform should not be undefined or empty"
     )
-  } else if (platform !== undefined) {
-    assert(
-      icon !== undefined || activity !== undefined,
-      "icon and activity should not be undefined"
-    )
+  } else if (hasPlatform) {
+    assert(hasIcon || hasActivity, "icon and activity should not be undefined")
   }
 
   if (avatarUrl !== undefined) {
@@ -124,7 +125,7 @@ const UserProfile: FC<UserProfileProps> = ({
 
         <div
           className={twMerge(
-            "absolute rounded-[50%] border-[2px] border-solid border-neutral-50 translate-x-1/4 translate-y-1/4 right-0 bottom-0",
+            "absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 rounded-[50%] border-[2px] border-solid border-neutral-50",
             isLarge ? "h-[17px] w-[17px]" : "h-[13px] w-[13px]",
             userStatusClass
           )}

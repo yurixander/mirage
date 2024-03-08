@@ -14,7 +14,8 @@
     "eslint-config-prettier",
     "plugin:storybook/recommended",
     "plugin:tailwindcss/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:sonarjs/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -39,6 +40,7 @@
     "no-useless-escape": "off",
     "@typescript-eslint/no-non-null-assertion": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
-    "no-new": "off"
+    "no-new": "off",
+    "sonarjs/cognitive-complexity": ["error", 17]
   }
 }

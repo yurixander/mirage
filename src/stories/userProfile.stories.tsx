@@ -11,12 +11,15 @@ type Story = StoryObj<typeof UserProfile>
 const meta: Meta<typeof UserProfile> = {component: UserProfile}
 const render = (args: UserProfileProps) => <UserProfile {...args} />
 
+const displayName = "Emerald Branch"
+const username = "@emerald_branch"
+
 export const Offline: Story = {
   render,
   args: {
-    displayName: "Emerald Branch",
+    displayName,
     displayNameColor: "#5CC679",
-    text: "@emerald_branch",
+    text: username,
     status: UserStatus.Offline,
     isLarge: false,
   },
@@ -25,9 +28,9 @@ export const Offline: Story = {
 export const Online: Story = {
   render,
   args: {
-    displayName: "Emerald Branch",
+    displayName,
     displayNameColor: "#5CC679",
-    text: "@emerald_branch",
+    text: username,
     status: UserStatus.Online,
     isLarge: false,
   },
@@ -36,9 +39,9 @@ export const Online: Story = {
 export const Idle: Story = {
   render,
   args: {
-    displayName: "Emerald Branch",
+    displayName,
     displayNameColor: "#5CC679",
-    text: "@emerald_branch",
+    text: username,
     status: UserStatus.Idle,
     isLarge: false,
   },
@@ -47,7 +50,7 @@ export const Idle: Story = {
 export const WithActivityIcon: Story = {
   render,
   args: {
-    displayName: "Emerald Branch",
+    displayName,
     displayNameColor: "#5CC679",
     text: "Listening to Spotify",
     status: UserStatus.Idle,
@@ -61,7 +64,7 @@ export const WithActivityIcon: Story = {
 export const Large: Story = {
   render,
   args: {
-    displayName: "Emerald Branch",
+    displayName,
     displayNameColor: "#5CC679",
     text: "Online",
     status: UserStatus.Idle,
