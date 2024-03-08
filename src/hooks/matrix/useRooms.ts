@@ -15,7 +15,7 @@ const useRooms = () => {
 
   const updateRoom = useCallback((updatedRoom: Room) => {
     setRooms(prevRooms => {
-      const roomsUpdated = prevRooms.map(room => {
+      return prevRooms.map(room => {
         if (room.roomId === updatedRoom.roomId) {
           return {
             ...room,
@@ -32,7 +32,6 @@ const useRooms = () => {
 
         return room
       })
-      return roomsUpdated
     })
   }, [])
 

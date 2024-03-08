@@ -20,7 +20,7 @@ const render = (args: InputProps) => <Input {...args} />
 
 export const Default: Story = {
   render,
-  args: {placeholder: "This is an input"},
+  args: {placeholder: "This is a default input"},
 }
 
 export const AllConstraint: Story = {
@@ -71,7 +71,7 @@ export const WithUrlConstraint: Story = {
 export const WithIcon: Story = {
   render,
   args: {
-    placeholder: "This is an input",
+    placeholder: "This is an input with icon",
     icon: faCircleUser,
   },
 }
@@ -79,7 +79,7 @@ export const WithIcon: Story = {
 export const Disabled: Story = {
   render,
   args: {
-    placeholder: "This is an input",
+    placeholder: "This is an input disabled",
     icon: faSearch,
     isDisabled: true,
   },
@@ -88,7 +88,7 @@ export const Disabled: Story = {
 export const WithActions: Story = {
   render,
   args: {
-    placeholder: "This is an input",
+    placeholder: "This is an input with actions",
     actions: [
       {
         tooltip: "Paste",

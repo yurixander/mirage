@@ -39,16 +39,16 @@ const AppView: FC = () => {
         <QuickActions
           className="p-4"
           onViewDirectMessages={() => {
-            throw new Error("Function not implemented.")
+            throw new Error("View direct messages not implemented.")
           }}
           onViewCalls={() => {
-            throw new Error("Function not implemented.")
+            throw new Error("View calls not implemented.")
           }}
           onViewNotifications={() => {
-            throw new Error("Function not implemented.")
+            throw new Error("View notifications not implemented.")
           }}
           onOpenExtensions={() => {
-            throw new Error("Function not implemented.")
+            throw new Error("Open extensions not implemented.")
           }}
           onLogout={() => {
             void disconnect()
