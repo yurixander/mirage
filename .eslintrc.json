@@ -15,7 +15,8 @@
     "plugin:storybook/recommended",
     "plugin:tailwindcss/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:sonarjs/recommended"
+    "plugin:sonarjs/recommended",
+    "plugin:github/react"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",

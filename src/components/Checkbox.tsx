@@ -30,13 +30,15 @@ const Checkbox: FC<CheckboxProps> = ({
     <div className="flex size-max items-center gap-[5px]">
       <div
         className={twMerge(
-          "w-[13px] h-[13px] rounded-[3px] focus-visible:outline-[2px] focus-visible:outline-outlineTab focus-visible:duration-150 focus-visible:outline-offset-[1px]",
+          "h-[13px] w-[13px] rounded-[3px] focus-visible:outline-[2px] focus-visible:outline-offset-[1px] focus-visible:outline-outlineTab focus-visible:duration-150",
           isSelectedClass,
           isDisabledClass
         )}
         onClick={isDisabled ? undefined : handleSelectionChanged}
-        tabIndex={isDisabled ? undefined : 0}
+        tabIndex={0}
         onKeyDown={handleKeyDown}
+        role="checkbox"
+        aria-checked="false"
       />
 
       {label && <div>{label}</div>}

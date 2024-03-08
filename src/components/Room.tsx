@@ -37,13 +37,14 @@ const Room: FC<RoomProps> = ({
   return (
     <div
       onClick={onClick}
-      className="group flex cursor-pointer flex-row items-center">
+      className="group flex cursor-pointer flex-row items-center"
+      aria-hidden="true">
       <div className="w-full">
         <div className="group w-max group-active:scale-90 group-active:transition group-active:duration-300">
           <FontAwesomeIcon
             icon={faHashtag}
             className={twMerge(
-              "mr-3 group-active:transition-colors group-active:duration-1000 group-active:text-purple-500",
+              "mr-3 group-active:text-purple-500 group-active:transition-colors group-active:duration-1000",
               activeClass
             )}
           />
@@ -52,7 +53,7 @@ const Room: FC<RoomProps> = ({
             className={twMerge(
               "mr-auto",
               isActive ? "text-purple-500" : "text-stone-600",
-              "group-active:transition-colors group-active:duration-1000 group-active:text-purple-500"
+              "group-active:text-purple-500 group-active:transition-colors group-active:duration-1000"
             )}>
             {trim(name, MAX_NAME_LENGTH)}
           </span>

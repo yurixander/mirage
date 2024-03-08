@@ -19,7 +19,7 @@ const RosterUser: FC<RosterUserProps> = ({userProfileProps, onClick}) => {
     <div
       onClick={onClick}
       className="w-full cursor-pointer p-1 hover:rounded-xl hover:bg-neutral-100 focus-visible:rounded-md focus-visible:border-[2px] focus-visible:border-solid focus-visible:border-outlineTab focus-visible:outline-none focus-visible:transition focus-visible:duration-150"
-      tabIndex={0}>
+      aria-hidden="true">
       <UserProfile {...userProfileProps} />
     </div>
   )

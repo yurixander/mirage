@@ -34,7 +34,11 @@ const MessageContainer: FC<MessageContainerProps> = ({
 
   const avatarImage =
     authorAvatarUrl !== undefined ? (
-      <img src={authorAvatarUrl} className="size-full" />
+      <img
+        src={authorAvatarUrl}
+        className="size-full"
+        alt={authorDisplayName}
+      />
     ) : (
       <Avatar
         size={40}
@@ -52,7 +56,8 @@ const MessageContainer: FC<MessageContainerProps> = ({
           overflow-hidden rounded-lg bg-neutral-50"
           onClick={() => {
             onAuthorClick()
-          }}>
+          }}
+          aria-hidden="true">
           {avatarImage}
         </div>
 
@@ -60,7 +65,8 @@ const MessageContainer: FC<MessageContainerProps> = ({
           <span
             className="select-text font-semibold"
             style={{color: authorDisplayNameColor}}
-            onClick={onAuthorClick}>
+            onClick={onAuthorClick}
+            aria-hidden="true">
             {authorDisplayName}
           </span>
 

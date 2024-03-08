@@ -54,6 +54,7 @@ const DevPreview: FC = () => {
               <img
                 className="h-auto w-full rounded-lg object-cover shadow-md"
                 src={filesContent[0].content}
+                alt={filesContent[0].name}
               />
 
               <div className="flex w-full items-center justify-end gap-1">

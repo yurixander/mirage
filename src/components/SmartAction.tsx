@@ -10,7 +10,11 @@ export type SmartActionProps = {
 
 const SmartAction: FC<SmartActionProps> = ({icon, text, onClick}) => {
   return (
-    <div className="flex cursor-pointer gap-1 text-xs" onClick={onClick}>
+    <div
+      className="flex cursor-pointer gap-1 text-xs"
+      onClick={onClick}
+      role={"button"}
+      aria-hidden="true">
       <FontAwesomeIcon className="size-[10px] text-neutral-200" icon={icon} />
 
       <span>{text}</span>

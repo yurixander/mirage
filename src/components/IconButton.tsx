@@ -29,9 +29,10 @@ const IconButton: FC<IconButtonProps> = ({
       onClick={isDisabled ? undefined : onClick}
       tabIndex={isDisabled ? undefined : 0}
       className={twMerge(
-        "inline-block self-center cursor-pointer p-1 rounded-[10px] focus-visible:duration-150 focus-visible:rounded-[5px]",
+        "inline-block cursor-pointer self-center rounded-[10px] p-1 focus-visible:rounded-[5px] focus-visible:duration-150",
         isDisabledClass
-      )}>
+      )}
+      aria-hidden="true">
       <NotificationDot isVisible={isDotVisible ?? false}>
         <FontAwesomeIcon
           style={{color}}
