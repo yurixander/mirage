@@ -71,10 +71,10 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
           <div className="m-3 flex flex-col gap-1">
             {items.map((item, index) => (
               <div
-                tabIndex={0}
                 key={index}
                 className="group flex cursor-pointer gap-3 p-3 text-stone-600 hover:rounded-[5px] hover:bg-purple-500 hover:text-white focus-visible:rounded-[5px] focus-visible:text-outlineTab focus-visible:outline-[2px] focus-visible:transition focus-visible:duration-150"
-                onClick={item.action}>
+                onClick={item.action}
+                aria-hidden="true">
                 <span className="mr-auto font-semibold">{item.label}</span>
 
                 {item.icon && (

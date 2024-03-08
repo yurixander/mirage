@@ -48,7 +48,7 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange, className}) => {
   return (
     <div
       className={twMerge(
-        "relative p-2 inline-flex justify-start items-center gap-1 bg-neutral-300 rounded-lg",
+        "relative inline-flex items-center justify-start gap-1 rounded-lg bg-neutral-300 p-2",
         results.length > 0 ? "rounded-bl-none rounded-br-none" : "",
         className
       )}>
@@ -70,7 +70,8 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange, className}) => {
             <div
               key={index}
               className="cursor-pointer rounded-md p-[10px] hover:bg-neutral-300"
-              onClick={result.onClick}>
+              onClick={result.onClick}
+              aria-hidden="true">
               {result.text}
             </div>
           ))}

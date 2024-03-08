@@ -15,7 +15,7 @@ import {
 import Button, {ButtonColor, ButtonVariant} from "@/components/Button"
 import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 import useConnection from "@/hooks/matrix/useConnection"
-import {ViewPath} from "@/utils/util"
+import {StaticAssetPath, ViewPath} from "@/utils/util"
 import {Link, useNavigate} from "react-router-dom"
 import {SyncState} from "matrix-js-sdk"
 import {ReactSVG} from "react-svg"
@@ -82,7 +82,7 @@ const LoginView: FC = () => {
         <div className="flex grow flex-col justify-center gap-6 p-3">
           <div className="flex w-full justify-center">
             <div className="m-2 flex items-center">
-              <ReactSVG src="public/logo-small.svg" />
+              <ReactSVG src={StaticAssetPath.AppLogoSmall} />
 
               <div className="flex items-end font-iowan">
                 <div>Mirage</div>
@@ -187,7 +187,11 @@ const LoginView: FC = () => {
         </div>
 
         <div className="flex grow overflow-hidden rounded-xl">
-          <img className="object-fill" src="public/LoginPhoto.png" />
+          <img
+            className="object-fill"
+            src={StaticAssetPath.LoginPhoto}
+            alt="Matrix Protocol, that connects you to the world"
+          />
         </div>
       </div>
     </div>

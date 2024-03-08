@@ -20,6 +20,7 @@ const ServerListItem: FC<ServerListItemProps> = ({
       <img
         className="absolute left-1/2 top-1/2 size-serverAvatarSize -translate-x-1/2 -translate-y-1/2"
         src={avatarUrl}
+        alt="Server avatar"
       />
     ) : (
       <Avatar size={47} square variant="bauhaus" name="Margaret Sanger" />
@@ -30,9 +31,9 @@ const ServerListItem: FC<ServerListItemProps> = ({
       <div className="flex h-auto w-2 flex-col justify-center overflow-hidden">
         <div
           className={twMerge(
-            "w-[8px] transition-all duration-300 ease-in-out -translate-x-[3px] group-active:h-2",
+            "w-[8px] -translate-x-[3px] transition-all duration-300 ease-in-out group-active:h-2",
             isActive
-              ? "h-6 animate-indicator bg-purple-500 rounded-xl"
+              ? "h-6 animate-indicator rounded-xl bg-purple-500"
               : "h-[8px] rounded-[50%]"
           )}
         />
@@ -41,11 +42,12 @@ const ServerListItem: FC<ServerListItemProps> = ({
       <div
         tabIndex={!isActive ? 0 : undefined}
         className={twMerge(
-          "relative overflow-hidden box-border rounded-xl bg-red-500 ml-1 cursor-pointer size-serverSize focus-visible:rounded-lg group-active:animate-hold group-active:transform group-active:scale-75",
+          "relative ml-1 box-border size-serverSize cursor-pointer overflow-hidden rounded-xl bg-red-500 focus-visible:rounded-lg group-active:scale-75 group-active:transform group-active:animate-hold",
           isActive &&
-            "border-[3px] border-solid border-purple-500 duration-200 transition shadow-serverSelected"
+            "border-[3px] border-solid border-purple-500 shadow-serverSelected transition duration-200"
         )}
-        onClick={onClick}>
+        onClick={onClick}
+        aria-hidden="true">
         {avatarImage}
       </div>
     </div>

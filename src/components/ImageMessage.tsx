@@ -67,6 +67,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
         <img
           className="h-52 w-44 cursor-pointer rounded-xl object-contain"
           src={imageUrl}
+          alt={text}
         />
       ) : (
         <div className="flex flex-row items-center gap-1">

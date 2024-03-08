@@ -96,6 +96,7 @@ const UserProfile: FC<UserProfileProps> = ({
             ? "h-userProfileAvatarSizeLarge w-userProfileAvatarSizeLarge"
             : "h-userProfileAvatarSize w-userProfileAvatarSize"
         )}
+        alt={"User avatar"}
       />
     ) : (
       <Avatar size={isLarge ? 60 : 40} square name={text} variant="beam" />
