@@ -16,14 +16,14 @@ const ServerListItem: FC<ServerListItemProps> = ({
   tooltip,
 }) => {
   const avatarImage =
-    avatarUrl !== undefined ? (
+    avatarUrl === undefined ? (
+      <Avatar size={47} square variant="bauhaus" name="Margaret Sanger" />
+    ) : (
       <img
         className="absolute left-1/2 top-1/2 size-serverAvatarSize -translate-x-1/2 -translate-y-1/2"
         src={avatarUrl}
         alt="Server avatar"
       />
-    ) : (
-      <Avatar size={47} square variant="bauhaus" name="Margaret Sanger" />
     )
 
   return (
@@ -40,7 +40,7 @@ const ServerListItem: FC<ServerListItemProps> = ({
       </div>
 
       <div
-        tabIndex={!isActive ? 0 : undefined}
+        tabIndex={isActive ? undefined : 0}
         className={twMerge(
           "relative ml-1 box-border size-serverSize cursor-pointer overflow-hidden rounded-xl bg-red-500 focus-visible:rounded-lg group-active:scale-75 group-active:transform group-active:animate-hold",
           isActive &&

@@ -16,7 +16,8 @@
     "plugin:tailwindcss/recommended",
     "plugin:react-hooks/recommended",
     "plugin:sonarjs/recommended",
-    "plugin:github/react"
+    "plugin:github/react",
+    "plugin:unicorn/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -42,6 +43,11 @@
     "@typescript-eslint/no-non-null-assertion": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
     "no-new": "off",
-    "sonarjs/cognitive-complexity": ["error", 17]
+    "sonarjs/cognitive-complexity": ["error", 17],
+    "unicorn/filename-case": ["off"],
+    "unicorn/prevent-abbreviations": ["off"],
+    "unicorn/no-nested-ternary": "off",
+    "unicorn/no-null": ["off"],
+    "unicorn/prefer-code-point": "off"
   }
 }

@@ -1,12 +1,12 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import ServerListItem, {
-  type ServerListItemProps,
+  type ServerListItemProps as ServerListItemProperties,
 } from "../components/ServerListItem"
 
 type Story = StoryObj<typeof ServerListItem>
 
 const meta: Meta<typeof ServerListItem> = {component: ServerListItem}
-const render = (args: ServerListItemProps) => <ServerListItem {...args} />
+const render = (arguments_: ServerListItemProperties) => <ServerListItem {...arguments_} />
 
 export const Default: Story = {
   render,

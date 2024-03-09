@@ -33,18 +33,18 @@ const MessageContainer: FC<MessageContainerProps> = ({
   const localeTimeString = timeFormatter(timestamp)
 
   const avatarImage =
-    authorAvatarUrl !== undefined ? (
-      <img
-        src={authorAvatarUrl}
-        className="size-full"
-        alt={authorDisplayName}
-      />
-    ) : (
+    authorAvatarUrl === undefined ? (
       <Avatar
         size={40}
         square
         name={cleanDisplayName(authorDisplayName)}
         variant="beam"
+      />
+    ) : (
+      <img
+        src={authorAvatarUrl}
+        className="size-full"
+        alt={authorDisplayName}
       />
     )
 

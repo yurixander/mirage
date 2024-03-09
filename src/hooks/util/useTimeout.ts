@@ -1,11 +1,11 @@
 import {useEffect, useRef} from "react"
 
 const useTimeout = (callback: () => void, delay: number | null) => {
-  const callbackRef = useRef(callback)
+  const callbackReference = useRef(callback)
 
   useEffect(() => {
-    callbackRef.current = callback
-  }, [callbackRef, callback])
+    callbackReference.current = callback
+  }, [callbackReference, callback])
 
   useEffect(() => {
     if (delay === null) {
@@ -13,7 +13,7 @@ const useTimeout = (callback: () => void, delay: number | null) => {
     }
 
     const handle = setTimeout(() => {
-      callbackRef.current()
+      callbackReference.current()
     }, delay)
 
     return () => {

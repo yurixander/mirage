@@ -14,8 +14,8 @@ const useRooms = () => {
   const {setActiveRoomId, activeRoomId} = useActiveRoomIdStore()
 
   const updateRoom = useCallback((updatedRoom: Room) => {
-    setRooms(prevRooms => {
-      return prevRooms.map(room => {
+    setRooms(previousRooms => {
+      return previousRooms.map(room => {
         if (room.roomId === updatedRoom.roomId) {
           return {
             ...room,

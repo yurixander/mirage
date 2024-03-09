@@ -17,18 +17,18 @@ export type SearchBarProps = {
 
 const SearchBar: FC<SearchBarProps> = ({onQueryChange, className}) => {
   const KEYBOARD_HOTKEY_CHAR = "s"
-  const inputRef = React.useRef<HTMLInputElement>(null)
+  const inputReference = React.useRef<HTMLInputElement>(null)
   const [results, setResults] = useState<SearchResult[]>([])
 
   // Focus the input when the user presses the search hotkey.
   useGlobalHotkey({ctrl: true, key: KEYBOARD_HOTKEY_CHAR}, () => {
     // NOTE: The input is required to be focused before selecting
     // the text.
-    inputRef.current?.focus()
+    inputReference.current?.focus()
 
     // Select all the text in the input after focusing it,
     // so that the user can immediately start typing a new query.
-    inputRef.current?.select()
+    inputReference.current?.select()
   })
 
   // TODO: Consider using useCallback
@@ -57,7 +57,7 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange, className}) => {
       <input
         className="bg-neutral-300 p-0 text-xs"
         onChange={handleQueryChange}
-        ref={inputRef}
+        ref={inputReference}
         type="text"
         placeholder="Search anything..."
       />

@@ -9,7 +9,7 @@ const useRoomMembers = () => {
   const {client} = useConnection()
   const {activeRoomId} = useActiveRoomIdStore()
   const [members, setMembers] = useState<RosterUserProps[]>([])
-  const isMountedRef = useIsMountedRef()
+  const isMountedReference = useIsMountedRef()
 
   const fetchRoomMembers = useCallback(async () => {
     if (client === null || activeRoomId === null) {
@@ -28,7 +28,7 @@ const useRoomMembers = () => {
   }, [activeRoomId, client])
 
   useEffect(() => {
-    if (client === null || activeRoomId === null || !isMountedRef.current) {
+    if (client === null || activeRoomId === null || !isMountedReference.current) {
       return
     }
 
@@ -39,11 +39,11 @@ const useRoomMembers = () => {
     }
 
     void getRoomMembers(client, activeRoom).then(newMembers => {
-      if (isMountedRef.current) {
+      if (isMountedReference.current) {
         setMembers(newMembers)
       }
     })
-  }, [activeRoomId, client, fetchRoomMembers, isMountedRef])
+  }, [activeRoomId, client, fetchRoomMembers, isMountedReference])
 
   return {members}
 }

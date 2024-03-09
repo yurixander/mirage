@@ -1,12 +1,12 @@
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
-type Props = {
+type Properties = {
   className?: string
   text: string
 }
 
-const StatusMessage: FC<Props> = ({className, text}) => {
+const StatusMessage: FC<Properties> = ({className, text}) => {
   return (
     <div
       className={twMerge(

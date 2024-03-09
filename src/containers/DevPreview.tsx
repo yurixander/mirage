@@ -9,7 +9,7 @@ import {createPortal} from "react-dom"
 import {useNavigate} from "react-router-dom"
 import {useFilePicker} from "use-file-picker"
 
-const DevPreview: FC = () => {
+const DevelopmentPreview: FC = () => {
   const {client, connect} = useConnection()
   const {credentials} = useCachedCredentials()
   const navigate = useNavigate()
@@ -75,7 +75,7 @@ const DevPreview: FC = () => {
               </div>
             </div>
           </div>,
-          document.getElementById("root") ?? document.body
+          document.querySelector("#root") ?? document.body
         )}
 
       <IconButton
@@ -89,4 +89,4 @@ const DevPreview: FC = () => {
   )
 }
 
-export default DevPreview
+export default DevelopmentPreview

@@ -17,16 +17,21 @@ export type TypographyProps = {
 
 function getTagFromVariant(variant: TypographyVariant): JSX.ElementType {
   switch (variant) {
-    case TypographyVariant.H1:
+    case TypographyVariant.H1: {
       return "h1"
-    case TypographyVariant.H2:
+    }
+    case TypographyVariant.H2: {
       return "h2"
-    case TypographyVariant.H3:
+    }
+    case TypographyVariant.H3: {
       return "h3"
-    case TypographyVariant.P:
+    }
+    case TypographyVariant.P: {
       return "p"
-    case TypographyVariant.Span:
+    }
+    case TypographyVariant.Span: {
       return "span"
+    }
   }
 }
 

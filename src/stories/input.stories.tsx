@@ -1,6 +1,6 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Input, {
-  type InputProps,
+  type InputProps as InputProperties,
   integerConstraint,
   nonEmptyConstraint,
   urlConstraint,
@@ -16,7 +16,7 @@ import {
 type Story = StoryObj<typeof Input>
 
 const meta: Meta<typeof Input> = {component: Input}
-const render = (args: InputProps) => <Input {...args} />
+const render = (arguments_: InputProperties) => <Input {...arguments_} />
 
 export const Default: Story = {
   render,

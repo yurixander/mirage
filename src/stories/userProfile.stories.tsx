@@ -1,7 +1,7 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import UserProfile, {
   UserActivity,
-  type UserProfileProps,
+  type UserProfileProps as UserProfileProperties,
   UserStatus,
 } from "../components/UserProfile"
 import {faSpotify} from "@fortawesome/free-brands-svg-icons"
@@ -9,7 +9,7 @@ import {faSpotify} from "@fortawesome/free-brands-svg-icons"
 type Story = StoryObj<typeof UserProfile>
 
 const meta: Meta<typeof UserProfile> = {component: UserProfile}
-const render = (args: UserProfileProps) => <UserProfile {...args} />
+const render = (arguments_: UserProfileProperties) => <UserProfile {...arguments_} />
 
 const displayName = "Emerald Branch"
 const username = "@emerald_branch"

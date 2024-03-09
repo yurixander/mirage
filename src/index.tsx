@@ -10,7 +10,7 @@ import DevPreview from "./containers/DevPreview"
 import "./polyfills"
 import "./styles/tailwind.css"
 
-const $root = document.getElementById("root")
+const $root = document.querySelector("#root")
 
 assert($root !== null, "Root element should exist")
 

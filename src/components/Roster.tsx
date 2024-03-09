@@ -7,7 +7,7 @@ import {useMemo, type FC} from "react"
 import IconButton from "./IconButton"
 import Label from "./Label"
 import RosterUser, {UserPowerLevel} from "./RosterUser"
-import {type UserProfileProps} from "./UserProfile"
+import {type UserProfileProps as UserProfileProperties} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 import {twMerge} from "tailwind-merge"
 import useRoomMembers from "@/hooks/matrix/useRoomMembers"
@@ -19,7 +19,7 @@ export enum RosterUserCategory {
 
 export type RosterUserData = {
   category: RosterUserCategory
-  userProfileProps: UserProfileProps
+  userProfileProps: UserProfileProperties
 }
 
 export type RosterProps = {

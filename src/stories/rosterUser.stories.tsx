@@ -1,12 +1,12 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import RosterUser, {type RosterUserProps} from "../components/RosterUser"
+import RosterUser, {type RosterUserProps as RosterUserProperties} from "../components/RosterUser"
 import {UserActivity, UserStatus} from "../components/UserProfile"
 import {faSpotify} from "@fortawesome/free-brands-svg-icons"
 
 type Story = StoryObj<typeof RosterUser>
 
 const meta: Meta<typeof RosterUser> = {component: RosterUser}
-const render = (args: RosterUserProps) => <RosterUser {...args} />
+const render = (arguments_: RosterUserProperties) => <RosterUser {...arguments_} />
 
 export const WithActivity: Story = {
   render,

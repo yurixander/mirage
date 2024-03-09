@@ -1,9 +1,9 @@
 import {faReply, faShare, faTrash} from "@fortawesome/free-solid-svg-icons"
 import {useMemo, type FC} from "react"
 import ContextMenu from "./ContextMenu"
-import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
+import MessageContainer, {type MessageBaseProps as MessageBaseProperties} from "./MessageContainer"
 
-export type TextMessageProps = MessageBaseProps & {
+export type TextMessageProps = MessageBaseProperties & {
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl?: string
@@ -13,7 +13,7 @@ export type TextMessageProps = MessageBaseProps & {
   onDeleteMessage?: () => void
 }
 
-const TextMessage: FC<MessageBaseProps> = ({
+const TextMessage: FC<MessageBaseProperties> = ({
   authorAvatarUrl,
   authorDisplayName,
   authorDisplayNameColor,

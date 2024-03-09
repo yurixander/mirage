@@ -2,7 +2,7 @@ import {faGear} from "@fortawesome/free-solid-svg-icons"
 import {useMemo, type FC} from "react"
 import {getImageUrl, trim} from "../utils/util"
 import IconButton from "./IconButton"
-import UserProfile, {type UserProfileProps, UserStatus} from "./UserProfile"
+import UserProfile, {type UserProfileProps as UserProfileProperties, UserStatus} from "./UserProfile"
 import {twMerge} from "tailwind-merge"
 import useConnection from "@/hooks/matrix/useConnection"
 import UserProfilePlaceholder from "./UserProfilePlaceholder"
@@ -46,7 +46,7 @@ const UserBar: FC<UserBarProps> = ({className}) => {
     const imgUrl = getImageUrl(avatarUrl, client)
     const displayName = user?.displayName ?? userID
 
-    const userBarProps: UserProfileProps = {
+    const userBarProperties: UserProfileProperties = {
       avatarUrl: imgUrl,
       displayName: trim(displayName, MAX_NAME_LENGTH),
       text: trim(getUsernameByUserId(userID), MAX_NAME_LENGTH),
@@ -55,7 +55,7 @@ const UserBar: FC<UserBarProps> = ({className}) => {
       status,
     }
 
-    return userBarProps
+    return userBarProperties
   }, [client, status])
 
   return (

@@ -1,10 +1,10 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import Room, {type RoomProps, RoomType} from "../components/Room"
+import Room, {type RoomProps as RoomProperties, RoomType} from "../components/Room"
 
 type Story = StoryObj<typeof Room>
 
 const meta: Meta<typeof Room> = {component: Room}
-const render = (args: RoomProps) => <Room {...args} />
+const render = (arguments_: RoomProperties) => <Room {...arguments_} />
 
 export const ActiveWithMentions: Story = {
   render,

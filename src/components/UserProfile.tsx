@@ -72,22 +72,27 @@ const UserProfile: FC<UserProfileProps> = ({
   let userStatusClass: string
 
   switch (status) {
-    case UserStatus.Online:
+    case UserStatus.Online: {
       userStatusClass = "bg-green-400"
 
       break
-    case UserStatus.Offline:
+    }
+    case UserStatus.Offline: {
       userStatusClass = "bg-gray-300"
 
       break
-    case UserStatus.Idle:
+    }
+    case UserStatus.Idle: {
       userStatusClass = "bg-yellow-500"
 
       break
+    }
   }
 
   const avatarImage =
-    avatarUrl !== undefined ? (
+    avatarUrl === undefined ? (
+      <Avatar size={isLarge ? 60 : 40} square name={text} variant="beam" />
+    ) : (
       <img
         src={avatarUrl}
         className={twMerge(
@@ -98,19 +103,17 @@ const UserProfile: FC<UserProfileProps> = ({
         )}
         alt={"User avatar"}
       />
-    ) : (
-      <Avatar size={isLarge ? 60 : 40} square name={text} variant="beam" />
     )
 
   const activityOrText =
-    activity !== undefined ? (
+    activity === undefined ? (
+      <span className="text-xs">{text}</span>
+    ) : (
       <span className="text-xs">
         {activity + " "}
 
         <span className="font-semibold leading-[100%]">{platform}</span>
       </span>
-    ) : (
-      <span className="text-xs">{text}</span>
     )
 
   return (
