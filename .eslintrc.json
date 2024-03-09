@@ -17,7 +17,8 @@
     "plugin:react-hooks/recommended",
     "plugin:sonarjs/recommended",
     "plugin:github/react",
-    "plugin:unicorn/recommended"
+    "plugin:unicorn/recommended",
+    "plugin:deprecation/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",

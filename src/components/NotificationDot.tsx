@@ -2,7 +2,7 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type NotificationDotProps = {
-  children: JSX.Element
+  children: React.JSX.Element
   isVisible: boolean
 }
 

@@ -1,9 +1,9 @@
 import {create} from "zustand"
 
 type ModelState = {
-  elements: JSX.Element[]
-  showModal: (element: JSX.Element) => void
-  closeModal: (element: JSX.Element) => void
+  elements: React.JSX.Element[]
+  showModal: (element: React.JSX.Element) => void
+  closeModal: (element: React.JSX.Element) => void
 }
 
 export const useModal = create<ModelState>(set => ({

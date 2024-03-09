@@ -1,3 +1,4 @@
+import React from "react"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -15,7 +16,7 @@ export type TypographyProps = {
   children?: React.ReactNode
 }
 
-function getTagFromVariant(variant: TypographyVariant): JSX.ElementType {
+function getTagFromVariant(variant: TypographyVariant): React.JSX.ElementType {
   switch (variant) {
     case TypographyVariant.H1: {
       return "h1"
