@@ -211,7 +211,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
                 onKeyDown={handleKeyDown}
                 rows={1}
                 ref={textareaReference}
-                autoFocus
                 placeholder="Write a message or simply say 👋🏼 hello..."
                 value={value}
                 disabled={false}

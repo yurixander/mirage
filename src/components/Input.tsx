@@ -20,7 +20,6 @@ export type InputProps = {
   isDisabled?: boolean
   label?: string
   className?: string
-  autoFocus?: boolean
   placeholder: string
   constraints?: InputConstraint[]
   alwaysShowAllConstraints?: boolean
@@ -83,7 +82,6 @@ const Input: FC<InputProps> = ({
   isDisabled,
   label,
   className,
-  autoFocus,
   placeholder,
   constraints,
   alwaysShowAllConstraints,
@@ -134,7 +132,6 @@ const Input: FC<InputProps> = ({
           className="w-full rounded-[10px]"
           type="text"
           disabled={isDisabled}
-          autoFocus={autoFocus}
           placeholder={placeholder}
           value={parentValue ?? value}
           onChange={handleChange}

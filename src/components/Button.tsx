@@ -17,7 +17,6 @@ export enum ButtonColor {
 }
 
 export type ButtonProps = {
-  autoFocus?: boolean
   onClick: () => void
   label: string
   isLoading?: boolean
@@ -29,7 +28,6 @@ export type ButtonProps = {
 }
 
 const Button: FC<ButtonProps> = ({
-  autoFocus,
   onClick,
   label: text,
   isLoading,
@@ -64,7 +62,6 @@ const Button: FC<ButtonProps> = ({
         variantClass
       )}
       disabled={isLoading ?? isDisabled}
-      autoFocus={autoFocus}
       onClick={isDisabled ? undefined : onClick}
       tabIndex={isDisabled ? undefined : 0}>
       {text}
