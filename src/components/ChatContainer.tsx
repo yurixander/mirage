@@ -18,15 +18,15 @@ import IconButton from "./IconButton"
 import SmartAction from "./SmartAction"
 import TypingIndicator from "./TypingIndicator"
 import useActiveRoom, {MessageKind} from "@/hooks/matrix/useActiveRoom"
-import ImageMessage, {type ImageMessageProps} from "./ImageMessage"
-import TextMessage, {type TextMessageProps} from "./TextMessage"
-import EventMessage, {type EventMessageProps} from "./EventMessage"
+import ImageMessage, {type ImageMessageProps as ImageMessageProperties} from "./ImageMessage"
+import TextMessage, {type TextMessageProps as TextMessageProperties} from "./TextMessage"
+import EventMessage, {type EventMessageProps as EventMessageProperties} from "./EventMessage"
 import {twMerge} from "tailwind-merge"
 import {useFilePicker} from "use-file-picker"
 import {MsgType} from "matrix-js-sdk"
 import {createPortal} from "react-dom"
 import Button, {ButtonVariant} from "./Button"
-import UnreadIndicator, {type UnreadIndicatorProps} from "./UnreadIndicator"
+import UnreadIndicator, {type UnreadIndicatorProps as UnreadIndicatorProperties} from "./UnreadIndicator"
 
 export type ChatContainerProps = {
   className?: string
@@ -34,11 +34,11 @@ export type ChatContainerProps = {
 
 const ChatContainer: FC<ChatContainerProps> = ({className}) => {
   const [value, setValue] = useState("")
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaReference = useRef<HTMLTextAreaElement>(null)
 
   const {
     activeRoom,
-    messages: messageProps,
+    messages: messageProperties,
     typingUsers,
     client,
     activeRoomId,
@@ -59,26 +59,26 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   const messages = useMemo(
     () =>
-      messageProps.map((message, index) =>
+      messageProperties.map((message, index) =>
         message.kind === MessageKind.Text ? (
-          <TextMessage key={index} {...(message.data as TextMessageProps)} />
+          <TextMessage key={index} {...(message.data as TextMessageProperties)} />
         ) : message.kind === MessageKind.Image ? (
-          <ImageMessage key={index} {...(message.data as ImageMessageProps)} />
+          <ImageMessage key={index} {...(message.data as ImageMessageProperties)} />
         ) : message.kind === MessageKind.Event ? (
-          <EventMessage key={index} {...(message.data as EventMessageProps)} />
+          <EventMessage key={index} {...(message.data as EventMessageProperties)} />
         ) : (
           <UnreadIndicator
             key={index}
-            {...(message.data as UnreadIndicatorProps)}
+            {...(message.data as UnreadIndicatorProperties)}
           />
         )
       ),
-    [messageProps]
+    [messageProperties]
   )
 
   useEffect(() => {
     // Move scroll to last message.
-    const textarea = textareaRef.current
+    const textarea = textareaReference.current
 
     if (textarea !== null) {
       textarea.style.height = "auto"
@@ -99,7 +99,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   const name = activeRoom?.name ?? " "
 
-  assert(name.length !== 0, "room name should not be empty")
+  assert(name.length > 0, "room name should not be empty")
 
   return (
     <>
@@ -172,13 +172,13 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         </header>
 
         <div
-          ref={scrollRef => {
-            if (scrollRef === null) {
+          ref={scrollReference => {
+            if (scrollReference === null) {
               return
             }
 
-            scrollRef.scrollTo({
-              top: scrollRef.scrollHeight - scrollRef.clientHeight,
+            scrollReference.scrollTo({
+              top: scrollReference.scrollHeight - scrollReference.clientHeight,
               behavior: "smooth",
             })
           }}
@@ -210,7 +210,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               <textarea
                 onKeyDown={handleKeyDown}
                 rows={1}
-                ref={textareaRef}
+                ref={textareaReference}
                 autoFocus
                 placeholder="Write a message or simply say 👋🏼 hello..."
                 value={value}

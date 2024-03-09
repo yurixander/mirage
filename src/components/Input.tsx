@@ -51,12 +51,12 @@ const urlPattern = new RegExp(
 
 const userIdPattern = new RegExp(
   // `@` [username] `:` [domain]
-  /^@[a-zA-Z_\-=\.\/0-9]+:[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/
+  /^@[\w./=\-]+:[\d.A-Za-z\-]+\.[A-Za-z]{2,}$/
 )
 
 const integerPattern = new RegExp(
   // Optional sign and digits.
-  /^[-+]?\d+$/
+  /^[+-]?\d+$/
 )
 
 export const urlConstraint: InputConstraint = {

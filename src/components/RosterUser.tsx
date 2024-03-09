@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import UserProfile, {type UserProfileProps} from "./UserProfile"
+import UserProfile, {type UserProfileProps as UserProfileProperties} from "./UserProfile"
 
 export enum UserPowerLevel {
   Admin,
@@ -8,7 +8,7 @@ export enum UserPowerLevel {
 }
 
 export type RosterUserProps = {
-  userProfileProps: UserProfileProps
+  userProfileProps: UserProfileProperties
   powerLevel: UserPowerLevel
   userId: string
   onClick: () => void

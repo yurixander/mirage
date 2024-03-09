@@ -16,8 +16,8 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
     const ghosts = []
 
     // REVISE: Simplify by using `Array.from` or `Array().fill`.
-    for (let i = 1; i <= count; i++) {
-      ghosts.push(i * opacityMultiplier)
+    for (let index = 1; index <= count; index++) {
+      ghosts.push(index * opacityMultiplier)
     }
 
     return ghosts

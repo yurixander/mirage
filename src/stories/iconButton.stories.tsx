@@ -1,11 +1,11 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import IconButton, {type IconButtonProps} from "../components/IconButton"
+import IconButton, {type IconButtonProps as IconButtonProperties} from "../components/IconButton"
 import {faGear, faBell} from "@fortawesome/free-solid-svg-icons"
 
 type Story = StoryObj<typeof IconButton>
 
 const meta: Meta<typeof IconButton> = {component: IconButton}
-const render = (args: IconButtonProps) => <IconButton {...args} />
+const render = (arguments_: IconButtonProperties) => <IconButton {...arguments_} />
 
 export const Settings: Story = {
   render,

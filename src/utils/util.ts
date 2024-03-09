@@ -48,7 +48,7 @@ export function assert(
 }
 
 export function trim(text: string, maxLength: number) {
-  return text.length >= maxLength ? `${text.substring(0, maxLength)}...` : text
+  return text.length >= maxLength ? `${text.slice(0, Math.max(0, maxLength))}...` : text
 }
 
 export function validateUrl(url: string): boolean {
@@ -133,9 +133,9 @@ export async function getImage(data: string): Promise<HTMLImageElement> {
   return await new Promise(resolve => {
     const img = new Image()
 
-    img.onload = () => {
+    img.addEventListener('load', () => {
       resolve(img)
-    }
+    })
 
     img.src = data
   })
@@ -227,8 +227,9 @@ export async function getRoomMembers(
   client: MatrixClient,
   room: Room
 ): Promise<RosterUserProps[]> {
-  const membersProp: RosterUserProps[] = []
-  const joinedMembers = (await client.getJoinedRoomMembers(room.roomId)).joined
+  const membersProperty: RosterUserProps[] = []
+  const members = await client.getJoinedRoomMembers(room.roomId)
+  const joinedMembers = members.joined
 
   const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
 
@@ -256,7 +257,7 @@ export async function getRoomMembers(
     const displayName = member.display_name
     const isAdmin = powerLevel === MIN_ADMIN_POWER_LEVEL
 
-    membersProp.push({
+    membersProperty.push({
       // TODO: Use actual props instead of dummy data.
       userProfileProps: {
         avatarUrl: getImageUrl(member.avatar_url, client),
@@ -285,7 +286,7 @@ export async function getRoomMembers(
     const member = joinedMembers[userId]
     const displayName = member.display_name ?? userId
 
-    membersProp.push({
+    membersProperty.push({
       // TODO: Use actual props instead of dummy data.
       userProfileProps: {
         avatarUrl: getImageUrl(member.avatar_url, client),
@@ -302,20 +303,20 @@ export async function getRoomMembers(
     memberCount += 1
   }
 
-  return membersProp
+  return membersProperty
 }
 
-export function stringToColor(str: string): string {
+export function stringToColor(string_: string): string {
   let hash = 0
 
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash)
+  for (let index = 0; index < string_.length; index++) {
+    hash = string_.charCodeAt(index) + ((hash << 5) - hash)
   }
 
   let color = "#"
 
-  for (let i = 0; i < 3; i++) {
-    const value = (hash >> (i * 8)) & 0xff
+  for (let index = 0; index < 3; index++) {
+    const value = (hash >> (index * 8)) & 0xFF
 
     color += ("00" + value.toString(16)).slice(-2)
   }

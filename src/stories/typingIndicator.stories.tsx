@@ -1,12 +1,12 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import TypingIndicator, {
-  type TypingIndicatorProps,
+  type TypingIndicatorProps as TypingIndicatorProperties,
 } from "../components/TypingIndicator"
 
 type Story = StoryObj<typeof TypingIndicator>
 
 const meta: Meta<typeof TypingIndicator> = {component: TypingIndicator}
-const render = (args: TypingIndicatorProps) => <TypingIndicator {...args} />
+const render = (arguments_: TypingIndicatorProperties) => <TypingIndicator {...arguments_} />
 
 const defaultAvatarUrl =
   "https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

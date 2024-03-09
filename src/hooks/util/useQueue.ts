@@ -3,7 +3,7 @@ import {useState, useRef, useCallback, useEffect} from "react"
 function useQueue<T>(delay: number = 10_000) {
   const [current, setCurrent] = useState<T | null>(null)
   const queue = useRef<T[]>([])
-  const timeoutRef = useRef<number | null>(null)
+  const timeoutReference = useRef<number | null>(null)
 
   const processQueue = useCallback(() => {
     if (queue.current.length === 0) {
@@ -16,7 +16,7 @@ function useQueue<T>(delay: number = 10_000) {
     setCurrent(nextItem)
 
     // Set a timeout to process the next item.
-    timeoutRef.current = window.setTimeout(() => {
+    timeoutReference.current = window.setTimeout(() => {
       setCurrent(null)
 
       // Process the next item after delay.
@@ -39,9 +39,9 @@ function useQueue<T>(delay: number = 10_000) {
   const clearItems = useCallback(() => {
     queue.current = []
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
+    if (timeoutReference.current) {
+      clearTimeout(timeoutReference.current)
+      timeoutReference.current = null
     }
 
     // Clear current item immediately.
@@ -51,8 +51,8 @@ function useQueue<T>(delay: number = 10_000) {
   // Clear timeout on unmount to prevent memory leaks.
   useEffect(() => {
     return () => {
-      if (timeoutRef.current !== null) {
-        clearTimeout(timeoutRef.current)
+      if (timeoutReference.current !== null) {
+        clearTimeout(timeoutReference.current)
       }
     }
   }, [])

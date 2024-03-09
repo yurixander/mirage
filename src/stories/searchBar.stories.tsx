@@ -1,17 +1,17 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import SearchBar, {type SearchBarProps} from "../components/SearchBar"
+import SearchBar, {type SearchBarProps as SearchBarProperties} from "../components/SearchBar"
 
 type Story = StoryObj<typeof SearchBar>
 
 const meta: Meta<typeof SearchBar> = {component: SearchBar}
 
 export const Default: Story = {
-  render: (args: SearchBarProps) => <SearchBar {...args} />,
+  render: (arguments_: SearchBarProperties) => <SearchBar {...arguments_} />,
   args: {onQueryChange: () => []},
 }
 
 export const WithResults: Story = {
-  render: (args: SearchBarProps) => <SearchBar {...args} />,
+  render: (arguments_: SearchBarProperties) => <SearchBar {...arguments_} />,
   args: {
     onQueryChange: (_query: string) => [
       {

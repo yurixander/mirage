@@ -1,6 +1,6 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import NotificationIndicator, {
-  type NotificationIndicatorProps,
+  type NotificationIndicatorProps as NotificationIndicatorProperties,
 } from "../components/NotificationIndicator"
 
 type Story = StoryObj<typeof NotificationIndicator>
@@ -8,8 +8,8 @@ type Story = StoryObj<typeof NotificationIndicator>
 const meta: Meta<typeof NotificationIndicator> = {
   component: NotificationIndicator,
 }
-const render = (args: NotificationIndicatorProps) => (
-  <NotificationIndicator {...args} />
+const render = (arguments_: NotificationIndicatorProperties) => (
+  <NotificationIndicator {...arguments_} />
 )
 
 export const WithMentions: Story = {

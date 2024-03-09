@@ -1,7 +1,7 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import RadioGroup, {
   RadioGroupDirection,
-  type RadioGroupProps,
+  type RadioGroupProps as RadioGroupProperties,
 } from "../components/RadioGroup"
 
 type Story = StoryObj<typeof RadioGroup>
@@ -9,7 +9,7 @@ type Story = StoryObj<typeof RadioGroup>
 const meta: Meta<typeof RadioGroup> = {
   component: RadioGroup,
 }
-const render = (args: RadioGroupProps) => <RadioGroup {...args} />
+const render = (arguments_: RadioGroupProperties) => <RadioGroup {...arguments_} />
 
 export const Default: Story = {
   render,

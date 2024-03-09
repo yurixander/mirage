@@ -2,11 +2,11 @@ import {type FC} from "react"
 import {timeFormatter} from "../utils/util"
 import Button, {ButtonSize, ButtonVariant} from "./Button"
 import Label from "./Label"
-import UserProfile, {type UserProfileProps} from "./UserProfile"
+import UserProfile, {type UserProfileProps as UserProfileProperties} from "./UserProfile"
 import {createPortal} from "react-dom"
 
 export type UserCardProps = {
-  userProfileProps: UserProfileProps
+  userProfileProps: UserProfileProperties
   aboutMe: string
   accountCreationTime: number
   serverJoinTime: number
@@ -22,7 +22,7 @@ const UserCard: FC<UserCardProps> = ({
   userProfileProps,
   onCancel,
 }) => {
-  const chatMessagesBridge = document.getElementById("messages")
+  const chatMessagesBridge = document.querySelector("#messages")
 
   return (
     chatMessagesBridge &&

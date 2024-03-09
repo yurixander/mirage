@@ -1,10 +1,10 @@
 import {type FC} from "react"
-import RadioButton, {type RadioButtonProps} from "./RadioButton"
+import RadioButton, {type RadioButtonProps as RadioButtonProperties} from "./RadioButton"
 import {twMerge} from "tailwind-merge"
 import useSelection from "@/hooks/util/useSelection"
 
 export type RadioGroupProps = {
-  items: RadioButtonProps[]
+  items: RadioButtonProperties[]
   isColum?: RadioGroupDirection
 }
 
@@ -17,7 +17,7 @@ const RadioGroup: FC<RadioGroupProps> = ({
   items,
   isColum = RadioGroupDirection.Column,
 }) => {
-  const {selectedItem, handleSelectionChange} = useSelection<RadioButtonProps>(
+  const {selectedItem, handleSelectionChange} = useSelection<RadioButtonProperties>(
     items,
     item => item.isChecked
   )
@@ -27,13 +27,13 @@ const RadioGroup: FC<RadioGroupProps> = ({
 
   return (
     <div className={twMerge("flex gap-3", directionClass)}>
-      {items.map((props, index) => (
+      {items.map((properties, index) => (
         <RadioButton
           key={index}
-          {...props}
-          isChecked={props === selectedItem}
+          {...properties}
+          isChecked={properties === selectedItem}
           onClick={() => {
-            handleSelectionChange(props)
+            handleSelectionChange(properties)
           }}
         />
       ))}

@@ -11,18 +11,24 @@ function getSyncStateText(syncState: SyncState | null) {
   }
 
   switch (syncState) {
-    case SyncState.Syncing:
+    case SyncState.Syncing: {
       return "Syncing"
-    case SyncState.Error:
+    }
+    case SyncState.Error: {
       return "Sync error"
-    case SyncState.Prepared:
+    }
+    case SyncState.Prepared: {
       return "Ready"
-    case SyncState.Catchup:
+    }
+    case SyncState.Catchup: {
       return "Catching up"
-    case SyncState.Stopped:
+    }
+    case SyncState.Stopped: {
       return "Disconnected"
-    case SyncState.Reconnecting:
+    }
+    case SyncState.Reconnecting: {
       return "Reconnecting"
+    }
   }
 }
 

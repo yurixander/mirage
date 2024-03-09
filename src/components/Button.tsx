@@ -45,9 +45,9 @@ const Button: FC<ButtonProps> = ({
 
   const variantClass =
     variant === ButtonVariant.Primary
-      ? color === ButtonColor.Black
+      ? (color === ButtonColor.Black
         ? "bg-black border-none text-white"
-        : "bg-purple-700 border-purple-900 text-white"
+        : "bg-purple-700 border-purple-900 text-white")
       : variant === ButtonVariant.Secondary
         ? "bg-purple-100 text-purple-800 border-none hover:bg-purple-200"
         : variant === ButtonVariant.TextLink

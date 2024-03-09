@@ -1,12 +1,12 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import MessageContainer, {
-  type MessageContainerProps,
+  type MessageContainerProps as MessageContainerProperties,
 } from "../components/MessageContainer"
 
 type Story = StoryObj<typeof MessageContainer>
 
 const meta: Meta<typeof MessageContainer> = {component: MessageContainer}
-const render = (args: MessageContainerProps) => <MessageContainer {...args} />
+const render = (arguments_: MessageContainerProperties) => <MessageContainer {...arguments_} />
 
 export const Default: Story = {
   render,

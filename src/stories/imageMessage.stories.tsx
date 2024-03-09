@@ -1,10 +1,10 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import ImageMessage, {type ImageMessageProps} from "../components/ImageMessage"
+import ImageMessage, {type ImageMessageProps as ImageMessageProperties} from "../components/ImageMessage"
 
 type Story = StoryObj<typeof ImageMessage>
 
 const meta: Meta<typeof ImageMessage> = {component: ImageMessage}
-const render = (args: ImageMessageProps) => <ImageMessage {...args} />
+const render = (arguments_: ImageMessageProperties) => <ImageMessage {...arguments_} />
 
 export const Default: Story = {
   render,

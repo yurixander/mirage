@@ -28,10 +28,10 @@ const Room: FC<RoomProps> = ({
   mentionCount,
   onClick,
 }) => {
-  assert(name.length !== 0, "room name should not be empty")
+  assert(name.length > 0, "room name should not be empty")
 
   const activeClass = isActive ? "text-purple-500" : "text-gray-300"
-  const mentionCountProp = mentionCount > 0 ? mentionCount : undefined
+  const mentionCountProperty = mentionCount > 0 ? mentionCount : undefined
   const MAX_NAME_LENGTH = 16
 
   return (
@@ -61,7 +61,7 @@ const Room: FC<RoomProps> = ({
       </div>
 
       {containsUnreadMessages && (
-        <NotificationIndicator mentionAmount={mentionCountProp} />
+        <NotificationIndicator mentionAmount={mentionCountProperty} />
       )}
     </div>
   )

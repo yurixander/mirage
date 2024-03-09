@@ -15,16 +15,21 @@ export type ModalProps = {
 
 const getPopupPositionClassName = (position?: ModalPosition): string => {
   switch (position) {
-    case ModalPosition.Left:
+    case ModalPosition.Left: {
       return "items-center justify-start"
-    case ModalPosition.Right:
+    }
+    case ModalPosition.Right: {
       return "items-center justify-end"
-    case ModalPosition.Top:
+    }
+    case ModalPosition.Top: {
       return "items-start justify-center"
-    case ModalPosition.Bottom:
+    }
+    case ModalPosition.Bottom: {
       return "items-end justify-center"
-    case undefined:
+    }
+    case undefined: {
       return "items-center justify-center"
+    }
   }
 }
 

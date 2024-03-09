@@ -1,12 +1,12 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import UserCard, {type UserCardProps} from "../components/UserCard"
+import UserCard, {type UserCardProps as UserCardProperties} from "../components/UserCard"
 import {UserStatus} from "../components/UserProfile"
 
 type Story = StoryObj<typeof UserCard>
 
 const date = new Date().getDate()
 const meta: Meta<typeof UserCard> = {component: UserCard}
-const render = (args: UserCardProps) => <UserCard {...args} />
+const render = (arguments_: UserCardProperties) => <UserCard {...arguments_} />
 
 export const Default: Story = {
   render,

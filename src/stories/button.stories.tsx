@@ -3,13 +3,13 @@ import Button, {
   ButtonColor,
   ButtonSize,
   ButtonVariant,
-  type ButtonProps,
+  type ButtonProps as ButtonProperties,
 } from "../components/Button"
 
 type Story = StoryObj<typeof Button>
 
 const meta: Meta<typeof Button> = {component: Button}
-const render = (args: ButtonProps) => <Button {...args} />
+const render = (arguments_: ButtonProperties) => <Button {...arguments_} />
 
 export const Primary: Story = {
   render,
