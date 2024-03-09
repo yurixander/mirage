@@ -17,7 +17,7 @@ export type MessageContainerProps = {
   authorDisplayName: string
   authorDisplayNameColor: string
   authorAvatarUrl?: string
-  children: JSX.Element
+  children: React.JSX.Element
   timestamp: number
   onAuthorClick: () => void
 }

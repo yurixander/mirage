@@ -10,7 +10,7 @@ export enum ModalPosition {
 
 export type ModalProps = {
   position?: ModalPosition
-  dialogs: JSX.Element[]
+  dialogs: React.JSX.Element[]
 }
 
 const getPopupPositionClassName = (position?: ModalPosition): string => {

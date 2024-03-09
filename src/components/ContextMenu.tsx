@@ -1,5 +1,6 @@
 import {type IconProp} from "@fortawesome/fontawesome-svg-core"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import React from "react"
 import {useCallback, useEffect, type FC} from "react"
 import {create} from "zustand"
 
@@ -12,7 +13,7 @@ export type ContextMenuItem = {
 export type ContextMenuProps = {
   id: number
   items: ContextMenuItem[]
-  children: JSX.Element
+  children: React.JSX.Element
 }
 
 type ContextMenuState = {
