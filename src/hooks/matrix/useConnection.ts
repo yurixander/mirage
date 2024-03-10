@@ -23,9 +23,9 @@ const useClientStore = create<ZustandClientStore>(set => ({
   client: null,
   syncState: null,
   lastSyncError: null,
-  // A flag to prevent multiple connection attempts. This is needed apart from
+  // A flag to prevent connection attempts. This is needed apart from
   // the sync state, as the sync state is not set until the client is prepared.
-  // This is used as an immediate lock to prevent multiple connection attempts.
+  // This is used as an immediate lock to prevent connection attempts.
   isConnecting: false,
   setIsConnecting: (isConnecting: boolean) => {
     set({isConnecting})
@@ -55,8 +55,8 @@ const useConnection = () => {
 
   const connect = useCallback(
     async (credentials: Credentials): Promise<boolean> => {
-      // The client is already connected or is in the process of
-      // connecting; don't attempt another connection.
+      // The client is already (connected | connecting);
+      // don't attempt another connection.
       if (
         ![SyncState.Stopped, SyncState.Error, null].includes(syncState) ||
         isConnecting
@@ -100,7 +100,7 @@ const useConnection = () => {
         setClient(newClient)
 
         // NOTE: No need to await the promise, as the client will
-        // emit events when it is connected or when it fails to connect
+        // emit events when connected or when it fails to connect
         // via the client sync event above.
         // TODO: Handle connection errors (`.catch`).
         void newClient.startClient({
@@ -129,7 +129,7 @@ const useConnection = () => {
 
   return {
     // TODO: Use assertion that the singleton must be defined if is connected.
-    // Only provide the client if it is both connected and synced.
+    // Provide the client if both connected and synced.
     client: syncState === SyncState.Prepared ? client : null,
     syncState,
     connect,

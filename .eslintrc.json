@@ -7,7 +7,14 @@
   "settings": {
     "react": {
       "version": "detect"
-    }
+    },
+    "boundaries/elements": [
+      {
+        "type": "components",
+        "pattern": "components/*/*",
+        "capture": ["family", "elementName"]
+      }
+    ]
   },
   "extends": [
     "standard-with-typescript",
@@ -19,8 +26,10 @@
     "plugin:github/react",
     "plugin:unicorn/recommended",
     "plugin:deprecation/recommended",
-    "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended",
+    "plugin:boundaries/recommended"
   ],
+  "plugins": ["boundaries", "write-good-comments"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
@@ -50,6 +59,13 @@
     "unicorn/prevent-abbreviations": ["off"],
     "unicorn/no-nested-ternary": "off",
     "unicorn/no-null": ["off"],
-    "unicorn/prefer-code-point": "off"
+    "unicorn/prefer-code-point": "off",
+    "write-good-comments/write-good-comments": [
+      "warn",
+      {
+        "passive": false,
+        "whitelist": ["read-only"]
+      }
+    ]
   }
 }

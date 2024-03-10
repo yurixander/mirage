@@ -18,5 +18,7 @@
   },
   "todo-tree.general.tagGroups": {
     "FIXME": ["FIXME", "FIXIT", "FIX"]
-  }
+  },
+  "eslint.enable": true,
+  "eslint.validate": ["html"]
 }

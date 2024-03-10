@@ -28,7 +28,7 @@ function useQueue<T>(delay: number = 10_000) {
     (message: T) => {
       queue.current.push(message)
 
-      // If nothing is currently shown, process the next item immediately.
+      // If nothing is shown, process the next item instantly.
       if (!current) {
         processQueue()
       }
@@ -44,7 +44,7 @@ function useQueue<T>(delay: number = 10_000) {
       timeoutReference.current = null
     }
 
-    // Clear current item immediately.
+    // Clear current item instantly.
     setCurrent(null)
   }, [])
 

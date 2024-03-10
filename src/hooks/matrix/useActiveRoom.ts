@@ -47,7 +47,7 @@ type Message<Kind extends MessageKind> = {
   data: MessageOf<Kind>
 }
 
-// TODO: Make the compiler recognize when it is one and when it is another.
+// TODO:Make the compiler recognize it.
 type AnyMessage = Message<MessageKind>
 
 const useActiveRoom = () => {
@@ -59,7 +59,11 @@ const useActiveRoom = () => {
   const isMountedReference = useIsMountedRef()
 
   useEffect(() => {
-    if (client === null || activeRoomId === null || !isMountedReference.current) {
+    if (
+      client === null ||
+      activeRoomId === null ||
+      !isMountedReference.current
+    ) {
       return
     }
 
