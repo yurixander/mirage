@@ -28,7 +28,7 @@ const NotificationIndicator: FC<NotificationIndicatorProps> = ({
 
   const adjustedAmount =
     mentionAmount === undefined
-      ? // If there's too many notifications to display, just show "99+"
+      ? // If there's too much notifications to display, show "99+"
         // to avoid overflowing the dot to a larger width.
         undefined
       : (mentionAmount > 99

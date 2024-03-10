@@ -48,7 +48,9 @@ export function assert(
 }
 
 export function trim(text: string, maxLength: number) {
-  return text.length >= maxLength ? `${text.slice(0, Math.max(0, maxLength))}...` : text
+  return text.length >= maxLength
+    ? `${text.slice(0, Math.max(0, maxLength))}...`
+    : text
 }
 
 export function validateUrl(url: string): boolean {
@@ -133,7 +135,7 @@ export async function getImage(data: string): Promise<HTMLImageElement> {
   return await new Promise(resolve => {
     const img = new Image()
 
-    img.addEventListener('load', () => {
+    img.addEventListener("load", () => {
       resolve(img)
     })
 
@@ -189,7 +191,6 @@ export function deleteMessage(
   roomId: string,
   eventId: string
 ) {
-  // TODO: Handle that can delete message just the administrators or the user.
   client.redactEvent(roomId, eventId).catch(error => {
     console.error("Error deleting message", error)
   })

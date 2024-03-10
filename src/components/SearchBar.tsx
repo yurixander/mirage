@@ -27,7 +27,7 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange, className}) => {
     inputReference.current?.focus()
 
     // Select all the text in the input after focusing it,
-    // so that the user can immediately start typing a new query.
+    // do that the user can instantly start typing a new query.
     inputReference.current?.select()
   })
 
