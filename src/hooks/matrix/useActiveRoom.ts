@@ -47,7 +47,7 @@ type Message<Kind extends MessageKind> = {
   data: MessageOf<Kind>
 }
 
-// TODO:Make the compiler recognize it.
+// TODO: Make the compiler recognize it.
 type AnyMessage = Message<MessageKind>
 
 const useActiveRoom = () => {
@@ -502,6 +502,9 @@ const handleMemberEvent = (
       )
 
       break
+    }
+    case undefined: {
+      return null
     }
   }
 

@@ -34,23 +34,23 @@ const urlPattern = new RegExp(
   // Protocol.
   "^(https?:\\/\\/)?" +
     // Domain name and extension.
-    "((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|" +
+    "([a-z\\d-]+\\.)+[a-z]{2,}|" +
     // Or IP (v4) address.
-    "((\\d{1,3}\\.){3}\\d{1,3}))" +
+    "((\\d{1,3}\\.){3}\\d{1,3})" +
     // Port.
-    "(\\:\\d+)?" +
+    "(:\\d+)?" +
     // Path.
-    "(\\/[-a-zA-Z\\d%_.~+]*)*" +
+    "(\\/[-\\w%.~+]*)*" +
     // Query string.
-    "(\\?[;&a-zA-Z\\d%_.~+=-]*)?" +
+    "(\\?[;&\\w%.~+=-]*)?" +
     // Fragment locator.
-    "(\\#[-a-zA-Z\\d_]*)?$",
+    "(#[-\\w]*)?$",
   "i"
 )
 
 const userIdPattern = new RegExp(
   // `@` [username] `:` [domain]
-  /^@[\w./=\-]+:[\d.A-Za-z\-]+\.[A-Za-z]{2,}$/
+  /^@[\w./=\-]+:[\d.a-z\-]+\.[a-z]{2,}$/i
 )
 
 const integerPattern = new RegExp(
