@@ -28,7 +28,11 @@ const useRoomMembers = () => {
   }, [activeRoomId, client])
 
   useEffect(() => {
-    if (client === null || activeRoomId === null || !isMountedReference.current) {
+    if (
+      client === null ||
+      activeRoomId === null ||
+      !isMountedReference.current
+    ) {
       return
     }
 

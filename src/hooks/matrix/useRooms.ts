@@ -2,7 +2,7 @@ import useConnection from "@/hooks/matrix/useConnection"
 import {NotificationCountType, type Room, RoomEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 import useEventListener from "./useEventListener"
-import {getDirectRoomsIds, getRoomsFromSpace} from "@/utils/util"
+import {getDirectRoomsIds, getRoomsFromSpace, normalizeName} from "@/utils/util"
 import {RoomType, type RoomProps} from "@/components/Room"
 import {useActiveSpaceIdStore} from "./useSpaces"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
@@ -63,7 +63,7 @@ const useRooms = () => {
 
       newRooms.push({
         roomId: room.roomId,
-        name: room.name,
+        name: normalizeName(room.name),
         containsUnreadMessages:
           room.getUnreadNotificationCount(NotificationCountType.Total) > 0,
         mentionCount: room.getUnreadNotificationCount(

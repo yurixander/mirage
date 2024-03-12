@@ -255,7 +255,7 @@ export async function getRoomMembers(
 
     adminUsersId.push(adminId)
     const member = joinedMembers[adminId]
-    const displayName = member.display_name
+    const displayName = normalizeName(member.display_name)
     const isAdmin = powerLevel === MIN_ADMIN_POWER_LEVEL
 
     membersProperty.push({
@@ -285,7 +285,7 @@ export async function getRoomMembers(
     }
 
     const member = joinedMembers[userId]
-    const displayName = member.display_name ?? userId
+    const displayName = normalizeName(member.display_name ?? userId)
 
     membersProperty.push({
       // TODO: Use actual props instead of dummy data.
@@ -317,7 +317,7 @@ export function stringToColor(string_: string): string {
   let color = "#"
 
   for (let index = 0; index < 3; index++) {
-    const value = (hash >> (index * 8)) & 0xFF
+    const value = (hash >> (index * 8)) & 0xff
 
     color += ("00" + value.toString(16)).slice(-2)
   }
@@ -351,4 +351,11 @@ export function getLastReadEventIdFromRoom(
   }
 
   return room.findEventById(eventReadUpTo)?.getId() ?? null
+}
+
+export function normalizeName(displayName: string): string {
+  return displayName
+    .replaceAll(/[\u{1F600}-\u{1F64F}]/gu, "")
+    .replaceAll(/[^\w !"#%&'()+,:;?@¡¿\u00C0-\u00FF\-]/g, "")
+    .replaceAll(".", "")
 }
