@@ -1,5 +1,3 @@
-import {type IconProp} from "@fortawesome/fontawesome-svg-core"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import React from "react"
 import {useCallback, useEffect, type FC} from "react"
 import {create} from "zustand"
@@ -7,7 +5,7 @@ import {create} from "zustand"
 export type ContextMenuItem = {
   label: string
   action: () => void
-  icon?: IconProp
+  icon: React.JSX.Element
 }
 
 export type ContextMenuProps = {
@@ -77,13 +75,9 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
                 onClick={item.action}
                 aria-hidden="true">
                 <span className="mr-auto font-semibold">{item.label}</span>
-
-                {item.icon && (
-                  <FontAwesomeIcon
-                    className="text-stone-600 group-hover:text-white"
-                    icon={item.icon}
-                  />
-                )}
+                <div className="text-stone-600 group-hover:text-white">
+                  {item.icon}
+                </div>
               </div>
             ))}
           </div>

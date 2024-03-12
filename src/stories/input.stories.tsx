@@ -6,12 +6,7 @@ import Input, {
   urlConstraint,
   userIdConstraint,
 } from "../components/Input"
-import {
-  faSearch,
-  faCircleUser,
-  faEyeSlash,
-  faPaste,
-} from "@fortawesome/free-solid-svg-icons"
+import {IoArrowUndo, IoTrash, IoArrowRedo} from "react-icons/io5"
 
 type Story = StoryObj<typeof Input>
 
@@ -72,7 +67,7 @@ export const WithIcon: Story = {
   render,
   args: {
     placeholder: "This is an input with icon",
-    icon: faCircleUser,
+    Icon: IoArrowRedo,
   },
 }
 
@@ -80,7 +75,7 @@ export const Disabled: Story = {
   render,
   args: {
     placeholder: "This is an input disabled",
-    icon: faSearch,
+    Icon: IoTrash,
     isDisabled: true,
   },
 }
@@ -93,12 +88,12 @@ export const WithActions: Story = {
       {
         tooltip: "Paste",
         onClick: () => {},
-        icon: faPaste,
+        Icon: IoArrowUndo,
       },
       {
         tooltip: "Show pass",
         onClick: () => {},
-        icon: faEyeSlash,
+        Icon: IoTrash,
       },
     ],
   },

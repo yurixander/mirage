@@ -14,8 +14,8 @@ const NotificationDot: FC<NotificationDotProps> = ({children, isVisible}) => {
       {isVisible && (
         <div
           className={twMerge(
-            "absolute top-0 right-0 h-[6px] w-[6px]",
-            "bg-red-400 rounded-lg border-[1px] border-solid border-neutral-50"
+            "absolute right-0 top-0 h-[6px] w-[6px]",
+            "rounded-lg border-[1px] border-solid border-neutral-50 bg-red-400"
           )}
         />
       )}

@@ -1,5 +1,3 @@
-import {type IconProp} from "@fortawesome/fontawesome-svg-core"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import Avatar from "boring-avatars"
 import {type FC} from "react"
 import {assert, cleanDisplayName, trim, validateUrl} from "../utils/util"
@@ -22,7 +20,7 @@ export type UserProfileProps = {
   displayNameColor: string
   status: UserStatus
   activity?: UserActivity
-  icon?: IconProp
+  icon?: React.JSX.Element
   platform?: string
   isLarge?: boolean
 }
@@ -144,10 +142,7 @@ const UserProfile: FC<UserProfileProps> = ({
         </div>
 
         <div className="flex items-center">
-          {icon && (
-            <FontAwesomeIcon icon={icon} className="mr-[3px] size-[10px]" />
-          )}
-
+          {icon && <div className="mr-[3px] size-[10px]">{icon}</div>}
           {activityOrText}
         </div>
       </div>

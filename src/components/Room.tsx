@@ -1,9 +1,8 @@
-import {faHashtag} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {type FC} from "react"
 import {assert, trim} from "../utils/util"
 import NotificationIndicator from "./NotificationIndicator"
 import {twMerge} from "tailwind-merge"
+import {LiaSlackHash} from "react-icons/lia"
 
 export enum RoomType {
   Direct,
@@ -32,7 +31,7 @@ const Room: FC<RoomProps> = ({
 
   const activeClass = isActive ? "text-purple-500" : "text-gray-300"
   const mentionCountProperty = mentionCount > 0 ? mentionCount : undefined
-  const MAX_NAME_LENGTH = 16
+  const MAX_NAME_LENGTH = 14
 
   return (
     <div
@@ -40,11 +39,10 @@ const Room: FC<RoomProps> = ({
       className="group flex cursor-pointer flex-row items-center"
       aria-hidden="true">
       <div className="w-full">
-        <div className="group w-max group-active:scale-90 group-active:transition group-active:duration-300">
-          <FontAwesomeIcon
-            icon={faHashtag}
+        <div className="group w-max flex-row group-active:scale-90 group-active:transition group-active:duration-300">
+          <LiaSlackHash
             className={twMerge(
-              "mr-3 group-active:text-purple-500 group-active:transition-colors group-active:duration-1000",
+              "group-active:text-purple-500 group-active:transition-colors group-active:duration-1000",
               activeClass
             )}
           />

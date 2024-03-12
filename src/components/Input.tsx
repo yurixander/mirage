@@ -1,9 +1,8 @@
-import {type IconProp} from "@fortawesome/fontawesome-svg-core"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {useState, type FC} from "react"
+import React, {useState, type FC} from "react"
 import IconButton from "./IconButton"
 import Label from "./Label"
 import {twMerge} from "tailwind-merge"
+import {type IconType} from "react-icons"
 
 export type InputConstraint = {
   message: string
@@ -13,7 +12,7 @@ export type InputConstraint = {
 export type InputAction = {
   tooltip: string
   onClick: () => void
-  icon: IconProp
+  Icon: IconType
 }
 
 export type InputProps = {
@@ -26,7 +25,7 @@ export type InputProps = {
   onValueChange?: (value: string) => void
   initialValue?: string
   parentValue?: string
-  icon?: IconProp
+  Icon?: IconType
   actions?: InputAction[]
 }
 
@@ -88,7 +87,7 @@ const Input: FC<InputProps> = ({
   onValueChange,
   initialValue,
   parentValue,
-  icon,
+  Icon,
   actions,
 }) => {
   const [value, setValue] = useState(initialValue ?? "")
@@ -122,11 +121,7 @@ const Input: FC<InputProps> = ({
         tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
 
-        {icon && (
-          <div className="ml-[10px] size-[18px] text-neutral-200">
-            <FontAwesomeIcon icon={icon} />
-          </div>
-        )}
+        {Icon && <Icon className="ml-[10px] size-[18px] text-neutral-200" />}
 
         <input
           className="w-full rounded-[10px]"
@@ -144,7 +139,7 @@ const Input: FC<InputProps> = ({
                 key={action.tooltip}
                 onClick={action.onClick}
                 tooltip={action.tooltip}
-                icon={action.icon}
+                Icon={action.Icon}
               />
             ))}
           </div>
