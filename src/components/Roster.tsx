@@ -6,8 +6,7 @@ import {type UserProfileProps as UserProfileProperties} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 import {twMerge} from "tailwind-merge"
 import useRoomMembers from "@/hooks/matrix/useRoomMembers"
-import {IoFilter} from "react-icons/io5"
-import {IoIosContacts} from "react-icons/io"
+import {IoFilterCircle, IoPeople} from "react-icons/io5"
 
 export enum RosterUserCategory {
   Admin,
@@ -53,14 +52,14 @@ const Roster: FC<RosterProps> = ({className}) => {
   return (
     <>
       <div className={twMerge("flex h-full flex-col", className)}>
-        <header className="flex items-center p-3">
-          <IoIosContacts size={36} className="text-neutral-300" />
+        <header className="flex items-center p-4">
+          <IoPeople size={28} className="text-neutral-300" />
 
           <div className="ml-[5px] w-full text-neutral-600">People</div>
 
           <IconButton
             tooltip="Sort members"
-            Icon={IoFilter}
+            Icon={IoFilterCircle}
             onClick={() => {
               // TODO: Handle `sort` button click.
             }}

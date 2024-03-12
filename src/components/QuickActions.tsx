@@ -6,8 +6,8 @@ import {
   IoExtensionPuzzle,
   IoExit,
   IoNotificationsSharp,
+  IoCall,
 } from "react-icons/io5"
-import {IoMdCall} from "react-icons/io"
 
 export type QuickActionsProps = {
   onViewDirectMessages: () => void
@@ -34,7 +34,7 @@ const QuickActions: FC<QuickActionsProps> = ({
         Icon={IoPaperPlane}
       />
 
-      <IconButton onClick={onViewCalls} tooltip="Calls" Icon={IoMdCall} />
+      <IconButton onClick={onViewCalls} tooltip="Calls" Icon={IoCall} />
 
       <IconButton
         onClick={onViewNotifications}

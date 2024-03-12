@@ -24,12 +24,12 @@ import UnreadIndicator, {
 import {
   IoEllipsisVertical,
   IoInformationCircle,
-  IoPaperPlane,
   IoAccessibility,
   IoContrast,
   IoAttach,
+  IoPaperPlane,
 } from "react-icons/io5"
-import {IoMdGlobe, IoMdHappy, IoMdMedical, IoIosLink} from "react-icons/io"
+import {IoMdGlobe, IoMdMedical, IoIosHappy, IoMdLink} from "react-icons/io"
 import {LiaSlackHash} from "react-icons/lia"
 
 export type ChatContainerProps = {
@@ -150,7 +150,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           "flex h-screen flex-col gap-4 border-[1px] border-solid border-stone-200",
           className
         )}>
-        <header className="flex items-center gap-4 border-b border-solid border-b-stone-200 p-4">
+        <header className="flex items-center gap-2 border-b border-solid border-b-stone-200 p-4">
           <div className="flex w-full gap-1">
             <LiaSlackHash className="text-purple-500" />
 
@@ -172,7 +172,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               /* TODO: Handle `link` button click. */
             }}
             tooltip="Copy link"
-            Icon={IoIosLink}
+            Icon={IoMdLink}
           />
 
           <IconButton
@@ -207,7 +207,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
                   /* TODO: Handle `emoji` button click. */
                 }}
                 tooltip="Emoji"
-                Icon={IoMdHappy}
+                Icon={IoIosHappy}
               />
 
               <IconButton
