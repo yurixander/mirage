@@ -1,32 +1,36 @@
-import {
-  faCircleHalfStroke,
-  faCircleInfo,
-  faEarthAmerica,
-  faEllipsisV,
-  faFaceSmile,
-  faHashtag,
-  faLink,
-  faPaperPlane,
-  faPaperclip,
-  faStarOfLife,
-  faUniversalAccess,
-} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {useCallback, useEffect, useMemo, useRef, useState, type FC} from "react"
 import {assert, sendImageMessageFromFile} from "../utils/util"
 import IconButton from "./IconButton"
 import SmartAction from "./SmartAction"
 import TypingIndicator from "./TypingIndicator"
 import useActiveRoom, {MessageKind} from "@/hooks/matrix/useActiveRoom"
-import ImageMessage, {type ImageMessageProps as ImageMessageProperties} from "./ImageMessage"
-import TextMessage, {type TextMessageProps as TextMessageProperties} from "./TextMessage"
-import EventMessage, {type EventMessageProps as EventMessageProperties} from "./EventMessage"
+import ImageMessage, {
+  type ImageMessageProps as ImageMessageProperties,
+} from "./ImageMessage"
+import TextMessage, {
+  type TextMessageProps as TextMessageProperties,
+} from "./TextMessage"
+import EventMessage, {
+  type EventMessageProps as EventMessageProperties,
+} from "./EventMessage"
 import {twMerge} from "tailwind-merge"
 import {useFilePicker} from "use-file-picker"
 import {MsgType} from "matrix-js-sdk"
 import {createPortal} from "react-dom"
 import Button, {ButtonVariant} from "./Button"
-import UnreadIndicator, {type UnreadIndicatorProps as UnreadIndicatorProperties} from "./UnreadIndicator"
+import UnreadIndicator, {
+  type UnreadIndicatorProps as UnreadIndicatorProperties,
+} from "./UnreadIndicator"
+import {
+  IoEllipsisVertical,
+  IoInformationCircle,
+  IoPaperPlane,
+  IoAccessibility,
+  IoContrast,
+  IoAttach,
+} from "react-icons/io5"
+import {IoMdGlobe, IoMdHappy, IoMdMedical, IoIosLink} from "react-icons/io"
+import {LiaSlackHash} from "react-icons/lia"
 
 export type ChatContainerProps = {
   className?: string
@@ -61,11 +65,20 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     () =>
       messageProperties.map((message, index) =>
         message.kind === MessageKind.Text ? (
-          <TextMessage key={index} {...(message.data as TextMessageProperties)} />
+          <TextMessage
+            key={index}
+            {...(message.data as TextMessageProperties)}
+          />
         ) : message.kind === MessageKind.Image ? (
-          <ImageMessage key={index} {...(message.data as ImageMessageProperties)} />
+          <ImageMessage
+            key={index}
+            {...(message.data as ImageMessageProperties)}
+          />
         ) : message.kind === MessageKind.Event ? (
-          <EventMessage key={index} {...(message.data as EventMessageProperties)} />
+          <EventMessage
+            key={index}
+            {...(message.data as EventMessageProperties)}
+          />
         ) : (
           <UnreadIndicator
             key={index}
@@ -139,7 +152,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         )}>
         <header className="flex items-center gap-4 border-b border-solid border-b-stone-200 p-4">
           <div className="flex w-full gap-1">
-            <FontAwesomeIcon icon={faHashtag} className="text-purple-500" />
+            <LiaSlackHash className="text-purple-500" />
 
             <span className="text-purple-500">{name}</span>
 
@@ -151,7 +164,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               /* TODO: Handle `info` button click. */
             }}
             tooltip="Room details"
-            icon={faCircleInfo}
+            Icon={IoInformationCircle}
           />
 
           <IconButton
@@ -159,7 +172,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               /* TODO: Handle `link` button click. */
             }}
             tooltip="Copy link"
-            icon={faLink}
+            Icon={IoIosLink}
           />
 
           <IconButton
@@ -167,7 +180,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               /* TODO: Handle `more` button click. */
             }}
             tooltip="More actions"
-            icon={faEllipsisV}
+            Icon={IoEllipsisVertical}
           />
         </header>
 
@@ -194,7 +207,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
                   /* TODO: Handle `emoji` button click. */
                 }}
                 tooltip="Emoji"
-                icon={faFaceSmile}
+                Icon={IoMdHappy}
               />
 
               <IconButton
@@ -202,7 +215,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
                   openFilePicker()
                 }}
                 tooltip="Attach"
-                icon={faPaperclip}
+                Icon={IoAttach}
               />
             </div>
 
@@ -229,7 +242,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               <div className="m-[5px] size-max">
                 <IconButton
                   tooltip="Send"
-                  icon={faPaperPlane}
+                  Icon={IoPaperPlane}
                   color="#C463FF"
                   isDisabled={false}
                   onClick={() => {
@@ -249,9 +262,9 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-4 border-t border-solid border-t-stone-200 bg-neutral-50 p-[5px]">
+        <div className="flex items-center justify-end gap-4 border-t border-solid border-t-stone-200 bg-neutral-50 p-[5px] pr-2">
           <SmartAction
-            icon={faStarOfLife}
+            Icon={IoMdMedical}
             text="Quick menu"
             onClick={() => {
               /* TODO: Handle `Quick menu` click. */
@@ -259,7 +272,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           />
 
           <SmartAction
-            icon={faUniversalAccess}
+            Icon={IoAccessibility}
             text="Accessibility"
             onClick={() => {
               /* TODO: Handle `Accessibility` click. */
@@ -267,7 +280,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           />
 
           <SmartAction
-            icon={faCircleHalfStroke}
+            Icon={IoContrast}
             text="Switch theme"
             onClick={() => {
               /* TODO: Handle `Switch theme` click. */
@@ -275,7 +288,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           />
 
           <SmartAction
-            icon={faEarthAmerica}
+            Icon={IoMdGlobe}
             text="63ms ping"
             onClick={() => {
               /* TODO: Handle `Ping` click. */

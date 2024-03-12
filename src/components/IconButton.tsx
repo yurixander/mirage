@@ -1,20 +1,19 @@
-import {type IconProp} from "@fortawesome/fontawesome-svg-core"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {memo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import NotificationDot from "./NotificationDot"
+import {type IconType} from "react-icons"
 
 export type IconButtonProps = {
   onClick: () => void
   tooltip: string
-  icon: IconProp
+  Icon: IconType
   color?: string
   isDisabled?: boolean
   isDotVisible?: boolean
 }
 
 const IconButton: FC<IconButtonProps> = ({
-  icon,
+  Icon,
   onClick,
   color,
   isDisabled,
@@ -34,11 +33,7 @@ const IconButton: FC<IconButtonProps> = ({
       )}
       aria-hidden="true">
       <NotificationDot isVisible={isDotVisible ?? false}>
-        <FontAwesomeIcon
-          style={{color}}
-          className="text-neutral-300"
-          icon={icon}
-        />
+        <Icon style={{color}} size={20} className="text-neutral-300" />
       </NotificationDot>
     </div>
   )

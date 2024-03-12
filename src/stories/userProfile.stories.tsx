@@ -4,12 +4,14 @@ import UserProfile, {
   type UserProfileProps as UserProfileProperties,
   UserStatus,
 } from "../components/UserProfile"
-import {faSpotify} from "@fortawesome/free-brands-svg-icons"
+import {IoHeadsetSharp} from "react-icons/io5"
 
 type Story = StoryObj<typeof UserProfile>
 
 const meta: Meta<typeof UserProfile> = {component: UserProfile}
-const render = (arguments_: UserProfileProperties) => <UserProfile {...arguments_} />
+const render = (arguments_: UserProfileProperties) => (
+  <UserProfile {...arguments_} />
+)
 
 const displayName = "Emerald Branch"
 const username = "@emerald_branch"
@@ -55,7 +57,7 @@ export const WithActivityIcon: Story = {
     text: "Listening to Spotify",
     status: UserStatus.Idle,
     activity: UserActivity.Listening,
-    icon: faSpotify,
+    icon: <IoHeadsetSharp />,
     platform: "Spotify",
     isLarge: false,
   },

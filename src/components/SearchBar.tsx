@@ -1,9 +1,8 @@
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
-import {faSearch} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import React, {useState, type FC} from "react"
 import KeyCue from "./KeyCue"
 import {twMerge} from "tailwind-merge"
+import {IoSearch} from "react-icons/io5"
 
 export type SearchResult = {
   text: string
@@ -48,14 +47,14 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange, className}) => {
   return (
     <div
       className={twMerge(
-        "relative inline-flex items-center justify-start gap-1 rounded-lg bg-neutral-300 p-2",
+        "relative inline-flex items-center justify-start gap-1 rounded-lg bg-neutral-200 p-2",
         results.length > 0 ? "rounded-bl-none rounded-br-none" : "",
         className
       )}>
-      <FontAwesomeIcon className="size-3 text-neutral-400" icon={faSearch} />
+      <IoSearch className="size-3 text-neutral-400" />
 
       <input
-        className="bg-neutral-300 p-0 text-xs"
+        className="bg-neutral-200 p-0 text-xs"
         onChange={handleQueryChange}
         ref={inputReference}
         type="text"
@@ -65,11 +64,11 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange, className}) => {
       <KeyCue ctrl char={KEYBOARD_HOTKEY_CHAR} />
 
       {results.length > 0 && (
-        <div className="absolute left-0 top-full w-full rounded-b-xl border-t border-solid border-neutral-300 bg-neutral-300 p-[10px]">
+        <div className="absolute left-0 top-full w-full rounded-b-xl border-t border-solid border-neutral-300 bg-neutral-300 p-3">
           {results.map((result, index) => (
             <div
               key={index}
-              className="cursor-pointer rounded-md p-[10px] hover:bg-neutral-300"
+              className="cursor-pointer rounded-md p-3 hover:bg-neutral-300"
               onClick={result.onClick}
               aria-hidden="true">
               {result.text}

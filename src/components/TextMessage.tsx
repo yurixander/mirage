@@ -1,7 +1,10 @@
-import {faReply, faShare, faTrash} from "@fortawesome/free-solid-svg-icons"
 import {useMemo, type FC} from "react"
-import ContextMenu from "./ContextMenu"
-import MessageContainer, {type MessageBaseProps as MessageBaseProperties} from "./MessageContainer"
+import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
+import MessageContainer, {
+  type MessageBaseProps as MessageBaseProperties,
+} from "./MessageContainer"
+import {IoArrowUndo, IoTrash, IoArrowRedo} from "react-icons/io5"
+import {IoMdTrash} from "react-icons/io"
 
 export type TextMessageProps = MessageBaseProperties & {
   authorDisplayName: string
@@ -23,18 +26,18 @@ const TextMessage: FC<MessageBaseProperties> = ({
   onDeleteMessage,
 }) => {
   const contextMenuItems = useMemo(() => {
-    const items = []
+    const items: ContextMenuItem[] = []
 
     items.push(
       {
         label: "Reply",
         action: () => {},
-        icon: faReply,
+        icon: <IoArrowUndo />,
       },
       {
         label: "Resend",
         action: () => {},
-        icon: faShare,
+        icon: <IoArrowRedo />,
       }
     )
 
@@ -42,7 +45,7 @@ const TextMessage: FC<MessageBaseProperties> = ({
       items.push({
         label: "Delete",
         action: onDeleteMessage,
-        icon: faTrash,
+        icon: <IoMdTrash />,
       })
     }
 

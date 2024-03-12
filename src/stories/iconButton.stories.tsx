@@ -1,16 +1,20 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import IconButton, {type IconButtonProps as IconButtonProperties} from "../components/IconButton"
-import {faGear, faBell} from "@fortawesome/free-solid-svg-icons"
+import IconButton, {
+  type IconButtonProps as IconButtonProperties,
+} from "../components/IconButton"
+import {IoPaperPlane, IoNotificationsSharp} from "react-icons/io5"
 
 type Story = StoryObj<typeof IconButton>
 
 const meta: Meta<typeof IconButton> = {component: IconButton}
-const render = (arguments_: IconButtonProperties) => <IconButton {...arguments_} />
+const render = (arguments_: IconButtonProperties) => (
+  <IconButton {...arguments_} />
+)
 
 export const Settings: Story = {
   render,
   args: {
-    icon: faGear,
+    Icon: IoPaperPlane,
     onClick: () => {},
     tooltip: "Settings",
   },
@@ -19,7 +23,7 @@ export const Settings: Story = {
 export const Disabled: Story = {
   render,
   args: {
-    icon: faGear,
+    Icon: IoPaperPlane,
     onClick: () => {},
     tooltip: "Settings",
     isDisabled: true,
@@ -29,7 +33,7 @@ export const Disabled: Story = {
 export const WithDot: Story = {
   render,
   args: {
-    icon: faBell,
+    Icon: IoNotificationsSharp,
     onClick: () => {},
     tooltip: "Settings",
     isDotVisible: true,

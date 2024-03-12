@@ -1,11 +1,14 @@
-import {faGear} from "@fortawesome/free-solid-svg-icons"
 import {useMemo, type FC} from "react"
 import {getImageUrl, trim} from "../utils/util"
 import IconButton from "./IconButton"
-import UserProfile, {type UserProfileProps as UserProfileProperties, UserStatus} from "./UserProfile"
+import UserProfile, {
+  type UserProfileProps as UserProfileProperties,
+  UserStatus,
+} from "./UserProfile"
 import {twMerge} from "tailwind-merge"
 import useConnection from "@/hooks/matrix/useConnection"
 import UserProfilePlaceholder from "./UserProfilePlaceholder"
+import {IoMdSettings} from "react-icons/io"
 
 export type UserBarProps = {
   className?: string
@@ -69,7 +72,7 @@ const UserBar: FC<UserBarProps> = ({className}) => {
       </div>
 
       {/* TODO: Handle click on settings button. */}
-      <IconButton onClick={() => {}} icon={faGear} tooltip="Settings" />
+      <IconButton onClick={() => {}} Icon={IoMdSettings} tooltip="Settings" />
     </div>
   )
 }

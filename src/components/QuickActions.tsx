@@ -1,13 +1,13 @@
-import {
-  faBell,
-  faBox,
-  faPaperPlane,
-  faPhone,
-  faRightFromBracket,
-} from "@fortawesome/free-solid-svg-icons"
 import {type FC} from "react"
 import IconButton from "./IconButton"
 import {twMerge} from "tailwind-merge"
+import {
+  IoPaperPlane,
+  IoExtensionPuzzle,
+  IoExit,
+  IoNotificationsSharp,
+} from "react-icons/io5"
+import {IoMdCall} from "react-icons/io"
 
 export type QuickActionsProps = {
   onViewDirectMessages: () => void
@@ -31,29 +31,25 @@ const QuickActions: FC<QuickActionsProps> = ({
       <IconButton
         onClick={onViewDirectMessages}
         tooltip="Direct messages"
-        icon={faPaperPlane}
+        Icon={IoPaperPlane}
       />
 
-      <IconButton onClick={onViewCalls} tooltip="Calls" icon={faPhone} />
+      <IconButton onClick={onViewCalls} tooltip="Calls" Icon={IoMdCall} />
 
       <IconButton
         onClick={onViewNotifications}
         tooltip="Notifications"
-        icon={faBell}
+        Icon={IoNotificationsSharp}
         isDotVisible
       />
 
       <IconButton
         onClick={onOpenExtensions}
         tooltip="Extensions"
-        icon={faBox}
+        Icon={IoExtensionPuzzle}
       />
 
-      <IconButton
-        onClick={onLogout}
-        tooltip="Sign out"
-        icon={faRightFromBracket}
-      />
+      <IconButton onClick={onLogout} tooltip="Sign out" Icon={IoExit} />
     </section>
   )
 }

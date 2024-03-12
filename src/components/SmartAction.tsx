@@ -1,22 +1,20 @@
-import {type IconProp} from "@fortawesome/fontawesome-svg-core"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {type FC} from "react"
+import {type IconType} from "react-icons"
 
 export type SmartActionProps = {
-  icon: IconProp
+  Icon: IconType
   text: string
   onClick: () => void
 }
 
-const SmartAction: FC<SmartActionProps> = ({icon, text, onClick}) => {
+const SmartAction: FC<SmartActionProps> = ({Icon, text, onClick}) => {
   return (
     <div
-      className="flex cursor-pointer gap-1 text-xs"
+      className="flex cursor-pointer items-center gap-1 text-xs"
       onClick={onClick}
       role={"button"}
       aria-hidden="true">
-      <FontAwesomeIcon className="size-[10px] text-neutral-200" icon={icon} />
-
+      <Icon size={10} className="text-neutral-300" />
       <span>{text}</span>
     </div>
   )

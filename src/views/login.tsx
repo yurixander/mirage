@@ -5,13 +5,6 @@ import Input, {
 } from "@/components/Input"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {useCallback, useEffect, useState, type FC} from "react"
-import {
-  faEyeSlash,
-  faEye,
-  faLink,
-  faUserCircle,
-  faKey,
-} from "@fortawesome/free-solid-svg-icons"
 import Button, {ButtonColor, ButtonVariant} from "@/components/Button"
 import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 import useConnection from "@/hooks/matrix/useConnection"
@@ -19,6 +12,8 @@ import {StaticAssetPath, ViewPath} from "@/utils/util"
 import {Link, useNavigate} from "react-router-dom"
 import {SyncState} from "matrix-js-sdk"
 import {ReactSVG} from "react-svg"
+import {IoIosLink, IoIosContact} from "react-icons/io"
+import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
 
 const LoginView: FC = () => {
   const navigate = useNavigate()
@@ -111,7 +106,7 @@ const LoginView: FC = () => {
 
               <Input
                 className="w-full"
-                icon={faLink}
+                Icon={IoIosLink}
                 placeholder="https://matrix-client.matrix.org"
                 constraints={[urlConstraint, nonEmptyConstraint]}
                 initialValue={baseUrl}
@@ -129,11 +124,11 @@ const LoginView: FC = () => {
                 placeholder="syt_dGhlY3Jpc3M_PAmQdRhKFWPaexp_0iK0SN"
                 initialValue={accessToken}
                 onValueChange={setAccessToken}
-                icon={faKey}
+                Icon={IoKey}
                 actions={[
                   {
                     tooltip: isPasswordVisible ? "Hide token" : "Show token",
-                    icon: isPasswordVisible ? faEyeSlash : faEye,
+                    Icon: isPasswordVisible ? IoEyeOff : IoEye,
                     onClick: () => {
                       setIsPasswordVisible(!isPasswordVisible)
                     },
@@ -148,7 +143,7 @@ const LoginView: FC = () => {
               <Input
                 initialValue={userId}
                 className="w-full"
-                icon={faUserCircle}
+                Icon={IoIosContact}
                 placeholder="@userId:matrix.org"
                 constraints={[userIdConstraint, nonEmptyConstraint]}
                 onValueChange={setUserId}

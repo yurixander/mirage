@@ -1,15 +1,11 @@
-import {
-  faDownload,
-  faReply,
-  faShare,
-  faTrash,
-  faCircleExclamation,
-} from "@fortawesome/free-solid-svg-icons"
 import {useMemo, type FC} from "react"
-import ContextMenu from "./ContextMenu"
-import MessageContainer, {type MessageBaseProps as MessageBaseProperties} from "./MessageContainer"
+import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
+import MessageContainer, {
+  type MessageBaseProps as MessageBaseProperties,
+} from "./MessageContainer"
 import {saveAs} from "file-saver"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {IoMdDownload, IoIosAlert, IoMdTrash} from "react-icons/io"
+import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 
 export type ImageMessageProps = MessageBaseProperties & {
   imageUrl?: string
@@ -26,7 +22,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
   onDeleteMessage,
 }) => {
   const contextMenuItems = useMemo(() => {
-    const items = []
+    const items: ContextMenuItem[] = []
 
     if (imageUrl !== undefined) {
       items.push(
@@ -35,17 +31,17 @@ const ImageMessage: FC<ImageMessageProps> = ({
           action: () => {
             saveAs(imageUrl, text)
           },
-          icon: faDownload,
+          icon: <IoMdDownload />,
         },
         {
           label: "Reply",
           action: () => {},
-          icon: faReply,
+          icon: <IoArrowUndo />,
         },
         {
           label: "Resend",
           action: () => {},
-          icon: faShare,
+          icon: <IoArrowRedo />,
         }
       )
     }
@@ -54,7 +50,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
       items.push({
         label: "Delete",
         action: onDeleteMessage,
-        icon: faTrash,
+        icon: <IoMdTrash />,
       })
     }
 
@@ -65,10 +61,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
     <div className="flex flex-col pt-[3px]">
       {imageUrl === null ? (
         <div className="flex flex-row items-center gap-1">
-          <FontAwesomeIcon
-            className="text-red-500"
-            icon={faCircleExclamation}
-          />
+          <IoIosAlert className="text-red-500" />
           <div className="leading-160">
             The image uploaded by the user is currently unavailable.
           </div>

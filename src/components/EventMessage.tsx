@@ -1,7 +1,6 @@
-import {faPencil} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {type FC} from "react"
 import {timeFormatter} from "../utils/util"
+import {IoMdCreate} from "react-icons/io"
 
 export type EventMessageProps = {
   timestamp: number
@@ -15,7 +14,7 @@ const EventMessage: FC<EventMessageProps> = ({timestamp, text}) => {
   return (
     <div className="flex items-center gap-3">
       <div className="flex w-[40px] items-center justify-end">
-        <FontAwesomeIcon icon={faPencil} className="text-neutral-200" />
+        <IoMdCreate className="text-neutral-200" />
       </div>
 
       <div className="max-w-messageMaxWidth select-text whitespace-pre-line break-words italic leading-160">

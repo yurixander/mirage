@@ -1,8 +1,3 @@
-import {
-  faArrowDownShortWide,
-  faUserGroup,
-} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {useMemo, type FC} from "react"
 import IconButton from "./IconButton"
 import Label from "./Label"
@@ -11,6 +6,8 @@ import {type UserProfileProps as UserProfileProperties} from "./UserProfile"
 import UserProfileGhost from "./UserProfileGhost"
 import {twMerge} from "tailwind-merge"
 import useRoomMembers from "@/hooks/matrix/useRoomMembers"
+import {IoFilter} from "react-icons/io5"
+import {IoIosContacts} from "react-icons/io"
 
 export enum RosterUserCategory {
   Admin,
@@ -56,14 +53,14 @@ const Roster: FC<RosterProps> = ({className}) => {
   return (
     <>
       <div className={twMerge("flex h-full flex-col", className)}>
-        <header className="flex items-center p-4">
-          <FontAwesomeIcon className="text-neutral-200" icon={faUserGroup} />
+        <header className="flex items-center p-3">
+          <IoIosContacts size={36} className="text-neutral-300" />
 
           <div className="ml-[5px] w-full text-neutral-600">People</div>
 
           <IconButton
             tooltip="Sort members"
-            icon={faArrowDownShortWide}
+            Icon={IoFilter}
             onClick={() => {
               // TODO: Handle `sort` button click.
             }}
