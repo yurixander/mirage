@@ -80,6 +80,7 @@
         "whitelist": ["read-only"]
       }
     ],
-    "promise/always-return": "off"
+    "promise/always-return": "off",
+    "unicorn/number-literal-case": "off"
   }
 }

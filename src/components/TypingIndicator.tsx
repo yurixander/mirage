@@ -5,7 +5,7 @@ import {twMerge} from "tailwind-merge"
 export type TypingIndicatorUser = {
   displayName: string
   color: string
-  avatarUrl?: string
+  avatarUrl: string | null
 }
 
 export type TypingIndicatorProps = {

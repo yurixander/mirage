@@ -3,7 +3,7 @@ import {cleanDisplayName, timeFormatter} from "../utils/util"
 import Avatar from "boring-avatars"
 
 export type MessageBaseProps = {
-  authorAvatarUrl?: string
+  authorAvatarUrl: string | null
   authorDisplayName: string
   authorDisplayNameColor: string
   timestamp: number
@@ -16,7 +16,7 @@ export type MessageBaseProps = {
 export type MessageContainerProps = {
   authorDisplayName: string
   authorDisplayNameColor: string
-  authorAvatarUrl?: string
+  authorAvatarUrl: string | null
   children: React.JSX.Element
   timestamp: number
   onAuthorClick: () => void
@@ -33,7 +33,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
   const localeTimeString = timeFormatter(timestamp)
 
   const avatarImage =
-    authorAvatarUrl === undefined ? (
+    authorAvatarUrl === null ? (
       <Avatar
         size={40}
         square

@@ -14,7 +14,7 @@ export enum UserStatus {
 }
 
 export type UserProfileProps = {
-  avatarUrl?: string
+  avatarUrl: string | null
   text: string
   displayName: string
   displayNameColor: string
@@ -62,7 +62,7 @@ const UserProfile: FC<UserProfileProps> = ({
     assert(hasIcon || hasActivity, "icon and activity should not be undefined")
   }
 
-  if (avatarUrl !== undefined) {
+  if (avatarUrl !== null) {
     assert(validateUrl(avatarUrl), "avatar URL should be valid if defined")
   }
 
@@ -88,7 +88,7 @@ const UserProfile: FC<UserProfileProps> = ({
   }
 
   const avatarImage =
-    avatarUrl === undefined ? (
+    avatarUrl === null ? (
       <Avatar size={isLarge ? 60 : 40} square name={text} variant="beam" />
     ) : (
       <img

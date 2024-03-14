@@ -3,7 +3,7 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type ServerListItemProps = {
-  avatarUrl?: string
+  avatarUrl: string | null
   isActive: boolean
   tooltip: string
   onClick: () => void
@@ -16,7 +16,7 @@ const ServerListItem: FC<ServerListItemProps> = ({
   tooltip,
 }) => {
   const avatarImage =
-    avatarUrl === undefined ? (
+    avatarUrl === null ? (
       <Avatar size={47} square variant="bauhaus" name="Margaret Sanger" />
     ) : (
       <img

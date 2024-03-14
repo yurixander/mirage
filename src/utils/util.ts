@@ -23,7 +23,7 @@ export type Credentials = {
   userId: string
 }
 
-export type FileUploadedInfo = {
+export type ImageUploadedInfo = {
   matrixUrl: string
   filename: string
   info: {
@@ -66,15 +66,14 @@ export function validateUrl(url: string): boolean {
 export function getImageUrl(
   url: string | null | undefined,
   client: MatrixClient | null
-): string | undefined {
+): string | null {
   if (url === null || url === undefined || client === null) {
-    return undefined
+    return null
   }
 
   const SIZE = 48
 
-  // REVISE: This should return `null` instead of `undefined`.
-  return client.mxcUrlToHttp(url, SIZE, SIZE, "scale") ?? undefined
+  return client.mxcUrlToHttp(url, SIZE, SIZE, "scale")
 }
 
 export async function sendImageMessageFromFile(
@@ -103,7 +102,7 @@ export async function sendImageMessageFromFile(
 export async function uploadFileToMatrix(
   file: FileContent<string>,
   client: MatrixClient
-): Promise<FileUploadedInfo | null> {
+): Promise<ImageUploadedInfo | null> {
   const content = file.content
   const response = await fetch(content)
   const blob = await response.blob()
