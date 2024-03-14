@@ -353,9 +353,10 @@ export function getLastReadEventIdFromRoom(
   return room.findEventById(eventReadUpTo)?.getId() ?? null
 }
 
+const ASCII_LIMIT = 127
+
 export function normalizeName(displayName: string): string {
-  return displayName
-    .replaceAll(/[\u{1F600}-\u{1F64F}]/gu, "")
-    .replaceAll(/[^\w !"#%&'()+,:;?@¡¿\u00C0-\u00FF\-]/g, "")
-    .replaceAll(".", "")
+  return [...displayName]
+    .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
+    .join("")
 }

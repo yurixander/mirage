@@ -3,7 +3,7 @@ import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import MessageContainer, {
   type MessageBaseProps as MessageBaseProperties,
 } from "./MessageContainer"
-import {IoArrowUndo, IoTrash, IoArrowRedo} from "react-icons/io5"
+import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 import {IoMdTrash} from "react-icons/io"
 
 export type TextMessageProps = MessageBaseProperties & {

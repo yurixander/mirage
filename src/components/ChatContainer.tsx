@@ -63,25 +63,25 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   const messages = useMemo(
     () =>
-      messageProperties.map((message, index) =>
+      messageProperties.map(message =>
         message.kind === MessageKind.Text ? (
           <TextMessage
-            key={index}
+            key={(message.data as TextMessageProperties).id}
             {...(message.data as TextMessageProperties)}
           />
         ) : message.kind === MessageKind.Image ? (
           <ImageMessage
-            key={index}
+            key={(message.data as ImageMessageProperties).id}
             {...(message.data as ImageMessageProperties)}
           />
         ) : message.kind === MessageKind.Event ? (
           <EventMessage
-            key={index}
+            key={(message.data as EventMessageProperties).id}
             {...(message.data as EventMessageProperties)}
           />
         ) : (
           <UnreadIndicator
-            key={index}
+            key={(message.data as UnreadIndicatorProperties).lastReadEventId}
             {...(message.data as UnreadIndicatorProperties)}
           />
         )
