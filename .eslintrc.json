@@ -81,6 +81,7 @@
       }
     ],
     "promise/always-return": "off",
-    "unicorn/number-literal-case": "off"
+    "unicorn/number-literal-case": "off",
+    "unicorn/prefer-spread": "off"
   }
 }

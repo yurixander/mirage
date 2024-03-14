@@ -6,17 +6,9 @@ import MessageContainer, {
 import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 import {IoMdTrash} from "react-icons/io"
 
-export type TextMessageProps = MessageBaseProperties & {
-  authorDisplayName: string
-  authorDisplayNameColor: string
-  authorAvatarUrl?: string
-  text: string
-  timestamp: number
-  onAuthorClick: () => void
-  onDeleteMessage?: () => void
-}
+export interface TextMessageProps extends MessageBaseProperties {}
 
-const TextMessage: FC<MessageBaseProperties> = ({
+const TextMessage: FC<TextMessageProps> = ({
   authorAvatarUrl,
   authorDisplayName,
   authorDisplayNameColor,
