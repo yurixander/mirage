@@ -1,14 +1,12 @@
 import {useMemo, type FC} from "react"
 import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import MessageContainer, {
-  type MessageBaseProps as MessageBaseProperties,
+  type MessageBaseProps,
 } from "./MessageContainer"
 import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 import {IoMdTrash} from "react-icons/io"
 
-export interface TextMessageProps extends MessageBaseProperties {}
-
-const TextMessage: FC<TextMessageProps> = ({
+const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
   authorDisplayName,
   authorDisplayNameColor,
