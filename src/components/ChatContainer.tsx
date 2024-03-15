@@ -4,23 +4,15 @@ import IconButton from "./IconButton"
 import SmartAction from "./SmartAction"
 import TypingIndicator from "./TypingIndicator"
 import useActiveRoom, {MessageKind} from "@/hooks/matrix/useActiveRoom"
-import ImageMessage, {
-  type ImageMessageProps as ImageMessageProperties,
-} from "./ImageMessage"
-import TextMessage, {
-  type TextMessageProps as TextMessageProperties,
-} from "./TextMessage"
-import EventMessage, {
-  type EventMessageProps as EventMessageProperties,
-} from "./EventMessage"
+import ImageMessage from "./ImageMessage"
+import TextMessage from "./TextMessage"
+import EventMessage from "./EventMessage"
 import {twMerge} from "tailwind-merge"
 import {useFilePicker} from "use-file-picker"
 import {MsgType} from "matrix-js-sdk"
 import {createPortal} from "react-dom"
 import Button, {ButtonVariant} from "./Button"
-import UnreadIndicator, {
-  type UnreadIndicatorProps as UnreadIndicatorProperties,
-} from "./UnreadIndicator"
+import UnreadIndicator from "./UnreadIndicator"
 import {
   IoEllipsisVertical,
   IoInformationCircle,
@@ -65,24 +57,15 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     () =>
       messageProperties.map(message =>
         message.kind === MessageKind.Text ? (
-          <TextMessage
-            key={(message.data as TextMessageProperties).id}
-            {...(message.data as TextMessageProperties)}
-          />
+          <TextMessage key={message.data.id} {...message.data} />
         ) : message.kind === MessageKind.Image ? (
-          <ImageMessage
-            key={(message.data as ImageMessageProperties).id}
-            {...(message.data as ImageMessageProperties)}
-          />
+          <ImageMessage key={message.data.id} {...message.data} />
         ) : message.kind === MessageKind.Event ? (
-          <EventMessage
-            key={(message.data as EventMessageProperties).id}
-            {...(message.data as EventMessageProperties)}
-          />
+          <EventMessage key={message.data.id} {...message.data} />
         ) : (
           <UnreadIndicator
-            key={(message.data as UnreadIndicatorProperties).lastReadEventId}
-            {...(message.data as UnreadIndicatorProperties)}
+            key={message.data.lastReadEventId}
+            {...message.data}
           />
         )
       ),

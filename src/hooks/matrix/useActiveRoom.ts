@@ -47,8 +47,11 @@ type Message<Kind extends MessageKind> = {
   data: MessageOf<Kind>
 }
 
-// TODO: Make the compiler recognize it.
-type AnyMessage = Message<MessageKind>
+type AnyMessage =
+  | Message<MessageKind.Text>
+  | Message<MessageKind.Image>
+  | Message<MessageKind.Event>
+  | Message<MessageKind.Unread>
 
 const useActiveRoom = () => {
   const {activeRoomId} = useActiveRoomIdStore()
@@ -341,9 +344,7 @@ const handleMessagesEvent = async (
     case MsgType.Text: {
       return {
         kind: MessageKind.Text,
-        data: {
-          ...messageBaseProperties,
-        },
+        data: {...messageBaseProperties},
       }
     }
     case MsgType.Image: {
