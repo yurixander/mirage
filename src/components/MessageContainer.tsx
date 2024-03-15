@@ -2,7 +2,7 @@ import {type FC} from "react"
 import {cleanDisplayName, timeFormatter} from "../utils/util"
 import Avatar from "boring-avatars"
 
-export interface MessageBaseProps {
+export type MessageBaseProps = {
   authorAvatarUrl: string | null
   authorDisplayName: string
   authorDisplayNameColor: string
