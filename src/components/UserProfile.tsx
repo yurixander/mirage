@@ -1,7 +1,7 @@
-import Avatar from "boring-avatars"
 import {type FC} from "react"
 import {assert, cleanDisplayName, trim, validateUrl} from "../utils/util"
 import {twMerge} from "tailwind-merge"
+import AvatarImage, {AvatarType} from "./Avatar"
 
 export enum UserActivity {
   Listening = "Listening to",
@@ -87,22 +87,6 @@ const UserProfile: FC<UserProfileProps> = ({
     }
   }
 
-  const avatarImage =
-    avatarUrl === null ? (
-      <Avatar size={isLarge ? 60 : 40} square name={text} variant="beam" />
-    ) : (
-      <img
-        src={avatarUrl}
-        className={twMerge(
-          "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 object-contain",
-          isLarge
-            ? "h-userProfileAvatarSizeLarge w-userProfileAvatarSizeLarge"
-            : "h-userProfileAvatarSize w-userProfileAvatarSize"
-        )}
-        alt={"User avatar"}
-      />
-    )
-
   const activityOrText =
     activity === undefined ? (
       <span className="text-xs">{text}</span>
@@ -122,7 +106,12 @@ const UserProfile: FC<UserProfileProps> = ({
             "relative overflow-hidden rounded-lg bg-red-500",
             isLarge ? "h-[50px] w-[50px]" : "h-[37px] w-[37px]"
           )}>
-          {avatarImage}
+          <AvatarImage
+            isRounded={false}
+            isLarge={isLarge ?? false}
+            avatarType={AvatarType.Profile}
+            displayName={displayName}
+          />
         </div>
 
         <div

@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import Avatar from "./Avatar"
+import AvatarImage, {AvatarType} from "./Avatar"
 import {twMerge} from "tailwind-merge"
 
 export type TypingIndicatorUser = {
@@ -34,11 +34,15 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
     (user, index) =>
       user.avatarUrl && (
         <div key={index} className={index === 1 || index === 2 ? "-ml-4" : ""}>
-          <Avatar
-            isRounded
-            displayName={user.displayName}
-            avatarUrl={user.avatarUrl}
-          />
+          <div className="size-[30px] object-contain">
+            <AvatarImage
+              isRounded
+              displayName={user.displayName}
+              avatarUrl={user.avatarUrl}
+              isLarge={false}
+              avatarType={AvatarType.Message}
+            />
+          </div>
         </div>
       )
   )

@@ -56,7 +56,6 @@ const Navigation: FC<NavigationProps> = ({className}) => {
               setActiveSpaceId(null)
             }}
             tooltip="All rooms"
-            avatarUrl={null}
           />
 
           {spaceElements}
