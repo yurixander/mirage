@@ -23,6 +23,7 @@ import {
 } from "react-icons/io5"
 import {IoMdGlobe, IoMdMedical, IoIosHappy, IoMdLink} from "react-icons/io"
 import {LiaSlackHash} from "react-icons/lia"
+import {v4} from "uuid"
 
 export type ChatContainerProps = {
   className?: string
@@ -63,10 +64,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         ) : message.kind === MessageKind.Event ? (
           <EventMessage key={message.data.id} {...message.data} />
         ) : (
-          <UnreadIndicator
-            key={message.data.lastReadEventId}
-            {...message.data}
-          />
+          <UnreadIndicator key={v4()} {...message.data} />
         )
       ),
     [messageProperties]
