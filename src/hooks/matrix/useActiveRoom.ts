@@ -55,10 +55,10 @@ type AnyMessage =
 const useActiveRoom = () => {
   const {activeRoomId} = useActiveRoomIdStore()
   const {client} = useConnection()
-  const [activeRoom, setActiveRoom] = useState<Room | null>(null)
   const [messages, setMessages] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const isMountedReference = useIsMountedRef()
+  const [roomName, setRoomName] = useState<string>(" ")
 
   useEffect(() => {
     if (
@@ -71,11 +71,17 @@ const useActiveRoom = () => {
 
     const room = client.getRoom(activeRoomId)
 
+    void client.getRoomSummary(activeRoomId).then(roomSummary => {
+      if (roomSummary.name === undefined) {
+        return
+      }
+
+      setRoomName(roomSummary.name)
+    })
+
     if (room === null) {
       throw new Error(`Room with ID ${activeRoomId} does not exist`)
     }
-
-    setActiveRoom(room)
 
     void handleRoomEvents(client, room).then(newMessages => {
       if (isMountedReference.current) {
@@ -110,11 +116,11 @@ const useActiveRoom = () => {
 
     const eventContent = event.getContent()
 
-    if (eventContent.msgtype !== undefined || activeRoom === null) {
+    if (eventContent.msgtype !== undefined) {
       return
     }
 
-    void handleRoomEvents(client, activeRoom).then(messagesOrEvents => {
+    void handleRoomEvents(client, room).then(messagesOrEvents => {
       if (messagesOrEvents === null) {
         return
       }
@@ -169,13 +175,13 @@ const useActiveRoom = () => {
 
   return {
     activeRoomId,
-    activeRoom,
     messages,
     sendTextMessage,
     typingUsers,
     sendEventTyping,
     client,
     deleteMessage,
+    roomName,
   }
 }
 

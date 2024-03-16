@@ -88,7 +88,7 @@ const UserProfile: FC<UserProfileProps> = ({
   }
 
   const avatarImage =
-    avatarUrl === null ? (
+    avatarUrl === undefined ? (
       <Avatar size={isLarge ? 60 : 40} square name={text} variant="beam" />
     ) : (
       <img
