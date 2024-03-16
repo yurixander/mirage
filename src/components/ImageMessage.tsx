@@ -6,7 +6,7 @@ import {IoMdDownload, IoIosAlert, IoMdTrash} from "react-icons/io"
 import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 
 export interface ImageMessageProps extends MessageBaseProps {
-  imageUrl: string | null
+  imageUrl?: string
 }
 
 const ImageMessage: FC<ImageMessageProps> = ({
@@ -22,7 +22,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
   const contextMenuItems = useMemo(() => {
     const items: ContextMenuItem[] = []
 
-    if (imageUrl !== null) {
+    if (imageUrl !== undefined) {
       items.push(
         {
           label: "Save",

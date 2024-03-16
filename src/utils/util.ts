@@ -66,14 +66,14 @@ export function validateUrl(url: string): boolean {
 export function getImageUrl(
   url: string | null | undefined,
   client: MatrixClient | null
-): string | null {
+): string | undefined {
   if (url === null || url === undefined || client === null) {
-    return null
+    return undefined
   }
 
   const SIZE = 48
 
-  return client.mxcUrlToHttp(url, SIZE, SIZE, "scale")
+  return client.mxcUrlToHttp(url, SIZE, SIZE, "scale") ?? undefined
 }
 
 export async function sendImageMessageFromFile(
@@ -355,7 +355,8 @@ export function getLastReadEventIdFromRoom(
 const ASCII_LIMIT = 127
 
 export function normalizeName(displayName: string): string {
-  return displayName.split("")
+  return displayName
+    .split("")
     .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
     .join("")
 }

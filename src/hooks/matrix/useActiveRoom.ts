@@ -1,6 +1,5 @@
 import {type EventMessageProps} from "@/components/EventMessage"
 import {type ImageMessageProps} from "@/components/ImageMessage"
-import {type TextMessageProps} from "@/components/TextMessage"
 import useConnection from "@/hooks/matrix/useConnection"
 import {
   EventType,
@@ -35,7 +34,7 @@ export enum MessageKind {
 }
 
 type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
-  ? TextMessageProps
+  ? MessageBaseProps
   : Kind extends MessageKind.Image
     ? ImageMessageProps
     : Kind extends MessageKind.Event
