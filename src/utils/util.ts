@@ -170,17 +170,19 @@ export function getRoomsFromSpace(
     ?.getStateEvents("m.space.child")
 
   // Retrieve all rooms and check if some room is child of this space.
-  const storeRooms = client.getRooms().filter(
-    room =>
-      room
-        .getLiveTimeline()
-        .getState(EventTimeline.FORWARDS)
-        ?.getStateEvents("m.space.parent")
-        .filter(
-          event =>
-            event.getStateKey() === spaceId &&
-            Object.keys(event.getContent()).length > 0
-        ).length ?? -1 > 0
+  // OPTIMIZE: Should not iterate to all rooms.
+  const storeRooms = client.getRooms().filter(room =>
+    room
+      .getLiveTimeline()
+      .getState(EventTimeline.FORWARDS)
+      ?.getStateEvents("m.space.parent")
+      .some(
+        event =>
+          // State key is spaceId parent, check if equals with space selected.
+          event.getStateKey() === spaceId &&
+          // When there is content it means that the room is related to a space.
+          Object.keys(event.getContent()).length > 0
+      )
   )
 
   if (childEvents === undefined) {
@@ -188,12 +190,15 @@ export function getRoomsFromSpace(
   }
 
   for (const event of childEvents) {
+    // If not has content, not are associated with space parent.
     if (Object.keys(event.getContent()).length === 0) {
       continue
     }
 
     const room = client.getRoom(event.getStateKey())
 
+    // If room is null, you remove room from your client.
+    // If room is include on storeRooms should not add this room, should not has duplicate rooms on storeRooms.
     if (room !== null && !storeRooms.includes(room)) {
       storeRooms.push(room)
     }
@@ -326,15 +331,24 @@ export async function getRoomMembers(
 export function stringToColor(string_: string): string {
   let hash = 0
 
+  // Iterate over string letter by letter
   for (let index = 0; index < string_.length; index++) {
+    // hash << 5 move the bit 5 digits (00000010 to 00100000) to the left and subtract the hash value.
     hash = string_.charCodeAt(index) + ((hash << 5) - hash)
   }
 
   let color = "#"
 
+  // Extract the 3 byte values, red, green and blue
   for (let index = 0; index < 3; index++) {
+    // When index = 0 is green, index = 1 is blue, index = 2 is red
+    // Move hash index * 8 digits to the right for extract the color.
+    // 0xff is equal to 255 and the AND operator (&) is limiting to 8 bits.
     const value = (hash >> (index * 8)) & 0xFF
 
+    // value.toString(16) convert value to hex string.
+    // 00 if the hexadecimal string is less than two characters ensuring consistent formatting.
+    // .slice(-2) extracts the last two characters from the resulting string.
     color += ("00" + value.toString(16)).slice(-2)
   }
 
