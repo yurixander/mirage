@@ -49,7 +49,7 @@ const AvatarImage: FC<AvatarProps> = ({
               ? "h-userProfileAvatarSizeLarge w-userProfileAvatarSizeLarge"
               : "h-userProfileAvatarSize w-userProfileAvatarSize"
           ),
-        isRounded && "rounded-[50%]"
+        isRounded && "rounded-full"
       )}
       alt={displayName}
     />

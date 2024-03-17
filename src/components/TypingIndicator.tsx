@@ -34,7 +34,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
     (user, index) =>
       user.avatarUrl && (
         <div key={index} className={index === 1 || index === 2 ? "-ml-4" : ""}>
-          <div className="size-[30px] object-contain">
+          <div className="size-8 object-contain">
             <AvatarImage
               isRounded
               displayName={user.displayName}
@@ -48,7 +48,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
   )
 
   const dotClass =
-    "h-[10px] w-[10px] animate-dot-jump rounded-[50%] bg-neutral-300"
+    "h-[10px] w-[10px] animate-dot-jump rounded-full bg-neutral-300"
 
   return (
     <div className="inline-flex items-center gap-3">

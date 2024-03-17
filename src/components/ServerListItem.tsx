@@ -41,7 +41,7 @@ const ServerListItem: FC<ServerListItemProps> = ({
           isRounded={false}
           isLarge={false}
           avatarType={AvatarType.Server}
-          displayName={"Margaret Sanger"}
+          displayName="Margaret Sanger"
           avatarUrl={avatarUrl}
         />
       </div>
