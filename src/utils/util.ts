@@ -167,23 +167,39 @@ export function getRoomsFromSpace(
   const childEvents = space
     .getLiveTimeline()
     .getState(EventTimeline.FORWARDS)
-    ?.events.get("m.space.child")
+    ?.getStateEvents("m.space.child")
+
+  // Retrieve all rooms and check if some room is child of this space.
+  const storeRooms = client.getRooms().filter(
+    room =>
+      room
+        .getLiveTimeline()
+        .getState(EventTimeline.FORWARDS)
+        ?.getStateEvents("m.space.parent")
+        .filter(
+          event =>
+            event.getStateKey() === spaceId &&
+            Object.keys(event.getContent()).length > 0
+        ).length ?? -1 > 0
+  )
 
   if (childEvents === undefined) {
     throw new Error("The selected space does not have associated child rooms.")
   }
 
-  const rooms: Room[] = []
+  for (const event of childEvents) {
+    if (Object.keys(event.getContent()).length === 0) {
+      continue
+    }
 
-  for (const [stateKey] of childEvents) {
-    const room = client.getRoom(stateKey)
+    const room = client.getRoom(event.getStateKey())
 
-    if (room !== null) {
-      rooms.push(room)
+    if (room !== null && !storeRooms.includes(room)) {
+      storeRooms.push(room)
     }
   }
 
-  return rooms
+  return storeRooms
 }
 
 export function deleteMessage(
@@ -317,7 +333,7 @@ export function stringToColor(string_: string): string {
   let color = "#"
 
   for (let index = 0; index < 3; index++) {
-    const value = (hash >> (index * 8)) & 0xff
+    const value = (hash >> (index * 8)) & 0xFF
 
     color += ("00" + value.toString(16)).slice(-2)
   }
