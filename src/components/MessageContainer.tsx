@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import {cleanDisplayName, timeFormatter} from "../utils/util"
-import Avatar from "boring-avatars"
+import AvatarImage, {AvatarType} from "./Avatar"
 
 export type MessageBaseProps = {
   authorAvatarUrl?: string
@@ -32,22 +32,6 @@ const MessageContainer: FC<MessageContainerProps> = ({
 }) => {
   const localeTimeString = timeFormatter(timestamp)
 
-  const avatarImage =
-    authorAvatarUrl === undefined ? (
-      <Avatar
-        size={40}
-        square
-        name={cleanDisplayName(authorDisplayName)}
-        variant="beam"
-      />
-    ) : (
-      <img
-        src={authorAvatarUrl}
-        className="size-full"
-        alt={authorDisplayName}
-      />
-    )
-
   return (
     <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">
@@ -58,7 +42,13 @@ const MessageContainer: FC<MessageContainerProps> = ({
             onAuthorClick()
           }}
           aria-hidden="true">
-          {avatarImage}
+          <AvatarImage
+            isRounded={false}
+            isLarge={false}
+            avatarType={AvatarType.Message}
+            displayName={cleanDisplayName(authorDisplayName)}
+            avatarUrl={authorAvatarUrl}
+          />
         </div>
 
         <div className="w-full">

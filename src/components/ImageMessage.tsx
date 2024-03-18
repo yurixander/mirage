@@ -1,13 +1,11 @@
 import {useMemo, type FC} from "react"
 import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
-import MessageContainer, {
-  type MessageBaseProps as MessageBaseProperties,
-} from "./MessageContainer"
+import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import {saveAs} from "file-saver"
 import {IoMdDownload, IoIosAlert, IoMdTrash} from "react-icons/io"
 import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 
-export type ImageMessageProps = MessageBaseProperties & {
+export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
 }
 

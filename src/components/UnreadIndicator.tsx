@@ -1,7 +1,7 @@
 import {type FC} from "react"
 
 export type UnreadIndicatorProps = {
-  lastReadEventId?: string
+  lastReadEventId: string
 }
 
 const UnreadIndicator: FC<UnreadIndicatorProps> = ({lastReadEventId}) => {

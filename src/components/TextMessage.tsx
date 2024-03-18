@@ -1,22 +1,12 @@
 import {useMemo, type FC} from "react"
 import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import MessageContainer, {
-  type MessageBaseProps as MessageBaseProperties,
+  type MessageBaseProps,
 } from "./MessageContainer"
-import {IoArrowUndo, IoTrash, IoArrowRedo} from "react-icons/io5"
+import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 import {IoMdTrash} from "react-icons/io"
 
-export type TextMessageProps = MessageBaseProperties & {
-  authorDisplayName: string
-  authorDisplayNameColor: string
-  authorAvatarUrl?: string
-  text: string
-  timestamp: number
-  onAuthorClick: () => void
-  onDeleteMessage?: () => void
-}
-
-const TextMessage: FC<MessageBaseProperties> = ({
+const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
   authorDisplayName,
   authorDisplayNameColor,
