@@ -12,8 +12,10 @@ export type NavigationProps = {
 }
 
 const Navigation: FC<NavigationProps> = ({className}) => {
-  const [isCreateRoomModalShowed, showCreateRoomModal] = useState(false)
   const {spaces, activeSpaceId, setActiveSpaceId, client} = useSpaces()
+
+  const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] =
+    useState(false)
 
   const spaceElements = useMemo(() => {
     if (client === null || spaces === null) {
@@ -35,12 +37,12 @@ const Navigation: FC<NavigationProps> = ({className}) => {
 
   return (
     <>
-      {isCreateRoomModalShowed &&
+      {isCreateRoomModalVisible &&
         createPortal(
           <div className="fixed inset-0 flex size-full w-screen flex-col items-center justify-center">
             <CreateRoom
               onClose={() => {
-                showCreateRoomModal(false)
+                setIsCreateRoomModalVisible(false)
               }}
             />
           </div>,
@@ -53,10 +55,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
         )}>
         <div className="flex flex-col">
           <div className="m-2 flex flex-col items-center">
-            <ReactSVG
-              className="cursor-pointer"
-              src={StaticAssetPath.AppLogo}
-            />
+            <ReactSVG src={StaticAssetPath.AppLogo} />
 
             <div className="flex items-end font-iowan">
               <div>Mirage</div>
@@ -83,7 +82,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
                 className="size-serverSize cursor-pointer"
                 src={StaticAssetPath.AddServerIcon}
                 onClick={() => {
-                  showCreateRoomModal(true)
+                  setIsCreateRoomModalVisible(true)
                 }}
               />
             </div>

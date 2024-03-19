@@ -5,7 +5,6 @@ import {
   type Room,
   type MatrixClient,
   EventTimeline,
-  type Visibility,
 } from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
@@ -363,19 +362,4 @@ export function normalizeName(displayName: string): string {
     .replaceAll(/[\u{1F600}-\u{1F64F}]/gu, "")
     .replaceAll(/[^\w !"#%&'()+,:;?@¡¿\u00C0-\u00FF\-]/g, "")
     .replaceAll(".", "")
-}
-
-export async function createRoom(
-  client: MatrixClient | null,
-  name: string,
-  visibility: Visibility,
-  topic: string
-): Promise<boolean> {
-  if (client === null) {
-    return false
-  }
-
-  await client.createRoom({visibility, name, topic})
-
-  return true
 }

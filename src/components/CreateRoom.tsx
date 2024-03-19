@@ -6,7 +6,6 @@ import IconButton from "./IconButton"
 import {IoClose} from "react-icons/io5"
 import Dropdown from "./Dropdown"
 import {Visibility} from "matrix-js-sdk"
-import {createRoom} from "@/utils/util"
 import useConnection from "@/hooks/matrix/useConnection"
 
 export type CreateRoomProps = {
@@ -18,6 +17,27 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
   const [roomTopic, setRoomTopic] = useState("")
   const [roomVisibility, setRoomVisibility] = useState(Visibility.Private)
   const {client} = useConnection()
+
+  const onCreateRoom = () => {
+    if (client === null) {
+      return
+    }
+
+    void client
+      .createRoom({
+        visibility: roomVisibility,
+        name: roomName,
+        topic: roomTopic,
+      })
+      .then(_roomID => {
+        // TODO: Send here notification that the room has been created.
+
+        onClose()
+      })
+      .catch(_error => {
+        // TODO: Send here notification that the room has not been created.
+      })
+  }
 
   return (
     <div className="flex flex-col gap-4 rounded-lg border border-neutral-300 bg-slate-50 p-5 shadow-sm">
@@ -74,22 +94,7 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
       </div>
       <div className="text-center">
         <div className="float-right">
-          <Button
-            onClick={() => {
-              void createRoom(client, roomName, roomVisibility, roomTopic).then(
-                isCreated => {
-                  if (!isCreated) {
-                    // TODO: Send here notification that the room has not been created.
-                    return
-                  }
-
-                  // TODO: Send here notification that the room has been created.
-                  onClose()
-                }
-              )
-            }}
-            label="Create"
-          />
+          <Button onClick={onCreateRoom} label="Create" />
         </div>
       </div>
     </div>
