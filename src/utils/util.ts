@@ -169,8 +169,8 @@ export function getRoomsFromSpace(
     .getState(EventTimeline.FORWARDS)
     ?.getStateEvents("m.space.child")
 
-  // Retrieve all rooms and check if some room is child of this space.
-  // OPTIMIZE: Should not iterate to all rooms.
+  // Fetch space child events to identify associated rooms.
+  // OPTIMIZE: Consider more efficient filtering to avoid iterating over all rooms.
   const storeRooms = client.getRooms().filter(room =>
     room
       .getLiveTimeline()
@@ -178,7 +178,7 @@ export function getRoomsFromSpace(
       ?.getStateEvents("m.space.parent")
       .some(
         event =>
-          // State key is spaceId parent, check if equals with space selected.
+          // Check if room's parent spaceId matches the selected space.
           event.getStateKey() === spaceId &&
           // When there is content it means that the room is related to a space.
           Object.keys(event.getContent()).length > 0
@@ -190,15 +190,15 @@ export function getRoomsFromSpace(
   }
 
   for (const event of childEvents) {
-    // If not has content, not are associated with space parent.
+    // Skip event if it has no content, indicating no association with the parent space.
     if (Object.keys(event.getContent()).length === 0) {
       continue
     }
 
     const room = client.getRoom(event.getStateKey())
 
-    // If room is null, you remove room from your client.
-    // If room is include on storeRooms should not add this room, should not has duplicate rooms on storeRooms.
+    // Ignore if room is null, meaning it's not available in the client.
+    // Avoid adding the room if already in storeRooms to prevent duplicates.
     if (room !== null && !storeRooms.includes(room)) {
       storeRooms.push(room)
     }
