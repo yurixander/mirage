@@ -63,7 +63,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         ) : message.kind === MessageKind.Event ? (
           <EventMessage key={message.data.id} {...message.data} />
         ) : (
-          <UnreadIndicator key={"unread-indicator"} {...message.data} />
+          <UnreadIndicator key="unread-indicator" {...message.data} />
         )
       ),
     [messageProperties]
