@@ -1,7 +1,12 @@
 import {type RosterUserProps, UserPowerLevel} from "@/components/RosterUser"
 import {UserStatus} from "@/components/UserProfile"
 import dayjs from "dayjs"
-import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
+import {
+  type Room,
+  type MatrixClient,
+  EventTimeline,
+  type Visibility,
+} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -317,7 +322,7 @@ export function stringToColor(string_: string): string {
   let color = "#"
 
   for (let index = 0; index < 3; index++) {
-    const value = (hash >> (index * 8)) & 0xff
+    const value = (hash >> (index * 8)) & 0xFF
 
     color += ("00" + value.toString(16)).slice(-2)
   }
@@ -358,4 +363,19 @@ export function normalizeName(displayName: string): string {
     .replaceAll(/[\u{1F600}-\u{1F64F}]/gu, "")
     .replaceAll(/[^\w !"#%&'()+,:;?@¡¿\u00C0-\u00FF\-]/g, "")
     .replaceAll(".", "")
+}
+
+export async function createRoom(
+  client: MatrixClient | null,
+  name: string,
+  visibility: Visibility,
+  topic: string
+): Promise<boolean> {
+  if (client === null) {
+    return false
+  }
+
+  await client.createRoom({visibility, name, topic})
+
+  return true
 }
