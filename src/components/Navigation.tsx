@@ -20,7 +20,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
     return spaces.map((server, index) => (
       <ServerListItem
         avatarUrl={getImageUrl(server.getMxcAvatarUrl(), client)}
-        key={index}
+        key={server.roomId}
         isActive={server.roomId === activeSpaceId}
         tooltip={server.normalizedName}
         onClick={() => {

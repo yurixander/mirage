@@ -29,7 +29,7 @@ const Roster: FC<RosterProps> = ({className}) => {
     () =>
       members
         .filter(member => member.powerLevel === UserPowerLevel.Member)
-        .map((member, index) => <RosterUser key={index} {...member} />),
+        .map(member => <RosterUser key={member.userId} {...member} />),
     [members]
   )
 
@@ -37,7 +37,7 @@ const Roster: FC<RosterProps> = ({className}) => {
     () =>
       members
         .filter(member => member.powerLevel === UserPowerLevel.Moderator)
-        .map((member, index) => <RosterUser key={index} {...member} />),
+        .map(member => <RosterUser key={member.userId} {...member} />),
     [members]
   )
 
@@ -45,7 +45,7 @@ const Roster: FC<RosterProps> = ({className}) => {
     () =>
       members
         .filter(member => member.powerLevel === UserPowerLevel.Admin)
-        .map((member, index) => <RosterUser key={index} {...member} />),
+        .map(member => <RosterUser key={member.userId} {...member} />),
     [members]
   )
 

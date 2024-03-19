@@ -23,7 +23,7 @@ export type Credentials = {
   userId: string
 }
 
-export type FileUploadedInfo = {
+export type ImageUploadedInfo = {
   matrixUrl: string
   filename: string
   info: {
@@ -73,7 +73,6 @@ export function getImageUrl(
 
   const SIZE = 48
 
-  // REVISE: This should return `null` instead of `undefined`.
   return client.mxcUrlToHttp(url, SIZE, SIZE, "scale") ?? undefined
 }
 
@@ -103,7 +102,7 @@ export async function sendImageMessageFromFile(
 export async function uploadFileToMatrix(
   file: FileContent<string>,
   client: MatrixClient
-): Promise<FileUploadedInfo | null> {
+): Promise<ImageUploadedInfo | null> {
   const content = file.content
   const response = await fetch(content)
   const blob = await response.blob()
@@ -353,9 +352,11 @@ export function getLastReadEventIdFromRoom(
   return room.findEventById(eventReadUpTo)?.getId() ?? null
 }
 
+const ASCII_LIMIT = 127
+
 export function normalizeName(displayName: string): string {
   return displayName
-    .replaceAll(/[\u{1F600}-\u{1F64F}]/gu, "")
-    .replaceAll(/[^\w !"#%&'()+,:;?@¡¿\u00C0-\u00FF\-]/g, "")
-    .replaceAll(".", "")
+    .split("")
+    .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
+    .join("")
 }
