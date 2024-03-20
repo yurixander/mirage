@@ -1,5 +1,5 @@
 import {useMemo, type FC} from "react"
-import {getImageUrl, trim} from "../utils/util"
+import {getImageUrl, stringToColor, trim} from "../utils/util"
 import IconButton from "./IconButton"
 import UserProfile, {
   type UserProfileProps as UserProfileProperties,
@@ -53,8 +53,7 @@ const UserBar: FC<UserBarProps> = ({className}) => {
       avatarUrl: imgUrl,
       displayName: trim(displayName, MAX_NAME_LENGTH),
       text: trim(getUsernameByUserId(userID), MAX_NAME_LENGTH),
-      // TODO: Calculate color from the user's id.
-      displayNameColor: "",
+      displayNameColor: stringToColor(userID),
       status,
     }
 

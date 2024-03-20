@@ -23,7 +23,7 @@ const LoginView: FC = () => {
   const [baseUrl, setBaseUrl] = useState("")
   const [accessToken, setAccessToken] = useState("")
 
-  const {connect, disconnect, syncState, lastSyncError, isConnecting} =
+  const {connect, disconnect, syncState, lastSyncError, isConnecting, client} =
     useConnection()
 
   const login = useCallback(async () => {
@@ -57,11 +57,16 @@ const LoginView: FC = () => {
 
   // Automatically login if credentials are cached.
   useEffect(() => {
-    if (credentials === null || isConnecting || syncState === SyncState.Error) {
+    if (
+      credentials === null ||
+      isConnecting ||
+      syncState === SyncState.Error ||
+      client !== null
+    ) {
       return
     }
 
-    void connect({...credentials}).then(async connectedAndSynced => {
+    void connect(credentials).then(async connectedAndSynced => {
       if (!connectedAndSynced) {
         return
       }
@@ -69,7 +74,15 @@ const LoginView: FC = () => {
       await disconnect()
       navigate(ViewPath.App)
     })
-  }, [connect, credentials, disconnect, isConnecting, navigate, syncState])
+  }, [
+    client,
+    connect,
+    credentials,
+    disconnect,
+    isConnecting,
+    navigate,
+    syncState,
+  ])
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">

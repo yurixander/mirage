@@ -25,6 +25,7 @@ export type ButtonProps = {
   color?: ButtonColor
   size?: ButtonSize
   isDisabled?: boolean
+  className?: string
 }
 
 const Button: FC<ButtonProps> = ({
@@ -35,17 +36,18 @@ const Button: FC<ButtonProps> = ({
   variant,
   color,
   size,
+  className,
 }) => {
   const sizeClass =
     size === ButtonSize.Small
-      ? "p-[5px] text-xs rounded-[5px] border-[1px] px-2"
-      : "rounded-[10px] border-[2px] p-[10px]"
+      ? "p-1 text-xs rounded-md px-2"
+      : "rounded-xl border-[2px] p-3"
 
   const variantClass =
     variant === ButtonVariant.Primary
-      ? (color === ButtonColor.Black
+      ? color === ButtonColor.Black
         ? "bg-black border-none text-white"
-        : "bg-purple-700 border-purple-900 text-white")
+        : "bg-purple-700 border-purple-900 text-white"
       : variant === ButtonVariant.Secondary
         ? "bg-purple-100 text-purple-800 border-none hover:bg-purple-200"
         : variant === ButtonVariant.TextLink
@@ -57,9 +59,10 @@ const Button: FC<ButtonProps> = ({
   return (
     <button
       className={twMerge(
-        "flex box-border active:translate-y-[1px] origin-center cursor-pointer items-center justify-center border-solid font-strong outline-none disabled:translate-y-[1px]",
+        "font-strong box-border flex origin-center cursor-pointer items-center justify-center border-solid outline-none active:translate-y-[1px] disabled:translate-y-[1px]",
         sizeClass,
-        variantClass
+        variantClass,
+        className
       )}
       disabled={isLoading ?? isDisabled}
       onClick={isDisabled ? undefined : onClick}

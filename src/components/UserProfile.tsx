@@ -18,7 +18,7 @@ export type UserProfileProps = {
   text: string
   displayName: string
   displayNameColor: string
-  status: UserStatus
+  status?: UserStatus
   activity?: UserActivity
   icon?: React.JSX.Element
   platform?: string
@@ -85,6 +85,9 @@ const UserProfile: FC<UserProfileProps> = ({
 
       break
     }
+    case undefined: {
+      userStatusClass = ""
+    }
   }
 
   const activityOrText =
@@ -111,16 +114,19 @@ const UserProfile: FC<UserProfileProps> = ({
             isLarge={isLarge ?? false}
             avatarType={AvatarType.Profile}
             displayName={displayName}
+            avatarUrl={avatarUrl}
           />
         </div>
 
-        <div
-          className={twMerge(
-            "absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 rounded-[50%] border-[2px] border-solid border-neutral-50",
-            isLarge ? "h-[17px] w-[17px]" : "h-[13px] w-[13px]",
-            userStatusClass
-          )}
-        />
+        {status && (
+          <div
+            className={twMerge(
+              "absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 rounded-[50%] border-[2px] border-solid border-neutral-50",
+              isLarge ? "h-[17px] w-[17px]" : "h-[13px] w-[13px]",
+              userStatusClass
+            )}
+          />
+        )}
       </div>
 
       <div className="mr-auto inline-flex flex-col gap-[2px]">

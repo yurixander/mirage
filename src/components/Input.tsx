@@ -117,14 +117,14 @@ const Input: FC<InputProps> = ({
   return (
     <div className={className?.trim()}>
       <div
-        className="flex items-center rounded-[10px] border-[1px] border-solid border-neutral-300"
+        className="flex items-center rounded-[10px] border-[1px] border-solid border-neutral-300 bg-neutral-50"
         tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
 
         {Icon && <Icon className="ml-[10px] size-[18px] text-neutral-200" />}
 
         <input
-          className="w-full rounded-[10px]"
+          className="w-full rounded-[10px] bg-neutral-50"
           type="text"
           disabled={isDisabled}
           placeholder={placeholder}

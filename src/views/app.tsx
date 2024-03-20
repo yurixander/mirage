@@ -1,6 +1,6 @@
 import ChatContainer from "@/components/ChatContainer"
 import Navigation from "@/components/Navigation"
-import QuickActions from "@/components/QuickActions"
+import SidebarActions from "@/components/SidebarActions"
 import Roster from "@/components/Roster"
 import SearchBar, {type SearchResult} from "@/components/SearchBar"
 import UserBar from "@/components/UserBar"
@@ -36,7 +36,7 @@ const AppView: FC = () => {
       <div className="flex flex-col items-center">
         <Navigation className="mb-auto" />
 
-        <QuickActions
+        <SidebarActions
           className="p-4"
           onViewDirectMessages={() => {
             throw new Error("View direct messages not implemented.")
