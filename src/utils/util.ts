@@ -1,7 +1,11 @@
 import {type RosterUserProps, UserPowerLevel} from "@/components/RosterUser"
 import {UserStatus} from "@/components/UserProfile"
 import dayjs from "dayjs"
-import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
+import {
+  type Room,
+  type MatrixClient,
+  EventTimeline,
+} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -316,7 +320,7 @@ export function stringToColor(string_: string): string {
   let color = "#"
 
   for (let index = 0; index < 3; index++) {
-    const value = (hash >> (index * 8)) & 0xff
+    const value = (hash >> (index * 8)) & 0xFF
 
     color += ("00" + value.toString(16)).slice(-2)
   }
