@@ -1,6 +1,6 @@
-import Avatar from "boring-avatars"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import AvatarImage, {AvatarType} from "./Avatar"
 
 export type ServerListItemProps = {
   avatarUrl?: string
@@ -15,17 +15,6 @@ const ServerListItem: FC<ServerListItemProps> = ({
   onClick,
   tooltip,
 }) => {
-  const avatarImage =
-    avatarUrl === undefined ? (
-      <Avatar size={47} square variant="bauhaus" name="Margaret Sanger" />
-    ) : (
-      <img
-        className="absolute left-1/2 top-1/2 size-serverAvatarSize -translate-x-1/2 -translate-y-1/2"
-        src={avatarUrl}
-        alt="Server avatar"
-      />
-    )
-
   return (
     <div className="group flex items-center">
       <div className="flex h-auto w-2 flex-col justify-center overflow-hidden">
@@ -44,11 +33,17 @@ const ServerListItem: FC<ServerListItemProps> = ({
         className={twMerge(
           "relative ml-1 box-border size-serverSize cursor-pointer overflow-hidden rounded-xl bg-red-500 focus-visible:rounded-lg group-active:scale-75 group-active:transform group-active:animate-hold",
           isActive &&
-            "border-[3px] border-solid border-purple-500 shadow-serverSelected transition duration-200"
+            "border-[3px] border-solid border-purple-500 shadow-serverSelected transition-transform duration-200"
         )}
         onClick={onClick}
         aria-hidden="true">
-        {avatarImage}
+        <AvatarImage
+          isRounded={false}
+          isLarge={false}
+          avatarType={AvatarType.Server}
+          displayName="Margaret Sanger"
+          avatarUrl={avatarUrl}
+        />
       </div>
     </div>
   )
