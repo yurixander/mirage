@@ -199,8 +199,9 @@ export function deleteMessage(
   })
 }
 
+const MIN_ADMIN_POWER_LEVEL = 50
+
 export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
-  const MIN_ADMIN_POWER_LEVEL = 50
   const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
   const userId = client.getUserId()
 

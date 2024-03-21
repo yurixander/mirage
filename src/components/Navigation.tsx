@@ -22,7 +22,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
       return []
     }
 
-    return spaces.map((server, index) => (
+    return spaces.map(server => (
       <ServerListItem
         avatarUrl={getImageUrl(server.getMxcAvatarUrl(), client)}
         key={server.roomId}

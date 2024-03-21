@@ -33,13 +33,13 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
   const textareaReference = useRef<HTMLTextAreaElement>(null)
 
   const {
-    activeRoom,
     messages: messageProperties,
     typingUsers,
     client,
     activeRoomId,
     sendTextMessage,
     sendEventTyping,
+    roomName,
   } = useActiveRoom()
 
   const {openFilePicker, filesContent, clear} = useFilePicker({
@@ -90,9 +90,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
       }
   }
 
-  const name = activeRoom?.name ?? " "
-
-  assert(name.length > 0, "room name should not be empty")
+  assert(roomName.length > 0, "room name should not be empty")
 
   return (
     <>
@@ -134,7 +132,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           <div className="flex w-full gap-1">
             <LiaSlackHash className="text-purple-500" />
 
-            <span className="text-purple-500">{name}</span>
+            <span className="text-purple-500">{roomName}</span>
 
             {/* <span className="text-stone-600">{text}</span> */}
           </div>
