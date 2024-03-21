@@ -1,4 +1,4 @@
-import useConnection from "./useConnection"
+import useConnection from "../../hooks/matrix/useConnection"
 import {useNavigate} from "react-router-dom"
 import {ViewPath} from "@/utils/util"
 

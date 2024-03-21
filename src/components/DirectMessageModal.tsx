@@ -23,26 +23,25 @@ type DirectChatRecentProps = {
   userId: string
   displayName: string
   roomId: string
-  lastMsgSentDate?: number
+  lastMessageSentDate?: number
 }
 
 const DirectChatRecent: FC<DirectChatRecentProps> = ({
   displayName,
   userId,
-  lastMsgSentDate,
+  lastMessageSentDate,
 }) => {
   return (
-    <div className="flex cursor-pointer flex-row items-center rounded-lg p-2 hover:bg-neutral-200">
+    <div className="flex cursor-pointer flex-row items-center justify-between rounded-lg p-2 hover:bg-neutral-200">
       <UserProfile
         text={userId}
         displayName={displayName}
         displayNameColor={stringToColor(userId)}
-        className="mr-auto"
       />
 
-      {lastMsgSentDate && (
+      {lastMessageSentDate !== undefined && (
         <Typography variant={TypographyVariant.P}>
-          {timeFormatter(lastMsgSentDate)}
+          {timeFormatter(lastMessageSentDate)}
         </Typography>
       )}
     </div>
@@ -53,11 +52,12 @@ const DirectMessageModal: FC<DirectMessageModalProps> = ({onClose}) => {
   const {client} = useConnection()
   const [userId, setUserId] = useState<string | null>(null)
   const [directChats, setDirectChats] = useState<DirectChatRecentProps[]>([])
-  const {userToFind, setUserToFind, usersResult} = useUsersSearch(client)
+  const {query, setQuery, results} = useUsersSearch(client)
 
   const {invitationLink, isLinkCopied, copyToClipboard} =
     useInvitationLink(userId)
 
+  // Initially retrieves all direct chat conversations associated with the current user.
   useEffect(() => {
     if (client === null) {
       return
@@ -66,26 +66,25 @@ const DirectMessageModal: FC<DirectMessageModalProps> = ({onClose}) => {
     setUserId(client.getUserId())
 
     const directRoomIds = getDirectRoomsIds(client)
-    const directChats: DirectChatRecentProps[] = []
+    const directChatsProps: DirectChatRecentProps[] = []
 
     for (const roomId of directRoomIds) {
       const room = client.getRoom(roomId)
-      const lastMsgSentDate = room?.getLastLiveEvent()?.localTimestamp
-      const partnerUserId = getPartnerUserIdFromRoomDirect(room)
+      const lastMessageSentDate = room?.getLastLiveEvent()?.localTimestamp
 
-      if (room === null || partnerUserId === null) {
+      if (room === null) {
         continue
       }
 
-      directChats.push({
+      directChatsProps.push({
         roomId: room.roomId,
-        userId: partnerUserId,
+        userId: getPartnerUserIdFromRoomDirect(room),
         displayName: normalizeName(room.name),
-        lastMsgSentDate,
+        lastMessageSentDate,
       })
     }
 
-    setDirectChats(directChats)
+    setDirectChats(directChatsProps)
   }, [client])
 
   return (
@@ -110,8 +109,8 @@ const DirectMessageModal: FC<DirectMessageModalProps> = ({onClose}) => {
 
       <Input
         className="w-full"
-        initialValue={userToFind}
-        onValueChange={setUserToFind}
+        initialValue={query}
+        onValueChange={setQuery}
         placeholder="Enter name or username"
       />
 
@@ -121,11 +120,11 @@ const DirectMessageModal: FC<DirectMessageModalProps> = ({onClose}) => {
         </Typography>
 
         <div className="flex h-full flex-col gap-1 overflow-y-scroll scrollbar-hide">
-          {usersResult === null
+          {results === null
             ? directChats.map(directChatProps => (
                 <DirectChatRecent {...directChatProps} />
               ))
-            : usersResult.map(userProps => (
+            : results.map(userProps => (
                 <div className="w-full cursor-pointer rounded-lg p-2 hover:bg-neutral-200">
                   <UserProfile {...userProps} />
                 </div>

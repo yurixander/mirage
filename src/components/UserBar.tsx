@@ -23,13 +23,13 @@ const UserBar: FC<UserBarProps> = ({className}) => {
   const {client, isConnecting} = useConnection()
 
   const userData = useMemo(() => {
-    const userID = client?.getUserId() ?? null
+    const userId = client?.getUserId() ?? null
 
-    if (userID === null || client === null) {
+    if (userId === null || client === null) {
       return
     }
 
-    const user = client?.getUser(userID)
+    const user = client?.getUser(userId)
     const avatarUrl = user?.avatarUrl
 
     const status = client.isLoggedIn()
@@ -43,13 +43,13 @@ const UserBar: FC<UserBarProps> = ({className}) => {
     }
 
     const imgUrl = getImageUrl(avatarUrl, client)
-    const displayName = user?.displayName ?? userID
+    const displayName = user?.displayName ?? userId
 
     const userBarProperties: UserProfileProperties = {
       avatarUrl: imgUrl,
       displayName: trim(displayName, MAX_NAME_LENGTH),
-      text: trim(getUsernameByUserId(userID), MAX_NAME_LENGTH),
-      displayNameColor: stringToColor(userID),
+      text: trim(getUsernameByUserId(userId), MAX_NAME_LENGTH),
+      displayNameColor: stringToColor(userId),
       status,
     }
 

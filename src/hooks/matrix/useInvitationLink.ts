@@ -6,6 +6,8 @@ const checkIsLinkCopied = async (invitationLink: string): Promise<boolean> => {
 
     return textClipboard === invitationLink
   } catch {
+    // If the user has an empty clipboard or if permission to access the clipboard was not granted.
+
     return false
   }
 }
@@ -19,13 +21,11 @@ const useInvitationLink = (userId: string | null) => {
       return
     }
 
-    void checkIsLinkCopied(invitationLink).then(isCopied => {
-      setLinkCopied(isCopied)
-    })
+    void checkIsLinkCopied(invitationLink).then(setLinkCopied)
   }, [invitationLink])
 
   const copyToClipboard = useCallback(async () => {
-    if (!invitationLink) {
+    if (invitationLink === null) {
       return
     }
 

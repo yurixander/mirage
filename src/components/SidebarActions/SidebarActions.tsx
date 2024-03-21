@@ -1,5 +1,5 @@
 import {useState, type FC} from "react"
-import IconButton from "./IconButton"
+import IconButton from "../IconButton"
 import {twMerge} from "tailwind-merge"
 import {
   IoPaperPlane,
@@ -8,9 +8,9 @@ import {
   IoNotificationsSharp,
   IoCall,
 } from "react-icons/io5"
-import useSidebarActions from "@/hooks/matrix/useSidebarActions"
+import useSidebarActions from "@/components/SidebarActions/useSidebarActions"
 import {createPortal} from "react-dom"
-import DirectMessageModal from "./DirectMessageModal"
+import DirectMessageModal from "../DirectMessageModal"
 
 export type SidebarActionsProps = {
   onViewDirectMessages: () => void
@@ -28,6 +28,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   className,
 }) => {
   const {onLogout} = useSidebarActions()
+
   const [isDirectMessageModalVisible, setDirectMessageModalVisible] =
     useState(false)
 
@@ -44,6 +45,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
           </div>,
           document.body
         )}
+
       <section className={twMerge("inline-flex flex-col gap-4", className)}>
         <IconButton
           onClick={() => {

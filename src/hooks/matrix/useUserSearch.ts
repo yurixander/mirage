@@ -6,30 +6,24 @@ import {type MatrixClient} from "matrix-js-sdk"
 const LIMIT_USER_SEARCH = 100
 
 const useUsersSearch = (client: MatrixClient | null, searchDelay = 500) => {
-  const [userToFind, setUserToFind] = useState("")
-
-  const [usersResult, setUsersResult] = useState<UserProfileProps[] | null>(
-    null
-  )
+  const [query, setQuery] = useState("")
+  const [results, setResult] = useState<UserProfileProps[] | null>(null)
 
   useEffect(() => {
     const search = async () => {
-      if (userToFind.length <= 0) {
-        setUsersResult(null)
+      if (query.length <= 0 || client === null) {
+        setResult(null)
+
         return
       }
 
-      const results = await client?.searchUserDirectory({
-        term: userToFind,
+      const response = await client.searchUserDirectory({
+        term: query,
         limit: LIMIT_USER_SEARCH,
       })
 
-      if (results === undefined) {
-        return
-      }
-
-      setUsersResult(
-        results.results.map(userResult => ({
+      setResult(
+        response.results.map(userResult => ({
           displayName: userResult.display_name ?? userResult.user_id,
           text: userResult.user_id,
           displayNameColor: stringToColor(userResult.user_id),
@@ -44,9 +38,9 @@ const useUsersSearch = (client: MatrixClient | null, searchDelay = 500) => {
     return () => {
       clearTimeout(timerId)
     }
-  }, [userToFind, client, searchDelay])
+  }, [query, client, searchDelay])
 
-  return {userToFind, setUserToFind, usersResult}
+  return {query, setQuery, results}
 }
 
 export default useUsersSearch
