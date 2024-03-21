@@ -13,6 +13,32 @@ export type DirectMessageModalProps = {
   onClose: () => void
 }
 
+type DirectChatRecentProps = {
+  userId: string
+  displayName: string
+  lastMsgSentDate: string
+}
+
+const DirectChatRecent: FC<DirectChatRecentProps> = ({
+  displayName,
+  userId,
+  lastMsgSentDate,
+}) => {
+  return (
+    <div className="flex cursor-pointer flex-row items-center rounded-lg p-2 hover:bg-neutral-300">
+      <UserProfile
+        text={userId}
+        displayName={displayName}
+        displayNameColor={stringToColor(userId)}
+      />
+
+      <Typography variant={TypographyVariant.P} className="ml-auto">
+        {lastMsgSentDate}
+      </Typography>
+    </div>
+  )
+}
+
 const DirectMessageModal: FC<DirectMessageModalProps> = ({onClose}) => {
   const {connectWithCachedCredentials, client} = useConnection()
   const [userId, setUserId] = useState<string | null>(null)
@@ -62,19 +88,12 @@ const DirectMessageModal: FC<DirectMessageModalProps> = ({onClose}) => {
         </Typography>
 
         {usersResult === null ? (
-          <div className="flex cursor-pointer flex-row items-center rounded-lg p-2 hover:bg-neutral-300">
-            {/* TODO: Replace this info for real info. */}
-            <UserProfile
-              text={"@thecrissx:matrix.org"}
-              displayName={"Tokyoto"}
-              displayNameColor={stringToColor("Tokyoto")}
-            />
-
-            {/* TODO: Use real info. */}
-            <Typography variant={TypographyVariant.P} className="ml-auto">
-              22 days ago
-            </Typography>
-          </div>
+          /* TODO: Replace this info for real info. */
+          <DirectChatRecent
+            userId="@thecrissx:matrix.org"
+            displayName="Tokyoto"
+            lastMsgSentDate="22 days ago"
+          />
         ) : (
           usersResult.map(userProps => <UserProfile {...userProps} />)
         )}
