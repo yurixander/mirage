@@ -4,10 +4,16 @@ import IconButton from "./IconButton"
 import {IoCheckmark, IoCloseCircle, IoCopyOutline} from "react-icons/io5"
 import Input from "./Input"
 import UserProfile from "./UserProfile"
-import {stringToColor} from "@/utils/util"
+import {
+  getDirectRoomsIds,
+  getPartnerUserIdFromRoomDirect,
+  normalizeName,
+  stringToColor,
+  timeFormatter,
+} from "@/utils/util"
 import useConnection from "@/hooks/matrix/useConnection"
-import useUserSearch from "@/hooks/matrix/useUserSearch"
 import useInvitationLink from "@/hooks/matrix/useInvitationLink"
+import useUsersSearch from "@/hooks/matrix/useUserSearch"
 
 export type DirectMessageModalProps = {
   onClose: () => void
@@ -16,7 +22,8 @@ export type DirectMessageModalProps = {
 type DirectChatRecentProps = {
   userId: string
   displayName: string
-  lastMsgSentDate: string
+  roomId: string
+  lastMsgSentDate?: number
 }
 
 const DirectChatRecent: FC<DirectChatRecentProps> = ({
@@ -25,41 +32,66 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
   lastMsgSentDate,
 }) => {
   return (
-    <div className="flex cursor-pointer flex-row items-center rounded-lg p-2 hover:bg-neutral-300">
+    <div className="flex cursor-pointer flex-row items-center rounded-lg p-2 hover:bg-neutral-200">
       <UserProfile
         text={userId}
         displayName={displayName}
         displayNameColor={stringToColor(userId)}
+        className="mr-auto"
       />
 
-      <Typography variant={TypographyVariant.P} className="ml-auto">
-        {lastMsgSentDate}
-      </Typography>
+      {lastMsgSentDate && (
+        <Typography variant={TypographyVariant.P}>
+          {timeFormatter(lastMsgSentDate)}
+        </Typography>
+      )}
     </div>
   )
 }
 
 const DirectMessageModal: FC<DirectMessageModalProps> = ({onClose}) => {
-  const {connectWithCachedCredentials, client} = useConnection()
+  const {client} = useConnection()
   const [userId, setUserId] = useState<string | null>(null)
-  const {userToFind, setUserToFind, usersResult} = useUserSearch(client)
+  const [directChats, setDirectChats] = useState<DirectChatRecentProps[]>([])
+  const {userToFind, setUserToFind, usersResult} = useUsersSearch(client)
+
   const {invitationLink, isLinkCopied, copyToClipboard} =
     useInvitationLink(userId)
 
   useEffect(() => {
-    void connectWithCachedCredentials()
-
     if (client === null) {
       return
     }
 
     setUserId(client.getUserId())
-  }, [client, connectWithCachedCredentials])
+
+    const directRoomIds = getDirectRoomsIds(client)
+    const directChats: DirectChatRecentProps[] = []
+
+    for (const roomId of directRoomIds) {
+      const room = client.getRoom(roomId)
+      const lastMsgSentDate = room?.getLastLiveEvent()?.localTimestamp
+      const partnerUserId = getPartnerUserIdFromRoomDirect(room)
+
+      if (room === null || partnerUserId === null) {
+        continue
+      }
+
+      directChats.push({
+        roomId: room.roomId,
+        userId: partnerUserId,
+        displayName: normalizeName(room.name),
+        lastMsgSentDate,
+      })
+    }
+
+    setDirectChats(directChats)
+  }, [client])
 
   return (
     // TODO: Should be pixels value, replace by the future design.
-    <div className="flex size-full max-h-[80%] max-w-[50%] flex-col gap-2 rounded-lg bg-neutral-100 p-3 shadow-2xl">
-      <div className="flex">
+    <div className="flex size-full max-h-[80%] max-w-[50%] flex-col gap-2 rounded-lg bg-neutral-100 p-5 shadow-2xl">
+      <div className="flex w-full">
         <Typography variant={TypographyVariant.H3}>Direct messages</Typography>
 
         <IconButton
@@ -72,31 +104,33 @@ const DirectMessageModal: FC<DirectMessageModalProps> = ({onClose}) => {
       </div>
 
       <Typography>
-        Start a conversation with someone using their name, email, or username.
+        Start a conversation with someone using their name or username
+        (@username:matrix.org).
       </Typography>
 
       <Input
         className="w-full"
         initialValue={userToFind}
         onValueChange={setUserToFind}
-        placeholder="@username:matrix.org"
+        placeholder="Enter name or username"
       />
 
-      <div className="flex flex-col gap-2 p-1">
+      <div className="flex h-full flex-col gap-2 overflow-hidden p-1">
         <Typography variant={TypographyVariant.P}>
           RECENT CONVERSATIONS
         </Typography>
 
-        {usersResult === null ? (
-          /* TODO: Replace this info for real info. */
-          <DirectChatRecent
-            userId="@thecrissx:matrix.org"
-            displayName="Tokyoto"
-            lastMsgSentDate="22 days ago"
-          />
-        ) : (
-          usersResult.map(userProps => <UserProfile {...userProps} />)
-        )}
+        <div className="flex h-full flex-col gap-1 overflow-y-scroll scrollbar-hide">
+          {usersResult === null
+            ? directChats.map(directChatProps => (
+                <DirectChatRecent {...directChatProps} />
+              ))
+            : usersResult.map(userProps => (
+                <div className="w-full cursor-pointer rounded-lg p-2 hover:bg-neutral-200">
+                  <UserProfile {...userProps} />
+                </div>
+              ))}
+        </div>
 
         <Typography>
           Some suggestions may not be shown for privacy reasons. If you don't

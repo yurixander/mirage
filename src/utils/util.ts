@@ -360,3 +360,17 @@ export function normalizeName(displayName: string): string {
     .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
     .join("")
 }
+
+export function getPartnerUserIdFromRoomDirect(
+  room: Room | null
+): string | null {
+  if (room === null) {
+    return null
+  }
+
+  const userId = room
+    .getJoinedMembers()
+    .find(member => member.userId !== room.myUserId)?.userId
+
+  return userId ?? null
+}

@@ -54,8 +54,6 @@ const useConnection = () => {
     setLastSyncError,
   } = useClientStore()
 
-  const {credentials} = useCachedCredentials()
-
   const connect = useCallback(
     async (credentials: Credentials): Promise<boolean> => {
       // The client is already (connected | connecting);
@@ -122,14 +120,6 @@ const useConnection = () => {
     ]
   )
 
-  const connectWithCachedCredentials = useCallback(async () => {
-    if (credentials === null) {
-      return false
-    }
-
-    return await connect(credentials)
-  }, [connect, credentials])
-
   const disconnect = useCallback(async () => {
     if (client === null || client.getSyncState() === SyncState.Stopped) {
       return
@@ -148,7 +138,6 @@ const useConnection = () => {
     disconnect,
     lastSyncError,
     isConnecting,
-    connectWithCachedCredentials,
   }
 }
 

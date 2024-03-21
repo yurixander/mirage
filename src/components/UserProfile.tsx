@@ -23,6 +23,7 @@ export type UserProfileProps = {
   icon?: React.JSX.Element
   platform?: string
   isLarge?: boolean
+  className?: string
 }
 
 const UserProfile: FC<UserProfileProps> = ({
@@ -35,6 +36,7 @@ const UserProfile: FC<UserProfileProps> = ({
   icon,
   isLarge,
   platform,
+  className,
 }) => {
   const hasIcon = icon !== undefined
   const hasActivity = activity !== undefined
@@ -102,7 +104,7 @@ const UserProfile: FC<UserProfileProps> = ({
     )
 
   return (
-    <div className="flex gap-2">
+    <div className={twMerge("flex gap-2", className)}>
       <div className="relative">
         <div
           className={twMerge(

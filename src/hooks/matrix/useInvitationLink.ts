@@ -1,7 +1,13 @@
 import {useCallback, useEffect, useState} from "react"
 
 const checkIsLinkCopied = async (invitationLink: string): Promise<boolean> => {
-  return (await navigator.clipboard.readText()) === invitationLink
+  try {
+    const textClipboard = await navigator.clipboard.readText()
+
+    return textClipboard === invitationLink
+  } catch {
+    return false
+  }
 }
 
 const useInvitationLink = (userId: string | null) => {
@@ -19,10 +25,12 @@ const useInvitationLink = (userId: string | null) => {
   }, [invitationLink])
 
   const copyToClipboard = useCallback(async () => {
-    if (invitationLink) {
-      await navigator.clipboard.writeText(invitationLink)
-      setLinkCopied(true)
+    if (!invitationLink) {
+      return
     }
+
+    await navigator.clipboard.writeText(invitationLink)
+    setLinkCopied(true)
   }, [invitationLink])
 
   return {invitationLink, isLinkCopied, copyToClipboard}

@@ -3,7 +3,9 @@ import {stringToColor} from "@/utils/util"
 import {useState, useEffect} from "react"
 import {type MatrixClient} from "matrix-js-sdk"
 
-const useUserSearch = (client: MatrixClient | null, searchDelay = 500) => {
+const LIMIT_USER_SEARCH = 100
+
+const useUsersSearch = (client: MatrixClient | null, searchDelay = 500) => {
   const [userToFind, setUserToFind] = useState("")
 
   const [usersResult, setUsersResult] = useState<UserProfileProps[] | null>(
@@ -19,18 +21,20 @@ const useUserSearch = (client: MatrixClient | null, searchDelay = 500) => {
 
       const results = await client?.searchUserDirectory({
         term: userToFind,
-        limit: 4,
+        limit: LIMIT_USER_SEARCH,
       })
 
-      if (results?.limited) {
-        setUsersResult(
-          results.results.map(userResult => ({
-            displayName: userResult.display_name ?? userResult.user_id,
-            text: userResult.user_id,
-            displayNameColor: stringToColor(userResult.user_id),
-          }))
-        )
+      if (results === undefined) {
+        return
       }
+
+      setUsersResult(
+        results.results.map(userResult => ({
+          displayName: userResult.display_name ?? userResult.user_id,
+          text: userResult.user_id,
+          displayNameColor: stringToColor(userResult.user_id),
+        }))
+      )
     }
 
     const timerId = setTimeout(() => {
@@ -45,4 +49,4 @@ const useUserSearch = (client: MatrixClient | null, searchDelay = 500) => {
   return {userToFind, setUserToFind, usersResult}
 }
 
-export default useUserSearch
+export default useUsersSearch
