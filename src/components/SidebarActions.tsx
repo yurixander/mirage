@@ -36,7 +36,11 @@ const SidebarActions: FC<SidebarActionsProps> = ({
       {isDirectMessageModalVisible &&
         createPortal(
           <div className="fixed inset-0 flex size-full w-screen flex-col items-center justify-center">
-            <DirectMessageModal />
+            <DirectMessageModal
+              onClose={() => {
+                setDirectMessageModalVisible(false)
+              }}
+            />
           </div>,
           document.body
         )}

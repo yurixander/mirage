@@ -22,16 +22,6 @@ const UserBar: FC<UserBarProps> = ({className}) => {
   const MAX_NAME_LENGTH = 18
   const {client, isConnecting} = useConnection()
 
-  const status = useMemo(() => {
-    if (isConnecting) {
-      return UserStatus.Idle
-    } else if (client?.isLoggedIn()) {
-      return UserStatus.Online
-    }
-
-    return UserStatus.Offline
-  }, [client, isConnecting])
-
   const userData = useMemo(() => {
     const userID = client?.getUserId() ?? null
 
@@ -41,6 +31,12 @@ const UserBar: FC<UserBarProps> = ({className}) => {
 
     const user = client?.getUser(userID)
     const avatarUrl = user?.avatarUrl
+
+    const status = client.isLoggedIn()
+      ? UserStatus.Online
+      : isConnecting
+        ? UserStatus.Idle
+        : UserStatus.Offline
 
     if (avatarUrl === undefined) {
       return
@@ -58,7 +54,7 @@ const UserBar: FC<UserBarProps> = ({className}) => {
     }
 
     return userBarProperties
-  }, [client, status])
+  }, [client, isConnecting])
 
   return (
     <div className={twMerge("flex p-[x1]", className)}>

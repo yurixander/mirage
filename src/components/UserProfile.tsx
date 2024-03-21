@@ -67,7 +67,7 @@ const UserProfile: FC<UserProfileProps> = ({
   }
 
   const MAX_DISPLAY_NAME_LENGTH = 12
-  let userStatusClass: string
+  let userStatusClass: string | null = null
 
   switch (status) {
     case UserStatus.Online: {
@@ -86,7 +86,7 @@ const UserProfile: FC<UserProfileProps> = ({
       break
     }
     case undefined: {
-      userStatusClass = ""
+      break
     }
   }
 
@@ -118,7 +118,7 @@ const UserProfile: FC<UserProfileProps> = ({
           />
         </div>
 
-        {status && (
+        {userStatusClass && (
           <div
             className={twMerge(
               "absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 rounded-[50%] border-[2px] border-solid border-neutral-50",

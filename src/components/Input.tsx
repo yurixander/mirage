@@ -140,6 +140,7 @@ const Input: FC<InputProps> = ({
                 onClick={action.onClick}
                 tooltip={action.tooltip}
                 Icon={action.Icon}
+                isDisabled={violatedConstraints.length > 0}
               />
             ))}
           </div>

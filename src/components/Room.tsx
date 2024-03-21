@@ -19,6 +19,7 @@ export type RoomProps = {
   containsUnreadMessages: boolean
   mentionCount: number
   onClick: () => void
+  lastMsgSentDate?: string
 }
 
 const Room: FC<RoomProps> = ({

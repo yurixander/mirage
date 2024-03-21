@@ -7,6 +7,7 @@ import {
 } from "matrix-js-sdk"
 import {useCallback} from "react"
 import {create} from "zustand"
+import useCachedCredentials from "./useCachedCredentials"
 
 type ZustandClientStore = {
   client: MatrixClient | null
@@ -52,6 +53,8 @@ const useConnection = () => {
     lastSyncError,
     setLastSyncError,
   } = useClientStore()
+
+  const {credentials} = useCachedCredentials()
 
   const connect = useCallback(
     async (credentials: Credentials): Promise<boolean> => {
@@ -119,6 +122,14 @@ const useConnection = () => {
     ]
   )
 
+  const connectWithCachedCredentials = useCallback(async () => {
+    if (credentials === null) {
+      return false
+    }
+
+    return await connect(credentials)
+  }, [connect, credentials])
+
   const disconnect = useCallback(async () => {
     if (client === null || client.getSyncState() === SyncState.Stopped) {
       return
@@ -137,6 +148,7 @@ const useConnection = () => {
     disconnect,
     lastSyncError,
     isConnecting,
+    connectWithCachedCredentials,
   }
 }
 
