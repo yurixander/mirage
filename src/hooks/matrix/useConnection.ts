@@ -7,7 +7,6 @@ import {
 } from "matrix-js-sdk"
 import {useCallback} from "react"
 import {create} from "zustand"
-import useCachedCredentials from "./useCachedCredentials"
 
 type ZustandClientStore = {
   client: MatrixClient | null
