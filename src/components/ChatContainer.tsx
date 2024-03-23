@@ -10,7 +10,6 @@ import EventMessage from "./EventMessage"
 import {twMerge} from "tailwind-merge"
 import {useFilePicker} from "use-file-picker"
 import {MsgType} from "matrix-js-sdk"
-import {createPortal} from "react-dom"
 import Button, {ButtonVariant} from "./Button"
 import UnreadIndicator from "./UnreadIndicator"
 import {
@@ -23,6 +22,7 @@ import {
 } from "react-icons/io5"
 import {IoMdGlobe, IoMdMedical, IoIosHappy, IoMdLink} from "react-icons/io"
 import {LiaSlackHash} from "react-icons/lia"
+import Modal from "./Modal"
 
 export type ChatContainerProps = {
   className?: string
@@ -94,34 +94,35 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   return (
     <>
-      {filesContent.length > 0 &&
-        createPortal(
-          <div className="fixed inset-0 flex size-full w-screen flex-col items-center justify-center">
-            <div className="flex max-h-[600px] max-w-[600px] flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
+      <Modal
+        children={
+          <div className="flex max-h-[600px] max-w-[600px] flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
+            {filesContent.length > 0 && (
               <img
                 className="h-auto w-full rounded-lg object-cover shadow-md"
                 src={filesContent[0].content}
                 alt={filesContent[0].name}
               />
-              <div className="flex w-full items-center justify-end gap-1">
-                <Button
-                  variant={ButtonVariant.Secondary}
-                  onClick={() => {
-                    clear()
-                  }}
-                  label={"Cancel"}
-                />
-                <Button
-                  onClick={() => {
-                    void sendImageMessage()
-                  }}
-                  label={"Send Image"}
-                />
-              </div>
+            )}
+            <div className="flex w-full items-center justify-end gap-1">
+              <Button
+                variant={ButtonVariant.Secondary}
+                onClick={() => {
+                  clear()
+                }}
+                label={"Cancel"}
+              />
+              <Button
+                onClick={() => {
+                  void sendImageMessage()
+                }}
+                label={"Send Image"}
+              />
             </div>
-          </div>,
-          document.body
-        )}
+          </div>
+        }
+        isVisible={filesContent.length > 0}
+      />
 
       <div
         className={twMerge(

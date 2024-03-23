@@ -4,8 +4,8 @@ import useSpaces from "@/hooks/matrix/useSpaces"
 import {twMerge} from "tailwind-merge"
 import {StaticAssetPath, getImageUrl} from "@/utils/util"
 import {ReactSVG} from "react-svg"
-import {createPortal} from "react-dom"
 import CreateRoom from "./CreateRoom"
+import Modal from "./Modal"
 
 export type NavigationProps = {
   className?: string
@@ -37,17 +37,17 @@ const Navigation: FC<NavigationProps> = ({className}) => {
 
   return (
     <>
-      {isCreateRoomModalVisible &&
-        createPortal(
-          <div className="fixed inset-0 flex size-full w-screen flex-col items-center justify-center">
-            <CreateRoom
-              onClose={() => {
-                setIsCreateRoomModalVisible(false)
-              }}
-            />
-          </div>,
-          document.body
-        )}
+      <Modal
+        children={
+          <CreateRoom
+            onClose={() => {
+              setIsCreateRoomModalVisible(false)
+            }}
+          />
+        }
+        isVisible={isCreateRoomModalVisible}
+      />
+
       <div
         className={twMerge(
           "h-full min-w-max grow overflow-y-scroll scrollbar-hide",
