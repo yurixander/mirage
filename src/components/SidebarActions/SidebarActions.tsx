@@ -8,37 +8,35 @@ import {
   IoNotificationsSharp,
   IoCall,
 } from "react-icons/io5"
-import useSidebarActions from "@/components/SidebarActions/useSidebarActions"
-import DirectMessageModal from "../DirectMessageModal"
-import Modal from "../Modal"
+import useSidebarActions, {
+  SidebarModals,
+} from "@/components/SidebarActions/useSidebarActions"
+import DirectMessageModal from "./DirectMessageModal"
 
 export type SidebarActionsProps = {
   className?: string
 }
 
 const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
-  const {onLogout} = useSidebarActions()
-  const [isDirectMessageVisible, setDirectMessageVisible] = useState(false)
+  const {onLogout, isDirectMessageVisible, showAndCloseSidebarModal} =
+    useSidebarActions()
 
   return (
     <>
-      <Modal
-        children={
-          <DirectMessageModal
-            onClose={() => {
-              setDirectMessageVisible(false)
-            }}
-          />
-        }
+      <DirectMessageModal
         isVisible={isDirectMessageVisible}
+        onClose={() => {
+          showAndCloseSidebarModal(SidebarModals.DirectMessages, false)
+        }}
       />
+
       <section className={twMerge("inline-flex flex-col gap-4", className)}>
         <IconButton
-          onClick={() => {
-            setDirectMessageVisible(true)
-          }}
           tooltip="Direct messages"
           Icon={IoPaperPlane}
+          onClick={() => {
+            showAndCloseSidebarModal(SidebarModals.DirectMessages, true)
+          }}
         />
 
         <IconButton

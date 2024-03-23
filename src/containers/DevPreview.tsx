@@ -1,4 +1,4 @@
-import DirectMessageModal from "@/components/DirectMessageModal"
+import DirectMessageModal from "@/components/SidebarActions/DirectMessageModal"
 import {type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
