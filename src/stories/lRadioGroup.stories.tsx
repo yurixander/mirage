@@ -1,23 +1,45 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import LRadioGroup, {
-  LRadioGroupDirection,
-  type LRadioGroupProps,
+import RadioGroup, {
+  RadioGroupDirection,
+  type RadioGroupProps,
 } from "../components/LRadioGroup"
 
-type Story = StoryObj<typeof LRadioGroup>
+type Story = StoryObj<typeof RadioGroup>
 
-const meta: Meta<typeof LRadioGroup> = {
-  component: LRadioGroup,
+const meta: Meta<typeof RadioGroup> = {
+  component: RadioGroup,
 }
-const render = (args: LRadioGroupProps) => <LRadioGroup {...args} />
+
+const render = (args: RadioGroupProps) => <RadioGroup {...args} />
 
 export const Default: Story = {
   render,
   args: {
     items: [
-      {label: "Item A", name: "radiobutton", onClick: () => {}},
-      {label: "Item B", name: "radiobutton", onClick: () => {}},
-      {label: "Item C", name: "radiobutton", onClick: () => {}},
+      {
+        label: "Item A",
+        name: "radiobutton",
+        onClick: () => {},
+        id: "",
+        key: "",
+        value: "",
+      },
+      {
+        label: "Item B",
+        name: "radiobutton",
+        onClick: () => {},
+        id: "",
+        key: "",
+        value: "",
+      },
+      {
+        label: "Item C",
+        name: "radiobutton",
+        onClick: () => {},
+        id: "",
+        key: "",
+        value: "",
+      },
     ],
   },
 }
@@ -26,11 +48,32 @@ export const IsRow: Story = {
   render,
   args: {
     items: [
-      {label: "Item A", name: "radiobutton", onClick: () => {}},
-      {label: "Item B", name: "radiobutton", onClick: () => {}},
-      {label: "Item C", name: "radiobutton", onClick: () => {}},
+      {
+        label: "Item A",
+        name: "radiobutton",
+        onClick: () => {},
+        id: "",
+        key: "",
+        value: "",
+      },
+      {
+        label: "Item B",
+        name: "radiobutton",
+        onClick: () => {},
+        id: "",
+        key: "",
+        value: "",
+      },
+      {
+        label: "Item C",
+        name: "radiobutton",
+        onClick: () => {},
+        id: "",
+        key: "",
+        value: "",
+      },
     ],
-    isColum: LRadioGroupDirection.Row,
+    isColum: RadioGroupDirection.Row,
   },
 }
 
