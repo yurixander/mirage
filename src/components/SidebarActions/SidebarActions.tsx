@@ -9,63 +9,57 @@ import {
   IoCall,
 } from "react-icons/io5"
 import useSidebarActions from "@/components/SidebarActions/useSidebarActions"
-import {createPortal} from "react-dom"
 import DirectMessageModal from "../DirectMessageModal"
+import Modal from "../Modal"
 
 export type SidebarActionsProps = {
-  onViewDirectMessages: () => void
-  onViewCalls: () => void
-  onViewNotifications: () => void
-  onOpenExtensions: () => void
-  onLogout: () => void
   className?: string
 }
 
-const SidebarActions: FC<SidebarActionsProps> = ({
-  onViewCalls,
-  onViewNotifications,
-  onOpenExtensions,
-  className,
-}) => {
+const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
   const {onLogout} = useSidebarActions()
-
-  const [isDirectMessageModalVisible, setDirectMessageModalVisible] =
-    useState(false)
+  const [dialogs, setDialogs] = useState<React.JSX.Element[]>([])
 
   return (
     <>
-      {isDirectMessageModalVisible &&
-        createPortal(
-          <div className="fixed inset-0 flex size-full w-screen flex-col items-center justify-center">
-            <DirectMessageModal
-              onClose={() => {
-                setDirectMessageModalVisible(false)
-              }}
-            />
-          </div>,
-          document.body
-        )}
-
+      <Modal dialogs={dialogs} />
       <section className={twMerge("inline-flex flex-col gap-4", className)}>
         <IconButton
           onClick={() => {
-            setDirectMessageModalVisible(true)
+            setDialogs(prev => [
+              ...prev,
+              <DirectMessageModal
+                onClose={() => {
+                  setDialogs([])
+                }}
+              />,
+            ])
           }}
           tooltip="Direct messages"
           Icon={IoPaperPlane}
         />
 
-        <IconButton onClick={onViewCalls} tooltip="Calls" Icon={IoCall} />
+        <IconButton
+          onClick={() => {
+            throw new Error("View calls not implemented.")
+          }}
+          tooltip="Calls"
+          Icon={IoCall}
+        />
 
         <IconButton
-          onClick={onViewNotifications}
+          onClick={() => {
+            throw new Error("View notifications not implemented.")
+          }}
           tooltip="Notifications"
           Icon={IoNotificationsSharp}
           isDotVisible
         />
 
         <IconButton
-          onClick={onOpenExtensions}
+          onClick={() => {
+            throw new Error("Open extensions not implemented.")
+          }}
           tooltip="Extensions"
           Icon={IoExtensionPuzzle}
         />

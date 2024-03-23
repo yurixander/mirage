@@ -1,4 +1,5 @@
 import {useMemo, type FC} from "react"
+import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
 
 export enum ModalPosition {
@@ -46,20 +47,24 @@ const Modal: FC<ModalProps> = ({position, dialogs}) => {
   }
 
   return (
-    <div
-      className={twMerge(
-        "fixed inset-0 flex content-center items-center bg-modalOverlay *:absolute",
-        getPopupPositionClassName(position)
-      )}>
-      {dialogsToShow.map((dialog, index) => (
-        <div
-          key={dialog.key ?? index}
-          className="animate-enter"
-          style={{opacity: calculateOpacity(index)}}>
-          {dialog}
-        </div>
-      ))}
-    </div>
+    dialogs.length > 0 &&
+    createPortal(
+      <div
+        className={twMerge(
+          "fixed inset-0 flex content-center items-center bg-modalOverlay *:absolute",
+          getPopupPositionClassName(position)
+        )}>
+        {dialogsToShow.map((dialog, index) => (
+          <div
+            key={dialog.key ?? index}
+            className="animate-enter"
+            style={{opacity: calculateOpacity(index)}}>
+            {dialog}
+          </div>
+        ))}
+      </div>,
+      document.body
+    )
   )
 }
 

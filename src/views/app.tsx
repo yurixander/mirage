@@ -13,7 +13,7 @@ import {useNavigate} from "react-router-dom"
 
 const AppView: FC = () => {
   const navigate = useNavigate()
-  const {connect, disconnect} = useConnection()
+  const {connect} = useConnection()
   const {credentials} = useCachedCredentials()
 
   // Connect on startup.
@@ -29,32 +29,14 @@ const AppView: FC = () => {
 
       navigate(ViewPath.Login)
     })
-  }, [connect, credentials, disconnect, navigate])
+  }, [connect, credentials, navigate])
 
   return (
     <div className="flex size-full flex-row">
       <div className="flex flex-col items-center">
         <Navigation className="mb-auto" />
 
-        <SidebarActions
-          className="p-4"
-          onViewDirectMessages={() => {
-            throw new Error("View direct messages not implemented.")
-          }}
-          onViewCalls={() => {
-            throw new Error("View calls not implemented.")
-          }}
-          onViewNotifications={() => {
-            throw new Error("View notifications not implemented.")
-          }}
-          onOpenExtensions={() => {
-            throw new Error("Open extensions not implemented.")
-          }}
-          onLogout={() => {
-            void disconnect()
-            navigate(ViewPath.Login)
-          }}
-        />
+        <SidebarActions className="p-4" />
       </div>
 
       <div className="flex flex-col border border-solid border-stone-200">
