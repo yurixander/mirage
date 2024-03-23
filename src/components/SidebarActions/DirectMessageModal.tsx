@@ -96,7 +96,7 @@ const DirectMessageModal: FC<DirectMessageModalProps> = ({
     // TODO: Should be pixels value, replace by the future design.
     <Modal
       children={
-        <div className="flex size-full max-h-[80%] max-w-[50%] flex-col gap-2 rounded-lg bg-neutral-100 p-5 shadow-2xl">
+        <div className="flex h-5 flex-col gap-2 rounded-lg bg-white p-5 shadow-2xl">
           <div className="flex w-full">
             <Typography variant={TypographyVariant.H3}>
               Direct messages

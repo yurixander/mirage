@@ -32,7 +32,7 @@ const Modal: FC<ModalProps> = ({position, children, isVisible}) => {
     createPortal(
       <div
         className={twMerge(
-          "fixed inset-0 flex bg-modalOverlay",
+          "fixed inset-0 flex size-full w-screen flex-col bg-modalOverlay",
           popupPositionClass
         )}>
         {children}

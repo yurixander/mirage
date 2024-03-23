@@ -1,14 +1,12 @@
 import {stringToColor, timeFormatter} from "@/utils/util"
 import {type FC} from "react"
-import {IoTime} from "react-icons/io5"
+import {IoCloseCircle, IoTime} from "react-icons/io5"
 import AvatarImage, {AvatarType} from "../Avatar"
 import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
 import Typography, {TypographyVariant} from "../Typography"
 import {twMerge} from "tailwind-merge"
-
-export type NotificationsModalProps = {
-  className?: string
-}
+import Modal from "../Modal"
+import IconButton from "../IconButton"
 
 type NotificationActions = {
   name: string
@@ -46,7 +44,7 @@ const Notification: FC<NotificationProps> = ({
         </div>
       )}
 
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-1">
         <div className="flex flex-row">
           <Typography className="text-xs">
             {userComponent ?? ""} {event}
@@ -79,47 +77,69 @@ const Notification: FC<NotificationProps> = ({
   )
 }
 
-const NotificationsModal: FC<NotificationsModalProps> = ({className}) => {
+export type NotificationsModalProps = {
+  isVisible: boolean
+  className?: string
+  onClose: () => void
+}
+
+const NotificationsModal: FC<NotificationsModalProps> = ({
+  className,
+  isVisible,
+  onClose,
+}) => {
   return (
-    <div
-      className={twMerge(
-        "flex size-full max-h-[80%] max-w-[35%] flex-col gap-2 rounded-xl bg-white p-2",
-        className
-      )}>
-      <div className="flex w-full justify-between p-2">
-        <Typography
-          className="font-bold text-black"
-          variant={TypographyVariant.H3}>
-          Notifications
-        </Typography>
+    <Modal
+      isVisible={isVisible}
+      children={
+        <div
+          className={twMerge(
+            "flex flex-col gap-2 rounded-xl bg-white p-2",
+            className
+          )}>
+          <div className="flex w-full p-2">
+            <Typography
+              className="mr-auto font-bold text-black "
+              variant={TypographyVariant.H3}>
+              Notifications
+            </Typography>
 
-        <Button
-          variant={ButtonVariant.TextLink}
-          size={ButtonSize.Small}
-          color={ButtonColor.Black}
-          onClick={() => {
-            // TODO: Handle here close this modal.
-          }}
-          label="Mark all as read"
-        />
-      </div>
+            <Button
+              variant={ButtonVariant.TextLink}
+              size={ButtonSize.Small}
+              color={ButtonColor.Black}
+              onClick={() => {
+                // TODO: Close modal after mark all as read.
+                onClose()
+              }}
+              label="Mark all as read"
+            />
 
-      <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
-        <Notification
-          event="is trying to start a conversation with you."
-          displayName="Criss"
-          lastNotificationTime={Date.now()}
-          actions={[
-            {name: "Accept", onClick: () => {}},
-            {
-              name: "Decline",
-              onClick: () => {},
-              actionVariant: ButtonVariant.TextLink,
-            },
-          ]}
-        />
-      </div>
-    </div>
+            <IconButton
+              onClick={onClose}
+              tooltip="Close"
+              Icon={IoCloseCircle}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
+            <Notification
+              event="is trying to start a conversation with you."
+              displayName="Criss"
+              lastNotificationTime={Date.now()}
+              actions={[
+                {name: "Accept", onClick: () => {}},
+                {
+                  name: "Decline",
+                  onClick: () => {},
+                  actionVariant: ButtonVariant.TextLink,
+                },
+              ]}
+            />
+          </div>
+        </div>
+      }
+    />
   )
 }
 

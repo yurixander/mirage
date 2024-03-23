@@ -1,4 +1,4 @@
-import {useState, type FC} from "react"
+import {type FC} from "react"
 import IconButton from "../IconButton"
 import {twMerge} from "tailwind-merge"
 import {
@@ -12,14 +12,19 @@ import useSidebarActions, {
   SidebarModals,
 } from "@/components/SidebarActions/useSidebarActions"
 import DirectMessageModal from "./DirectMessageModal"
+import NotificationsModal from "./NotificationsModal"
 
 export type SidebarActionsProps = {
   className?: string
 }
 
 const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
-  const {onLogout, isDirectMessageVisible, showAndCloseSidebarModal} =
-    useSidebarActions()
+  const {
+    onLogout,
+    isDirectMessageVisible,
+    showAndCloseSidebarModal,
+    isNotificationsVisible,
+  } = useSidebarActions()
 
   return (
     <>
@@ -27,6 +32,13 @@ const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
         isVisible={isDirectMessageVisible}
         onClose={() => {
           showAndCloseSidebarModal(SidebarModals.DirectMessages, false)
+        }}
+      />
+
+      <NotificationsModal
+        isVisible={isNotificationsVisible}
+        onClose={() => {
+          showAndCloseSidebarModal(SidebarModals.Notifications, false)
         }}
       />
 
@@ -49,7 +61,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
 
         <IconButton
           onClick={() => {
-            throw new Error("View notifications not implemented.")
+            showAndCloseSidebarModal(SidebarModals.Notifications, true)
           }}
           tooltip="Notifications"
           Icon={IoNotificationsSharp}
