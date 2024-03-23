@@ -15,34 +15,25 @@ export type ModalProps = {
   position?: ModalPosition
 }
 
-const getPopupPositionClassName = (position?: ModalPosition): string => {
-  switch (position) {
-    case ModalPosition.Left: {
-      return "items-center justify-start"
-    }
-    case ModalPosition.Right: {
-      return "items-center justify-end"
-    }
-    case ModalPosition.Top: {
-      return "items-start justify-center"
-    }
-    case ModalPosition.Bottom: {
-      return "items-end justify-center"
-    }
-    case undefined: {
-      return "items-center justify-center"
-    }
-  }
-}
-
 const Modal: FC<ModalProps> = ({position, children, isVisible}) => {
+  const popupPositionClass =
+    position === ModalPosition.Left
+      ? "items-center justify-start"
+      : position === ModalPosition.Right
+        ? "items-center justify-end"
+        : position === ModalPosition.Top
+          ? "items-start justify-center"
+          : position === ModalPosition.Bottom
+            ? "items-end justify-center"
+            : "items-center justify-center"
+
   return (
     isVisible &&
     createPortal(
       <div
         className={twMerge(
-          "fixed inset-0 flex content-center items-center bg-modalOverlay",
-          getPopupPositionClassName(position)
+          "fixed inset-0 flex bg-modalOverlay",
+          popupPositionClass
         )}>
         {children}
       </div>,

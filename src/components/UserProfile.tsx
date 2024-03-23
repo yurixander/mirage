@@ -109,7 +109,7 @@ const UserProfile: FC<UserProfileProps> = ({
         <div
           className={twMerge(
             "relative overflow-hidden rounded-lg bg-red-500",
-            isLarge ? "h-[50px] w-[50px]" : "h-[37px] w-[37px]"
+            isLarge ? "size-[50px]" : "size-[37px]"
           )}>
           <AvatarImage
             isRounded={false}
@@ -131,6 +131,7 @@ const UserProfile: FC<UserProfileProps> = ({
         )}
       </div>
 
+      {/* TODO: Update this to use `Typography` */}
       <div className="mr-auto inline-flex flex-col gap-[2px]">
         <div
           style={{color: displayNameColor}}

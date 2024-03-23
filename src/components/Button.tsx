@@ -33,11 +33,13 @@ const Button: FC<ButtonProps> = ({
   label: text,
   isLoading,
   isDisabled,
-  variant,
+  variant = ButtonVariant.Primary,
   color,
   size,
   className,
 }) => {
+  // TODO: Add outline variant.
+
   const sizeClass =
     size === ButtonSize.Small
       ? "p-1 text-xs rounded-md px-2"
