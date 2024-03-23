@@ -1,7 +1,11 @@
 import {type RosterUserProps, UserPowerLevel} from "@/components/RosterUser"
 import {UserStatus} from "@/components/UserProfile"
 import dayjs from "dayjs"
-import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
+import {
+  type Room,
+  type MatrixClient,
+  EventTimeline,
+} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -195,8 +199,9 @@ export function deleteMessage(
   })
 }
 
+const MIN_ADMIN_POWER_LEVEL = 50
+
 export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
-  const MIN_ADMIN_POWER_LEVEL = 50
   const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
   const userId = client.getUserId()
 
@@ -316,7 +321,7 @@ export function stringToColor(string_: string): string {
   let color = "#"
 
   for (let index = 0; index < 3; index++) {
-    const value = (hash >> (index * 8)) & 0xff
+    const value = (hash >> (index * 8)) & 0xFF
 
     color += ("00" + value.toString(16)).slice(-2)
   }
