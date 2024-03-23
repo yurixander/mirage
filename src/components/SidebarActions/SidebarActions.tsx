@@ -18,22 +18,24 @@ export type SidebarActionsProps = {
 
 const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
   const {onLogout} = useSidebarActions()
-  const [dialogs, setDialogs] = useState<React.JSX.Element[]>([])
+  const [isDirectMessageVisible, setDirectMessageVisible] = useState(false)
 
   return (
     <>
-      <Modal dialogs={dialogs} />
+      <Modal
+        children={
+          <DirectMessageModal
+            onClose={() => {
+              setDirectMessageVisible(false)
+            }}
+          />
+        }
+        isVisible={isDirectMessageVisible}
+      />
       <section className={twMerge("inline-flex flex-col gap-4", className)}>
         <IconButton
           onClick={() => {
-            setDialogs(prev => [
-              ...prev,
-              <DirectMessageModal
-                onClose={() => {
-                  setDialogs([])
-                }}
-              />,
-            ])
+            setDirectMessageVisible(true)
           }}
           tooltip="Direct messages"
           Icon={IoPaperPlane}

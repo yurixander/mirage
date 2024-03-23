@@ -1,4 +1,4 @@
-import {useMemo, type FC} from "react"
+import React, {type FC} from "react"
 import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
 
@@ -10,8 +10,9 @@ export enum ModalPosition {
 }
 
 export type ModalProps = {
+  children: React.JSX.Element
+  isVisible: boolean
   position?: ModalPosition
-  dialogs: React.JSX.Element[]
 }
 
 const getPopupPositionClassName = (position?: ModalPosition): string => {
@@ -34,34 +35,16 @@ const getPopupPositionClassName = (position?: ModalPosition): string => {
   }
 }
 
-const Modal: FC<ModalProps> = ({position, dialogs}) => {
-  const MAX_DIALOGS = 5
-
-  const dialogsToShow = useMemo(
-    () => [...dialogs].slice(0, MAX_DIALOGS).reverse(),
-    [dialogs]
-  )
-
-  const calculateOpacity = (index: number) => {
-    return 1 - 0.2 * (dialogsToShow.length - 1 - index)
-  }
-
+const Modal: FC<ModalProps> = ({position, children, isVisible}) => {
   return (
-    dialogs.length > 0 &&
+    isVisible &&
     createPortal(
       <div
         className={twMerge(
-          "fixed inset-0 flex content-center items-center bg-modalOverlay *:absolute",
+          "fixed inset-0 flex content-center items-center bg-modalOverlay",
           getPopupPositionClassName(position)
         )}>
-        {dialogsToShow.map((dialog, index) => (
-          <div
-            key={dialog.key ?? index}
-            className="animate-enter"
-            style={{opacity: calculateOpacity(index)}}>
-            {dialog}
-          </div>
-        ))}
+        {children}
       </div>,
       document.body
     )
