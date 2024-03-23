@@ -64,7 +64,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
             </div>
           </div>
 
-          <div className="m-2 mx-3 h-[1px] bg-neutral-300" />
+          <div className="m-2 mx-3 h-px bg-neutral-300" />
 
           <div className="flex flex-col items-start justify-center gap-4">
             <ServerListItem

@@ -2,7 +2,9 @@ import {type FC} from "react"
 import {timeFormatter} from "../utils/util"
 import Button, {ButtonSize, ButtonVariant} from "./Button"
 import Label from "./Label"
-import UserProfile, {type UserProfileProps as UserProfileProperties} from "./UserProfile"
+import UserProfile, {
+  type UserProfileProps as UserProfileProperties,
+} from "./UserProfile"
 import {createPortal} from "react-dom"
 
 export type UserCardProps = {
@@ -30,8 +32,8 @@ const UserCard: FC<UserCardProps> = ({
       <div className="z-50 flex size-full justify-end px-1">
         <div
           className="absolute flex min-h-80 w-[250px] flex-col rounded-xl
-    border-[1px] border-solid border-neutral-300 bg-neutral-50 shadow-userCard">
-          <div className="rounded-xl border-b-[1px] border-solid border-b-neutral-300 bg-white p-4">
+    border border-neutral-300 bg-neutral-50 shadow-userCard">
+          <div className="rounded-xl border-b border-solid border-b-neutral-300 bg-white p-4">
             <UserProfile {...userProfileProps} />
           </div>
 

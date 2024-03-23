@@ -5,7 +5,7 @@ export type UnreadIndicatorProps = {
 }
 
 const UnreadIndicator: FC<UnreadIndicatorProps> = ({lastReadEventId}) => {
-  const lineClass = "h-[1px] grow bg-red-500"
+  const lineClass = "h-px grow bg-red-500"
 
   return (
     <div className="flex flex-row items-center justify-center">

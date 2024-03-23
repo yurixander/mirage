@@ -126,10 +126,10 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
       <div
         className={twMerge(
-          "flex h-screen flex-col gap-4 border-[1px] border-solid border-stone-200",
+          "flex h-screen flex-col gap-4 border border-stone-200",
           className
         )}>
-        <header className="flex items-center gap-2 border-b border-solid border-b-stone-200 p-4">
+        <header className="flex items-center gap-2 border-b border-b-stone-200 p-4">
           <div className="flex w-full gap-1">
             <LiaSlackHash className="text-purple-500" />
 
@@ -198,7 +198,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               />
             </div>
 
-            <div className="flex w-full rounded-[5px] border-[1px] border-solid border-neutral-300 bg-neutral-50">
+            <div className="flex w-full rounded-[5px] border border-neutral-300 bg-neutral-50">
               <textarea
                 onKeyDown={handleKeyDown}
                 rows={1}
