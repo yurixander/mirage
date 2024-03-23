@@ -96,7 +96,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     <>
       <Modal
         children={
-          <div className="flex max-h-[600px] max-w-[600px] flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
+          <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
             {filesContent.length > 0 && (
               <img
                 className="h-auto w-full rounded-lg object-cover shadow-md"

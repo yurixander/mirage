@@ -148,11 +148,11 @@ const DirectMessageModal: FC<DirectMessageModalProps> = ({
           </div>
 
           <div className="mt-auto flex flex-col gap-2">
-            <div className="h-[1px] w-full bg-neutral-400" />
+            <div className="h-px w-full bg-neutral-400" />
 
             <Typography>INVITATION LINK</Typography>
 
-            <div className="flex flex-row items-center rounded-md border-[1px] border-black p-2">
+            <div className="flex flex-row items-center rounded-md border border-black p-2">
               <Typography
                 variant={TypographyVariant.Span}
                 className="text-blue-500">
