@@ -1,25 +1,36 @@
 import {type FC} from "react"
 
-export type LRadioButtonProps = {
+export type RadioButtonProps = {
   label: string
   name: string
+  id: string
+  key: string
+  value: string
   onClick: () => void
 }
-const LRadioButton: FC<LRadioButtonProps> = ({label, name, onClick}) => {
+
+const RadioButton: FC<RadioButtonProps> = ({
+  label,
+  name,
+  onClick,
+  id,
+  key,
+  value,
+}) => {
   return (
-    <>
-      <label className="flex cursor-pointer">
-        <input
-          type="radio"
-          name={name}
-          value="purple"
-          id="purple"
-          onClick={onClick}
-          className="size-4 cursor-pointer accent-purple-500"
-        />
-        <span className="px-1.5">{label}</span>
-      </label>
-    </>
+    <label className="flex cursor-pointer">
+      <input
+        type="radio"
+        name={name}
+        id={id}
+        key={key}
+        value={value}
+        onClick={onClick}
+        className="size-4 cursor-pointer accent-purple-500"
+      />
+      <span className="px-1.5">{label}</span>
+    </label>
   )
 }
-export default LRadioButton
+
+export default RadioButton

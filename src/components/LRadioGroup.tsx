@@ -1,25 +1,31 @@
 import {type FC} from "react"
-import LRadioButton, {type LRadioButtonProps} from "./LRadioButton"
+import RadioButton, {type RadioButtonProps} from "./LRadioButton"
 import {twMerge} from "tailwind-merge"
 
-export type LRadioGroupProps = {
-  items: LRadioButtonProps[]
-  isColum?: LRadioGroupDirection
+export type RadioGroupProps = {
+  items: RadioButtonProps[]
+  isColum?: RadioGroupDirection
 }
-export enum LRadioGroupDirection {
+
+export enum RadioGroupDirection {
   Column,
   Row,
 }
-const LRadioGroup: FC<LRadioGroupProps> = ({
+
+const RadioGroup: FC<RadioGroupProps> = ({
   items,
-  isColum = LRadioGroupDirection.Column,
+  isColum = RadioGroupDirection.Column,
 }) => {
   const directionClass =
-    isColum === LRadioGroupDirection.Column ? "flex-col" : "flex-row"
+    isColum === RadioGroupDirection.Column ? "flex-col" : "flex-row"
+
   return (
     <div className={twMerge("flex gap-4", directionClass)}>
       {items.map((props, index) => (
-        <LRadioButton
+        <RadioButton
+          id={props.id}
+          key={props.key}
+          value={props.value}
           label={props.label}
           name={props.name}
           onClick={() => {}}
@@ -29,4 +35,4 @@ const LRadioGroup: FC<LRadioGroupProps> = ({
   )
 }
 
-export default LRadioGroup
+export default RadioGroup
