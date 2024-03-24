@@ -25,7 +25,9 @@ const RadioButton: FC<RadioButtonProps> = ({
         onClick={onClick}
         className="size-4 cursor-pointer accent-purple-500"
       />
+      
       <span className="px-1.5">{label}</span>
+      
     </label>
   )
 }
