@@ -94,35 +94,30 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   return (
     <>
-      <Modal
-        children={
-          <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
-            {filesContent.length > 0 && (
-              <img
-                className="h-auto w-full rounded-lg object-cover shadow-md"
-                src={filesContent[0].content}
-                alt={filesContent[0].name}
-              />
-            )}
-            <div className="flex w-full items-center justify-end gap-1">
-              <Button
-                variant={ButtonVariant.Secondary}
-                onClick={() => {
-                  clear()
-                }}
-                label={"Cancel"}
-              />
-              <Button
-                onClick={() => {
-                  void sendImageMessage()
-                }}
-                label={"Send Image"}
-              />
-            </div>
+      <Modal isVisible={filesContent.length > 0}>
+        <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
+          {filesContent.length > 0 && (
+            <img
+              className="h-auto w-full rounded-lg object-cover shadow-md"
+              src={filesContent[0].content}
+              alt={filesContent[0].name}
+            />
+          )}
+          <div className="flex w-full items-center justify-end gap-1">
+            <Button
+              variant={ButtonVariant.Secondary}
+              onClick={clear}
+              label="Cancel"
+            />
+            <Button
+              onClick={() => {
+                void sendImageMessage()
+              }}
+              label="Send Image"
+            />
           </div>
-        }
-        isVisible={filesContent.length > 0}
-      />
+        </div>
+      </Modal>
 
       <div
         id={ModalRenderLocation.ChatContainer}

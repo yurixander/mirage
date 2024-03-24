@@ -28,9 +28,10 @@ const Notification: FC<NotificationProps> = ({
   actions,
   lastNotificationTime,
 }) => {
-  const userComponent = displayName !== undefined && (
-    <b style={{color: stringToColor(displayName)}}>{displayName}</b>
-  )
+  const userComponent =
+    displayName === undefined ? undefined : (
+      <b style={{color: stringToColor(displayName)}}>{displayName}</b>
+    )
 
   return (
     <div className="flex gap-2 p-2">
@@ -47,8 +48,8 @@ const Notification: FC<NotificationProps> = ({
 
       <div className="flex flex-col gap-1">
         <div className="flex flex-row">
-          <Typography className="text-xs">
-            {userComponent ?? ""} {event}
+          <Typography>
+            {userComponent} {event}
           </Typography>
         </div>
 
@@ -97,7 +98,7 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
       children={
         <div
           className={twMerge(
-            "flex flex-col gap-2 rounded-xl bg-white p-2",
+            "flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl bg-white p-2",
             className
           )}>
           <div className="flex w-full p-2">
@@ -126,20 +127,6 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
           </div>
 
           <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
-            <Notification
-              event="is trying to start a conversation with you."
-              displayName="Criss"
-              lastNotificationTime={Date.now()}
-              actions={[
-                {name: "Accept", onClick: () => {}},
-                {
-                  name: "Decline",
-                  onClick: () => {},
-                  actionVariant: ButtonVariant.TextLink,
-                },
-              ]}
-            />
-
             {notifications.map(notification => (
               <Notification {...notification} />
             ))}

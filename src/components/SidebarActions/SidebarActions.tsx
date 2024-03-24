@@ -53,7 +53,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
 
         <IconButton
           onClick={() => {
-            throw new Error("View calls not implemented.")
+            // TODO: Handle here view calls.
           }}
           tooltip="Calls"
           Icon={IoCall}
@@ -70,7 +70,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
 
         <IconButton
           onClick={() => {
-            throw new Error("Open extensions not implemented.")
+            // TODO: Handle here open extensions.
           }}
           tooltip="Extensions"
           Icon={IoExtensionPuzzle}

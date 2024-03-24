@@ -14,6 +14,7 @@ export type AvatarProps = {
   isLarge: boolean
   avatarType: AvatarType
   displayName: string
+  isSquare?: boolean
   avatarUrl?: string
   className?: string
 }
@@ -21,6 +22,7 @@ export type AvatarProps = {
 const AvatarImage: FC<AvatarProps> = ({
   isRounded,
   isLarge,
+  isSquare = true,
   avatarType,
   displayName,
   avatarUrl,
@@ -38,7 +40,7 @@ const AvatarImage: FC<AvatarProps> = ({
       )}>
       <Avatar
         size={isAvatarServer ? 47 : isProfile && isLarge ? 60 : 40}
-        square
+        square={isSquare}
         name={cleanDisplayName(displayName)}
         variant={isAvatarServer ? "bauhaus" : "beam"}
       />

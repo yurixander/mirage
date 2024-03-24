@@ -20,5 +20,5 @@
     "FIXME": ["FIXME", "FIXIT", "FIX"]
   },
   "eslint.enable": true,
-  "eslint.validate": ["html"]
+  "eslint.validate": ["html"],
 }

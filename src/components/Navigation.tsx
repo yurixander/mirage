@@ -37,16 +37,13 @@ const Navigation: FC<NavigationProps> = ({className}) => {
 
   return (
     <>
-      <Modal
-        children={
-          <CreateRoom
-            onClose={() => {
-              setIsCreateRoomModalVisible(false)
-            }}
-          />
-        }
-        isVisible={isCreateRoomModalVisible}
-      />
+      <Modal isVisible={isCreateRoomModalVisible}>
+        <CreateRoom
+          onClose={() => {
+            setIsCreateRoomModalVisible(false)
+          }}
+        />
+      </Modal>
 
       <div
         className={twMerge(
