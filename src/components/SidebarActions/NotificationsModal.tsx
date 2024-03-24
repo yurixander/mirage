@@ -7,14 +7,15 @@ import Typography, {TypographyVariant} from "../Typography"
 import {twMerge} from "tailwind-merge"
 import Modal from "../Modal"
 import IconButton from "../IconButton"
+import useNotifications from "./useNotifications"
 
-type NotificationActions = {
+export type NotificationActions = {
   name: string
   actionVariant?: ButtonVariant
   onClick: () => void
 }
 
-type NotificationProps = {
+export type NotificationProps = {
   event: string
   lastNotificationTime: number
   displayName?: string
@@ -88,6 +89,8 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
   isVisible,
   onClose,
 }) => {
+  const {notifications} = useNotifications()
+
   return (
     <Modal
       isVisible={isVisible}
@@ -136,6 +139,10 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
                 },
               ]}
             />
+
+            {notifications.map(notification => (
+              <Notification {...notification} />
+            ))}
           </div>
         </div>
       }

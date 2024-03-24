@@ -2,6 +2,10 @@ import React, {type FC} from "react"
 import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
 
+export enum ModalRenderLocation {
+  ChatContainer = "chat-container",
+}
+
 export enum ModalPosition {
   Left = "left",
   Right = "right",
@@ -13,9 +17,15 @@ export type ModalProps = {
   children: React.JSX.Element
   isVisible: boolean
   position?: ModalPosition
+  renderLocation?: ModalRenderLocation
 }
 
-const Modal: FC<ModalProps> = ({position, children, isVisible}) => {
+const Modal: FC<ModalProps> = ({
+  position,
+  children,
+  isVisible,
+  renderLocation,
+}) => {
   const popupPositionClass =
     position === ModalPosition.Left
       ? "items-center justify-start"
@@ -37,7 +47,9 @@ const Modal: FC<ModalProps> = ({position, children, isVisible}) => {
         )}>
         {children}
       </div>,
-      document.body
+      renderLocation === undefined
+        ? document.body
+        : document.querySelector(renderLocation) ?? document.body
     )
   )
 }

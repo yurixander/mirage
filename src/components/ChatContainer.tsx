@@ -22,7 +22,7 @@ import {
 } from "react-icons/io5"
 import {IoMdGlobe, IoMdMedical, IoIosHappy, IoMdLink} from "react-icons/io"
 import {LiaSlackHash} from "react-icons/lia"
-import Modal from "./Modal"
+import Modal, {ModalRenderLocation} from "./Modal"
 
 export type ChatContainerProps = {
   className?: string
@@ -125,6 +125,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
       />
 
       <div
+        id={ModalRenderLocation.ChatContainer}
         className={twMerge(
           "flex h-screen flex-col gap-4 border border-stone-200",
           className
