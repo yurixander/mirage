@@ -1,34 +1,38 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import RadioGroup, {
-  RadioGroupDirection,
-  type RadioGroupProps as RadioGroupProperties,
-} from "../components/RadioGroup"
+import RadioGroup, {type RadioGroupProps} from "../components/RadioGroup"
 
 type Story = StoryObj<typeof RadioGroup>
 
 const meta: Meta<typeof RadioGroup> = {
   component: RadioGroup,
 }
-const render = (arguments_: RadioGroupProperties) => <RadioGroup {...arguments_} />
+
+const render = (args: RadioGroupProps) => <RadioGroup {...args} />
 
 export const Default: Story = {
   render,
   args: {
     items: [
       {
-        isChecked: false,
-        label: "Item 1",
+        label: "Item A",
+        name: "radiobutton",
         onClick: () => {},
+        id: "",
+        value: "",
       },
       {
-        isChecked: false,
-        label: "Item 2",
+        label: "Item B",
+        name: "radiobutton",
         onClick: () => {},
+        id: "",
+        value: "",
       },
       {
-        isChecked: false,
-        label: "Item 3",
+        label: "Item C",
+        name: "radiobutton",
         onClick: () => {},
+        id: "",
+        value: "",
       },
     ],
   },
@@ -39,22 +43,28 @@ export const IsRow: Story = {
   args: {
     items: [
       {
-        isChecked: true,
-        label: "Item 1",
+        label: "Item A",
+        name: "radiobutton",
         onClick: () => {},
+        id: "",
+        value: "",
       },
       {
-        isChecked: false,
-        label: "Item 2",
+        label: "Item B",
+        name: "radiobutton",
         onClick: () => {},
+        id: "",
+        value: "",
       },
       {
-        isChecked: false,
-        label: "Item 3",
+        label: "Item C",
+        name: "radiobutton",
         onClick: () => {},
+        id: "",
+        value: "",
       },
     ],
-    isColum: RadioGroupDirection.Row,
+    className: "flex-row",
   },
 }
 
