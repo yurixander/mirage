@@ -56,7 +56,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
   }, [imageUrl, onDeleteMessage, text])
 
   const content = (
-    <div className="flex flex-col pt-[3px]">
+    <div className="flex flex-col pt-1">
       {imageUrl === null ? (
         <div className="flex flex-row items-center gap-1">
           <IoIosAlert className="text-red-500" />
@@ -65,11 +65,14 @@ const ImageMessage: FC<ImageMessageProps> = ({
           </div>
         </div>
       ) : (
-        <img
-          className="h-52 w-44 cursor-pointer rounded-xl object-contain"
-          src={imageUrl}
-          alt={text}
-        />
+        // TODO: Handle image size here. Preferably, make the component accept 'imageDimensions' as props.
+        <div className="max-h-52 max-w-44 overflow-hidden rounded-xl">
+          <img
+            className="cursor-pointer object-contain"
+            src={imageUrl}
+            alt={text}
+          />
+        </div>
       )}
 
       <div className="max-w-messageMaxWidth select-text leading-160">

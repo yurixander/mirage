@@ -123,7 +123,7 @@ const UserProfile: FC<UserProfileProps> = ({
         {userStatusClass !== null && (
           <div
             className={twMerge(
-              "absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 rounded-[50%] border-[2px] border-solid border-neutral-50",
+              "absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 rounded-full border-2 border-neutral-50",
               isLarge ? "size-[17px]" : "size-[13px]",
               userStatusClass
             )}

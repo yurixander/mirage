@@ -87,15 +87,14 @@ const DirectMessageModal: FC = () => {
 
   return (
     // TODO: Should be pixels value, replace by the future design.
-    <div className="flex max-h-[80%] max-w-2xl flex-col gap-2 rounded-lg bg-white p-5 shadow-2xl">
-      <div className="flex w-full">
+    <div className="flex size-full max-h-[80%] max-w-2xl flex-col justify-between gap-2 rounded-lg bg-white p-5 shadow-2xl">
+      <div className="flex w-full justify-between">
         <Typography variant={TypographyVariant.H3}>Direct messages</Typography>
 
         <IconButton
           onClick={clearActiveSidebarModal}
           tooltip="Close"
           Icon={IoCloseCircle}
-          className="ml-auto"
           color="gray"
         />
       </div>
@@ -136,7 +135,7 @@ const DirectMessageModal: FC = () => {
       </div>
 
       {/* User direct chat invitation link zone */}
-      <div className="mt-auto flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         <div className="h-px w-full bg-neutral-400" />
 
         <Typography>INVITATION LINK</Typography>

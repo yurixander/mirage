@@ -29,12 +29,14 @@ const IconButton: FC<IconButtonProps> = ({
     <div
       onClick={isDisabled ? undefined : onClick}
       tabIndex={isDisabled ? undefined : 0}
+      role="button"
+      aria-disabled={isDisabled}
+      aria-hidden="true"
       className={twMerge(
-        "inline-block cursor-pointer self-center rounded-[10px] p-1 focus-visible:rounded-[5px] focus-visible:duration-150",
+        "inline-block rounded-lg p-1 focus-visible:duration-150",
         isDisabledClass,
         className
-      )}
-      aria-hidden="true">
+      )}>
       <NotificationDot isVisible={isDotVisible ?? false}>
         <Icon style={{color}} size={20} className="text-neutral-300" />
       </NotificationDot>

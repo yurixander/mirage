@@ -61,7 +61,7 @@ const Button: FC<ButtonProps> = ({
   return (
     <button
       className={twMerge(
-        "font-strong box-border flex origin-center cursor-pointer items-center justify-center border-solid outline-none active:translate-y-[1px] disabled:translate-y-[1px]",
+        "font-strong box-border flex origin-center items-center justify-center outline-none active:translate-y-[1px] disabled:translate-y-[1px]",
         sizeClass,
         variantClass,
         className

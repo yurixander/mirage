@@ -59,6 +59,7 @@ const AvatarImage: FC<AvatarProps> = ({
               ? "h-userProfileAvatarSizeLarge w-userProfileAvatarSizeLarge"
               : "h-userProfileAvatarSize w-userProfileAvatarSize"
           ),
+        // TODO: Class `rounded-full` should be parent container with `overflow-hidden`.
         isRounded && "rounded-full",
         className
       )}

@@ -13,7 +13,7 @@ const EventMessage: FC<EventMessageProps> = ({timestamp, text}) => {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="flex w-[40px] items-center justify-end">
+      <div className="flex w-10 items-center justify-end">
         <IoMdCreate className="text-neutral-200" />
       </div>
 

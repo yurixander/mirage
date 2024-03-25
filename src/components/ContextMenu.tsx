@@ -62,7 +62,7 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
 
       {isActive && (
         <div
-          className="absolute z-50 h-max w-44 animate-fadeIn rounded-[5px] bg-white shadow-contextMenu"
+          className="absolute z-50 h-max w-44 animate-fadeIn rounded-md bg-white shadow-contextMenu"
           style={{
             left: `${x}px`,
             top: `${y}px`,
@@ -71,10 +71,10 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
             {items.map((item, index) => (
               <div
                 key={index}
-                className="group flex cursor-pointer gap-3 p-3 text-stone-600 hover:rounded-[5px] hover:bg-purple-500 hover:text-white focus-visible:rounded-[5px] focus-visible:text-outlineTab focus-visible:outline-[2px] focus-visible:transition focus-visible:duration-150"
+                className="group flex cursor-pointer justify-between gap-3 p-3 text-stone-600 hover:rounded-md hover:bg-purple-500 hover:text-white focus-visible:rounded-md focus-visible:text-outlineTab focus-visible:outline-[2px] focus-visible:transition focus-visible:duration-150"
                 onClick={item.action}
                 aria-hidden="true">
-                <span className="mr-auto font-semibold">{item.label}</span>
+                <span className="font-semibold">{item.label}</span>
                 <div className="text-stone-600 group-hover:text-white">
                   {item.icon}
                 </div>

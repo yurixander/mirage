@@ -194,7 +194,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               />
             </div>
 
-            <div className="flex w-full rounded-[5px] border border-neutral-300 bg-neutral-50">
+            <div className="flex w-full rounded-md border border-neutral-300 bg-neutral-50">
               <textarea
                 onKeyDown={handleKeyDown}
                 rows={1}
@@ -211,7 +211,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
                   void sendEventTyping()
                 }}
-                className="flex max-h-[100px] w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
+                className="flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
               />
 
               <div className="m-[5px] size-max">
@@ -237,7 +237,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-4 border-t border-solid border-t-stone-200 bg-neutral-50 p-[5px] pr-2">
+        <div className="flex items-center justify-end gap-4 border-t border-t-stone-200 bg-neutral-50 p-1 pr-2">
           <SmartAction
             Icon={IoMdMedical}
             text="Quick menu"
