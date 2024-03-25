@@ -18,6 +18,7 @@ export type NotificationActions = {
 export type NotificationProps = {
   event: string
   lastNotificationTime: number
+  id: string
   displayName?: string
   actions?: NotificationActions[]
 }

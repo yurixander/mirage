@@ -46,7 +46,7 @@ const useRooms = () => {
 
     const storeRooms =
       activeSpaceId === null
-        ? client.getRooms()
+        ? client.getRooms().filter(room => room.getMyMembership() === "join")
         : getRoomsFromSpace(activeSpaceId, client)
 
     const directRoomIds = getDirectRoomsIds(client)

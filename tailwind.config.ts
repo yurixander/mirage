@@ -3,6 +3,7 @@ import {Config} from "tailwindcss"
 module.exports = {
   content: [
     "./src/components/**/*.{ts,tsx}",
+    "./src/views/**/*.{ts,tsx}",
     "./src/containers/*.{ts,tsx}",
     "./src/styles/*.{scss,sass}",
     "./stories/**/*.{ts,tsx}",
