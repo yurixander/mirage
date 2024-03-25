@@ -4,10 +4,11 @@ import {twMerge} from "tailwind-merge"
 
 export type RadioGroupProps = {
   items: RadioButtonProps[]
-  className: string
+  className?: string
 }
 
 const RadioGroup: FC<RadioGroupProps> = ({items, className = "flex-col"}) => {
+  // TODO: Handle here selection radiobutton group by name, value, checked, onChange
   return (
     <div className={twMerge("flex gap-4", className)}>
       {items.map((props, index) => (
