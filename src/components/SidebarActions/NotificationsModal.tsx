@@ -5,9 +5,9 @@ import AvatarImage, {AvatarType} from "../Avatar"
 import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
 import Typography, {TypographyVariant} from "../Typography"
 import {twMerge} from "tailwind-merge"
-import Modal from "../Modal"
 import IconButton from "../IconButton"
 import useNotifications from "./useNotifications"
+import {useSidebarModalActiveStore} from "./useSidebarActions"
 
 export type NotificationActions = {
   name: string
@@ -80,61 +80,46 @@ const Notification: FC<NotificationProps> = ({
   )
 }
 
-export type NotificationsModalProps = {
-  isVisible: boolean
-  className?: string
-  onClose: () => void
-}
-
-const NotificationsModal: FC<NotificationsModalProps> = ({
-  className,
-  isVisible,
-  onClose,
-}) => {
+const NotificationsModal: FC = () => {
+  const {clearActiveSidebarModal} = useSidebarModalActiveStore()
   const {notifications} = useNotifications()
 
   return (
-    <Modal
-      isVisible={isVisible}
-      children={
-        <div
-          className={twMerge(
-            "flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl bg-white p-2",
-            className
-          )}>
-          <div className="flex w-full p-2">
-            <Typography
-              className="mr-auto font-bold text-black "
-              variant={TypographyVariant.H3}>
-              Notifications
-            </Typography>
+    <div
+      className={twMerge(
+        "flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl bg-white p-2"
+      )}>
+      <div className="flex w-full p-2">
+        <Typography
+          className="mr-auto font-bold text-black "
+          variant={TypographyVariant.H3}>
+          Notifications
+        </Typography>
 
-            <Button
-              variant={ButtonVariant.TextLink}
-              size={ButtonSize.Small}
-              color={ButtonColor.Black}
-              onClick={() => {
-                // TODO: Close modal after mark all as read.
-                onClose()
-              }}
-              label="Mark all as read"
-            />
+        <Button
+          variant={ButtonVariant.TextLink}
+          size={ButtonSize.Small}
+          color={ButtonColor.Black}
+          onClick={() => {
+            // TODO: Close modal after mark all as read.
+            clearActiveSidebarModal()
+          }}
+          label="Mark all as read"
+        />
 
-            <IconButton
-              onClick={onClose}
-              tooltip="Close"
-              Icon={IoCloseCircle}
-            />
-          </div>
+        <IconButton
+          onClick={clearActiveSidebarModal}
+          tooltip="Close"
+          Icon={IoCloseCircle}
+        />
+      </div>
 
-          <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
-            {notifications.map(notification => (
-              <Notification {...notification} />
-            ))}
-          </div>
-        </div>
-      }
-    />
+      <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
+        {notifications.map(notification => (
+          <Notification {...notification} />
+        ))}
+      </div>
+    </div>
   )
 }
 

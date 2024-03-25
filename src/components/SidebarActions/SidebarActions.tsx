@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import {useMemo, type FC} from "react"
 import IconButton from "../IconButton"
 import {twMerge} from "tailwind-merge"
 import {
@@ -10,44 +10,56 @@ import {
 } from "react-icons/io5"
 import useSidebarActions, {
   SidebarModals,
+  useSidebarModalActiveStore,
 } from "@/components/SidebarActions/useSidebarActions"
 import DirectMessageModal from "./DirectMessageModal"
 import NotificationsModal from "./NotificationsModal"
+import Modal from "../Modal"
+
+const SidebarModalsHandler: FC = () => {
+  const {sidebarModalActive} = useSidebarModalActiveStore()
+
+  const activeModalElement = useMemo(() => {
+    if (sidebarModalActive === null) {
+      return
+    }
+
+    switch (sidebarModalActive) {
+      case SidebarModals.DirectMessages: {
+        return <DirectMessageModal />
+      }
+      case SidebarModals.Notifications: {
+        return <NotificationsModal />
+      }
+    }
+  }, [sidebarModalActive])
+
+  return (
+    <>
+      {activeModalElement !== undefined && (
+        <Modal isVisible>{activeModalElement}</Modal>
+      )}
+    </>
+  )
+}
 
 export type SidebarActionsProps = {
   className?: string
 }
 
 const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
-  const {
-    onLogout,
-    isDirectMessageVisible,
-    showAndCloseSidebarModal,
-    isNotificationsVisible,
-  } = useSidebarActions()
+  const {onLogout, setActiveSidebarModal} = useSidebarActions()
 
   return (
     <>
-      <DirectMessageModal
-        isVisible={isDirectMessageVisible}
-        onClose={() => {
-          showAndCloseSidebarModal(SidebarModals.DirectMessages, false)
-        }}
-      />
-
-      <NotificationsModal
-        isVisible={isNotificationsVisible}
-        onClose={() => {
-          showAndCloseSidebarModal(SidebarModals.Notifications, false)
-        }}
-      />
+      <SidebarModalsHandler />
 
       <section className={twMerge("inline-flex flex-col gap-4", className)}>
         <IconButton
           tooltip="Direct messages"
           Icon={IoPaperPlane}
           onClick={() => {
-            showAndCloseSidebarModal(SidebarModals.DirectMessages, true)
+            setActiveSidebarModal(SidebarModals.DirectMessages)
           }}
         />
 
@@ -61,7 +73,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
 
         <IconButton
           onClick={() => {
-            showAndCloseSidebarModal(SidebarModals.Notifications, true)
+            setActiveSidebarModal(SidebarModals.Notifications)
           }}
           tooltip="Notifications"
           Icon={IoNotificationsSharp}
