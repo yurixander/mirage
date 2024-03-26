@@ -6,7 +6,7 @@ type Story = StoryObj<typeof CreateRoom>
 const meta: Meta<typeof CreateRoom> = {component: CreateRoom}
 
 export const Default: Story = {
-  render: () => <CreateRoom />,
+  render: () => <CreateRoom onClose={() => {}} />,
 }
 
 export default meta

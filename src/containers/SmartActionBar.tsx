@@ -1,8 +1,8 @@
 import SmartAction from "@/components/SmartAction"
 import useConnection from "@/hooks/matrix/useConnection"
-import {faGlobeAmericas} from "@fortawesome/free-solid-svg-icons"
 import {SyncState} from "matrix-js-sdk"
 import {type FC} from "react"
+import {IoGlobe} from "react-icons/io5"
 
 function getSyncStateText(syncState: SyncState | null) {
   // Haven't started initial connection yet.
@@ -38,7 +38,7 @@ const SmartActionBar: FC = () => {
   return (
     <div className="flex flex-row gap-2">
       <SmartAction
-        icon={faGlobeAmericas}
+        Icon={IoGlobe}
         text={getSyncStateText(syncState)}
         onClick={() => {}}
       />
