@@ -50,7 +50,7 @@ const TextMessage: FC<MessageBaseProps> = ({
         timestamp={timestamp}
         onAuthorClick={onAuthorClick}>
         <div className="max-w-messageMaxWidth select-text break-words leading-160">
-          // TODO: Process line breaks (\n).
+          {/* TODO: Process line breaks (\n). */}
           {text}
         </div>
       </MessageContainer>
