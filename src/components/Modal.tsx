@@ -1,3 +1,4 @@
+import {assert} from "@/utils/util"
 import React, {type FC} from "react"
 import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
@@ -46,6 +47,13 @@ const Modal: FC<ModalProps> = ({
   isVisible,
   renderLocation,
 }) => {
+  const targetElement =
+    renderLocation === undefined
+      ? document.body
+      : document.querySelector(renderLocation)
+
+  assert(targetElement !== null, "The render location does not exist")
+
   return (
     isVisible &&
     createPortal(
@@ -56,9 +64,7 @@ const Modal: FC<ModalProps> = ({
         )}>
         {children}
       </div>,
-      renderLocation === undefined
-        ? document.body
-        : document.querySelector(renderLocation) ?? document.body
+      targetElement
     )
   )
 }
