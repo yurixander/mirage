@@ -52,10 +52,10 @@ const Roster: FC<RosterProps> = ({className}) => {
   return (
     <>
       <div className={twMerge("flex h-full flex-col", className)}>
-        <header className="flex items-center p-4">
-          <IoPeople size={28} className="text-neutral-300" />
+        <header className="m-1 flex items-center p-2.5">
+          <IoPeople size={27} className="text-neutral-300" />
 
-          <div className="ml-[5px] w-full text-neutral-600">People</div>
+          <div className="ml-1 w-full text-neutral-600">People</div>
 
           <IconButton
             tooltip="Sort members"
