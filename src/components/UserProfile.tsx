@@ -2,6 +2,7 @@ import {type FC} from "react"
 import {assert, cleanDisplayName, trim, validateUrl} from "../utils/util"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./Avatar"
+import {type IconType} from "react-icons"
 
 export enum UserActivity {
   Listening = "Listening to",
@@ -20,7 +21,7 @@ export type UserProfileProps = {
   displayNameColor: string
   status?: UserStatus
   activity?: UserActivity
-  icon?: React.JSX.Element
+  icon?: IconType
   platform?: string
   isLarge?: boolean
   className?: string
@@ -38,7 +39,8 @@ const UserProfile: FC<UserProfileProps> = ({
   platform,
   className,
 }) => {
-  const hasIcon = icon !== undefined
+  const Icon = icon
+  const hasIcon = Icon !== undefined
   const hasActivity = activity !== undefined
   const hasPlatform = platform !== undefined
 
@@ -140,7 +142,7 @@ const UserProfile: FC<UserProfileProps> = ({
         </div>
 
         <div className="flex items-center">
-          {icon && <div className="mr-[3px] size-[10px]">{icon}</div>}
+          {Icon && <Icon size={10} className="mr-[3px]" />}
           {activityOrText}
         </div>
       </div>

@@ -43,7 +43,7 @@ const Button: FC<ButtonProps> = ({
   const sizeClass =
     size === ButtonSize.Small
       ? "p-1 text-xs rounded-md px-2"
-      : "rounded-xl border-[2px] p-3"
+      : "rounded-xl border-2 p-3"
 
   const variantClass =
     variant === ButtonVariant.Primary

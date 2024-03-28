@@ -10,16 +10,12 @@ const render = (arguments_: ModalProperties) => <Modal {...arguments_} />
 export const WithTwoDialogs: Story = {
   render,
   args: {
-    dialogs: [
+    children: (
       <div key={0}>
         <Button onClick={() => {}} label="showPopup2" />
-      </div>,
-      <div key={1}>
-        <Button onClick={() => {}} label="showPopup2" />
-
-        <Button onClick={() => {}} label="close" />
-      </div>,
-    ],
+      </div>
+    ),
+    isVisible: true,
   },
 }
 
