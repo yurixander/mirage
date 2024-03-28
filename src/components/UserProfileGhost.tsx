@@ -31,7 +31,7 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
           style={{opacity: 1 - multiplier}}
           className="flex gap-1">
           <div className="relative">
-            <div className="relative size-[40px] overflow-hidden rounded-xl bg-neutral-300" />
+            <div className="relative size-10 overflow-hidden rounded-lg bg-neutral-300" />
 
             <div className="absolute bottom-0 right-0 size-[13px] translate-x-1/4 translate-y-1/4 rounded-full border-2 border-neutral-50 bg-neutral-300" />
           </div>
