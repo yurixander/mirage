@@ -1,5 +1,5 @@
 import {useMemo, type FC} from "react"
-import {getImageUrl, trim} from "../utils/util"
+import {getImageUrl, stringToColor, trim} from "../utils/util"
 import IconButton from "./IconButton"
 import UserProfile, {
   type UserProfileProps as UserProfileProperties,
@@ -22,44 +22,39 @@ const UserBar: FC<UserBarProps> = ({className}) => {
   const MAX_NAME_LENGTH = 18
   const {client, isConnecting} = useConnection()
 
-  const status = useMemo(() => {
-    if (isConnecting) {
-      return UserStatus.Idle
-    } else if (client?.isLoggedIn()) {
-      return UserStatus.Online
-    }
-
-    return UserStatus.Offline
-  }, [client, isConnecting])
-
   const userData = useMemo(() => {
-    const userID = client?.getUserId() ?? null
+    const userId = client?.getUserId() ?? null
 
-    if (userID === null || client === null) {
+    if (userId === null || client === null) {
       return
     }
 
-    const user = client?.getUser(userID)
+    const user = client?.getUser(userId)
     const avatarUrl = user?.avatarUrl
+
+    const status = client.isLoggedIn()
+      ? UserStatus.Online
+      : isConnecting
+        ? UserStatus.Idle
+        : UserStatus.Offline
 
     if (avatarUrl === undefined) {
       return
     }
 
     const imgUrl = getImageUrl(avatarUrl, client)
-    const displayName = user?.displayName ?? userID
+    const displayName = user?.displayName ?? userId
 
     const userBarProperties: UserProfileProperties = {
       avatarUrl: imgUrl,
       displayName: trim(displayName, MAX_NAME_LENGTH),
-      text: trim(getUsernameByUserId(userID), MAX_NAME_LENGTH),
-      // TODO: Calculate color from the user's id.
-      displayNameColor: "",
+      text: trim(getUsernameByUserId(userId), MAX_NAME_LENGTH),
+      displayNameColor: stringToColor(userId),
       status,
     }
 
     return userBarProperties
-  }, [client, status])
+  }, [client, isConnecting])
 
   return (
     <div className={twMerge("flex p-[x1]", className)}>

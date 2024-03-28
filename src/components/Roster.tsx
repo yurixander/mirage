@@ -66,7 +66,7 @@ const Roster: FC<RosterProps> = ({className}) => {
           />
         </header>
 
-        <div className="h-[1px] w-full bg-neutral-300" />
+        <div className="h-px w-full bg-neutral-300" />
 
         <div className="flex h-full grow flex-col gap-[5px] overflow-y-scroll scrollbar-hide">
           <div className="mt-[10px] flex flex-col gap-1">

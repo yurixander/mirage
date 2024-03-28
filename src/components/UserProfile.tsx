@@ -18,11 +18,12 @@ export type UserProfileProps = {
   text: string
   displayName: string
   displayNameColor: string
-  status: UserStatus
+  status?: UserStatus
   activity?: UserActivity
   icon?: React.JSX.Element
   platform?: string
   isLarge?: boolean
+  className?: string
 }
 
 const UserProfile: FC<UserProfileProps> = ({
@@ -35,6 +36,7 @@ const UserProfile: FC<UserProfileProps> = ({
   icon,
   isLarge,
   platform,
+  className,
 }) => {
   const hasIcon = icon !== undefined
   const hasActivity = activity !== undefined
@@ -67,7 +69,7 @@ const UserProfile: FC<UserProfileProps> = ({
   }
 
   const MAX_DISPLAY_NAME_LENGTH = 12
-  let userStatusClass: string
+  let userStatusClass: string | null = null
 
   switch (status) {
     case UserStatus.Online: {
@@ -85,6 +87,9 @@ const UserProfile: FC<UserProfileProps> = ({
 
       break
     }
+    case undefined: {
+      break
+    }
   }
 
   const activityOrText =
@@ -99,30 +104,34 @@ const UserProfile: FC<UserProfileProps> = ({
     )
 
   return (
-    <div className="flex gap-2">
+    <div className={twMerge("flex gap-2", className)}>
       <div className="relative">
         <div
           className={twMerge(
             "relative overflow-hidden rounded-lg bg-red-500",
-            isLarge ? "h-[50px] w-[50px]" : "h-[37px] w-[37px]"
+            isLarge ? "size-[50px]" : "size-[37px]"
           )}>
           <AvatarImage
             isRounded={false}
             isLarge={isLarge ?? false}
             avatarType={AvatarType.Profile}
             displayName={displayName}
+            avatarUrl={avatarUrl}
           />
         </div>
 
-        <div
-          className={twMerge(
-            "absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 rounded-[50%] border-[2px] border-solid border-neutral-50",
-            isLarge ? "h-[17px] w-[17px]" : "h-[13px] w-[13px]",
-            userStatusClass
-          )}
-        />
+        {userStatusClass !== null && (
+          <div
+            className={twMerge(
+              "absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 rounded-full border-2 border-neutral-50",
+              isLarge ? "size-[17px]" : "size-[13px]",
+              userStatusClass
+            )}
+          />
+        )}
       </div>
 
+      {/* TODO: Update this to use `Typography` */}
       <div className="mr-auto inline-flex flex-col gap-[2px]">
         <div
           style={{color: displayNameColor}}

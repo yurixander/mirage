@@ -395,3 +395,21 @@ export function normalizeName(displayName: string): string {
     .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
     .join("")
 }
+
+export function getPartnerUserIdFromRoomDirect(room: Room): string {
+  assert(
+    room.getJoinedMemberCount() === 2,
+    "Direct chat must have exactly two participants."
+  )
+
+  const userId = room
+    .getJoinedMembers()
+    .find(member => member.userId !== room.myUserId)?.userId
+
+  assert(
+    userId !== undefined,
+    "If one participant is the current user, the other must exist."
+  )
+
+  return userId
+}

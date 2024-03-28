@@ -125,7 +125,8 @@ const useConnection = () => {
     }
 
     client.stopClient()
-  }, [client])
+    setSyncState(SyncState.Stopped)
+  }, [client, setSyncState])
 
   return {
     // TODO: Use assertion that the singleton must be defined if is connected.

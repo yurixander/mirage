@@ -23,7 +23,7 @@ const LoginView: FC = () => {
   const [baseUrl, setBaseUrl] = useState("")
   const [accessToken, setAccessToken] = useState("")
 
-  const {connect, disconnect, syncState, lastSyncError, isConnecting} =
+  const {connect, disconnect, syncState, lastSyncError, isConnecting, client} =
     useConnection()
 
   const login = useCallback(async () => {
@@ -57,11 +57,16 @@ const LoginView: FC = () => {
 
   // Automatically login if credentials are cached.
   useEffect(() => {
-    if (credentials === null || isConnecting || syncState === SyncState.Error) {
+    if (
+      credentials === null ||
+      isConnecting ||
+      syncState === SyncState.Error ||
+      client !== null
+    ) {
       return
     }
 
-    void connect({...credentials}).then(async connectedAndSynced => {
+    void connect(credentials).then(async connectedAndSynced => {
       if (!connectedAndSynced) {
         return
       }
@@ -69,11 +74,19 @@ const LoginView: FC = () => {
       await disconnect()
       navigate(ViewPath.App)
     })
-  }, [connect, credentials, disconnect, isConnecting, navigate, syncState])
+  }, [
+    client,
+    connect,
+    credentials,
+    disconnect,
+    isConnecting,
+    navigate,
+    syncState,
+  ])
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <div className="flex size-full max-h-[900px] max-w-[900px] gap-16 p-6">
+      <div className="flex size-full max-h-[900px] max-w-4xl gap-16 p-6">
         <div className="flex grow flex-col justify-center gap-6 p-3">
           <div className="flex w-full justify-center">
             <div className="m-2 flex items-center">
@@ -121,14 +134,14 @@ const LoginView: FC = () => {
 
               <Input
                 className="w-full"
-                placeholder="syt_dGhlY3Jpc3M_PAmQdRhKFWPaexp_0iK0SN"
+                placeholder="syt_dGhlY3Jpc3M_PAmQdRhKFW_0iK0SN"
                 initialValue={accessToken}
                 onValueChange={setAccessToken}
                 Icon={IoKey}
                 actions={[
                   {
                     tooltip: isPasswordVisible ? "Hide token" : "Show token",
-                    Icon: isPasswordVisible ? IoEyeOff : IoEye,
+                    icon: isPasswordVisible ? IoEyeOff : IoEye,
                     onClick: () => {
                       setIsPasswordVisible(!isPasswordVisible)
                     },

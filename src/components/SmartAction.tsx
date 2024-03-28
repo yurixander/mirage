@@ -12,7 +12,7 @@ const SmartAction: FC<SmartActionProps> = ({Icon, text, onClick}) => {
     <div
       className="flex cursor-pointer items-center gap-1 text-xs"
       onClick={onClick}
-      role={"button"}
+      role="button"
       aria-hidden="true">
       <Icon size={10} className="text-neutral-300" />
       <span>{text}</span>

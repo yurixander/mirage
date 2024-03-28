@@ -14,27 +14,37 @@ export type AvatarProps = {
   isLarge: boolean
   avatarType: AvatarType
   displayName: string
+  isSquare?: boolean
   avatarUrl?: string
+  className?: string
 }
 
 const AvatarImage: FC<AvatarProps> = ({
   isRounded,
   isLarge,
-  avatarType = AvatarType.Profile,
+  isSquare = true,
+  avatarType,
   displayName,
   avatarUrl,
+  className,
 }) => {
   const isAvatarMessage = avatarType === AvatarType.Message
   const isAvatarServer = avatarType === AvatarType.Server
   const isProfile = avatarType === AvatarType.Profile
 
   return avatarUrl === undefined ? (
-    <Avatar
-      size={isAvatarServer ? 47 : isProfile && isLarge ? 60 : 40}
-      square
-      name={cleanDisplayName(displayName)}
-      variant={isAvatarServer ? "bauhaus" : "beam"}
-    />
+    <div
+      className={twMerge(
+        "overflow-hidden rounded-lg",
+        isRounded && "rounded-full"
+      )}>
+      <Avatar
+        size={isAvatarServer ? 47 : isProfile && isLarge ? 60 : 40}
+        square={isSquare}
+        name={cleanDisplayName(displayName)}
+        variant={isAvatarServer ? "bauhaus" : "beam"}
+      />
+    </div>
   ) : (
     <img
       src={avatarUrl}
@@ -49,7 +59,9 @@ const AvatarImage: FC<AvatarProps> = ({
               ? "h-userProfileAvatarSizeLarge w-userProfileAvatarSizeLarge"
               : "h-userProfileAvatarSize w-userProfileAvatarSize"
           ),
-        isRounded && "rounded-full"
+        // TODO: Class `rounded-full` should be parent container with `overflow-hidden`.
+        isRounded && "rounded-full",
+        className
       )}
       alt={displayName}
     />

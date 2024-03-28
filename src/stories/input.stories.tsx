@@ -88,12 +88,12 @@ export const WithActions: Story = {
       {
         tooltip: "Paste",
         onClick: () => {},
-        Icon: IoArrowUndo,
+        icon: IoArrowUndo,
       },
       {
         tooltip: "Show pass",
         onClick: () => {},
-        Icon: IoTrash,
+        icon: IoTrash,
       },
     ],
   },

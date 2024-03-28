@@ -1,5 +1,11 @@
-import {useMemo, type FC} from "react"
+import {assert} from "@/utils/util"
+import React, {type FC} from "react"
+import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
+
+export enum ModalRenderLocation {
+  ChatContainer = "chat-container",
+}
 
 export enum ModalPosition {
   Left = "left",
@@ -9,8 +15,10 @@ export enum ModalPosition {
 }
 
 export type ModalProps = {
+  children: React.JSX.Element
+  isVisible: boolean
   position?: ModalPosition
-  dialogs: React.JSX.Element[]
+  renderLocation?: ModalRenderLocation
 }
 
 const getPopupPositionClassName = (position?: ModalPosition): string => {
@@ -33,33 +41,31 @@ const getPopupPositionClassName = (position?: ModalPosition): string => {
   }
 }
 
-const Modal: FC<ModalProps> = ({position, dialogs}) => {
-  const MAX_DIALOGS = 5
+const Modal: FC<ModalProps> = ({
+  position,
+  children,
+  isVisible,
+  renderLocation,
+}) => {
+  const targetElement =
+    renderLocation === undefined
+      ? document.body
+      : document.querySelector(renderLocation)
 
-  const dialogsToShow = useMemo(
-    () => [...dialogs].slice(0, MAX_DIALOGS).reverse(),
-    [dialogs]
-  )
-
-  const calculateOpacity = (index: number) => {
-    return 1 - 0.2 * (dialogsToShow.length - 1 - index)
-  }
+  assert(targetElement !== null, "The render location does not exist")
 
   return (
-    <div
-      className={twMerge(
-        "fixed inset-0 flex content-center items-center bg-modalOverlay *:absolute",
-        getPopupPositionClassName(position)
-      )}>
-      {dialogsToShow.map((dialog, index) => (
-        <div
-          key={dialog.key ?? index}
-          className="animate-enter"
-          style={{opacity: calculateOpacity(index)}}>
-          {dialog}
-        </div>
-      ))}
-    </div>
+    isVisible &&
+    createPortal(
+      <div
+        className={twMerge(
+          "fixed inset-0 flex size-full w-screen flex-col bg-modalOverlay",
+          getPopupPositionClassName(position)
+        )}>
+        {children}
+      </div>,
+      targetElement
+    )
   )
 }
 

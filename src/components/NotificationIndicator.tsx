@@ -23,20 +23,20 @@ const NotificationIndicator: FC<NotificationIndicatorProps> = ({
 
   const isMentionClass =
     mentionAmount === undefined
-      ? "rounded-[50%] bg-neutral-300 h-[10px] w-[10px]"
-      : "h-auto w-auto rounded-md bg-red-500 px-[3px] py-[6px]"
+      ? "rounded-full bg-neutral-300 size-2.5"
+      : "size-auto rounded-md bg-red-500 px-[3px] py-[6px]"
 
   const adjustedAmount =
     mentionAmount === undefined
       ? // If there's too much notifications to display, show "99+"
         // to avoid overflowing the dot to a larger width.
         undefined
-      : (mentionAmount > 99
+      : mentionAmount > 99
         ? "99+"
-        : mentionAmount.toString())
+        : mentionAmount.toString()
 
   return (
-    <div className="flex size-[10px] items-center justify-center">
+    <div className="flex size-2.5 items-center justify-center">
       <div className={twMerge("inline-block text-neutral-50", isMentionClass)}>
         {adjustedAmount !== undefined && adjustedAmount}
       </div>

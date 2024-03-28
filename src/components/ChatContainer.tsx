@@ -10,7 +10,6 @@ import EventMessage from "./EventMessage"
 import {twMerge} from "tailwind-merge"
 import {useFilePicker} from "use-file-picker"
 import {MsgType} from "matrix-js-sdk"
-import {createPortal} from "react-dom"
 import Button, {ButtonVariant} from "./Button"
 import UnreadIndicator from "./UnreadIndicator"
 import {
@@ -23,6 +22,7 @@ import {
 } from "react-icons/io5"
 import {IoMdGlobe, IoMdMedical, IoIosHappy, IoMdLink} from "react-icons/io"
 import {LiaSlackHash} from "react-icons/lia"
+import Modal, {ModalRenderLocation} from "./Modal"
 
 export type ChatContainerProps = {
   className?: string
@@ -94,41 +94,38 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   return (
     <>
-      {filesContent.length > 0 &&
-        createPortal(
-          <div className="fixed inset-0 flex size-full w-screen flex-col items-center justify-center">
-            <div className="flex max-h-[600px] max-w-[600px] flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
-              <img
-                className="h-auto w-full rounded-lg object-cover shadow-md"
-                src={filesContent[0].content}
-                alt={filesContent[0].name}
-              />
-              <div className="flex w-full items-center justify-end gap-1">
-                <Button
-                  variant={ButtonVariant.Secondary}
-                  onClick={() => {
-                    clear()
-                  }}
-                  label={"Cancel"}
-                />
-                <Button
-                  onClick={() => {
-                    void sendImageMessage()
-                  }}
-                  label={"Send Image"}
-                />
-              </div>
-            </div>
-          </div>,
-          document.body
-        )}
+      <Modal isVisible={filesContent.length > 0}>
+        <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
+          {filesContent.length > 0 && (
+            <img
+              className="h-auto w-full rounded-lg object-cover shadow-md"
+              src={filesContent[0].content}
+              alt={filesContent[0].name}
+            />
+          )}
+          <div className="flex w-full items-center justify-end gap-1">
+            <Button
+              variant={ButtonVariant.Secondary}
+              onClick={clear}
+              label="Cancel"
+            />
+            <Button
+              onClick={() => {
+                void sendImageMessage()
+              }}
+              label="Send Image"
+            />
+          </div>
+        </div>
+      </Modal>
 
       <div
+        id={ModalRenderLocation.ChatContainer}
         className={twMerge(
-          "flex h-screen flex-col gap-4 border-[1px] border-solid border-stone-200",
+          "flex h-screen flex-col gap-4 border border-stone-200",
           className
         )}>
-        <header className="flex items-center gap-2 border-b border-solid border-b-stone-200 p-4">
+        <header className="flex items-center gap-2 border-b border-b-stone-200 p-4">
           <div className="flex w-full gap-1">
             <LiaSlackHash className="text-purple-500" />
 
@@ -197,7 +194,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               />
             </div>
 
-            <div className="flex w-full rounded-[5px] border-[1px] border-solid border-neutral-300 bg-neutral-50">
+            <div className="flex w-full rounded-md border border-neutral-300 bg-neutral-50">
               <textarea
                 onKeyDown={handleKeyDown}
                 rows={1}
@@ -214,7 +211,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
                   void sendEventTyping()
                 }}
-                className="flex max-h-[100px] w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
+                className="flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
               />
 
               <div className="m-[5px] size-max">
@@ -240,7 +237,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-4 border-t border-solid border-t-stone-200 bg-neutral-50 p-[5px] pr-2">
+        <div className="flex items-center justify-end gap-4 border-t border-t-stone-200 bg-neutral-50 p-1 pr-2">
           <SmartAction
             Icon={IoMdMedical}
             text="Quick menu"

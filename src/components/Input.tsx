@@ -12,7 +12,7 @@ export type InputConstraint = {
 export type InputAction = {
   tooltip: string
   onClick: () => void
-  Icon: IconType
+  icon: IconType
 }
 
 export type InputProps = {
@@ -117,14 +117,14 @@ const Input: FC<InputProps> = ({
   return (
     <div className={className?.trim()}>
       <div
-        className="flex items-center rounded-[10px] border-[1px] border-solid border-neutral-300"
+        className="flex items-center rounded-lg border border-neutral-300 bg-neutral-50"
         tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
 
-        {Icon && <Icon className="ml-[10px] size-[18px] text-neutral-200" />}
+        {Icon && <Icon className="ml-2 size-5 text-neutral-200" />}
 
         <input
-          className="w-full rounded-[10px]"
+          className="w-full rounded-lg bg-neutral-50"
           type="text"
           disabled={isDisabled}
           placeholder={placeholder}
@@ -133,13 +133,14 @@ const Input: FC<InputProps> = ({
         />
 
         {actions && (
-          <div className="mr-[5px] flex fill-neutral-200">
+          <div className="mr-1 flex fill-neutral-200">
             {actions?.map(action => (
               <IconButton
                 key={action.tooltip}
                 onClick={action.onClick}
                 tooltip={action.tooltip}
-                Icon={action.Icon}
+                Icon={action.icon}
+                isDisabled={violatedConstraints.length > 0}
               />
             ))}
           </div>
