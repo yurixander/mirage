@@ -169,8 +169,8 @@ const ChatInput: FC<ChatInputProps> = ({
   }, [value])
 
   return (
-    <div className="flex gap-3">
-      <div className="mt-[5px] flex h-max gap-3 ">
+    <div className="flex gap-2">
+      <div className="flex h-full items-center gap-3">
         <IconButton
           onClick={() => {
             /* TODO: Handle `emoji` button click. */
@@ -196,7 +196,7 @@ const ChatInput: FC<ChatInputProps> = ({
           className="flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
         />
 
-        <div className="m-[5px] size-max">
+        <div className="m-1 size-max">
           <IconButton
             tooltip="Send"
             Icon={IoPaperPlane}
