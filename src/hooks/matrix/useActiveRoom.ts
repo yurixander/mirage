@@ -19,12 +19,14 @@ import {
   getImageUrl,
   getLastReadEventIdFromRoom,
   isUserRoomAdmin,
+  sendImageMessageFromFile,
   stringToColor,
 } from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {type MessageBaseProps} from "@/components/MessageContainer"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
+import {useFilePicker} from "use-file-picker"
 
 export enum MessageKind {
   Text,
@@ -55,10 +57,16 @@ type AnyMessage =
 const useActiveRoom = () => {
   const {activeRoomId} = useActiveRoomIdStore()
   const {client} = useConnection()
-  const [messages, setMessages] = useState<AnyMessage[]>([])
+  const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const isMountedReference = useIsMountedRef()
   const [roomName, setRoomName] = useState<string>(" ")
+
+  const {openFilePicker, filesContent, clear} = useFilePicker({
+    accept: "image/*",
+    multiple: false,
+    readAs: "DataURL",
+  })
 
   useEffect(() => {
     if (
@@ -85,7 +93,7 @@ const useActiveRoom = () => {
 
     void handleRoomEvents(client, room).then(newMessages => {
       if (isMountedReference.current) {
-        setMessages(newMessages)
+        setMessagesProp(newMessages)
       }
     })
   }, [client, activeRoomId, isMountedReference])
@@ -103,7 +111,7 @@ const useActiveRoom = () => {
           return
         }
 
-        setMessages(messages => [...messages, messageOrEvent])
+        setMessagesProp(messages => [...messages, messageOrEvent])
         void client.sendReadReceipt(event)
       }
     )
@@ -125,7 +133,7 @@ const useActiveRoom = () => {
         return
       }
 
-      setMessages(messagesOrEvents)
+      setMessagesProp(messagesOrEvents)
       void client.sendReadReceipt(event)
     })
   })
@@ -154,12 +162,18 @@ const useActiveRoom = () => {
     }
   })
 
+  const sendImageMessage = useCallback(async () => {
+    await sendImageMessageFromFile(filesContent[0], client, activeRoomId)
+    clear()
+  }, [activeRoomId, clear, client, filesContent])
+
   const sendTextMessage = useCallback(
     async (type: MsgType, body: string) => {
       if (activeRoomId === null || client === null) {
         return
       }
 
+      // TODO: Show toast when an error has occurred.
       await client.sendMessage(activeRoomId, {body, msgtype: type})
     },
     [activeRoomId, client]
@@ -175,13 +189,17 @@ const useActiveRoom = () => {
 
   return {
     activeRoomId,
-    messages,
+    messagesProp,
     sendTextMessage,
+    sendImageMessage,
+    openFilePicker,
     typingUsers,
     sendEventTyping,
     client,
     deleteMessage,
     roomName,
+    filesContent,
+    clear,
   }
 }
 

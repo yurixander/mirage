@@ -1,4 +1,4 @@
-import ChatContainer from "@/components/ChatContainer"
+import ChatContainer from "@/containers/ChatContainer/ChatContainer"
 import Navigation from "@/components/Navigation"
 import SidebarActions from "@/components/SidebarActions/SidebarActions"
 import Roster from "@/components/Roster"
@@ -39,8 +39,8 @@ const AppView: FC = () => {
         <SidebarActions className="p-4" />
       </div>
 
-      <div className="flex flex-col border border-solid border-stone-200">
-        <div className="border-b-[1px] border-solid border-b-stone-200">
+      <div className="flex flex-col border border-stone-200">
+        <div className="border-b border-b-stone-200">
           <SearchBar
             className="m-2"
             onQueryChange={function (query: string): SearchResult[] {

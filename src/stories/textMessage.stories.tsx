@@ -1,10 +1,11 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import TextMessage, {type TextMessageProps as TextMessageProperties} from "../components/TextMessage"
+import TextMessage from "../components/TextMessage"
+import {type MessageBaseProps} from "../components/MessageContainer"
 
 type Story = StoryObj<typeof TextMessage>
 
 const meta: Meta<typeof TextMessage> = {component: TextMessage}
-const render = (arguments_: TextMessageProperties) => (
+const render = (arguments_: MessageBaseProps) => (
   <TextMessage {...arguments_} onDeleteMessage={() => {}} />
 )
 

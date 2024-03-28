@@ -1,8 +1,6 @@
 import {useMemo, type FC} from "react"
 import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
-import MessageContainer, {
-  type MessageBaseProps,
-} from "./MessageContainer"
+import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 import {IoMdTrash} from "react-icons/io"
 
@@ -52,6 +50,7 @@ const TextMessage: FC<MessageBaseProps> = ({
         timestamp={timestamp}
         onAuthorClick={onAuthorClick}>
         <div className="max-w-messageMaxWidth select-text break-words leading-160">
+          {/* TODO: Process line breaks (\n). */}
           {text}
         </div>
       </MessageContainer>

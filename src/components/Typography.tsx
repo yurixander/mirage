@@ -13,10 +13,13 @@ export enum TypographyVariant {
 export type TypographyProps = {
   className?: string
   variant?: TypographyVariant
+  as?: keyof React.JSX.IntrinsicElements
   children?: React.ReactNode
 }
 
-function getTagFromVariant(variant: TypographyVariant): React.JSX.ElementType {
+function getTagFromVariant(
+  variant: TypographyVariant
+): keyof React.JSX.IntrinsicElements {
   switch (variant) {
     case TypographyVariant.H1: {
       return "h1"
@@ -38,10 +41,11 @@ function getTagFromVariant(variant: TypographyVariant): React.JSX.ElementType {
 
 const Typography: FC<TypographyProps> = ({
   variant = TypographyVariant.Span,
+  as,
   className,
   children,
 }) => {
-  const Component = getTagFromVariant(variant)
+  const Component = as ?? getTagFromVariant(variant)
 
   const variantClass =
     variant === TypographyVariant.H1
