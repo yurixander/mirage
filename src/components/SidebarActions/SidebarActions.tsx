@@ -37,9 +37,10 @@ const SidebarModalsHandler: FC = () => {
   return (
     <>
       {activeModalElement !== undefined && (
-        <Modal isVisible={sidebarModalActive !== null}>
-          {activeModalElement}
-        </Modal>
+        <Modal
+          isVisible={sidebarModalActive !== null}
+          children={activeModalElement}
+        />
       )}
     </>
   )

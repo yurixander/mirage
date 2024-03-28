@@ -1,44 +1,34 @@
 import {type FC} from "react"
-import {twMerge} from "tailwind-merge"
 
 export type RadioButtonProps = {
-  isChecked: boolean
-  label?: string
-  isDisabled?: boolean
+  label: string
+  name: string
+  id: string
+  value: string
   onClick: () => void
 }
 
 const RadioButton: FC<RadioButtonProps> = ({
-  isChecked,
-  isDisabled,
   label,
+  name,
+  id,
+  value,
   onClick,
 }) => {
-  const isDisabledClassName = isDisabled
-    ? "cursor-not-allowed active:animate-none active:transform-none opacity-50"
-    : "cursor-pointer active:scale-90 active:animate-hold"
-
   return (
-    <>
-      <div
-        className={twMerge(
-          "flex w-max items-center",
-          isDisabled ? "cursor-not-allowed opacity-50" : ""
-        )}>
-        <div
-          className={twMerge(
-            "box-border flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border-[2px] border-purple-500",
-            isDisabledClassName
-          )}
-          onClick={isDisabled ? undefined : onClick}
-          tabIndex={isDisabled ? undefined : 0}
-          aria-hidden="true">
-          {isChecked && <div className="size-2 rounded-full bg-purple-500" />}
-        </div>
-
-        <div className="ml-[3px]">{label}</div>
-      </div>
-    </>
+    <label className="flex cursor-pointer">
+      <input
+        type="radio"
+        name={name}
+        id={id}
+        value={value}
+        onClick={onClick}
+        className="size-4 cursor-pointer accent-purple-500"
+      />
+      
+      <span className="px-1.5">{label}</span>
+      
+    </label>
   )
 }
 
