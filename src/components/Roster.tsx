@@ -52,10 +52,10 @@ const Roster: FC<RosterProps> = ({className}) => {
   return (
     <>
       <div className={twMerge("flex h-full flex-col", className)}>
-        <header className="flex items-center p-4">
-          <IoPeople size={28} className="text-neutral-300" />
+        <header className="m-1 flex items-center p-2.5">
+          <IoPeople size={27} className="text-neutral-300" />
 
-          <div className="ml-[5px] w-full text-neutral-600">People</div>
+          <div className="ml-1 w-full text-neutral-600">People</div>
 
           <IconButton
             tooltip="Sort members"
@@ -68,10 +68,10 @@ const Roster: FC<RosterProps> = ({className}) => {
 
         <div className="h-px w-full bg-neutral-300" />
 
-        <div className="flex h-full grow flex-col gap-[5px] overflow-y-scroll scrollbar-hide">
+        <div className="flex h-full grow flex-col gap-1 overflow-y-scroll scrollbar-hide">
           <div className="mt-[10px] flex flex-col gap-1">
             <Label
-              className="p-[5px]"
+              className="p-1"
               text={"Admin — " + adminMembersElement.length}
             />
 
@@ -81,7 +81,7 @@ const Roster: FC<RosterProps> = ({className}) => {
           {moderatorMembersElement.length > 0 && (
             <div className="flex flex-col gap-1">
               <Label
-                className="p-[5px]"
+                className="p-1"
                 text={"Moderator — " + moderatorMembersElement.length}
               />
 
@@ -91,7 +91,7 @@ const Roster: FC<RosterProps> = ({className}) => {
 
           <div className="flex flex-col gap-1">
             <Label
-              className="p-[5px]"
+              className="p-1"
               text={"Member — " + joinedMembersElement.length}
             />
 

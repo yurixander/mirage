@@ -21,7 +21,7 @@ export const WithActivity: Story = {
       text: " ",
       status: UserStatus.Idle,
       activity: UserActivity.Listening,
-      icon: <IoHeadsetSharp />,
+      icon: IoHeadsetSharp,
       platform: "Spotify",
       isLarge: false,
     },
