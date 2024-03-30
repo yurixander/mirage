@@ -255,10 +255,6 @@ const handleEvents = async (
     return null
   }
 
-  const checkErrorList: string[] = []
-
-  checkErrorList.push("Other error")
-
   const user = client.getUser(sender)?.displayName
 
   if (user === undefined) {
