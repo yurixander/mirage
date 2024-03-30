@@ -31,5 +31,8 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run ESLint
-        run: eslint --fix . --ext .ts,.tsx
+        run: npx eslint .
+          --config .eslintrc.json
+          --ext .js,.jsx,.ts,.tsx
+          --output-file eslint-results.sarif
         continue-on-error: true
