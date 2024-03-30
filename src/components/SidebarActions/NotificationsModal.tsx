@@ -16,16 +16,17 @@ export type NotificationActions = {
 }
 
 export type NotificationProps = {
-  event: string
+  body: string
   lastNotificationTime: number
   id: string
   displayName?: string
+  avatarUrl?: string
   actions?: NotificationActions[]
 }
 
 const Notification: FC<NotificationProps> = ({
   displayName,
-  event,
+  body,
   actions,
   lastNotificationTime,
 }) => {
@@ -50,7 +51,7 @@ const Notification: FC<NotificationProps> = ({
       <div className="flex flex-col gap-1">
         <div className="flex flex-row">
           <Typography>
-            {userComponent} {event}
+            {userComponent} {body}
           </Typography>
         </div>
 

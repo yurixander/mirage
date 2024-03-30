@@ -1,22 +1,26 @@
 import {useState} from "react"
 
-type LocalNotificationProps = {
+export type LocalNotificationProps = {
+  body: string
   isRead: boolean
-  eventId: string
+  notificationId: string
+  notificationTime: number
+  senderName?: string
+  avatarSenderName?: string
 }
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "notifications"
 
 const useCachedNotifications = () => {
-  const [notifications, setNotifications] = useState<LocalNotificationProps[]>(
-    () => {
-      const savedNotifications = localStorage.getItem(
-        NOTIFICATIONS_LOCAL_STORAGE_KEY
-      )
+  const [cachedNotifications, setNotifications] = useState<
+    LocalNotificationProps[]
+  >(() => {
+    const savedNotifications = localStorage.getItem(
+      NOTIFICATIONS_LOCAL_STORAGE_KEY
+    )
 
-      return savedNotifications ? JSON.parse(savedNotifications) : []
-    }
-  )
+    return savedNotifications ? JSON.parse(savedNotifications) : []
+  })
 
   const saveNotification = (notification: LocalNotificationProps) => {
     setNotifications(prevNotifications => {
@@ -31,7 +35,18 @@ const useCachedNotifications = () => {
     })
   }
 
-  return {notifications, saveNotification}
+  const clearNotifications = () => {
+    const emptyNotifications: LocalNotificationProps[] = []
+
+    setNotifications(emptyNotifications)
+
+    localStorage.setItem(
+      NOTIFICATIONS_LOCAL_STORAGE_KEY,
+      JSON.stringify(emptyNotifications)
+    )
+  }
+
+  return {cachedNotifications, saveNotification, clearNotifications}
 }
 
 export default useCachedNotifications

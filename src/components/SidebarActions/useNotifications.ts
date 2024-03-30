@@ -1,12 +1,23 @@
 import {useCallback, useEffect, useState} from "react"
 import {type NotificationProps} from "./NotificationsModal"
 import useEventListener from "@/hooks/matrix/useEventListener"
-import {type MatrixClient, type Room, RoomStateEvent} from "matrix-js-sdk"
+import {
+  type MatrixClient,
+  type MatrixEvent,
+  type Room,
+  type RoomMember,
+  RoomStateEvent,
+} from "matrix-js-sdk"
 import {ButtonVariant} from "../Button"
 import useConnection from "@/hooks/matrix/useConnection"
+import useCachedNotifications, {
+  type LocalNotificationProps,
+} from "./useCachedNotifications"
+import {getImageUrl} from "@/utils/util"
 
 const useNotifications = () => {
   const {client} = useConnection()
+  const {cachedNotifications, saveNotification} = useCachedNotifications()
   const [notifications, setNotifications] = useState<NotificationProps[]>([])
 
   const removeNotification = useCallback((notificationId: string) => {
@@ -22,6 +33,19 @@ const useNotifications = () => {
       return
     }
 
+    const notificationsTwo: NotificationProps[] = []
+
+    for (const notification of cachedNotifications) {
+      notificationsTwo.push({
+        body: notification.body,
+        lastNotificationTime: notification.notificationTime,
+        id: notification.notificationId,
+        displayName: notification.senderName,
+      })
+    }
+
+    setNotifications(notificationsTwo)
+
     // Handle history user notifications.
     const notifications: NotificationProps[] = []
 
@@ -36,58 +60,84 @@ const useNotifications = () => {
     }
 
     setNotifications(notifications)
-  }, [client, removeNotification])
+  }, [cachedNotifications, client, removeNotification])
 
   useEventListener(RoomStateEvent.Members, (event, state, member) => {
-    if (client === null) {
+    if (client === null || client.getUserId() !== member.userId) {
       return
     }
 
-    const room = client.getRoom(state.roomId)
+    const notification = membersEventNotificationTransformer(
+      event,
+      client,
+      member
+    )
 
-    if (room === null || member.membership === undefined) {
+    if (notification === null) {
       return
     }
 
-    const onRemoveNotification = () => {
-      // Check if the sender of the event is the same as the user who received the invitation.
-      if (event.getSender() === member.userId) {
-        // If so, remove the invitation notification for this room
-        removeNotification(room.roomId)
-      }
-    }
-
-    switch (member.membership) {
-      case "invite": {
-        setNotifications([
-          inviteRoomNotificationTransformer(room, Date.now(), client),
-        ])
-
-        break
-      }
-      case "leave": {
-        // When user leaves the room.
-        onRemoveNotification()
-
-        // TODO: Handle here when the user has been expelled.
-
-        break
-      }
-      case "join": {
-        // When user joined the room.
-        onRemoveNotification()
-
-        break
-      }
-      case "ban": {
-        // TODO: Handle here when the user has been banned.
-
-        break
-      }
-    }
+    saveNotification(notification)
   })
 
   return {notifications}
+}
+
+const membersEventNotificationTransformer = (
+  event: MatrixEvent,
+  client: MatrixClient,
+  member: RoomMember
+): LocalNotificationProps | null => {
+  const eventId = event.getId()
+
+  if (eventId === undefined || member.membership === undefined) {
+    console.error("Event id not found", event)
+
+    return null
+  }
+
+  switch (member.membership) {
+    case "invite": {
+      break
+    }
+    case "leave": {
+      if (event.getSender() !== client.getUserId()) {
+        const eventId = event.getId()
+
+        if (eventId === undefined) {
+          console.error("eventID not found", event)
+
+          return null
+        }
+
+        return {
+          body: "expelled you from the room",
+          isRead: false,
+          notificationId: eventId,
+          notificationTime: event.localTimestamp,
+          senderName: event.sender?.name,
+          avatarSenderName: getImageUrl(
+            event.sender?.getMxcAvatarUrl(),
+            client
+          ),
+        }
+      }
+
+      // TODO: Handle here when the user has been expelled.
+
+      break
+    }
+    case "join": {
+      break
+    }
+    case "ban": {
+      // TODO: Handle here when the user has been banned.
+
+      break
+    }
+  }
+
+  return null
 }
 
 const inviteRoomNotificationTransformer = (
@@ -96,7 +146,7 @@ const inviteRoomNotificationTransformer = (
   client: MatrixClient
 ): NotificationProps => {
   return {
-    event: "has invited for this room",
+    body: "has invited for this room",
     lastNotificationTime,
     displayName: room.normalizedName,
     // TODO: Prefer use other id type that be unique.
