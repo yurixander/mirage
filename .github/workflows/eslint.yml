@@ -29,6 +29,9 @@ jobs:
       with:
         node-version: '16'
 
+    - name: Install dependencies
+      run: npm install
+
     - name: Run ESLint
       run: npx eslint --fix . --ext .ts,.tsx
       
