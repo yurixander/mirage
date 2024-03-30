@@ -30,6 +30,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install typescript-eslint
+        run: npm install --save-dev eslint-config-standard-with-typescript
+
       - name: Run ESLint
         run: npx eslint .
           --config .eslintrc.json
