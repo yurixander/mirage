@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useCallback, useState} from "react"
 
 export type LocalNotificationProps = {
   body: string
@@ -22,18 +22,30 @@ const useCachedNotifications = () => {
     return savedNotifications ? JSON.parse(savedNotifications) : []
   })
 
-  const saveNotification = (notification: LocalNotificationProps) => {
-    setNotifications(prevNotifications => {
-      const updatedNotifications = [...prevNotifications, notification]
+  const saveNotification = useCallback(
+    (notification: LocalNotificationProps) => {
+      setNotifications(prevNotifications => {
+        if (
+          prevNotifications.some(
+            prevNotification =>
+              prevNotification.notificationId === notification.notificationId
+          )
+        ) {
+          return prevNotifications
+        }
 
-      localStorage.setItem(
-        NOTIFICATIONS_LOCAL_STORAGE_KEY,
-        JSON.stringify(updatedNotifications)
-      )
+        const updatedNotifications = [...prevNotifications, notification]
 
-      return updatedNotifications
-    })
-  }
+        localStorage.setItem(
+          NOTIFICATIONS_LOCAL_STORAGE_KEY,
+          JSON.stringify(updatedNotifications)
+        )
+
+        return updatedNotifications
+      })
+    },
+    []
+  )
 
   const clearNotifications = () => {
     const emptyNotifications: LocalNotificationProps[] = []

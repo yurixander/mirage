@@ -29,6 +29,7 @@ const Notification: FC<NotificationProps> = ({
   body,
   actions,
   lastNotificationTime,
+  avatarUrl,
 }) => {
   const userComponent =
     displayName === undefined ? undefined : (
@@ -44,6 +45,7 @@ const Notification: FC<NotificationProps> = ({
             isLarge={false}
             avatarType={AvatarType.Profile}
             displayName={displayName}
+            avatarUrl={avatarUrl}
           />
         </div>
       )}
@@ -83,7 +85,7 @@ const Notification: FC<NotificationProps> = ({
 
 const NotificationsModal: FC = () => {
   const {clearActiveSidebarModal} = useSidebarModalActiveStore()
-  const {notifications} = useNotifications()
+  const {notifications, clearNotifications} = useNotifications()
 
   return (
     <div
@@ -104,6 +106,9 @@ const NotificationsModal: FC = () => {
           onClick={() => {
             // TODO: Close modal after mark all as read.
             clearActiveSidebarModal()
+
+            // TODO: Temporarily, remove in the future.
+            clearNotifications()
           }}
           label="Mark all as read"
         />

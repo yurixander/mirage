@@ -4,20 +4,21 @@ import useEventListener from "@/hooks/matrix/useEventListener"
 import {
   type MatrixClient,
   type MatrixEvent,
-  type Room,
   type RoomMember,
   RoomStateEvent,
 } from "matrix-js-sdk"
-import {ButtonVariant} from "../Button"
 import useConnection from "@/hooks/matrix/useConnection"
 import useCachedNotifications, {
   type LocalNotificationProps,
 } from "./useCachedNotifications"
-import {getImageUrl} from "@/utils/util"
+import {assert, getImageUrl} from "@/utils/util"
+import {ButtonVariant} from "../Button"
 
 const useNotifications = () => {
   const {client} = useConnection()
-  const {cachedNotifications, saveNotification} = useCachedNotifications()
+  const {cachedNotifications, saveNotification, clearNotifications} =
+    useCachedNotifications()
+
   const [notifications, setNotifications] = useState<NotificationProps[]>([])
 
   const removeNotification = useCallback((notificationId: string) => {
@@ -33,33 +34,57 @@ const useNotifications = () => {
       return
     }
 
-    const notificationsTwo: NotificationProps[] = []
-
-    for (const notification of cachedNotifications) {
-      notificationsTwo.push({
-        body: notification.body,
-        lastNotificationTime: notification.notificationTime,
-        id: notification.notificationId,
-        displayName: notification.senderName,
-      })
-    }
-
-    setNotifications(notificationsTwo)
-
     // Handle history user notifications.
-    const notifications: NotificationProps[] = []
+    const newNotifications: NotificationProps[] = []
 
     const invitedRooms = client
       .getRooms()
       .filter(room => room.getMyMembership() === "invite")
 
     for (const invitedRoom of invitedRooms) {
-      notifications.push(
-        inviteRoomNotificationTransformer(invitedRoom, Date.now(), client)
-      )
+      // TODO: Handle here invited rooms.
+
+      newNotifications.push({
+        body: "invited you to join this room",
+        id: invitedRoom.roomId,
+        lastNotificationTime: Date.now(),
+        avatarUrl: getImageUrl(invitedRoom.getMxcAvatarUrl(), client),
+        displayName: invitedRoom.name,
+        actions: [
+          {
+            name: "Accept",
+            onClick: () => {
+              void client.joinRoom(invitedRoom.roomId).then(room => {
+                if (room.getMyMembership() === "join") {
+                  removeNotification(invitedRoom.roomId)
+                }
+              })
+            },
+          },
+          {
+            name: "Decline",
+            onClick: () => {
+              void client.leave(invitedRoom.roomId).then(() => {
+                removeNotification(invitedRoom.roomId)
+              })
+            },
+            actionVariant: ButtonVariant.TextLink,
+          },
+        ],
+      })
     }
 
-    setNotifications(notifications)
+    for (const notification of cachedNotifications) {
+      newNotifications.push({
+        body: notification.body,
+        lastNotificationTime: notification.notificationTime,
+        id: notification.notificationId,
+        displayName: notification.senderName,
+        avatarUrl: notification.avatarSenderName,
+      })
+    }
+
+    setNotifications(newNotifications)
   }, [cachedNotifications, client, removeNotification])
 
   useEventListener(RoomStateEvent.Members, (event, state, member) => {
@@ -80,7 +105,7 @@ const useNotifications = () => {
     saveNotification(notification)
   })
 
-  return {notifications}
+  return {notifications, clearNotifications}
 }
 
 const membersEventNotificationTransformer = (
@@ -90,42 +115,37 @@ const membersEventNotificationTransformer = (
 ): LocalNotificationProps | null => {
   const eventId = event.getId()
 
-  if (eventId === undefined || member.membership === undefined) {
-    console.error("Event id not found", event)
-
-    return null
-  }
+  assert(eventId !== undefined, "eventId should not be undefined")
 
   switch (member.membership) {
     case "invite": {
       break
     }
     case "leave": {
-      if (event.getSender() !== client.getUserId()) {
-        const eventId = event.getId()
-
-        if (eventId === undefined) {
-          console.error("eventID not found", event)
-
-          return null
-        }
+      if (
+        event.getSender() === client.getUserId() &&
+        event.getPrevContent().membership === "invite"
+      ) {
+        const room = client.getRoom(event.getRoomId())
 
         return {
-          body: "expelled you from the room",
+          body: "you rejected the invitation",
           isRead: false,
           notificationId: eventId,
           notificationTime: event.localTimestamp,
-          senderName: event.sender?.name,
-          avatarSenderName: getImageUrl(
-            event.sender?.getMxcAvatarUrl(),
-            client
-          ),
+          senderName: room?.name,
+          avatarSenderName: getImageUrl(room?.getMxcAvatarUrl(), client),
         }
       }
 
-      // TODO: Handle here when the user has been expelled.
-
-      break
+      return {
+        body: "expelled you from the room",
+        isRead: false,
+        notificationId: eventId,
+        notificationTime: event.localTimestamp,
+        senderName: event.sender?.name,
+        avatarSenderName: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
+      }
     }
     case "join": {
       break
@@ -135,38 +155,12 @@ const membersEventNotificationTransformer = (
 
       break
     }
+    case undefined: {
+      break
+    }
   }
 
   return null
-}
-
-const inviteRoomNotificationTransformer = (
-  room: Room,
-  lastNotificationTime: number,
-  client: MatrixClient
-): NotificationProps => {
-  return {
-    body: "has invited for this room",
-    lastNotificationTime,
-    displayName: room.normalizedName,
-    // TODO: Prefer use other id type that be unique.
-    id: room.roomId,
-    actions: [
-      {
-        name: "Accept",
-        onClick: () => {
-          void client.joinRoom(room.roomId)
-        },
-      },
-      {
-        name: "Decline",
-        onClick: () => {
-          void client.leave(room.roomId)
-        },
-        actionVariant: ButtonVariant.TextLink,
-      },
-    ],
-  }
 }
 
 export default useNotifications
