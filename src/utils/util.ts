@@ -373,6 +373,10 @@ export function getLastReadEventIdFromRoom(
     return null
   }
 
+  const errors: string[] = []
+
+  errors.push("New error")
+
   const eventReadUpTo = room.getEventReadUpTo(userId)
 
   if (eventReadUpTo === null) {
