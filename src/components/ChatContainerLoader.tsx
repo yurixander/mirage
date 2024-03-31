@@ -93,7 +93,7 @@ const SkeletonCircle: FC<SkeletonProps> = ({className = "size-10"}) => {
     <div className="relative">
       <div
         className={twMerge(
-          "relative  overflow-hidden rounded-full bg-neutral-300",
+          "relative overflow-hidden rounded-full bg-neutral-300",
           className
         )}>
         <LoadingEffect />
