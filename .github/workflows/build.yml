@@ -5,17 +5,19 @@ on: [pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Cache Yarn modules
+        uses: actions/cache@v2
         with:
-          node-version: '16'
+          path: ~/.yarn-cache
+          key: ${{ runner.os }}-build-${{ hashFiles('**/yarn.lock') }}-new
 
       - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+        run: yarn install
 
       - name: Build
-        run: npm run build
+        run: yarn build
