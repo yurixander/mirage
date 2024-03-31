@@ -23,8 +23,8 @@ const Notification: FC<NotificationProps> = ({
   body,
   notificationTime,
   actions,
-  avatarSenderName,
   senderName,
+  avatarSenderUrl,
 }) => {
   const userComponent =
     senderName === undefined ? undefined : (
@@ -40,7 +40,7 @@ const Notification: FC<NotificationProps> = ({
             isLarge={false}
             avatarType={AvatarType.Message}
             displayName={senderName}
-            avatarUrl={avatarSenderName}
+            avatarUrl={avatarSenderUrl}
           />
         </div>
       )}
@@ -80,12 +80,12 @@ const Notification: FC<NotificationProps> = ({
 
 export type NotificationsModalProps = {
   notifications: NotificationProps[]
-  onAllMaskAsRead: () => void
+  onMarkAllAsRead: () => void
 }
 
 const NotificationsModal: FC<NotificationsModalProps> = ({
   notifications,
-  onAllMaskAsRead,
+  onMarkAllAsRead,
 }) => {
   const {clearActiveSidebarModal} = useSidebarModalActiveStore()
 
@@ -110,7 +110,7 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
             clearActiveSidebarModal()
 
             // TODO: Temporarily, remove in the future.
-            onAllMaskAsRead()
+            onMarkAllAsRead()
           }}
           label="Mark all as read"
         />
