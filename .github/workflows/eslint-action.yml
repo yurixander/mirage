@@ -9,12 +9,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Cache Yarn modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.yarn-cache
-        key: ${{ runner.os }}-build-${{ hashFiles('**/yarn.lock') }}-new
-
     - name: Install Dependencies
       run: yarn install
 
