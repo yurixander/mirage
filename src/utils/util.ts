@@ -230,6 +230,10 @@ export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
     return false
   }
 
+  const errorList: string[] = []
+
+  errorList.push("New error")
+
   const powerLevels = roomState
     .getStateEvents("m.room.power_levels", "")
     ?.getContent().users as string[]
