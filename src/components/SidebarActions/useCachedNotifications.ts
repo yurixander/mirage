@@ -1,19 +1,19 @@
 import {useCallback, useState} from "react"
 
-export type LocalNotificationProps = {
+export type LocalNotificationData = {
   body: string
   isRead: boolean
   notificationId: string
   notificationTime: number
   senderName?: string
-  avatarSenderName?: string
+  avatarSenderUrl?: string
 }
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "notifications"
 
 const useCachedNotifications = () => {
   const [cachedNotifications, setNotifications] = useState<
-    LocalNotificationProps[]
+    LocalNotificationData[]
   >(() => {
     const savedNotifications = localStorage.getItem(
       NOTIFICATIONS_LOCAL_STORAGE_KEY
@@ -23,7 +23,7 @@ const useCachedNotifications = () => {
   })
 
   const saveNotification = useCallback(
-    (notification: LocalNotificationProps) => {
+    (notification: LocalNotificationData) => {
       setNotifications(prevNotifications => {
         if (
           prevNotifications.some(
@@ -34,7 +34,7 @@ const useCachedNotifications = () => {
           return prevNotifications
         }
 
-        const updatedNotifications = [...prevNotifications, notification]
+        const updatedNotifications = [notification, ...prevNotifications]
 
         localStorage.setItem(
           NOTIFICATIONS_LOCAL_STORAGE_KEY,
@@ -48,7 +48,7 @@ const useCachedNotifications = () => {
   )
 
   const clearNotifications = () => {
-    const emptyNotifications: LocalNotificationProps[] = []
+    const emptyNotifications: LocalNotificationData[] = []
 
     setNotifications(emptyNotifications)
 

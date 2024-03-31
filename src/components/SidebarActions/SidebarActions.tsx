@@ -15,9 +15,11 @@ import useSidebarActions, {
 import DirectMessageModal from "./DirectMessageModal"
 import NotificationsModal from "./NotificationsModal"
 import Modal from "../Modal"
+import useNotifications from "./useNotifications"
 
 const SidebarModalsHandler: FC = () => {
   const {sidebarModalActive} = useSidebarModalActiveStore()
+  const {notifications, clearNotifications} = useNotifications()
 
   const activeModalElement = useMemo(() => {
     if (sidebarModalActive === null) {
@@ -29,10 +31,15 @@ const SidebarModalsHandler: FC = () => {
         return <DirectMessageModal />
       }
       case SidebarModals.Notifications: {
-        return <NotificationsModal />
+        return (
+          <NotificationsModal
+            notifications={notifications}
+            onAllMaskAsRead={clearNotifications}
+          />
+        )
       }
     }
-  }, [sidebarModalActive])
+  }, [clearNotifications, notifications, sidebarModalActive])
 
   return (
     <>

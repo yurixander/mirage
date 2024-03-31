@@ -6,8 +6,8 @@ import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
 import Typography, {TypographyVariant} from "../Typography"
 import {twMerge} from "tailwind-merge"
 import IconButton from "../IconButton"
-import useNotifications from "./useNotifications"
 import {useSidebarModalActiveStore} from "./useSidebarActions"
+import {type LocalNotificationData} from "./useCachedNotifications"
 
 export type NotificationActions = {
   name: string
@@ -15,37 +15,32 @@ export type NotificationActions = {
   onClick: () => void
 }
 
-export type NotificationProps = {
-  body: string
-  lastNotificationTime: number
-  id: string
-  displayName?: string
-  avatarUrl?: string
+export interface NotificationProps extends LocalNotificationData {
   actions?: NotificationActions[]
 }
 
 const Notification: FC<NotificationProps> = ({
-  displayName,
   body,
+  notificationTime,
   actions,
-  lastNotificationTime,
-  avatarUrl,
+  avatarSenderName,
+  senderName,
 }) => {
   const userComponent =
-    displayName === undefined ? undefined : (
-      <b style={{color: stringToColor(displayName)}}>{displayName}</b>
+    senderName === undefined ? undefined : (
+      <b style={{color: stringToColor(senderName)}}>{senderName}</b>
     )
 
   return (
     <div className="flex gap-2 p-2">
-      {displayName !== undefined && (
-        <div className="overflow-hidden rounded-lg">
+      {senderName !== undefined && (
+        <div className="size-full max-h-10 max-w-10 overflow-hidden rounded-lg">
           <AvatarImage
             isRounded={false}
             isLarge={false}
-            avatarType={AvatarType.Profile}
-            displayName={displayName}
-            avatarUrl={avatarUrl}
+            avatarType={AvatarType.Message}
+            displayName={senderName}
+            avatarUrl={avatarSenderName}
           />
         </div>
       )}
@@ -61,7 +56,7 @@ const Notification: FC<NotificationProps> = ({
           <IoTime size={13} />
 
           <Typography variant={TypographyVariant.P}>
-            {timeFormatter(lastNotificationTime)}
+            {timeFormatter(notificationTime)}
           </Typography>
         </div>
 
@@ -83,9 +78,16 @@ const Notification: FC<NotificationProps> = ({
   )
 }
 
-const NotificationsModal: FC = () => {
+export type NotificationsModalProps = {
+  notifications: NotificationProps[]
+  onAllMaskAsRead: () => void
+}
+
+const NotificationsModal: FC<NotificationsModalProps> = ({
+  notifications,
+  onAllMaskAsRead,
+}) => {
   const {clearActiveSidebarModal} = useSidebarModalActiveStore()
-  const {notifications, clearNotifications} = useNotifications()
 
   return (
     <div
@@ -108,7 +110,7 @@ const NotificationsModal: FC = () => {
             clearActiveSidebarModal()
 
             // TODO: Temporarily, remove in the future.
-            clearNotifications()
+            onAllMaskAsRead()
           }}
           label="Mark all as read"
         />
