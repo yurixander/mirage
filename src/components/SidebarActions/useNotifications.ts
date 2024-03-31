@@ -98,17 +98,7 @@ const useNotifications = () => {
       return // If there is no room, the event may not be a mention event.
     }
 
-    const notification = mentionEventNotificationTransformer(
-      client,
-      event,
-      room
-    )
-
-    if (notification === null) {
-      return
-    }
-
-    saveNotification(notification)
+    saveNotification(mentionEventNotificationTransformer(client, event, room))
   })
 
   useEventListener(RoomStateEvent.Members, (event, _state, member) => {
@@ -116,17 +106,7 @@ const useNotifications = () => {
       return
     }
 
-    const notification = membersEventNotificationTransformer(
-      event,
-      client,
-      member
-    )
-
-    if (notification === null) {
-      return
-    }
-
-    saveNotification(notification)
+    saveNotification(membersEventNotificationTransformer(event, client, member))
   })
 
   return {notifications, clearNotifications}

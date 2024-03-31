@@ -23,7 +23,11 @@ const useCachedNotifications = () => {
   })
 
   const saveNotification = useCallback(
-    (notification: LocalNotificationData) => {
+    (notification: LocalNotificationData | null) => {
+      if (notification === null) {
+        return
+      }
+
       setNotifications(prevNotifications => {
         if (
           prevNotifications.some(
