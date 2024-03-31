@@ -1,5 +1,7 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import UserCard, {type UserCardProps as UserCardProperties} from "../components/UserCard"
+import UserCard, {
+  type UserCardProps as UserCardProperties,
+} from "../components/UserCard"
 import {UserStatus} from "../components/UserProfile"
 
 type Story = StoryObj<typeof UserCard>

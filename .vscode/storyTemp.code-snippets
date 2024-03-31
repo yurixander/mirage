@@ -22,8 +22,8 @@
       "  args: {},",
       "}",
       "",
-      "export default meta"
+      "export default meta",
     ],
-    "description": "Snippet for creating a Storybook story for a React component"
-  }
+    "description": "Snippet for creating a Storybook story for a React component",
+  },
 }

@@ -1,10 +1,15 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import EventMessage, {type EventMessageProps as EventMessageProperties} from "../components/EventMessage"
+import EventMessage, {
+  type EventMessageProps as EventMessageProperties,
+} from "../components/EventMessage"
+import React from "react"
 
 type Story = StoryObj<typeof EventMessage>
 
 const meta: Meta<typeof EventMessage> = {component: EventMessage}
-const render = (arguments_: EventMessageProperties) => <EventMessage {...arguments_} />
+const render = (arguments_: EventMessageProperties) => (
+  <EventMessage {...arguments_} />
+)
 
 export const Default: Story = {
   render,

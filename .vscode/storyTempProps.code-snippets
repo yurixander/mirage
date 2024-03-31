@@ -18,8 +18,8 @@
       "  args: {},",
       "}",
       "",
-      "export default meta"
+      "export default meta",
     ],
-    "description": "Snippet for creating a Storybook story for a React component without props"
-  }
+    "description": "Snippet for creating a Storybook story for a React component without props",
+  },
 }

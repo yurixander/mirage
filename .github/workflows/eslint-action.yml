@@ -1,0 +1,16 @@
+name: Lint
+
+on: [pull_request]
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: yarn install
+
+    - name: Run ESLint
+      run: npx eslint . --ext .js,.jsx,.ts,.tsx

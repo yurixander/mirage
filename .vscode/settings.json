@@ -6,9 +6,6 @@
   "editor.formatOnSave": true,
   "files.autoSave": "afterDelay",
   "files.trimFinalNewlines": true,
-  "[sass]": {
-    "editor.defaultFormatter": "syler.sass-indented"
-  },
   "todo-tree.highlights.customHighlight": {
     "FIXME": {
       "foreground": "#000000",
@@ -20,5 +17,5 @@
     "FIXME": ["FIXME", "FIXIT", "FIX"]
   },
   "eslint.enable": true,
-  "eslint.validate": ["html"],
+  "eslint.validate": ["html"]
 }

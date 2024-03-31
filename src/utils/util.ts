@@ -1,11 +1,7 @@
 import {type RosterUserProps, UserPowerLevel} from "@/components/RosterUser"
 import {UserStatus} from "@/components/UserProfile"
 import dayjs from "dayjs"
-import {
-  type Room,
-  type MatrixClient,
-  EventTimeline,
-} from "matrix-js-sdk"
+import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -348,7 +344,7 @@ export function stringToColor(string_: string): string {
     // When index = 0 is green, index = 1 is blue, index = 2 is red
     // Move hash index * 8 digits to the right for extract the color.
     // 0xff is equal to 255 and the AND operator (&) is limiting to 8 bits.
-    const value = (hash >> (index * 8)) & 0xFF
+    const value = (hash >> (index * 8)) & 0xff
 
     // value.toString(16) convert value to hex string.
     // 00 if the hexadecimal string is less than two characters ensuring consistent formatting.
