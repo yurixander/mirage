@@ -6,7 +6,9 @@ import UserProfileGhost, {
 type Story = StoryObj<typeof UserProfileGhost>
 
 const meta: Meta<typeof UserProfileGhost> = {component: UserProfileGhost}
-const render = (arguments_: UserProfileGhostProperties) => <UserProfileGhost {...arguments_} />
+const render = (arguments_: UserProfileGhostProperties) => (
+  <UserProfileGhost {...arguments_} />
+)
 
 export const Default: Story = {
   render,

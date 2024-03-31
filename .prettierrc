@@ -6,5 +6,6 @@
   "bracketSameLine": true,
   "arrowParens": "avoid",
   "quoteProps": "consistent",
+  "endOfLine": "auto",
   "plugins": ["prettier-plugin-tailwindcss"]
 }
