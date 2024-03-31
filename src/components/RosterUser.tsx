@@ -4,9 +4,9 @@ import UserProfile, {
 } from "./UserProfile"
 
 export enum UserPowerLevel {
-  Admin,
-  Moderator,
-  Member,
+  Admin = 100,
+  Moderator = 50,
+  Member = 0,
 }
 
 export type RosterUserProps = {

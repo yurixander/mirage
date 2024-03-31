@@ -38,6 +38,10 @@ export function timeFormatter(timestamp: number): string {
   return dayjs(timestamp).format("hh:mm a")
 }
 
+export enum AssertMessagesMoreUsed {
+  EventIdNotFound = "eventId should not be undefined",
+}
+
 export function assert(
   condition: boolean,
   reasoning: string
@@ -216,6 +220,7 @@ export function deleteMessage(
   })
 }
 
+// TODO: Check why existing two const for admin power level.
 const MIN_ADMIN_POWER_LEVEL = 50
 
 export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
@@ -266,18 +271,18 @@ export async function getRoomMembers(
   const users = Object.entries(powerLevels)
   const adminUsersId: string[] = []
 
-  const MIN_MOD_POWER_LEVEL = 50
-  const MIN_ADMIN_POWER_LEVEL = 100
-
   for (const [adminId, powerLevel] of users) {
-    if (typeof powerLevel !== "number" || powerLevel < MIN_MOD_POWER_LEVEL) {
+    if (
+      typeof powerLevel !== "number" ||
+      powerLevel < UserPowerLevel.Moderator
+    ) {
       continue
     }
 
     adminUsersId.push(adminId)
     const member = joinedMembers[adminId]
     const displayName = normalizeName(member.display_name)
-    const isAdmin = powerLevel === MIN_ADMIN_POWER_LEVEL
+    const isAdmin = powerLevel === UserPowerLevel.Admin
 
     membersProperty.push({
       // TODO: Use actual props instead of dummy data.

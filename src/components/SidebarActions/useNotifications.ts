@@ -2,6 +2,7 @@ import {useCallback, useEffect, useState} from "react"
 import {type NotificationProps} from "./NotificationsModal"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {
+  EventType,
   type MatrixClient,
   type MatrixEvent,
   type Room,
@@ -13,8 +14,9 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useCachedNotifications, {
   type LocalNotificationData,
 } from "./useCachedNotifications"
-import {assert, getImageUrl} from "@/utils/util"
+import {assert, AssertMessagesMoreUsed, getImageUrl} from "@/utils/util"
 import {ButtonVariant} from "../Button"
+import {UserPowerLevel} from "../RosterUser"
 
 const useNotifications = () => {
   const {client} = useConnection()
@@ -89,6 +91,17 @@ const useNotifications = () => {
     setNotifications(newNotifications)
   }, [cachedNotifications, client, removeNotification])
 
+  useEventListener(RoomStateEvent.Events, (event, state) => {
+    if (event.getType() !== EventType.RoomPowerLevels || client === null) {
+      return
+    }
+
+    // Handle power levels event for notifications.
+    saveNotification(
+      powerLevelsEventNotificationTransformer(client, event, state.roomId)
+    )
+  })
+
   useEventListener(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {
     if (toStartOfTimeline) {
       return // Ignore past events when starting sync.
@@ -112,6 +125,53 @@ const useNotifications = () => {
   return {notifications, clearNotifications}
 }
 
+const powerLevelsEventNotificationTransformer = (
+  client: MatrixClient,
+  event: MatrixEvent,
+  roomId: string
+): LocalNotificationData | null => {
+  const eventId = event.getId()
+  const userId = client.getUserId()
+  const roomName = client.getRoom(roomId)?.name
+  let powerLevel: string = "Member"
+  let body: string | null = null
+
+  assert(eventId !== undefined, AssertMessagesMoreUsed.EventIdNotFound)
+  assert(userId !== null, "My userId should not be undefined")
+  assert(roomName !== undefined, "The room must exist")
+
+  const currentLevels: number = event.getContent().users[userId]
+  const previousLevels: number = event.getPrevContent().users[userId] || 0
+
+  if (currentLevels === UserPowerLevel.Admin) {
+    powerLevel = "Admin"
+  } else if (
+    currentLevels >= UserPowerLevel.Moderator &&
+    currentLevels < UserPowerLevel.Admin
+  ) {
+    powerLevel = "Moderator"
+  }
+
+  if (currentLevels > previousLevels) {
+    body = `You have been promoted to ${powerLevel} at ${roomName}`
+  } else if (currentLevels < previousLevels) {
+    body = `You has degraded you to ${powerLevel} at ${roomName}`
+  }
+
+  if (body === null) {
+    return null
+  }
+
+  return {
+    body,
+    isRead: false,
+    notificationId: eventId,
+    notificationTime: event.localTimestamp,
+    avatarSenderUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
+    senderName: event.sender?.name,
+  }
+}
+
 const mentionEventNotificationTransformer = (
   client: MatrixClient,
   event: MatrixEvent,
@@ -119,10 +179,9 @@ const mentionEventNotificationTransformer = (
 ): LocalNotificationData | null => {
   const eventId = event.getId()
 
-  if (
-    !event.getContent()["m.mentions"]?.user_ids?.includes(room.myUserId) ||
-    eventId === undefined
-  ) {
+  assert(eventId !== undefined, AssertMessagesMoreUsed.EventIdNotFound)
+
+  if (!event.getContent()["m.mentions"]?.user_ids?.includes(room.myUserId)) {
     return null
   }
 
@@ -150,7 +209,7 @@ const membersEventNotificationTransformer = (
   const hasReason = event.getContent().reason
   const reason = hasReason === undefined ? "" : `for <<${hasReason}>>`
 
-  assert(eventId !== undefined, "eventId should not be undefined")
+  assert(eventId !== undefined, AssertMessagesMoreUsed.EventIdNotFound)
 
   switch (event.getContent().membership) {
     case "leave": {
