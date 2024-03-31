@@ -4,6 +4,8 @@ import useEventListener from "@/hooks/matrix/useEventListener"
 import {
   type MatrixClient,
   type MatrixEvent,
+  type Room,
+  RoomEvent,
   type RoomMember,
   RoomStateEvent,
 } from "matrix-js-sdk"
@@ -16,10 +18,10 @@ import {ButtonVariant} from "../Button"
 
 const useNotifications = () => {
   const {client} = useConnection()
+  const [notifications, setNotifications] = useState<NotificationProps[]>([])
+
   const {cachedNotifications, saveNotification, clearNotifications} =
     useCachedNotifications()
-
-  const [notifications, setNotifications] = useState<NotificationProps[]>([])
 
   const removeNotification = useCallback((notificationId: string) => {
     setNotifications(prevNotifications =>
@@ -87,7 +89,29 @@ const useNotifications = () => {
     setNotifications(newNotifications)
   }, [cachedNotifications, client, removeNotification])
 
-  useEventListener(RoomStateEvent.Members, (event, state, member) => {
+  useEventListener(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {
+    if (toStartOfTimeline) {
+      return // Ignore past events when starting sync.
+    }
+
+    if (room === undefined || client === null) {
+      return // If there is no room, the event may not be a mention event.
+    }
+
+    const notification = mentionEventNotificationTransformer(
+      client,
+      event,
+      room
+    )
+
+    if (notification === null) {
+      return
+    }
+
+    saveNotification(notification)
+  })
+
+  useEventListener(RoomStateEvent.Members, (event, _state, member) => {
     if (client === null || client.getUserId() !== member.userId) {
       return
     }
@@ -108,6 +132,30 @@ const useNotifications = () => {
   return {notifications, clearNotifications}
 }
 
+const mentionEventNotificationTransformer = (
+  client: MatrixClient,
+  event: MatrixEvent,
+  room: Room
+): LocalNotificationData | null => {
+  const eventId = event.getId()
+
+  if (
+    !event.getContent()["m.mentions"]?.user_ids?.includes(room.myUserId) ||
+    eventId === undefined
+  ) {
+    return null
+  }
+
+  return {
+    body: `mentioned you in room: ${room.name}`,
+    isRead: false,
+    notificationId: eventId,
+    notificationTime: event.localTimestamp,
+    avatarSenderUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
+    senderName: event.sender?.name,
+  }
+}
+
 const membersEventNotificationTransformer = (
   event: MatrixEvent,
   client: MatrixClient,
@@ -119,7 +167,6 @@ const membersEventNotificationTransformer = (
   const prevContent = event.getPrevContent()
   const room = client.getRoom(event.getRoomId())
   const roomName = room?.name ?? "room"
-
   const hasReason = event.getContent().reason
   const reason = hasReason === undefined ? "" : `for <<${hasReason}>>`
 
