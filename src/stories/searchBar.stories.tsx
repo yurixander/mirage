@@ -1,5 +1,7 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import SearchBar, {type SearchBarProps as SearchBarProperties} from "../components/SearchBar"
+import SearchBar, {
+  type SearchBarProps as SearchBarProperties,
+} from "../components/SearchBar"
 
 type Story = StoryObj<typeof SearchBar>
 

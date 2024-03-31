@@ -1,5 +1,8 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import Room, {type RoomProps as RoomProperties, RoomType} from "../components/Room"
+import Room, {
+  type RoomProps as RoomProperties,
+  RoomType,
+} from "../components/Room"
 
 type Story = StoryObj<typeof Room>
 

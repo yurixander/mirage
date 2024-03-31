@@ -1,0 +1,17 @@
+name: Prettier Code Formatter
+
+on: [pull_request]
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Check Code Format
+        run: npx prettier --check .

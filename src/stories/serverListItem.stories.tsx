@@ -6,7 +6,9 @@ import ServerListItem, {
 type Story = StoryObj<typeof ServerListItem>
 
 const meta: Meta<typeof ServerListItem> = {component: ServerListItem}
-const render = (arguments_: ServerListItemProperties) => <ServerListItem {...arguments_} />
+const render = (arguments_: ServerListItemProperties) => (
+  <ServerListItem {...arguments_} />
+)
 
 export const Default: Story = {
   render,

@@ -6,7 +6,9 @@ import MessageContainer, {
 type Story = StoryObj<typeof MessageContainer>
 
 const meta: Meta<typeof MessageContainer> = {component: MessageContainer}
-const render = (arguments_: MessageContainerProperties) => <MessageContainer {...arguments_} />
+const render = (arguments_: MessageContainerProperties) => (
+  <MessageContainer {...arguments_} />
+)
 
 export const Default: Story = {
   render,

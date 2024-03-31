@@ -16,8 +16,8 @@
       "  )",
       "}",
       "",
-      "export default $1"
+      "export default $1",
     ],
-    "description": "Snippet for a React functional component with customizable props"
-  }
+    "description": "Snippet for a React functional component with customizable props",
+  },
 }
