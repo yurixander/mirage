@@ -26,7 +26,7 @@ jobs:
           ${{ runner.os }}-
 
     - name: Install Dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     - name: Run ESLint
       run: npx eslint . --ext .js,.jsx,.ts,.tsx
