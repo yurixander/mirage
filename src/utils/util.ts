@@ -38,7 +38,7 @@ export function timeFormatter(timestamp: number): string {
   return dayjs(timestamp).format("hh:mm a")
 }
 
-export enum AssertMessagesMoreUsed {
+export enum CommonAssertion {
   EventIdNotFound = "eventId should not be undefined",
 }
 

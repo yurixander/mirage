@@ -14,7 +14,7 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useCachedNotifications, {
   type LocalNotificationData,
 } from "./useCachedNotifications"
-import {assert, AssertMessagesMoreUsed, getImageUrl} from "@/utils/util"
+import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
 import {ButtonVariant} from "../Button"
 import {UserPowerLevel} from "../RosterUser"
 
@@ -98,7 +98,7 @@ const useNotifications = () => {
 
     // Handle power levels event for notifications.
     saveNotification(
-      powerLevelsEventNotificationTransformer(client, event, state.roomId)
+      getNotificationFromPowerLevelEvent(client, event, state.roomId)
     )
   })
 
@@ -111,7 +111,7 @@ const useNotifications = () => {
       return // If there is no room, the event may not be a mention event.
     }
 
-    saveNotification(mentionEventNotificationTransformer(client, event, room))
+    saveNotification(getNotificationFromMentionEvent(client, event, room))
   })
 
   useEventListener(RoomStateEvent.Members, (event, _state, member) => {
@@ -119,13 +119,13 @@ const useNotifications = () => {
       return
     }
 
-    saveNotification(membersEventNotificationTransformer(event, client, member))
+    saveNotification(getNotificationFromMembersEvent(event, client, member))
   })
 
   return {notifications, clearNotifications}
 }
 
-const powerLevelsEventNotificationTransformer = (
+const getNotificationFromPowerLevelEvent = (
   client: MatrixClient,
   event: MatrixEvent,
   roomId: string
@@ -136,7 +136,7 @@ const powerLevelsEventNotificationTransformer = (
   let powerLevel: string = "Member"
   let body: string | null = null
 
-  assert(eventId !== undefined, AssertMessagesMoreUsed.EventIdNotFound)
+  assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
   assert(userId !== null, "My userId should not be undefined")
   assert(roomName !== undefined, "The room must exist")
 
@@ -153,9 +153,9 @@ const powerLevelsEventNotificationTransformer = (
   }
 
   if (currentLevels > previousLevels) {
-    body = `You have been promoted to ${powerLevel} at ${roomName}`
+    body = `you have been promoted to ${powerLevel} at ${roomName}`
   } else if (currentLevels < previousLevels) {
-    body = `You has degraded you to ${powerLevel} at ${roomName}`
+    body = `you has demoted you to ${powerLevel} at ${roomName}`
   }
 
   if (body === null) {
@@ -172,14 +172,14 @@ const powerLevelsEventNotificationTransformer = (
   }
 }
 
-const mentionEventNotificationTransformer = (
+const getNotificationFromMentionEvent = (
   client: MatrixClient,
   event: MatrixEvent,
   room: Room
 ): LocalNotificationData | null => {
   const eventId = event.getId()
 
-  assert(eventId !== undefined, AssertMessagesMoreUsed.EventIdNotFound)
+  assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
 
   if (!event.getContent()["m.mentions"]?.user_ids?.includes(room.myUserId)) {
     return null
@@ -195,7 +195,7 @@ const mentionEventNotificationTransformer = (
   }
 }
 
-const membersEventNotificationTransformer = (
+const getNotificationFromMembersEvent = (
   event: MatrixEvent,
   client: MatrixClient,
   member: RoomMember
@@ -209,7 +209,7 @@ const membersEventNotificationTransformer = (
   const hasReason = event.getContent().reason
   const reason = hasReason === undefined ? "" : `for <<${hasReason}>>`
 
-  assert(eventId !== undefined, AssertMessagesMoreUsed.EventIdNotFound)
+  assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
 
   switch (event.getContent().membership) {
     case "leave": {
