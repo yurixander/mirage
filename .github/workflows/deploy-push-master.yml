@@ -14,13 +14,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Install Dependencies
-      run: npm install
+      run: yarn
 
     - name: Build Project
-      run: npm run build
+      run: yarn build
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./src  # Replace with the directory where Vite build outputs files, if different
+        publish_dir: ./dist
