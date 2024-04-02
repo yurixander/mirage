@@ -27,6 +27,7 @@ const useNotifications = () => {
     saveNotification,
     deleteNotificationById,
     markAsReadByNotificationId,
+    markAsReadAllNotifications,
   } = useCachedNotifications()
 
   useEffect(() => {
@@ -135,7 +136,7 @@ const useNotifications = () => {
     saveNotification(getNotificationFromMembersEvent(event, client, member))
   })
 
-  return {notifications}
+  return {notifications, markAsReadAllNotifications}
 }
 
 const getNotificationFromPowerLevelEvent = (
@@ -195,6 +196,8 @@ const getNotificationFromMentionEvent = (
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
 
   if (!event.getContent()["m.mentions"]?.user_ids?.includes(room.myUserId)) {
+    // TODO: If the room is encrypted, you will have to decrypt the message first.
+    // While return null.
     return null
   }
 

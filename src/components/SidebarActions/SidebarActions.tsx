@@ -19,7 +19,7 @@ import useNotifications from "./useNotifications"
 
 const SidebarModalsHandler: FC = () => {
   const {sidebarModalActive} = useSidebarModalActiveStore()
-  const {notifications} = useNotifications()
+  const {notifications, markAsReadAllNotifications} = useNotifications()
 
   const activeModalElement = useMemo(() => {
     if (sidebarModalActive === null) {
@@ -34,14 +34,12 @@ const SidebarModalsHandler: FC = () => {
         return (
           <NotificationsModal
             notifications={notifications}
-            onMarkAllAsRead={() => {
-              // TODO: Handle here marks all as read.
-            }}
+            onMarkAllAsRead={markAsReadAllNotifications}
           />
         )
       }
     }
-  }, [notifications, sidebarModalActive])
+  }, [markAsReadAllNotifications, notifications, sidebarModalActive])
 
   return (
     <>

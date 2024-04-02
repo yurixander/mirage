@@ -22,9 +22,27 @@ const useCachedNotifications = () => {
     return savedNotifications ? JSON.parse(savedNotifications) : []
   })
 
+  const markAsReadAllNotifications = useCallback(() => {
+    setNotifications(prevNotifications => {
+      const updatedNotifications = prevNotifications.map(notification => {
+        return {
+          ...notification,
+          isRead: true,
+        }
+      })
+
+      localStorage.setItem(
+        NOTIFICATIONS_LOCAL_STORAGE_KEY,
+        JSON.stringify(updatedNotifications)
+      )
+
+      return updatedNotifications
+    })
+  }, [])
+
   const markAsReadByNotificationId = useCallback((notificationId: string) => {
-    setNotifications(prevNotifications =>
-      prevNotifications.map(notification => {
+    setNotifications(prevNotifications => {
+      const updatedNotifications = prevNotifications.map(notification => {
         if (notification.notificationId === notificationId) {
           return {
             ...notification,
@@ -34,7 +52,14 @@ const useCachedNotifications = () => {
 
         return notification
       })
-    )
+
+      localStorage.setItem(
+        NOTIFICATIONS_LOCAL_STORAGE_KEY,
+        JSON.stringify(updatedNotifications)
+      )
+
+      return updatedNotifications
+    })
   }, [])
 
   const deleteNotificationById = useCallback((notificationId: string) => {
@@ -86,6 +111,7 @@ const useCachedNotifications = () => {
     saveNotification,
     deleteNotificationById,
     markAsReadByNotificationId,
+    markAsReadAllNotifications,
   }
 }
 

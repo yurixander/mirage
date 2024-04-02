@@ -1,5 +1,5 @@
 import {stringToColor, timeFormatter} from "@/utils/util"
-import {type FC} from "react"
+import {useMemo, type FC} from "react"
 import {IoCheckbox, IoCloseCircle, IoTime, IoTrash} from "react-icons/io5"
 import AvatarImage, {AvatarType} from "../Avatar"
 import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
@@ -37,7 +37,11 @@ const Notification: FC<NotificationProps> = ({
     )
 
   return (
-    <div className="flex gap-2 p-2">
+    <div
+      className={twMerge(
+        "flex gap-2 p-2",
+        !isRead && "rounded-lg bg-slate-100"
+      )}>
       {senderName !== undefined && (
         <div className="size-full max-h-8 max-w-8 overflow-hidden rounded-lg">
           <AvatarImage
@@ -114,6 +118,30 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
 }) => {
   const {clearActiveSidebarModal} = useSidebarModalActiveStore()
 
+  const notificationsUnread = useMemo(() => {
+    const notificationsUnreadProps: React.JSX.Element[] = []
+
+    for (const notification of notifications) {
+      if (!notification.isRead) {
+        notificationsUnreadProps.push(<Notification {...notification} />)
+      }
+    }
+
+    return notificationsUnreadProps
+  }, [notifications])
+
+  const notificationsMarkAsRead = useMemo(() => {
+    const notificationsUnreadProps: React.JSX.Element[] = []
+
+    for (const notification of notifications) {
+      if (notification.isRead) {
+        notificationsUnreadProps.push(<Notification {...notification} />)
+      }
+    }
+
+    return notificationsUnreadProps
+  }, [notifications])
+
   return (
     <div
       className={twMerge(
@@ -148,9 +176,8 @@ const NotificationsModal: FC<NotificationsModalProps> = ({
       </div>
 
       <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
-        {notifications.map(notification => (
-          <Notification {...notification} />
-        ))}
+        <div className="bg-slate-100">{notificationsUnread}</div>
+        {notificationsMarkAsRead}
       </div>
     </div>
   )
