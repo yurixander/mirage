@@ -16,6 +16,7 @@ import DirectMessageModal from "./DirectMessageModal"
 import NotificationsModal from "./NotificationsModal"
 import Modal from "../Modal"
 import useNotifications from "./useNotifications"
+import {useNotificationsStateStore} from "./useCachedNotifications"
 
 const SidebarModalsHandler: FC = () => {
   const {sidebarModalActive} = useSidebarModalActiveStore()
@@ -58,8 +59,8 @@ export type SidebarActionsProps = {
 }
 
 const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
-  const {onLogout, setActiveSidebarModal, containsUnreadNotifications} =
-    useSidebarActions()
+  const {containsUnreadNotifications} = useNotificationsStateStore()
+  const {onLogout, setActiveSidebarModal} = useSidebarActions()
 
   return (
     <>

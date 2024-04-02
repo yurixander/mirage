@@ -38,6 +38,7 @@ const useCachedNotifications = () => {
   })
 
   useEffect(() => {
+    // Check if you have unread notifications with the `some` method and it will refresh the global status of notifications.
     refreshContainsUnreadNotifications(
       cachedNotifications.some(notification => !notification.isRead)
     )

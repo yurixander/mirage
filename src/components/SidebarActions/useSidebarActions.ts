@@ -3,7 +3,6 @@ import {useNavigate} from "react-router-dom"
 import {ViewPath} from "@/utils/util"
 import {useCallback} from "react"
 import {create} from "zustand"
-import {useNotificationsStateStore} from "./useCachedNotifications"
 
 export enum SidebarModals {
   DirectMessages,
@@ -30,7 +29,6 @@ const useSidebarActions = () => {
   const {disconnect} = useConnection()
   const navigate = useNavigate()
   const {setActiveSidebarModal} = useSidebarModalActiveStore()
-  const {containsUnreadNotifications} = useNotificationsStateStore()
 
   const onLogout = useCallback(async () => {
     await disconnect()
@@ -40,7 +38,6 @@ const useSidebarActions = () => {
   return {
     onLogout,
     setActiveSidebarModal,
-    containsUnreadNotifications,
   }
 }
 

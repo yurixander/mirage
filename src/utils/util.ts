@@ -39,7 +39,7 @@ export function timeFormatter(timestamp: number): string {
 }
 
 export enum CommonAssertion {
-  EventIdNotFound = "eventId should not be undefined",
+  EventIdNotFound = "To confirm that an event happened, event id should not be undefined.",
 }
 
 export function assert(
