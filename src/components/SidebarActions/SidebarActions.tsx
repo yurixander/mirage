@@ -58,7 +58,8 @@ export type SidebarActionsProps = {
 }
 
 const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
-  const {onLogout, setActiveSidebarModal} = useSidebarActions()
+  const {onLogout, setActiveSidebarModal, containsUnreadNotifications} =
+    useSidebarActions()
 
   return (
     <>
@@ -87,7 +88,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
           }}
           tooltip="Notifications"
           Icon={IoNotificationsSharp}
-          isDotVisible
+          isDotVisible={containsUnreadNotifications}
         />
 
         <IconButton

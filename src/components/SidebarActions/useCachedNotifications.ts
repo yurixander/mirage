@@ -1,4 +1,5 @@
-import {useCallback, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
+import {create} from "zustand"
 
 export type LocalNotificationData = {
   body: string
@@ -11,7 +12,21 @@ export type LocalNotificationData = {
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "notifications"
 
+type NotificationsState = {
+  containsUnreadNotifications: boolean
+  refreshContainsUnreadNotifications: (newValue: boolean) => void
+}
+
+export const useNotificationsStateStore = create<NotificationsState>(set => ({
+  containsUnreadNotifications: false,
+  refreshContainsUnreadNotifications: newValue => {
+    set(_state => ({containsUnreadNotifications: newValue}))
+  },
+}))
+
 const useCachedNotifications = () => {
+  const {refreshContainsUnreadNotifications} = useNotificationsStateStore()
+
   const [cachedNotifications, setNotifications] = useState<
     LocalNotificationData[]
   >(() => {
@@ -21,6 +36,12 @@ const useCachedNotifications = () => {
 
     return savedNotifications ? JSON.parse(savedNotifications) : []
   })
+
+  useEffect(() => {
+    refreshContainsUnreadNotifications(
+      cachedNotifications.some(notification => !notification.isRead)
+    )
+  }, [cachedNotifications, refreshContainsUnreadNotifications])
 
   const markAsReadAllNotifications = useCallback(() => {
     setNotifications(prevNotifications => {
