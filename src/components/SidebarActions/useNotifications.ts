@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react"
+import {useEffect, useState} from "react"
 import {type NotificationProps} from "./NotificationsModal"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {
@@ -22,16 +22,8 @@ const useNotifications = () => {
   const {client} = useConnection()
   const [notifications, setNotifications] = useState<NotificationProps[]>([])
 
-  const {cachedNotifications, saveNotification, clearNotifications} =
+  const {cachedNotifications, saveNotification, deleteNotificationById} =
     useCachedNotifications()
-
-  const removeNotification = useCallback((notificationId: string) => {
-    setNotifications(prevNotifications =>
-      prevNotifications.filter(
-        notification => notification.notificationId !== notificationId
-      )
-    )
-  }, [])
 
   useEffect(() => {
     if (client === null) {
@@ -59,7 +51,7 @@ const useNotifications = () => {
             onClick: () => {
               void client.joinRoom(invitedRoom.roomId).then(room => {
                 if (room.getMyMembership() === "join") {
-                  removeNotification(invitedRoom.roomId)
+                  deleteNotificationById(invitedRoom.roomId)
                 }
               })
             },
@@ -68,12 +60,15 @@ const useNotifications = () => {
             name: "Decline",
             onClick: () => {
               void client.leave(invitedRoom.roomId).then(() => {
-                removeNotification(invitedRoom.roomId)
+                deleteNotificationById(invitedRoom.roomId)
               })
             },
             actionVariant: ButtonVariant.TextLink,
           },
         ],
+        onDelete: () => {
+          deleteNotificationById(invitedRoom.roomId)
+        },
       })
     }
 
@@ -85,11 +80,14 @@ const useNotifications = () => {
         notificationId: notification.notificationId,
         senderName: notification.senderName,
         avatarSenderUrl: notification.avatarSenderUrl,
+        onDelete: () => {
+          deleteNotificationById(notification.notificationId)
+        },
       })
     }
 
     setNotifications(newNotifications)
-  }, [cachedNotifications, client, removeNotification])
+  }, [cachedNotifications, client, deleteNotificationById])
 
   useEventListener(RoomStateEvent.Events, (event, state) => {
     if (event.getType() !== EventType.RoomPowerLevels || client === null) {
@@ -122,7 +120,7 @@ const useNotifications = () => {
     saveNotification(getNotificationFromMembersEvent(event, client, member))
   })
 
-  return {notifications, clearNotifications}
+  return {notifications}
 }
 
 const getNotificationFromPowerLevelEvent = (

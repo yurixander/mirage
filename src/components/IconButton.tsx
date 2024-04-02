@@ -7,6 +7,7 @@ export type IconButtonProps = {
   onClick: () => void
   tooltip: string
   Icon: IconType
+  size?: number
   color?: string
   isDisabled?: boolean
   isDotVisible?: boolean
@@ -19,6 +20,7 @@ const IconButton: FC<IconButtonProps> = ({
   color,
   isDisabled,
   isDotVisible,
+  size,
   className,
 }) => {
   const isDisabledClass = isDisabled
@@ -38,7 +40,7 @@ const IconButton: FC<IconButtonProps> = ({
         className
       )}>
       <NotificationDot isVisible={isDotVisible ?? false}>
-        <Icon style={{color}} size={20} className="text-neutral-300" />
+        <Icon style={{color}} size={size ?? 20} className="text-neutral-300" />
       </NotificationDot>
     </div>
   )

@@ -1,6 +1,6 @@
 import {stringToColor, timeFormatter} from "@/utils/util"
 import {type FC} from "react"
-import {IoCloseCircle, IoTime} from "react-icons/io5"
+import {IoCloseCircle, IoRemove, IoTime, IoTrash} from "react-icons/io5"
 import AvatarImage, {AvatarType} from "../Avatar"
 import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
 import Typography, {TypographyVariant} from "../Typography"
@@ -16,6 +16,7 @@ export type NotificationActions = {
 }
 
 export interface NotificationProps extends LocalNotificationData {
+  onDelete: () => void
   actions?: NotificationActions[]
 }
 
@@ -25,6 +26,7 @@ const Notification: FC<NotificationProps> = ({
   actions,
   senderName,
   avatarSenderUrl,
+  onDelete,
 }) => {
   const userComponent =
     senderName === undefined ? undefined : (
@@ -34,7 +36,7 @@ const Notification: FC<NotificationProps> = ({
   return (
     <div className="flex gap-2 p-2">
       {senderName !== undefined && (
-        <div className="size-full max-h-10 max-w-10 overflow-hidden rounded-lg">
+        <div className="size-full max-h-8 max-w-8 overflow-hidden rounded-lg">
           <AvatarImage
             isRounded={false}
             isLarge={false}
@@ -47,7 +49,7 @@ const Notification: FC<NotificationProps> = ({
 
       <div className="flex flex-col gap-1">
         <div className="flex flex-row">
-          <Typography>
+          <Typography variant={TypographyVariant.P}>
             {userComponent} {body}
           </Typography>
         </div>
@@ -74,6 +76,14 @@ const Notification: FC<NotificationProps> = ({
           </div>
         )}
       </div>
+
+      <IconButton
+        className="ml-auto size-min"
+        size={14}
+        onClick={onDelete}
+        tooltip="Remove notification"
+        Icon={IoTrash}
+      />
     </div>
   )
 }

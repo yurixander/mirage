@@ -22,6 +22,21 @@ const useCachedNotifications = () => {
     return savedNotifications ? JSON.parse(savedNotifications) : []
   })
 
+  const deleteNotificationById = useCallback((notificationId: string) => {
+    setNotifications(prevNotifications => {
+      const updatedNotifications = prevNotifications.filter(
+        notification => notification.notificationId !== notificationId
+      )
+
+      localStorage.setItem(
+        NOTIFICATIONS_LOCAL_STORAGE_KEY,
+        JSON.stringify(updatedNotifications)
+      )
+
+      return updatedNotifications
+    })
+  }, [])
+
   const saveNotification = useCallback(
     (notification: LocalNotificationData | null) => {
       if (notification === null) {
@@ -51,18 +66,11 @@ const useCachedNotifications = () => {
     []
   )
 
-  const clearNotifications = () => {
-    const emptyNotifications: LocalNotificationData[] = []
-
-    setNotifications(emptyNotifications)
-
-    localStorage.setItem(
-      NOTIFICATIONS_LOCAL_STORAGE_KEY,
-      JSON.stringify(emptyNotifications)
-    )
+  return {
+    cachedNotifications,
+    saveNotification,
+    deleteNotificationById,
   }
-
-  return {cachedNotifications, saveNotification, clearNotifications}
 }
 
 export default useCachedNotifications
