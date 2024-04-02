@@ -22,8 +22,12 @@ const useNotifications = () => {
   const {client} = useConnection()
   const [notifications, setNotifications] = useState<NotificationProps[]>([])
 
-  const {cachedNotifications, saveNotification, deleteNotificationById} =
-    useCachedNotifications()
+  const {
+    cachedNotifications,
+    saveNotification,
+    deleteNotificationById,
+    markAsReadByNotificationId,
+  } = useCachedNotifications()
 
   useEffect(() => {
     if (client === null) {
@@ -69,6 +73,9 @@ const useNotifications = () => {
         onDelete: () => {
           deleteNotificationById(invitedRoom.roomId)
         },
+        onMarkAsRead() {
+          markAsReadByNotificationId(invitedRoom.roomId)
+        },
       })
     }
 
@@ -83,11 +90,19 @@ const useNotifications = () => {
         onDelete: () => {
           deleteNotificationById(notification.notificationId)
         },
+        onMarkAsRead: () => {
+          markAsReadByNotificationId(notification.notificationId)
+        },
       })
     }
 
     setNotifications(newNotifications)
-  }, [cachedNotifications, client, deleteNotificationById])
+  }, [
+    cachedNotifications,
+    client,
+    deleteNotificationById,
+    markAsReadByNotificationId,
+  ])
 
   useEventListener(RoomStateEvent.Events, (event, state) => {
     if (event.getType() !== EventType.RoomPowerLevels || client === null) {

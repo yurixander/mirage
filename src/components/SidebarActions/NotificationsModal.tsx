@@ -1,6 +1,6 @@
 import {stringToColor, timeFormatter} from "@/utils/util"
 import {type FC} from "react"
-import {IoCloseCircle, IoRemove, IoTime, IoTrash} from "react-icons/io5"
+import {IoCheckbox, IoCloseCircle, IoTime, IoTrash} from "react-icons/io5"
 import AvatarImage, {AvatarType} from "../Avatar"
 import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
 import Typography, {TypographyVariant} from "../Typography"
@@ -17,6 +17,7 @@ export type NotificationActions = {
 
 export interface NotificationProps extends LocalNotificationData {
   onDelete: () => void
+  onMarkAsRead: () => void
   actions?: NotificationActions[]
 }
 
@@ -27,6 +28,8 @@ const Notification: FC<NotificationProps> = ({
   senderName,
   avatarSenderUrl,
   onDelete,
+  isRead,
+  onMarkAsRead,
 }) => {
   const userComponent =
     senderName === undefined ? undefined : (
@@ -77,13 +80,25 @@ const Notification: FC<NotificationProps> = ({
         )}
       </div>
 
-      <IconButton
-        className="ml-auto size-min"
-        size={14}
-        onClick={onDelete}
-        tooltip="Remove notification"
-        Icon={IoTrash}
-      />
+      <div className="ml-auto flex">
+        {!isRead && (
+          <IconButton
+            className="size-min"
+            size={14}
+            onClick={onMarkAsRead}
+            tooltip="Remove notification"
+            Icon={IoCheckbox}
+          />
+        )}
+
+        <IconButton
+          className="size-min"
+          size={14}
+          onClick={onDelete}
+          tooltip="Remove notification"
+          Icon={IoTrash}
+        />
+      </div>
     </div>
   )
 }
