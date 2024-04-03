@@ -32,7 +32,7 @@ const useNotifications = () => {
     saveNotification,
     deleteNotificationById,
     markAsReadByNotificationId,
-    markAsReadAllNotifications,
+    markAllNotificationsAsRead,
   } = useCachedNotifications()
 
   useEffect(() => {
@@ -151,7 +151,7 @@ const useNotifications = () => {
     saveNotification(getNotificationFromMembersEvent(event, client, member))
   })
 
-  return {notifications, markAsReadAllNotifications}
+  return {notifications, markAllNotificationsAsRead}
 }
 
 const getNotificationFromPowerLevelEvent = (
@@ -166,7 +166,7 @@ const getNotificationFromPowerLevelEvent = (
   let body: string | null = null
 
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
-  assert(userId !== null, "My userId should not be undefined")
+  assert(userId !== null, "If userId is undefined, client is not initialized")
   assert(roomName !== undefined, "The room must exist")
 
   const currentLevels: number = event.getContent().users[userId]
@@ -188,6 +188,7 @@ const getNotificationFromPowerLevelEvent = (
   }
 
   if (body === null) {
+    // If the body is null then the power levels event did not occur or was not processed by the room.
     return null
   }
 
@@ -212,8 +213,7 @@ const getNotificationFromMentionEvent = (
 
   if (!event.getContent()["m.mentions"]?.user_ids?.includes(room.myUserId)) {
     // TODO: If the room is encrypted, you will have to decrypt the message first.
-    // While return null.
-    return null
+    throw new Error("Not yet implemented")
   }
 
   return {

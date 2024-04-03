@@ -20,7 +20,7 @@ import {useNotificationsStateStore} from "./useCachedNotifications"
 
 const SidebarModalsHandler: FC = () => {
   const {sidebarModalActive} = useSidebarModalActiveStore()
-  const {notifications, markAsReadAllNotifications} = useNotifications()
+  const {notifications, markAllNotificationsAsRead} = useNotifications()
 
   const activeModalElement = useMemo(() => {
     if (sidebarModalActive === null) {
@@ -35,12 +35,12 @@ const SidebarModalsHandler: FC = () => {
         return (
           <NotificationsModal
             notifications={notifications}
-            onMarkAllAsRead={markAsReadAllNotifications}
+            onMarkAllAsRead={markAllNotificationsAsRead}
           />
         )
       }
     }
-  }, [markAsReadAllNotifications, notifications, sidebarModalActive])
+  }, [markAllNotificationsAsRead, notifications, sidebarModalActive])
 
   return (
     <>

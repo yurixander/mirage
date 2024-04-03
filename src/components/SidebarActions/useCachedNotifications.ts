@@ -44,7 +44,7 @@ const useCachedNotifications = () => {
     )
   }, [cachedNotifications, refreshContainsUnreadNotifications])
 
-  const markAsReadAllNotifications = useCallback(() => {
+  const markAllNotificationsAsRead = useCallback(() => {
     setNotifications(prevNotifications => {
       const updatedNotifications = prevNotifications.map(notification => {
         return {
@@ -106,12 +106,12 @@ const useCachedNotifications = () => {
       }
 
       setNotifications(prevNotifications => {
-        if (
-          prevNotifications.some(
-            prevNotification =>
-              prevNotification.notificationId === notification.notificationId
-          )
-        ) {
+        const isNotificationsExist = prevNotifications.some(
+          prevNotification =>
+            prevNotification.notificationId === notification.notificationId
+        )
+
+        if (isNotificationsExist) {
           return prevNotifications
         }
 
@@ -133,7 +133,7 @@ const useCachedNotifications = () => {
     saveNotification,
     deleteNotificationById,
     markAsReadByNotificationId,
-    markAsReadAllNotifications,
+    markAllNotificationsAsRead,
   }
 }
 
