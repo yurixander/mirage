@@ -1,4 +1,5 @@
-import {useCallback, useEffect, useState} from "react"
+import {getNotificationsData} from "@/utils/notifications"
+import {useEffect, useState} from "react"
 import {create} from "zustand"
 
 export type LocalNotificationData = {
@@ -10,32 +11,48 @@ export type LocalNotificationData = {
   avatarSenderUrl?: string
 }
 
-const NOTIFICATIONS_LOCAL_STORAGE_KEY = "notifications"
+export enum NotificationsSyncState {
+  Pending,
+  Processed,
+}
 
 type NotificationsState = {
+  state: NotificationsSyncState | null
+  setNotificationsState: (state: NotificationsSyncState) => void
   containsUnreadNotifications: boolean
   refreshContainsUnreadNotifications: (newValue: boolean) => void
 }
 
 export const useNotificationsStateStore = create<NotificationsState>(set => ({
+  state: null,
   containsUnreadNotifications: false,
   refreshContainsUnreadNotifications: newValue => {
     set(_state => ({containsUnreadNotifications: newValue}))
   },
+  setNotificationsState: newState => {
+    set(_state => ({
+      state: newState,
+      containsUnreadNotifications: newState === NotificationsSyncState.Pending,
+    }))
+  },
 }))
 
 const useCachedNotifications = () => {
-  const {refreshContainsUnreadNotifications} = useNotificationsStateStore()
+  const {refreshContainsUnreadNotifications, state, setNotificationsState} =
+    useNotificationsStateStore()
 
   const [cachedNotifications, setNotifications] = useState<
     LocalNotificationData[]
-  >(() => {
-    const savedNotifications = localStorage.getItem(
-      NOTIFICATIONS_LOCAL_STORAGE_KEY
-    )
+  >([])
 
-    return savedNotifications ? JSON.parse(savedNotifications) : []
-  })
+  useEffect(() => {
+    if (state === NotificationsSyncState.Processed) {
+      return
+    }
+
+    setNotifications(getNotificationsData())
+    setNotificationsState(NotificationsSyncState.Processed)
+  }, [setNotificationsState, state])
 
   useEffect(() => {
     // Check if you have unread notifications with the `some` method and it will refresh the global status of notifications.
@@ -44,96 +61,8 @@ const useCachedNotifications = () => {
     )
   }, [cachedNotifications, refreshContainsUnreadNotifications])
 
-  const markAllNotificationsAsRead = useCallback(() => {
-    setNotifications(prevNotifications => {
-      const updatedNotifications = prevNotifications.map(notification => {
-        return {
-          ...notification,
-          isRead: true,
-        }
-      })
-
-      localStorage.setItem(
-        NOTIFICATIONS_LOCAL_STORAGE_KEY,
-        JSON.stringify(updatedNotifications)
-      )
-
-      return updatedNotifications
-    })
-  }, [])
-
-  const markAsReadByNotificationId = useCallback((notificationId: string) => {
-    setNotifications(prevNotifications => {
-      const updatedNotifications = prevNotifications.map(notification => {
-        if (notification.notificationId === notificationId) {
-          return {
-            ...notification,
-            isRead: true,
-          }
-        }
-
-        return notification
-      })
-
-      localStorage.setItem(
-        NOTIFICATIONS_LOCAL_STORAGE_KEY,
-        JSON.stringify(updatedNotifications)
-      )
-
-      return updatedNotifications
-    })
-  }, [])
-
-  const deleteNotificationById = useCallback((notificationId: string) => {
-    setNotifications(prevNotifications => {
-      const updatedNotifications = prevNotifications.filter(
-        notification => notification.notificationId !== notificationId
-      )
-
-      localStorage.setItem(
-        NOTIFICATIONS_LOCAL_STORAGE_KEY,
-        JSON.stringify(updatedNotifications)
-      )
-
-      return updatedNotifications
-    })
-  }, [])
-
-  const saveNotification = useCallback(
-    (notification: LocalNotificationData | null) => {
-      if (notification === null) {
-        return
-      }
-
-      setNotifications(prevNotifications => {
-        const isNotificationsExist = prevNotifications.some(
-          prevNotification =>
-            prevNotification.notificationId === notification.notificationId
-        )
-
-        if (isNotificationsExist) {
-          return prevNotifications
-        }
-
-        const updatedNotifications = [notification, ...prevNotifications]
-
-        localStorage.setItem(
-          NOTIFICATIONS_LOCAL_STORAGE_KEY,
-          JSON.stringify(updatedNotifications)
-        )
-
-        return updatedNotifications
-      })
-    },
-    []
-  )
-
   return {
     cachedNotifications,
-    saveNotification,
-    deleteNotificationById,
-    markAsReadByNotificationId,
-    markAllNotificationsAsRead,
   }
 }
 

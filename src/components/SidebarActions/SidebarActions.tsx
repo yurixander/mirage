@@ -15,12 +15,10 @@ import useSidebarActions, {
 import DirectMessageModal from "./DirectMessageModal"
 import NotificationsModal from "./NotificationsModal"
 import Modal from "../Modal"
-import useNotifications from "./useNotifications"
-import {useNotificationsStateStore} from "./useCachedNotifications"
+import useGlobalEventListeners from "@/hooks/matrix/useGlobalEventListeners"
 
 const SidebarModalsHandler: FC = () => {
   const {sidebarModalActive} = useSidebarModalActiveStore()
-  const {notifications, markAllNotificationsAsRead} = useNotifications()
 
   const activeModalElement = useMemo(() => {
     if (sidebarModalActive === null) {
@@ -32,15 +30,10 @@ const SidebarModalsHandler: FC = () => {
         return <DirectMessageModal />
       }
       case SidebarModals.Notifications: {
-        return (
-          <NotificationsModal
-            notifications={notifications}
-            onMarkAllAsRead={markAllNotificationsAsRead}
-          />
-        )
+        return <NotificationsModal />
       }
     }
-  }, [markAllNotificationsAsRead, notifications, sidebarModalActive])
+  }, [sidebarModalActive])
 
   return (
     <>
@@ -59,8 +52,8 @@ export type SidebarActionsProps = {
 }
 
 const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
-  const {containsUnreadNotifications} = useNotificationsStateStore()
   const {onLogout, setActiveSidebarModal} = useSidebarActions()
+  const {containsUnreadNotifications} = useGlobalEventListeners()
 
   return (
     <>

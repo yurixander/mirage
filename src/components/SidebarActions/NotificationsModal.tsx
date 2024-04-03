@@ -8,6 +8,11 @@ import {twMerge} from "tailwind-merge"
 import IconButton from "../IconButton"
 import {useSidebarModalActiveStore} from "./useSidebarActions"
 import {type LocalNotificationData} from "./useCachedNotifications"
+import {
+  deleteNotificationById,
+  markAsReadByNotificationId,
+} from "@/utils/notifications"
+import useNotifications from "./useNotifications"
 
 export type NotificationActions = {
   name: string
@@ -16,8 +21,7 @@ export type NotificationActions = {
 }
 
 export interface NotificationProps extends LocalNotificationData {
-  onDelete: () => void
-  onMarkAsRead: () => void
+  onRequestChanges: () => void
   actions?: NotificationActions[]
 }
 
@@ -27,9 +31,9 @@ const Notification: FC<NotificationProps> = ({
   actions,
   senderName,
   avatarSenderUrl,
-  onDelete,
+  notificationId,
   isRead,
-  onMarkAsRead,
+  onRequestChanges,
 }) => {
   const userComponent =
     senderName === undefined ? undefined : (
@@ -89,7 +93,10 @@ const Notification: FC<NotificationProps> = ({
           <IconButton
             className="size-min"
             size={14}
-            onClick={onMarkAsRead}
+            onClick={() => {
+              markAsReadByNotificationId(notificationId)
+              onRequestChanges()
+            }}
             tooltip="Remove notification"
             Icon={IoCheckbox}
           />
@@ -98,7 +105,10 @@ const Notification: FC<NotificationProps> = ({
         <IconButton
           className="size-min"
           size={14}
-          onClick={onDelete}
+          onClick={() => {
+            deleteNotificationById(notificationId)
+            onRequestChanges()
+          }}
           tooltip="Remove notification"
           Icon={IoTrash}
         />
@@ -107,16 +117,9 @@ const Notification: FC<NotificationProps> = ({
   )
 }
 
-export type NotificationsModalProps = {
-  notifications: NotificationProps[]
-  onMarkAllAsRead: () => void
-}
-
-const NotificationsModal: FC<NotificationsModalProps> = ({
-  notifications,
-  onMarkAllAsRead,
-}) => {
+const NotificationsModal: FC = () => {
   const {clearActiveSidebarModal} = useSidebarModalActiveStore()
+  const {notifications, onMarkAllAsRead} = useNotifications()
 
   const notificationsUnread = useMemo(() => {
     const notificationsUnreadProps: React.JSX.Element[] = []
