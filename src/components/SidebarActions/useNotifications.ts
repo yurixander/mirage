@@ -14,7 +14,12 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useCachedNotifications, {
   type LocalNotificationData,
 } from "./useCachedNotifications"
-import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
+import {
+  assert,
+  checkIsDirectRoom,
+  CommonAssertion,
+  getImageUrl,
+} from "@/utils/util"
 import {ButtonVariant} from "../Button"
 import {UserPowerLevel} from "../RosterUser"
 
@@ -43,11 +48,18 @@ const useNotifications = () => {
       .filter(room => room.getMyMembership() === "invite")
 
     for (const invitedRoom of invitedRooms) {
+      const isDirectRoom = checkIsDirectRoom(client, invitedRoom)
+      const inviteSenderMember = invitedRoom.getAvatarFallbackMember()
+
+      const avatarUrl = isDirectRoom
+        ? inviteSenderMember?.getMxcAvatarUrl()
+        : invitedRoom.getMxcAvatarUrl()
+
       newNotifications.push({
         body: "invited you to join this room",
         notificationId: invitedRoom.roomId,
         notificationTime: Date.now(),
-        avatarSenderUrl: getImageUrl(invitedRoom.getMxcAvatarUrl(), client),
+        avatarSenderUrl: getImageUrl(avatarUrl, client),
         senderName: invitedRoom.name,
         isRead: false,
         actions: [
@@ -65,6 +77,7 @@ const useNotifications = () => {
             name: "Decline",
             onClick: () => {
               void client.leave(invitedRoom.roomId).then(() => {
+                // TODO: Check because with direct rooms it does not delete the notification.
                 deleteNotificationById(invitedRoom.roomId)
               })
             },
@@ -118,11 +131,13 @@ const useNotifications = () => {
 
   useEventListener(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {
     if (toStartOfTimeline) {
-      return // Ignore past events when starting sync.
+      // Ignore past events when starting sync.
+      return
     }
 
     if (room === undefined || client === null) {
-      return // If there is no room, the event may not be a mention event.
+      // If there is no room, the event may not be a mention event.
+      return
     }
 
     saveNotification(getNotificationFromMentionEvent(client, event, room))

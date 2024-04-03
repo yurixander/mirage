@@ -1,7 +1,13 @@
 import {type RosterUserProps, UserPowerLevel} from "@/components/RosterUser"
 import {UserStatus} from "@/components/UserProfile"
 import dayjs from "dayjs"
-import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
+import {
+  type Room,
+  type MatrixClient,
+  EventTimeline,
+  Direction,
+  EventType,
+} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -146,6 +152,31 @@ export async function getImage(data: string): Promise<HTMLImageElement> {
   })
 }
 
+// TODO: Is temporary, change it when the matrix js sdk is updated.
+export function checkIsDirectRoom(
+  client: MatrixClient | null,
+  room: Room
+): boolean {
+  if (client === null) {
+    return false
+  }
+
+  const myUserId = client.getUserId()
+
+  assert(myUserId !== null, "The client must be logged in.")
+
+  return (
+    room
+      .getLiveTimeline()
+      .getState(Direction.Forward)
+      ?.events.get(EventType.RoomMember)
+      // Find event by userId.
+      // If the client user is not in the room event then this room is not a direct chat for the user.
+      ?.get(myUserId)?.event.content?.is_direct ?? false
+  )
+}
+
+// TODO: Is temporary, change it when the matrix js sdk is updated.
 export function getDirectRoomsIds(client: MatrixClient): string[] {
   const directRooms = client.getAccountData("m.direct")
   const content = directRooms?.event.content
