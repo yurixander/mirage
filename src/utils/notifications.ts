@@ -10,7 +10,7 @@ export function getNotificationsData(): LocalNotificationData[] {
   return savedNotifications ? JSON.parse(savedNotifications) : []
 }
 
-function setNotificationsData(notifications: LocalNotificationData[]) {
+export function setNotificationsData(notifications: LocalNotificationData[]) {
   localStorage.setItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY,
     JSON.stringify(notifications)
@@ -23,6 +23,15 @@ export function saveNotification(notification: LocalNotificationData | null) {
   }
 
   const savedNotifications = getNotificationsData()
+
+  const isExist = savedNotifications.some(
+    prevNotification =>
+      prevNotification.notificationId === notification.notificationId
+  )
+
+  if (isExist) {
+    return
+  }
 
   savedNotifications.push(notification)
 

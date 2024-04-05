@@ -4,30 +4,32 @@ import {
   type MatrixEvent,
   type Room,
   RoomEvent,
-  RoomMemberEvent,
   type RoomState,
   RoomStateEvent,
 } from "matrix-js-sdk"
 import useEventListener from "./useEventListener"
 import useConnection from "./useConnection"
-import {saveNotification} from "@/utils/notifications"
+import {getNotificationsData, saveNotification} from "@/utils/notifications"
 import {
   type LocalNotificationData,
   NotificationsSyncState,
   useNotificationsStateStore,
 } from "@/components/SidebarActions/useCachedNotifications"
-import {useCallback} from "react"
 import {UserPowerLevel} from "@/components/RosterUser"
 import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
+import {useMemo} from "react"
 
 const useGlobalEventListeners = () => {
   const {client} = useConnection()
-  const {setNotificationsState, containsUnreadNotifications} =
-    useNotificationsStateStore()
+  const {onRequestChanges, state} = useNotificationsStateStore()
 
-  const onRequestChanges = useCallback(() => {
-    setNotificationsState(NotificationsSyncState.Pending)
-  }, [setNotificationsState])
+  const containsUnreadNotifications = useMemo(() => {
+    if (state === NotificationsSyncState.Processed) {
+      return false
+    }
+
+    return getNotificationsData().some(notification => notification.isRead)
+  }, [state])
 
   useEventListener(RoomStateEvent.Events, (event, state) => {
     if (event.getType() === EventType.RoomMember) {
@@ -68,6 +70,21 @@ const useGlobalEventListeners = () => {
   })
 
   return {containsUnreadNotifications}
+}
+
+export const getNotificationFromInviteEvent = (
+  client: MatrixClient,
+  room: Room
+): LocalNotificationData | null => {
+  return {
+    body: "invited you to join this room",
+    notificationId: room.roomId,
+    notificationTime: Date.now(),
+    avatarSenderUrl: getImageUrl(room.getMxcAvatarUrl(), client),
+    senderName: room.name,
+    isRead: false,
+    hasActions: true,
+  }
 }
 
 const getNotificationFromPowerLevelEvent = (
@@ -216,9 +233,9 @@ const getNotificationFromMembersEvent = (
     }
   }
 
-  if (member?.membership !== "ban" && prevContent.membership === "ban") {
-    // The user ban was removed.
+  // The user ban was removed.
 
+  if (member?.membership !== "ban" && prevContent.membership === "ban") {
     return {
       body: `your ban has been lifted in the ${roomName}`,
       isRead: false,

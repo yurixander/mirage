@@ -9,6 +9,7 @@ export type LocalNotificationData = {
   notificationTime: number
   senderName?: string
   avatarSenderUrl?: string
+  hasActions?: boolean
 }
 
 export enum NotificationsSyncState {
@@ -19,20 +20,19 @@ export enum NotificationsSyncState {
 type NotificationsState = {
   state: NotificationsSyncState | null
   setNotificationsState: (state: NotificationsSyncState) => void
-  containsUnreadNotifications: boolean
-  refreshContainsUnreadNotifications: (newValue: boolean) => void
+  onRequestChanges: () => void
 }
 
 export const useNotificationsStateStore = create<NotificationsState>(set => ({
   state: null,
-  containsUnreadNotifications: false,
-  refreshContainsUnreadNotifications: newValue => {
-    set(_state => ({containsUnreadNotifications: newValue}))
-  },
   setNotificationsState: newState => {
     set(_state => ({
       state: newState,
-      containsUnreadNotifications: newState === NotificationsSyncState.Pending,
+    }))
+  },
+  onRequestChanges: () => {
+    set(_state => ({
+      state: NotificationsSyncState.Pending,
     }))
   },
 }))
@@ -40,31 +40,24 @@ export const useNotificationsStateStore = create<NotificationsState>(set => ({
 const useCachedNotifications = () => {
   const {state, setNotificationsState} = useNotificationsStateStore()
 
-  const [cachedNotifications, setNotifications] = useState<
-    LocalNotificationData[]
-  >([])
+  const [notifications, setNotifications] = useState<LocalNotificationData[]>(
+    []
+  )
 
   useEffect(() => {
     if (
       state === NotificationsSyncState.Processed &&
-      cachedNotifications.length > 0
+      notifications.length > 0
     ) {
       return
     }
 
     setNotifications(getNotificationsData())
     setNotificationsState(NotificationsSyncState.Processed)
-  }, [cachedNotifications.length, setNotificationsState, state])
-
-  // useEffect(() => {
-  //   // Check if you have unread notifications with the `some` method and it will refresh the global status of notifications.
-  //   refreshContainsUnreadNotifications(
-  //     cachedNotifications.some(notification => !notification.isRead)
-  //   )
-  // }, [cachedNotifications, refreshContainsUnreadNotifications])
+  }, [notifications.length, setNotificationsState, state])
 
   return {
-    cachedNotifications,
+    notifications,
   }
 }
 
