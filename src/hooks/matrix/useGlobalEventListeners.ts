@@ -4,7 +4,8 @@ import {
   type MatrixEvent,
   type Room,
   RoomEvent,
-  type RoomMember,
+  RoomMemberEvent,
+  type RoomState,
   RoomStateEvent,
 } from "matrix-js-sdk"
 import useEventListener from "./useEventListener"
@@ -29,6 +30,15 @@ const useGlobalEventListeners = () => {
   }, [setNotificationsState])
 
   useEventListener(RoomStateEvent.Events, (event, state) => {
+    if (event.getType() === EventType.RoomMember) {
+      if (client === null) {
+        return
+      }
+
+      saveNotification(getNotificationFromMembersEvent(event, client, state))
+      onRequestChanges()
+    }
+
     // TODO: Handle here power level events.
     if (event.getType() !== EventType.RoomPowerLevels || client === null) {
       return
@@ -38,6 +48,7 @@ const useGlobalEventListeners = () => {
     saveNotification(
       getNotificationFromPowerLevelEvent(client, event, state.roomId)
     )
+
     onRequestChanges()
   })
 
@@ -54,14 +65,6 @@ const useGlobalEventListeners = () => {
 
     saveNotification(getNotificationFromMentionEvent(client, event, room))
     onRequestChanges()
-  })
-
-  useEventListener(RoomStateEvent.Members, (event, _state, member) => {
-    if (client === null || client.getUserId() !== member.userId) {
-      return
-    }
-
-    saveNotification(getNotificationFromMembersEvent(event, client, member))
   })
 
   return {containsUnreadNotifications}
@@ -142,7 +145,7 @@ const getNotificationFromMentionEvent = (
 const getNotificationFromMembersEvent = (
   event: MatrixEvent,
   client: MatrixClient,
-  member: RoomMember
+  state: RoomState
 ): LocalNotificationData | null => {
   const eventId = event.getId()
   const myUserId = client.getUserId()
@@ -154,6 +157,12 @@ const getNotificationFromMembersEvent = (
   const reason = hasReason === undefined ? "" : `for <<${hasReason}>>`
 
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
+
+  const userId = client.getUserId()
+
+  assert(userId !== null, CommonAssertion.UserIdNotFound)
+
+  const member = state.getMember(userId)
 
   switch (event.getContent().membership) {
     case "leave": {
@@ -207,7 +216,7 @@ const getNotificationFromMembersEvent = (
     }
   }
 
-  if (member.membership !== "ban" && prevContent.membership === "ban") {
+  if (member?.membership !== "ban" && prevContent.membership === "ban") {
     // The user ban was removed.
 
     return {

@@ -38,28 +38,30 @@ export const useNotificationsStateStore = create<NotificationsState>(set => ({
 }))
 
 const useCachedNotifications = () => {
-  const {refreshContainsUnreadNotifications, state, setNotificationsState} =
-    useNotificationsStateStore()
+  const {state, setNotificationsState} = useNotificationsStateStore()
 
   const [cachedNotifications, setNotifications] = useState<
     LocalNotificationData[]
   >([])
 
   useEffect(() => {
-    if (state === NotificationsSyncState.Processed) {
+    if (
+      state === NotificationsSyncState.Processed &&
+      cachedNotifications.length > 0
+    ) {
       return
     }
 
     setNotifications(getNotificationsData())
     setNotificationsState(NotificationsSyncState.Processed)
-  }, [setNotificationsState, state])
+  }, [cachedNotifications.length, setNotificationsState, state])
 
-  useEffect(() => {
-    // Check if you have unread notifications with the `some` method and it will refresh the global status of notifications.
-    refreshContainsUnreadNotifications(
-      cachedNotifications.some(notification => !notification.isRead)
-    )
-  }, [cachedNotifications, refreshContainsUnreadNotifications])
+  // useEffect(() => {
+  //   // Check if you have unread notifications with the `some` method and it will refresh the global status of notifications.
+  //   refreshContainsUnreadNotifications(
+  //     cachedNotifications.some(notification => !notification.isRead)
+  //   )
+  // }, [cachedNotifications, refreshContainsUnreadNotifications])
 
   return {
     cachedNotifications,

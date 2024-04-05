@@ -46,6 +46,7 @@ export function timeFormatter(timestamp: number): string {
 
 export enum CommonAssertion {
   EventIdNotFound = "To confirm that an event happened, event id should not be undefined.",
+  UserIdNotFound = "The client must be logged in.",
 }
 
 export function assert(
@@ -163,7 +164,7 @@ export function checkIsDirectRoom(
 
   const myUserId = client.getUserId()
 
-  assert(myUserId !== null, "The client must be logged in.")
+  assert(myUserId !== null, CommonAssertion.UserIdNotFound)
 
   return (
     room
