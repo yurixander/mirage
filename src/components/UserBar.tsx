@@ -1,5 +1,11 @@
 import {useMemo, type FC} from "react"
-import {getImageUrl, stringToColor, trim} from "../utils/util"
+import {
+  assert,
+  CommonAssertion,
+  getImageUrl,
+  stringToColor,
+  trim,
+} from "../utils/util"
 import IconButton from "./IconButton"
 import UserProfile, {
   type UserProfileProps as UserProfileProperties,
@@ -23,14 +29,24 @@ const UserBar: FC<UserBarProps> = ({className}) => {
   const {client, isConnecting} = useConnection()
 
   const userData = useMemo(() => {
-    const userId = client?.getUserId() ?? null
-
-    if (userId === null || client === null) {
+    if (client === null) {
       return
     }
 
-    const user = client?.getUser(userId)
-    const avatarUrl = user?.avatarUrl
+    const userId = client.getUserId()
+
+    // TODO: Improve this so that the user's credentials are obtained if they log in.
+    assert(userId !== null, CommonAssertion.UserIdNotFound)
+
+    const user = client.getUser(userId)
+
+    assert(
+      user !== null,
+      "Your same user should exist for there to be a session."
+    )
+
+    const avatarUrl = user.avatarUrl
+    const displayName = user.displayName ?? userId
 
     const status = client.isLoggedIn()
       ? UserStatus.Online
@@ -38,15 +54,8 @@ const UserBar: FC<UserBarProps> = ({className}) => {
         ? UserStatus.Idle
         : UserStatus.Offline
 
-    if (avatarUrl === undefined) {
-      return
-    }
-
-    const imgUrl = getImageUrl(avatarUrl, client)
-    const displayName = user?.displayName ?? userId
-
     const userBarProperties: UserProfileProperties = {
-      avatarUrl: imgUrl,
+      avatarUrl: getImageUrl(avatarUrl, client),
       displayName: trim(displayName, MAX_NAME_LENGTH),
       text: trim(getUsernameByUserId(userId), MAX_NAME_LENGTH),
       displayNameColor: stringToColor(userId),

@@ -110,7 +110,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           <ChatInput
             onAttach={openFilePicker}
             onSend={() => {
-              void sendTextMessage(MsgType.Text, query)
+              void sendTextMessage(query)
 
               setQuery("")
             }}
