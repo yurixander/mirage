@@ -33,7 +33,7 @@ export function saveNotification(notification: LocalNotificationData | null) {
     return
   }
 
-  savedNotifications.push(notification)
+  savedNotifications.unshift(notification)
 
   setNotificationsData(savedNotifications)
 }
