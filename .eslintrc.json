@@ -23,6 +23,8 @@
     ]
   },
   "extends": [
+    "eslint:recommended",
+    "plugin:react/jsx-runtime",
     "standard-with-typescript",
     "eslint-config-prettier",
     "plugin:storybook/recommended",
@@ -82,6 +84,7 @@
     ],
     "promise/always-return": "off",
     "unicorn/number-literal-case": "off",
-    "unicorn/prefer-spread": "off"
+    "unicorn/prefer-spread": "off",
+    "react/jsx-key": "error"
   }
 }

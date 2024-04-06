@@ -118,11 +118,13 @@ const DirectMessageModal: FC = () => {
 
         <div className="flex h-full flex-col gap-1 overflow-y-scroll scrollbar-hide">
           {results === null
-            ? directChats.map(directChatProps => (
-                <DirectChatRecent {...directChatProps} />
+            ? directChats.map((directChatProps, index) => (
+                <DirectChatRecent key={index} {...directChatProps} />
               ))
-            : results.map(userProps => (
-                <div className="w-full cursor-pointer rounded-lg p-2 hover:bg-neutral-200">
+            : results.map((userProps, index) => (
+                <div
+                  key={index}
+                  className="w-full cursor-pointer rounded-lg p-2 hover:bg-neutral-200">
                   <UserProfile {...userProps} />
                 </div>
               ))}
