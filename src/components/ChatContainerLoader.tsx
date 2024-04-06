@@ -16,6 +16,7 @@ const ChatContainerLoader: FC = () => {
 
       <div className="flex gap-1">
         <SkeletonCircle />
+
         <div className="inline-flex flex-col gap-1">
           <SkeletonLine className="h-4 w-60" />
 
@@ -84,12 +85,12 @@ type SkeletonProps = {
   className?: string
 }
 
-const SkeletonLine: FC<SkeletonProps> = ({className = "h-3 w-80"}) => {
+const SkeletonLine: FC<SkeletonProps> = ({className}) => {
   return (
     <div
       className={twMerge(
         "overflow-hidden rounded-lg bg-neutral-300",
-        className
+        className ?? "h-3 w-80"
       )}>
       <LoadingEffect />
     </div>
