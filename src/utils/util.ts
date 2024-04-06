@@ -312,6 +312,7 @@ export async function getRoomMembers(
     }
 
     adminUsersId.push(adminId)
+
     const member = joinedMembers[adminId]
     const displayName = normalizeName(member.display_name)
     const isAdmin = powerLevel === UserPowerLevel.Admin

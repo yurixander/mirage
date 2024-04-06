@@ -46,6 +46,8 @@ const useGlobalEventListeners = () => {
       saveNotification(
         getNotificationFromMembersEvent(event, client, member, oldMembership)
       )
+
+      onRequestChanges()
     }
   )
 
@@ -66,21 +68,23 @@ const useGlobalEventListeners = () => {
         member.userId
       )
     )
+
+    onRequestChanges()
   })
 
   useEventListener(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {
+    // Ignore past events when starting sync.
     if (toStartOfTimeline) {
-      // Ignore past events when starting sync.
       return
     }
 
+    // If there is no room, the event may not be a mention event.
     if (room === undefined || client === null) {
-      // If there is no room, the event may not be a mention event.
       return
     }
 
+    // If the room is the one that is active, no notification is sent.
     if (activeRoomId === room.roomId) {
-      // If the room is the one that is active, no notification is sent.
       return
     }
 
@@ -155,8 +159,8 @@ const getNotificationFromMentionEvent = (
 
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
 
+  // If there are no mentions there is no mention event.
   if (!event.getContent()["m.mentions"]?.user_ids?.includes(room.myUserId)) {
-    // If there are no mentions there is no mention event.
     return null
   }
 

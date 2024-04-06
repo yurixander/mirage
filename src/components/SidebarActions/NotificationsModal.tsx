@@ -53,7 +53,6 @@ const NotificationsModal: FC = () => {
           onClick={() => {
             markAllNotificationsAsRead()
             onRequestChanges()
-
             clearActiveSidebarModal()
           }}
         />
@@ -78,6 +77,7 @@ const NotificationsModal: FC = () => {
 
         {notificationsMarkAsRead.map(notification => (
           <Notification
+            key={notification.notificationId}
             {...notification}
             hasActions={notification.hasActions ?? false}
             onRequestChanges={onRequestChanges}
