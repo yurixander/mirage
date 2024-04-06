@@ -24,12 +24,12 @@ export function saveNotification(notification: LocalNotificationData | null) {
 
   const savedNotifications = getNotificationsData()
 
-  const isExist = savedNotifications.some(
+  const exists = savedNotifications.some(
     prevNotification =>
       prevNotification.notificationId === notification.notificationId
   )
 
-  if (isExist) {
+  if (exists) {
     return
   }
 

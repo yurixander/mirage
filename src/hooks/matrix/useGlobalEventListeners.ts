@@ -131,7 +131,7 @@ const getNotificationFromPowerLevelEvent = (
   if (currentLevels > previousLevels) {
     body = `you have been promoted to ${powerLevel} at ${roomName}`
   } else if (currentLevels < previousLevels) {
-    body = `you has demoted you to ${powerLevel} at ${roomName}`
+    body = `you have been demoted to ${powerLevel} at ${roomName}`
   }
 
   // If the body is null then the power levels event did not occur or was not processed by the room.

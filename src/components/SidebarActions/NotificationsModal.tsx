@@ -68,6 +68,7 @@ const NotificationsModal: FC = () => {
         <div className="bg-slate-100">
           {notificationsUnread.map(notification => (
             <Notification
+              key={notification.notificationId}
               {...notification}
               hasActions={notification.hasActions ?? false}
               onRequestChanges={onRequestChanges}

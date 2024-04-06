@@ -7,7 +7,6 @@ import ImageMessage from "../../components/ImageMessage"
 import TextMessage from "../../components/TextMessage"
 import EventMessage from "../../components/EventMessage"
 import {twMerge} from "tailwind-merge"
-import {MsgType} from "matrix-js-sdk"
 import Button, {ButtonVariant} from "../../components/Button"
 import UnreadIndicator from "../../components/UnreadIndicator"
 import {
@@ -27,7 +26,7 @@ export type ChatContainerProps = {
 }
 
 const ChatContainer: FC<ChatContainerProps> = ({className}) => {
-  const {query, setQuery} = useChatInput()
+  const {messageText, setMessageText} = useChatInput()
 
   const {
     messagesProp,
@@ -110,12 +109,12 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           <ChatInput
             onAttach={openFilePicker}
             onSend={() => {
-              void sendTextMessage(query)
+              void sendTextMessage(messageText)
 
-              setQuery("")
+              setMessageText("")
             }}
-            onValueChange={setQuery}
-            value={query}
+            onValueChange={setMessageText}
+            value={messageText}
           />
 
           <div className="flex gap-3">

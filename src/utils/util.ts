@@ -154,10 +154,7 @@ export async function getImage(data: string): Promise<HTMLImageElement> {
 }
 
 // TODO: Is temporary, change it when the matrix js sdk is updated.
-export function checkIsDirectRoom(
-  client: MatrixClient | null,
-  room: Room
-): boolean {
+export function isDirectRoom(client: MatrixClient | null, room: Room): boolean {
   if (client === null) {
     return false
   }
