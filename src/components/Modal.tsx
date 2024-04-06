@@ -1,5 +1,5 @@
 import {assert} from "@/utils/util"
-import type React from "react";
+import type React from "react"
 import {type FC} from "react"
 import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"

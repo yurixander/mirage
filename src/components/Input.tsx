@@ -1,4 +1,4 @@
-import type React from "react";
+import type React from "react"
 import {useState, type FC} from "react"
 import IconButton from "./IconButton"
 import Label from "./Label"
