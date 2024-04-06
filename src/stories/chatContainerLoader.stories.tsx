@@ -6,6 +6,7 @@ type Story = StoryObj<typeof ChatContainerLoader>
 const meta: Meta<typeof ChatContainerLoader> = {
   component: ChatContainerLoader,
 }
+
 const render = () => <ChatContainerLoader />
 
 export const Default: Story = {
