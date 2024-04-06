@@ -34,18 +34,17 @@ const Notification: FC<NotificationProps> = ({
     }
 
     void client.joinRoom(notificationId)
-
     deleteNotificationById(notificationId)
     onRequestChanges()
   })
 
+  // TODO: Launch `Toast` if you rejected the room invitation.
   const onLeaveRoom = useMatrixAction(client => {
     if (!hasActions) {
       return
     }
 
     void client.leave(notificationId)
-
     deleteNotificationById(notificationId)
     onRequestChanges()
   })

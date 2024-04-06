@@ -3,8 +3,8 @@ import {
   type MatrixEvent,
   type Room,
   RoomEvent,
+  type RoomMember,
   RoomMemberEvent,
-  type RoomState,
 } from "matrix-js-sdk"
 import useEventListener from "./useEventListener"
 import useConnection from "./useConnection"
@@ -35,7 +35,17 @@ const useGlobalEventListeners = () => {
   useEventListener(
     RoomMemberEvent.Membership,
     (event, member, oldMembership) => {
-      console.log("Membership", event, member, oldMembership)
+      if (
+        client === null ||
+        event.getRoomId() === activeRoomId ||
+        member.userId !== client.getUserId()
+      ) {
+        return
+      }
+
+      saveNotification(
+        getNotificationFromMembersEvent(event, client, member, oldMembership)
+      )
     }
   )
 
@@ -57,37 +67,6 @@ const useGlobalEventListeners = () => {
       )
     )
   })
-
-  // useEventListener(RoomStateEvent.Members, (event, state, _member) => {
-  //   if (client === null || activeRoomId === state.roomId) {
-  //     return
-  //   }
-
-  //   console.log(event.getType())
-
-  //   let notification: LocalNotificationData | null = null
-
-  //   switch (event.getType()) {
-  //     case EventType.RoomPowerLevels: {
-  //       notification = getNotificationFromPowerLevelEvent(
-  //         client,
-  //         event,
-  //         state.roomId
-  //       )
-
-  //       break
-  //     }
-  //     case EventType.RoomMember: {
-  //       console.log("Of Members;", _member)
-  //       // notification = getNotificationFromMembersEvent(event, client, state)
-
-  //       break
-  //     }
-  //   }
-
-  //   saveNotification(notification)
-  //   onRequestChanges()
-  // })
 
   useEventListener(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {
     if (toStartOfTimeline) {
@@ -194,28 +173,30 @@ const getNotificationFromMentionEvent = (
 const getNotificationFromMembersEvent = (
   event: MatrixEvent,
   client: MatrixClient,
-  state: RoomState
+  member: RoomMember,
+  oldMembership?: string
 ): LocalNotificationData | null => {
   const eventId = event.getId()
-  const myUserId = client.getUserId()
   const sender = event.getSender()
-  const prevContent = event.getPrevContent()
-  const room = client.getRoom(event.getRoomId())
-  const roomName = room?.name ?? "room"
+  const room = client.getRoom(member.roomId)
   const hasReason = event.getContent().reason
   const reason = hasReason === undefined ? "" : `for <<${hasReason}>>`
 
+  assert(
+    room !== null,
+    "There should be a room for there to be room member events."
+  )
+
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
 
-  const userId = client.getUserId()
+  switch (member.membership) {
+    case "invite": {
+      saveNotification(getNotificationFromInviteEvent(client, room))
 
-  assert(userId !== null, CommonAssertion.UserIdNotFound)
-
-  const member = state.getMember(userId)
-
-  switch (event.getContent().membership) {
+      break
+    }
     case "leave": {
-      if (sender === myUserId && prevContent.membership === "invite") {
+      if (sender === member.userId && oldMembership === "invite") {
         return {
           body: "you rejected the invitation",
           isRead: false,
@@ -224,9 +205,9 @@ const getNotificationFromMembersEvent = (
           senderName: room?.name,
           avatarSenderUrl: getImageUrl(room?.getMxcAvatarUrl(), client),
         }
-      } else if (sender !== myUserId && prevContent.membership === "join") {
+      } else if (sender !== member.userId && oldMembership === "join") {
         return {
-          body: `expelled you from the ${roomName} ${reason}`,
+          body: `expelled you from the ${room.name} ${reason}`,
           isRead: false,
           notificationId: eventId,
           notificationTime: event.localTimestamp,
@@ -237,22 +218,9 @@ const getNotificationFromMembersEvent = (
 
       break
     }
-    case "join": {
-      if (prevContent.membership === "invite") {
-        return {
-          body: `you accepted the invitation to join this room`,
-          isRead: false,
-          notificationId: eventId,
-          notificationTime: event.localTimestamp,
-          senderName: room?.name,
-          avatarSenderUrl: getImageUrl(room?.getMxcAvatarUrl(), client),
-        }
-      }
-      break
-    }
     case "ban": {
       return {
-        body: `you have been banned from the ${roomName} ${reason}`,
+        body: `you have been banned from the ${room.name} ${reason}`,
         isRead: false,
         notificationId: eventId,
         notificationTime: event.localTimestamp,
@@ -266,10 +234,9 @@ const getNotificationFromMembersEvent = (
   }
 
   // The user ban was removed.
-
-  if (member?.membership !== "ban" && prevContent.membership === "ban") {
+  if (member.membership !== "ban" && oldMembership === "ban") {
     return {
-      body: `your ban has been lifted in the ${roomName}`,
+      body: `your ban has been lifted in the ${room.name}`,
       isRead: false,
       notificationId: eventId,
       notificationTime: event.localTimestamp,
