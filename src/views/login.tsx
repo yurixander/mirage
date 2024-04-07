@@ -61,6 +61,7 @@ const LoginView: FC = () => {
       credentials === null ||
       isConnecting ||
       syncState === SyncState.Error ||
+      syncState === SyncState.Stopped ||
       client !== null
     ) {
       return

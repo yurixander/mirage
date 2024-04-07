@@ -6,6 +6,8 @@ import {getDirectRoomsIds, getRoomsFromSpace, normalizeName} from "@/utils/util"
 import {RoomType, type RoomProps} from "@/components/Room"
 import {useActiveSpaceIdStore} from "./useSpaces"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import {saveNotification} from "@/utils/notifications"
+import {getNotificationFromInviteEvent} from "./useGlobalEventListeners"
 
 const useRooms = () => {
   const [rooms, setRooms] = useState<RoomProps[]>([])
@@ -37,6 +39,7 @@ const useRooms = () => {
 
   // Initial gathering of rooms, when a connection is
   // established or re-established.
+
   useEffect(() => {
     if (client === null) {
       console.info("Client is null; cannot fetch rooms.")
@@ -46,7 +49,17 @@ const useRooms = () => {
 
     const storeRooms =
       activeSpaceId === null
-        ? client.getRooms().filter(room => room.getMyMembership() === "join")
+        ? client.getRooms().filter(room => {
+            if (room.getMyMembership() === "join") {
+              return true
+            }
+
+            if (room.getMyMembership() === "invite") {
+              saveNotification(getNotificationFromInviteEvent(client, room))
+            }
+
+            return false
+          })
         : getRoomsFromSpace(activeSpaceId, client)
 
     const directRoomIds = getDirectRoomsIds(client)

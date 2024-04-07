@@ -1,13 +1,16 @@
-import {stringToColor, timeFormatter} from "@/utils/util"
-import {type FC} from "react"
-import {IoCloseCircle, IoTime} from "react-icons/io5"
-import AvatarImage, {AvatarType} from "../Avatar"
+import {useMemo, type FC} from "react"
+import {IoCloseCircle} from "react-icons/io5"
 import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
 import Typography, {TypographyVariant} from "../Typography"
 import {twMerge} from "tailwind-merge"
 import IconButton from "../IconButton"
-import useNotifications from "./useNotifications"
 import {useSidebarModalActiveStore} from "./useSidebarActions"
+import useCachedNotifications, {
+  useNotificationsStateStore,
+  type LocalNotificationData,
+} from "./useCachedNotifications"
+import {markAllNotificationsAsRead} from "@/utils/notifications"
+import Notification from "./Notification"
 
 export type NotificationActions = {
   name: string
@@ -15,74 +18,20 @@ export type NotificationActions = {
   onClick: () => void
 }
 
-export type NotificationProps = {
-  event: string
-  lastNotificationTime: number
-  id: string
-  displayName?: string
-  actions?: NotificationActions[]
-}
-
-const Notification: FC<NotificationProps> = ({
-  displayName,
-  event,
-  actions,
-  lastNotificationTime,
-}) => {
-  const userComponent =
-    displayName === undefined ? undefined : (
-      <b style={{color: stringToColor(displayName)}}>{displayName}</b>
-    )
-
-  return (
-    <div className="flex gap-2 p-2">
-      {displayName !== undefined && (
-        <div className="overflow-hidden rounded-lg">
-          <AvatarImage
-            isRounded={false}
-            isLarge={false}
-            avatarType={AvatarType.Profile}
-            displayName={displayName}
-          />
-        </div>
-      )}
-
-      <div className="flex flex-col gap-1">
-        <div className="flex flex-row">
-          <Typography>
-            {userComponent} {event}
-          </Typography>
-        </div>
-
-        <div className="flex items-center gap-[2px]">
-          <IoTime size={13} />
-
-          <Typography variant={TypographyVariant.P}>
-            {timeFormatter(lastNotificationTime)}
-          </Typography>
-        </div>
-
-        {actions !== undefined && (
-          <div className="mt-2 flex flex-row gap-1">
-            {actions.map(action => (
-              <Button
-                onClick={action.onClick}
-                label={action.name}
-                variant={action.actionVariant}
-                color={ButtonColor.Black}
-                size={ButtonSize.Small}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
 const NotificationsModal: FC = () => {
   const {clearActiveSidebarModal} = useSidebarModalActiveStore()
-  const {notifications} = useNotifications()
+  const {onRequestChanges} = useNotificationsStateStore()
+  const {notifications} = useCachedNotifications()
+
+  const notificationsUnread: LocalNotificationData[] = useMemo(
+    () => notifications.filter(notification => !notification.isRead),
+    [notifications]
+  )
+
+  const notificationsMarkAsRead: LocalNotificationData[] = useMemo(
+    () => notifications.filter(notification => notification.isRead),
+    [notifications]
+  )
 
   return (
     <div
@@ -100,11 +49,12 @@ const NotificationsModal: FC = () => {
           variant={ButtonVariant.TextLink}
           size={ButtonSize.Small}
           color={ButtonColor.Black}
+          label="Mark all as read"
           onClick={() => {
-            // TODO: Close modal after mark all as read.
+            markAllNotificationsAsRead()
+            onRequestChanges()
             clearActiveSidebarModal()
           }}
-          label="Mark all as read"
         />
 
         <IconButton
@@ -115,8 +65,24 @@ const NotificationsModal: FC = () => {
       </div>
 
       <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
-        {notifications.map(notification => (
-          <Notification {...notification} />
+        <div className="bg-slate-100">
+          {notificationsUnread.map(notification => (
+            <Notification
+              key={notification.notificationId}
+              {...notification}
+              hasActions={notification.hasActions ?? false}
+              onRequestChanges={onRequestChanges}
+            />
+          ))}
+        </div>
+
+        {notificationsMarkAsRead.map(notification => (
+          <Notification
+            key={notification.notificationId}
+            {...notification}
+            hasActions={notification.hasActions ?? false}
+            onRequestChanges={onRequestChanges}
+          />
         ))}
       </div>
     </div>

@@ -2,7 +2,6 @@ import {type Meta, type StoryObj} from "@storybook/react"
 import EventMessage, {
   type EventMessageProps as EventMessageProperties,
 } from "../components/EventMessage"
-import React from "react"
 
 type Story = StoryObj<typeof EventMessage>
 

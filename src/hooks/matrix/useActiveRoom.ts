@@ -168,13 +168,16 @@ const useActiveRoom = () => {
   }, [activeRoomId, clear, client, filesContent])
 
   const sendTextMessage = useCallback(
-    async (type: MsgType, body: string) => {
+    async (body: string) => {
       if (activeRoomId === null || client === null) {
         return
       }
 
       // TODO: Show toast when an error has occurred.
-      await client.sendMessage(activeRoomId, {body, msgtype: type})
+      await client.sendMessage(activeRoomId, {
+        body,
+        msgtype: MsgType.Text,
+      })
     },
     [activeRoomId, client]
   )

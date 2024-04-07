@@ -1,7 +1,13 @@
 import {type RosterUserProps, UserPowerLevel} from "@/components/RosterUser"
 import {UserStatus} from "@/components/UserProfile"
 import dayjs from "dayjs"
-import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
+import {
+  type Room,
+  type MatrixClient,
+  EventTimeline,
+  Direction,
+  EventType,
+} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -36,6 +42,11 @@ export type ImageUploadedInfo = {
 
 export function timeFormatter(timestamp: number): string {
   return dayjs(timestamp).format("hh:mm a")
+}
+
+export enum CommonAssertion {
+  EventIdNotFound = "To confirm that an event happened, event id should not be undefined.",
+  UserIdNotFound = "The client should be logged in.",
 }
 
 export function assert(
@@ -142,6 +153,28 @@ export async function getImage(data: string): Promise<HTMLImageElement> {
   })
 }
 
+// TODO: Is temporary, change it when the matrix js sdk is updated.
+export function isDirectRoom(client: MatrixClient | null, room: Room): boolean {
+  if (client === null) {
+    return false
+  }
+
+  const myUserId = client.getUserId()
+
+  assert(myUserId !== null, CommonAssertion.UserIdNotFound)
+
+  return (
+    room
+      .getLiveTimeline()
+      .getState(Direction.Forward)
+      ?.events.get(EventType.RoomMember)
+      // Find event by userId.
+      // If the client user is not in the room event then this room is not a direct chat for the user.
+      ?.get(myUserId)?.event.content?.is_direct ?? false
+  )
+}
+
+// TODO: Is temporary, change it when the matrix js sdk is updated.
 export function getDirectRoomsIds(client: MatrixClient): string[] {
   const directRooms = client.getAccountData("m.direct")
   const content = directRooms?.event.content
@@ -216,6 +249,7 @@ export function deleteMessage(
   })
 }
 
+// TODO: Check why existing two const for admin power level.
 const MIN_ADMIN_POWER_LEVEL = 50
 
 export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
@@ -266,18 +300,19 @@ export async function getRoomMembers(
   const users = Object.entries(powerLevels)
   const adminUsersId: string[] = []
 
-  const MIN_MOD_POWER_LEVEL = 50
-  const MIN_ADMIN_POWER_LEVEL = 100
-
   for (const [adminId, powerLevel] of users) {
-    if (typeof powerLevel !== "number" || powerLevel < MIN_MOD_POWER_LEVEL) {
+    if (
+      typeof powerLevel !== "number" ||
+      powerLevel < UserPowerLevel.Moderator
+    ) {
       continue
     }
 
     adminUsersId.push(adminId)
+
     const member = joinedMembers[adminId]
     const displayName = normalizeName(member.display_name)
-    const isAdmin = powerLevel === MIN_ADMIN_POWER_LEVEL
+    const isAdmin = powerLevel === UserPowerLevel.Admin
 
     membersProperty.push({
       // TODO: Use actual props instead of dummy data.

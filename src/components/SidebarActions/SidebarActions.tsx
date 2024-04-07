@@ -15,6 +15,7 @@ import useSidebarActions, {
 import DirectMessageModal from "./DirectMessageModal"
 import NotificationsModal from "./NotificationsModal"
 import Modal from "../Modal"
+import useGlobalEventListeners from "@/hooks/matrix/useGlobalEventListeners"
 
 const SidebarModalsHandler: FC = () => {
   const {sidebarModalActive} = useSidebarModalActiveStore()
@@ -52,6 +53,7 @@ export type SidebarActionsProps = {
 
 const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
   const {onLogout, setActiveSidebarModal} = useSidebarActions()
+  const {containsUnreadNotifications} = useGlobalEventListeners()
 
   return (
     <>
@@ -80,7 +82,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({className}) => {
           }}
           tooltip="Notifications"
           Icon={IoNotificationsSharp}
-          isDotVisible
+          isDotVisible={containsUnreadNotifications}
         />
 
         <IconButton

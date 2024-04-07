@@ -6,8 +6,8 @@ import {useCallback, useEffect, useState} from "react"
 const useChatInput = () => {
   const {client} = useConnection()
   const {activeRoomId} = useActiveRoomIdStore()
-  const [query, setQuery] = useState("")
-  const debouncedText = useDebounced(query, 500)
+  const [messageText, setMessageText] = useState("")
+  const debouncedText = useDebounced(messageText, 500)
 
   const sendEventTyping = useCallback(async () => {
     if (activeRoomId === null || client === null) {
@@ -25,7 +25,7 @@ const useChatInput = () => {
     void sendEventTyping()
   }, [debouncedText, sendEventTyping])
 
-  return {query, setQuery}
+  return {messageText, setMessageText}
 }
 
 export default useChatInput
