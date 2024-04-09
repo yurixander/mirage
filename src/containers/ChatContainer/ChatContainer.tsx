@@ -1,5 +1,8 @@
 import TypingIndicator from "../../components/TypingIndicator"
-import useActiveRoom, {MessageKind} from "@/hooks/matrix/useActiveRoom"
+import useActiveRoom, {
+  MessageKind,
+  MessagesState,
+} from "@/hooks/matrix/useActiveRoom"
 import ImageMessage from "../../components/ImageMessage"
 import TextMessage from "../../components/TextMessage"
 import EventMessage from "../../components/EventMessage"
@@ -13,6 +16,7 @@ import ChatHeader from "./ChatHeader"
 import ChatInput from "./ChatInput"
 import {useMemo, type FC} from "react"
 import WelcomeChatContainer from "./WelcomeChatContainer"
+import ChatContainerLoader from "./ChatContainerLoader"
 
 export type ChatContainerProps = {
   className?: string
@@ -31,6 +35,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     clear,
     openFilePicker,
     activeRoomId,
+    messagesState,
   } = useActiveRoom()
 
   const messages = useMemo(
@@ -100,7 +105,11 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               })
             }}
             className="mx-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
-            {messages}
+            {messagesState === MessagesState.Loaded ? (
+              messages
+            ) : (
+              <ChatContainerLoader />
+            )}
           </div>
 
           <div className="mx-4 flex flex-col gap-3">

@@ -28,6 +28,11 @@ import {type MessageBaseProps} from "@/components/MessageContainer"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useFilePicker} from "use-file-picker"
 
+export enum MessagesState {
+  Charging,
+  Loaded,
+}
+
 export enum MessageKind {
   Text,
   Image,
@@ -61,6 +66,7 @@ const useActiveRoom = () => {
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const isMountedReference = useIsMountedRef()
   const [roomName, setRoomName] = useState<string>(" ")
+  const [messagesState, setMessagesState] = useState<MessagesState>()
 
   const {openFilePicker, filesContent, clear} = useFilePicker({
     accept: "image/*",
@@ -79,6 +85,8 @@ const useActiveRoom = () => {
 
     const room = client.getRoom(activeRoomId)
 
+    setMessagesState(MessagesState.Charging)
+
     void client.getRoomSummary(activeRoomId).then(roomSummary => {
       if (roomSummary.name === undefined) {
         return
@@ -94,6 +102,8 @@ const useActiveRoom = () => {
     void handleRoomEvents(client, room).then(newMessages => {
       if (isMountedReference.current) {
         setMessagesProp(newMessages)
+
+        setMessagesState(MessagesState.Loaded)
       }
     })
   }, [client, activeRoomId, isMountedReference])
@@ -203,6 +213,7 @@ const useActiveRoom = () => {
     roomName,
     filesContent,
     clear,
+    messagesState,
   }
 }
 
