@@ -3,7 +3,7 @@ import Typography, {TypographyVariant} from "../../components/Typography"
 import {ReactSVG} from "react-svg"
 import {StaticAssetPath} from "@/utils/util"
 
-const WelcomeChatContainer: FC = () => {
+const WelcomeChat: FC = () => {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-4">
       <ReactSVG src={StaticAssetPath.AppLogo} />
@@ -18,4 +18,4 @@ const WelcomeChatContainer: FC = () => {
   )
 }
 
-export default WelcomeChatContainer
+export default WelcomeChat

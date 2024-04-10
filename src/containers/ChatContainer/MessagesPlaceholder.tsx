@@ -2,7 +2,7 @@ import {type FC} from "react"
 import LoadingEffect from "../../components/LoadingEffect"
 import {twMerge} from "tailwind-merge"
 
-const ChatContainerLoader: FC = () => {
+const MessagesPlaceholder: FC = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-1">
@@ -79,7 +79,7 @@ const ChatContainerLoader: FC = () => {
   )
 }
 
-export default ChatContainerLoader
+export default MessagesPlaceholder
 
 type SkeletonProps = {
   className?: string

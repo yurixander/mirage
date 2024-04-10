@@ -15,8 +15,8 @@ import useChatInput from "./useChatInput"
 import ChatHeader from "./ChatHeader"
 import ChatInput from "./ChatInput"
 import {useMemo, type FC} from "react"
-import WelcomeChatContainer from "./WelcomeChatContainer"
-import ChatContainerLoader from "./ChatContainerLoader"
+import WelcomeChat from "./WelcomeChat"
+import MessagesPlaceholder from "./MessagesPlaceholder"
 
 export type ChatContainerProps = {
   className?: string
@@ -82,7 +82,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
       </Modal>
 
       {activeRoomId === null ? (
-        <WelcomeChatContainer />
+        <WelcomeChat />
       ) : (
         <div
           id={ModalRenderLocation.ChatContainer}
@@ -108,7 +108,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
             {messagesState === MessagesState.Loaded ? (
               messages
             ) : (
-              <ChatContainerLoader />
+              <MessagesPlaceholder />
             )}
           </div>
 
