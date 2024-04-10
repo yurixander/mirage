@@ -8,6 +8,7 @@ import {useActiveSpaceIdStore} from "./useSpaces"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {saveNotification} from "@/utils/notifications"
 import {getNotificationFromInviteEvent} from "./useGlobalEventListeners"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 const useRooms = () => {
   const [rooms, setRooms] = useState<RoomProps[]>([])
@@ -50,11 +51,11 @@ const useRooms = () => {
     const storeRooms =
       activeSpaceId === null
         ? client.getRooms().filter(room => {
-            if (room.getMyMembership() === "join") {
+            if (room.getMyMembership() === KnownMembership.Join) {
               return true
             }
 
-            if (room.getMyMembership() === "invite") {
+            if (room.getMyMembership() === KnownMembership.Invite) {
               saveNotification(getNotificationFromInviteEvent(client, room))
             }
 

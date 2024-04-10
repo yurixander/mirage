@@ -1,5 +1,6 @@
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import React from "react"
 
 export type NotificationDotProps = {
   children: React.JSX.Element

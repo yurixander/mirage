@@ -20,6 +20,7 @@ import {LiaSlackHash} from "react-icons/lia"
 import Modal, {ModalRenderLocation} from "../../components/Modal"
 import SmartActionBar from "@/containers/SmartActionBar"
 import useChatInput from "./useChatInput"
+import React from "react"
 
 export type ChatContainerProps = {
   className?: string

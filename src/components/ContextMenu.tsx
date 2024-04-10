@@ -1,4 +1,4 @@
-import type React from "react"
+import React from "react"
 import {useCallback, useEffect, type FC} from "react"
 import {create} from "zustand"
 

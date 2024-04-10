@@ -1,4 +1,5 @@
 import {useState, useCallback} from "react"
+import type React from "react"
 
 type SelectionToggleHook = (
   isInitiallySelected: boolean,

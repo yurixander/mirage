@@ -18,6 +18,7 @@ import {UserPowerLevel} from "@/components/RosterUser"
 import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
 import {useMemo} from "react"
 import useActiveRoomIdStore from "./useActiveRoomIdStore"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 const useGlobalEventListeners = () => {
   const {client} = useConnection()
@@ -194,13 +195,16 @@ const getNotificationFromMembersEvent = (
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
 
   switch (member.membership) {
-    case "invite": {
+    case KnownMembership.Invite: {
       saveNotification(getNotificationFromInviteEvent(client, room))
 
       break
     }
-    case "leave": {
-      if (sender === member.userId && oldMembership === "invite") {
+    case KnownMembership.Leave: {
+      if (
+        sender === member.userId &&
+        oldMembership === KnownMembership.Invite
+      ) {
         return {
           body: "you rejected the invitation",
           isRead: false,
@@ -209,7 +213,10 @@ const getNotificationFromMembersEvent = (
           senderName: room?.name,
           avatarSenderUrl: getImageUrl(room?.getMxcAvatarUrl(), client),
         }
-      } else if (sender !== member.userId && oldMembership === "join") {
+      } else if (
+        sender !== member.userId &&
+        oldMembership === KnownMembership.Join
+      ) {
         return {
           body: `expelled you from the ${room.name} ${reason}`,
           isRead: false,
@@ -222,7 +229,7 @@ const getNotificationFromMembersEvent = (
 
       break
     }
-    case "ban": {
+    case KnownMembership.Ban: {
       return {
         body: `you have been banned from the ${room.name} ${reason}`,
         isRead: false,
@@ -238,7 +245,10 @@ const getNotificationFromMembersEvent = (
   }
 
   // The user ban was removed.
-  if (member.membership !== "ban" && oldMembership === "ban") {
+  if (
+    member.membership !== KnownMembership.Ban &&
+    oldMembership === KnownMembership.Ban
+  ) {
     return {
       body: `your ban has been lifted in the ${room.name}`,
       isRead: false,
