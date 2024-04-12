@@ -12,7 +12,7 @@ module.exports = {
     extend: {
       backgroundColor: {
         statusMessageBg: "transparentize(#e53e3e, 0.9)",
-        modalOverlay: "rgba(0, 0, 0, 0.5)",
+        modalOverlay: "rgba(0, 0, 0, 0.728)",
       },
       boxShadow: {
         checkBox: "inset 0 0 5px #D9D9D9",
