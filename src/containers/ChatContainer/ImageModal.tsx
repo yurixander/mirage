@@ -3,6 +3,7 @@ import {type FC} from "react"
 import {saveAs} from "file-saver"
 import {IoMdDownload, IoMdTrash} from "react-icons/io"
 import {IoArrowRedo, IoArrowUndo, IoCloseCircle} from "react-icons/io5"
+import ImageZoom from "@/components/ImageZoom"
 
 export type ImageModalProps = {
   imageUrl?: string
@@ -71,11 +72,7 @@ const ImageModal: FC<ImageModalProps> = ({
       </div>
 
       <div className="flex size-full items-center justify-center overflow-auto">
-        <img
-          className="max-w-full object-fill"
-          src={imageUrl}
-          alt="Message content"
-        />
+        <ImageZoom src={imageUrl} />
       </div>
     </div>
   )
