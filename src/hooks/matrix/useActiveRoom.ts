@@ -10,6 +10,8 @@ import {
   RoomMemberEvent,
   RoomEvent,
   type MatrixEvent,
+  JoinRule,
+  HistoryVisibility,
 } from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 import useEventListener from "./useEventListener"
@@ -27,6 +29,7 @@ import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {type MessageBaseProps} from "@/components/MessageContainer"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useFilePicker} from "use-file-picker"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 export enum MessagesState {
   Charging,
@@ -458,13 +461,13 @@ function handleMemberLeave(
   }
 
   switch (previousMembership) {
-    case "invite": {
+    case KnownMembership.Invite: {
       return `${user} has canceled the invitation to ${previousDisplayName}`
     }
-    case "ban": {
+    case KnownMembership.Ban: {
       return `${user} has removed the ban from ${displayName}`
     }
-    case "join": {
+    case KnownMembership.Join: {
       return `${user} has left the room`
     }
     default: {
@@ -494,8 +497,11 @@ const handleMemberEvent = (
 
   switch (eventContent.membership) {
     // TODO: Handle here other types of RoomMember events.
-    case "join": {
-      if (previousMembership === "invite" || previousMembership !== "join") {
+    case KnownMembership.Join: {
+      if (
+        previousMembership === KnownMembership.Invite ||
+        previousMembership !== KnownMembership.Join
+      ) {
         text = `${user} has joined to the room`
       } else if (
         previousDisplayName !== undefined &&
@@ -521,17 +527,17 @@ const handleMemberEvent = (
 
       break
     }
-    case "invite": {
+    case KnownMembership.Invite: {
       text = `${user} invited ${displayName}`
 
       break
     }
-    case "ban": {
+    case KnownMembership.Ban: {
       text = `${user} has banned ${previousDisplayName}: ${eventContent.reason}`
 
       break
     }
-    case "leave": {
+    case KnownMembership.Leave: {
       text = handleMemberLeave(
         user,
         client.getUser(stateKey)?.displayName,
@@ -615,17 +621,17 @@ const handleJoinRulesEvent = async (
   let text: string | null = null
 
   switch (event.getContent().join_rule) {
-    case "invite": {
+    case JoinRule.Invite: {
       text = `${user} restricted the room to guests`
 
       break
     }
-    case "public": {
+    case JoinRule.Public: {
       text = `${user} made the room public to anyone who knows the link.`
 
       break
     }
-    case "private": {
+    case JoinRule.Restricted: {
       text = `${user} made the room private. Only admins can invite now.`
 
       break
@@ -686,22 +692,22 @@ const handleHistoryVisibilityEvent = async (
   let content: string | null = null
 
   switch (event.getContent().history_visibility) {
-    case "shared": {
+    case HistoryVisibility.Shared: {
       content = `${user} made the future history of the room visible to all members of the room`
 
       break
     }
-    case "invited": {
+    case HistoryVisibility.Invited: {
       content = `${user} made the room future history visible to all room members, from the moment they are invited.`
 
       break
     }
-    case "joined": {
+    case HistoryVisibility.Joined: {
       content = `${user} made the room future history visible to all room members, from the moment they are joined.`
 
       break
     }
-    case "world_readable": {
+    case HistoryVisibility.WorldReadable: {
       content = `${user} made the future history of the room visible to anyone people.`
 
       break

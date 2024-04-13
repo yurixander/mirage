@@ -24,8 +24,7 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/jsx-runtime",
-    "standard-with-typescript",
+    "love",
     "eslint-config-prettier",
     "plugin:storybook/recommended",
     "plugin:tailwindcss/recommended",
@@ -84,7 +83,6 @@
     ],
     "promise/always-return": "off",
     "unicorn/number-literal-case": "off",
-    "unicorn/prefer-spread": "off",
-    "react/jsx-key": "error"
+    "unicorn/prefer-spread": "off"
   }
 }

@@ -1,4 +1,5 @@
 import {create} from "zustand"
+import type React from "react"
 
 type ModelState = {
   elements: React.JSX.Element[]

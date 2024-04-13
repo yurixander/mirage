@@ -1,6 +1,7 @@
 import {type FC} from "react"
 import {cleanDisplayName, timeFormatter} from "../utils/util"
 import AvatarImage, {AvatarType} from "./Avatar"
+import React from "react"
 
 export type MessageBaseProps = {
   authorAvatarUrl?: string
