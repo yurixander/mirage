@@ -2,6 +2,7 @@ import IconButton from "@/components/IconButton"
 import {type FC, useRef, useEffect} from "react"
 import {IoIosHappy} from "react-icons/io"
 import {IoAttach, IoPaperPlane} from "react-icons/io5"
+import React from "react"
 
 export type ChatInputProps = {
   value: string

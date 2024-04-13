@@ -44,7 +44,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         message.kind === MessageKind.Text ? (
           <TextMessage key={message.data.id} {...message.data} />
         ) : message.kind === MessageKind.Image ? (
-          <ImageMessage key={message.data.id} {...message.data}/>
+          <ImageMessage key={message.data.id} {...message.data} />
         ) : message.kind === MessageKind.Event ? (
           <EventMessage key={message.data.id} {...message.data} />
         ) : (
