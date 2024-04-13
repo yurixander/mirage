@@ -6,11 +6,7 @@ type Story = StoryObj<typeof ImageModal>
 const meta: Meta<typeof ImageModal> = {
   component: ImageModal,
 }
-const render = () => (
-  <ImageModal
-    onClose={() => {}}
-  />
-)
+const render = () => <ImageModal onClose={() => {}} />
 
 export const Default: Story = {
   render,
