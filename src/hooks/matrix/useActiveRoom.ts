@@ -20,6 +20,7 @@ import {
   deleteMessage,
   getImageUrl,
   getLastReadEventIdFromRoom,
+  ImageSizes,
   isUserRoomAdmin,
   sendImageMessageFromFile,
   stringToColor,
@@ -365,7 +366,11 @@ const handleMessagesEvent = async (
   }
 
   const messageBaseProperties: MessageBaseProps = {
-    authorAvatarUrl: getImageUrl(user.avatarUrl, client),
+    authorAvatarUrl: getImageUrl(
+      user.avatarUrl,
+      client,
+      ImageSizes.MessageAndProfile
+    ),
     authorDisplayName,
     authorDisplayNameColor: stringToColor(authorDisplayName),
     id: eventId,
@@ -392,6 +397,7 @@ const handleMessagesEvent = async (
         kind: MessageKind.Image,
         data: {
           ...messageBaseProperties,
+          text: "",
           imageUrl: getImageUrl(eventContent.url as string, client),
         },
       }

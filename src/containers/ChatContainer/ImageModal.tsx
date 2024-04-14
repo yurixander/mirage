@@ -76,7 +76,7 @@ const ImageModal: FC<ImageModalProps> = ({
         />
       </div>
 
-      <div className="flex size-full items-center justify-center overflow-auto">
+      <div className="flex size-full items-center justify-center">
         {imageUrl === undefined ? (
           <div className="flex flex-col items-center gap-2 rounded-lg bg-white p-2">
             <IoInformationCircle size={28} color="red" />
