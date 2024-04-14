@@ -5,6 +5,7 @@ export enum ButtonVariant {
   Primary,
   Secondary,
   TextLink,
+  Loading,
 }
 
 export enum ButtonSize {
@@ -43,35 +44,42 @@ const Button: FC<ButtonProps> = ({
   const sizeClass =
     size === ButtonSize.Small
       ? "p-1 text-xs rounded-md px-2"
-      : "rounded-xl border-2 p-3"
+      : "h-8 min-w-32 px-4 text-sm rounded"
 
-  const variantClass =
-    variant === ButtonVariant.Primary
-      ? color === ButtonColor.Black
-        ? "bg-black border-none text-white"
-        : "bg-purple-700 border-purple-900 text-white"
-      : variant === ButtonVariant.Secondary
-        ? "bg-purple-100 text-purple-800 border-none hover:bg-purple-200"
-        : variant === ButtonVariant.TextLink
-          ? color === ButtonColor.Black
-            ? "bg-none text-black hover:bg-stone-100 border-none underline"
-            : "bg-none text-purple-800 hover:bg-purple-100 border-none underline"
-          : "bg-purple-700 border-purple-900 text-white"
-
+  const variantClass = isDisabled
+    ? "border disabled:border-[#15803D] disabled:bg-[#22C55E] text-white"
+    : variant === ButtonVariant.Primary
+      ? "border border-green-700 bg-green-500 text-white duration-200 hover:border-green-600 hover:bg-green-400 hover:shadow active:translate-y-1"
+      : variant === ButtonVariant.Loading
+        ? "border border-green-600 bg-green-500 text-white"
+        : variant === ButtonVariant.Secondary
+          ? "bg-green-200 text-green-700 duration-200 hover:bg-green-100 hover:shadow active:translate-y-1"
+          : variant === ButtonVariant.TextLink
+            ? "bg-none hover:text-purple-800 hover:bg-purple-100 border-none underline duration-200 active:translate-y-1 "
+            : ""
   return (
     <button
+      type="button"
       className={twMerge(
-        "font-strong box-border flex origin-center items-center justify-center outline-none active:translate-y-[1px] disabled:translate-y-[1px]",
-        sizeClass,
+        "flex items-center justify-center ",
         variantClass,
+        sizeClass,
         className
       )}
-      disabled={isLoading ?? isDisabled}
-      onClick={isDisabled ? undefined : onClick}
-      tabIndex={isDisabled ? undefined : 0}>
-      {text}
+      disabled={variant === ButtonVariant.Loading || isDisabled}
+      onClick={onClick}>
+      {isLoading ? <Loading /> : text}
     </button>
   )
 }
 
 export default Button
+
+const Loading: FC = () => {
+  return (
+    <div className="flex items-center justify-center gap-2">
+      <div className="size-4 animate-rotation rounded-full border-2 border-white border-t-[rgba(255,255,255,0.5)]" />
+      <span>Loadin...</span>
+    </div>
+  )
+}
