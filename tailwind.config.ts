@@ -55,6 +55,7 @@ module.exports = {
       "dot-jump": "dot-jump 400ms ease-in-out infinite alternate",
       "loading": "loading 1.5s infinite ease-in-out",
       "indicator": "indicator 300ms",
+      "rotation" : "rotation 1s infinite linear"
     },
     keyframes: {
       // Usage: animate-[keyframe-name]
@@ -129,6 +130,14 @@ module.exports = {
       "rotate": {
         "50%": {opacity: "0.5", filter: "blur(1px)"},
         "100%": {transform: "rotate(360deg)"},
+      },
+      "rotation":{
+        from:{
+          transform: "rotate(0deg)"
+        },
+        to:{
+          transform: "rotate(360deg)"
+        }
       },
     },
   },
