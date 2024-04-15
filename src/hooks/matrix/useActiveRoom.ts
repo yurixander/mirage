@@ -32,11 +32,6 @@ import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useFilePicker} from "use-file-picker"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
-export enum MessagesState {
-  Charging,
-  Loaded,
-}
-
 export enum MessageKind {
   Text,
   Image,
@@ -70,7 +65,7 @@ const useActiveRoom = () => {
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const isMountedReference = useIsMountedRef()
   const [roomName, setRoomName] = useState<string>(" ")
-  const [messagesState, setMessagesState] = useState<MessagesState>()
+  const [isLoadingMessages, setIsMessagesLoading] = useState(false)
 
   const {openFilePicker, filesContent, clear} = useFilePicker({
     accept: "image/*",
@@ -89,7 +84,7 @@ const useActiveRoom = () => {
 
     const room = client.getRoom(activeRoomId)
 
-    setMessagesState(MessagesState.Charging)
+    setIsMessagesLoading(true)
 
     void client.getRoomSummary(activeRoomId).then(roomSummary => {
       if (roomSummary.name === undefined) {
@@ -106,7 +101,7 @@ const useActiveRoom = () => {
     void handleRoomEvents(client, room).then(newMessages => {
       if (isMountedReference.current) {
         setMessagesProp(newMessages)
-        setMessagesState(MessagesState.Loaded)
+        setIsMessagesLoading(false)
       }
     })
   }, [client, activeRoomId, isMountedReference])
@@ -216,7 +211,7 @@ const useActiveRoom = () => {
     roomName,
     filesContent,
     clear,
-    messagesState,
+    isLoadingMessages,
   }
 }
 

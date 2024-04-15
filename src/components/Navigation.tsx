@@ -54,8 +54,8 @@ const Navigation: FC<NavigationProps> = ({className}) => {
               tooltip="All rooms"
             />
 
-            {spaces.map(server => (
-              <ServerListItem {...server} />
+            {spaces.map((server, index) => (
+              <ServerListItem key={index} {...server} />
             ))}
 
             <div className="flex w-full justify-center">
