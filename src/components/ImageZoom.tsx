@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {type FC, useState} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type ImageZoomProps = {
@@ -17,7 +17,7 @@ const ZOOM_LEVEL_MAX = 300
 
 const COORDINATE_TO_PERCENT = 100
 
-const ImageZoom: React.FC<ImageZoomProps> = ({className, src}) => {
+const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
   const [zoom, setZoom] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(DEFAULT_ZOOM_LEVEL)
   const [position, setPosition] = useState<ImagePoints>({x: 0, y: 0})
@@ -54,6 +54,7 @@ const ImageZoom: React.FC<ImageZoomProps> = ({className, src}) => {
     }
 
     event.preventDefault()
+
     const delta = event.deltaY * -0.01
 
     setZoomLevel(prevZoomLevel =>
