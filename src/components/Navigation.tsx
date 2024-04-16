@@ -38,11 +38,13 @@ const Navigation: FC<NavigationProps> = ({className}) => {
   return (
     <>
       <Modal isVisible={isCreateRoomModalVisible}>
-        <CreateRoom
-          onClose={() => {
-            setIsCreateRoomModalVisible(false)
-          }}
-        />
+        <div className="min-w-messageMaxWidth">
+          <CreateRoom
+            onClose={() => {
+              setIsCreateRoomModalVisible(false)
+            }}
+          />
+        </div>
       </Modal>
 
       <div

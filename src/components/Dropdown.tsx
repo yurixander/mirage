@@ -1,25 +1,78 @@
-import {type FC} from "react"
-
-export type DropdownOptionProps = {
-  label: string
-  value: string
-  onClick: () => void
-}
+import {type FC, useState} from "react"
+import {type IconType} from "react-icons"
+import {IoIosArrowDown} from "react-icons/io"
+import {twMerge} from "tailwind-merge"
 
 export type DropdownProps = {
   options: DropdownOptionProps[]
 }
 
 const Dropdown: FC<DropdownProps> = ({options}) => {
+  const [visivility, setVisivility] = useState("hidden")
+  const [label, setLabel] = useState(options[0].label)
+  const [indexIcon, setIndexIcon] = useState(0)
+
   return (
-    <select className="flex items-center rounded-lg border border-neutral-300 bg-white p-2">
-      {options.map((props, index) => (
-        <option key={index} value={props.value} onClick={props.onClick}>
-          {props.label}
-        </option>
-      ))}
-    </select>
+    <div className="relative inline-block">
+      <button
+        onClick={() => {
+          setVisivility(visivility === "hidden" ? "inline-block" : "hidden")
+        }}
+        type="button"
+        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded border bg-neutral-50 p-2 text-sm">
+        <DropdownIcon Icon={options[indexIcon].Icon} />
+
+        <div className="w-full text-left">{label}</div>
+
+        <IoIosArrowDown />
+      </button>
+
+      <div
+        className={twMerge(
+          "absolute w-full rounded bg-white shadow-2xl",
+          visivility
+        )}>
+        {options.map((option, index) => (
+          <DropdownOption
+            label={option.label}
+            Icon={option.Icon}
+            onClick={() => {
+              setIndexIcon(index)
+              setLabel(option.label)
+              setVisivility("hidden")
+              option.onClick()
+            }}
+          />
+        ))}
+      </div>
+    </div>
   )
 }
 
 export default Dropdown
+
+type DropdownOptionProps = {
+  Icon: IconType
+  label: string
+  onClick: () => void
+}
+
+const DropdownOption: FC<DropdownOptionProps> = ({Icon, label, onClick}) => {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex w-full cursor-pointer items-center justify-center gap-2 bg-neutral-50 p-2 text-left text-sm hover:bg-slate-100">
+      <Icon size={20} />
+      <div className="w-full">{label}</div>
+    </button>
+  )
+}
+
+type DropdownIconProps = {
+  Icon: IconType
+}
+
+const DropdownIcon: FC<DropdownIconProps> = ({Icon}) => {
+  return <Icon size={20} />
+}

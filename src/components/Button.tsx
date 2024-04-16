@@ -43,8 +43,8 @@ const Button: FC<ButtonProps> = ({
 
   const sizeClass =
     size === ButtonSize.Small
-      ? "p-1 text-xs rounded-md px-2"
-      : "h-8 min-w-32 px-4 text-sm rounded"
+      ? "p-1 text-xs rounded px-2"
+      : "p-2 min-w-32 px-4 text-sm rounded"
 
   const variantClass = isDisabled
     ? "border disabled:border-[#15803D] disabled:bg-[#22C55E] text-white"
@@ -55,13 +55,13 @@ const Button: FC<ButtonProps> = ({
         : variant === ButtonVariant.Secondary
           ? "bg-green-200 text-green-700 duration-200 hover:bg-green-100 hover:shadow active:translate-y-1"
           : variant === ButtonVariant.TextLink
-            ? "bg-none hover:text-purple-800 hover:bg-purple-100 border-none underline duration-200 active:translate-y-1 "
+            ? "bg-none hover:text-purple-800 hover:bg-purple-100 border-none underline duration-200 active:translate-y-1"
             : ""
   return (
     <button
       type="button"
       className={twMerge(
-        "flex items-center justify-center ",
+        "flex items-center justify-center",
         variantClass,
         sizeClass,
         className
