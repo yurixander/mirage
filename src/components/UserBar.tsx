@@ -55,7 +55,7 @@ const UserBar: FC<UserBarProps> = ({className}) => {
         : UserStatus.Offline
 
     const userBarProperties: UserProfileProperties = {
-      avatarUrl: getImageUrl(avatarUrl, client),
+      avatarUrl: getImageUrl(avatarUrl, client, 48),
       displayName: trim(displayName, MAX_NAME_LENGTH),
       text: trim(getUsernameByUserId(userId), MAX_NAME_LENGTH),
       displayNameColor: stringToColor(userId),

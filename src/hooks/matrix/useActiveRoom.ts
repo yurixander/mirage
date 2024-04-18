@@ -20,6 +20,7 @@ import {
   deleteMessage,
   getImageUrl,
   getLastReadEventIdFromRoom,
+  ImageSizes,
   isUserRoomAdmin,
   sendImageMessageFromFile,
   stringToColor,
@@ -64,6 +65,7 @@ const useActiveRoom = () => {
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const isMountedReference = useIsMountedRef()
   const [roomName, setRoomName] = useState<string>(" ")
+  const [isLoadingMessages, setIsMessagesLoading] = useState(false)
 
   const {openFilePicker, filesContent, clear} = useFilePicker({
     accept: "image/*",
@@ -82,6 +84,8 @@ const useActiveRoom = () => {
 
     const room = client.getRoom(activeRoomId)
 
+    setIsMessagesLoading(true)
+
     void client.getRoomSummary(activeRoomId).then(roomSummary => {
       if (roomSummary.name === undefined) {
         return
@@ -97,6 +101,7 @@ const useActiveRoom = () => {
     void handleRoomEvents(client, room).then(newMessages => {
       if (isMountedReference.current) {
         setMessagesProp(newMessages)
+        setIsMessagesLoading(false)
       }
     })
   }, [client, activeRoomId, isMountedReference])
@@ -206,6 +211,7 @@ const useActiveRoom = () => {
     roomName,
     filesContent,
     clear,
+    isLoadingMessages,
   }
 }
 
@@ -354,7 +360,11 @@ const handleMessagesEvent = async (
   }
 
   const messageBaseProperties: MessageBaseProps = {
-    authorAvatarUrl: getImageUrl(user.avatarUrl, client),
+    authorAvatarUrl: getImageUrl(
+      user.avatarUrl,
+      client,
+      ImageSizes.MessageAndProfile
+    ),
     authorDisplayName,
     authorDisplayNameColor: stringToColor(authorDisplayName),
     id: eventId,
@@ -381,6 +391,7 @@ const handleMessagesEvent = async (
         kind: MessageKind.Image,
         data: {
           ...messageBaseProperties,
+          text: "",
           imageUrl: getImageUrl(eventContent.url as string, client),
         },
       }

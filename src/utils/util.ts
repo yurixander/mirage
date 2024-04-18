@@ -74,17 +74,27 @@ export function validateUrl(url: string): boolean {
   }
 }
 
+export enum ImageSizes {
+  Server = 47,
+  MessageAndProfile = 40,
+  ProfileLarge = 60,
+}
+
 export function getImageUrl(
   url: string | null | undefined,
-  client: MatrixClient | null
+  client: MatrixClient | null,
+  size?: number
 ): string | undefined {
   if (url === null || url === undefined || client === null) {
     return undefined
   }
 
-  const SIZE = 48
+  const imageUrl =
+    size === undefined
+      ? client.mxcUrlToHttp(url)
+      : client.mxcUrlToHttp(url, size, size, "scale")
 
-  return client.mxcUrlToHttp(url, SIZE, SIZE, "scale") ?? undefined
+  return imageUrl ?? undefined
 }
 
 export async function sendImageMessageFromFile(
@@ -317,7 +327,11 @@ export async function getRoomMembers(
     membersProperty.push({
       // TODO: Use actual props instead of dummy data.
       userProfileProps: {
-        avatarUrl: getImageUrl(member.avatar_url, client),
+        avatarUrl: getImageUrl(
+          member.avatar_url,
+          client,
+          ImageSizes.MessageAndProfile
+        ),
         text: "Online",
         displayName,
         displayNameColor: stringToColor(displayName),
@@ -346,7 +360,11 @@ export async function getRoomMembers(
     membersProperty.push({
       // TODO: Use actual props instead of dummy data.
       userProfileProps: {
-        avatarUrl: getImageUrl(member.avatar_url, client),
+        avatarUrl: getImageUrl(
+          member.avatar_url,
+          client,
+          ImageSizes.MessageAndProfile
+        ),
         text: "Online",
         displayName,
         displayNameColor: stringToColor(displayName),
