@@ -28,6 +28,7 @@
     "file-saver": "^2.0.5",
     "immutable": "^5.0.0-beta.5",
     "matrix-js-sdk": "^31.6.1",
+    "olm": "https://packages.matrix.org/npm/olm/olm-3.1.4.tgz",
     "postcss": "^8.4.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

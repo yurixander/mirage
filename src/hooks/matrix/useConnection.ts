@@ -1,4 +1,3 @@
-import {type Credentials} from "@/utils/util"
 import {
   type MatrixClient,
   createClient,
@@ -7,6 +6,8 @@ import {
 } from "matrix-js-sdk"
 import {useCallback} from "react"
 import {create} from "zustand"
+import "olm"
+import {type Credentials} from "./useCachedCredentials"
 
 type ZustandClientStore = {
   client: MatrixClient | null
@@ -71,6 +72,9 @@ const useConnection = () => {
 
         const newClient = createClient(credentials)
 
+        // TODO: Handle here cryptography.
+        void newClient.initCrypto()
+
         // NOTE: No need to remove the listener, as the client is a singleton.
         newClient.once(
           ClientEvent.Sync,
@@ -103,6 +107,7 @@ const useConnection = () => {
         // emit events when connected or when it fails to connect
         // via the client sync event above.
         // TODO: Handle connection errors (`.catch`).
+
         void newClient.startClient({
           lazyLoadMembers: true,
           initialSyncLimit: 1,
