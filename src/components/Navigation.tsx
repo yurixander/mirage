@@ -36,7 +36,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
           <div className="m-2 flex flex-col items-center">
             <ReactSVG src={StaticAssetPath.AppLogo} />
 
-            <div className="font-iowan flex items-end">
+            <div className="flex items-end font-iowan">
               <div>Mirage</div>
 
               <span className="ml-[2px] text-xs italic">©</span>
