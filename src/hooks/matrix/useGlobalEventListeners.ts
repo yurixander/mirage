@@ -30,7 +30,7 @@ const useGlobalEventListeners = () => {
       return false
     }
 
-    return getNotificationsData().some(notification => notification.isRead)
+    return getNotificationsData().some(notification => !notification.isRead)
   }, [state])
 
   useEventListener(

@@ -1,5 +1,6 @@
+import {type ServerListItemProps} from "@/components/ServerListItem"
 import useConnection from "@/hooks/matrix/useConnection"
-import {type Room} from "matrix-js-sdk"
+import {getImageUrl} from "@/utils/util"
 import {useEffect, useState} from "react"
 import {create} from "zustand"
 
@@ -16,7 +17,7 @@ export const useActiveSpaceIdStore = create<ActiveSpaceIdStore>(set => ({
 }))
 
 const useSpaces = () => {
-  const [spaces, setSpace] = useState<Room[] | null>(null)
+  const [spaces, setSpace] = useState<ServerListItemProps[]>([])
   const {client, syncState} = useConnection()
   const {activeSpaceId, setActiveSpaceId} = useActiveSpaceIdStore()
 
@@ -27,8 +28,22 @@ const useSpaces = () => {
       return
     }
 
-    setSpace(client.getRooms().filter(room => room.isSpaceRoom()))
-  }, [client, syncState])
+    const spacesProp: ServerListItemProps[] = client
+      .getRooms()
+      .filter(room => room.isSpaceRoom())
+      .map(server => {
+        return {
+          avatarUrl: getImageUrl(server.getMxcAvatarUrl(), client),
+          isActive: server.roomId === activeSpaceId,
+          tooltip: server.normalizedName,
+          onClick: () => {
+            setActiveSpaceId(server.roomId)
+          },
+        }
+      })
+
+    setSpace(spacesProp)
+  }, [activeSpaceId, client, setActiveSpaceId, syncState])
 
   return {spaces, activeSpaceId, setActiveSpaceId, client}
 }

@@ -1,8 +1,8 @@
-import {useMemo, useState, type FC} from "react"
+import {useState, type FC} from "react"
 import ServerListItem from "./ServerListItem"
 import useSpaces from "@/hooks/matrix/useSpaces"
 import {twMerge} from "tailwind-merge"
-import {StaticAssetPath, getImageUrl} from "@/utils/util"
+import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
 import CreateRoom from "./CreateRoom"
 import Modal from "./Modal"
@@ -12,39 +12,19 @@ export type NavigationProps = {
 }
 
 const Navigation: FC<NavigationProps> = ({className}) => {
-  const {spaces, activeSpaceId, setActiveSpaceId, client} = useSpaces()
+  const {spaces, activeSpaceId, setActiveSpaceId} = useSpaces()
 
   const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] =
     useState(false)
 
-  const spaceElements = useMemo(() => {
-    if (client === null || spaces === null) {
-      return []
-    }
-
-    return spaces.map(server => (
-      <ServerListItem
-        avatarUrl={getImageUrl(server.getMxcAvatarUrl(), client)}
-        key={server.roomId}
-        isActive={server.roomId === activeSpaceId}
-        tooltip={server.normalizedName}
-        onClick={() => {
-          setActiveSpaceId(server.roomId)
-        }}
-      />
-    ))
-  }, [activeSpaceId, client, setActiveSpaceId, spaces])
-
   return (
     <>
       <Modal isVisible={isCreateRoomModalVisible}>
-        <div className="min-w-messageMaxWidth">
-          <CreateRoom
-            onClose={() => {
-              setIsCreateRoomModalVisible(false)
-            }}
-          />
-        </div>
+        <CreateRoom
+          onClose={() => {
+            setIsCreateRoomModalVisible(false)
+          }}
+        />
       </Modal>
 
       <div
@@ -56,7 +36,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
           <div className="m-2 flex flex-col items-center">
             <ReactSVG src={StaticAssetPath.AppLogo} />
 
-            <div className="flex items-end font-iowan">
+            <div className="font-iowan flex items-end">
               <div>Mirage</div>
 
               <span className="ml-[2px] text-xs italic">©</span>
@@ -74,7 +54,9 @@ const Navigation: FC<NavigationProps> = ({className}) => {
               tooltip="All rooms"
             />
 
-            {spaceElements}
+            {spaces.map((server, index) => (
+              <ServerListItem key={index} {...server} />
+            ))}
 
             <div className="flex w-full justify-center">
               <ReactSVG

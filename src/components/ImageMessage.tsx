@@ -1,9 +1,13 @@
-import {useMemo, type FC} from "react"
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import {useMemo, useState, type FC} from "react"
 import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import {saveAs} from "file-saver"
 import {IoMdDownload, IoIosAlert, IoMdTrash} from "react-icons/io"
 import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
+import ImageModal from "@/containers/ChatContainer/ImageModal"
+import Modal from "./Modal"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
@@ -19,6 +23,8 @@ const ImageMessage: FC<ImageMessageProps> = ({
   timestamp,
   onDeleteMessage,
 }) => {
+  const [isImageModalShowed, setImageModalShow] = useState(false)
+
   const contextMenuItems = useMemo(() => {
     const items: ContextMenuItem[] = []
 
@@ -60,13 +66,19 @@ const ImageMessage: FC<ImageMessageProps> = ({
       {imageUrl === null ? (
         <div className="flex flex-row items-center gap-1">
           <IoIosAlert className="text-red-500" />
+
           <div className="leading-160">
             The image uploaded by the user is currently unavailable.
           </div>
         </div>
       ) : (
         // TODO: Handle image size here. Preferably, make the component accept 'imageDimensions' as props.
-        <div className="max-h-52 max-w-44 overflow-hidden rounded-xl">
+        <div
+          role="button"
+          className="max-h-52 max-w-44 overflow-hidden rounded-xl"
+          onClick={() => {
+            setImageModalShow(true)
+          }}>
           <img
             className="cursor-pointer object-contain"
             src={imageUrl}
@@ -83,16 +95,30 @@ const ImageMessage: FC<ImageMessageProps> = ({
 
   // NOTE: `id` attribute should be unique to avoid duplicate context menus.
   return (
-    <ContextMenu id={timestamp} items={contextMenuItems}>
-      <MessageContainer
-        authorDisplayName={authorDisplayName}
-        authorDisplayNameColor={authorDisplayNameColor}
-        authorAvatarUrl={authorAvatarUrl}
-        children={content}
-        timestamp={timestamp}
-        onAuthorClick={onAuthorClick}
+    <>
+      <Modal
+        isVisible={isImageModalShowed}
+        children={
+          <ImageModal
+            onDeleteImage={onDeleteMessage}
+            imageUrl={imageUrl}
+            onClose={() => {
+              setImageModalShow(false)
+            }}
+          />
+        }
       />
-    </ContextMenu>
+      <ContextMenu id={timestamp} items={contextMenuItems}>
+        <MessageContainer
+          authorDisplayName={authorDisplayName}
+          authorDisplayNameColor={authorDisplayNameColor}
+          authorAvatarUrl={authorAvatarUrl}
+          children={content}
+          timestamp={timestamp}
+          onAuthorClick={onAuthorClick}
+        />
+      </ContextMenu>
+    </>
   )
 }
 
