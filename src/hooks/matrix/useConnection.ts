@@ -7,7 +7,6 @@ import {
 } from "matrix-js-sdk"
 import {useCallback} from "react"
 import {create} from "zustand"
-import "olm"
 import {type Credentials} from "./useCachedCredentials"
 
 type ZustandClientStore = {
@@ -109,8 +108,6 @@ const useConnection = () => {
         // emit events when connected or when it fails to connect
         // via the client sync event above.
         // TODO: Handle connection errors (`.catch`).
-
-        void newClient.initCrypto()
 
         void newClient.startClient({
           lazyLoadMembers: true,
