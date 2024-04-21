@@ -85,7 +85,12 @@ export function getImageUrl(
   client: MatrixClient | null,
   size?: number
 ): string | undefined {
-  if (url === null || url === undefined || client === null) {
+  if (
+    url === null ||
+    url === undefined ||
+    client === null ||
+    url.length === 0
+  ) {
     return undefined
   }
 
@@ -289,26 +294,24 @@ export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
   return false
 }
 
-export async function getRoomMembers(
-  client: MatrixClient,
-  room: Room
-): Promise<RosterUserProps[]> {
-  const membersProperty: RosterUserProps[] = []
-  const members = await client.getJoinedRoomMembers(room.roomId)
-  const joinedMembers = members.joined
+export type PartialRoomMember = {
+  userId: string
+  powerLevel: UserPowerLevel
+}
 
+export function getRoomAdminsAndModerators(room: Room): PartialRoomMember[] {
   const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
 
   if (roomState === undefined) {
     return []
   }
 
-  const powerLevels = roomState
-    .getStateEvents("m.room.power_levels", "")
-    ?.getContent().users as string[]
+  const userPowerLevels: string[] =
+    roomState.getStateEvents("m.room.power_levels", "")?.getContent().users ??
+    []
 
-  const users = Object.entries(powerLevels)
-  const adminUsersId: string[] = []
+  const users = Object.entries(userPowerLevels)
+  const partialAdminOrModerator: PartialRoomMember[] = []
 
   for (const [adminId, powerLevel] of users) {
     if (
@@ -318,11 +321,37 @@ export async function getRoomMembers(
       continue
     }
 
-    adminUsersId.push(adminId)
+    partialAdminOrModerator.push({
+      userId: adminId,
+      powerLevel:
+        powerLevel === UserPowerLevel.Admin
+          ? UserPowerLevel.Admin
+          : UserPowerLevel.Moderator,
+    })
+  }
 
-    const member = joinedMembers[adminId]
-    const displayName = normalizeName(member.display_name)
-    const isAdmin = powerLevel === UserPowerLevel.Admin
+  return partialAdminOrModerator
+}
+
+export async function getRoomMembers(
+  client: MatrixClient,
+  room: Room
+): Promise<RosterUserProps[]> {
+  const membersProperty: RosterUserProps[] = []
+  const members = await client.getJoinedRoomMembers(room.roomId)
+  const partialAdminsOrModerators = getRoomAdminsAndModerators(room)
+  const joinedMembers = members.joined
+
+  for (const adminOrModerator of partialAdminsOrModerators) {
+    const member = joinedMembers[adminOrModerator.userId]
+
+    if (member === undefined) {
+      continue
+    }
+
+    const displayName = normalizeName(
+      member.display_name ?? adminOrModerator.userId
+    )
 
     membersProperty.push({
       // TODO: Use actual props instead of dummy data.
@@ -337,24 +366,29 @@ export async function getRoomMembers(
         displayNameColor: stringToColor(displayName),
         status: UserStatus.Online,
       },
-      powerLevel: isAdmin ? UserPowerLevel.Admin : UserPowerLevel.Moderator,
+      powerLevel: adminOrModerator.powerLevel,
       onClick: () => {},
-      userId: adminId,
+      userId: adminOrModerator.userId,
     })
   }
 
   let memberCount = 0
 
   for (const userId in joinedMembers) {
-    if (memberCount >= 20) {
+    if (memberCount >= 30) {
       break
     }
 
-    if (adminUsersId.includes(userId)) {
+    const member = joinedMembers[userId]
+
+    const isAdminOrModerator = partialAdminsOrModerators.some(
+      adminOrModerator => adminOrModerator.userId === userId
+    )
+
+    if (member === undefined || isAdminOrModerator) {
       continue
     }
 
-    const member = joinedMembers[userId]
     const displayName = normalizeName(member.display_name ?? userId)
 
     membersProperty.push({
