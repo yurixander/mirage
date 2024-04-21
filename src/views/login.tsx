@@ -91,7 +91,7 @@ const LoginView: FC = () => {
               />
 
               {/* FIXME: This is temporary. Remove later on. */}
-              <div>{lastSyncError?.message ?? "Waiting for login."}</div>
+              {lastSyncError !== null && <div>{lastSyncError.message}</div>}
 
               <Button
                 onClick={() => {}}
