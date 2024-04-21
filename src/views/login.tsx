@@ -6,22 +6,24 @@ import Input, {
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {useCallback, useEffect, useState, type FC} from "react"
 import Button, {ButtonColor, ButtonVariant} from "@/components/Button"
-import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 import useConnection from "@/hooks/matrix/useConnection"
-import {StaticAssetPath, ViewPath} from "@/utils/util"
+import {type Credentials, StaticAssetPath, ViewPath} from "@/utils/util"
 import {Link, useNavigate} from "react-router-dom"
 import {SyncState} from "matrix-js-sdk"
 import {ReactSVG} from "react-svg"
 import {IoIosLink, IoIosContact} from "react-icons/io"
 import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
+import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
 
 const LoginView: FC = () => {
   const navigate = useNavigate()
-  const {credentials, saveCredentials} = useCachedCredentials()
   const [userId, setUserId] = useState("")
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [baseUrl, setBaseUrl] = useState("")
   const [accessToken, setAccessToken] = useState("")
+
+  const {cachedValue: credentials, saveValue: saveCredentials} =
+    useLocalStorage<Credentials>(LocalStorageKeys.Credentials)
 
   const {connect, disconnect, syncState, lastSyncError, isConnecting, client} =
     useConnection()
