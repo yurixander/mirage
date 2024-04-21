@@ -10,10 +10,13 @@
 
 ## Features
 
-- 📐 **Simple & consistent UI**: Maintain a clean interface that is consistent in its design, and emphasizes simplicity.<br /><br />
-- ⚡ **Feature-complete**: Make all the features that the Matrix protocol has to offer, available to the user, whilst not polluting the UI or overwhelming the user. _(Work in progress)_<br /><br />
-- ⚡ **Animations**: The use of animations (where appropriate) provides deeper feedback to user engagement with the UI _(Work in progress)_<br /><br />
-- ✨ **Themes & customization**: Empower the user to customize the UI to their liking (including fonts and colors), enabling the creation of themes for a more personalized experience. _(Work in progress)_<br /><br />
+- 📐 **Simple & consistent UI**: Maintain a clean interface that is consistent in its design, and emphasizes simplicity.
+
+- ⚡ **Feature-complete**: Make all the features that the Matrix protocol has to offer, available to the user, whilst not polluting the UI or overwhelming the user. \_(Work in progress)
+
+- ⚡ **Animations**: The use of animations (where appropriate) provides deeper feedback to user engagement with the UI _(Work in progress)_
+
+- ✨ **Themes & customization**: Empower the user to customize the UI to their liking (including fonts and colors), enabling the creation of themes for a more personalized experience. _(Work in progress)_
 
 ## Building and running
 
@@ -35,8 +38,7 @@ npm run dev
   - [TypeScript](https://www.typescriptlang.org/)
 - **User-interface**:
   - [React](https://reactjs.org/)
-  - [SCSS/SASS](https://sass-lang.com/)
-  - [Tippy.js](https://atomiks.github.io/tippyjs/): Tooltip library for React
+  - [Tailwind CSS](https://tailwindcss.com/docs/)
 - **Additional tooling & frameworks**:
   - [Matrix JS SDK](https://github.com/matrix-org/matrix-js-sdk): Matrix client library
   - [Vite.js](https://vitejs.dev/): Build tooling
@@ -44,5 +46,6 @@ npm run dev
   - [DayJS](https://day.js.org/): Date & time formatting library
   - [Zustand](https://github.com/pmndrs/zustand): React state-management library
   - [Storybook.js](https://storybook.js.org/): Isolated component development environment
+  - [React Icons](https://react-icons.github.io/react-icons/): Provides the foundation for our interface icons.
 
-<hr />
+---
