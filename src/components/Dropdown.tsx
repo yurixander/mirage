@@ -8,7 +8,8 @@ export type DropdownProps = {
 }
 
 const Dropdown: FC<DropdownProps> = ({options}) => {
-  const [visivility, setVisivility] = useState("hidden")
+  const [isDropdownOptionVisibility, setIsDropdownOptionVisibility] =
+    useState(false)
   const [label, setLabel] = useState(options[0].label)
   const [indexIcon, setIndexIcon] = useState(0)
 
@@ -16,7 +17,7 @@ const Dropdown: FC<DropdownProps> = ({options}) => {
     <div className="relative inline-block">
       <button
         onClick={() => {
-          setVisivility(visivility === "hidden" ? "inline-block" : "hidden")
+          setIsDropdownOptionVisibility(!isDropdownOptionVisibility)
         }}
         type="button"
         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded border bg-neutral-50 p-2 text-sm">
@@ -30,7 +31,7 @@ const Dropdown: FC<DropdownProps> = ({options}) => {
       <div
         className={twMerge(
           "absolute w-full rounded bg-white shadow-2xl",
-          visivility
+          isDropdownOptionVisibility ? "inline-block" : "hidden"
         )}>
         {options.map((option, index) => (
           <DropdownOption
@@ -39,7 +40,7 @@ const Dropdown: FC<DropdownProps> = ({options}) => {
             onClick={() => {
               setIndexIcon(index)
               setLabel(option.label)
-              setVisivility("hidden")
+              setIsDropdownOptionVisibility(false)
               option.onClick()
             }}
           />
