@@ -64,7 +64,7 @@ const LoginView: FC = () => {
             />
 
             <LoginInputSection
-              title="Access token"
+              title="Password"
               onValueChange={setPassword}
               icon={IoKey}
               placeholder="Password"

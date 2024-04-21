@@ -77,8 +77,6 @@ const useConnection = () => {
           cryptoStore: new LocalStorageCryptoStore(window.localStorage),
         })
 
-        void newClient.initCrypto()
-
         // NOTE: No need to remove the listener, as the client is a singleton.
         newClient.once(
           ClientEvent.Sync,
