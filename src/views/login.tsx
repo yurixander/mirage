@@ -68,6 +68,7 @@ const LoginView: FC = () => {
               onValueChange={setPassword}
               icon={IoKey}
               placeholder="Password"
+              isPassword={!isPasswordVisible}
               actions={[
                 {
                   tooltip: isPasswordVisible ? "Hide token" : "Show token",
@@ -129,6 +130,7 @@ type LoginInputSectionProps = {
   placeholder: string
   constraints?: InputConstraint[]
   actions?: InputAction[]
+  isPassword?: boolean
 }
 
 const LoginInputSection: FC<LoginInputSectionProps> = ({
@@ -138,6 +140,7 @@ const LoginInputSection: FC<LoginInputSectionProps> = ({
   actions,
   constraints,
   placeholder,
+  isPassword,
 }) => {
   return (
     <div className="flex flex-col gap-1">
@@ -150,6 +153,7 @@ const LoginInputSection: FC<LoginInputSectionProps> = ({
         Icon={icon}
         actions={actions}
         constraints={constraints}
+        type={isPassword === true ? "password" : "text"}
       />
     </div>
   )
