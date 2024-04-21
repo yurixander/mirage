@@ -3,6 +3,7 @@ import {
   createClient,
   ClientEvent,
   SyncState,
+  LocalStorageCryptoStore,
 } from "matrix-js-sdk"
 import {useCallback} from "react"
 import {create} from "zustand"
@@ -70,9 +71,12 @@ const useConnection = () => {
       return await new Promise(resolve => {
         setLastSyncError(null)
 
-        const newClient = createClient(credentials)
+        const newClient = createClient({
+          ...credentials,
+          timelineSupport: true,
+          cryptoStore: new LocalStorageCryptoStore(window.localStorage),
+        })
 
-        // TODO: Handle here cryptography.
         void newClient.initCrypto()
 
         // NOTE: No need to remove the listener, as the client is a singleton.
@@ -107,6 +111,8 @@ const useConnection = () => {
         // emit events when connected or when it fails to connect
         // via the client sync event above.
         // TODO: Handle connection errors (`.catch`).
+
+        void newClient.initCrypto()
 
         void newClient.startClient({
           lazyLoadMembers: true,

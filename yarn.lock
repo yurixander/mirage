@@ -11405,9 +11405,9 @@ oidc-client-ts@^3.0.1:
   dependencies:
     jwt-decode "^4.0.0"
 
-"olm@https://packages.matrix.org/npm/olm/olm-3.1.4.tgz":
-  version "3.1.4"
-  resolved "https://packages.matrix.org/npm/olm/olm-3.1.4.tgz#0f03128b7d3b2f614d2216409a1dfccca765fdb3"
+"olm@https://matrix.org/packages/npm/olm/olm-3.0.0.tgz":
+  version "3.0.0"
+  resolved "https://matrix.org/packages/npm/olm/olm-3.0.0.tgz#4a6f5e83c5c4d05a268246a5db9bdf0e720311b1"
 
 on-finished@2.4.1:
   version "2.4.1"
