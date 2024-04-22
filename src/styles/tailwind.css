@@ -17,6 +17,11 @@ input {
   @apply border-none p-[10px] outline-none;
 }
 
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
 body {
   @apply relative m-0  select-none overflow-hidden antialiased;
   @apply font-noto font-normal text-stone-600;

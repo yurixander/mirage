@@ -1,91 +1,31 @@
 import Input, {
+  type InputAction,
+  type InputConstraint,
   nonEmptyConstraint,
-  urlConstraint,
   userIdConstraint,
 } from "@/components/Input"
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {useCallback, useEffect, useState, type FC} from "react"
+import {useState, type FC} from "react"
 import Button, {ButtonColor, ButtonVariant} from "@/components/Button"
-import useConnection from "@/hooks/matrix/useConnection"
-import {type Credentials, StaticAssetPath, ViewPath} from "@/utils/util"
-import {Link, useNavigate} from "react-router-dom"
-import {SyncState} from "matrix-js-sdk"
+import {StaticAssetPath} from "@/utils/util"
+import {Link} from "react-router-dom"
 import {ReactSVG} from "react-svg"
-import {IoIosLink, IoIosContact} from "react-icons/io"
+import {IoIosContact} from "react-icons/io"
 import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
-import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
+import useLogin from "@/hooks/util/useLogin"
+import {type IconType} from "react-icons"
 
 const LoginView: FC = () => {
-  const navigate = useNavigate()
-  const [userId, setUserId] = useState("")
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-  const [baseUrl, setBaseUrl] = useState("")
-  const [accessToken, setAccessToken] = useState("")
 
-  const {cachedValue: credentials, saveValue: saveCredentials} =
-    useLocalStorage<Credentials>(LocalStorageKeys.Credentials)
-
-  const {connect, disconnect, syncState, lastSyncError, isConnecting, client} =
-    useConnection()
-
-  const login = useCallback(async () => {
-    if (isConnecting) {
-      return
-    }
-
-    const connectedAndSynced = await connect({
-      accessToken,
-      baseUrl,
-      userId,
-    })
-
-    if (!connectedAndSynced) {
-      return
-    }
-
-    saveCredentials({accessToken, baseUrl, userId})
-    await disconnect()
-    navigate(ViewPath.App)
-  }, [
-    accessToken,
-    connect,
-    disconnect,
-    isConnecting,
-    navigate,
-    saveCredentials,
-    baseUrl,
-    userId,
-  ])
-
-  // Automatically login if credentials are cached.
-  useEffect(() => {
-    if (
-      credentials === null ||
-      isConnecting ||
-      syncState === SyncState.Error ||
-      syncState === SyncState.Stopped ||
-      client !== null
-    ) {
-      return
-    }
-
-    void connect(credentials).then(async connectedAndSynced => {
-      if (!connectedAndSynced) {
-        return
-      }
-
-      await disconnect()
-      navigate(ViewPath.App)
-    })
-  }, [
-    client,
-    connect,
-    credentials,
-    disconnect,
-    isConnecting,
-    navigate,
+  const {
+    lastSyncError,
+    login,
+    setPassword,
+    setUserId,
     syncState,
-  ])
+    isConnecting,
+  } = useLogin()
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
@@ -115,61 +55,35 @@ const LoginView: FC = () => {
           </div>
 
           <div className="flex size-full flex-col justify-center gap-2">
-            <div className="flex w-full flex-col gap-1">
-              <Typography variant={TypographyVariant.Span}>
-                Server URL
-              </Typography>
+            <LoginInputSection
+              title="User ID"
+              onValueChange={setUserId}
+              icon={IoIosContact}
+              placeholder="@userId:matrix.org"
+              constraints={[userIdConstraint, nonEmptyConstraint]}
+            />
 
-              <Input
-                className="w-full"
-                Icon={IoIosLink}
-                placeholder="https://matrix-client.matrix.org"
-                constraints={[urlConstraint, nonEmptyConstraint]}
-                initialValue={baseUrl}
-                onValueChange={setBaseUrl}
-              />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <Typography variant={TypographyVariant.Span}>
-                Access token
-              </Typography>
-
-              <Input
-                className="w-full"
-                placeholder="syt_dGhlY3Jpc3M_PAmQdRhKFW_0iK0SN"
-                initialValue={accessToken}
-                onValueChange={setAccessToken}
-                Icon={IoKey}
-                actions={[
-                  {
-                    tooltip: isPasswordVisible ? "Hide token" : "Show token",
-                    icon: isPasswordVisible ? IoEyeOff : IoEye,
-                    onClick: () => {
-                      setIsPasswordVisible(!isPasswordVisible)
-                    },
+            <LoginInputSection
+              title="Password"
+              onValueChange={setPassword}
+              icon={IoKey}
+              placeholder="Password"
+              isPassword={!isPasswordVisible}
+              actions={[
+                {
+                  tooltip: isPasswordVisible ? "Hide token" : "Show token",
+                  icon: isPasswordVisible ? IoEyeOff : IoEye,
+                  onClick: () => {
+                    setIsPasswordVisible(!isPasswordVisible)
                   },
-                ]}
-              />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <Typography variant={TypographyVariant.Span}>User ID</Typography>
-
-              <Input
-                initialValue={userId}
-                className="w-full"
-                Icon={IoIosContact}
-                placeholder="@userId:matrix.org"
-                constraints={[userIdConstraint, nonEmptyConstraint]}
-                onValueChange={setUserId}
-              />
-            </div>
+                },
+              ]}
+            />
 
             <div className="flex flex-col gap-1">
               <Button
                 label={isConnecting ? "Connecting..." : "Sign in →"}
-                isDisabled={syncState !== null && syncState !== SyncState.Error}
+                isDisabled={syncState === null}
                 isLoading={isConnecting}
                 onClick={() => {
                   void login()
@@ -177,7 +91,7 @@ const LoginView: FC = () => {
               />
 
               {/* FIXME: This is temporary. Remove later on. */}
-              <div>{lastSyncError?.message ?? "Waiting for login."}</div>
+              {lastSyncError !== null && <div>{lastSyncError.message}</div>}
 
               <Button
                 onClick={() => {}}
@@ -205,6 +119,42 @@ const LoginView: FC = () => {
           />
         </div>
       </div>
+    </div>
+  )
+}
+
+type LoginInputSectionProps = {
+  title: string
+  onValueChange: (value: string) => void
+  icon: IconType
+  placeholder: string
+  constraints?: InputConstraint[]
+  actions?: InputAction[]
+  isPassword?: boolean
+}
+
+const LoginInputSection: FC<LoginInputSectionProps> = ({
+  icon,
+  onValueChange,
+  title,
+  actions,
+  constraints,
+  placeholder,
+  isPassword,
+}) => {
+  return (
+    <div className="flex flex-col gap-1">
+      <Typography variant={TypographyVariant.Span}>{title}</Typography>
+
+      <Input
+        className="w-full"
+        placeholder={placeholder}
+        onValueChange={onValueChange}
+        Icon={icon}
+        actions={actions}
+        constraints={constraints}
+        type={isPassword === true ? "password" : "text"}
+      />
     </div>
   )
 }

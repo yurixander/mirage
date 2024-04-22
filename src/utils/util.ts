@@ -27,6 +27,7 @@ export type Credentials = {
   baseUrl: string
   accessToken: string
   userId: string
+  deviceId: string
 }
 
 export type ImageUploadedInfo = {

@@ -28,6 +28,7 @@ export type InputProps = {
   parentValue?: string
   Icon?: IconType
   actions?: InputAction[]
+  type?: React.HTMLInputTypeAttribute
 }
 
 const urlPattern = new RegExp(
@@ -90,6 +91,7 @@ const Input: FC<InputProps> = ({
   parentValue,
   Icon,
   actions,
+  type,
 }) => {
   const [value, setValue] = useState(initialValue ?? "")
 
@@ -126,7 +128,7 @@ const Input: FC<InputProps> = ({
 
         <input
           className="w-full rounded-lg bg-neutral-50"
-          type="text"
+          type={type ?? "text"}
           disabled={isDisabled}
           placeholder={placeholder}
           value={parentValue ?? value}
