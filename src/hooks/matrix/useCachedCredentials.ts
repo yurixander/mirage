@@ -4,6 +4,7 @@ export type Credentials = {
   baseUrl: string
   accessToken: string
   userId: string
+  deviceId: string
 }
 
 const CREDENTIALS_LOCAL_STORAGE_KEY = "credentials"

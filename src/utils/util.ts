@@ -23,12 +23,6 @@ export enum StaticAssetPath {
   LoginPhoto = "LoginPhoto.png",
 }
 
-export type Credentials = {
-  baseUrl: string
-  accessToken: string
-  userId: string
-}
-
 export type ImageUploadedInfo = {
   matrixUrl: string
   filename: string
