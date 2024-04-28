@@ -99,7 +99,7 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
           onClick={onClose}
           label="Cancel"
         />
-        
+
         <Button onClick={onCreateRoom} label="Create" />
       </div>
     </div>
