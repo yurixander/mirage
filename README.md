@@ -6,11 +6,14 @@
   <p class="description-container">A simple✨, lightweight🪶, and easy-to-use web client for the
   <a href="https://matrix.org">[Matrix] protocol</a>
   </p>
-  <div>PUT HERE THE BADGES</div>
-  <div class="divider"></div>
 </div>
 
-<br>
+![GitHub package.json dynamic (branch)](https://img.shields.io/github/package-json/version/yurixander/mirage/master?style=flat-square&label=Mirage%20version&color=blueviolet)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/yurixander/mirage?style=flat-square&label=Total%20commits&color=blueviolet)
+![GitHub package.json prod dependency version](https://img.shields.io/github/package-json/dependency-version/yurixander/mirage/react?style=flat-square&color=blueviolet)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/yurixander/mirage/dev?style=flat-square&label=Last%20commit&color=blueviolet)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/yurixander/mirage?style=flat-square&label=Pull%20requests&color=blueviolet)
+
 <br>
 
 # Goals
