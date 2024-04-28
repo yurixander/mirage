@@ -43,6 +43,12 @@ span {
   display: flex;
   align-items: center;
   gap: 8px;
+  height: max-content;
+}
+
+.circle-list-header {
+  display: flex;
+  gap: 8px;
 }
 
 .circle-outline {
