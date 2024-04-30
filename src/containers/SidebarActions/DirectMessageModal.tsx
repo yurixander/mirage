@@ -1,9 +1,9 @@
 import {useEffect, useState, type FC} from "react"
-import Typography, {TypographyVariant} from "../Typography"
-import IconButton from "../IconButton"
+import Typography, {TypographyVariant} from "../../components/Typography"
+import IconButton from "../../components/IconButton"
 import {IoCheckmark, IoCloseCircle, IoCopyOutline} from "react-icons/io5"
-import Input from "../Input"
-import UserProfile from "../UserProfile"
+import Input from "../../components/Input"
+import UserProfile from "../../components/UserProfile"
 import {
   getPartnerUserIdFromRoomDirect,
   normalizeName,

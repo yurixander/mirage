@@ -7,10 +7,14 @@ import {stringToColor, timeFormatter} from "@/utils/util"
 import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import AvatarImage, {AvatarType} from "../Avatar"
-import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
-import IconButton from "../IconButton"
-import Typography, {TypographyVariant} from "../Typography"
+import AvatarImage, {AvatarType} from "../../components/Avatar"
+import Button, {
+  ButtonColor,
+  ButtonSize,
+  ButtonVariant,
+} from "../../components/Button"
+import IconButton from "../../components/IconButton"
+import Typography, {TypographyVariant} from "../../components/Typography"
 import {type LocalNotificationData} from "./useCachedNotifications"
 
 export interface NotificationProps extends LocalNotificationData {

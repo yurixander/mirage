@@ -1,6 +1,6 @@
 import ChatContainer from "@/containers/ChatContainer/ChatContainer"
 import Navigation from "@/components/Navigation"
-import SidebarActions from "@/components/SidebarActions/SidebarActions"
+import SidebarActions from "@/containers/SidebarActions/SidebarActions"
 import Roster from "@/components/Roster"
 import SearchBar, {type SearchResult} from "@/components/SearchBar"
 import UserBar from "@/components/UserBar"

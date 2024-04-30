@@ -13,7 +13,7 @@ import {
   type LocalNotificationData,
   NotificationsSyncState,
   useNotificationsStateStore,
-} from "@/components/SidebarActions/useCachedNotifications"
+} from "@/containers/SidebarActions/useCachedNotifications"
 import {UserPowerLevel} from "@/components/RosterUser"
 import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
 import {useMemo} from "react"
