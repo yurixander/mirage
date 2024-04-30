@@ -21,7 +21,6 @@ import {
   getImageUrl,
   getLastReadEventIdFromRoom,
   ImageSizes,
-  isUserRoomAdmin,
   sendImageMessageFromFile,
   stringToColor,
 } from "@/utils/util"
@@ -31,6 +30,7 @@ import {type MessageBaseProps} from "@/components/MessageContainer"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useFilePicker} from "use-file-picker"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import {isUserRoomAdmin} from "@/utils/members"
 
 export enum MessageKind {
   Text,

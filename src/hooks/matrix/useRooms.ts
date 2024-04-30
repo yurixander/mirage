@@ -2,13 +2,14 @@ import useConnection from "@/hooks/matrix/useConnection"
 import {NotificationCountType, type Room, RoomEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 import useEventListener from "./useEventListener"
-import {getDirectRoomsIds, getRoomsFromSpace, normalizeName} from "@/utils/util"
+import {normalizeName} from "@/utils/util"
 import {RoomType, type RoomProps} from "@/components/Room"
 import {useActiveSpaceIdStore} from "./useSpaces"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {saveNotification} from "@/utils/notifications"
 import {getNotificationFromInviteEvent} from "./useGlobalEventListeners"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import {getDirectRoomsIds, getRoomsFromSpace} from "@/utils/rooms"
 
 const useRooms = () => {
   const [rooms, setRooms] = useState<RoomProps[]>([])
