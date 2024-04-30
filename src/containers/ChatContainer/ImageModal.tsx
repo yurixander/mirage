@@ -11,7 +11,7 @@ import {
 import ImageZoom from "@/components/ImageZoom"
 import Typography from "@/components/Typography"
 
-const ICON_BUTTON_MODAL_SIZE =  26
+const ICON_BUTTON_MODAL_SIZE = 26
 
 export type ImageModalProps = {
   imageUrl?: string
