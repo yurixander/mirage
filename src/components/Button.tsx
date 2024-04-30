@@ -78,7 +78,7 @@ export default Button
 const Loading: FC = () => {
   return (
     <div className="flex items-center justify-center gap-2">
-      <div className="border-t-borderLoading size-4 animate-rotation rounded-full border-2 border-white" />
+      <div className="size-4 animate-rotation rounded-full border-2 border-white border-t-borderLoading" />
       <span>Loadin...</span>
     </div>
   )
