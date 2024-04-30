@@ -10,6 +10,7 @@ export type DropdownProps = {
 const Dropdown: FC<DropdownProps> = ({options}) => {
   const [isDropdownOptionVisibility, setIsDropdownOptionVisibility] =
     useState(false)
+
   const [label, setLabel] = useState(options[0].label)
   const [indexIcon, setIndexIcon] = useState(0)
 
@@ -37,6 +38,7 @@ const Dropdown: FC<DropdownProps> = ({options}) => {
           <DropdownOption
             label={option.label}
             Icon={option.Icon}
+            key={index}
             onClick={() => {
               setIndexIcon(index)
               setLabel(option.label)
@@ -65,6 +67,7 @@ const DropdownOption: FC<DropdownOptionProps> = ({Icon, label, onClick}) => {
       onClick={onClick}
       className="flex w-full cursor-pointer items-center justify-center gap-2 bg-neutral-50 p-2 text-left text-sm hover:bg-slate-100">
       <Icon size={20} />
+
       <div className="w-full">{label}</div>
     </button>
   )
