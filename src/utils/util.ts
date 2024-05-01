@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import {type Room, type MatrixClient} from "matrix-js-sdk"
+import {type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -20,17 +20,6 @@ export type Credentials = {
   accessToken: string
   userId: string
   deviceId: string
-}
-
-export type ImageUploadedInfo = {
-  matrixUrl: string
-  filename: string
-  info: {
-    w: number
-    h: number
-    mimetype: string
-    size: number
-  }
 }
 
 export function timeFormatter(timestamp: number): string {
@@ -67,11 +56,52 @@ export function validateUrl(url: string): boolean {
   }
 }
 
-export enum ImageSizes {
-  Server = 47,
-  MessageAndProfile = 40,
-  ProfileLarge = 60,
+export function stringToColor(string_: string): string {
+  let hash = 0
+
+  // Iterate over string letter by letter
+  for (let index = 0; index < string_.length; index++) {
+    // hash << 5 move the bit 5 digits (00000010 to 00100000) to the left and subtract the hash value.
+    hash = string_.charCodeAt(index) + ((hash << 5) - hash)
+  }
+
+  let color = "#"
+
+  // Extract the 3 byte values, red, green and blue
+  for (let index = 0; index < 3; index++) {
+    // When index = 0 is green, index = 1 is blue, index = 2 is red
+    // Move hash index * 8 digits to the right for extract the color.
+    // 0xff is equal to 255 and the AND operator (&) is limiting to 8 bits.
+    const value = (hash >> (index * 8)) & 0xff
+
+    // value.toString(16) convert value to hex string.
+    // 00 if the hexadecimal string is less than two characters ensuring consistent formatting.
+    // .slice(-2) extracts the last two characters from the resulting string.
+    color += ("00" + value.toString(16)).slice(-2)
+  }
+
+  return color
 }
+
+export function cleanDisplayName(displayName: string): string {
+  return displayName
+    .trim()
+    .toLowerCase()
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
+}
+
+const ASCII_LIMIT = 127
+
+export function normalizeName(displayName: string): string {
+  return displayName
+    .split("")
+    .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
+    .join("")
+}
+
+// #region Matrix SDK utils
 
 export function getImageUrl(
   url: string | null | undefined,
@@ -93,6 +123,17 @@ export function getImageUrl(
       : client.mxcUrlToHttp(url, size, size, "scale")
 
   return imageUrl ?? undefined
+}
+
+export type ImageUploadedInfo = {
+  matrixUrl: string
+  filename: string
+  info: {
+    w: number
+    h: number
+    mimetype: string
+    size: number
+  }
 }
 
 export async function sendImageMessageFromFile(
@@ -169,86 +210,4 @@ export function deleteMessage(
   client.redactEvent(roomId, eventId).catch(error => {
     console.error("Error deleting message", error)
   })
-}
-
-export function stringToColor(string_: string): string {
-  let hash = 0
-
-  // Iterate over string letter by letter
-  for (let index = 0; index < string_.length; index++) {
-    // hash << 5 move the bit 5 digits (00000010 to 00100000) to the left and subtract the hash value.
-    hash = string_.charCodeAt(index) + ((hash << 5) - hash)
-  }
-
-  let color = "#"
-
-  // Extract the 3 byte values, red, green and blue
-  for (let index = 0; index < 3; index++) {
-    // When index = 0 is green, index = 1 is blue, index = 2 is red
-    // Move hash index * 8 digits to the right for extract the color.
-    // 0xff is equal to 255 and the AND operator (&) is limiting to 8 bits.
-    const value = (hash >> (index * 8)) & 0xff
-
-    // value.toString(16) convert value to hex string.
-    // 00 if the hexadecimal string is less than two characters ensuring consistent formatting.
-    // .slice(-2) extracts the last two characters from the resulting string.
-    color += ("00" + value.toString(16)).slice(-2)
-  }
-
-  return color
-}
-
-export function cleanDisplayName(displayName: string): string {
-  return displayName
-    .trim()
-    .toLowerCase()
-    .split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ")
-}
-
-export function getLastReadEventIdFromRoom(
-  room: Room,
-  client: MatrixClient
-): string | null {
-  const userId = client.getUserId()
-
-  if (userId === null) {
-    return null
-  }
-
-  const eventReadUpTo = room.getEventReadUpTo(userId)
-
-  if (eventReadUpTo === null) {
-    return null
-  }
-
-  return room.findEventById(eventReadUpTo)?.getId() ?? null
-}
-
-const ASCII_LIMIT = 127
-
-export function normalizeName(displayName: string): string {
-  return displayName
-    .split("")
-    .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
-    .join("")
-}
-
-export function getPartnerUserIdFromRoomDirect(room: Room): string {
-  assert(
-    room.getJoinedMemberCount() === 2,
-    "Direct chat must have exactly two participants."
-  )
-
-  const userId = room
-    .getJoinedMembers()
-    .find(member => member.userId !== room.myUserId)?.userId
-
-  assert(
-    userId !== undefined,
-    "If one participant is the current user, the other must exist."
-  )
-
-  return userId
 }

@@ -8,12 +8,15 @@ import {
 } from "matrix-js-sdk"
 import useEventListener from "./useEventListener"
 import useConnection from "./useConnection"
-import {getNotificationsData, saveNotification} from "@/utils/notifications"
+import {
+  getNotificationsData,
+  saveNotification,
+} from "@/containers/SidebarActions/hooks/notifications"
 import {
   type LocalNotificationData,
   NotificationsSyncState,
   useNotificationsStateStore,
-} from "@/containers/SidebarActions/useCachedNotifications"
+} from "@/containers/SidebarActions/hooks/useCachedNotifications"
 import {UserPowerLevel} from "@/components/RosterUser"
 import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
 import {useMemo} from "react"

@@ -11,7 +11,7 @@ import {
 import useSidebarActions, {
   SidebarModals,
   useSidebarModalActiveStore,
-} from "@/containers/SidebarActions/useSidebarActions"
+} from "@/containers/SidebarActions/hooks/useSidebarActions"
 import DirectMessageModal from "./DirectMessageModal"
 import NotificationsModal from "./NotificationsModal"
 import Modal from "../../components/Modal"

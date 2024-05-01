@@ -2,7 +2,7 @@ import useMatrixAction from "@/hooks/matrix/useMatrixAction"
 import {
   deleteNotificationById,
   markAsReadByNotificationId,
-} from "@/utils/notifications"
+} from "@/containers/SidebarActions/hooks/notifications"
 import {stringToColor, timeFormatter} from "@/utils/util"
 import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"
@@ -15,7 +15,7 @@ import Button, {
 } from "../../components/Button"
 import IconButton from "../../components/IconButton"
 import Typography, {TypographyVariant} from "../../components/Typography"
-import {type LocalNotificationData} from "./useCachedNotifications"
+import {type LocalNotificationData} from "./hooks/useCachedNotifications"
 
 export interface NotificationProps extends LocalNotificationData {
   onRequestChanges: () => void
