@@ -12,9 +12,9 @@ export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
     return false
   }
 
-  const powerLevels = roomState
+  const powerLevels: string[] = roomState
     .getStateEvents("m.room.power_levels", "")
-    ?.getContent().users as string[]
+    ?.getContent().users
 
   const users = Object.entries(powerLevels)
 
