@@ -1,5 +1,5 @@
 import {useState, type FC} from "react"
-import Button from "./Button"
+import Button, {ButtonVariant} from "./Button"
 import Input from "./Input"
 import Typography, {TypographyVariant} from "./Typography"
 import IconButton from "./IconButton"
@@ -7,6 +7,7 @@ import {IoClose} from "react-icons/io5"
 import Dropdown from "./Dropdown"
 import {Visibility} from "matrix-js-sdk"
 import useConnection from "@/hooks/matrix/useConnection"
+import {IoIosGlobe, IoIosLock} from "react-icons/io"
 
 export type CreateRoomProps = {
   onClose: () => void
@@ -40,7 +41,7 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-lg border border-neutral-300 bg-slate-50 p-5 shadow-sm">
+    <div className="flex flex-col gap-4 rounded border border-neutral-300 bg-white p-5 shadow-sm">
       <div>
         <div className="float-right">
           <IconButton tooltip="Close" onClick={onClose} Icon={IoClose} />
@@ -70,21 +71,21 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
       </div>
       <div className="flex flex-col gap-1">
         <Typography variant={TypographyVariant.Span}>
-          Select type of room
+          Select visibility
         </Typography>
 
         <Dropdown
           options={[
             {
               label: "Private Room (invite only)",
-              value: Visibility.Private,
+              Icon: IoIosLock,
               onClick: () => {
                 setRoomVisibility(Visibility.Private)
               },
             },
             {
               label: "Public Room",
-              value: Visibility.Public,
+              Icon: IoIosGlobe,
               onClick: () => {
                 setRoomVisibility(Visibility.Public)
               },
@@ -92,10 +93,14 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
           ]}
         />
       </div>
-      <div className="text-center">
-        <div className="float-right">
-          <Button onClick={onCreateRoom} label="Create" />
-        </div>
+      <div className="flex justify-end gap-2">
+        <Button
+          variant={ButtonVariant.Secondary}
+          onClick={onClose}
+          label="Cancel"
+        />
+
+        <Button onClick={onCreateRoom} label="Create" />
       </div>
     </div>
   )

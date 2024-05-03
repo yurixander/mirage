@@ -12,7 +12,7 @@ module.exports = {
     extend: {
       backgroundColor: {
         statusMessageBg: "transparentize(#e53e3e, 0.9)",
-        modalOverlay: "rgba(0, 0, 0, 0.728)",
+        modalOverlay: "rgba(0, 0, 0, 0.5)",
       },
       boxShadow: {
         checkBox: "inset 0 0 5px #D9D9D9",
@@ -31,6 +31,9 @@ module.exports = {
         outlineTab: "#56b0ff",
         profileGhost: "#ffffff00",
         statusMessageColor: "#e53e3eb2",
+        borderLoading: "rgba(255, 255, 255, 0.5)",
+        borderButtonDisabled: "#15803D",
+        backgroundButtonDisabled: "#22C55E",
       },
       spacing: {
         serverAvatarSize: "calc(47px * sqrt(2))",
@@ -55,6 +58,7 @@ module.exports = {
       "dot-jump": "dot-jump 400ms ease-in-out infinite alternate",
       "loading": "loading 1.5s infinite ease-in-out",
       "indicator": "indicator 300ms",
+      "rotation": "rotation 1s infinite linear",
     },
     keyframes: {
       // Usage: animate-[keyframe-name]
@@ -129,6 +133,14 @@ module.exports = {
       "rotate": {
         "50%": {opacity: "0.5", filter: "blur(1px)"},
         "100%": {transform: "rotate(360deg)"},
+      },
+      "rotation": {
+        from: {
+          transform: "rotate(0deg)",
+        },
+        to: {
+          transform: "rotate(360deg)",
+        },
       },
     },
   },
