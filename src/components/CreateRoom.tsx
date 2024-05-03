@@ -1,13 +1,14 @@
 import {useState, type FC} from "react"
-import Button, {ButtonVariant} from "./Button"
-import Input from "./Input"
+import Button, {ButtonSize, ButtonVariant} from "./Button"
 import Typography, {TypographyVariant} from "./Typography"
-import IconButton from "./IconButton"
-import {IoClose} from "react-icons/io5"
 import Dropdown from "./Dropdown"
 import {Visibility} from "matrix-js-sdk"
 import useConnection from "@/hooks/matrix/useConnection"
-import {IoIosGlobe, IoIosLock} from "react-icons/io"
+import {IoIosLock, IoMdGlobe} from "react-icons/io"
+import {StaticAssetPath} from "@/utils/util"
+import {ReactSVG} from "react-svg"
+import InputSection from "./InputSection"
+import SwitchButton from "./SwitchButton"
 
 export type CreateRoomProps = {
   onClose: () => void
@@ -15,8 +16,9 @@ export type CreateRoomProps = {
 
 const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
   const [roomName, setRoomName] = useState("")
-  const [roomTopic, setRoomTopic] = useState("")
+  const [roomDescription, setRoomDescription] = useState("")
   const [roomVisibility, setRoomVisibility] = useState(Visibility.Private)
+  const [enableEncryption, setEnableEncryption] = useState(false)
   const {client} = useConnection()
 
   const onCreateRoom = () => {
@@ -28,7 +30,7 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
       .createRoom({
         visibility: roomVisibility,
         name: roomName,
-        topic: roomTopic,
+        topic: roomDescription,
       })
       .then(_roomID => {
         // TODO: Send here notification that the room has been created.
@@ -41,66 +43,101 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded border border-neutral-300 bg-white p-5 shadow-sm">
-      <div>
-        <div className="float-right">
-          <IconButton tooltip="Close" onClick={onClose} Icon={IoClose} />
+    <div className="box-border flex max-w-xl flex-col overflow-hidden rounded-md border border-slate-300">
+      <div className="w-full border-b border-b-slate-300 bg-gray-50">
+        <Typography
+          variant={TypographyVariant.H3}
+          className="py-3 pl-4 font-sans font-medium text-black">
+          Create Room
+        </Typography>
+      </div>
+
+      <div className="flex flex-col gap-4 bg-white p-5">
+        <div className="flex flex-col gap-2">
+          <InputSection
+            title="Name"
+            placeholder="Ej: Gaming Lovers"
+            onValueChange={setRoomName}
+          />
+
+          <InputSection
+            title="Description (optional)"
+            placeholder="A brief description about the purpose of this room"
+            onValueChange={setRoomDescription}
+          />
+
+          <div className="flex flex-col gap-1">
+            <Typography variant={TypographyVariant.Span}>
+              Room Privacy
+            </Typography>
+
+            <Dropdown
+              options={[
+                {
+                  Icon: IoIosLock,
+                  label: "Private Room",
+                  onClick: () => {
+                    setRoomVisibility(Visibility.Private)
+                  },
+                },
+                {
+                  Icon: IoMdGlobe,
+                  label: "Public Room",
+                  onClick: () => {
+                    setRoomVisibility(Visibility.Public)
+                  },
+                },
+              ]}
+            />
+          </div>
         </div>
 
-        <Typography variant={TypographyVariant.H3}>Create Room</Typography>
-      </div>
-      <div className="flex flex-col gap-1">
-        <Typography variant={TypographyVariant.Span}>Name</Typography>
-
-        <Input
-          initialValue={roomName}
-          onValueChange={setRoomName}
-          placeholder="Name"
-        />
-      </div>
-      <div className="flex flex-col gap-1">
-        <Typography variant={TypographyVariant.Span}>
-          Topic (optional)
+        <Typography className="text-black" variant={TypographyVariant.P}>
+          Only those who are invited will be able to find and join this room.
+          You can change this at any time from the room settings
         </Typography>
 
-        <Input
-          initialValue={roomTopic}
-          onValueChange={setRoomTopic}
-          placeholder="Topic (optional)"
-        />
-      </div>
-      <div className="flex flex-col gap-1">
-        <Typography variant={TypographyVariant.Span}>
-          Select visibility
-        </Typography>
+        <div className="flex justify-between">
+          <div className="flex max-w-64 flex-col">
+            <Typography
+              className="font-medium text-black"
+              variant={TypographyVariant.Span}>
+              Turn on end-to-end encryption
+            </Typography>
 
-        <Dropdown
-          options={[
-            {
-              label: "Private Room (invite only)",
-              Icon: IoIosLock,
-              onClick: () => {
-                setRoomVisibility(Visibility.Private)
-              },
-            },
-            {
-              label: "Public Room",
-              Icon: IoIosGlobe,
-              onClick: () => {
-                setRoomVisibility(Visibility.Public)
-              },
-            },
-          ]}
-        />
+            <Typography variant={TypographyVariant.P}>
+              You won't be able to turn it off later. Bridges and most of robots
+              still won't work.
+            </Typography>
+          </div>
+
+          <SwitchButton
+            isInitiallySelected={enableEncryption}
+            onSelectionChange={setEnableEncryption}
+          />
+        </div>
+
+        <div className="flex gap-1 overflow-hidden">
+          <ReactSVG src={StaticAssetPath.DotGrid} />
+
+          <ReactSVG src={StaticAssetPath.DotGrid} />
+        </div>
       </div>
-      <div className="flex justify-end gap-2">
+
+      <div className="flex w-full justify-end gap-3 border-t border-t-slate-200 bg-gray-50 p-3">
         <Button
-          variant={ButtonVariant.Secondary}
-          onClick={onClose}
           label="Cancel"
+          variant={ButtonVariant.TextLink}
+          size={ButtonSize.Small}
+          onClick={onClose}
         />
 
-        <Button onClick={onCreateRoom} label="Create" />
+        <Button
+          label="Create Room"
+          isDisabled={client === null}
+          size={ButtonSize.Small}
+          onClick={onCreateRoom}
+        />
       </div>
     </div>
   )
