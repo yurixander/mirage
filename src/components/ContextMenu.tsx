@@ -75,6 +75,7 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
                 onClick={item.action}
                 aria-hidden="true">
                 <span className="font-semibold">{item.label}</span>
+
                 <div className="text-stone-600 group-hover:text-white">
                   {item.icon}
                 </div>

@@ -1,3 +1,4 @@
+import {type Credentials} from "@/utils/util"
 import {
   type MatrixClient,
   createClient,
@@ -7,7 +8,6 @@ import {
 } from "matrix-js-sdk"
 import {useCallback} from "react"
 import {create} from "zustand"
-import {type Credentials} from "./useCachedCredentials"
 
 type ZustandClientStore = {
   client: MatrixClient | null

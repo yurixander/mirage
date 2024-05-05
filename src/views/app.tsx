@@ -1,20 +1,22 @@
 import ChatContainer from "@/containers/ChatContainer/ChatContainer"
 import Navigation from "@/components/Navigation"
-import SidebarActions from "@/components/SidebarActions/SidebarActions"
+import SidebarActions from "@/containers/SidebarActions/SidebarActions"
 import Roster from "@/components/Roster"
 import SearchBar, {type SearchResult} from "@/components/SearchBar"
 import UserBar from "@/components/UserBar"
 import RoomsList from "@/containers/RoomsList"
-import useCachedCredentials from "@/hooks/matrix/useCachedCredentials"
 import useConnection from "@/hooks/matrix/useConnection"
-import {ViewPath} from "@/utils/util"
+import {type Credentials, ViewPath} from "@/utils/util"
 import {useEffect, type FC} from "react"
 import {useNavigate} from "react-router-dom"
+import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
 
 const AppView: FC = () => {
   const navigate = useNavigate()
   const {connect} = useConnection()
-  const {credentials} = useCachedCredentials()
+  const {cachedValue: credentials} = useLocalStorage<Credentials>(
+    LocalStorageKeys.Credentials
+  )
 
   // Connect on startup.
   useEffect(() => {

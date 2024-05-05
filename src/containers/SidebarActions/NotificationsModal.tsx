@@ -1,15 +1,19 @@
 import {useMemo, type FC} from "react"
 import {IoCloseCircle} from "react-icons/io5"
-import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
-import Typography, {TypographyVariant} from "../Typography"
+import Button, {
+  ButtonColor,
+  ButtonSize,
+  ButtonVariant,
+} from "../../components/Button"
+import Typography, {TypographyVariant} from "../../components/Typography"
 import {twMerge} from "tailwind-merge"
-import IconButton from "../IconButton"
-import {useSidebarModalActiveStore} from "./useSidebarActions"
+import IconButton from "../../components/IconButton"
+import {useSidebarModalActiveStore} from "./hooks/useSidebarActions"
 import useCachedNotifications, {
   useNotificationsStateStore,
   type LocalNotificationData,
-} from "./useCachedNotifications"
-import {markAllNotificationsAsRead} from "@/utils/notifications"
+} from "./hooks/useCachedNotifications"
+import {markAllNotificationsAsRead} from "@/containers/SidebarActions/hooks/notifications"
 import Notification from "./Notification"
 
 export type NotificationActions = {

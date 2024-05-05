@@ -1,13 +1,5 @@
-import {type RosterUserProps, UserPowerLevel} from "@/components/RosterUser"
-import {UserStatus} from "@/components/UserProfile"
 import dayjs from "dayjs"
-import {
-  type Room,
-  type MatrixClient,
-  EventTimeline,
-  Direction,
-  EventType,
-} from "matrix-js-sdk"
+import {type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -23,15 +15,11 @@ export enum StaticAssetPath {
   LoginPhoto = "LoginPhoto.png",
 }
 
-export type ImageUploadedInfo = {
-  matrixUrl: string
-  filename: string
-  info: {
-    w: number
-    h: number
-    mimetype: string
-    size: number
-  }
+export type Credentials = {
+  baseUrl: string
+  accessToken: string
+  userId: string
+  deviceId: string
 }
 
 export function timeFormatter(timestamp: number): string {
@@ -68,18 +56,64 @@ export function validateUrl(url: string): boolean {
   }
 }
 
-export enum ImageSizes {
-  Server = 47,
-  MessageAndProfile = 40,
-  ProfileLarge = 60,
+export function stringToColor(string_: string): string {
+  let hash = 0
+
+  // Iterate over string letter by letter
+  for (let index = 0; index < string_.length; index++) {
+    // hash << 5 move the bit 5 digits (00000010 to 00100000) to the left and subtract the hash value.
+    hash = string_.charCodeAt(index) + ((hash << 5) - hash)
+  }
+
+  let color = "#"
+
+  // Extract the 3 byte values, red, green and blue
+  for (let index = 0; index < 3; index++) {
+    // When index = 0 is green, index = 1 is blue, index = 2 is red
+    // Move hash index * 8 digits to the right for extract the color.
+    // 0xff is equal to 255 and the AND operator (&) is limiting to 8 bits.
+    const value = (hash >> (index * 8)) & 0xff
+
+    // value.toString(16) convert value to hex string.
+    // 00 if the hexadecimal string is less than two characters ensuring consistent formatting.
+    // .slice(-2) extracts the last two characters from the resulting string.
+    color += ("00" + value.toString(16)).slice(-2)
+  }
+
+  return color
 }
+
+export function cleanDisplayName(displayName: string): string {
+  return displayName
+    .trim()
+    .toLowerCase()
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
+}
+
+const ASCII_LIMIT = 127
+
+export function normalizeName(displayName: string): string {
+  return displayName
+    .split("")
+    .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
+    .join("")
+}
+
+// #region Matrix SDK utils
 
 export function getImageUrl(
   url: string | null | undefined,
   client: MatrixClient | null,
   size?: number
 ): string | undefined {
-  if (url === null || url === undefined || client === null) {
+  if (
+    url === null ||
+    url === undefined ||
+    client === null ||
+    url.length === 0
+  ) {
     return undefined
   }
 
@@ -89,6 +123,17 @@ export function getImageUrl(
       : client.mxcUrlToHttp(url, size, size, "scale")
 
   return imageUrl ?? undefined
+}
+
+export type ImageUploadedInfo = {
+  matrixUrl: string
+  filename: string
+  info: {
+    w: number
+    h: number
+    mimetype: string
+    size: number
+  }
 }
 
 export async function sendImageMessageFromFile(
@@ -157,92 +202,6 @@ export async function getImage(data: string): Promise<HTMLImageElement> {
   })
 }
 
-// TODO: Is temporary, change it when the matrix js sdk is updated.
-export function isDirectRoom(client: MatrixClient | null, room: Room): boolean {
-  if (client === null) {
-    return false
-  }
-
-  const myUserId = client.getUserId()
-
-  assert(myUserId !== null, CommonAssertion.UserIdNotFound)
-
-  return (
-    room
-      .getLiveTimeline()
-      .getState(Direction.Forward)
-      ?.events.get(EventType.RoomMember)
-      // Find event by userId.
-      // If the client user is not in the room event then this room is not a direct chat for the user.
-      ?.get(myUserId)?.event.content?.is_direct ?? false
-  )
-}
-
-// TODO: Is temporary, change it when the matrix js sdk is updated.
-export function getDirectRoomsIds(client: MatrixClient): string[] {
-  const directRooms = client.getAccountData("m.direct")
-  const content = directRooms?.event.content
-
-  if (content === undefined) {
-    return []
-  }
-
-  return Object.values(content).flat()
-}
-
-export function getRoomsFromSpace(
-  spaceId: string,
-  client: MatrixClient
-): Room[] {
-  const space = client.getRoom(spaceId)
-
-  if (space === null || !space.isSpaceRoom()) {
-    throw new Error("The space is not valid.")
-  }
-
-  const childEvents = space
-    .getLiveTimeline()
-    .getState(EventTimeline.FORWARDS)
-    ?.getStateEvents("m.space.child")
-
-  // Fetch space child events to identify associated rooms.
-  // OPTIMIZE: Consider more efficient filtering to avoid iterating over all rooms.
-  const storeRooms = client.getRooms().filter(room =>
-    room
-      .getLiveTimeline()
-      .getState(EventTimeline.FORWARDS)
-      ?.getStateEvents("m.space.parent")
-      .some(
-        event =>
-          // Check if room's parent spaceId matches the selected space.
-          event.getStateKey() === spaceId &&
-          // When there is content it means that the room is related to a space.
-          Object.keys(event.getContent()).length > 0
-      )
-  )
-
-  if (childEvents === undefined) {
-    throw new Error("The selected space does not have associated child rooms.")
-  }
-
-  for (const event of childEvents) {
-    // Skip event if it has no content, indicating no association with the parent space.
-    if (Object.keys(event.getContent()).length === 0) {
-      continue
-    }
-
-    const room = client.getRoom(event.getStateKey())
-
-    // Ignore if room is null, meaning it's not available in the client.
-    // Avoid adding the room if already in storeRooms to prevent duplicates.
-    if (room !== null && !storeRooms.includes(room)) {
-      storeRooms.push(room)
-    }
-  }
-
-  return storeRooms
-}
-
 export function deleteMessage(
   client: MatrixClient,
   roomId: string,
@@ -251,208 +210,4 @@ export function deleteMessage(
   client.redactEvent(roomId, eventId).catch(error => {
     console.error("Error deleting message", error)
   })
-}
-
-// TODO: Check why existing two const for admin power level.
-const MIN_ADMIN_POWER_LEVEL = 50
-
-export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
-  const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
-  const userId = client.getUserId()
-
-  if (roomState === undefined || userId === null) {
-    return false
-  }
-
-  const powerLevels = roomState
-    .getStateEvents("m.room.power_levels", "")
-    ?.getContent().users as string[]
-
-  const users = Object.entries(powerLevels)
-
-  for (const [adminId, powerLevel] of users) {
-    if (typeof powerLevel !== "number" || powerLevel < MIN_ADMIN_POWER_LEVEL) {
-      continue
-    }
-
-    if (adminId === userId) {
-      return true
-    }
-  }
-
-  return false
-}
-
-export async function getRoomMembers(
-  client: MatrixClient,
-  room: Room
-): Promise<RosterUserProps[]> {
-  const membersProperty: RosterUserProps[] = []
-  const members = await client.getJoinedRoomMembers(room.roomId)
-  const joinedMembers = members.joined
-
-  const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
-
-  if (roomState === undefined) {
-    return []
-  }
-
-  const powerLevels = roomState
-    .getStateEvents("m.room.power_levels", "")
-    ?.getContent().users as string[]
-
-  const users = Object.entries(powerLevels)
-  const adminUsersId: string[] = []
-
-  for (const [adminId, powerLevel] of users) {
-    if (
-      typeof powerLevel !== "number" ||
-      powerLevel < UserPowerLevel.Moderator
-    ) {
-      continue
-    }
-
-    adminUsersId.push(adminId)
-
-    const member = joinedMembers[adminId]
-    const displayName = normalizeName(member.display_name)
-    const isAdmin = powerLevel === UserPowerLevel.Admin
-
-    membersProperty.push({
-      // TODO: Use actual props instead of dummy data.
-      userProfileProps: {
-        avatarUrl: getImageUrl(
-          member.avatar_url,
-          client,
-          ImageSizes.MessageAndProfile
-        ),
-        text: "Online",
-        displayName,
-        displayNameColor: stringToColor(displayName),
-        status: UserStatus.Online,
-      },
-      powerLevel: isAdmin ? UserPowerLevel.Admin : UserPowerLevel.Moderator,
-      onClick: () => {},
-      userId: adminId,
-    })
-  }
-
-  let memberCount = 0
-
-  for (const userId in joinedMembers) {
-    if (memberCount >= 20) {
-      break
-    }
-
-    if (adminUsersId.includes(userId)) {
-      continue
-    }
-
-    const member = joinedMembers[userId]
-    const displayName = normalizeName(member.display_name ?? userId)
-
-    membersProperty.push({
-      // TODO: Use actual props instead of dummy data.
-      userProfileProps: {
-        avatarUrl: getImageUrl(
-          member.avatar_url,
-          client,
-          ImageSizes.MessageAndProfile
-        ),
-        text: "Online",
-        displayName,
-        displayNameColor: stringToColor(displayName),
-        status: UserStatus.Online,
-      },
-      powerLevel: UserPowerLevel.Member,
-      onClick: () => {},
-      userId,
-    })
-
-    memberCount += 1
-  }
-
-  return membersProperty
-}
-
-export function stringToColor(string_: string): string {
-  let hash = 0
-
-  // Iterate over string letter by letter
-  for (let index = 0; index < string_.length; index++) {
-    // hash << 5 move the bit 5 digits (00000010 to 00100000) to the left and subtract the hash value.
-    hash = string_.charCodeAt(index) + ((hash << 5) - hash)
-  }
-
-  let color = "#"
-
-  // Extract the 3 byte values, red, green and blue
-  for (let index = 0; index < 3; index++) {
-    // When index = 0 is green, index = 1 is blue, index = 2 is red
-    // Move hash index * 8 digits to the right for extract the color.
-    // 0xff is equal to 255 and the AND operator (&) is limiting to 8 bits.
-    const value = (hash >> (index * 8)) & 0xff
-
-    // value.toString(16) convert value to hex string.
-    // 00 if the hexadecimal string is less than two characters ensuring consistent formatting.
-    // .slice(-2) extracts the last two characters from the resulting string.
-    color += ("00" + value.toString(16)).slice(-2)
-  }
-
-  return color
-}
-
-export function cleanDisplayName(displayName: string): string {
-  return displayName
-    .trim()
-    .toLowerCase()
-    .split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ")
-}
-
-export function getLastReadEventIdFromRoom(
-  room: Room,
-  client: MatrixClient
-): string | null {
-  const userId = client.getUserId()
-
-  if (userId === null) {
-    return null
-  }
-
-  const eventReadUpTo = room.getEventReadUpTo(userId)
-
-  if (eventReadUpTo === null) {
-    return null
-  }
-
-  return room.findEventById(eventReadUpTo)?.getId() ?? null
-}
-
-const ASCII_LIMIT = 127
-
-export function normalizeName(displayName: string): string {
-  return displayName
-    .split("")
-    .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
-    .join("")
-}
-
-export function getPartnerUserIdFromRoomDirect(room: Room): string {
-  assert(
-    room.getJoinedMemberCount() === 2,
-    "Direct chat must have exactly two participants."
-  )
-
-  const userId = room
-    .getJoinedMembers()
-    .find(member => member.userId !== room.myUserId)?.userId
-
-  assert(
-    userId !== undefined,
-    "If one participant is the current user, the other must exist."
-  )
-
-  return userId
 }

@@ -1,9 +1,9 @@
 import {type RosterUserProps} from "@/components/RosterUser"
 import useConnection from "./useConnection"
 import {useCallback, useEffect, useState} from "react"
-import {getRoomMembers} from "@/utils/util"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import {getRoomMembers} from "@/utils/rooms"
 
 const useRoomMembers = () => {
   const {client} = useConnection()
