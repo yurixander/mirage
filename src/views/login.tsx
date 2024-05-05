@@ -6,7 +6,7 @@ import Input, {
 } from "@/components/Input"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {useState, type FC} from "react"
-import Button, {ButtonColor, ButtonVariant} from "@/components/Button"
+import Button, {ButtonVariant} from "@/components/Button"
 import {StaticAssetPath} from "@/utils/util"
 import {Link} from "react-router-dom"
 import {ReactSVG} from "react-svg"
@@ -97,7 +97,6 @@ const LoginView: FC = () => {
                 onClick={() => {}}
                 label="Forgot password?"
                 variant={ButtonVariant.TextLink}
-                color={ButtonColor.Black}
               />
             </div>
           </div>
