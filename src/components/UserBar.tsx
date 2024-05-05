@@ -1,7 +1,7 @@
 import {useMemo, type FC} from "react"
 import {
   assert,
-  CommonAssertion,
+  type Credentials,
   getImageUrl,
   stringToColor,
   trim,
@@ -15,6 +15,7 @@ import {twMerge} from "tailwind-merge"
 import useConnection from "@/hooks/matrix/useConnection"
 import UserProfilePlaceholder from "./UserProfilePlaceholder"
 import {IoMdSettings} from "react-icons/io"
+import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
 
 export type UserBarProps = {
   className?: string
@@ -24,21 +25,21 @@ export function getUsernameByUserId(userId: string): string {
   return userId.replace(":matrix.org", "")
 }
 
+const MAX_NAME_LENGTH = 18
+
 const UserBar: FC<UserBarProps> = ({className}) => {
-  const MAX_NAME_LENGTH = 18
   const {client, isConnecting} = useConnection()
 
+  const {cachedValue: credentials} = useLocalStorage<Credentials>(
+    LocalStorageKeys.Credentials
+  )
+
   const userData = useMemo(() => {
-    if (client === null) {
+    if (client === null || !client.isLoggedIn() || credentials === null) {
       return
     }
 
-    const userId = client.getUserId()
-
-    // TODO: Improve this so that the user's credentials are obtained if they log in.
-    assert(userId !== null, CommonAssertion.UserIdNotFound)
-
-    const user = client.getUser(userId)
+    const user = client.getUser(credentials.userId)
 
     assert(
       user !== null,
@@ -46,7 +47,7 @@ const UserBar: FC<UserBarProps> = ({className}) => {
     )
 
     const avatarUrl = user.avatarUrl
-    const displayName = user.displayName ?? userId
+    const displayName = user.displayName ?? credentials.userId
 
     const status = client.isLoggedIn()
       ? UserStatus.Online
@@ -57,13 +58,13 @@ const UserBar: FC<UserBarProps> = ({className}) => {
     const userBarProperties: UserProfileProperties = {
       avatarUrl: getImageUrl(avatarUrl, client, 48),
       displayName: trim(displayName, MAX_NAME_LENGTH),
-      text: trim(getUsernameByUserId(userId), MAX_NAME_LENGTH),
-      displayNameColor: stringToColor(userId),
+      text: trim(getUsernameByUserId(credentials.userId), MAX_NAME_LENGTH),
+      displayNameColor: stringToColor(credentials.userId),
       status,
     }
 
     return userBarProperties
-  }, [client, isConnecting])
+  }, [client, credentials, isConnecting])
 
   return (
     <div className={twMerge("flex p-[x1]", className)}>

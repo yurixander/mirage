@@ -9,7 +9,7 @@ const LIMIT_USER_SEARCH = 100
 const useUsersSearch = (client: MatrixClient | null, searchDelay = 500) => {
   const [query, setQuery] = useState("")
   const [results, setResult] = useState<UserProfileProps[] | null>(null)
-  const debouncedText = useDebounced(query, 500)
+  const debouncedText = useDebounced(query, searchDelay)
 
   useEffect(() => {
     const search = async () => {

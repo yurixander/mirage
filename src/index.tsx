@@ -4,7 +4,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom"
 import {ViewPath, assert} from "./utils/util"
 import AppView from "./views/app.jsx"
 import LoginView from "./views/login"
-import DevPreview from "./containers/DevPreview"
+import DevPreview from "./views/DevPreview"
 
 // Special imports.
 import "./polyfills"

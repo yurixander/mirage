@@ -11,6 +11,8 @@ import {
 import ImageZoom from "@/components/ImageZoom"
 import Typography from "@/components/Typography"
 
+const ICON_BUTTON_MODAL_SIZE = 26
+
 export type ImageModalProps = {
   imageUrl?: string
   onClose: () => void
@@ -27,7 +29,7 @@ const ImageModal: FC<ImageModalProps> = ({
       <div className="ml-auto flex gap-1 p-2">
         {onDeleteImage !== undefined && (
           <IconButton
-            size={26}
+            size={ICON_BUTTON_MODAL_SIZE}
             tooltip="Delete image message"
             Icon={IoMdTrash}
             onClick={() => {
@@ -40,7 +42,7 @@ const ImageModal: FC<ImageModalProps> = ({
         {imageUrl !== undefined && (
           <div>
             <IconButton
-              size={26}
+              size={ICON_BUTTON_MODAL_SIZE}
               tooltip="Resend image message"
               Icon={IoArrowRedo}
               onClick={function (): void {
@@ -49,7 +51,7 @@ const ImageModal: FC<ImageModalProps> = ({
             />
 
             <IconButton
-              size={26}
+              size={ICON_BUTTON_MODAL_SIZE}
               tooltip="Reply image message"
               Icon={IoArrowUndo}
               onClick={function (): void {
@@ -58,7 +60,7 @@ const ImageModal: FC<ImageModalProps> = ({
             />
 
             <IconButton
-              size={26}
+              size={ICON_BUTTON_MODAL_SIZE}
               tooltip="Download Image"
               Icon={IoMdDownload}
               onClick={() => {
@@ -69,7 +71,7 @@ const ImageModal: FC<ImageModalProps> = ({
         )}
 
         <IconButton
-          size={26}
+          size={ICON_BUTTON_MODAL_SIZE}
           tooltip="Close image"
           Icon={IoCloseCircle}
           onClick={onClose}

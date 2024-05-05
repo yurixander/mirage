@@ -67,7 +67,10 @@ const UserProfile: FC<UserProfileProps> = ({
   }
 
   if (avatarUrl !== undefined) {
-    assert(validateUrl(avatarUrl), "avatar URL should be valid if defined")
+    assert(
+      validateUrl(avatarUrl),
+      `${avatarUrl} avatar URL should be valid if defined`
+    )
   }
 
   const MAX_DISPLAY_NAME_LENGTH = 12
