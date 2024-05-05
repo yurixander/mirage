@@ -140,6 +140,23 @@ module.exports = {
         ".bg-clip-text": {
           "-webkit-background-clip": "text",
         },
+        ".slider::-webkit-slider-thumb": {
+          "-webkit-appearance": "none",
+          "width": "14px",
+          "height": "14px",
+          "background": "#c0f",
+          "border-radius": "10px",
+          "box-shadow": "0 0 5px 0 solid rgba(0,0,0,0.5)",
+        },
+        ".slider::-moz-range-thumb": {
+          "appearance": "none",
+          "width": "14px",
+          "height": "14px",
+          "border": "none",
+          "background": "#c0f",
+          "border-radius": "10px",
+          "box-shadow": "0 0 5px 0 solid rgba(0,0,0,0.5)",
+        },
       }
       addUtilities(newUtilities, ["responsive", "hover"])
     },
