@@ -2,13 +2,22 @@ import {useState, type FC} from "react"
 import Button, {ButtonSize, ButtonVariant} from "./Button"
 import Typography, {TypographyVariant} from "./Typography"
 import Dropdown from "./Dropdown"
-import {Visibility} from "matrix-js-sdk"
+import {Preset, Visibility} from "matrix-js-sdk"
 import useConnection from "@/hooks/matrix/useConnection"
 import {IoIosLock, IoMdGlobe} from "react-icons/io"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
 import InputSection from "./InputSection"
 import SwitchButton from "./SwitchButton"
+
+// Initial event that declares the room as encrypted.
+const ROOM_ENCRYPTION_OBJECT = {
+  type: "m.room.encryption",
+  state_key: "",
+  content: {
+    algorithm: "m.megolm.v1.aes-sha2",
+  },
+}
 
 export type CreateRoomProps = {
   onClose: () => void
@@ -31,6 +40,8 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
         visibility: roomVisibility,
         name: roomName,
         topic: roomDescription,
+        preset: enableEncryption ? Preset.PrivateChat : undefined,
+        initial_state: enableEncryption ? [ROOM_ENCRYPTION_OBJECT] : undefined,
       })
       .then(_roomID => {
         // TODO: Send here notification that the room has been created.
@@ -92,30 +103,34 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
           </div>
         </div>
 
-        <Typography className="text-black" variant={TypographyVariant.P}>
-          Only those who are invited will be able to find and join this room.
-          You can change this at any time from the room settings
-        </Typography>
-
-        <div className="flex justify-between">
-          <div className="flex max-w-64 flex-col">
-            <Typography
-              className="font-medium text-black"
-              variant={TypographyVariant.Span}>
-              Turn on end-to-end encryption
+        {roomVisibility === Visibility.Private && (
+          <div className="flex flex-col gap-2">
+            <Typography className="text-black" variant={TypographyVariant.P}>
+              Only those who are invited will be able to find and join this
+              room. You can change this at any time from the room settings
             </Typography>
 
-            <Typography variant={TypographyVariant.P}>
-              You won't be able to turn it off later. Bridges and most of robots
-              still won't work.
-            </Typography>
+            <div className="flex justify-between">
+              <div className="flex max-w-64 flex-col">
+                <Typography
+                  className="font-medium text-black"
+                  variant={TypographyVariant.Span}>
+                  Turn on end-to-end encryption
+                </Typography>
+
+                <Typography variant={TypographyVariant.P}>
+                  You won't be able to turn it off later. Bridges and most of
+                  robots still won't work.
+                </Typography>
+              </div>
+
+              <SwitchButton
+                isInitiallySelected={enableEncryption}
+                onSelectionChange={setEnableEncryption}
+              />
+            </div>
           </div>
-
-          <SwitchButton
-            isInitiallySelected={enableEncryption}
-            onSelectionChange={setEnableEncryption}
-          />
-        </div>
+        )}
 
         <div className="flex gap-1 overflow-hidden">
           <ReactSVG src={StaticAssetPath.DotGrid} />
