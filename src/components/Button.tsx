@@ -12,35 +12,26 @@ export enum ButtonSize {
   Small,
 }
 
-export enum ButtonColor {
-  Green,
-  Black,
-}
-
 export type ButtonProps = {
   onClick: () => void
   label: string
   isLoading?: boolean
   loadingText?: string
   variant?: ButtonVariant
-  color?: ButtonColor
   size?: ButtonSize
   isDisabled?: boolean
   className?: string
 }
 
 const Button: FC<ButtonProps> = ({
-  onClick,
   label: text,
+  variant = ButtonVariant.Primary,
+  onClick,
   isLoading,
   isDisabled,
-  variant = ButtonVariant.Primary,
-  color,
   size,
   className,
 }) => {
-  // TODO: Add outline variant.
-
   const sizeClass =
     size === ButtonSize.Small
       ? "p-1 text-xs rounded px-2"
@@ -66,20 +57,19 @@ const Button: FC<ButtonProps> = ({
         sizeClass,
         className
       )}
-      disabled={variant === ButtonVariant.Loading || isDisabled}
+      disabled={isLoading ?? isDisabled}
       onClick={onClick}>
       {isLoading ? <Loading /> : text}
     </button>
   )
 }
 
-export default Button
-
 const Loading: FC = () => {
   return (
     <div className="flex items-center justify-center gap-2">
       <div className="size-4 animate-rotation rounded-full border-2 border-white border-t-borderLoading" />
-      <span>Loadin...</span>
     </div>
   )
 }
+
+export default Button

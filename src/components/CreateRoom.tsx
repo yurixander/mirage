@@ -28,12 +28,15 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
   const [roomDescription, setRoomDescription] = useState("")
   const [roomVisibility, setRoomVisibility] = useState(Visibility.Private)
   const [enableEncryption, setEnableEncryption] = useState(false)
+  const [isCreatingRoom, setIsCreatingRoom] = useState(false)
   const {client} = useConnection()
 
   const onCreateRoom = () => {
     if (client === null) {
       return
     }
+
+    setIsCreatingRoom(true)
 
     void client
       .createRoom({
@@ -50,6 +53,8 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
       })
       .catch(_error => {
         // TODO: Send here notification that the room has not been created.
+
+        setIsCreatingRoom(false)
       })
   }
 
@@ -150,6 +155,7 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
         <Button
           label="Create Room"
           isDisabled={client === null}
+          isLoading={isCreatingRoom}
           size={ButtonSize.Small}
           onClick={onCreateRoom}
         />
