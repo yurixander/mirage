@@ -5,7 +5,7 @@ import {StaticAssetPath} from "@/utils/util"
 
 const WelcomeChat: FC = () => {
   return (
-    <div className="flex size-full flex-col items-center justify-center gap-4">
+    <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
       <ReactSVG src={StaticAssetPath.AppLogo} />
 
       <Typography variant={TypographyVariant.H1}>Welcome to Mirage</Typography>

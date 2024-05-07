@@ -79,4 +79,14 @@ export const SmallBlack: Story = {
   },
 }
 
+export const Loading: Story = {
+  render,
+  args: {
+    label: "Loading",
+    variant: ButtonVariant.Primary,
+    isLoading: true,
+    onClick: () => {},
+  },
+}
+
 export default meta

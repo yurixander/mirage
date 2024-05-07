@@ -1,5 +1,6 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Dropdown, {type DropdownProps} from "../components/Dropdown"
+import {IoAccessibility, IoAdd, IoFlame} from "react-icons/io5"
 
 type Story = StoryObj<typeof Dropdown>
 
@@ -12,9 +13,9 @@ export const Default: Story = {
   render,
   args: {
     options: [
-      {label: "Option 1", value: "1", onClick: () => {}},
-      {label: "Option 2", value: "2", onClick: () => {}},
-      {label: "Option 3", value: "3", onClick: () => {}},
+      {label: "Option 1", Icon: IoFlame, onClick: () => {}},
+      {label: "Option 2", Icon: IoAdd, onClick: () => {}},
+      {label: "Option 3", Icon: IoAccessibility, onClick: () => {}},
     ],
   },
 }

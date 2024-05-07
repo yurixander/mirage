@@ -47,7 +47,7 @@ const LoginView: FC = () => {
               Welcome Back
             </Typography>
 
-            <Typography>
+            <Typography className="text-center">
               Enter your email and password to
               <br />
               access your account
