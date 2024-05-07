@@ -10,7 +10,7 @@ const RoomsList: FC = () => {
     () =>
       rooms
         .filter(room => room.type === RoomType.Group)
-        .map((room, index) => <Room key={index} {...room} />),
+        .map(room => <Room key={room.roomId} {...room} />),
     [rooms]
   )
 
@@ -18,7 +18,7 @@ const RoomsList: FC = () => {
     () =>
       rooms
         .filter(room => room.type === RoomType.Direct)
-        .map((room, index) => <Room key={index} {...room} />),
+        .map(room => <Room key={room.roomId} {...room} />),
     [rooms]
   )
 
