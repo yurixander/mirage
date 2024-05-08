@@ -5,7 +5,6 @@ export enum ButtonVariant {
   Primary,
   Secondary,
   TextLink,
-  Loading,
 }
 
 export enum ButtonSize {
@@ -32,12 +31,13 @@ export type ButtonProps = {
 const Button: FC<ButtonProps> = ({
   onClick,
   label: text,
-  isLoading,
+  isLoading = false,
   isDisabled,
   variant = ButtonVariant.Primary,
   color,
   size,
   className,
+  loadingText,
 }) => {
   // TODO: Add outline variant.
 
@@ -50,7 +50,7 @@ const Button: FC<ButtonProps> = ({
     ? "border disabled:border-borderButtonDisabled disabled:bg-backgroundButtonDisabled text-white"
     : variant === ButtonVariant.Primary
       ? "border border-green-700 bg-green-500 text-white duration-200 hover:border-green-600 hover:bg-green-400 hover:shadow active:translate-y-1"
-      : variant === ButtonVariant.Loading
+      : isLoading
         ? "border border-green-600 bg-green-500 text-white"
         : variant === ButtonVariant.Secondary
           ? "bg-green-200 text-green-700 duration-200 hover:bg-green-100 hover:shadow active:translate-y-1"
@@ -66,20 +66,23 @@ const Button: FC<ButtonProps> = ({
         sizeClass,
         className
       )}
-      disabled={variant === ButtonVariant.Loading || isDisabled}
+      disabled={isLoading || isDisabled}
       onClick={onClick}>
-      {isLoading ? <Loading /> : text}
+      {isLoading ? <Loading textLoading={loadingText ?? "Loading..."} /> : text}
     </button>
   )
 }
 
 export default Button
 
-const Loading: FC = () => {
+type LoadingProps = {
+  textLoading: string
+}
+const Loading: FC<LoadingProps> = ({textLoading}) => {
   return (
     <div className="flex items-center justify-center gap-2">
       <div className="size-4 animate-rotation rounded-full border-2 border-white border-t-borderLoading" />
-      <span>Loadin...</span>
+      <span>{textLoading}</span>
     </div>
   )
 }
