@@ -13,6 +13,7 @@ export enum StaticAssetPath {
   AppLogoSmall = "logo-small.svg",
   AddServerIcon = "icons/add-server.svg",
   LoginPhoto = "LoginPhoto.png",
+  DotGrid = "icons/dot-grid.svg",
 }
 
 export type Credentials = {
