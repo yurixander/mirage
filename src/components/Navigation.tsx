@@ -4,8 +4,8 @@ import useSpaces from "@/hooks/matrix/useSpaces"
 import {twMerge} from "tailwind-merge"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
-import CreateRoom from "./CreateRoom"
 import Modal from "./Modal"
+import CreateSpaceModal from "./CreateSpaceModal"
 
 export type NavigationProps = {
   className?: string
@@ -21,7 +21,7 @@ const Navigation: FC<NavigationProps> = ({className}) => {
     <>
       <Modal isVisible={isCreateRoomModalVisible}>
         <div className="w-messageMaxWidth">
-          <CreateRoom
+          <CreateSpaceModal
             onClose={() => {
               setIsCreateRoomModalVisible(false)
             }}
