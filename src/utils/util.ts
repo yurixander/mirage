@@ -146,7 +146,11 @@ export async function sendImageMessageFromFile(
     return
   }
 
-  const imageUploadedInfo = await uploadFileToMatrix(image, client)
+  const imageUploadedInfo = await uploadImageToMatrix(
+    image,
+    client,
+    _percent => {}
+  )
 
   if (imageUploadedInfo === null) {
     return
@@ -160,9 +164,10 @@ export async function sendImageMessageFromFile(
   )
 }
 
-export async function uploadFileToMatrix(
+export async function uploadImageToMatrix(
   file: FileContent<string>,
-  client: MatrixClient
+  client: MatrixClient,
+  progressCallback: (percent: number) => void
 ): Promise<ImageUploadedInfo | null> {
   const content = file.content
   const response = await fetch(content)
@@ -172,6 +177,9 @@ export async function uploadFileToMatrix(
   try {
     const uploadResponse = await client.uploadContent(blob, {
       type: blob.type,
+      progressHandler: progress => {
+        progressCallback(Math.round((progress.loaded / progress.total) * 100))
+      },
     })
 
     return {

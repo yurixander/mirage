@@ -7,9 +7,9 @@ import {ReactSVG} from "react-svg"
 import {createSpace, StaticAssetPath} from "@/utils/util"
 import Button, {ButtonSize} from "./Button"
 import InputArea from "./InputArea"
-import UploadAvatar from "./UploadAvatar"
 import useConnection from "@/hooks/matrix/useConnection"
 import {EventType} from "matrix-js-sdk"
+import AvatarUploader from "./AvatarUploader"
 
 const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
   const {client} = useConnection()
@@ -61,7 +61,7 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
 
       <div className="flex flex-col gap-6 border-b border-slate-300 p-6">
         <div className="flex items-center gap-2">
-          <UploadAvatar onImageUploaded={setSpaceAvatarUrl} />
+          <AvatarUploader onAvatarUploaded={setSpaceAvatarUrl} />
 
           <div className="flex flex-col">
             <Typography
