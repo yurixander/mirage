@@ -16,11 +16,14 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
   const [spaceName, setSpaceName] = useState("")
   const [spaceDescription, setSpaceDescription] = useState("")
   const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
+  const [isCreatingSpace, setIsCreatingSpace] = useState(false)
 
   const onCreateSpace = () => {
     if (client === null) {
       return
     }
+
+    setIsCreatingSpace(true)
 
     void createSpace(client, {
       name: spaceName,
@@ -38,10 +41,13 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
       .then(_roomID => {
         // TODO: Send here notification that the room has been created.
 
+        setIsCreatingSpace(false)
         onClose()
       })
       .catch(_error => {
         // TODO: Send here notification that the room has not been created.
+
+        setIsCreatingSpace(false)
       })
   }
 
@@ -110,6 +116,7 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
         <Button
           size={ButtonSize.Small}
           label="Create Space"
+          isLoading={isCreatingSpace}
           isDisabled={client === null || spaceName.length <= 0}
           onClick={onCreateSpace}
         />
