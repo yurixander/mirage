@@ -31,7 +31,6 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
       initial_state: [
         {
           type: EventType.RoomAvatar,
-          state_key: "",
           content: {
             url: spaceAvatarUrl,
           },

@@ -2,17 +2,10 @@ import {useCallback, useEffect} from "react"
 import useList from "../util/useList"
 import useConnection from "./useConnection"
 import {RoomType} from "matrix-js-sdk"
-
-type Room = {
-  roomId: string
-  roomName: string
-}
-
-export type Space = {
-  name: string
-  spaceId: string
-  childRooms: Room[]
-}
+import {
+  type Space,
+  type PartialRoom,
+} from "@/containers/NavigationSection/SpaceList"
 
 const hasRepeat = (space1: Space, space2: Space): boolean =>
   space1.spaceId === space2.spaceId
@@ -32,7 +25,7 @@ const useNavigation = () => {
       client
         .getRoomHierarchy(storeSpace.roomId)
         .then(roomHierarchy => {
-          const childRooms: Room[] = []
+          const childRooms: PartialRoom[] = []
 
           for (const room of roomHierarchy.rooms) {
             if (room.name === undefined || room.room_type === RoomType.Space) {
