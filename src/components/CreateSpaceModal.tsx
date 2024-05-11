@@ -4,16 +4,46 @@ import IconButton from "./IconButton"
 import {IoCloseCircle} from "react-icons/io5"
 import InputSection from "./InputSection"
 import {ReactSVG} from "react-svg"
-import {StaticAssetPath} from "@/utils/util"
+import {createSpace, StaticAssetPath} from "@/utils/util"
 import Button, {ButtonSize} from "./Button"
 import InputArea from "./InputArea"
 import UploadAvatar from "./UploadAvatar"
 import useConnection from "@/hooks/matrix/useConnection"
+import {EventType} from "matrix-js-sdk"
 
 const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
   const {client} = useConnection()
   const [spaceName, setSpaceName] = useState("")
   const [spaceDescription, setSpaceDescription] = useState("")
+  const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
+
+  const onCreateSpace = () => {
+    if (client === null) {
+      return
+    }
+
+    void createSpace(client, {
+      name: spaceName,
+      topic: spaceDescription,
+      initial_state: [
+        {
+          type: EventType.RoomAvatar,
+          state_key: "",
+          content: {
+            url: spaceAvatarUrl,
+          },
+        },
+      ],
+    })
+      .then(_roomID => {
+        // TODO: Send here notification that the room has been created.
+
+        onClose()
+      })
+      .catch(_error => {
+        // TODO: Send here notification that the room has not been created.
+      })
+  }
 
   return (
     <div className="flex max-w-md flex-col overflow-hidden rounded-md border border-slate-300 bg-white">
@@ -31,11 +61,7 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
 
       <div className="flex flex-col gap-6 border-b border-slate-300 p-6">
         <div className="flex items-center gap-2">
-          <UploadAvatar
-            onImageUploaded={function (matrixSrc: string): void {
-              throw new Error("Function not implemented.")
-            }}
-          />
+          <UploadAvatar onImageUploaded={setSpaceAvatarUrl} />
 
           <div className="flex flex-col">
             <Typography
@@ -84,10 +110,8 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
         <Button
           size={ButtonSize.Small}
           label="Create Space"
-          isDisabled={client === null}
-          onClick={function (): void {
-            throw new Error("Implement here `Create Space` functionality")
-          }}
+          isDisabled={client === null || spaceName.length <= 0}
+          onClick={onCreateSpace}
         />
       </div>
     </div>

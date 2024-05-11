@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import {type MatrixClient} from "matrix-js-sdk"
+import {type ICreateRoomOpts, type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -210,5 +210,18 @@ export function deleteMessage(
 ) {
   client.redactEvent(roomId, eventId).catch(error => {
     console.error("Error deleting message", error)
+  })
+}
+
+export async function createSpace(
+  client: MatrixClient,
+  options: ICreateRoomOpts
+): Promise<{room_id: string}> {
+  return await client.createRoom({
+    ...options,
+    creation_content: {
+      ...options.creation_content,
+      type: "m.space",
+    },
   })
 }

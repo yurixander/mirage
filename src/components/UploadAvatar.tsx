@@ -39,14 +39,16 @@ const UploadAvatar: FC<UploadAvatarProps> = ({onImageUploaded, className}) => {
 
   return filesContent.length > 0 ? (
     <div className={twMerge("relative size-16 shrink-0", className)}>
-      <IoTrashBin
-        size={20}
-        color="white"
-        aria-hidden="true"
-        role="button"
-        className="absolute -bottom-1 -right-1 cursor-pointer rounded-full bg-red-500 p-1 transition-transform hover:scale-125"
-        onClick={clear}
-      />
+      {!isImageUploading && (
+        <IoTrashBin
+          size={20}
+          color="white"
+          aria-hidden="true"
+          role="button"
+          className="absolute -bottom-1 -right-1 cursor-pointer rounded-full bg-red-500 p-1 transition-transform hover:scale-125"
+          onClick={clear}
+        />
+      )}
 
       {isImageUploading || client === null ? (
         <img
