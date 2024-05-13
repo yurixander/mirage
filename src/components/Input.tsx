@@ -29,6 +29,7 @@ export type InputProps = {
   Icon?: IconType
   actions?: InputAction[]
   type?: React.HTMLInputTypeAttribute
+  isSmall?: boolean
 }
 
 const urlPattern = new RegExp(
@@ -92,6 +93,7 @@ const Input: FC<InputProps> = ({
   Icon,
   actions,
   type,
+  isSmall = false,
 }) => {
   const [value, setValue] = useState(initialValue ?? "")
 
@@ -124,10 +126,20 @@ const Input: FC<InputProps> = ({
         tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
 
-        {Icon && <Icon className="ml-2 size-5 text-neutral-200" />}
+        {Icon && (
+          <Icon
+            className={twMerge(
+              "text-neutral-200",
+              isSmall ? "ml-1 size-4" : "ml-2 size-5"
+            )}
+          />
+        )}
 
         <input
-          className="w-full rounded bg-neutral-50"
+          className={twMerge(
+            "w-full rounded bg-neutral-50",
+            isSmall ? "p-1 text-sm" : "p-2"
+          )}
           type={type ?? "text"}
           disabled={isDisabled}
           placeholder={placeholder}

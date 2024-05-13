@@ -14,7 +14,7 @@ body,
 }
 
 input {
-  @apply border-none p-[10px] outline-none;
+  @apply border-none p-2 outline-none;
 }
 
 input::-ms-reveal,

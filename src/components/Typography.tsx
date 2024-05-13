@@ -12,6 +12,7 @@ export enum TypographyVariant {
 
 export type TypographyProps = {
   className?: string
+  style?: React.CSSProperties
   variant?: TypographyVariant
   as?: keyof React.JSX.IntrinsicElements
   children?: React.ReactNode
@@ -44,6 +45,7 @@ const Typography: FC<TypographyProps> = ({
   as,
   className,
   children,
+  style,
 }) => {
   const Component = as ?? getTagFromVariant(variant)
 
@@ -59,7 +61,7 @@ const Typography: FC<TypographyProps> = ({
             : "text-sm"
 
   return (
-    <Component className={twMerge(className, variantClass)}>
+    <Component style={style} className={twMerge(className, variantClass)}>
       {children}
     </Component>
   )

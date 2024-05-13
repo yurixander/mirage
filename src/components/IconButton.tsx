@@ -35,7 +35,7 @@ const IconButton: FC<IconButtonProps> = ({
       aria-disabled={isDisabled}
       aria-hidden="true"
       className={twMerge(
-        "inline-block rounded-lg p-1 focus-visible:duration-150",
+        "inline-block size-max rounded-lg p-1 focus-visible:duration-150",
         isDisabledClass,
         className
       )}>

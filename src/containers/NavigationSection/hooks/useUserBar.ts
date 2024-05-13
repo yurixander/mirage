@@ -1,25 +1,14 @@
-import {useMemo, type FC} from "react"
+import {type UserProfileProps, UserStatus} from "@/components/UserProfile"
+import useConnection from "@/hooks/matrix/useConnection"
+import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
 import {
   assert,
   type Credentials,
   getImageUrl,
   stringToColor,
   trim,
-} from "../utils/util"
-import IconButton from "./IconButton"
-import UserProfile, {
-  type UserProfileProps as UserProfileProperties,
-  UserStatus,
-} from "./UserProfile"
-import {twMerge} from "tailwind-merge"
-import useConnection from "@/hooks/matrix/useConnection"
-import UserProfilePlaceholder from "./UserProfilePlaceholder"
-import {IoMdSettings} from "react-icons/io"
-import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
-
-export type UserBarProps = {
-  className?: string
-}
+} from "@/utils/util"
+import {useMemo} from "react"
 
 export function getUsernameByUserId(userId: string): string {
   return userId.replace(":matrix.org", "")
@@ -27,7 +16,7 @@ export function getUsernameByUserId(userId: string): string {
 
 const MAX_NAME_LENGTH = 18
 
-const UserBar: FC<UserBarProps> = ({className}) => {
+const useUserBar = () => {
   const {client, isConnecting} = useConnection()
 
   const {cachedValue: credentials} = useLocalStorage<Credentials>(
@@ -55,7 +44,7 @@ const UserBar: FC<UserBarProps> = ({className}) => {
         ? UserStatus.Idle
         : UserStatus.Offline
 
-    const userBarProperties: UserProfileProperties = {
+    const userBarProperties: UserProfileProps = {
       avatarUrl: getImageUrl(avatarUrl, client, 48),
       displayName: trim(displayName, MAX_NAME_LENGTH),
       text: trim(getUsernameByUserId(credentials.userId), MAX_NAME_LENGTH),
@@ -66,20 +55,7 @@ const UserBar: FC<UserBarProps> = ({className}) => {
     return userBarProperties
   }, [client, credentials, isConnecting])
 
-  return (
-    <div className={twMerge("flex p-[x1]", className)}>
-      <div className="mr-auto">
-        {userData ? (
-          <UserProfile {...userData} isLarge={false} />
-        ) : (
-          <UserProfilePlaceholder />
-        )}
-      </div>
-
-      {/* TODO: Handle click on settings button. */}
-      <IconButton onClick={() => {}} Icon={IoMdSettings} tooltip="Settings" />
-    </div>
-  )
+  return {userData}
 }
 
-export default UserBar
+export default useUserBar

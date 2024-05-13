@@ -2,6 +2,7 @@ import Typography, {TypographyVariant} from "@/components/Typography"
 import {type FC} from "react"
 import React from "react"
 import * as emoji from "node-emoji"
+import {twMerge} from "tailwind-merge"
 
 export type PartialRoom = {
   roomId: string
@@ -16,11 +17,12 @@ export type Space = {
 
 export type SpaceListProps = {
   spaces: Space[]
+  className?: string
 }
 
-const SpaceList: FC<SpaceListProps> = ({spaces}) => {
+const SpaceList: FC<SpaceListProps> = ({spaces, className}) => {
   return (
-    <div className="flex flex-col gap-6">
+    <div className={twMerge("flex flex-col gap-6", className)}>
       {spaces.map(space => (
         <Details title={space.name} key={space.spaceId}>
           <div className="flex w-max max-w-44 flex-col gap-1">
@@ -43,7 +45,7 @@ const Room: FC<{roomName: string; tagEmoji: string}> = ({
   tagEmoji,
 }) => {
   return (
-    <div className="flex gap-2 rounded-sm p-1 hover:bg-gray-100">
+    <div className="flex gap-2 rounded-md p-1 px-2 hover:bg-slate-200">
       <Typography variant={TypographyVariant.P}>{tagEmoji}</Typography>
 
       <Typography

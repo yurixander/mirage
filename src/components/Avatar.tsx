@@ -5,15 +5,16 @@ import {twMerge} from "tailwind-merge"
 
 export enum AvatarType {
   Profile,
+  ProfileBar,
   Server,
   Message,
 }
 
 export type AvatarProps = {
   isRounded: boolean
-  isLarge: boolean
   avatarType: AvatarType
   displayName: string
+  isLarge?: boolean
   isSquare?: boolean
   avatarUrl?: string
   className?: string
@@ -21,7 +22,7 @@ export type AvatarProps = {
 
 const AvatarImage: FC<AvatarProps> = ({
   isRounded,
-  isLarge,
+  isLarge = false,
   isSquare = true,
   avatarType,
   displayName,
