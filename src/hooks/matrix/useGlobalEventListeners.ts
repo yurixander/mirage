@@ -8,15 +8,12 @@ import {
 } from "matrix-js-sdk"
 import useEventListener from "./useEventListener"
 import useConnection from "./useConnection"
-import {
-  getNotificationsData,
-  saveNotification,
-} from "@/containers/SidebarActions/hooks/notifications"
+import {getNotificationsData, saveNotification} from "@/utils/notifications"
 import {
   type LocalNotificationData,
   NotificationsSyncState,
   useNotificationsStateStore,
-} from "@/containers/SidebarActions/hooks/useCachedNotifications"
+} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 import {UserPowerLevel} from "@/components/RosterUser"
 import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
 import {useMemo} from "react"
@@ -30,10 +27,16 @@ const useGlobalEventListeners = () => {
 
   const containsUnreadNotifications = useMemo(() => {
     if (state === NotificationsSyncState.Processed) {
-      return false
+      return
     }
 
-    return getNotificationsData().some(notification => !notification.isRead)
+    const notificationsUnread = getNotificationsData().filter(
+      notification => !notification.isRead
+    )
+
+    return notificationsUnread.length > 0
+      ? notificationsUnread.length
+      : undefined
   }, [state])
 
   useEventListener(

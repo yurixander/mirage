@@ -19,7 +19,26 @@ const useNavigation = () => {
       return
     }
 
-    const storeSpaces = client.getRooms().filter(room => room.isSpaceRoom())
+    const allRooms: PartialRoom[] = []
+
+    const storeSpaces = client.getRooms().filter(room => {
+      if (room.isSpaceRoom()) {
+        return true
+      }
+
+      allRooms.push({
+        roomId: room.roomId,
+        roomName: room.name,
+      })
+
+      return false
+    })
+
+    addSpace({
+      name: "All Rooms",
+      spaceId: "all_rooms",
+      childRooms: allRooms,
+    })
 
     for (const storeSpace of storeSpaces) {
       client

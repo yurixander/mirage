@@ -22,20 +22,28 @@ export type SpaceListProps = {
 
 const SpaceList: FC<SpaceListProps> = ({spaces, className}) => {
   return (
-    <div className={twMerge("flex flex-col gap-6", className)}>
-      {spaces.map(space => (
-        <Details title={space.name} key={space.spaceId}>
-          <div className="flex flex-col gap-1">
-            {space.childRooms.map(room => (
-              <Room
-                key={room.roomId}
-                roomName={room.roomName}
-                tagEmoji={emoji.random().emoji}
-              />
-            ))}
-          </div>
-        </Details>
-      ))}
+    <div className={twMerge("flex size-full flex-col gap-6", className)}>
+      {spaces.length > 0 ? (
+        spaces.map(space => (
+          <Details title={space.name} key={space.spaceId}>
+            <div className="flex flex-col gap-1">
+              {space.childRooms.map(room => (
+                <Room
+                  key={room.roomId}
+                  roomName={room.roomName}
+                  tagEmoji={emoji.random().emoji}
+                />
+              ))}
+            </div>
+          </Details>
+        ))
+      ) : (
+        <div className="flex size-full flex-col items-center justify-center gap-2">
+          <div className="size-8 animate-rotation rounded-full border-4 border-white border-t-slate-500" />
+
+          <Typography>Charging Spaces...</Typography>
+        </div>
+      )}
     </div>
   )
 }

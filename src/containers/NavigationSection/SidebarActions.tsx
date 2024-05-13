@@ -11,6 +11,7 @@ export type SidebarActionsProps = {
   onCalls: () => void
   onExit: () => void
   className?: string
+  notificationsCount?: number
 }
 
 const SidebarActions: FC<SidebarActionsProps> = ({
@@ -19,6 +20,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onDirectMessages,
   onExit,
   onNotification,
+  notificationsCount,
 }) => {
   return (
     <div className={twMerge("flex flex-col gap-2", className)}>
@@ -32,6 +34,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
         name="Notifications"
         icon={IoNotifications}
         onClick={onNotification}
+        unreadNotifications={notificationsCount}
       />
 
       <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />

@@ -1,14 +1,23 @@
 import {type FC} from "react"
 import SidebarActions from "./SidebarActions"
 import SpaceList from "./SpaceList"
-import {SPACE_DATA} from "@/stories/spaceList.stories"
 import UserBar from "./UserBar"
 import Input from "@/components/Input"
 import {IoSearch} from "react-icons/io5"
+import useNavigation from "@/hooks/matrix/useNavigation"
+import useSidebarActions, {SidebarModals} from "./hooks/useSidebarActions"
+import SidebarModalsHandler from "./SidebarModalsHandler"
+import useGlobalEventListeners from "@/hooks/matrix/useGlobalEventListeners"
 
 const NavigationSection: FC = () => {
+  const {spaces} = useNavigation()
+  const {onLogout, setActiveSidebarModal} = useSidebarActions()
+  const {containsUnreadNotifications} = useGlobalEventListeners()
+
   return (
     <>
+      <SidebarModalsHandler />
+
       <div className="flex size-full max-w-52 flex-col gap-1 border border-slate-300 bg-slate-100">
         <Input
           Icon={IoSearch}
@@ -18,16 +27,23 @@ const NavigationSection: FC = () => {
         />
 
         <SpaceList
-          spaces={SPACE_DATA}
+          spaces={spaces}
           className="overflow-y-auto scroll-smooth p-4"
         />
 
         <SidebarActions
           className="mt-auto p-4"
-          onNotification={() => {}}
-          onDirectMessages={() => {}}
+          notificationsCount={containsUnreadNotifications}
           onCalls={() => {}}
-          onExit={() => {}}
+          onNotification={() => {
+            setActiveSidebarModal(SidebarModals.Notifications)
+          }}
+          onDirectMessages={() => {
+            setActiveSidebarModal(SidebarModals.DirectMessages)
+          }}
+          onExit={() => {
+            void onLogout()
+          }}
         />
 
         <UserBar
