@@ -127,7 +127,7 @@ const Input: FC<InputProps> = ({
         {Icon && <Icon className="ml-2 size-5 text-neutral-200" />}
 
         <input
-          className="w-full rounded bg-neutral-50"
+          className="w-full rounded bg-neutral-50 p-2 text-sm"
           type={type ?? "text"}
           disabled={isDisabled}
           placeholder={placeholder}
