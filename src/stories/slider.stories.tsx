@@ -25,7 +25,7 @@ export const Step: Story = {
     onInput: () => {},
     Icon: IoIosCall,
     isVariantBasic: false,
-    step: "20",
+    step: 20,
   },
 }
 export default meta
