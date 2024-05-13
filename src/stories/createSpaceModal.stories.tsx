@@ -6,7 +6,7 @@ type Story = StoryObj<typeof CreateSpaceModal>
 const meta: Meta<typeof CreateSpaceModal> = {
   component: CreateSpaceModal,
 }
-const render = () => <CreateSpaceModal />
+const render = () => <CreateSpaceModal onClose={() => {}} />
 
 export const Default: Story = {
   render,

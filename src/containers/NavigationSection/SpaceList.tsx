@@ -25,7 +25,7 @@ const SpaceList: FC<SpaceListProps> = ({spaces, className}) => {
     <div className={twMerge("flex flex-col gap-6", className)}>
       {spaces.map(space => (
         <Details title={space.name} key={space.spaceId}>
-          <div className="flex w-max max-w-44 flex-col gap-1">
+          <div className="flex flex-col gap-1">
             {space.childRooms.map(room => (
               <Room
                 key={room.roomId}
