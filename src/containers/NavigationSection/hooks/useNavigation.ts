@@ -1,6 +1,6 @@
 import {useCallback, useEffect} from "react"
-import useList from "../util/useList"
-import useConnection from "./useConnection"
+import useList from "../../../hooks/util/useList"
+import useConnection from "../../../hooks/matrix/useConnection"
 import {RoomType} from "matrix-js-sdk"
 import {
   type Space,

@@ -14,6 +14,7 @@ const render = (args: SpaceListProps) => <SpaceList {...args} />
 export const Default: Story = {
   render,
   args: {
+    onRoomSelected: (roomId: string) => {},
     spaces: [
       {
         name: "Design Boards",
@@ -22,18 +23,22 @@ export const Default: Story = {
           {
             roomId: "!hello_world#matrix.org",
             roomName: "Cycle Design Team",
+            isSelected: false,
           },
           {
             roomId: "!hello_plane#matrix.org",
             roomName: "Cycle 3.0",
+            isSelected: false,
           },
           {
             roomId: "!hello_matrix#matrix.org",
             roomName: "Design System",
+            isSelected: false,
           },
           {
             roomId: "!hello_universe#matrix.org",
             roomName: "User feedbacks",
+            isSelected: false,
           },
         ],
       },
@@ -44,10 +49,12 @@ export const Default: Story = {
           {
             roomId: "!hello_matrix#matrix.org",
             roomName: "Design System",
+            isSelected: false,
           },
           {
             roomId: "!hello_universe#matrix.org",
             roomName: "User feedbacks",
+            isSelected: true,
           },
         ],
       },
