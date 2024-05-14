@@ -1,9 +1,9 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {type FC} from "react"
 import React from "react"
-import * as emoji from "node-emoji"
 import {twMerge} from "tailwind-merge"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import {emojiRandom} from "@/utils/util"
 
 export type PartialRoom = {
   roomId: string
@@ -34,7 +34,7 @@ const SpaceList: FC<SpaceListProps> = ({spaces, className}) => {
                 <Room
                   key={room.roomId}
                   roomName={room.roomName}
-                  tagEmoji={emoji.random().emoji}
+                  tagEmoji={emojiRandom()}
                   isSelected={activeRoomId === room.roomId}
                   onClick={() => {
                     setActiveRoomId(room.roomId)
