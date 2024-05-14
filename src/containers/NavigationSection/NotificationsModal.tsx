@@ -1,10 +1,6 @@
 import {useMemo, type FC} from "react"
 import {IoCloseCircle} from "react-icons/io5"
-import Button, {
-  ButtonColor,
-  ButtonSize,
-  ButtonVariant,
-} from "../../components/Button"
+import Button, {ButtonSize, ButtonVariant} from "../../components/Button"
 import Typography, {TypographyVariant} from "../../components/Typography"
 import {twMerge} from "tailwind-merge"
 import IconButton from "../../components/IconButton"
@@ -52,7 +48,6 @@ const NotificationsModal: FC = () => {
         <Button
           variant={ButtonVariant.TextLink}
           size={ButtonSize.Small}
-          color={ButtonColor.Black}
           label="Mark all as read"
           onClick={() => {
             markAllNotificationsAsRead()

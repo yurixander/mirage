@@ -1,6 +1,7 @@
 @import url("tailwindcss/base");
 @import url("tailwindcss/components");
 @import url("tailwindcss/utilities");
+@import url("satoshi.css");
 
 * {
   @apply box-border leading-[100%];
@@ -10,7 +11,7 @@ html,
 body,
 #root,
 #storybook-root {
-  @apply h-full font-noto;
+  @apply h-full font-sans;
 }
 
 input {
