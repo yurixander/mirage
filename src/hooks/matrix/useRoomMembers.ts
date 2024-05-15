@@ -1,4 +1,4 @@
-import {type RosterUserProps} from "@/components/RosterUser"
+import {type RosterUserProps} from "@/containers/Roster/RosterUser"
 import useConnection from "./useConnection"
 import {useCallback, useEffect, useState} from "react"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"

@@ -14,7 +14,7 @@ import {
   NotificationsSyncState,
   useNotificationsStateStore,
 } from "@/containers/NavigationSection/hooks/useCachedNotifications"
-import {UserPowerLevel} from "@/components/RosterUser"
+import {UserPowerLevel} from "@/containers/Roster/RosterUser"
 import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
 import {useMemo} from "react"
 import useActiveRoomIdStore from "./useActiveRoomIdStore"

@@ -1,5 +1,5 @@
 import ChatContainer from "@/containers/ChatContainer/ChatContainer"
-import Roster from "@/components/Roster"
+import Roster from "@/containers/Roster/Roster"
 import useConnection from "@/hooks/matrix/useConnection"
 import {type Credentials, ViewPath} from "@/utils/util"
 import {useEffect, type FC} from "react"

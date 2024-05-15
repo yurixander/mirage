@@ -73,7 +73,7 @@ const UserProfile: FC<UserProfileProps> = ({
     )
   }
 
-  const MAX_DISPLAY_NAME_LENGTH = 12
+  const MAX_DISPLAY_NAME_LENGTH = 16
   let userStatusClass: string | null = null
 
   switch (status) {
@@ -99,7 +99,7 @@ const UserProfile: FC<UserProfileProps> = ({
 
   const activityOrText =
     activity === undefined ? (
-      <span className="text-xs">{text}</span>
+      <span className="line-clamp-1 text-xs">{text}</span>
     ) : (
       <span className="text-xs">
         {activity + " "}
@@ -140,7 +140,7 @@ const UserProfile: FC<UserProfileProps> = ({
       <div className="mr-auto inline-flex flex-col gap-[2px]">
         <div
           style={{color: displayNameColor}}
-          className="text-base font-semibold leading-[100%]">
+          className="line-clamp-1 text-sm font-normal leading-[100%] text-slate-500">
           {trim(cleanDisplayName(displayName), MAX_DISPLAY_NAME_LENGTH)}
         </div>
 

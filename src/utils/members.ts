@@ -1,4 +1,4 @@
-import {UserPowerLevel} from "@/components/RosterUser"
+import {UserPowerLevel} from "@/containers/Roster/RosterUser"
 import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
 
 // TODO: Check why existing two const for admin power level.

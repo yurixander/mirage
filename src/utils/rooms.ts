@@ -18,7 +18,10 @@ import {
   normalizeName,
   stringToColor,
 } from "./util"
-import {type RosterUserProps, UserPowerLevel} from "@/components/RosterUser"
+import {
+  type RosterUserProps,
+  UserPowerLevel,
+} from "@/containers/Roster/RosterUser"
 import {UserStatus} from "@/components/UserProfile"
 import {getRoomAdminsAndModerators, isUserRoomAdmin} from "./members"
 import {type AnyMessage, MessageKind} from "@/hooks/matrix/useActiveRoom"
