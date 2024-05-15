@@ -2,16 +2,16 @@ import useMatrixAction from "@/hooks/matrix/useMatrixAction"
 import {
   deleteNotificationById,
   markAsReadByNotificationId,
-} from "@/utils/notifications"
+} from "@/containers/SidebarActions/hooks/notifications"
 import {stringToColor, timeFormatter} from "@/utils/util"
 import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import AvatarImage, {AvatarType} from "../Avatar"
-import Button, {ButtonColor, ButtonSize, ButtonVariant} from "../Button"
-import IconButton from "../IconButton"
-import Typography, {TypographyVariant} from "../Typography"
-import {type LocalNotificationData} from "./useCachedNotifications"
+import AvatarImage, {AvatarType} from "../../components/Avatar"
+import Button, {ButtonSize, ButtonVariant} from "../../components/Button"
+import IconButton from "../../components/IconButton"
+import Typography, {TypographyVariant} from "../../components/Typography"
+import {type LocalNotificationData} from "./hooks/useCachedNotifications"
 
 export interface NotificationProps extends LocalNotificationData {
   onRequestChanges: () => void
@@ -91,7 +91,6 @@ const Notification: FC<NotificationProps> = ({
           <div className="mt-2 flex flex-row gap-1">
             <Button
               label="Accept"
-              color={ButtonColor.Black}
               size={ButtonSize.Small}
               onClick={() => {
                 if (onJoinRoom === null) {
@@ -105,7 +104,6 @@ const Notification: FC<NotificationProps> = ({
             <Button
               label="Decline"
               variant={ButtonVariant.TextLink}
-              color={ButtonColor.Black}
               size={ButtonSize.Small}
               onClick={() => {
                 if (onLeaveRoom === null) {

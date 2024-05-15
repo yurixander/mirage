@@ -1,5 +1,5 @@
 import {useMemo, type FC} from "react"
-import IconButton from "../IconButton"
+import IconButton from "../../components/IconButton"
 import {twMerge} from "tailwind-merge"
 import {
   IoPaperPlane,
@@ -11,10 +11,10 @@ import {
 import useSidebarActions, {
   SidebarModals,
   useSidebarModalActiveStore,
-} from "@/components/SidebarActions/useSidebarActions"
+} from "@/containers/SidebarActions/hooks/useSidebarActions"
 import DirectMessageModal from "./DirectMessageModal"
 import NotificationsModal from "./NotificationsModal"
-import Modal from "../Modal"
+import Modal from "../../components/Modal"
 import useGlobalEventListeners from "@/hooks/matrix/useGlobalEventListeners"
 
 const SidebarModalsHandler: FC = () => {

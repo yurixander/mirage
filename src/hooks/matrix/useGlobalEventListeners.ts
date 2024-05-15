@@ -8,12 +8,15 @@ import {
 } from "matrix-js-sdk"
 import useEventListener from "./useEventListener"
 import useConnection from "./useConnection"
-import {getNotificationsData, saveNotification} from "@/utils/notifications"
+import {
+  getNotificationsData,
+  saveNotification,
+} from "@/containers/SidebarActions/hooks/notifications"
 import {
   type LocalNotificationData,
   NotificationsSyncState,
   useNotificationsStateStore,
-} from "@/components/SidebarActions/useCachedNotifications"
+} from "@/containers/SidebarActions/hooks/useCachedNotifications"
 import {UserPowerLevel} from "@/components/RosterUser"
 import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
 import {useMemo} from "react"
@@ -97,15 +100,16 @@ const useGlobalEventListeners = () => {
 }
 
 export const getNotificationFromInviteEvent = (
-  client: MatrixClient,
-  room: Room
+  roomId: string,
+  roomName: string,
+  roomAvatarUrl?: string
 ): LocalNotificationData | null => {
   return {
     body: "invited you to join this room",
-    notificationId: room.roomId,
+    notificationId: roomId,
     notificationTime: Date.now(),
-    avatarSenderUrl: getImageUrl(room.getMxcAvatarUrl(), client),
-    senderName: room.name,
+    avatarSenderUrl: roomAvatarUrl,
+    senderName: roomName,
     isRead: false,
     hasActions: true,
   }
@@ -121,11 +125,17 @@ const getNotificationFromPowerLevelEvent = (
   const isMod = currentLevels === UserPowerLevel.Moderator
   const eventId = event.getId()
   const roomName = client.getRoom(event.getRoomId())?.name
+  const prevContent = event.getPrevContent()
 
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
   assert(roomName !== undefined, "The room should be exist")
 
-  const previousLevels: number = event.getPrevContent().users[userId] || 0
+  // If it does not have users, is a Room in creation, it cannot be processed.
+  if (prevContent.users === undefined) {
+    return null
+  }
+
+  const previousLevels: number = prevContent.users[userId] ?? 0
   const powerLevel = isAdmin ? "Admin" : isMod ? "Moderator" : "Member"
   let body: string | null = null
 
@@ -187,16 +197,22 @@ const getNotificationFromMembersEvent = (
   const hasReason = event.getContent().reason
   const reason = hasReason === undefined ? "" : `for <<${hasReason}>>`
 
-  assert(
-    room !== null,
-    "There should be a room for there to be room member events."
-  )
-
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
+
+  // A null room in this case is a room that is being created and the notification should not be processed.
+  if (room === null) {
+    return null
+  }
 
   switch (member.membership) {
     case KnownMembership.Invite: {
-      saveNotification(getNotificationFromInviteEvent(client, room))
+      saveNotification(
+        getNotificationFromInviteEvent(
+          room.roomId,
+          room.name,
+          getImageUrl(room.getMxcAvatarUrl(), client)
+        )
+      )
 
       break
     }

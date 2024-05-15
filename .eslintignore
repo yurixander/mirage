@@ -6,3 +6,4 @@ vite.config.ts
 commitlint.config.ts
 tailwind.config.ts
 eslint.config.cjs
+node_modules

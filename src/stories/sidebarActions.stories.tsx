@@ -1,7 +1,7 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import SidebarActions, {
   type SidebarActionsProps as QuickActionsProperties,
-} from "../components/SidebarActions/SidebarActions"
+} from "../containers/SidebarActions/SidebarActions"
 
 type Story = StoryObj<typeof SidebarActions>
 

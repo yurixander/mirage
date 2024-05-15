@@ -1,16 +1,18 @@
-import {ViewPath} from "@/utils/util"
+import {type Credentials, ViewPath} from "@/utils/util"
 import {createClient, SyncState} from "matrix-js-sdk"
 import {useState, useCallback, useEffect} from "react"
 import {useNavigate} from "react-router-dom"
-import useCachedCredentials from "../matrix/useCachedCredentials"
 import useConnection from "../matrix/useConnection"
 import Servers from "@/utils/servers"
+import useLocalStorage, {LocalStorageKeys} from "./useLocalStorage"
 
 const useLogin = () => {
   const navigate = useNavigate()
-  const {credentials, saveCredentials} = useCachedCredentials()
   const [userId, setUserId] = useState("")
   const [password, setPassword] = useState("")
+
+  const {cachedValue: credentials, saveValue: saveCredentials} =
+    useLocalStorage<Credentials>(LocalStorageKeys.Credentials)
 
   const {connect, disconnect, syncState, lastSyncError, isConnecting, client} =
     useConnection()

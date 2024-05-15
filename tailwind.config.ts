@@ -45,6 +45,7 @@ module.exports = {
       fontFamily: {
         iowan: ["Iowan Old Style", "serif"],
         noto: ["Noto sans", "sans-serif"],
+        sans: ["Satoshi", "sans-serif"],
       },
       lineHeight: {
         "160": "160%",
