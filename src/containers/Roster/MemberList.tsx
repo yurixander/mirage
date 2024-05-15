@@ -16,7 +16,7 @@ const MemberList: FC<{list: MemberListProps[]}> = ({list}) => {
           <div className="flex flex-col gap-1">
             {/* TODO: Make think as sticky header with scroll. */}
             <Label
-              className="ml-1 font-bold text-slate-400"
+              className="sticky top-0 z-10 ml-1 bg-white font-bold text-slate-400"
               text={`${memberSection.title} — ${memberSection.users.length}`}
             />
 

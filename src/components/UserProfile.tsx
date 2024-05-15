@@ -140,7 +140,7 @@ const UserProfile: FC<UserProfileProps> = ({
       <div className="mr-auto inline-flex flex-col gap-[2px]">
         <div
           style={{color: displayNameColor}}
-          className="line-clamp-1 text-sm font-normal leading-[100%] text-slate-500">
+          className="line-clamp-1 text-sm font-bold leading-[100%] text-slate-500">
           {trim(cleanDisplayName(displayName), MAX_DISPLAY_NAME_LENGTH)}
         </div>
 
