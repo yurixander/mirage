@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import {type MatrixClient} from "matrix-js-sdk"
+import {type ICreateRoomOpts, type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -146,7 +146,11 @@ export async function sendImageMessageFromFile(
     return
   }
 
-  const imageUploadedInfo = await uploadFileToMatrix(image, client)
+  const imageUploadedInfo = await uploadImageToMatrix(
+    image,
+    client,
+    _percent => {}
+  )
 
   if (imageUploadedInfo === null) {
     return
@@ -160,9 +164,10 @@ export async function sendImageMessageFromFile(
   )
 }
 
-export async function uploadFileToMatrix(
+export async function uploadImageToMatrix(
   file: FileContent<string>,
-  client: MatrixClient
+  client: MatrixClient,
+  progressCallback: (percent: number) => void
 ): Promise<ImageUploadedInfo | null> {
   const content = file.content
   const response = await fetch(content)
@@ -172,6 +177,9 @@ export async function uploadFileToMatrix(
   try {
     const uploadResponse = await client.uploadContent(blob, {
       type: blob.type,
+      progressHandler: progress => {
+        progressCallback(Math.round((progress.loaded / progress.total) * 100))
+      },
     })
 
     return {
@@ -211,4 +219,34 @@ export function deleteMessage(
   client.redactEvent(roomId, eventId).catch(error => {
     console.error("Error deleting message", error)
   })
+}
+
+export async function createSpace(
+  client: MatrixClient,
+  options: ICreateRoomOpts
+): Promise<{room_id: string}> {
+  return await client.createRoom({
+    ...options,
+    creation_content: {
+      ...options.creation_content,
+      type: "m.space",
+    },
+  })
+}
+
+export const emojiRandom = (): string => {
+  const emojiRanges: Array<[number, number]> = [
+    [0x1_f6_00, 0x1_f6_4f], // Emoticons
+    [0x1_f6_80, 0x1_f6_ff], // Transport and Map Symbols
+    [0x26_00, 0x26_ff], // Miscellaneous Symbols
+    [0x27_00, 0x27_bf], // Dingbats
+    [0x1_f9_00, 0x1_f9_ff], // Supplemental Symbols and Pictographs
+  ]
+
+  const [start, end] =
+    emojiRanges[Math.floor(Math.random() * emojiRanges.length)]
+
+  const codePoint = Math.floor(Math.random() * (end - start + 1)) + start
+
+  return String.fromCodePoint(codePoint)
 }

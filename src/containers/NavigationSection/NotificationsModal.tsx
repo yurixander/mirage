@@ -9,7 +9,7 @@ import useCachedNotifications, {
   useNotificationsStateStore,
   type LocalNotificationData,
 } from "./hooks/useCachedNotifications"
-import {markAllNotificationsAsRead} from "@/containers/SidebarActions/hooks/notifications"
+import {markAllNotificationsAsRead} from "@/utils/notifications"
 import Notification from "./Notification"
 
 export type NotificationActions = {

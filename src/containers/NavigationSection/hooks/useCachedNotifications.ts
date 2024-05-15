@@ -1,4 +1,4 @@
-import {getNotificationsData} from "@/containers/SidebarActions/hooks/notifications"
+import {getNotificationsData} from "@/utils/notifications"
 import {useEffect, useState} from "react"
 import {create} from "zustand"
 
