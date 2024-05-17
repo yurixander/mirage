@@ -61,7 +61,9 @@ const Typography: FC<TypographyProps> = ({
             : "text-sm"
 
   return (
-    <Component style={style} className={twMerge(className, variantClass)}>
+    <Component
+      style={style}
+      className={twMerge("leading-160", className, variantClass)}>
       {children}
     </Component>
   )

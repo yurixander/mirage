@@ -2,6 +2,7 @@ import {type FC} from "react"
 import UserProfile from "../../components/UserProfile"
 import {stringToColor, timeFormatter} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
+import Typography, {TypographyVariant} from "@/components/Typography"
 
 export enum UserPowerLevel {
   Admin = 100,
@@ -42,10 +43,10 @@ const RosterUser: FC<RosterUserProps> = ({
       aria-hidden="true">
       <UserProfile
         avatarUrl={avatarUrl}
-        text={text}
         displayName={displayName}
-        displayNameColor={stringToColor(userId)}
-      />
+        displayNameColor={stringToColor(userId)}>
+        <Typography variant={TypographyVariant.P}>{text}</Typography>
+      </UserProfile>
     </div>
   )
 }
