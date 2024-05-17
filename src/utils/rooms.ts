@@ -90,11 +90,8 @@ export enum ImageSizes {
   ProfileLarge = 60,
 }
 
-export async function getRoomMembers(
-  client: MatrixClient,
-  room: Room
-): Promise<RosterUserProps[]> {
-  const members = await client.getJoinedRoomMembers(room.roomId)
+export async function getRoomMembers(room: Room): Promise<RosterUserProps[]> {
+  const members = await room.client.getJoinedRoomMembers(room.roomId)
   const adminsOrModerators = await getRoomAdminsAndModerators(room)
   const joinedMembers = members.joined
   const membersProperty: RosterUserProps[] = adminsOrModerators
@@ -125,7 +122,7 @@ export async function getRoomMembers(
       lastPresenceAge,
       avatarUrl: getImageUrl(
         member.avatar_url,
-        client,
+        room.client,
         ImageSizes.MessageAndProfile
       ),
       powerLevel: UserPowerLevel.Member,

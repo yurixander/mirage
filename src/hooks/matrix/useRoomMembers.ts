@@ -30,7 +30,7 @@ const useRoomMembers = () => {
 
     setMemberLoading(true)
 
-    void getRoomMembers(client, activeRoom).then(newMembers => {
+    void getRoomMembers(activeRoom).then(newMembers => {
       setSections([
         {
           title: "Admin",
