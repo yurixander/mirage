@@ -33,16 +33,16 @@ const MemberList: FC<MemberListProps> = ({
         <>
           <div className="flex flex-col gap-4">
             {sections.map(
-              memberSection =>
+              (memberSection, index) =>
                 memberSection.users.length > 0 && (
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-1" key={index}>
                     <Label
                       className="sticky top-0 z-10 ml-1 bg-white font-bold text-slate-400"
                       text={`${memberSection.title} — ${memberSection.users.length}`}
                     />
 
                     {memberSection.users.map(user => (
-                      <RosterUser {...user} />
+                      <RosterUser {...user} key={user.userId} />
                     ))}
                   </div>
                 )
