@@ -94,42 +94,10 @@ export async function getRoomMembers(
   client: MatrixClient,
   room: Room
 ): Promise<RosterUserProps[]> {
-  const membersProperty: RosterUserProps[] = []
   const members = await client.getJoinedRoomMembers(room.roomId)
-  const partialAdminsOrModerators = getRoomAdminsAndModerators(room)
+  const adminsOrModerators = await getRoomAdminsAndModerators(room)
   const joinedMembers = members.joined
-
-  for (const adminOrModerator of partialAdminsOrModerators) {
-    const member = joinedMembers[adminOrModerator.userId]
-
-    if (member === undefined) {
-      continue
-    }
-
-    const displayName = normalizeName(
-      member.display_name ?? adminOrModerator.userId
-    )
-
-    const lastPresenceAge = await getUserLastPresence(
-      room,
-      adminOrModerator.userId
-    )
-
-    membersProperty.push({
-      displayName,
-      // TODO: Extract last presence age.
-      lastPresenceAge: lastPresenceAge ?? undefined,
-      avatarUrl: getImageUrl(
-        member.avatar_url,
-        client,
-        ImageSizes.MessageAndProfile
-      ),
-      // TODO: Use actual props instead of dummy data.
-      powerLevel: adminOrModerator.powerLevel,
-      onClick: () => {},
-      userId: adminOrModerator.userId,
-    })
-  }
+  const membersProperty: RosterUserProps[] = adminsOrModerators
 
   let memberCount = 0
 
@@ -140,7 +108,7 @@ export async function getRoomMembers(
 
     const member = joinedMembers[userId]
 
-    const isAdminOrModerator = partialAdminsOrModerators.some(
+    const isAdminOrModerator = adminsOrModerators.some(
       adminOrModerator => adminOrModerator.userId === userId
     )
 
@@ -148,13 +116,13 @@ export async function getRoomMembers(
       continue
     }
 
-    const displayName = normalizeName(member.display_name ?? userId)
+    const lastPresenceAge =
+      (await getUserLastPresence(room, userId)) ?? undefined
 
     // TODO: Use actual props instead of dummy data.
     membersProperty.push({
-      displayName,
-      // TODO: Fetch last presence age.
-      lastPresenceAge: Date.now(),
+      displayName: normalizeName(member.display_name ?? userId),
+      lastPresenceAge,
       avatarUrl: getImageUrl(
         member.avatar_url,
         client,

@@ -22,7 +22,7 @@ export type RosterProps = {
 }
 
 const Roster: FC<RosterProps> = ({className}) => {
-  const {sections} = useRoomMembers()
+  const {sections, isMemberLoading} = useRoomMembers()
 
   return (
     <>
@@ -46,7 +46,11 @@ const Roster: FC<RosterProps> = ({className}) => {
           </div>
         </header>
 
-        <MemberList className="m-1 w-52" sections={sections} />
+        <MemberList
+          className="m-1 w-52"
+          isLoading={isMemberLoading}
+          sections={sections}
+        />
       </div>
     </>
   )

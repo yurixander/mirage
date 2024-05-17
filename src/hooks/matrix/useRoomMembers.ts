@@ -1,9 +1,6 @@
-import {
-  UserPowerLevel,
-  type RosterUserProps,
-} from "@/containers/Roster/RosterUser"
+import {UserPowerLevel} from "@/containers/Roster/RosterUser"
 import useConnection from "./useConnection"
-import {useCallback, useEffect, useState} from "react"
+import {useEffect, useState} from "react"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {getRoomMembers} from "@/utils/rooms"
@@ -14,9 +11,14 @@ const useRoomMembers = () => {
   const {activeRoomId} = useActiveRoomIdStore()
   const isMountedReference = useIsMountedRef()
   const [sections, setSections] = useState<MemberSection[]>([])
+  const [isMemberLoading, setMemberLoading] = useState(false)
 
-  const fetchRoomMembers = useCallback(async () => {
-    if (client === null || activeRoomId === null) {
+  useEffect(() => {
+    if (
+      !isMountedReference.current ||
+      client === null ||
+      activeRoomId === null
+    ) {
       return
     }
 
@@ -26,58 +28,35 @@ const useRoomMembers = () => {
       return
     }
 
-    setSections([])
+    setMemberLoading(true)
 
-    const newMembers = await getRoomMembers(client, activeRoom)
+    void getRoomMembers(client, activeRoom).then(newMembers => {
+      setSections([
+        {
+          title: "Admin",
+          users: newMembers.filter(
+            user => user.powerLevel === UserPowerLevel.Admin
+          ),
+        },
+        {
+          title: "Moderator",
+          users: newMembers.filter(
+            user => user.powerLevel === UserPowerLevel.Moderator
+          ),
+        },
+        {
+          title: "Member",
+          users: newMembers.filter(
+            user => user.powerLevel === UserPowerLevel.Member
+          ),
+        },
+      ])
 
-    const admins: RosterUserProps[] = []
-    const moderators: RosterUserProps[] = []
-    const members: RosterUserProps[] = []
+      setMemberLoading(false)
+    })
+  }, [activeRoomId, client, isMountedReference])
 
-    for (const newMember of newMembers) {
-      switch (newMember.powerLevel) {
-        case UserPowerLevel.Admin: {
-          admins.push(newMember)
-
-          break
-        }
-        case UserPowerLevel.Moderator: {
-          moderators.push(newMember)
-
-          break
-        }
-        case UserPowerLevel.Member: {
-          members.push(newMember)
-        }
-      }
-    }
-
-    const newSections: MemberSection[] = []
-
-    if (admins.length > 0) {
-      newSections.push({title: "Admin", users: admins})
-    }
-
-    if (moderators.length > 0) {
-      newSections.push({title: "Moderators", users: moderators})
-    }
-
-    if (members.length > 0) {
-      newSections.push({title: "Member", users: members})
-    }
-
-    setSections(newSections)
-  }, [activeRoomId, client])
-
-  useEffect(() => {
-    if (!isMountedReference.current) {
-      return
-    }
-
-    void fetchRoomMembers()
-  }, [fetchRoomMembers, isMountedReference])
-
-  return {sections}
+  return {sections, isMemberLoading}
 }
 
 export default useRoomMembers

@@ -4,6 +4,7 @@ import React from "react"
 import {twMerge} from "tailwind-merge"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {emojiRandom} from "@/utils/util"
+import Loader from "@/components/Loader"
 
 export type PartialRoom = {
   roomId: string
@@ -45,11 +46,7 @@ const SpaceList: FC<SpaceListProps> = ({spaces, className}) => {
           </Details>
         ))
       ) : (
-        <div className="flex size-full flex-col items-center justify-center gap-2">
-          <div className="size-8 animate-rotation rounded-full border-4 border-white border-t-slate-500" />
-
-          <Typography>Charging Spaces...</Typography>
-        </div>
+        <Loader text="Charging Spaces..." />
       )}
     </div>
   )

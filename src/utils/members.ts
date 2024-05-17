@@ -1,10 +1,15 @@
-import {UserPowerLevel} from "@/containers/Roster/RosterUser"
+import {
+  type RosterUserProps,
+  UserPowerLevel,
+} from "@/containers/Roster/RosterUser"
 import {
   type Room,
   type MatrixClient,
   EventTimeline,
   EventType,
 } from "matrix-js-sdk"
+import {getImageUrl, normalizeName} from "./util"
+import {ImageSizes} from "./rooms"
 
 // TODO: Check why existing two const for admin power level.
 const MIN_ADMIN_POWER_LEVEL = 50
@@ -41,7 +46,10 @@ export type PartialRoomMember = {
   powerLevel: UserPowerLevel
 }
 
-export function getRoomAdminsAndModerators(room: Room): PartialRoomMember[] {
+export async function getRoomAdminsAndModerators(
+  room: Room
+): Promise<RosterUserProps[]> {
+  const allMembers = await room.client.getJoinedRoomMembers(room.roomId)
   const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
 
   if (roomState === undefined) {
@@ -53,7 +61,7 @@ export function getRoomAdminsAndModerators(room: Room): PartialRoomMember[] {
     []
 
   const users = Object.entries(userPowerLevels)
-  const partialAdminOrModerator: PartialRoomMember[] = []
+  const adminsOrModerators: RosterUserProps[] = []
 
   for (const [adminId, powerLevel] of users) {
     if (
@@ -63,16 +71,35 @@ export function getRoomAdminsAndModerators(room: Room): PartialRoomMember[] {
       continue
     }
 
-    partialAdminOrModerator.push({
-      userId: adminId,
+    const member = allMembers.joined[adminId]
+
+    if (member === undefined) {
+      continue
+    }
+
+    const displayName = normalizeName(member.display_name ?? adminId)
+
+    const lastPresenceAge = await getUserLastPresence(room, adminId)
+
+    adminsOrModerators.push({
+      displayName,
+      lastPresenceAge: lastPresenceAge ?? undefined,
+      avatarUrl: getImageUrl(
+        member.avatar_url,
+        room.client,
+        ImageSizes.MessageAndProfile
+      ),
+      // TODO: Use actual props instead of dummy data.
       powerLevel:
         powerLevel === UserPowerLevel.Admin
           ? UserPowerLevel.Admin
-          : UserPowerLevel.Moderator,
+          : UserPowerLevel.Member,
+      onClick: () => {},
+      userId: adminId,
     })
   }
 
-  return partialAdminOrModerator
+  return adminsOrModerators
 }
 
 export async function getUserLastPresence(
