@@ -27,9 +27,9 @@ const Roster: FC<RosterProps> = ({className}) => {
   return (
     <>
       <div className={twMerge("flex h-full flex-col", className)}>
-        <header className="border-b border-b-slate-300 p-3">
-          <div className="m-0.5 flex items-center">
-            <IoPeople size={27} className="text-neutral-300" />
+        <header className="flex size-full max-h-14 border-b border-b-slate-300">
+          <div className="m-0.5 mx-3 flex w-full items-center justify-center">
+            <IoPeople size={25} className="text-neutral-300" />
 
             <Typography className="ml-1 w-full text-neutral-600">
               People
