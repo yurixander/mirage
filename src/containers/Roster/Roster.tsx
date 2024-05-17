@@ -1,12 +1,11 @@
-import {useMemo, type FC} from "react"
+import {type FC} from "react"
 import IconButton from "../../components/IconButton"
-import Label from "../../components/Label"
-import RosterUser, {UserPowerLevel} from "./RosterUser"
 import {type UserProfileProps as UserProfileProperties} from "../../components/UserProfile"
-import UserProfileGhost from "../../components/UserProfileGhost"
 import {twMerge} from "tailwind-merge"
 import useRoomMembers from "@/hooks/matrix/useRoomMembers"
 import {IoFilterCircle, IoPeople} from "react-icons/io5"
+import MemberList from "./MemberList"
+import Typography from "@/components/Typography"
 
 export enum RosterUserCategory {
   Admin,
@@ -23,87 +22,31 @@ export type RosterProps = {
 }
 
 const Roster: FC<RosterProps> = ({className}) => {
-  const {members} = useRoomMembers()
-
-  const joinedMembersElement = useMemo(
-    () =>
-      members
-        .filter(member => member.powerLevel === UserPowerLevel.Member)
-        .map(member => <RosterUser key={member.userId} {...member} />),
-    [members]
-  )
-
-  const moderatorMembersElement = useMemo(
-    () =>
-      members
-        .filter(member => member.powerLevel === UserPowerLevel.Moderator)
-        .map(member => <RosterUser key={member.userId} {...member} />),
-    [members]
-  )
-
-  const adminMembersElement = useMemo(
-    () =>
-      members
-        .filter(member => member.powerLevel === UserPowerLevel.Admin)
-        .map(member => <RosterUser key={member.userId} {...member} />),
-    [members]
-  )
+  const {sections} = useRoomMembers()
 
   return (
     <>
       <div className={twMerge("flex h-full flex-col", className)}>
-        <header className="m-1 flex items-center p-2.5">
-          <IoPeople size={27} className="text-neutral-300" />
+        <header className="border-b border-b-slate-300 p-3">
+          <div className="m-0.5 flex items-center">
+            <IoPeople size={27} className="text-neutral-300" />
 
-          <div className="ml-1 w-full text-neutral-600">People</div>
+            <Typography className="ml-1 w-full text-neutral-600">
+              People
+            </Typography>
 
-          <IconButton
-            tooltip="Sort members"
-            Icon={IoFilterCircle}
-            onClick={() => {
-              // TODO: Handle `sort` button click.
-            }}
-          />
+            <IconButton
+              tooltip="Sort members"
+              Icon={IoFilterCircle}
+              size={20}
+              onClick={() => {
+                // TODO: Handle `sort` button click.
+              }}
+            />
+          </div>
         </header>
 
-        <div className="h-px w-full bg-neutral-300" />
-
-        <div className="flex h-full grow flex-col gap-1 overflow-y-scroll scrollbar-hide">
-          <div className="mt-[10px] flex flex-col gap-1">
-            <Label
-              className="p-1"
-              text={"Admin — " + adminMembersElement.length}
-            />
-
-            {adminMembersElement}
-          </div>
-
-          {moderatorMembersElement.length > 0 && (
-            <div className="flex flex-col gap-1">
-              <Label
-                className="p-1"
-                text={"Moderator — " + moderatorMembersElement.length}
-              />
-
-              {moderatorMembersElement}
-            </div>
-          )}
-
-          <div className="flex flex-col gap-1">
-            <Label
-              className="p-1"
-              text={"Member — " + joinedMembersElement.length}
-            />
-
-            {joinedMembersElement}
-          </div>
-
-          <UserProfileGhost
-            className="w-max"
-            count={4}
-            opacityMultiplier={0.2}
-          />
-        </div>
+        <MemberList className="m-1 w-52" sections={sections} />
       </div>
     </>
   )

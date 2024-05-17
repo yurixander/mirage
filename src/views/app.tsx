@@ -34,7 +34,7 @@ const AppView: FC = () => {
       <NavigationSection />
 
       <ChatContainer className="w-full grow" />
-      <Roster className="max-w-max grow" />
+      <Roster className="max-w-xs grow" />
     </div>
   )
 }

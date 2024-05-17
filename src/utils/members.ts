@@ -1,5 +1,10 @@
 import {UserPowerLevel} from "@/containers/Roster/RosterUser"
-import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
+import {
+  type Room,
+  type MatrixClient,
+  EventTimeline,
+  EventType,
+} from "matrix-js-sdk"
 
 // TODO: Check why existing two const for admin power level.
 const MIN_ADMIN_POWER_LEVEL = 50
@@ -68,4 +73,24 @@ export function getRoomAdminsAndModerators(room: Room): PartialRoomMember[] {
   }
 
   return partialAdminOrModerator
+}
+
+export async function getUserLastPresence(
+  room: Room,
+  userId: string
+): Promise<number | null> {
+  const roomHistory = await room.client.scrollback(room, 30)
+  const events = roomHistory.getLiveTimeline().getEvents()
+
+  for (const event of events) {
+    if (event.getType() !== EventType.RoomMessage) {
+      continue
+    }
+
+    if (event.getSender() === userId) {
+      return event.localTimestamp
+    }
+  }
+
+  return null
 }

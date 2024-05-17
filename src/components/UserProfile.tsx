@@ -144,7 +144,7 @@ const UserProfile: FC<UserProfileProps> = ({
           {trim(cleanDisplayName(displayName), MAX_DISPLAY_NAME_LENGTH)}
         </div>
 
-        <div className="flex items-center">
+        <div className="flex w-full items-center">
           {Icon && <Icon size={10} className="mr-[3px]" />}
           {activityOrText}
         </div>

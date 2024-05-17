@@ -9,7 +9,7 @@ const meta: Meta<typeof MemberList> = {
 }
 const render = () => (
   <MemberList
-    list={[
+    sections={[
       {
         title: "Admins",
         users: [

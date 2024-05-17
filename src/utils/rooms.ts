@@ -22,8 +22,11 @@ import {
   type RosterUserProps,
   UserPowerLevel,
 } from "@/containers/Roster/RosterUser"
-import {UserStatus} from "@/components/UserProfile"
-import {getRoomAdminsAndModerators, isUserRoomAdmin} from "./members"
+import {
+  getRoomAdminsAndModerators,
+  getUserLastPresence,
+  isUserRoomAdmin,
+} from "./members"
 import {type AnyMessage, MessageKind} from "@/hooks/matrix/useActiveRoom"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {type MessageBaseProps} from "@/components/MessageContainer"
@@ -107,19 +110,21 @@ export async function getRoomMembers(
       member.display_name ?? adminOrModerator.userId
     )
 
+    const lastPresenceAge = await getUserLastPresence(
+      room,
+      adminOrModerator.userId
+    )
+
     membersProperty.push({
+      displayName,
+      // TODO: Extract last presence age.
+      lastPresenceAge: lastPresenceAge ?? undefined,
+      avatarUrl: getImageUrl(
+        member.avatar_url,
+        client,
+        ImageSizes.MessageAndProfile
+      ),
       // TODO: Use actual props instead of dummy data.
-      userProfileProps: {
-        avatarUrl: getImageUrl(
-          member.avatar_url,
-          client,
-          ImageSizes.MessageAndProfile
-        ),
-        text: "Online",
-        displayName,
-        displayNameColor: stringToColor(displayName),
-        status: UserStatus.Online,
-      },
       powerLevel: adminOrModerator.powerLevel,
       onClick: () => {},
       userId: adminOrModerator.userId,
@@ -145,19 +150,16 @@ export async function getRoomMembers(
 
     const displayName = normalizeName(member.display_name ?? userId)
 
+    // TODO: Use actual props instead of dummy data.
     membersProperty.push({
-      // TODO: Use actual props instead of dummy data.
-      userProfileProps: {
-        avatarUrl: getImageUrl(
-          member.avatar_url,
-          client,
-          ImageSizes.MessageAndProfile
-        ),
-        text: "Online",
-        displayName,
-        displayNameColor: stringToColor(displayName),
-        status: UserStatus.Online,
-      },
+      displayName,
+      // TODO: Fetch last presence age.
+      lastPresenceAge: Date.now(),
+      avatarUrl: getImageUrl(
+        member.avatar_url,
+        client,
+        ImageSizes.MessageAndProfile
+      ),
       powerLevel: UserPowerLevel.Member,
       onClick: () => {},
       userId,

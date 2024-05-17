@@ -2,19 +2,25 @@ import {type FC} from "react"
 import RosterUser, {type RosterUserProps} from "./RosterUser"
 import Label from "@/components/Label"
 import UserProfileGhost from "@/components/UserProfileGhost"
+import {twMerge} from "tailwind-merge"
 
 export type MemberListProps = {
   sections: MemberSection[]
+  className?: string
 }
 
-type MemberSection = {
+export type MemberSection = {
   title: string
   users: RosterUserProps[]
 }
 
-const MemberList: FC<MemberListProps> = ({sections}) => {
+const MemberList: FC<MemberListProps> = ({sections, className}) => {
   return (
-    <div className="flex h-full max-w-56 flex-col overflow-y-scroll">
+    <div
+      className={twMerge(
+        "flex size-full flex-col overflow-y-scroll",
+        className
+      )}>
       <div className="flex flex-col gap-4">
         {sections.map(memberSection => (
           <div className="flex flex-col gap-1">
@@ -30,7 +36,7 @@ const MemberList: FC<MemberListProps> = ({sections}) => {
         ))}
       </div>
 
-      <UserProfileGhost className="w-max" count={4} opacityMultiplier={0.2} />
+      <UserProfileGhost count={4} opacityMultiplier={0.2} />
     </div>
   )
 }
