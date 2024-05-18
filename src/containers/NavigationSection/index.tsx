@@ -19,8 +19,8 @@ const NavigationSection: FC = () => {
       <SidebarModalsHandler />
 
       <div className="flex size-full max-w-52 flex-col gap-1 border border-slate-300 bg-slate-100">
-        <div className="max-h-14 border-b border-b-slate-300">
-          <Input Icon={IoSearch} placeholder="Search" isSmall className="p-3" />
+        <div className="max-h-12 border-b border-b-slate-300">
+          <Input Icon={IoSearch} placeholder="Search" isSmall className="p-2" />
         </div>
 
         <SpaceList

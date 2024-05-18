@@ -45,7 +45,9 @@ const RosterUser: FC<RosterUserProps> = ({
         avatarUrl={avatarUrl}
         displayName={displayName}
         displayNameColor={stringToColor(userId)}>
-        <Typography variant={TypographyVariant.P}>{text}</Typography>
+        <Typography className="line-clamp-1" variant={TypographyVariant.P}>
+          {text}
+        </Typography>
       </UserProfile>
     </div>
   )

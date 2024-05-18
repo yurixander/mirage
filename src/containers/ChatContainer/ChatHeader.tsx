@@ -9,7 +9,7 @@ const ChatHeader: FC<{roomName: string}> = ({roomName}) => {
   assert(roomName.length > 0, "room name should not be empty")
 
   return (
-    <header className="flex h-full max-h-14 items-center gap-2 border-b border-b-stone-200 px-3">
+    <header className="flex h-full max-h-12 shrink-0 items-center gap-2 border-b border-b-stone-200 px-3">
       <div className="m-2 flex w-full gap-1">
         <LiaSlackHash className="text-purple-500" />
 

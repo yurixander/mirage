@@ -109,7 +109,9 @@ export async function getUserLastPresence(
   const roomHistory = await room.client.scrollback(room, 30)
   const events = roomHistory.getLiveTimeline().getEvents()
 
-  for (const event of events) {
+  for (let index = events.length - 1; index >= 0; index--) {
+    const event = events[index]
+
     if (event.getType() !== EventType.RoomMessage) {
       continue
     }
