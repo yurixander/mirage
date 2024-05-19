@@ -29,7 +29,7 @@ const Roster: FC<RosterProps> = ({className}) => {
       {isInitiallyActive && (
         <div
           className={twMerge(
-            "flex h-full flex-col border border-l-slate-300 bg-gray-50",
+            "flex h-full max-w-xs flex-col border border-l-slate-300 bg-gray-50",
             className
           )}>
           <header className="flex size-full max-h-12 border-b border-b-slate-300">
