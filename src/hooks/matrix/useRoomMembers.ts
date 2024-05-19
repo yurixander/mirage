@@ -68,7 +68,11 @@ const useRoomMembers = () => {
     }
   }, [activeRoomId, client, fetchRoomMembers, isMountedReference])
 
-  return {sections, isMemberLoading}
+  return {
+    sections,
+    isMemberLoading,
+    isInitiallyActive: activeRoomId !== null,
+  }
 }
 
 export default useRoomMembers
