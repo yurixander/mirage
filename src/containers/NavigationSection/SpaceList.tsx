@@ -1,10 +1,11 @@
-import Typography, {TypographyVariant} from "@/components/Typography"
 import {type FC} from "react"
 import React from "react"
 import {twMerge} from "tailwind-merge"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {emojiRandom} from "@/utils/util"
 import Loader from "@/components/Loader"
+import useSpaces from "./hooks/useSpaces"
+import Room from "./Room"
 
 export type PartialRoom = {
   roomId: string
@@ -17,16 +18,16 @@ export type Space = {
   childRooms: PartialRoom[]
 }
 
-export type SpaceListProps = {
-  spaces: Space[]
-  className?: string
-}
-
-const SpaceList: FC<SpaceListProps> = ({spaces, className}) => {
+const SpaceList: FC<{className?: string}> = ({className}) => {
+  const {spaces} = useSpaces()
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
 
   return (
-    <div className={twMerge("flex size-full flex-col gap-6", className)}>
+    <div
+      className={twMerge(
+        "flex size-full flex-col gap-6 overflow-y-auto scroll-smooth ",
+        className
+      )}>
       {spaces.length > 0 ? (
         spaces.map(space => (
           <Details title={space.name} key={space.spaceId}>
@@ -36,10 +37,9 @@ const SpaceList: FC<SpaceListProps> = ({spaces, className}) => {
                   key={room.roomId}
                   roomName={room.roomName}
                   tagEmoji={emojiRandom()}
+                  roomId={room.roomId}
                   isSelected={activeRoomId === room.roomId}
-                  onClick={() => {
-                    setActiveRoomId(room.roomId)
-                  }}
+                  onRoomClick={setActiveRoomId}
                 />
               ))}
             </div>
@@ -52,36 +52,7 @@ const SpaceList: FC<SpaceListProps> = ({spaces, className}) => {
   )
 }
 
-const Room: FC<{
-  roomName: string
-  tagEmoji: string
-  isSelected?: boolean
-  onClick: () => void
-}> = ({roomName, tagEmoji, onClick, isSelected = false}) => {
-  return (
-    <div
-      className={twMerge(
-        "flex gap-2 rounded-md p-1 px-2",
-        isSelected ? "bg-purple-500" : "hover:bg-slate-200"
-      )}
-      onClick={onClick}
-      role="button"
-      aria-hidden="true">
-      <Typography variant={TypographyVariant.P}>{tagEmoji}</Typography>
-
-      <Typography
-        variant={TypographyVariant.P}
-        className={twMerge(
-          "line-clamp-1 font-bold",
-          isSelected ? "text-white" : "text-slate-500"
-        )}>
-        {roomName}
-      </Typography>
-    </div>
-  )
-}
-
-const Details: FC<{title: string; children?: React.JSX.Element}> = ({
+const Details: FC<{title: string; children?: React.ReactNode}> = ({
   title,
   children,
 }) => {

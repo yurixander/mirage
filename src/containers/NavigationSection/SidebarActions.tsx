@@ -10,8 +10,8 @@ export type SidebarActionsProps = {
   onDirectMessages: () => void
   onCalls: () => void
   onExit: () => void
-  className?: string
   notificationsCount?: number
+  className?: string
 }
 
 const SidebarActions: FC<SidebarActionsProps> = ({

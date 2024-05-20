@@ -5,10 +5,10 @@ import AvatarImage, {AvatarType} from "./Avatar"
 import React from "react"
 
 export type UserProfileProps = {
-  avatarUrl?: string
   displayName: string
   displayNameColor: string
   children: React.JSX.Element
+  avatarUrl?: string
   isLarge?: boolean
   className?: string
 }

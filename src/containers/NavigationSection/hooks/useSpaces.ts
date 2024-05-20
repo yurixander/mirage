@@ -1,16 +1,16 @@
 import {useCallback, useEffect} from "react"
 import useList from "../../../hooks/util/useList"
 import useConnection from "../../../hooks/matrix/useConnection"
-import {RoomType} from "matrix-js-sdk"
 import {
   type Space,
   type PartialRoom,
 } from "@/containers/NavigationSection/SpaceList"
+import {getRoomsFromSpace} from "@/utils/spaces"
 
 const hasRepeat = (space1: Space, space2: Space): boolean =>
   space1.spaceId === space2.spaceId
 
-const useNavigation = () => {
+const useSpaces = () => {
   const {items: spaces, addItem: addSpace} = useList<Space>(hasRepeat)
   const {client} = useConnection()
 
@@ -41,22 +41,8 @@ const useNavigation = () => {
     })
 
     for (const storeSpace of storeSpaces) {
-      client
-        .getRoomHierarchy(storeSpace.roomId)
-        .then(roomHierarchy => {
-          const childRooms: PartialRoom[] = []
-
-          for (const room of roomHierarchy.rooms) {
-            if (room.name === undefined || room.room_type === RoomType.Space) {
-              continue
-            }
-
-            childRooms.push({
-              roomId: room.room_id,
-              roomName: room.name,
-            })
-          }
-
+      void getRoomsFromSpace(storeSpace)
+        .then(childRooms => {
           addSpace({
             name: storeSpace.name,
             spaceId: storeSpace.roomId,
@@ -83,4 +69,4 @@ const useNavigation = () => {
   return {spaces}
 }
 
-export default useNavigation
+export default useSpaces

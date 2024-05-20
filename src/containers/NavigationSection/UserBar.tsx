@@ -1,52 +1,40 @@
 import {type FC} from "react"
-
 import IconButton from "../../components/IconButton"
 import {twMerge} from "tailwind-merge"
 import UserProfilePlaceholder from "../../components/UserProfilePlaceholder"
 import {IoMdSettings} from "react-icons/io"
 import AvatarImage, {AvatarType} from "@/components/Avatar"
 import Typography, {TypographyVariant} from "@/components/Typography"
+import useUserData from "./hooks/useUserData"
+import {stringToColor} from "@/utils/util"
 
-export type UserBarProps = {
-  displayName: string
-  displayNameColor: string
-  userId: string
-  avatarUrl?: string
-  isLoading?: boolean
-  className?: string
-}
+const UserBar: FC<{className?: string}> = ({className}) => {
+  const {userData, isConnecting} = useUserData()
 
-const UserBar: FC<UserBarProps> = ({
-  className,
-  displayName,
-  displayNameColor,
-  userId,
-  isLoading = false,
-}) => {
   return (
     <div className={twMerge("flex items-center p-3", className)}>
       <div className="mr-auto">
-        {isLoading ? (
+        {isConnecting || userData === undefined ? (
           <UserProfilePlaceholder />
         ) : (
           <div className="flex gap-2.5">
             <AvatarImage
               isRounded={false}
               avatarType={AvatarType.Profile}
-              displayName={displayName}
+              displayName={userData.displayName}
             />
 
             <div className="flex flex-col">
               <Typography
-                style={{color: displayNameColor}}
+                style={{color: stringToColor(userData.userId)}}
                 className="line-clamp-1 font-bold">
-                {displayName}
+                {userData?.displayName}
               </Typography>
 
               <Typography
                 className="line-clamp-1"
                 variant={TypographyVariant.P}>
-                {userId}
+                {userData.userId}
               </Typography>
             </div>
           </div>

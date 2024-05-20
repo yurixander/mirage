@@ -1,13 +1,6 @@
-import {type UserProfileProps, UserStatus} from "@/components/UserProfile"
 import useConnection from "@/hooks/matrix/useConnection"
 import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
-import {
-  assert,
-  type Credentials,
-  getImageUrl,
-  stringToColor,
-  trim,
-} from "@/utils/util"
+import {assert, type Credentials, getImageUrl, trim} from "@/utils/util"
 import {useMemo} from "react"
 
 export function getUsernameByUserId(userId: string): string {
@@ -16,14 +9,20 @@ export function getUsernameByUserId(userId: string): string {
 
 const MAX_NAME_LENGTH = 18
 
-const useUserBar = () => {
+export type UserData = {
+  displayName: string
+  userId: string
+  avatarUrl?: string
+}
+
+const useUserData = () => {
   const {client, isConnecting} = useConnection()
 
   const {cachedValue: credentials} = useLocalStorage<Credentials>(
     LocalStorageKeys.Credentials
   )
 
-  const userData = useMemo(() => {
+  const userData: UserData | undefined = useMemo(() => {
     if (client === null || !client.isLoggedIn() || credentials === null) {
       return
     }
@@ -38,24 +37,14 @@ const useUserBar = () => {
     const avatarUrl = user.avatarUrl
     const displayName = user.displayName ?? credentials.userId
 
-    const status = client.isLoggedIn()
-      ? UserStatus.Online
-      : isConnecting
-        ? UserStatus.Idle
-        : UserStatus.Offline
-
-    const userBarProperties: UserProfileProps = {
-      avatarUrl: getImageUrl(avatarUrl, client, 48),
+    return {
+      userId: credentials.userId,
       displayName: trim(displayName, MAX_NAME_LENGTH),
-      text: trim(getUsernameByUserId(credentials.userId), MAX_NAME_LENGTH),
-      displayNameColor: stringToColor(credentials.userId),
-      status,
+      avatarUrl: getImageUrl(avatarUrl, client, 48),
     }
+  }, [client, credentials])
 
-    return userBarProperties
-  }, [client, credentials, isConnecting])
-
-  return {userData}
+  return {userData, isConnecting}
 }
 
-export default useUserBar
+export default useUserData
