@@ -6,7 +6,7 @@ import {IoMdSettings} from "react-icons/io"
 import AvatarImage, {AvatarType} from "@/components/Avatar"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import useUserData from "./hooks/useUserData"
-import {stringToColor} from "@/utils/util"
+import {getUsernameByUserId, stringToColor} from "@/utils/util"
 
 const UserBar: FC<{className?: string}> = ({className}) => {
   const {userData, isConnecting} = useUserData()
@@ -22,19 +22,20 @@ const UserBar: FC<{className?: string}> = ({className}) => {
               isRounded={false}
               avatarType={AvatarType.Profile}
               displayName={userData.displayName}
+              avatarUrl={userData.avatarUrl}
             />
 
             <div className="flex flex-col">
               <Typography
                 style={{color: stringToColor(userData.userId)}}
                 className="line-clamp-1 font-bold">
-                {userData?.displayName}
+                {userData.displayName}
               </Typography>
 
               <Typography
                 className="line-clamp-1"
                 variant={TypographyVariant.P}>
-                {userData.userId}
+                {getUsernameByUserId(userData.userId)}
               </Typography>
             </div>
           </div>

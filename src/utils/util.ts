@@ -250,3 +250,7 @@ export const emojiRandom = (): string => {
 
   return String.fromCodePoint(codePoint)
 }
+
+export function getUsernameByUserId(userId: string): string {
+  return userId.replace(":matrix.org", "")
+}

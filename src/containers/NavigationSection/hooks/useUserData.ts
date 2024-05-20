@@ -3,10 +3,6 @@ import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
 import {assert, type Credentials, getImageUrl, trim} from "@/utils/util"
 import {useMemo} from "react"
 
-export function getUsernameByUserId(userId: string): string {
-  return userId.replace(":matrix.org", "")
-}
-
 const MAX_NAME_LENGTH = 18
 
 export type UserData = {

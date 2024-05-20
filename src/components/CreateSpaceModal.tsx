@@ -37,7 +37,7 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
         },
       ],
     })
-      .then(_roomID => {
+      .then(_roomId => {
         // TODO: Send here notification that the room has been created.
 
         setIsCreatingSpace(false)

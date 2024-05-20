@@ -4,7 +4,12 @@ import IconButton from "../../components/IconButton"
 import {IoCheckmark, IoCloseCircle, IoCopyOutline} from "react-icons/io5"
 import Input from "../../components/Input"
 import UserProfile from "../../components/UserProfile"
-import {normalizeName, stringToColor, timeFormatter} from "@/utils/util"
+import {
+  getUsernameByUserId,
+  normalizeName,
+  stringToColor,
+  timeFormatter,
+} from "@/utils/util"
 import useConnection from "@/hooks/matrix/useConnection"
 import useInvitationLink from "@/hooks/matrix/useInvitationLink"
 import useUsersSearch from "@/hooks/matrix/useUserSearch"
@@ -26,9 +31,13 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
   return (
     <div className="flex cursor-pointer flex-row items-center justify-between rounded-lg p-2 hover:bg-neutral-200">
       <UserProfile
-        text={userId}
         displayName={displayName}
         displayNameColor={stringToColor(userId)}
+        children={
+          <Typography variant={TypographyVariant.P}>
+            {getUsernameByUserId(userId)}
+          </Typography>
+        }
       />
 
       {lastMessageSentDate !== undefined && (
@@ -119,7 +128,16 @@ const DirectMessageModal: FC = () => {
                 <div
                   key={index}
                   className="w-full cursor-pointer rounded-lg p-2 hover:bg-neutral-200">
-                  <UserProfile {...userProps} />
+                  <UserProfile
+                    displayName={userProps.displayName}
+                    displayNameColor={stringToColor(userProps.userId)}
+                    avatarUrl={userProps.avatarUrl}
+                    children={
+                      <Typography variant={TypographyVariant.P}>
+                        {userProps.userId}
+                      </Typography>
+                    }
+                  />
                 </div>
               ))}
         </div>
