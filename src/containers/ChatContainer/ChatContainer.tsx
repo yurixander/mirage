@@ -83,10 +83,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
       ) : (
         <div
           id={ModalRenderLocation.ChatContainer}
-          className={twMerge(
-            "flex h-screen flex-col gap-4 border border-stone-200",
-            className
-          )}>
+          className={twMerge("flex h-screen flex-col gap-4", className)}>
           <ChatHeader roomName={roomName} />
 
           <div

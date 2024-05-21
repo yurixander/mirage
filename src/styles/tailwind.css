@@ -14,6 +14,10 @@ body,
   @apply h-full font-sans;
 }
 
+b {
+  @apply m-0 p-0;
+}
+
 input {
   @apply border-none p-2 outline-none;
 }
