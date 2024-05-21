@@ -17,7 +17,7 @@ const UserBar: FC<{className?: string}> = ({className}) => {
         {isConnecting || userData === undefined ? (
           <UserProfilePlaceholder />
         ) : (
-          <div className="flex gap-2.5">
+          <div className="flex gap-2">
             <AvatarImage
               isRounded={false}
               avatarType={AvatarType.Profile}

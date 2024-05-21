@@ -1,6 +1,13 @@
 import useConnection from "@/hooks/matrix/useConnection"
 import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
-import {assert, type Credentials, getImageUrl, trim} from "@/utils/util"
+import {
+  assert,
+  cleanDisplayName,
+  type Credentials,
+  getImageUrl,
+  getUsernameByUserId,
+  trim,
+} from "@/utils/util"
 import {useMemo} from "react"
 
 const MAX_NAME_LENGTH = 18
@@ -31,11 +38,13 @@ const useUserData = () => {
     )
 
     const avatarUrl = user.avatarUrl
-    const displayName = user.displayName ?? credentials.userId
+    const displayName =
+      user.displayName ??
+      getUsernameByUserId(credentials.userId).replace("@", "")
 
     return {
       userId: credentials.userId,
-      displayName: trim(displayName, MAX_NAME_LENGTH),
+      displayName: trim(cleanDisplayName(displayName), MAX_NAME_LENGTH),
       avatarUrl: getImageUrl(avatarUrl, client, 48),
     }
   }, [client, credentials])

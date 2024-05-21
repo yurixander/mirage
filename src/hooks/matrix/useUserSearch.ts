@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react"
 import {type MatrixClient} from "matrix-js-sdk"
 import useDebounced from "../util/useDebounced"
+import {getImageUrl} from "@/utils/util"
 
 const LIMIT_USER_SEARCH = 100
 
@@ -33,7 +34,7 @@ const useUsersSearch = (client: MatrixClient | null, searchDelay = 500) => {
           response.results.map(userResult => ({
             displayName: userResult.display_name ?? userResult.user_id,
             userId: userResult.user_id,
-            avatarUrl: userResult.avatar_url,
+            avatarUrl: getImageUrl(userResult.avatar_url, client),
           }))
         )
       } catch (error) {

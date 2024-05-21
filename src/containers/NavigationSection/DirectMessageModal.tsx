@@ -31,6 +31,7 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
   return (
     <div className="flex cursor-pointer flex-row items-center justify-between rounded-lg p-2 hover:bg-neutral-200">
       <UserProfile
+        isNameShorted={false}
         displayName={displayName}
         displayNameColor={stringToColor(userId)}
         children={
