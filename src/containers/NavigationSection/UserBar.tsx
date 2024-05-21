@@ -6,19 +6,22 @@ import {IoMdSettings} from "react-icons/io"
 import AvatarImage, {AvatarType} from "@/components/Avatar"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import useUserData from "./hooks/useUserData"
-import {getUsernameByUserId, stringToColor} from "@/utils/util"
+import {getUsernameByUserId, stringToColor, trim} from "@/utils/util"
+
+const MAX_USER_ID_LENGTH = 18
 
 const UserBar: FC<{className?: string}> = ({className}) => {
   const {userData, isConnecting} = useUserData()
 
   return (
-    <div className={twMerge("flex items-center p-3", className)}>
-      <div className="mr-auto">
-        {isConnecting || userData === undefined ? (
-          <UserProfilePlaceholder />
-        ) : (
-          <div className="flex gap-2">
+    <div className={twMerge("p-2", className)}>
+      {isConnecting || userData === undefined ? (
+        <UserProfilePlaceholder />
+      ) : (
+        <div className="flex items-center justify-between">
+          <div className="flex gap-1.5 overflow-hidden">
             <AvatarImage
+              className="flex shrink-0"
               isRounded={false}
               avatarType={AvatarType.Profile}
               displayName={userData.displayName}
@@ -35,15 +38,21 @@ const UserBar: FC<{className?: string}> = ({className}) => {
               <Typography
                 className="line-clamp-1"
                 variant={TypographyVariant.P}>
-                {getUsernameByUserId(userData.userId)}
+                {trim(getUsernameByUserId(userData.userId), MAX_USER_ID_LENGTH)}
               </Typography>
             </div>
           </div>
-        )}
-      </div>
 
-      {/* TODO: Handle click on settings button. */}
-      <IconButton onClick={() => {}} Icon={IoMdSettings} tooltip="Settings" />
+          {/* TODO: Handle click on settings button. */}
+          <IconButton
+            onClick={() => {
+              throw new Error("Configurations not implemented")
+            }}
+            Icon={IoMdSettings}
+            tooltip="Settings"
+          />
+        </div>
+      )}
     </div>
   )
 }

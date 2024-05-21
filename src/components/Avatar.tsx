@@ -1,4 +1,3 @@
-import {cleanDisplayName} from "@/utils/util"
 import Avatar from "boring-avatars"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
@@ -34,7 +33,7 @@ const AvatarImage: FC<AvatarProps> = ({
   return avatarUrl === undefined ? (
     <div
       className={twMerge(
-        "overflow-hidden rounded-lg",
+        "size-9 shrink-0 overflow-hidden rounded-lg",
         isRounded && "rounded-full"
       )}>
       <Avatar
@@ -49,13 +48,7 @@ const AvatarImage: FC<AvatarProps> = ({
       src={avatarUrl}
       className={twMerge(
         isAvatarMessage && "size-full",
-        isProfile &&
-          twMerge(
-            "object-contain",
-            isLarge
-              ? "h-userProfileAvatarSizeLarge w-userProfileAvatarSizeLarge"
-              : "h-10 w-10"
-          ),
+        isProfile && twMerge("object-contain", isLarge ? "size-14" : "size-9"),
         // TODO: Class `rounded-full` should be parent container with `overflow-hidden`.
         isRounded && "rounded-full",
         className
