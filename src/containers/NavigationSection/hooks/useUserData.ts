@@ -5,9 +5,8 @@ import {
   cleanDisplayName,
   type Credentials,
   getImageUrl,
-  getUsernameByUserId,
 } from "@/utils/util"
-import {useMemo} from "react"
+import {useCallback, useEffect, useState} from "react"
 
 export type UserData = {
   displayName: string
@@ -16,13 +15,14 @@ export type UserData = {
 }
 
 const useUserData = () => {
+  const [userData, setUserData] = useState<UserData>()
   const {client, isConnecting} = useConnection()
 
   const {cachedValue: credentials} = useLocalStorage<Credentials>(
     LocalStorageKeys.Credentials
   )
 
-  const userData: UserData | undefined = useMemo(() => {
+  const fetchUserData = useCallback(() => {
     if (client === null || !client.isLoggedIn() || credentials === null) {
       return
     }
@@ -34,16 +34,28 @@ const useUserData = () => {
       "Your same user should exist for there to be a session."
     )
 
-    const displayName =
-      user.displayName ??
-      getUsernameByUserId(credentials.userId).replace("@", "")
+    const displayName = user.displayName
 
-    return {
+    if (displayName === undefined) {
+      return
+    }
+
+    setUserData({
       userId: credentials.userId,
       displayName: cleanDisplayName(displayName),
       avatarUrl: getImageUrl(user.avatarUrl, client, 48),
-    }
+    })
   }, [client, credentials])
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      fetchUserData()
+    }, 1000)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [fetchUserData])
 
   return {userData, isConnecting}
 }
