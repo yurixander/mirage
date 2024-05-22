@@ -37,6 +37,7 @@ const useUserData = () => {
     const displayName = user.displayName
 
     if (displayName === undefined) {
+      // When connection is lost displayName is undefined.
       return
     }
 
