@@ -56,7 +56,7 @@ const useList = <T>(
     setItem([])
   }
 
-  return {items, addItem, updateItem, deleteItem, clearItems}
+  return {items, addItem, updateItem, deleteItem, clearItems, setItem}
 }
 
 export default useList
