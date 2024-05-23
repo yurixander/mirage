@@ -1,27 +1,21 @@
 import React, {useState, type FC} from "react"
-import Typography from "./Typography"
-import {type IconType} from "react-icons"
 
 export type SliderProps = {
-  label?: string
-  min?: number
-  max?: number
+  min: number
+  max: number
   step?: number
   initialValue?: string
   onInput: (value: string) => void
   isVariantBasic?: boolean
-  Icon: IconType
 }
 
 const Slider: FC<SliderProps> = ({
-  label,
   onInput,
   min,
   max,
   step,
   initialValue,
   isVariantBasic = true,
-  Icon,
 }) => {
   const [progress, setProgress] = useState(initialValue)
   const [internalValue, setInternalValue] = useState(initialValue)
@@ -36,15 +30,10 @@ const Slider: FC<SliderProps> = ({
 
   return (
     <label className="flex flex-col gap-1">
-      <div className="flex items-center gap-1">
-        <Icon />
-        <Typography>{label}</Typography>
-      </div>
-
       {isVariantBasic ? (
         <BasicProgressBar progress={progress ?? "50"} />
       ) : (
-        <StepProgressBar />
+        <StepProgressBar steps={(max - min) / (step ?? 1)} />
       )}
 
       <input
@@ -59,8 +48,6 @@ const Slider: FC<SliderProps> = ({
     </label>
   )
 }
-
-export default Slider
 
 type BasicProgressBarProps = {
   progress: string
@@ -77,7 +64,15 @@ const BasicProgressBar: FC<BasicProgressBarProps> = ({progress}) => {
   )
 }
 
-const StepProgressBar: FC = () => {
+type StepProgressBarProps = {
+  steps: number
+}
+const StepProgressBar: FC<StepProgressBarProps> = ({steps}) => {
+  const step = []
+  for (let i = 1; i < steps; i++) {
+    step.push(i)
+  }
+
   return (
     <div className="flex h-3 w-60 overflow-hidden rounded-full bg-slate-200 shadow">
       <div className="rounded-full bg-slate-300 text-end">
@@ -85,18 +80,22 @@ const StepProgressBar: FC = () => {
       </div>
 
       <Step />
-      <Step />
-      <Step />
-      <Step />
-      <Step />
+      {step.map((opt, index) => (
+        <Step key={index} />
+      ))}
     </div>
   )
 }
 
 const Step: FC = () => {
   return (
-    <div className="w-full">
-      <div className="float-right size-3 rounded-full bg-white shadow" />
-    </div>
+    <>
+      <div className="w-full" />
+      <div>
+        <div className="size-3 rounded-full bg-white shadow" />
+      </div>
+    </>
   )
 }
+
+export default Slider

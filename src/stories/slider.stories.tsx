@@ -1,6 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Slider, {type SliderProps} from "../components/Slider"
-import {IoIosCall, IoIosVolumeHigh} from "react-icons/io"
 
 type Story = StoryObj<typeof Slider>
 
@@ -12,18 +11,18 @@ const render = (args: SliderProps) => <Slider {...args} />
 export const Default: Story = {
   render,
   args: {
-    label: "Media Volume",
+    max: 100,
+    min: 0,
     onInput: () => {},
-    Icon: IoIosVolumeHigh,
   },
 }
 
 export const Step: Story = {
   render,
   args: {
-    label: "Call Volume",
+    max: 100,
+    min: 0,
     onInput: () => {},
-    Icon: IoIosCall,
     isVariantBasic: false,
     step: 20,
   },
