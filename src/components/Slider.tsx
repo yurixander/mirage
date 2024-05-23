@@ -70,7 +70,7 @@ type StepProgressBarProps = {
 
 const StepProgressBar: FC<StepProgressBarProps> = ({steps}) => {
   const step = []
-  for (let i = 1; i < steps; i++) {
+  for (let i = 0; i < steps; i++) {
     step.push(i)
   }
 
@@ -80,8 +80,7 @@ const StepProgressBar: FC<StepProgressBarProps> = ({steps}) => {
         <div className="size-3 rounded-full bg-white shadow" />
       </div>
 
-      <Step />
-      {step.map((opt, index) => (
+      {step.map((_opt, index) => (
         <Step key={index} />
       ))}
     </div>
@@ -92,6 +91,7 @@ const Step: FC = () => {
   return (
     <>
       <div className="w-full" />
+
       <div>
         <div className="size-3 rounded-full bg-white shadow" />
       </div>

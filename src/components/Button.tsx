@@ -59,20 +59,20 @@ const Button: FC<ButtonProps> = ({
       )}
       disabled={isLoading || isDisabled}
       onClick={onClick}>
-      {isLoading ? <Loading textLoading={loadingText ?? "Loading..."} /> : text}
+      {isLoading ? <Loading text={loadingText ?? "Loading..."} /> : text}
     </button>
   )
 }
 
 type LoadingProps = {
-  textLoading: string
+  text: string
 }
 
-const Loading: FC<LoadingProps> = ({textLoading}) => {
+const Loading: FC<LoadingProps> = ({text}) => {
   return (
     <div className="flex items-center justify-center gap-2">
       <div className="size-4 animate-rotation rounded-full border-2 border-white border-t-borderLoading" />
-      <span>{textLoading}</span>
+      <span>{text}</span>
     </div>
   )
 }
