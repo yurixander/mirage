@@ -4,7 +4,7 @@ export type SliderProps = {
   min: number
   max: number
   step?: number
-  initialValue?: string
+  initialValue?: number
   onInput: (value: string) => void
   isVariantBasic?: boolean
 }
@@ -23,15 +23,15 @@ const Slider: FC<SliderProps> = ({
   const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
-    setProgress(String((Number(value) * 100) / (max ?? 100)))
-    setInternalValue(value)
+    setProgress((Number(value) * 100) / (max ?? 100))
+    setInternalValue(Number(value))
     onInput(value)
   }
 
   return (
     <label className="flex flex-col gap-1">
       {isVariantBasic ? (
-        <BasicProgressBar progress={progress ?? "50"} />
+        <BasicProgressBar progress={String(progress) ?? "50"} />
       ) : (
         <StepProgressBar steps={(max - min) / (step ?? 1)} />
       )}
@@ -67,6 +67,7 @@ const BasicProgressBar: FC<BasicProgressBarProps> = ({progress}) => {
 type StepProgressBarProps = {
   steps: number
 }
+
 const StepProgressBar: FC<StepProgressBarProps> = ({steps}) => {
   const step = []
   for (let i = 1; i < steps; i++) {
