@@ -1,7 +1,10 @@
-import {useCallback, useEffect} from "react"
+import {useCallback, useEffect, useState} from "react"
 import useList from "../../../hooks/util/useList"
 import useConnection from "../../../hooks/matrix/useConnection"
-import {type Space} from "@/containers/NavigationSection/SpaceList"
+import {
+  type PartialRoom,
+  type Space,
+} from "@/containers/NavigationSection/SpaceList"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 
@@ -17,6 +20,7 @@ const processSpace = (space: Room): Space => {
 
 const useSpaces = () => {
   const {client} = useConnection()
+  const [allRooms, setAllRooms] = useState<PartialRoom[]>([])
 
   const {
     items,
@@ -29,7 +33,22 @@ const useSpaces = () => {
       return
     }
 
-    const storeSpaces = client.getRooms().filter(room => room.isSpaceRoom())
+    const newAllRooms: PartialRoom[] = []
+
+    const storeSpaces = client.getRooms().filter(room => {
+      if (room.isSpaceRoom()) {
+        return true
+      }
+
+      newAllRooms.push({
+        roomId: room.roomId,
+        roomName: room.name,
+      })
+
+      return false
+    })
+
+    setAllRooms(newAllRooms)
 
     for (const storeSpace of storeSpaces) {
       addSpace(processSpace(storeSpace))
@@ -66,7 +85,7 @@ const useSpaces = () => {
     updateSpace(processSpace(room))
   })
 
-  return {spaces: items}
+  return {spaces: items, allRooms}
 }
 
 export default useSpaces

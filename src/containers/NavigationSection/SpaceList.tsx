@@ -4,6 +4,9 @@ import {twMerge} from "tailwind-merge"
 import Loader from "@/components/Loader"
 import useSpaces from "./hooks/useSpaces"
 import RoomChildList from "./RoomChildList"
+import Room from "./Room"
+import {emojiRandom} from "@/utils/util"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 
 export type PartialRoom = {
   roomId: string
@@ -16,7 +19,8 @@ export type Space = {
 }
 
 const SpaceList: FC<{className?: string}> = ({className}) => {
-  const {spaces} = useSpaces()
+  const {spaces, allRooms} = useSpaces()
+  const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
 
   return (
     <div
@@ -25,11 +29,25 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
         className
       )}>
       {spaces.length > 0 ? (
-        spaces.map(space => (
-          <Details title={space.name} key={space.spaceId}>
-            <RoomChildList spaceId={space.spaceId} />
+        <>
+          <Details title="All rooms">
+            {allRooms.map(room => (
+              <Room
+                roomName={room.roomName}
+                tagEmoji={emojiRandom()}
+                roomId={room.roomId}
+                isSelected={activeRoomId === room.roomId}
+                onRoomClick={setActiveRoomId}
+              />
+            ))}
           </Details>
-        ))
+
+          {spaces.map(space => (
+            <Details title={space.name} key={space.spaceId}>
+              <RoomChildList spaceId={space.spaceId} />
+            </Details>
+          ))}
+        </>
       ) : (
         <Loader text="Charging Spaces..." />
       )}
