@@ -5,6 +5,7 @@ import useList from "@/hooks/util/useList"
 import {EventType, type MatrixClient, RoomEvent, RoomType} from "matrix-js-sdk"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {type IHierarchyRoom} from "matrix-js-sdk/lib/@types/spaces"
+import {generateUniqueNumber} from "@/utils/util"
 
 const hasRepeat = (room1: PartialRoom, room2: PartialRoom): boolean =>
   room1.roomId === room2.roomId
@@ -28,12 +29,14 @@ const processHierarchyRoom = (
     return {
       roomId: storedRoom.roomId,
       roomName: storedRoom.name,
+      id: generateUniqueNumber(),
     }
   }
 
   return {
     roomId: room.room_id,
     roomName: room.name,
+    id: generateUniqueNumber(),
   }
 }
 
@@ -93,6 +96,7 @@ const useSpaceRooms = (spaceId: string) => {
     addRoom({
       roomId: room.roomId,
       roomName: room.name,
+      id: generateUniqueNumber(),
     })
   })
 
@@ -104,6 +108,7 @@ const useSpaceRooms = (spaceId: string) => {
     updateRoom({
       roomId: room.roomId,
       roomName: room.name,
+      id: generateUniqueNumber(),
     })
   })
 

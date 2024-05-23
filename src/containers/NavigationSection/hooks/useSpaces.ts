@@ -7,6 +7,7 @@ import {
 } from "@/containers/NavigationSection/SpaceList"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
+import {generateUniqueNumber} from "@/utils/util"
 
 const hasRepeat = (space1: Space, space2: Space): boolean =>
   space1.spaceId === space2.spaceId
@@ -43,6 +44,7 @@ const useSpaces = () => {
       newAllRooms.push({
         roomId: room.roomId,
         roomName: room.name,
+        id: generateUniqueNumber(),
       })
 
       return false

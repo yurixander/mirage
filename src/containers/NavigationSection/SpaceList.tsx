@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import {useState, type FC} from "react"
 import React from "react"
 import {twMerge} from "tailwind-merge"
 import Loader from "@/components/Loader"
@@ -9,6 +9,7 @@ import {emojiRandom} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 
 export type PartialRoom = {
+  id: number
   roomId: string
   roomName: string
 }
@@ -20,7 +21,8 @@ export type Space = {
 
 const SpaceList: FC<{className?: string}> = ({className}) => {
   const {spaces, allRooms} = useSpaces()
-  const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
+  const {setActiveRoomId} = useActiveRoomIdStore()
+  const [roomSelectedId, setRoomSelectedId] = useState<number>()
 
   return (
     <div
@@ -31,20 +33,29 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
       {spaces.length > 0 ? (
         <>
           <Details title="All rooms">
-            {allRooms.map(room => (
+            {allRooms.map((room, index) => (
               <Room
+                key={index}
+                id={room.id}
                 roomName={room.roomName}
                 tagEmoji={emojiRandom()}
                 roomId={room.roomId}
-                isSelected={activeRoomId === room.roomId}
-                onRoomClick={setActiveRoomId}
+                isSelected={roomSelectedId === room.id}
+                onRoomClick={() => {
+                  setActiveRoomId(room.roomId)
+                  setRoomSelectedId(room.id)
+                }}
               />
             ))}
           </Details>
 
           {spaces.map(space => (
             <Details title={space.name} key={space.spaceId}>
-              <RoomChildList spaceId={space.spaceId} />
+              <RoomChildList
+                spaceId={space.spaceId}
+                roomSelected={roomSelectedId}
+                setRoomSelected={setRoomSelectedId}
+              />
             </Details>
           ))}
         </>

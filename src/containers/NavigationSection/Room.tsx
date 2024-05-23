@@ -3,18 +3,18 @@ import {memo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type RoomProps = {
+  id: number
   roomName: string
   tagEmoji: string
   roomId: string
   isSelected?: boolean
-  onRoomClick: (roomId: string) => void
+  onRoomClick: () => void
 }
 
 const Room: FC<RoomProps> = ({
   roomName,
   tagEmoji,
   onRoomClick,
-  roomId,
   isSelected = false,
 }) => {
   return (
@@ -25,9 +25,7 @@ const Room: FC<RoomProps> = ({
       )}
       role="button"
       aria-hidden="true"
-      onClick={() => {
-        onRoomClick(roomId)
-      }}>
+      onClick={onRoomClick}>
       <Typography variant={TypographyVariant.P}>{tagEmoji}</Typography>
 
       <Typography
