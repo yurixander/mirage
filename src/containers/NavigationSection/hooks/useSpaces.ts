@@ -23,7 +23,7 @@ const useSpaces = () => {
   const [allRooms, setAllRooms] = useState<PartialRoom[]>([])
 
   const {
-    items,
+    items: spaces,
     addItem: addSpace,
     updateItem: updateSpace,
   } = useList<Space>(hasRepeat)
@@ -66,11 +66,7 @@ const useSpaces = () => {
   }, [fetchSpaces])
 
   useEventListener(RoomEvent.Timeline, (event, room) => {
-    if (
-      (event.getType() !== EventType.RoomCreate &&
-        event.getType() !== EventType.SpaceChild) ||
-      !room?.isSpaceRoom()
-    ) {
+    if (event.getType() !== EventType.RoomCreate || !room?.isSpaceRoom()) {
       return
     }
 
@@ -85,7 +81,7 @@ const useSpaces = () => {
     updateSpace(processSpace(room))
   })
 
-  return {spaces: items, allRooms}
+  return {spaces, allRooms}
 }
 
 export default useSpaces

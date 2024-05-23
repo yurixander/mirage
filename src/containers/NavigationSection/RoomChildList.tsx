@@ -11,8 +11,6 @@ export type RoomChildListProps = {
 }
 
 const RoomChildList: FC<RoomChildListProps> = ({spaceId, className}) => {
-  // TODO: Actualize room list when `room_name` is changed.
-
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const {childRooms} = useSpaceRooms(spaceId)
 
