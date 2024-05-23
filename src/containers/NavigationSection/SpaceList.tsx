@@ -37,10 +37,8 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
               {allRooms.map((room, index) => (
                 <Room
                   key={index}
-                  id={room.id}
                   roomName={room.roomName}
                   tagEmoji={emojiRandom()}
-                  roomId={room.roomId}
                   isSelected={roomSelectedId === room.id}
                   onRoomClick={() => {
                     setActiveRoomId(room.roomId)

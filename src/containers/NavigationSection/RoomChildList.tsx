@@ -26,11 +26,9 @@ const RoomChildList: FC<RoomChildListProps> = ({
       {childRooms.map(childRoom => (
         <Room
           key={childRoom.roomId}
-          id={childRoom.id}
           isSelected={roomSelected === childRoom.id}
           roomName={childRoom.roomName}
           tagEmoji={emojiRandom()}
-          roomId={childRoom.roomId}
           onRoomClick={() => {
             setActiveRoomId(childRoom.roomId)
             setRoomSelected(childRoom.id)

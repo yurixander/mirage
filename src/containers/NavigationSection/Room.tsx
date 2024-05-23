@@ -3,10 +3,8 @@ import {memo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type RoomProps = {
-  id: number
   roomName: string
   tagEmoji: string
-  roomId: string
   isSelected?: boolean
   onRoomClick: () => void
 }
