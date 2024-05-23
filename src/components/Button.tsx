@@ -64,11 +64,10 @@ const Button: FC<ButtonProps> = ({
   )
 }
 
-export default Button
-
 type LoadingProps = {
   textLoading: string
 }
+
 const Loading: FC<LoadingProps> = ({textLoading}) => {
   return (
     <div className="flex items-center justify-center gap-2">
@@ -77,3 +76,5 @@ const Loading: FC<LoadingProps> = ({textLoading}) => {
     </div>
   )
 }
+
+export default Button
