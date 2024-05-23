@@ -26,7 +26,9 @@ const Room: FC<RoomProps> = ({
       role="button"
       aria-hidden="true"
       onClick={onRoomClick}>
-      <Typography variant={TypographyVariant.P}>{tagEmoji}</Typography>
+      <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
+        <Typography variant={TypographyVariant.P}>{tagEmoji}</Typography>
+      </div>
 
       <Typography
         variant={TypographyVariant.P}

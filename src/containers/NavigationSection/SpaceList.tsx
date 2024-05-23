@@ -33,20 +33,22 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
       {spaces.length > 0 ? (
         <>
           <Details title="All rooms">
-            {allRooms.map((room, index) => (
-              <Room
-                key={index}
-                id={room.id}
-                roomName={room.roomName}
-                tagEmoji={emojiRandom()}
-                roomId={room.roomId}
-                isSelected={roomSelectedId === room.id}
-                onRoomClick={() => {
-                  setActiveRoomId(room.roomId)
-                  setRoomSelectedId(room.id)
-                }}
-              />
-            ))}
+            <div className="flex flex-col gap-1">
+              {allRooms.map((room, index) => (
+                <Room
+                  key={index}
+                  id={room.id}
+                  roomName={room.roomName}
+                  tagEmoji={emojiRandom()}
+                  roomId={room.roomId}
+                  isSelected={roomSelectedId === room.id}
+                  onRoomClick={() => {
+                    setActiveRoomId(room.roomId)
+                    setRoomSelectedId(room.id)
+                  }}
+                />
+              ))}
+            </div>
           </Details>
 
           {spaces.map(space => (
