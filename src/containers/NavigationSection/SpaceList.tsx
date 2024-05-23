@@ -7,6 +7,8 @@ import RoomChildList from "./RoomChildList"
 import Room from "./Room"
 import {emojiRandom} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import IconButton from "@/components/IconButton"
+import {IoEllipsisHorizontal} from "react-icons/io5"
 
 export type PartialRoom = {
   id: number
@@ -32,7 +34,11 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
       )}>
       {spaces.length > 0 ? (
         <>
-          <Details title="All rooms">
+          <Details
+            title="All rooms"
+            onMoreActionsClick={function (): void {
+              throw new Error("Function not implemented.")
+            }}>
             <div className="flex flex-col gap-1">
               {allRooms.map((room, index) => (
                 <Room
@@ -50,7 +56,12 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
           </Details>
 
           {spaces.map(space => (
-            <Details title={space.name} key={space.spaceId}>
+            <Details
+              title={space.name}
+              key={space.spaceId}
+              onMoreActionsClick={function (): void {
+                throw new Error("Function not implemented.")
+              }}>
               <RoomChildList
                 spaceId={space.spaceId}
                 roomSelected={roomSelectedId}
@@ -66,14 +77,28 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
   )
 }
 
-const Details: FC<{title: string; children?: React.ReactNode}> = ({
-  title,
-  children,
-}) => {
+type DetailsProps = {
+  title: string
+  children?: React.ReactNode
+  onMoreActionsClick?: () => void
+}
+
+const Details: FC<DetailsProps> = ({title, children, onMoreActionsClick}) => {
   return (
     <details className="cursor-pointer">
-      <summary className="text-sm font-bold text-slate-500">
+      <summary className="flex gap-1.5 text-sm font-bold text-slate-500">
         {title.toUpperCase()}
+
+        {onMoreActionsClick !== undefined && (
+          <IconButton
+            className="ml-auto"
+            onClick={onMoreActionsClick}
+            size={14}
+            iconClassName="text-slate-500"
+            tooltip="More actions"
+            Icon={IoEllipsisHorizontal}
+          />
+        )}
       </summary>
 
       <div className="pt-2">{children}</div>

@@ -57,3 +57,11 @@ textarea:disabled {
 ::-webkit-scrollbar-thumb {
   @apply m-1 rounded-xl bg-gray-300;
 }
+
+summary::before {
+  content: "►";
+}
+
+details[open] summary::before {
+  content: "▼";
+}

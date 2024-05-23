@@ -30,12 +30,9 @@ const IconButton: FC<IconButtonProps> = ({
     : "active:animate-hold active:scale-90 hover:bg-neutral-50"
 
   return (
-    <div
+    <button
       onClick={isDisabled ? undefined : onClick}
       tabIndex={isDisabled ? undefined : 0}
-      role="button"
-      aria-disabled={isDisabled}
-      aria-hidden="true"
       className={twMerge(
         "inline-block size-max rounded-lg p-1 focus-visible:duration-150",
         isDisabledClass,
@@ -48,7 +45,7 @@ const IconButton: FC<IconButtonProps> = ({
           className={twMerge("text-neutral-300", iconClassName)}
         />
       </NotificationDot>
-    </div>
+    </button>
   )
 }
 
