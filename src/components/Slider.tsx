@@ -6,17 +6,9 @@ export type SliderProps = {
   step?: number
   initialValue?: number
   onInput: (value: string) => void
-  isVariantBasic?: boolean
 }
 
-const Slider: FC<SliderProps> = ({
-  onInput,
-  min,
-  max,
-  step,
-  initialValue,
-  isVariantBasic = true,
-}) => {
+const Slider: FC<SliderProps> = ({onInput, min, max, step, initialValue}) => {
   const [progress, setProgress] = useState(initialValue)
   const [internalValue, setInternalValue] = useState(initialValue)
 
@@ -30,7 +22,7 @@ const Slider: FC<SliderProps> = ({
 
   return (
     <label className="flex flex-col gap-1">
-      {isVariantBasic ? (
+      {step === undefined || step < 10 ? (
         <BasicProgressBar progress={String(progress) ?? "50"} />
       ) : (
         <StepProgressBar steps={(max - min) / (step ?? 1)} />

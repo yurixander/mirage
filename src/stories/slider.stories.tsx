@@ -23,7 +23,6 @@ export const Step: Story = {
     max: 100,
     min: 0,
     onInput: () => {},
-    isVariantBasic: false,
     step: 20,
   },
 }
