@@ -48,6 +48,7 @@ const Button: FC<ButtonProps> = ({
           : variant === ButtonVariant.TextLink
             ? "bg-none hover:text-green-800 hover:bg-green-100 border-none underline duration-200 active:translate-y-1"
             : ""
+
   return (
     <button
       type="button"

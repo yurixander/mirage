@@ -1,62 +1,30 @@
-import {useState, type FC} from "react"
+import {type FC} from "react"
 import Button, {ButtonSize, ButtonVariant} from "./Button"
 import Typography, {TypographyVariant} from "./Typography"
 import Dropdown from "./Dropdown"
-import {Preset, Visibility} from "matrix-js-sdk"
-import useConnection from "@/hooks/matrix/useConnection"
+import {Visibility} from "matrix-js-sdk"
 import {IoIosLock, IoMdGlobe} from "react-icons/io"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
 import InputSection from "./InputSection"
 import SwitchButton from "./SwitchButton"
+import {IoGlobe} from "react-icons/io5"
+import useCreateRoom from "@/hooks/matrix/useCreateRoom"
 
-// Initial event that declares the room as encrypted.
-const ROOM_ENCRYPTION_OBJECT = {
-  type: "m.room.encryption",
-  state_key: "",
-  content: {
-    algorithm: "m.megolm.v1.aes-sha2",
-  },
-}
-
-export type CreateRoomProps = {
-  onClose: () => void
-}
-
-const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
-  const [roomName, setRoomName] = useState("")
-  const [roomDescription, setRoomDescription] = useState("")
-  const [roomVisibility, setRoomVisibility] = useState(Visibility.Private)
-  const [enableEncryption, setEnableEncryption] = useState(false)
-  const [isCreatingRoom, setIsCreatingRoom] = useState(false)
-  const {client} = useConnection()
-
-  const onCreateRoom = () => {
-    if (client === null) {
-      return
-    }
-
-    setIsCreatingRoom(true)
-
-    void client
-      .createRoom({
-        visibility: roomVisibility,
-        name: roomName,
-        topic: roomDescription,
-        preset: enableEncryption ? Preset.PrivateChat : undefined,
-        initial_state: enableEncryption ? [ROOM_ENCRYPTION_OBJECT] : undefined,
-      })
-      .then(_roomID => {
-        // TODO: Send here notification that the room has been created.
-
-        onClose()
-      })
-      .catch(_error => {
-        // TODO: Send here notification that the room has not been created.
-
-        setIsCreatingRoom(false)
-      })
-  }
+const CreateRoom: FC = () => {
+  const {
+    isCreatingRoom,
+    onCreateRoom,
+    setEnableEncryption,
+    setRoomAddress,
+    setRoomDescription,
+    setRoomName,
+    setRoomVisibility,
+    roomVisibility,
+    enableEncryption,
+    isDisabled,
+    clearActiveSidebarModal,
+  } = useCreateRoom()
 
   return (
     <div className="box-border flex max-w-xl flex-col overflow-hidden rounded-md border border-slate-300">
@@ -71,7 +39,7 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
       <div className="flex flex-col gap-4 bg-white p-5">
         <div className="flex flex-col gap-2">
           <InputSection
-            title="Name"
+            title="* Name"
             placeholder="Ej: Gaming Lovers"
             onValueChange={setRoomName}
           />
@@ -108,7 +76,7 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
           </div>
         </div>
 
-        {roomVisibility === Visibility.Private && (
+        {roomVisibility === Visibility.Private ? (
           <div className="flex flex-col gap-2">
             <Typography className="text-black" variant={TypographyVariant.P}>
               Only those who are invited will be able to find and join this
@@ -135,6 +103,14 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
               />
             </div>
           </div>
+        ) : (
+          <InputSection
+            className="max-w-48"
+            title="* Room Address"
+            titleIcon={IoGlobe}
+            placeholder="p.j  my-room:matrix.org"
+            onValueChange={setRoomAddress}
+          />
         )}
 
         <div className="flex gap-1 overflow-hidden">
@@ -149,12 +125,12 @@ const CreateRoom: FC<CreateRoomProps> = ({onClose}) => {
           label="Cancel"
           variant={ButtonVariant.TextLink}
           size={ButtonSize.Small}
-          onClick={onClose}
+          onClick={clearActiveSidebarModal}
         />
 
         <Button
           label="Create Room"
-          isDisabled={client === null}
+          isDisabled={isDisabled}
           isLoading={isCreatingRoom}
           size={ButtonSize.Small}
           onClick={onCreateRoom}

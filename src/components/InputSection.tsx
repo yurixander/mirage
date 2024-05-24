@@ -2,30 +2,42 @@ import {type FC} from "react"
 import {type IconType} from "react-icons"
 import Input, {type InputConstraint, type InputAction} from "./Input"
 import Typography, {TypographyVariant} from "./Typography"
+import {twMerge} from "tailwind-merge"
 
 export type InputSectionProps = {
   title: string
   onValueChange: (value: string) => void
   placeholder: string
+  titleIcon?: IconType
   icon?: IconType
   constraints?: InputConstraint[]
   actions?: InputAction[]
   isPassword?: boolean
   rows?: number
+  className?: string
 }
 
 const InputSection: FC<InputSectionProps> = ({
   icon,
   onValueChange,
   title,
+  titleIcon,
   actions,
   constraints,
   placeholder,
   isPassword,
+  className,
 }) => {
+  const TitleIcon = titleIcon
+
   return (
-    <div className="flex flex-col gap-1">
-      <Typography variant={TypographyVariant.Span}>{title}</Typography>
+    <div className={twMerge("flex flex-col gap-1", className)}>
+      <Typography
+        className="flex items-center gap-1"
+        variant={TypographyVariant.Span}>
+        {TitleIcon !== undefined && <TitleIcon />}
+        {title}
+      </Typography>
 
       <Input
         className="w-full"

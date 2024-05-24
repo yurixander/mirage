@@ -6,6 +6,7 @@ import {create} from "zustand"
 export enum SidebarModals {
   DirectMessages,
   Notifications,
+  CreateRoom,
 }
 
 type SidebarModalActive = {

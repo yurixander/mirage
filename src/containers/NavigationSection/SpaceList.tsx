@@ -9,6 +9,10 @@ import {emojiRandom} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import IconButton from "@/components/IconButton"
 import {IoEllipsisHorizontal} from "react-icons/io5"
+import {
+  SidebarModals,
+  useSidebarModalActiveStore,
+} from "./hooks/useSidebarActions"
 
 export type PartialRoom = {
   id: number
@@ -25,6 +29,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
   const {spaces, allRooms} = useSpaces()
   const {setActiveRoomId} = useActiveRoomIdStore()
   const [roomSelectedId, setRoomSelectedId] = useState<number>()
+  const {setActiveSidebarModal} = useSidebarModalActiveStore()
 
   return (
     <div
@@ -59,8 +64,8 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
             <Details
               title={space.name}
               key={space.spaceId}
-              onMoreActionsClick={function (): void {
-                throw new Error("Function not implemented.")
+              onMoreActionsClick={() => {
+                setActiveSidebarModal(SidebarModals.CreateRoom)
               }}>
               <RoomChildList
                 spaceId={space.spaceId}
