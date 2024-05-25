@@ -31,7 +31,6 @@ body {
   @apply font-noto font-normal text-stone-600;
 }
 
-button:disabled,
 input:disabled,
 textarea:disabled {
   @apply cursor-not-allowed opacity-50;

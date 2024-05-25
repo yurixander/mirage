@@ -32,8 +32,6 @@ module.exports = {
         profileGhost: "#ffffff00",
         statusMessageColor: "#e53e3eb2",
         borderLoading: "rgba(255, 255, 255, 0.5)",
-        borderButtonDisabled: "#15803D",
-        backgroundButtonDisabled: "#22C55E",
       },
       spacing: {
         serverAvatarSize: "calc(47px * sqrt(2))",

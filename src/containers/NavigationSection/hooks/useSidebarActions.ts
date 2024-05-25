@@ -7,6 +7,7 @@ export enum SidebarModals {
   DirectMessages,
   Notifications,
   CreateRoom,
+  CreateSpace,
 }
 
 type SidebarModalActive = {

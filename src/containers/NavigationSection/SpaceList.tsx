@@ -65,7 +65,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
               title={space.name}
               key={space.spaceId}
               onMoreActionsClick={() => {
-                setActiveSidebarModal(SidebarModals.CreateRoom)
+                setActiveSidebarModal(SidebarModals.CreateSpace)
               }}>
               <RoomChildList
                 spaceId={space.spaceId}

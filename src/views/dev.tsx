@@ -1,4 +1,4 @@
-import CreateRoom from "@/components/CreateRoom"
+import CreateRoom from "@/components/CreateRoomModal"
 import {type FC} from "react"
 
 const DevelopmentPreview: FC = () => {

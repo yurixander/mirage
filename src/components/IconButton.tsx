@@ -25,17 +25,13 @@ const IconButton: FC<IconButtonProps> = ({
   className,
   iconClassName,
 }) => {
-  const isDisabledClass = isDisabled
-    ? "active:animate-none active:transform-none cursor-not-allowed opacity-50 hover:bg-none"
-    : "active:animate-hold active:scale-90 hover:bg-neutral-50"
-
   return (
     <button
-      onClick={isDisabled ? undefined : onClick}
-      tabIndex={isDisabled ? undefined : 0}
+      onClick={onClick}
+      tabIndex={0}
+      disabled={isDisabled}
       className={twMerge(
         "inline-block size-max rounded-lg p-1 focus-visible:duration-150",
-        isDisabledClass,
         className
       )}>
       <NotificationDot isVisible={isDotVisible ?? false}>
