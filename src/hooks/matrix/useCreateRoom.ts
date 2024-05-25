@@ -36,7 +36,7 @@ const useCreateRoom = () => {
         topic: roomDescription,
         preset: enableEncryption ? Preset.PrivateChat : Preset.PublicChat,
         initial_state: enableEncryption ? [ROOM_ENCRYPTION_OBJECT] : undefined,
-        room_alias_name: roomAddress,
+        room_alias_name: roomAddress.length > 0 ? roomAddress : undefined,
       })
       .then(_roomID => {
         // TODO: Send here notification that the room has been created.

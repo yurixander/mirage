@@ -37,9 +37,8 @@ const Button: FC<ButtonProps> = ({
       ? "p-1 text-xs rounded px-2"
       : "p-2 min-w-32 px-4 text-sm rounded"
 
-  const variantClass = isDisabled
-    ? "border disabled:border-borderButtonDisabled disabled:bg-backgroundButtonDisabled text-white"
-    : variant === ButtonVariant.Primary
+  const variantClass =
+    variant === ButtonVariant.Primary
       ? "border border-green-700 bg-green-500 text-white duration-200 hover:border-green-600 hover:bg-green-400 hover:shadow active:translate-y-1"
       : variant === ButtonVariant.Loading
         ? "border border-green-600 bg-green-500 text-white"

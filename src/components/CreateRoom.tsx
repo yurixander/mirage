@@ -10,6 +10,7 @@ import InputSection from "./InputSection"
 import SwitchButton from "./SwitchButton"
 import {IoGlobe} from "react-icons/io5"
 import useCreateRoom from "@/hooks/matrix/useCreateRoom"
+import {FaHashtag} from "react-icons/fa6"
 
 const CreateRoom: FC = () => {
   const {
@@ -108,7 +109,8 @@ const CreateRoom: FC = () => {
             className="max-w-48"
             title="* Room Address"
             titleIcon={IoGlobe}
-            placeholder="p.j  my-room:matrix.org"
+            icon={FaHashtag}
+            placeholder="p.j  my-room"
             onValueChange={setRoomAddress}
           />
         )}

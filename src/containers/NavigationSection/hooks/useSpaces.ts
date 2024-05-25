@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react"
+import {useCallback, useEffect} from "react"
 import useList from "../../../hooks/util/useList"
 import useConnection from "../../../hooks/matrix/useConnection"
 import {
@@ -9,8 +9,11 @@ import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {generateUniqueNumber} from "@/utils/util"
 
-const hasRepeat = (space1: Space, space2: Space): boolean =>
+const hasSpaceRepeat = (space1: Space, space2: Space): boolean =>
   space1.spaceId === space2.spaceId
+
+const hasRoomRepeat = (room1: PartialRoom, room2: PartialRoom): boolean =>
+  room1.roomId === room2.roomId
 
 const processSpace = (space: Room): Space => {
   return {
@@ -21,27 +24,25 @@ const processSpace = (space: Room): Space => {
 
 const useSpaces = () => {
   const {client} = useConnection()
-  const [allRooms, setAllRooms] = useState<PartialRoom[]>([])
+  const {items, addItem: addRoom} = useList<PartialRoom>(hasRoomRepeat)
 
   const {
     items: spaces,
     addItem: addSpace,
     updateItem: updateSpace,
-  } = useList<Space>(hasRepeat)
+  } = useList<Space>(hasSpaceRepeat)
 
   const fetchSpaces = useCallback(() => {
     if (client === null) {
       return
     }
 
-    const newAllRooms: PartialRoom[] = []
-
     const storeSpaces = client.getRooms().filter(room => {
       if (room.isSpaceRoom()) {
         return true
       }
 
-      newAllRooms.push({
+      addRoom({
         roomId: room.roomId,
         roomName: room.name,
         id: generateUniqueNumber(),
@@ -50,12 +51,10 @@ const useSpaces = () => {
       return false
     })
 
-    setAllRooms(newAllRooms)
-
     for (const storeSpace of storeSpaces) {
       addSpace(processSpace(storeSpace))
     }
-  }, [addSpace, client])
+  }, [addRoom, addSpace, client])
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -76,14 +75,20 @@ const useSpaces = () => {
   })
 
   useEventListener(RoomEvent.Name, room => {
-    if (!room.isSpaceRoom()) {
+    if (room.isSpaceRoom()) {
+      updateSpace(processSpace(room))
+
       return
     }
 
-    updateSpace(processSpace(room))
+    addRoom({
+      id: generateUniqueNumber(),
+      roomId: room.roomId,
+      roomName: room.name,
+    })
   })
 
-  return {spaces, allRooms}
+  return {spaces, allRooms: items}
 }
 
 export default useSpaces
