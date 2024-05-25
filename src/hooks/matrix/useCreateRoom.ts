@@ -2,6 +2,7 @@ import {Visibility, Preset} from "matrix-js-sdk"
 import {useState} from "react"
 import useConnection from "./useConnection"
 import {useSidebarModalActiveStore} from "@/containers/NavigationSection/hooks/useSidebarActions"
+import usePublicRoomsSearch from "./usePublicRoomsSearch"
 
 // Initial event that declares the room as encrypted.
 const ROOM_ENCRYPTION_OBJECT = {
@@ -15,12 +16,12 @@ const ROOM_ENCRYPTION_OBJECT = {
 const useCreateRoom = () => {
   const [roomName, setRoomName] = useState("")
   const [roomDescription, setRoomDescription] = useState<string>()
-  const [roomAddress, setRoomAddress] = useState("")
   const [roomVisibility, setRoomVisibility] = useState(Visibility.Private)
   const [enableEncryption, setEnableEncryption] = useState(false)
   const [isCreatingRoom, setIsCreatingRoom] = useState(false)
   const {clearActiveSidebarModal} = useSidebarModalActiveStore()
   const {client} = useConnection()
+  const {results, setRoomAddress, roomAddress} = usePublicRoomsSearch(client)
 
   const onCreateRoom = () => {
     if (client === null) {
@@ -61,6 +62,7 @@ const useCreateRoom = () => {
     roomVisibility,
     enableEncryption,
     clearActiveSidebarModal,
+    isValidAlias: !(results !== null && results.length > 0),
     isDisabled:
       client === null ||
       roomName.length <= 0 ||

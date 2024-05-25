@@ -25,6 +25,7 @@ const CreateRoom: FC = () => {
     enableEncryption,
     isDisabled,
     clearActiveSidebarModal,
+    isValidAlias,
   } = useCreateRoom()
 
   return (
@@ -105,6 +106,7 @@ const CreateRoom: FC = () => {
             </div>
           </div>
         ) : (
+          // TODO: Put new constraint for invalid alias.
           <InputSection
             className="max-w-48"
             title="* Room Address"
@@ -132,7 +134,7 @@ const CreateRoom: FC = () => {
 
         <Button
           label="Create Room"
-          isDisabled={isDisabled}
+          isDisabled={isDisabled || !isValidAlias}
           isLoading={isCreatingRoom}
           size={ButtonSize.Small}
           onClick={onCreateRoom}
