@@ -1,7 +1,6 @@
 @import url("tailwindcss/base");
 @import url("tailwindcss/components");
 @import url("tailwindcss/utilities");
-@import url("satoshi.css");
 
 * {
   @apply box-border leading-[100%];
