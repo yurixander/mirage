@@ -8,6 +8,7 @@ import {
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {generateUniqueNumber} from "@/utils/util"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 const hasSpaceRepeat = (space1: Space, space2: Space): boolean =>
   space1.spaceId === space2.spaceId
@@ -24,12 +25,18 @@ const processSpace = (space: Room): Space => {
 
 const useSpaces = () => {
   const {client} = useConnection()
-  const {items, addItem: addRoom} = useList<PartialRoom>(hasRoomRepeat)
+
+  const {
+    items,
+    addItem: addRoom,
+    deleteWhen: deleteRoomWhen,
+  } = useList<PartialRoom>(hasRoomRepeat)
 
   const {
     items: spaces,
     addItem: addSpace,
     updateItem: updateSpace,
+    deleteWhen: deleteSpaceWhen,
   } = useList<Space>(hasSpaceRepeat)
 
   const fetchSpaces = useCallback(() => {
@@ -87,6 +94,26 @@ const useSpaces = () => {
       roomName: room.name,
     })
   })
+
+  useEventListener(
+    RoomEvent.MyMembership,
+    (room, membership, prevMembership) => {
+      if (
+        membership !== KnownMembership.Leave &&
+        membership !== KnownMembership.Ban
+      ) {
+        return
+      }
+
+      if (room.isSpaceRoom()) {
+        deleteSpaceWhen(spaceIter => spaceIter.spaceId === room.roomId)
+
+        return
+      }
+
+      deleteRoomWhen(roomIter => roomIter.roomId === room.roomId)
+    }
+  )
 
   return {spaces, allRooms: items}
 }

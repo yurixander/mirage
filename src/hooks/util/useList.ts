@@ -52,11 +52,15 @@ const useList = <T>(
     [hasRepeat]
   )
 
+  const deleteWhen = useCallback((when: (element: T) => boolean) => {
+    setItem(prevItems => prevItems.filter(prevItem => !when(prevItem)))
+  }, [])
+
   const clearItems = () => {
     setItem([])
   }
 
-  return {items, addItem, updateItem, deleteItem, clearItems}
+  return {items, addItem, updateItem, deleteItem, clearItems, deleteWhen}
 }
 
 export default useList
