@@ -4,12 +4,18 @@ export type SliderProps = {
   min: number
   max: number
   step?: number
-  initialValue?: number
-  onInput: (value: string) => void
+  initialValue: number
+  onProgressChange: (value: string) => void
 }
 
-const Slider: FC<SliderProps> = ({onInput, min, max, step, initialValue}) => {
-  const [progress, setProgress] = useState(initialValue)
+const Slider: FC<SliderProps> = ({
+  onProgressChange,
+  min,
+  max,
+  step,
+  initialValue,
+}) => {
+  const [progress, setProgress] = useState((initialValue * 100) / (max ?? 100))
   const [internalValue, setInternalValue] = useState(initialValue)
 
   const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,7 +23,7 @@ const Slider: FC<SliderProps> = ({onInput, min, max, step, initialValue}) => {
 
     setProgress((Number(value) * 100) / (max ?? 100))
     setInternalValue(Number(value))
-    onInput(value)
+    onProgressChange(value)
   }
 
   return (
@@ -41,11 +47,7 @@ const Slider: FC<SliderProps> = ({onInput, min, max, step, initialValue}) => {
   )
 }
 
-type BasicProgressBarProps = {
-  progress: string
-}
-
-const BasicProgressBar: FC<BasicProgressBarProps> = ({progress}) => {
+const BasicProgressBar: FC<{progress: string}> = ({progress}) => {
   return (
     <div className="h-3 w-60 overflow-hidden rounded-full bg-slate-200 shadow">
       <div
@@ -56,12 +58,9 @@ const BasicProgressBar: FC<BasicProgressBarProps> = ({progress}) => {
   )
 }
 
-type StepProgressBarProps = {
-  steps: number
-}
-
-const StepProgressBar: FC<StepProgressBarProps> = ({steps}) => {
+const StepProgressBar: FC<{steps: number}> = ({steps}) => {
   const step = []
+
   for (let i = 0; i < steps; i++) {
     step.push(i)
   }

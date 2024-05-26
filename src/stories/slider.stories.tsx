@@ -13,7 +13,8 @@ export const Default: Story = {
   args: {
     max: 100,
     min: 0,
-    onInput: () => {},
+    onProgressChange: () => {},
+    initialValue: 50,
   },
 }
 
@@ -22,8 +23,9 @@ export const Step: Story = {
   args: {
     max: 100,
     min: 0,
-    onInput: () => {},
+    onProgressChange: () => {},
     step: 20,
+    initialValue: 40,
   },
 }
 export default meta
