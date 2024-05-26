@@ -1,5 +1,6 @@
 import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
 import {RoomType, type Room} from "matrix-js-sdk"
+import {generateUniqueNumber} from "./util"
 
 export const addRoomToSpace = async (
   spaceId: Room,
@@ -34,6 +35,7 @@ export async function getRoomsFromSpace(space: Room): Promise<PartialRoom[]> {
     }
 
     childRooms.push({
+      id: generateUniqueNumber(),
       roomId: room.room_id,
       roomName: room.name,
     })
