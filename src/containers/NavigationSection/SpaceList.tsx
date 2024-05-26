@@ -79,7 +79,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
           ))}
         </>
       ) : (
-        <Loader text="Charging Spaces..." />
+        <Loader text="Loading Spaces..." />
       )}
     </div>
   )

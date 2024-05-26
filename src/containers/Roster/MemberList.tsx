@@ -28,7 +28,7 @@ const MemberList: FC<MemberListProps> = ({
         className
       )}>
       {isLoading ? (
-        <Loader text="Charging members..." />
+        <Loader text="Loading members..." />
       ) : (
         <>
           <div className="flex flex-col gap-4">

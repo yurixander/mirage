@@ -7,20 +7,14 @@ import useEventListener from "@/hooks/matrix/useEventListener"
 import {type IHierarchyRoom} from "matrix-js-sdk/lib/@types/spaces"
 import {generateUniqueNumber} from "@/utils/util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-
-const hasRepeat = (room1: PartialRoom, room2: PartialRoom): boolean =>
-  room1.roomId === room2.roomId
+import {hasRoomRepeat} from "@/components/Room"
 
 const processHierarchyRoom = (
   room: IHierarchyRoom,
   client: MatrixClient
 ): PartialRoom | null => {
-  if (room.room_type === RoomType.Space) {
-    return null
-  }
-
-  // If the name is not defined, try to get the room.
-  if (room.name === undefined) {
+  // If the name or room_type is not defined, try to get the room.
+  if (room.name === undefined || room.room_type === undefined) {
     const storedRoom = client.getRoom(room.room_id)
 
     if (storedRoom === null || storedRoom.isSpaceRoom()) {
@@ -32,6 +26,10 @@ const processHierarchyRoom = (
       roomName: storedRoom.name,
       id: generateUniqueNumber(),
     }
+  }
+
+  if (room.room_type === RoomType.Space) {
+    return null
   }
 
   return {
@@ -49,36 +47,36 @@ const useSpaceRooms = (spaceId: string) => {
     addItem: addRoom,
     updateItem: updateRoom,
     deleteWhen: deleteRoomWhen,
-  } = useList<PartialRoom>(hasRepeat)
+  } = useList<PartialRoom>(hasRoomRepeat)
 
-  const fetchChildRooms = useCallback(() => {
+  const fetchChildRooms = useCallback(async () => {
     if (client === null) {
       return
     }
 
-    const childRooms = client.getRoomHierarchy(spaceId)
+    try {
+      const childRooms = await client.getRoomHierarchy(spaceId)
 
-    childRooms
-      .then(childRooms => {
-        for (const childRoom of childRooms.rooms) {
-          const childRoomProcessed = processHierarchyRoom(childRoom, client)
+      for (const childRoom of childRooms.rooms) {
+        const childRoomProcessed = processHierarchyRoom(childRoom, client)
 
-          if (childRoomProcessed === null) {
-            continue
-          }
-
-          addRoom(childRoomProcessed)
+        if (childRoomProcessed === null) {
+          continue
         }
-      })
-      .catch(error => {
-        // TODO: Handle errors here.
-        throw error
-      })
+
+        addRoom(childRoomProcessed)
+      }
+    } catch (error) {
+      console.error(
+        "An error occurred while retrieving rooms from the space:",
+        error
+      )
+    }
   }, [addRoom, client, spaceId])
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      fetchChildRooms()
+      void fetchChildRooms()
     }, 1000)
 
     return () => {
@@ -97,6 +95,7 @@ const useSpaceRooms = (spaceId: string) => {
       return
     }
 
+    // In this context, the state_key is the room_id.
     const eventRoom = client.getRoom(event.getStateKey())
 
     if (eventRoom === null) {
