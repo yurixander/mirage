@@ -43,6 +43,21 @@ const useList = <T>(
     [hasRepeat]
   )
 
+  const updateWhen = useCallback(
+    (when: (element: T) => boolean, newItem: T) => {
+      setItem(prevItems =>
+        prevItems.map(prevItem => {
+          if (when(prevItem)) {
+            return newItem
+          }
+
+          return prevItem
+        })
+      )
+    },
+    []
+  )
+
   const deleteItem = useCallback(
     (item: T) => {
       setItem(prevItems =>
@@ -60,7 +75,15 @@ const useList = <T>(
     setItem([])
   }
 
-  return {items, addItem, updateItem, deleteItem, clearItems, deleteWhen}
+  return {
+    items,
+    addItem,
+    updateItem,
+    deleteItem,
+    clearItems,
+    deleteWhen,
+    updateWhen,
+  }
 }
 
 export default useList

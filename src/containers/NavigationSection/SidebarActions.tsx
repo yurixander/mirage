@@ -33,7 +33,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   return (
     <div className={twMerge("flex flex-col gap-2", className)}>
       <SidebarActionItem
-        name="Direct Messages"
+        name="Direct Chats"
         icon={IoPaperPlane}
         onClick={onDirectMessages}
       />

@@ -13,6 +13,7 @@ import {
   SidebarModals,
   useSidebarModalActiveStore,
 } from "./hooks/useSidebarActions"
+import Typography from "@/components/Typography"
 
 export type PartialRoom = {
   id: number
@@ -44,7 +45,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
             onMoreActionsClick={function (): void {
               // TODO: Add `Reload Space Rooms` for this `Context Menu`.
 
-              throw new Error("Function not implemented.")
+              setActiveSidebarModal(SidebarModals.CreateRoom)
             }}>
             <div className="flex flex-col gap-1">
               {allRooms.map((room, index) => (
@@ -94,7 +95,7 @@ const Details: FC<DetailsProps> = ({title, children, onMoreActionsClick}) => {
   return (
     <details className="cursor-pointer">
       <summary className="flex gap-1.5 text-sm font-bold text-slate-500">
-        {title.toUpperCase()}
+        <Typography className="line-clamp-1">{title.toUpperCase()}</Typography>
 
         {onMoreActionsClick !== undefined && (
           <IconButton

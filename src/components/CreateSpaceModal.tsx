@@ -86,7 +86,7 @@ const CreateSpaceModal: FC = () => {
 
         <div className="flex flex-col gap-3">
           <InputSection
-            title="Space Name"
+            title="* Space Name"
             placeholder="Ej. Figma Community"
             onValueChange={setSpaceName}
           />
@@ -94,7 +94,7 @@ const CreateSpaceModal: FC = () => {
           {/* TODO: This input description prefer use `text-area` */}
           <div className="flex flex-col gap-1">
             <Typography variant={TypographyVariant.Span}>
-              Description
+              Description (optional)
             </Typography>
 
             <InputArea

@@ -29,6 +29,7 @@ const useSpaces = () => {
   const {
     items,
     addItem: addRoom,
+    updateItem: updateRoom,
     deleteWhen: deleteRoomWhen,
   } = useList<PartialRoom>(hasRoomRepeat)
 
@@ -44,9 +45,13 @@ const useSpaces = () => {
       return
     }
 
-    const storeSpaces = client.getRooms().filter(room => {
+    const storeRooms = client.getRooms()
+
+    for (const room of storeRooms) {
       if (room.isSpaceRoom()) {
-        return true
+        addSpace(processSpace(room))
+
+        continue
       }
 
       addRoom({
@@ -54,12 +59,6 @@ const useSpaces = () => {
         roomName: room.name,
         id: generateUniqueNumber(),
       })
-
-      return false
-    })
-
-    for (const storeSpace of storeSpaces) {
-      addSpace(processSpace(storeSpace))
     }
   }, [addRoom, addSpace, client])
 
@@ -74,11 +73,21 @@ const useSpaces = () => {
   }, [fetchSpaces])
 
   useEventListener(RoomEvent.Timeline, (event, room) => {
-    if (event.getType() !== EventType.RoomCreate || !room?.isSpaceRoom()) {
+    if (event.getType() !== EventType.RoomCreate || room === undefined) {
       return
     }
 
-    addSpace(processSpace(room))
+    if (room.isSpaceRoom()) {
+      addSpace(processSpace(room))
+
+      return
+    }
+
+    addRoom({
+      id: generateUniqueNumber(),
+      roomId: room.roomId,
+      roomName: room.name,
+    })
   })
 
   useEventListener(RoomEvent.Name, room => {
@@ -88,7 +97,7 @@ const useSpaces = () => {
       return
     }
 
-    addRoom({
+    updateRoom({
       id: generateUniqueNumber(),
       roomId: room.roomId,
       roomName: room.name,
