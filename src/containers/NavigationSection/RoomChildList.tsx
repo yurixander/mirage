@@ -1,9 +1,9 @@
 import {memo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import useSpaceRooms from "./hooks/useSpaceRooms"
-import Room from "./Room"
 import {emojiRandom} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import Room from "@/components/Room"
 
 export type RoomChildListProps = {
   spaceId: string

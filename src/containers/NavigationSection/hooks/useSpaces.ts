@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from "react"
+import {useEffect} from "react"
 import useList from "../../../hooks/util/useList"
 import useConnection from "../../../hooks/matrix/useConnection"
 import {
@@ -9,12 +9,10 @@ import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {generateUniqueNumber} from "@/utils/util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import {hasRoomRepeat} from "@/components/Room"
 
 const hasSpaceRepeat = (space1: Space, space2: Space): boolean =>
   space1.spaceId === space2.spaceId
-
-const hasRoomRepeat = (room1: PartialRoom, room2: PartialRoom): boolean =>
-  room1.roomId === room2.roomId
 
 const processSpace = (space: Room): Space => {
   return {
@@ -40,37 +38,31 @@ const useSpaces = () => {
     deleteWhen: deleteSpaceWhen,
   } = useList<Space>(hasSpaceRepeat)
 
-  const fetchSpaces = useCallback(() => {
-    if (client === null) {
-      return
-    }
-
-    const storeRooms = client.getRooms()
-
-    for (const room of storeRooms) {
-      if (room.isSpaceRoom()) {
-        addSpace(processSpace(room))
-
-        continue
-      }
-
-      addRoom({
-        roomId: room.roomId,
-        roomName: room.name,
-        id: generateUniqueNumber(),
-      })
-    }
-  }, [addRoom, addSpace, client])
-
   useEffect(() => {
     const handler = setTimeout(() => {
-      fetchSpaces()
+      if (client === null) {
+        return
+      }
+
+      for (const room of client.getRooms()) {
+        if (room.isSpaceRoom()) {
+          addSpace(processSpace(room))
+
+          continue
+        }
+
+        addRoom({
+          roomId: room.roomId,
+          roomName: room.name,
+          id: generateUniqueNumber(),
+        })
+      }
     }, 1000)
 
     return () => {
       clearTimeout(handler)
     }
-  }, [fetchSpaces])
+  }, [addRoom, addSpace, client])
 
   useEventListener(RoomEvent.Timeline, (event, room) => {
     if (event.getType() !== EventType.RoomCreate || room === undefined) {

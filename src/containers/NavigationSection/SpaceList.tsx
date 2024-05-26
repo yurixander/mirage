@@ -4,7 +4,6 @@ import {twMerge} from "tailwind-merge"
 import Loader from "@/components/Loader"
 import useSpaces from "./hooks/useSpaces"
 import RoomChildList from "./RoomChildList"
-import Room from "./Room"
 import {emojiRandom} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import IconButton from "@/components/IconButton"
@@ -14,6 +13,7 @@ import {
   useSidebarModalActiveStore,
 } from "./hooks/useSidebarActions"
 import Typography from "@/components/Typography"
+import Room from "@/components/Room"
 
 export type PartialRoom = {
   id: number

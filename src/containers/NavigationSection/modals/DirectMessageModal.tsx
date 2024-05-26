@@ -1,9 +1,5 @@
 import {useEffect, useState, type FC} from "react"
-import Typography, {TypographyVariant} from "../../components/Typography"
-import IconButton from "../../components/IconButton"
 import {IoCheckmark, IoCloseCircle, IoCopyOutline} from "react-icons/io5"
-import Input from "../../components/Input"
-import UserProfile from "../../components/UserProfile"
 import {
   getUsernameByUserId,
   normalizeName,
@@ -13,8 +9,12 @@ import {
 import useConnection from "@/hooks/matrix/useConnection"
 import useInvitationLink from "@/hooks/matrix/useInvitationLink"
 import useUsersSearch from "@/hooks/matrix/useUserSearch"
-import {useSidebarModalActiveStore} from "./hooks/useSidebarActions"
 import {getDirectRoomsIds, getPartnerUserIdFromRoomDirect} from "@/utils/rooms"
+import IconButton from "@/components/IconButton"
+import Typography, {TypographyVariant} from "@/components/Typography"
+import UserProfile from "@/components/UserProfile"
+import {useSidebarModalActiveStore} from "../hooks/useSidebarActions"
+import Input from "@/components/Input"
 
 type DirectChatRecentProps = {
   userId: string

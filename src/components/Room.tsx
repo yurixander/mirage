@@ -1,6 +1,7 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {memo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import {type PartialRoom} from "./SpaceList"
 
 export type RoomProps = {
   roomName: string
@@ -8,6 +9,11 @@ export type RoomProps = {
   isSelected?: boolean
   onRoomClick: () => void
 }
+
+export const hasRoomRepeat = (
+  room1: PartialRoom,
+  room2: PartialRoom
+): boolean => room1.roomId === room2.roomId
 
 const Room: FC<RoomProps> = ({
   roomName,

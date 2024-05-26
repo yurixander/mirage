@@ -3,7 +3,7 @@ import SidebarActions from "./SidebarActions"
 import SpaceList from "./SpaceList"
 import UserBar from "./UserBar"
 import useSidebarActions, {SidebarModals} from "./hooks/useSidebarActions"
-import SidebarModalsHandler from "./SidebarModalsHandler"
+import SidebarModalsHandler from "./modals/SidebarModalsHandler"
 import useGlobalEventListeners from "@/hooks/matrix/useGlobalEventListeners"
 
 const NavigationSection: FC = () => {

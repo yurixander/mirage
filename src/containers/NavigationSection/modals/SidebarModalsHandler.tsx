@@ -5,7 +5,7 @@ import NotificationsModal from "./NotificationsModal"
 import {
   useSidebarModalActiveStore,
   SidebarModals,
-} from "./hooks/useSidebarActions"
+} from "../hooks/useSidebarActions"
 import CreateSpaceModal from "@/components/CreateSpaceModal"
 import CreateRoomModal from "@/components/CreateRoomModal"
 
