@@ -42,6 +42,8 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
           <Details
             title="All rooms"
             onMoreActionsClick={function (): void {
+              // TODO: Add `Reload Space Rooms` for this `Context Menu`.
+
               throw new Error("Function not implemented.")
             }}>
             <div className="flex flex-col gap-1">

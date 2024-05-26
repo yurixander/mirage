@@ -2,12 +2,19 @@ import Typography, {TypographyVariant} from "@/components/Typography"
 import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {type IconType} from "react-icons"
-import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
+import {
+  IoCall,
+  IoExit,
+  IoNotifications,
+  IoPaperPlane,
+  IoSearch,
+} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 
 export type SidebarActionsProps = {
   onNotification: () => void
   onDirectMessages: () => void
+  onSearch: () => void
   onCalls: () => void
   onExit: () => void
   notificationsCount?: number
@@ -20,6 +27,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onDirectMessages,
   onExit,
   onNotification,
+  onSearch,
   notificationsCount,
 }) => {
   return (
@@ -36,6 +44,8 @@ const SidebarActions: FC<SidebarActionsProps> = ({
         onClick={onNotification}
         unreadNotifications={notificationsCount}
       />
+
+      <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
 
       <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />
 
