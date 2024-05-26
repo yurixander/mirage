@@ -95,25 +95,22 @@ const useSpaces = () => {
     })
   })
 
-  useEventListener(
-    RoomEvent.MyMembership,
-    (room, membership, prevMembership) => {
-      if (
-        membership !== KnownMembership.Leave &&
-        membership !== KnownMembership.Ban
-      ) {
-        return
-      }
-
-      if (room.isSpaceRoom()) {
-        deleteSpaceWhen(spaceIter => spaceIter.spaceId === room.roomId)
-
-        return
-      }
-
-      deleteRoomWhen(roomIter => roomIter.roomId === room.roomId)
+  useEventListener(RoomEvent.MyMembership, (room, membership) => {
+    if (
+      membership !== KnownMembership.Leave &&
+      membership !== KnownMembership.Ban
+    ) {
+      return
     }
-  )
+
+    if (room.isSpaceRoom()) {
+      deleteSpaceWhen(spaceIter => spaceIter.spaceId === room.roomId)
+
+      return
+    }
+
+    deleteRoomWhen(roomIter => roomIter.roomId === room.roomId)
+  })
 
   return {spaces, allRooms: items}
 }

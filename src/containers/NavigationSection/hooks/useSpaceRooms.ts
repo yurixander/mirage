@@ -6,6 +6,7 @@ import {EventType, type MatrixClient, RoomEvent, RoomType} from "matrix-js-sdk"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {type IHierarchyRoom} from "matrix-js-sdk/lib/@types/spaces"
 import {generateUniqueNumber} from "@/utils/util"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 const hasRepeat = (room1: PartialRoom, room2: PartialRoom): boolean =>
   room1.roomId === room2.roomId
@@ -22,7 +23,7 @@ const processHierarchyRoom = (
   if (room.name === undefined) {
     const storedRoom = client.getRoom(room.room_id)
 
-    if (storedRoom === null) {
+    if (storedRoom === null || storedRoom.isSpaceRoom()) {
       return null
     }
 
@@ -47,6 +48,7 @@ const useSpaceRooms = (spaceId: string) => {
     items,
     addItem: addRoom,
     updateItem: updateRoom,
+    deleteWhen: deleteRoomWhen,
   } = useList<PartialRoom>(hasRepeat)
 
   const fetchChildRooms = useCallback(() => {
@@ -87,15 +89,29 @@ const useSpaceRooms = (spaceId: string) => {
   useEventListener(RoomEvent.Timeline, (event, room) => {
     if (
       event.getType() !== EventType.SpaceChild ||
-      !room?.isSpaceRoom() ||
-      room.roomId !== spaceId
+      room === undefined ||
+      !room.isSpaceRoom() ||
+      room.roomId !== spaceId ||
+      client === null
     ) {
       return
     }
 
+    const eventRoom = client.getRoom(event.getStateKey())
+
+    if (eventRoom === null) {
+      return
+    }
+
+    if (event.getContent().via === undefined) {
+      deleteRoomWhen(roomIter => roomIter.roomId === eventRoom.roomId)
+
+      return
+    }
+
     addRoom({
-      roomId: room.roomId,
-      roomName: room.name,
+      roomId: eventRoom.roomId,
+      roomName: eventRoom.name,
       id: generateUniqueNumber(),
     })
   })
@@ -110,6 +126,18 @@ const useSpaceRooms = (spaceId: string) => {
       roomName: room.name,
       id: generateUniqueNumber(),
     })
+  })
+
+  useEventListener(RoomEvent.MyMembership, (room, membership) => {
+    if (
+      (membership !== KnownMembership.Leave &&
+        membership !== KnownMembership.Ban) ||
+      room.isSpaceRoom()
+    ) {
+      return
+    }
+
+    deleteRoomWhen(roomIter => roomIter.roomId === room.roomId)
   })
 
   return {
