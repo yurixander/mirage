@@ -14,8 +14,12 @@ body,
   @apply h-full font-sans;
 }
 
+b {
+  @apply m-0 p-0;
+}
+
 input {
-  @apply border-none p-[10px] outline-none;
+  @apply border-none p-2 outline-none;
 }
 
 input::-ms-reveal,
@@ -40,4 +44,16 @@ textarea:disabled {
 
 :focus-visible:not(input) {
   @apply outline-2 outline-offset-2 outline-blue-500 transition-all;
+}
+
+::-webkit-scrollbar {
+  @apply h-4 w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply m-1 rounded-xl bg-gray-300;
 }

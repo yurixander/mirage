@@ -2,7 +2,7 @@ import useMatrixAction from "@/hooks/matrix/useMatrixAction"
 import {
   deleteNotificationById,
   markAsReadByNotificationId,
-} from "@/containers/SidebarActions/hooks/notifications"
+} from "@/utils/notifications"
 import {stringToColor, timeFormatter} from "@/utils/util"
 import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"

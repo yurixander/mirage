@@ -35,7 +35,7 @@ const SwitchButton: FC<SwitchButtonProps> = ({
         )}
         aria-hidden="true"
         aria-checked="false"
-        role={"switch"}>
+        role="switch">
         <div className="relative size-4 rounded-full bg-white shadow-md" />
       </div>
       {label}

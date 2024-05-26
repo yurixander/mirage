@@ -1,4 +1,4 @@
-import {type LocalNotificationData} from "@/containers/SidebarActions/hooks/useCachedNotifications"
+import {type LocalNotificationData} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "notifications"
 

@@ -11,6 +11,7 @@ export type InputSectionProps = {
   constraints?: InputConstraint[]
   actions?: InputAction[]
   isPassword?: boolean
+  rows?: number
 }
 
 const InputSection: FC<InputSectionProps> = ({

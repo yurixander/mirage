@@ -1,4 +1,4 @@
-import {useMemo, type FC} from "react"
+import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type UserProfileGhostProps = {
@@ -12,36 +12,26 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
   opacityMultiplier,
   className,
 }) => {
-  const ghosts = useMemo(() => {
-    const ghosts = []
-
-    // REVISE: Simplify by using `Array.from` or `Array().fill`.
-    for (let index = 1; index <= count; index++) {
-      ghosts.push(index * opacityMultiplier)
-    }
-
-    return ghosts
-  }, [count, opacityMultiplier])
+  const ghosts = Array.from(
+    {length: count},
+    (_, num) => num * opacityMultiplier
+  )
 
   return (
-    <div className={twMerge("flex flex-col gap-3 p-1", className)}>
+    <div className={twMerge("flex flex-col gap-2 p-1", className)}>
       {ghosts.map((multiplier, index) => (
         <div
           key={index}
           style={{opacity: 1 - multiplier}}
           className="flex gap-1">
-          <div className="relative">
-            <div className="relative size-10 overflow-hidden rounded-lg bg-neutral-300" />
+          <div className="relative size-9 overflow-hidden rounded-lg bg-neutral-300" />
 
-            <div className="absolute bottom-0 right-0 size-[13px] translate-x-1/4 translate-y-1/4 rounded-full border-2 border-neutral-50 bg-neutral-300" />
-          </div>
-
-          <div className="mr-auto inline-flex flex-col gap-[2px]">
-            <div className="overflow-hidden rounded-xl bg-neutral-300 text-base font-semibold leading-[100%] text-profileGhost">
+          <div className="mr-auto inline-flex flex-col">
+            <div className="overflow-hidden rounded-xl bg-neutral-300 text-profileGhost">
               Emerald branch
             </div>
 
-            <div className="mt-1 h-3 w-min overflow-hidden rounded-xl bg-neutral-300 text-xs text-profileGhost">
+            <div className="mt-1 max-h-3 w-min overflow-hidden rounded-xl bg-neutral-300 text-xs text-profileGhost">
               @emerald
             </div>
           </div>
