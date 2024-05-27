@@ -1,13 +1,11 @@
-/* eslint-disable jsx-a11y/interactive-supports-focus */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import {useMemo, useState, type FC} from "react"
-import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import {saveAs} from "file-saver"
 import {IoMdDownload, IoIosAlert, IoMdTrash} from "react-icons/io"
 import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 import ImageModal from "@/containers/ChatContainer/ImageModal"
 import Modal from "./Modal"
+import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
@@ -31,30 +29,31 @@ const ImageMessage: FC<ImageMessageProps> = ({
     if (imageUrl !== undefined) {
       items.push(
         {
-          label: "Save",
-          action: () => {
+          text: "Save",
+          onClick: () => {
             saveAs(imageUrl, text)
           },
-          icon: <IoMdDownload />,
+          icon: IoMdDownload,
         },
         {
-          label: "Reply",
-          action: () => {},
-          icon: <IoArrowUndo />,
+          text: "Reply",
+          onClick: () => {},
+          icon: IoArrowUndo,
         },
         {
-          label: "Resend",
-          action: () => {},
-          icon: <IoArrowRedo />,
+          text: "Resend",
+          onClick: () => {},
+          icon: IoArrowRedo,
         }
       )
     }
 
     if (onDeleteMessage !== undefined) {
       items.push({
-        label: "Delete",
-        action: onDeleteMessage,
-        icon: <IoMdTrash />,
+        text: "Delete",
+        onClick: onDeleteMessage,
+        icon: IoMdTrash,
+        color: "red",
       })
     }
 
@@ -75,6 +74,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
         // TODO: Handle image size here. Preferably, make the component accept 'imageDimensions' as props.
         <div
           role="button"
+          aria-hidden
           className="max-h-52 max-w-44 overflow-hidden rounded-xl"
           onClick={() => {
             setImageModalShow(true)
@@ -108,7 +108,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
           />
         }
       />
-      <ContextMenu id={timestamp} items={contextMenuItems}>
+      <ContextMenu id={timestamp} elements={contextMenuItems}>
         <MessageContainer
           authorDisplayName={authorDisplayName}
           authorDisplayNameColor={authorDisplayNameColor}

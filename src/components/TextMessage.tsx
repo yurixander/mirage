@@ -1,8 +1,8 @@
 import {useMemo, type FC} from "react"
-import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
 import {IoMdTrash} from "react-icons/io"
+import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 
 const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
@@ -18,22 +18,23 @@ const TextMessage: FC<MessageBaseProps> = ({
 
     items.push(
       {
-        label: "Reply",
-        action: () => {},
-        icon: <IoArrowUndo />,
+        text: "Reply",
+        onClick: () => {},
+        icon: IoArrowUndo,
       },
       {
-        label: "Resend",
-        action: () => {},
-        icon: <IoArrowRedo />,
+        text: "Resend",
+        onClick: () => {},
+        icon: IoArrowRedo,
       }
     )
 
     if (onDeleteMessage !== undefined) {
       items.push({
-        label: "Delete",
-        action: onDeleteMessage,
-        icon: <IoMdTrash />,
+        text: "Delete",
+        onClick: onDeleteMessage,
+        icon: IoMdTrash,
+        color: "red",
       })
     }
 
@@ -42,7 +43,7 @@ const TextMessage: FC<MessageBaseProps> = ({
 
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
-    <ContextMenu id={timestamp} items={contextMenuItems}>
+    <ContextMenu id={timestamp} elements={contextMenuItems}>
       <MessageContainer
         authorDisplayName={authorDisplayName}
         authorDisplayNameColor={authorDisplayNameColor}

@@ -1,16 +1,19 @@
+import {useCallback, useEffect, type CSSProperties, type FC} from "react"
+import Typography from "./Typography"
+import {type IconType} from "react-icons"
 import React from "react"
-import {useCallback, useEffect, type FC} from "react"
 import {create} from "zustand"
 
 export type ContextMenuItem = {
-  label: string
-  action: () => void
-  icon: React.JSX.Element
+  text: string
+  icon: IconType
+  color?: CSSProperties["color"]
+  onClick: () => void
 }
 
 export type ContextMenuProps = {
   id: number
-  items: ContextMenuItem[]
+  elements: ContextMenuItem[]
   children: React.JSX.Element
 }
 
@@ -34,7 +37,7 @@ const useContextMenuStore = create<ContextMenuState>(set => ({
   },
 }))
 
-const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
+const ContextMenu: FC<ContextMenuProps> = ({id, elements, children}) => {
   const {activeMenuId, showMenu, hideMenu, x, y} = useContextMenuStore()
   const isActive = activeMenuId === id
 
@@ -62,26 +65,33 @@ const ContextMenu: FC<ContextMenuProps> = ({children, id, items}) => {
 
       {isActive && (
         <div
-          className="absolute z-50 h-max w-44 animate-fadeIn rounded-md bg-white shadow-contextMenu"
+          className="absolute z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border-2 border-gray-100 bg-white p-1.5 shadow-lg"
           style={{
             left: `${x}px`,
             top: `${y}px`,
           }}>
-          <div className="m-3 flex flex-col gap-1">
-            {items.map((item, index) => (
-              <div
-                key={index}
-                className="group flex cursor-pointer justify-between gap-3 p-3 text-stone-600 hover:rounded-md hover:bg-purple-500 hover:text-white focus-visible:rounded-md focus-visible:text-outlineTab focus-visible:outline-[2px] focus-visible:transition focus-visible:duration-150"
-                onClick={item.action}
-                aria-hidden="true">
-                <span className="font-semibold">{item.label}</span>
-
-                <div className="text-stone-600 group-hover:text-white">
-                  {item.icon}
-                </div>
+          {elements.map((element, index) => (
+            <div
+              className="flex max-h-7 cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-gray-100"
+              onClick={element.onClick}
+              role="button"
+              aria-hidden="true"
+              key={index}>
+              <div className="flex size-5 items-center justify-center">
+                <element.icon
+                  className="text-gray-700"
+                  size={20}
+                  style={{color: element.color}}
+                />
               </div>
-            ))}
-          </div>
+
+              <Typography
+                style={{color: element.color}}
+                className="font-medium text-gray-700">
+                {element.text}
+              </Typography>
+            </div>
+          ))}
         </div>
       )}
     </>
