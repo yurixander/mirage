@@ -33,13 +33,11 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
       <UserProfile
         isNameShorted={false}
         displayName={displayName}
-        displayNameColor={stringToColor(userId)}
-        children={
-          <Typography variant={TypographyVariant.P}>
-            {getUsernameByUserId(userId)}
-          </Typography>
-        }
-      />
+        displayNameColor={stringToColor(userId)}>
+        <Typography variant={TypographyVariant.P}>
+          {getUsernameByUserId(userId)}
+        </Typography>
+      </UserProfile>
 
       {lastMessageSentDate !== undefined && (
         <Typography variant={TypographyVariant.P}>
