@@ -1,11 +1,16 @@
 import {useMemo, useState, type FC} from "react"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import {saveAs} from "file-saver"
-import {IoMdDownload, IoIosAlert, IoMdTrash} from "react-icons/io"
-import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
+import {IoIosAlert} from "react-icons/io"
 import ImageModal from "@/containers/ChatContainer/ImageModal"
 import Modal from "./Modal"
-import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
+import ContextMenu, {
+  CONTEXT_MENU_DELETE,
+  CONTEXT_MENU_REPLY,
+  CONTEXT_MENU_RESEND,
+  CONTEXT_MENU_SAVE,
+  type ContextMenuItem,
+} from "./ContextMenu"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
@@ -29,31 +34,26 @@ const ImageMessage: FC<ImageMessageProps> = ({
     if (imageUrl !== undefined) {
       items.push(
         {
-          text: "Save",
+          ...CONTEXT_MENU_SAVE,
           onClick: () => {
             saveAs(imageUrl, text)
           },
-          icon: IoMdDownload,
         },
         {
-          text: "Reply",
+          ...CONTEXT_MENU_RESEND,
           onClick: () => {},
-          icon: IoArrowUndo,
         },
         {
-          text: "Resend",
+          ...CONTEXT_MENU_REPLY,
           onClick: () => {},
-          icon: IoArrowRedo,
         }
       )
     }
 
     if (onDeleteMessage !== undefined) {
       items.push({
-        text: "Delete",
+        ...CONTEXT_MENU_DELETE,
         onClick: onDeleteMessage,
-        icon: IoMdTrash,
-        color: "red",
       })
     }
 

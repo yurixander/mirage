@@ -1,8 +1,11 @@
 import {useMemo, type FC} from "react"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
-import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
-import {IoMdTrash} from "react-icons/io"
-import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
+import ContextMenu, {
+  CONTEXT_MENU_DELETE,
+  CONTEXT_MENU_REPLY,
+  CONTEXT_MENU_RESEND,
+  type ContextMenuItem,
+} from "./ContextMenu"
 
 const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
@@ -14,28 +17,13 @@ const TextMessage: FC<MessageBaseProps> = ({
   onDeleteMessage,
 }) => {
   const contextMenuItems = useMemo(() => {
-    const items: ContextMenuItem[] = []
-
-    items.push(
-      {
-        text: "Reply",
-        onClick: () => {},
-        icon: IoArrowUndo,
-      },
-      {
-        text: "Resend",
-        onClick: () => {},
-        icon: IoArrowRedo,
-      }
-    )
+    const items: ContextMenuItem[] = [
+      {...CONTEXT_MENU_REPLY, onClick: () => {}},
+      {...CONTEXT_MENU_RESEND, onClick: () => {}},
+    ]
 
     if (onDeleteMessage !== undefined) {
-      items.push({
-        text: "Delete",
-        onClick: onDeleteMessage,
-        icon: IoMdTrash,
-        color: "red",
-      })
+      items.push({...CONTEXT_MENU_DELETE, onClick: onDeleteMessage})
     }
 
     return items

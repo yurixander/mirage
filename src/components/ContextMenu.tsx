@@ -3,6 +3,29 @@ import Typography from "./Typography"
 import {type IconType} from "react-icons"
 import React from "react"
 import {create} from "zustand"
+import {IoArrowRedo, IoArrowUndo} from "react-icons/io5"
+import {IoMdDownload, IoMdTrash} from "react-icons/io"
+
+export const CONTEXT_MENU_REPLY = {
+  text: "Reply",
+  icon: IoArrowUndo,
+}
+
+export const CONTEXT_MENU_RESEND = {
+  text: "Resend",
+  icon: IoArrowRedo,
+}
+
+export const CONTEXT_MENU_SAVE = {
+  text: "Save",
+  icon: IoMdDownload,
+}
+
+export const CONTEXT_MENU_DELETE = {
+  text: "Delete",
+  icon: IoMdTrash,
+  color: "red",
+}
 
 export type ContextMenuItem = {
   text: string
