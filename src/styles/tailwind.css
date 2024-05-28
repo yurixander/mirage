@@ -1,7 +1,6 @@
 @import url("tailwindcss/base");
 @import url("tailwindcss/components");
 @import url("tailwindcss/utilities");
-@import url("satoshi.css");
 
 * {
   @apply box-border leading-[100%];
@@ -32,7 +31,6 @@ body {
   @apply font-noto font-normal text-stone-600;
 }
 
-button:disabled,
 input:disabled,
 textarea:disabled {
   @apply cursor-not-allowed opacity-50;
@@ -56,4 +54,12 @@ textarea:disabled {
 
 ::-webkit-scrollbar-thumb {
   @apply m-1 rounded-xl bg-gray-300;
+}
+
+summary::before {
+  content: "►";
+}
+
+details[open] summary::before {
+  content: "▼";
 }

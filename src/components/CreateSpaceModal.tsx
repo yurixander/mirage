@@ -10,13 +10,15 @@ import InputArea from "./InputArea"
 import useConnection from "@/hooks/matrix/useConnection"
 import {EventType} from "matrix-js-sdk"
 import AvatarUploader from "./AvatarUploader"
+import {useSidebarModalActiveStore} from "@/containers/NavigationSection/hooks/useSidebarActions"
 
-const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
+const CreateSpaceModal: FC = () => {
   const {client} = useConnection()
   const [spaceName, setSpaceName] = useState("")
   const [spaceDescription, setSpaceDescription] = useState("")
   const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
   const [isCreatingSpace, setIsCreatingSpace] = useState(false)
+  const {clearActiveSidebarModal} = useSidebarModalActiveStore()
 
   const onCreateSpace = () => {
     if (client === null) {
@@ -37,11 +39,11 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
         },
       ],
     })
-      .then(_roomID => {
+      .then(_roomId => {
         // TODO: Send here notification that the room has been created.
 
         setIsCreatingSpace(false)
-        onClose()
+        clearActiveSidebarModal()
       })
       .catch(_error => {
         // TODO: Send here notification that the room has not been created.
@@ -60,7 +62,7 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
         <IconButton
           tooltip="Close Modal"
           Icon={IoCloseCircle}
-          onClick={onClose}
+          onClick={clearActiveSidebarModal}
         />
       </div>
 
@@ -84,7 +86,7 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
 
         <div className="flex flex-col gap-3">
           <InputSection
-            title="Space Name"
+            title="* Space Name"
             placeholder="Ej. Figma Community"
             onValueChange={setSpaceName}
           />
@@ -92,7 +94,7 @@ const CreateSpaceModal: FC<{onClose: () => void}> = ({onClose}) => {
           {/* TODO: This input description prefer use `text-area` */}
           <div className="flex flex-col gap-1">
             <Typography variant={TypographyVariant.Span}>
-              Description
+              Description (optional)
             </Typography>
 
             <InputArea

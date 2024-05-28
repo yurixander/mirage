@@ -22,8 +22,8 @@ import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 const useGlobalEventListeners = () => {
   const {client} = useConnection()
-  const {onRequestChanges, state} = useNotificationsStateStore()
   const {activeRoomId} = useActiveRoomIdStore()
+  const {onRequestChanges, state} = useNotificationsStateStore()
 
   const containsUnreadNotifications = useMemo(() => {
     if (state === NotificationsSyncState.Processed) {

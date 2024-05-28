@@ -5,7 +5,9 @@ import NotificationsModal from "./NotificationsModal"
 import {
   useSidebarModalActiveStore,
   SidebarModals,
-} from "./hooks/useSidebarActions"
+} from "../hooks/useSidebarActions"
+import CreateSpaceModal from "@/components/CreateSpaceModal"
+import CreateRoomModal from "@/components/CreateRoomModal"
 
 const SidebarModalsHandler: FC = () => {
   const {sidebarModalActive} = useSidebarModalActiveStore()
@@ -21,6 +23,12 @@ const SidebarModalsHandler: FC = () => {
       }
       case SidebarModals.Notifications: {
         return <NotificationsModal />
+      }
+      case SidebarModals.CreateRoom: {
+        return <CreateRoomModal />
+      }
+      case SidebarModals.CreateSpace: {
+        return <CreateSpaceModal />
       }
     }
   }, [sidebarModalActive])

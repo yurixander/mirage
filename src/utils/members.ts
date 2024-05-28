@@ -2,12 +2,7 @@ import {
   type RosterUserProps,
   UserPowerLevel,
 } from "@/containers/Roster/RosterUser"
-import {
-  type Room,
-  type MatrixClient,
-  EventTimeline,
-  EventType,
-} from "matrix-js-sdk"
+import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
 import {getImageUrl, normalizeName} from "./util"
 import {ImageSizes} from "./rooms"
 
@@ -111,10 +106,6 @@ export async function getUserLastPresence(
 
   for (let index = events.length - 1; index >= 0; index--) {
     const event = events[index]
-
-    if (event.getType() !== EventType.RoomMessage) {
-      continue
-    }
 
     if (event.getSender() === userId) {
       return event.localTimestamp

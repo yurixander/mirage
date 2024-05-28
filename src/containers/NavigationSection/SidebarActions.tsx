@@ -2,16 +2,23 @@ import Typography, {TypographyVariant} from "@/components/Typography"
 import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {type IconType} from "react-icons"
-import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
+import {
+  IoCall,
+  IoExit,
+  IoNotifications,
+  IoPaperPlane,
+  IoSearch,
+} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 
 export type SidebarActionsProps = {
   onNotification: () => void
   onDirectMessages: () => void
+  onSearch: () => void
   onCalls: () => void
   onExit: () => void
-  className?: string
   notificationsCount?: number
+  className?: string
 }
 
 const SidebarActions: FC<SidebarActionsProps> = ({
@@ -20,12 +27,13 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onDirectMessages,
   onExit,
   onNotification,
+  onSearch,
   notificationsCount,
 }) => {
   return (
     <div className={twMerge("flex flex-col gap-2", className)}>
       <SidebarActionItem
-        name="Direct Messages"
+        name="Direct Chats"
         icon={IoPaperPlane}
         onClick={onDirectMessages}
       />
@@ -36,6 +44,8 @@ const SidebarActions: FC<SidebarActionsProps> = ({
         onClick={onNotification}
         unreadNotifications={notificationsCount}
       />
+
+      <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
 
       <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />
 
