@@ -5,7 +5,7 @@ export type SliderProps = {
   max: number
   step?: number
   initialValue: number
-  onProgressChange: (value: string) => void
+  onProgressChange: (value: number) => void
 }
 
 const Slider: FC<SliderProps> = ({
@@ -19,10 +19,10 @@ const Slider: FC<SliderProps> = ({
   const [internalValue, setInternalValue] = useState(initialValue)
 
   const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
+    const value = Number(event.target.value)
 
-    setProgress((Number(value) * 100) / (max ?? 100))
-    setInternalValue(Number(value))
+    setProgress((value * 100) / (max ?? 100))
+    setInternalValue(value)
     onProgressChange(value)
   }
 
@@ -40,7 +40,7 @@ const Slider: FC<SliderProps> = ({
         step={step ?? 1}
         value={internalValue}
         onInput={handleOnInput}
-        className="relative -top-4 h-3 w-60 cursor-pointer appearance-none rounded-full bg-transparent p-0 slider"
+        className="slider relative -top-4 h-3 w-60 cursor-pointer appearance-none rounded-full bg-transparent p-0"
         type="range"
       />
     </label>
@@ -51,7 +51,7 @@ const BasicProgressBar: FC<{progress: string}> = ({progress}) => {
   return (
     <div className="h-3 w-60 overflow-hidden rounded-full bg-slate-200 shadow">
       <div
-        style={{width: progress + "%"}}
+        style={{width: `${progress}%`}}
         className="h-3 bg-purple-500 shadow"
       />
     </div>
