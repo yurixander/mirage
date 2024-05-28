@@ -1,5 +1,5 @@
 import {UserPowerLevel} from "@/containers/Roster/RosterUser"
-import useConnection from "./useConnection"
+import useConnection from "../../../hooks/matrix/useConnection"
 import {useEffect, useState, useCallback} from "react"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
@@ -57,7 +57,11 @@ const useRoomMembers = () => {
   )
 
   useEffect(() => {
-    if (!isMountedReference.current || !client || !activeRoomId) {
+    if (
+      !isMountedReference.current ||
+      client === null ||
+      activeRoomId === null
+    ) {
       return
     }
 

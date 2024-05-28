@@ -1,14 +1,15 @@
 import {type FC} from "react"
-import {assert, cleanDisplayName, trim, validateUrl} from "../utils/util"
+import {assert, normalizeName, trim, validateUrl} from "../utils/util"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./Avatar"
 import React from "react"
 
 export type UserProfileProps = {
-  avatarUrl?: string
   displayName: string
   displayNameColor: string
   children: React.JSX.Element
+  isNameShorted?: boolean
+  avatarUrl?: string
   isLarge?: boolean
   className?: string
 }
@@ -19,6 +20,7 @@ const UserProfile: FC<UserProfileProps> = ({
   avatarUrl,
   isLarge,
   children,
+  isNameShorted = true,
   className,
 }) => {
   if (avatarUrl !== undefined) {
@@ -53,7 +55,9 @@ const UserProfile: FC<UserProfileProps> = ({
         <div
           style={{color: displayNameColor}}
           className="line-clamp-1 text-sm font-bold leading-[100%] text-slate-500">
-          {trim(cleanDisplayName(displayName), MAX_DISPLAY_NAME_LENGTH)}
+          {isNameShorted
+            ? trim(normalizeName(displayName), MAX_DISPLAY_NAME_LENGTH)
+            : displayName}
         </div>
 
         {children}
