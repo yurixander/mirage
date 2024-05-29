@@ -9,6 +9,7 @@ import ContextMenu, {
   CONTEXT_MENU_REPLY,
   CONTEXT_MENU_RESEND,
   CONTEXT_MENU_SAVE,
+  useContextMenuStore,
   type ContextMenuItem,
 } from "./ContextMenu"
 
@@ -27,6 +28,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
   onDeleteMessage,
 }) => {
   const [isImageModalShowed, setImageModalShow] = useState(false)
+  const {showMenu} = useContextMenuStore()
 
   const contextMenuItems = useMemo(() => {
     const items: ContextMenuItem[] = []
@@ -116,6 +118,9 @@ const ImageMessage: FC<ImageMessageProps> = ({
           children={content}
           timestamp={timestamp}
           onAuthorClick={onAuthorClick}
+          onMessageRightClick={event => {
+            showMenu(timestamp, event)
+          }}
         />
       </ContextMenu>
     </>

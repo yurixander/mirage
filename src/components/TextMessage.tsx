@@ -4,6 +4,7 @@ import ContextMenu, {
   CONTEXT_MENU_DELETE,
   CONTEXT_MENU_REPLY,
   CONTEXT_MENU_RESEND,
+  useContextMenuStore,
   type ContextMenuItem,
 } from "./ContextMenu"
 
@@ -16,6 +17,8 @@ const TextMessage: FC<MessageBaseProps> = ({
   timestamp,
   onDeleteMessage,
 }) => {
+  const {showMenu} = useContextMenuStore()
+
   const contextMenuItems = useMemo(() => {
     const items: ContextMenuItem[] = [
       {...CONTEXT_MENU_REPLY, onClick: () => {}},
@@ -37,7 +40,10 @@ const TextMessage: FC<MessageBaseProps> = ({
         authorDisplayNameColor={authorDisplayNameColor}
         authorAvatarUrl={authorAvatarUrl}
         timestamp={timestamp}
-        onAuthorClick={onAuthorClick}>
+        onAuthorClick={onAuthorClick}
+        onMessageRightClick={event => {
+          showMenu(timestamp, event)
+        }}>
         <div className="max-w-messageMaxWidth select-text break-words leading-160">
           {/* TODO: Process line breaks (\n). */}
           {text}

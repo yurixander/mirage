@@ -21,6 +21,7 @@ export type MessageContainerProps = {
   children: React.JSX.Element
   timestamp: number
   onAuthorClick: () => void
+  onMessageRightClick: <T>(e: React.MouseEvent<T>) => void
 }
 
 const MessageContainer: FC<MessageContainerProps> = ({
@@ -30,11 +31,14 @@ const MessageContainer: FC<MessageContainerProps> = ({
   children,
   timestamp,
   onAuthorClick,
+  onMessageRightClick,
 }) => {
   const localeTimeString = timeFormatter(timestamp)
 
   return (
-    <div className="flex w-full items-start justify-start">
+    <div
+      className="flex w-full items-start justify-start"
+      onContextMenu={onMessageRightClick}>
       <div className="flex w-full gap-3">
         <div
           className="flex size-10 cursor-pointer items-center justify-center
