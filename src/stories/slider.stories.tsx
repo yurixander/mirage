@@ -14,7 +14,7 @@ export const Default: Story = {
     max: 100,
     min: 0,
     onProgressChange: () => {},
-    initialValue: 50,
+    value: 50,
   },
 }
 
@@ -25,7 +25,7 @@ export const Step: Story = {
     min: 0,
     onProgressChange: () => {},
     step: 20,
-    initialValue: 40,
+    value: 40,
   },
 }
 export default meta

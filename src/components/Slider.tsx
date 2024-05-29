@@ -4,7 +4,7 @@ export type SliderProps = {
   min: number
   max: number
   step?: number
-  initialValue: number
+  value: number
   onProgressChange: (value: number) => void
 }
 
@@ -13,10 +13,10 @@ const Slider: FC<SliderProps> = ({
   min,
   max,
   step,
-  initialValue,
+  value,
 }) => {
-  const [progress, setProgress] = useState((initialValue * 100) / (max ?? 100))
-  const [internalValue, setInternalValue] = useState(initialValue)
+  const [progress, setProgress] = useState((value * 100) / (max ?? 100))
+  const [internalValue, setInternalValue] = useState(value)
 
   const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value)
