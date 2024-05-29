@@ -8,13 +8,7 @@ export type SliderProps = {
   onProgressChange: (value: number) => void
 }
 
-const Slider: FC<SliderProps> = ({
-  onProgressChange,
-  min,
-  max,
-  step,
-  value,
-}) => {
+const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
   const [progress, setProgress] = useState((value * 100) / (max ?? 100))
   const [internalValue, setInternalValue] = useState(value)
 
