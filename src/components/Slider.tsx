@@ -34,7 +34,7 @@ const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
         step={step ?? 1}
         value={internalValue}
         onInput={handleOnInput}
-        className="slider relative -top-4 h-3 w-60 cursor-pointer appearance-none rounded-full bg-transparent p-0"
+        className="relative -top-4 h-3 w-60 cursor-pointer appearance-none rounded-full bg-transparent p-0 slider"
         type="range"
       />
     </label>
