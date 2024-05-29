@@ -1,12 +1,13 @@
 import useConnection from "../../../hooks/matrix/useConnection"
 import {useNavigate} from "react-router-dom"
 import {ViewPath} from "@/utils/util"
-import {useCallback} from "react"
 import {create} from "zustand"
 
 export enum SidebarModals {
   DirectMessages,
   Notifications,
+  CreateRoom,
+  CreateSpace,
 }
 
 type SidebarModalActive = {
@@ -30,10 +31,17 @@ const useSidebarActions = () => {
   const navigate = useNavigate()
   const {setActiveSidebarModal} = useSidebarModalActiveStore()
 
-  const onLogout = useCallback(async () => {
-    await disconnect()
-    navigate(ViewPath.Login)
-  }, [disconnect, navigate])
+  const onLogout = () => {
+    void disconnect()
+      .then(() => {
+        navigate(ViewPath.Login)
+      })
+      .catch(error => {
+        // TODO: Handle error here.
+
+        throw new Error(String(error))
+      })
+  }
 
   return {
     onLogout,

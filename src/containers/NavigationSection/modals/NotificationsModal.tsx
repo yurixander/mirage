@@ -1,16 +1,16 @@
 import {useMemo, type FC} from "react"
 import {IoCloseCircle} from "react-icons/io5"
-import Button, {ButtonSize, ButtonVariant} from "../../components/Button"
-import Typography, {TypographyVariant} from "../../components/Typography"
+import Button, {ButtonSize, ButtonVariant} from "../../../components/Button"
+import Typography, {TypographyVariant} from "../../../components/Typography"
 import {twMerge} from "tailwind-merge"
-import IconButton from "../../components/IconButton"
-import {useSidebarModalActiveStore} from "./hooks/useSidebarActions"
+import IconButton from "../../../components/IconButton"
+import {useSidebarModalActiveStore} from "../hooks/useSidebarActions"
 import useCachedNotifications, {
   useNotificationsStateStore,
   type LocalNotificationData,
-} from "./hooks/useCachedNotifications"
+} from "../hooks/useCachedNotifications"
 import {markAllNotificationsAsRead} from "@/utils/notifications"
-import Notification from "./Notification"
+import Notification from "../../../components/Notification"
 
 export type NotificationActions = {
   name: string

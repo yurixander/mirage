@@ -1,6 +1,7 @@
 import dayjs from "dayjs"
 import {type ICreateRoomOpts, type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
+import {v4 as uuidv4} from "uuid"
 
 export enum ViewPath {
   App = "/",
@@ -249,4 +250,13 @@ export const emojiRandom = (): string => {
   const codePoint = Math.floor(Math.random() * (end - start + 1)) + start
 
   return String.fromCodePoint(codePoint)
+}
+
+export function getUsernameByUserId(userId: string): string {
+  return userId.replace(":matrix.org", "")
+}
+
+export const generateUniqueNumber = (): number => {
+  const partialUUID = uuidv4().replaceAll("-", "").slice(0, 15)
+  return Number.parseInt(partialUUID, 16)
 }

@@ -28,7 +28,7 @@ const MemberList: FC<MemberListProps> = ({
         className
       )}>
       {isLoading ? (
-        <Loader text="Charging members..." />
+        <Loader text="Loading members..." />
       ) : (
         <>
           <div className="flex flex-col gap-4">
@@ -37,7 +37,7 @@ const MemberList: FC<MemberListProps> = ({
                 memberSection.users.length > 0 && (
                   <div className="flex flex-col gap-1" key={index}>
                     <Label
-                      className="sticky top-0 z-10 ml-1 bg-white font-bold text-slate-400"
+                      className="sticky top-0 z-10 ml-1 bg-gray-50 font-bold text-slate-400"
                       text={`${memberSection.title} — ${memberSection.users.length}`}
                     />
 
