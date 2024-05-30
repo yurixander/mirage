@@ -9,13 +9,11 @@ export type SliderProps = {
 }
 
 const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
-  const [progress, setProgress] = useState((value * 100) / (max ?? 100))
   const [internalValue, setInternalValue] = useState(value)
 
   const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value)
 
-    setProgress((value * 100) / (max ?? 100))
     setInternalValue(value)
     onProgressChange(value)
   }
@@ -23,7 +21,9 @@ const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
   return (
     <label className="flex flex-col gap-1">
       {step === undefined || step < 10 ? (
-        <BasicProgressBar progress={String(progress) ?? "50"} />
+        <BasicProgressBar
+          progress={String((internalValue * 100) / max) ?? "50"}
+        />
       ) : (
         <StepProgressBar steps={(max - min) / (step ?? 1)} />
       )}
