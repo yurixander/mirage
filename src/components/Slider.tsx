@@ -21,9 +21,7 @@ const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
   return (
     <label className="flex flex-col gap-1">
       {step === undefined || step < 10 ? (
-        <BasicProgressBar
-          progress={((internalValue * 100) / max) ?? "50"}
-        />
+        <BasicProgressBar progress={(internalValue * 100) / max ?? "50"} />
       ) : (
         <StepProgressBar steps={(max - min) / (step ?? 1)} />
       )}
