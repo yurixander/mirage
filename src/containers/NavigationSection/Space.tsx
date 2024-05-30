@@ -14,7 +14,6 @@ export const Details: FC<DetailsProps> = ({
   title,
   children,
   onMoreActionsClick,
-  id,
 }) => {
   return (
     <details className="cursor-pointer">

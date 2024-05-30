@@ -86,10 +86,12 @@ const useActiveRoom = () => {
     }
 
     void handleRoomEvents(client, room).then(newMessages => {
-      if (isMountedReference.current) {
-        setMessagesProp(newMessages)
-        setIsMessagesLoading(false)
+      if (!isMountedReference.current) {
+        return
       }
+
+      setMessagesProp(newMessages)
+      setIsMessagesLoading(false)
     })
   }, [client, activeRoomId, isMountedReference])
 

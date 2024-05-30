@@ -3,8 +3,14 @@ import Typography from "./Typography"
 import {type IconType} from "react-icons"
 import React from "react"
 import {create} from "zustand"
-import {IoArrowRedo, IoArrowUndo} from "react-icons/io5"
-import {IoMdDownload, IoMdTrash} from "react-icons/io"
+import {
+  IoAddCircle,
+  IoArrowRedo,
+  IoArrowUndo,
+  IoReloadCircle,
+  IoSearchCircle,
+} from "react-icons/io5"
+import {IoIosSettings, IoMdDownload, IoMdTrash} from "react-icons/io"
 import {createPortal} from "react-dom"
 
 export const CONTEXT_MENU_REPLY = {
@@ -26,6 +32,26 @@ export const CONTEXT_MENU_DELETE = {
   text: "Delete",
   icon: IoMdTrash,
   color: "red",
+}
+
+export const CONTEXT_MENU_SETTINGS = {
+  text: "Settings",
+  icon: IoIosSettings,
+}
+
+export const CONTEXT_MENU_RELOAD = {
+  text: "Reload",
+  icon: IoReloadCircle,
+}
+
+export const CONTEXT_MENU_ADD = {
+  text: "Add",
+  icon: IoAddCircle,
+}
+
+export const CONTEXT_MENU_SEARCH = {
+  text: "Search",
+  icon: IoSearchCircle,
 }
 
 export type ContextMenuItem = {
@@ -84,7 +110,7 @@ const ContextMenu: FC<ContextMenuProps> = ({id, elements}) => {
           )}
 
           <div
-            className="absolute z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border-2 border-gray-100 bg-white p-1.5 shadow-lg"
+            className="absolute z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-gray-100 bg-white p-1.5 shadow-lg"
             style={{
               left: `${points.x}px`,
               top: `${points.y}px`,
@@ -92,7 +118,7 @@ const ContextMenu: FC<ContextMenuProps> = ({id, elements}) => {
             {elements.map((element, index) => (
               <div
                 className="flex max-h-7 cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-gray-100"
-                onClick={() => {
+                onClick={e => {
                   element.onClick()
                   hideMenu()
                 }}

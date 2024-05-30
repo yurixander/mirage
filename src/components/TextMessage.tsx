@@ -34,7 +34,9 @@ const TextMessage: FC<MessageBaseProps> = ({
 
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
-    <ContextMenu id={timestamp} elements={contextMenuItems}>
+    <>
+      <ContextMenu id={timestamp} elements={contextMenuItems} />
+
       <MessageContainer
         authorDisplayName={authorDisplayName}
         authorDisplayNameColor={authorDisplayNameColor}
@@ -49,7 +51,7 @@ const TextMessage: FC<MessageBaseProps> = ({
           {text}
         </div>
       </MessageContainer>
-    </ContextMenu>
+    </>
   )
 }
 
