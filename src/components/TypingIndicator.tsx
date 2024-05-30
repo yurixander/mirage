@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import AvatarImage, {AvatarType} from "./Avatar"
+import AvatarImage, {AvatarType} from "./AvatarImage"
 import {twMerge} from "tailwind-merge"
 
 export type TypingIndicatorUser = {
