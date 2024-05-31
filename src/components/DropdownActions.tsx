@@ -7,7 +7,6 @@ export type DropdownActionsProps = {
   options: DropdownOptionProps[]
 }
 
-// TODO: Upgrade for use `useSelectionToggle`
 const DropdownActions: FC<DropdownActionsProps> = ({options}) => {
   const [isDropdownOptionVisibility, setIsDropdownOptionVisibility] =
     useState(false)

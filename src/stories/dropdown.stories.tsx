@@ -1,6 +1,6 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import Dropdown, {type DropdownProps} from "../components/Dropdown"
 import Typography from "@/components/Typography"
+import Dropdown, {type DropdownProps} from "@/components/Dropdown"
 
 type Story = StoryObj<typeof Dropdown>
 

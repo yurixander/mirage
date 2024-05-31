@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState, type FC} from "react"
+import useClickOutside from "@/hooks/util/useClickOutside"
+import React, {useState, type FC} from "react"
 import {IoCaretDownOutline, IoCaretUpOutline} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 
 export type DropdownProps = {
   initiallyContent: React.JSX.Element
   children: React.JSX.Element
-  contentClassName?: string
   className?: string
 }
 
@@ -13,27 +13,11 @@ const Dropdown: FC<DropdownProps> = ({
   className,
   initiallyContent,
   children,
-  contentClassName,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const handleClickOutside = (e: MouseEvent) => {
-    if (e.target instanceof Node && dropdownRef.current?.contains(e.target)) {
-      return
-    }
-
+  const {dropdownRef} = useClickOutside<HTMLDivElement>(() => {
     setIsOpen(false)
-  }
-
-  useEffect(() => {
-    const EVENT = "click"
-
-    document.addEventListener(EVENT, handleClickOutside, true)
-
-    return () => {
-      document.addEventListener(EVENT, handleClickOutside, true)
-    }
   })
 
   return (
