@@ -24,12 +24,13 @@ export type ButtonProps = {
 
 const Button: FC<ButtonProps> = ({
   label: text,
+  isLoading,
   variant = ButtonVariant.Primary,
   onClick,
-  isLoading,
   isDisabled,
   size,
   className,
+  loadingText,
 }) => {
   const sizeClass =
     size === ButtonSize.Small
@@ -55,15 +56,16 @@ const Button: FC<ButtonProps> = ({
       )}
       disabled={isLoading === true || isDisabled === true}
       onClick={onClick}>
-      {isLoading ? <Loading /> : text}
+      {isLoading ? <Loading text={loadingText ?? "Loading..."} /> : text}
     </button>
   )
 }
 
-const Loading: FC = () => {
+const Loading: FC<{text: string}> = ({text}) => {
   return (
     <div className="flex items-center justify-center gap-2">
       <div className="size-4 animate-rotation rounded-full border-2 border-white border-t-borderLoading" />
+      <span>{text}</span>
     </div>
   )
 }
