@@ -1,7 +1,7 @@
 import {type FC} from "react"
 import Button, {ButtonSize, ButtonVariant} from "./Button"
 import Typography, {TypographyVariant} from "./Typography"
-import Dropdown from "./Dropdown"
+import Dropdown from "./DropdownActions"
 import {Visibility} from "matrix-js-sdk"
 import {IoIosLock, IoMdGlobe} from "react-icons/io"
 import {StaticAssetPath} from "@/utils/util"
