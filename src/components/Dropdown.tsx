@@ -56,15 +56,7 @@ const Dropdown: FC<DropdownProps> = ({
         </div>
       </div>
 
-      {isOpen && (
-        <div
-          className={twMerge(
-            "flex h-max w-full flex-col border-t border-t-slate-300 p-1",
-            contentClassName
-          )}>
-          {children}
-        </div>
-      )}
+      {isOpen && children}
     </div>
   )
 }

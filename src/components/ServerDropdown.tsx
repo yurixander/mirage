@@ -1,7 +1,6 @@
 import Avatar from "boring-avatars"
-import {useEffect, useRef, useState, type FC} from "react"
+import {useState, type FC} from "react"
 import Typography from "./Typography"
-import {IoCaretDownOutline, IoCaretUpOutline} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import {
   CUTEFUNNYART_SERVER,
@@ -9,84 +8,59 @@ import {
   TRYGVEME_SERVER,
   type Server,
 } from "@/utils/servers"
+import Dropdown from "./Dropdown"
+import {IoMdCheckmark} from "react-icons/io"
 
 const servers = [MATRIX_SERVER, CUTEFUNNYART_SERVER, TRYGVEME_SERVER]
 
 export type ServerDropdownProps = {
   onServerSelected: (server: Server) => void
-  className?: string
 }
 
-const ServerDropdown: FC<ServerDropdownProps> = ({
-  onServerSelected,
-  className,
-}) => {
-  const [isOpen, setIsOpen] = useState(false)
+const ServerDropdown: FC<ServerDropdownProps> = ({onServerSelected}) => {
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-
-  const handleClickOutside = (e: MouseEvent) => {
-    if (e.target instanceof Node && dropdownRef.current?.contains(e.target)) {
-      return
-    }
-
-    setIsOpen(false)
-  }
-
-  useEffect(() => {
-    const EVENT = "click"
-
-    document.addEventListener(EVENT, handleClickOutside, true)
-
-    return () => {
-      document.addEventListener(EVENT, handleClickOutside, true)
-    }
-  })
 
   return (
     <>
-      <div
-        ref={dropdownRef}
-        className={twMerge(
-          "flex max-w-xs flex-col overflow-hidden rounded-md border border-slate-300",
-          className
-        )}
-        role="button"
-        aria-hidden
-        onClick={() => {
-          setIsOpen(prevValue => !prevValue)
-        }}>
-        <div className="flex size-full items-center p-1">
-          <DropdownServerItem serverName={serverSelected.name} />
-
-          <div className="ml-auto text-slate-300">
-            {isOpen ? <IoCaretUpOutline /> : <IoCaretDownOutline />}
-          </div>
-        </div>
-
-        {isOpen && (
-          <div className="flex h-max w-full flex-col border-t border-t-slate-300">
-            <div className="flex flex-col">
-              {servers.map(server => (
-                <DropdownServerItem
-                  serverName={server.name}
-                  className="p-1 hover:bg-neutral-100"
-                  onClick={() => {
-                    setServerSelected(server)
-                    onServerSelected(server)
-                  }}
-                />
-              ))}
+      <Dropdown
+        initiallyContent={
+          <div className="flex items-center gap-2">
+            <div className="size-6 overflow-hidden rounded-md border-2 border-orange-500">
+              <Avatar
+                square
+                variant="bauhaus"
+                size={28}
+                name={serverSelected.name}
+                colors={["#FF6B00", "#F21F26", "#FFFF8E", "#EBC83A", "#15C070"]}
+              />
             </div>
+
+            <Typography className="font-medium">
+              {serverSelected.name}
+            </Typography>
           </div>
-        )}
-      </div>
+        }>
+        <div className="flex h-max w-full flex-col border-t border-t-slate-300">
+          {servers.map(server => (
+            <DropdownServerItem
+              serverName={server.name}
+              isSelected={server === serverSelected}
+              className="p-1 hover:bg-neutral-100"
+              onClick={() => {
+                setServerSelected(server)
+                onServerSelected(server)
+              }}
+            />
+          ))}
+        </div>
+      </Dropdown>
     </>
   )
 }
 
 type DropdownServerItemProps = {
   serverName: string
+  isSelected: boolean
   className?: string
   onClick?: () => void
 }
@@ -94,6 +68,7 @@ type DropdownServerItemProps = {
 const DropdownServerItem: FC<DropdownServerItemProps> = ({
   serverName,
   onClick,
+  isSelected,
   className,
 }) => {
   return (
@@ -113,6 +88,8 @@ const DropdownServerItem: FC<DropdownServerItemProps> = ({
       </div>
 
       <Typography className="font-medium">{serverName}</Typography>
+
+      {isSelected && <IoMdCheckmark className="ml-auto text-slate-300" />}
     </div>
   )
 }

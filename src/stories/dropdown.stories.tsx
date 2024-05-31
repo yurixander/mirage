@@ -14,7 +14,11 @@ export const Default: Story = {
   render,
   args: {
     initiallyContent: <Typography>Matrix.org</Typography>,
-    children: <Typography>Matrix.org</Typography>,
+    children: (
+      <div className="flex h-max w-full flex-col border-t border-t-slate-300 p-1">
+        <Typography>Matrix.org</Typography>
+      </div>
+    ),
   },
 }
 
