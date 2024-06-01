@@ -2,7 +2,7 @@ import {type Meta, type StoryObj} from "@storybook/react"
 import UserCard, {
   type UserCardProps as UserCardProperties,
 } from "../components/UserCard"
-import {UserStatus} from "../components/UserProfile"
+import Typography from "@/components/Typography"
 
 type Story = StoryObj<typeof UserCard>
 
@@ -16,8 +16,7 @@ export const Default: Story = {
     userProfileProps: {
       displayName: "Emerald Branch",
       displayNameColor: "#5CC679",
-      status: UserStatus.Online,
-      text: "Online",
+      children: <Typography>Online</Typography>,
       isLarge: true,
     },
     aboutMe:

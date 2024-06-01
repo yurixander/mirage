@@ -14,7 +14,7 @@ import {
   NotificationsSyncState,
   useNotificationsStateStore,
 } from "@/containers/NavigationSection/hooks/useCachedNotifications"
-import {UserPowerLevel} from "@/components/RosterUser"
+import {UserPowerLevel} from "@/containers/Roster/RosterUser"
 import {assert, CommonAssertion, getImageUrl} from "@/utils/util"
 import {useMemo} from "react"
 import useActiveRoomIdStore from "./useActiveRoomIdStore"
@@ -22,8 +22,8 @@ import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 const useGlobalEventListeners = () => {
   const {client} = useConnection()
-  const {onRequestChanges, state} = useNotificationsStateStore()
   const {activeRoomId} = useActiveRoomIdStore()
+  const {onRequestChanges, state} = useNotificationsStateStore()
 
   const containsUnreadNotifications = useMemo(() => {
     if (state === NotificationsSyncState.Processed) {

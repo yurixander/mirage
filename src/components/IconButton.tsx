@@ -12,6 +12,7 @@ export type IconButtonProps = {
   isDisabled?: boolean
   isDotVisible?: boolean
   className?: string
+  iconClassName?: string
 }
 
 const IconButton: FC<IconButtonProps> = ({
@@ -22,27 +23,25 @@ const IconButton: FC<IconButtonProps> = ({
   isDotVisible,
   size,
   className,
+  iconClassName,
 }) => {
-  const isDisabledClass = isDisabled
-    ? "active:animate-none active:transform-none cursor-not-allowed opacity-50 hover:bg-none"
-    : "active:animate-hold active:scale-90 hover:bg-neutral-50"
-
   return (
-    <div
-      onClick={isDisabled ? undefined : onClick}
-      tabIndex={isDisabled ? undefined : 0}
-      role="button"
-      aria-disabled={isDisabled}
-      aria-hidden="true"
+    <button
+      onClick={onClick}
+      tabIndex={0}
+      disabled={isDisabled}
       className={twMerge(
-        "inline-block size-max rounded-lg p-1 focus-visible:duration-150",
-        isDisabledClass,
+        "inline-block size-max rounded-lg p-1 hover:bg-gray-50 focus-visible:duration-150 active:scale-90 active:animate-hold",
         className
       )}>
       <NotificationDot isVisible={isDotVisible ?? false}>
-        <Icon style={{color}} size={size ?? 20} className="text-neutral-300" />
+        <Icon
+          style={{color}}
+          size={size ?? 20}
+          className={twMerge("text-neutral-300", iconClassName)}
+        />
       </NotificationDot>
-    </div>
+    </button>
   )
 }
 

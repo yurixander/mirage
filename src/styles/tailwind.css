@@ -1,7 +1,6 @@
 @import url("tailwindcss/base");
 @import url("tailwindcss/components");
 @import url("tailwindcss/utilities");
-@import url("satoshi.css");
 
 * {
   @apply box-border leading-[100%];
@@ -12,6 +11,10 @@ body,
 #root,
 #storybook-root {
   @apply h-full font-sans;
+}
+
+b {
+  @apply m-0 p-0;
 }
 
 input {
@@ -28,7 +31,6 @@ body {
   @apply font-noto font-normal text-stone-600;
 }
 
-button:disabled,
 input:disabled,
 textarea:disabled {
   @apply cursor-not-allowed opacity-50;
@@ -52,4 +54,30 @@ textarea:disabled {
 
 ::-webkit-scrollbar-thumb {
   @apply m-1 rounded-xl bg-gray-300;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #c0f;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 0 solid rgba(0, 0, 0, 0.5);
+}
+.slider::-moz-range-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: none;
+  background: #c0f;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 0 solid rgba(0, 0, 0, 0.5);
+}
+
+summary::before {
+  content: "►";
+}
+
+details[open] summary::before {
+  content: "▼";
 }
