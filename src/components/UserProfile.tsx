@@ -1,7 +1,7 @@
 import {type FC} from "react"
 import {assert, normalizeName, trim, validateUrl} from "../utils/util"
 import {twMerge} from "tailwind-merge"
-import AvatarImage, {AvatarType} from "./Avatar"
+import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
 
 export type UserProfileProps = {

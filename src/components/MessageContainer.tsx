@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import {cleanDisplayName, timeFormatter} from "../utils/util"
-import AvatarImage, {AvatarType} from "./Avatar"
+import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
 
 export type MessageBaseProps = {

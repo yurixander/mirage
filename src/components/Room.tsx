@@ -1,7 +1,7 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
+import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
 import {memo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
-import {type PartialRoom} from "./SpaceList"
 
 export type RoomProps = {
   roomName: string

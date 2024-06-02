@@ -6,6 +6,7 @@ export enum TypographyVariant {
   H1,
   H2,
   H3,
+  H4,
   P,
   Span,
 }
@@ -30,6 +31,9 @@ function getTagFromVariant(
     }
     case TypographyVariant.H3: {
       return "h3"
+    }
+    case TypographyVariant.H4: {
+      return "h4"
     }
     case TypographyVariant.P: {
       return "p"
@@ -56,9 +60,11 @@ const Typography: FC<TypographyProps> = ({
         ? "text-2xl"
         : variant === TypographyVariant.H3
           ? "text-xl"
-          : variant === TypographyVariant.P
-            ? "text-xs"
-            : "text-sm"
+          : variant === TypographyVariant.H4
+            ? "text-lg"
+            : variant === TypographyVariant.P
+              ? "text-xs"
+              : "text-sm"
 
   return (
     <Component
