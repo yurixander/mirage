@@ -1,8 +1,12 @@
 import {useMemo, type FC} from "react"
-import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
-import {IoArrowUndo, IoArrowRedo} from "react-icons/io5"
-import {IoMdTrash} from "react-icons/io"
+import ContextMenu, {
+  CONTEXT_MENU_DELETE,
+  CONTEXT_MENU_REPLY,
+  CONTEXT_MENU_RESEND,
+  useContextMenuStore,
+  type ContextMenuItem,
+} from "./ContextMenu"
 
 const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
@@ -13,28 +17,16 @@ const TextMessage: FC<MessageBaseProps> = ({
   timestamp,
   onDeleteMessage,
 }) => {
-  const contextMenuItems = useMemo(() => {
-    const items: ContextMenuItem[] = []
+  const {showMenu} = useContextMenuStore()
 
-    items.push(
-      {
-        label: "Reply",
-        action: () => {},
-        icon: <IoArrowUndo />,
-      },
-      {
-        label: "Resend",
-        action: () => {},
-        icon: <IoArrowRedo />,
-      }
-    )
+  const contextMenuItems = useMemo(() => {
+    const items: ContextMenuItem[] = [
+      {...CONTEXT_MENU_REPLY, onClick: () => {}},
+      {...CONTEXT_MENU_RESEND, onClick: () => {}},
+    ]
 
     if (onDeleteMessage !== undefined) {
-      items.push({
-        label: "Delete",
-        action: onDeleteMessage,
-        icon: <IoMdTrash />,
-      })
+      items.push({...CONTEXT_MENU_DELETE, onClick: onDeleteMessage})
     }
 
     return items
@@ -42,19 +34,24 @@ const TextMessage: FC<MessageBaseProps> = ({
 
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
-    <ContextMenu id={timestamp} items={contextMenuItems}>
+    <>
+      <ContextMenu id={timestamp} elements={contextMenuItems} />
+
       <MessageContainer
         authorDisplayName={authorDisplayName}
         authorDisplayNameColor={authorDisplayNameColor}
         authorAvatarUrl={authorAvatarUrl}
         timestamp={timestamp}
-        onAuthorClick={onAuthorClick}>
+        onAuthorClick={onAuthorClick}
+        onMessageRightClick={event => {
+          showMenu(timestamp, event)
+        }}>
         <div className="max-w-messageMaxWidth select-text break-words leading-160">
           {/* TODO: Process line breaks (\n). */}
           {text}
         </div>
       </MessageContainer>
-    </ContextMenu>
+    </>
   )
 }
 

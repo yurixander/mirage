@@ -1,18 +1,19 @@
-import {memo, type FC} from "react"
+import {type CSSProperties, memo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import NotificationDot from "./NotificationDot"
 import {type IconType} from "react-icons"
+import React from "react"
 
 export type IconButtonProps = {
-  onClick: () => void
   tooltip: string
   Icon: IconType
   size?: number
-  color?: string
+  color?: CSSProperties["color"]
   isDisabled?: boolean
   isDotVisible?: boolean
   className?: string
   iconClassName?: string
+  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const IconButton: FC<IconButtonProps> = ({
