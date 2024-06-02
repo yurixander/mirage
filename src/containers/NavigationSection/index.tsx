@@ -16,7 +16,7 @@ const NavigationSection: FC = () => {
 
       <div className="flex size-full max-w-52 flex-col gap-1 border border-slate-300 bg-slate-100">
         <div className="max-h-12 border-b border-b-slate-300">
-          {/* Put here the Server dropdown */}
+          {/* TODO: Place the Server dropdown component here. */}
         </div>
 
         <SpaceList className="p-4" />

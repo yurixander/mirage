@@ -58,7 +58,8 @@ const DirectMessageModal: FC = () => {
   const {invitationLink, isLinkCopied, copyToClipboard} =
     useInvitationLink(userId)
 
-  // Initially retrieves all direct chat conversations associated with the current user.
+  // Initially retrieves all direct chat conversations associated
+  // with the current user.
   useEffect(() => {
     if (client === null) {
       return

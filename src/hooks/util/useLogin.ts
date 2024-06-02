@@ -4,15 +4,15 @@ import {useState, useCallback, useEffect} from "react"
 import {useNavigate} from "react-router-dom"
 import useConnection from "../matrix/useConnection"
 import Servers from "@/utils/servers"
-import useLocalStorage, {LocalStorageKeys} from "./useLocalStorage"
+import useLocalStorage, {LocalStorageKey} from "./useLocalStorage"
 
 const useLogin = () => {
   const navigate = useNavigate()
   const [userId, setUserId] = useState("")
   const [password, setPassword] = useState("")
 
-  const {cachedValue: credentials, saveValue: saveCredentials} =
-    useLocalStorage<Credentials>(LocalStorageKeys.Credentials)
+  const {value: credentials, put: saveCredentials} =
+    useLocalStorage<Credentials>(LocalStorageKey.Credentials)
 
   const {connect, disconnect, syncState, lastSyncError, isConnecting, client} =
     useConnection()

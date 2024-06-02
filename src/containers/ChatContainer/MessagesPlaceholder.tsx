@@ -10,6 +10,7 @@ const MessagesPlaceholder: FC = () => {
 
         <div className="inline-flex flex-col gap-1">
           <SkeletonLine className="h-4 w-40" />
+
           <SkeletonLine />
         </div>
       </div>
@@ -22,15 +23,21 @@ const MessagesPlaceholder: FC = () => {
 
           <div className="flex flex-row gap-1.5">
             <SkeletonLine className="h-3 w-10" />
+
             <SkeletonLine className="h-3 w-20" />
+
             <SkeletonLine className="h-3 w-10" />
+
             <SkeletonLine className="h-3 w-20" />
           </div>
 
           <div className="flex flex-row gap-1.5">
             <SkeletonLine className="h-3 w-5" />
+
             <SkeletonLine className="h-3 w-20" />
+
             <SkeletonLine className="h-3 w-10" />
+
             <SkeletonLine className="h-3 w-16" />
           </div>
         </div>
@@ -41,6 +48,7 @@ const MessagesPlaceholder: FC = () => {
 
         <div className="inline-flex flex-col gap-1">
           <SkeletonLine className="h-4 w-36" />
+
           <SkeletonLine className="h-52 w-44" />
         </div>
       </div>
@@ -53,24 +61,35 @@ const MessagesPlaceholder: FC = () => {
 
           <div className="flex flex-row gap-1.5">
             <SkeletonLine className="h-3 w-10" />
+
             <SkeletonLine className="h-3 w-10" />
+
             <SkeletonLine className="h-3 w-20" />
+
             <SkeletonLine className="h-3 w-5" />
+
             <SkeletonLine className="h-3 w-10" />
           </div>
 
           <div className="flex flex-row gap-1.5">
             <SkeletonLine className="h-3 w-5" />
+
             <SkeletonLine className="h-3 w-20" />
+
             <SkeletonLine className="h-3 w-10" />
+
             <SkeletonLine className="h-3 w-16" />
           </div>
 
           <div className="flex flex-row gap-1.5">
             <SkeletonLine className="h-3 w-10" />
+
             <SkeletonLine className="h-3 w-5" />
+
             <SkeletonLine className="h-3 w-10" />
+
             <SkeletonLine className="h-3 w-5" />
+
             <SkeletonLine className="h-3 w-20" />
           </div>
         </div>
@@ -78,8 +97,6 @@ const MessagesPlaceholder: FC = () => {
     </div>
   )
 }
-
-export default MessagesPlaceholder
 
 type SkeletonProps = {
   className?: string
@@ -102,7 +119,7 @@ const SkeletonCircle: FC<SkeletonProps> = ({className = "size-10"}) => {
     <div className="relative">
       <div
         className={twMerge(
-          "relative  overflow-hidden rounded-full bg-neutral-300",
+          "relative overflow-hidden rounded-full bg-neutral-300",
           className
         )}>
         <LoadingEffect />
@@ -110,3 +127,5 @@ const SkeletonCircle: FC<SkeletonProps> = ({className = "size-10"}) => {
     </div>
   )
 }
+
+export default MessagesPlaceholder
