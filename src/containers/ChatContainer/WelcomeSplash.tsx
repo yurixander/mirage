@@ -15,7 +15,7 @@ const WelcomeSplash: FC = () => {
           Welcome to Mirage
         </Typography>
 
-        <Typography className="max-w-text mt-2 text-center">
+        <Typography className="mt-2 max-w-text text-center">
           Invite your friends to chat! Select a Room or a Direct Messages to
           start a conversation. You can also select an action below to get
           started quickly.
