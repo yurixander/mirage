@@ -1,12 +1,13 @@
-<svg width="955" height="639" viewBox="0 0 955 639" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_f_1_4)">
-<path d="M97 128L70 276L13 282L22 412L138 421L276 606L508 540L827 584L764 412L516 292L267 379L281 226L97 128Z" fill="#F7E0FF"/>
-</g>
-<defs>
-<filter id="filter0_f_1_4" x="-115" y="0" width="1070" height="734" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="64" result="effect1_foregroundBlur_1_4"/>
-</filter>
-</defs>
+<svg width="955" height="639" viewBox="0 0 955 639" fill="none"
+  xmlns="http://www.w3.org/2000/svg">
+  <g filter="url(#filter0_f_1_4)">
+    <path d="M97 128L70 276L13 282L22 412L138 421L276 606L508 540L827 584L764 412L516 292L267 379L281 226L97 128Z" fill="#F7E0FF"/>
+  </g>
+  <defs>
+    <filter id="filter0_f_1_4" x="-115" y="0" width="1070" height="734" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="64" result="effect1_foregroundBlur_1_4"/>
+    </filter>
+  </defs>
 </svg>

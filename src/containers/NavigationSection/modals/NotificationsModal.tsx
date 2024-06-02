@@ -23,12 +23,12 @@ const NotificationsModal: FC = () => {
   const {onRequestChanges} = useNotificationsStateStore()
   const {notifications} = useCachedNotifications()
 
-  const notificationsUnread: LocalNotificationData[] = useMemo(
+  const unreadNotifications: LocalNotificationData[] = useMemo(
     () => notifications.filter(notification => !notification.isRead),
     [notifications]
   )
 
-  const notificationsMarkAsRead: LocalNotificationData[] = useMemo(
+  const readNotifications: LocalNotificationData[] = useMemo(
     () => notifications.filter(notification => notification.isRead),
     [notifications]
   )
@@ -36,12 +36,12 @@ const NotificationsModal: FC = () => {
   return (
     <div
       className={twMerge(
-        "flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl bg-white p-2"
+        "flex max-h-[80%] min-h-[300px] w-full max-w-sm flex-col gap-2 rounded-xl bg-white p-2"
       )}>
       <div className="flex w-full p-2">
         <Typography
-          className="mr-auto font-bold text-black "
-          variant={TypographyVariant.H3}>
+          className="mr-auto text-black"
+          variant={TypographyVariant.Heading}>
           Notifications
         </Typography>
 
@@ -63,9 +63,17 @@ const NotificationsModal: FC = () => {
         />
       </div>
 
+      {unreadNotifications.length === 0 && readNotifications.length === 0 && (
+        <div className="flex size-full items-center justify-center">
+          <Typography className="text-center text-slate-400">
+            No notifications
+          </Typography>
+        </div>
+      )}
+
       <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
         <div className="bg-slate-100">
-          {notificationsUnread.map(notification => (
+          {unreadNotifications.map(notification => (
             <Notification
               key={notification.notificationId}
               {...notification}
@@ -75,7 +83,7 @@ const NotificationsModal: FC = () => {
           ))}
         </div>
 
-        {notificationsMarkAsRead.map(notification => (
+        {readNotifications.map(notification => (
           <Notification
             key={notification.notificationId}
             {...notification}

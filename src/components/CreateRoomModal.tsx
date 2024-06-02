@@ -32,7 +32,7 @@ const CreateRoomModal: FC = () => {
     <div className="box-border flex max-w-xl flex-col overflow-hidden rounded-md border border-slate-300">
       <div className="w-full border-b border-b-slate-300 bg-gray-50">
         <Typography
-          variant={TypographyVariant.H3}
+          variant={TypographyVariant.Heading}
           className="py-3 pl-4 font-sans font-medium text-black">
           Create Room
         </Typography>
@@ -53,7 +53,7 @@ const CreateRoomModal: FC = () => {
           />
 
           <div className="flex flex-col gap-1">
-            <Typography variant={TypographyVariant.Span}>
+            <Typography variant={TypographyVariant.BodySmall}>
               Room Privacy
             </Typography>
 
@@ -80,7 +80,7 @@ const CreateRoomModal: FC = () => {
 
         {roomVisibility === Visibility.Private ? (
           <div className="flex flex-col gap-2">
-            <Typography className="text-black" variant={TypographyVariant.P}>
+            <Typography className="text-black" variant={TypographyVariant.Body}>
               Only those who are invited will be able to find and join this
               room. You can change this at any time from the room settings
             </Typography>
@@ -89,11 +89,11 @@ const CreateRoomModal: FC = () => {
               <div className="flex max-w-64 flex-col">
                 <Typography
                   className="font-medium text-black"
-                  variant={TypographyVariant.Span}>
+                  variant={TypographyVariant.BodySmall}>
                   Turn on end-to-end encryption
                 </Typography>
 
-                <Typography variant={TypographyVariant.P}>
+                <Typography variant={TypographyVariant.Body}>
                   You won't be able to turn it off later. Bridges and most of
                   robots still won't work.
                 </Typography>

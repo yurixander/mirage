@@ -11,9 +11,6 @@ import {generateUniqueNumber} from "@/utils/util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {hasRoomRepeat} from "@/components/Room"
 
-const hasSpaceRepeat = (space1: Space, space2: Space): boolean =>
-  space1.spaceId === space2.spaceId
-
 const processSpace = (space: Room): Space => {
   return {
     name: space.name,
@@ -36,7 +33,7 @@ const useSpaces = () => {
     addItem: addSpace,
     updateItem: updateSpace,
     deleteWhen: deleteSpaceWhen,
-  } = useList<Space>(hasSpaceRepeat)
+  } = useList<Space>((a, b) => a.spaceId === b.spaceId)
 
   useEffect(() => {
     const handler = setTimeout(() => {

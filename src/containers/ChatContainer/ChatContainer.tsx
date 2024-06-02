@@ -12,7 +12,7 @@ import useChatInput from "./useChatInput"
 import ChatHeader from "./ChatHeader"
 import ChatInput from "./ChatInput"
 import {useMemo, type FC} from "react"
-import WelcomeChat from "./WelcomeChat"
+import WelcomeSplash from "./WelcomeSplash"
 import MessagesPlaceholder from "./MessagesPlaceholder"
 
 export type ChatContainerProps = {
@@ -79,7 +79,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
       </Modal>
 
       {activeRoomId === null ? (
-        <WelcomeChat />
+        <WelcomeSplash />
       ) : (
         <div
           id={ModalRenderLocation.ChatContainer}

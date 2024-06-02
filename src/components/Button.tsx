@@ -56,7 +56,7 @@ const Button: FC<ButtonProps> = ({
       )}
       disabled={isLoading === true || isDisabled === true}
       onClick={onClick}>
-      {isLoading ? <Loading text={loadingText ?? "Loading..."} /> : text}
+      {isLoading ? <Loading text={loadingText ?? "Loading"} /> : text}
     </button>
   )
 }

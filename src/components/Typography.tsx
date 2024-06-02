@@ -3,11 +3,11 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export enum TypographyVariant {
-  H1,
-  H2,
-  H3,
-  P,
-  Span,
+  HeadingLarge,
+  HeadingMedium,
+  Heading,
+  Body,
+  BodySmall,
 }
 
 export type TypographyProps = {
@@ -22,26 +22,24 @@ function getTagFromVariant(
   variant: TypographyVariant
 ): keyof React.JSX.IntrinsicElements {
   switch (variant) {
-    case TypographyVariant.H1: {
+    case TypographyVariant.HeadingLarge: {
       return "h1"
     }
-    case TypographyVariant.H2: {
+    case TypographyVariant.HeadingMedium: {
       return "h2"
     }
-    case TypographyVariant.H3: {
+    case TypographyVariant.Heading: {
       return "h3"
     }
-    case TypographyVariant.P: {
+    case TypographyVariant.Body:
+    case TypographyVariant.BodySmall: {
       return "p"
-    }
-    case TypographyVariant.Span: {
-      return "span"
     }
   }
 }
 
 const Typography: FC<TypographyProps> = ({
-  variant = TypographyVariant.Span,
+  variant = TypographyVariant.Body,
   as,
   className,
   children,
@@ -50,14 +48,14 @@ const Typography: FC<TypographyProps> = ({
   const Component = as ?? getTagFromVariant(variant)
 
   const variantClass =
-    variant === TypographyVariant.H1
-      ? "text-3xl"
-      : variant === TypographyVariant.H2
-        ? "text-2xl"
-        : variant === TypographyVariant.H3
-          ? "text-xl"
-          : variant === TypographyVariant.P
-            ? "text-xs"
+    variant === TypographyVariant.HeadingLarge
+      ? "font-unbounded text-4xl font-semibold"
+      : variant === TypographyVariant.HeadingMedium
+        ? "font-unbounded text-2xl font-medium"
+        : variant === TypographyVariant.Heading
+          ? "font-unbounded text-xl font-medium"
+          : variant === TypographyVariant.Body
+            ? "text-base"
             : "text-sm"
 
   return (

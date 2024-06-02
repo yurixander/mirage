@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        text: "630px",
+      },
       backgroundColor: {
         statusMessageBg: "transparentize(#e53e3e, 0.9)",
         modalOverlay: "rgba(0, 0, 0, 0.5)",
@@ -44,6 +47,7 @@ module.exports = {
         iowan: ["Iowan Old Style", "serif"],
         noto: ["Noto sans", "sans-serif"],
         sans: ["Satoshi", "sans-serif"],
+        unbounded: ["Unbounded", "sans-serif"],
       },
       lineHeight: {
         "160": "160%",

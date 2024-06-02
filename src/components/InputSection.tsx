@@ -34,7 +34,7 @@ const InputSection: FC<InputSectionProps> = ({
     <div className={twMerge("flex flex-col gap-1", className)}>
       <Typography
         className="flex items-center gap-1"
-        variant={TypographyVariant.Span}>
+        variant={TypographyVariant.BodySmall}>
         {TitleIcon !== undefined && <TitleIcon />}
         {title}
       </Typography>

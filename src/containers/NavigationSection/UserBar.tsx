@@ -37,7 +37,7 @@ const UserBar: FC<{className?: string}> = ({className}) => {
 
               <Typography
                 className="line-clamp-1"
-                variant={TypographyVariant.P}>
+                variant={TypographyVariant.Body}>
                 {trim(getUsernameByUserId(userData.userId), MAX_USER_ID_LENGTH)}
               </Typography>
             </div>

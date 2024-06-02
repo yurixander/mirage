@@ -13,7 +13,9 @@ export type RoomProps = {
 export const hasRoomRepeat = (
   room1: PartialRoom,
   room2: PartialRoom
-): boolean => room1.roomId === room2.roomId
+): boolean => {
+  return room1.roomId === room2.roomId
+}
 
 const Room: FC<RoomProps> = ({
   roomName,
@@ -31,11 +33,11 @@ const Room: FC<RoomProps> = ({
       aria-hidden="true"
       onClick={onRoomClick}>
       <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
-        <Typography variant={TypographyVariant.P}>{tagEmoji}</Typography>
+        <Typography variant={TypographyVariant.Body}>{tagEmoji}</Typography>
       </div>
 
       <Typography
-        variant={TypographyVariant.P}
+        variant={TypographyVariant.Body}
         className={twMerge(
           "line-clamp-1 font-bold",
           isSelected ? "text-white" : "text-slate-500"

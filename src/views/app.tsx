@@ -10,6 +10,7 @@ import NavigationSection from "@/containers/NavigationSection"
 const AppView: FC = () => {
   const navigate = useNavigate()
   const {connect} = useConnection()
+
   const {cachedValue: credentials} = useLocalStorage<Credentials>(
     LocalStorageKeys.Credentials
   )

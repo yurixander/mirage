@@ -43,7 +43,9 @@ const LoginView: FC = () => {
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <Typography variant={TypographyVariant.H2} className="font-bold">
+            <Typography
+              variant={TypographyVariant.HeadingMedium}
+              className="font-bold">
               Welcome Back
             </Typography>
 
@@ -143,7 +145,7 @@ const LoginInputSection: FC<LoginInputSectionProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-1">
-      <Typography variant={TypographyVariant.Span}>{title}</Typography>
+      <Typography variant={TypographyVariant.BodySmall}>{title}</Typography>
 
       <Input
         className="w-full"

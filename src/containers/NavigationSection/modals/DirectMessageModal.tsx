@@ -34,13 +34,13 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
         isNameShorted={false}
         displayName={displayName}
         displayNameColor={stringToColor(userId)}>
-        <Typography variant={TypographyVariant.P}>
+        <Typography variant={TypographyVariant.Body}>
           {getUsernameByUserId(userId)}
         </Typography>
       </UserProfile>
 
       {lastMessageSentDate !== undefined && (
-        <Typography variant={TypographyVariant.P}>
+        <Typography variant={TypographyVariant.Body}>
           {timeFormatter(lastMessageSentDate)}
         </Typography>
       )}
@@ -92,7 +92,9 @@ const DirectMessageModal: FC = () => {
     // TODO: Should be pixels value, replace by the future design.
     <div className="flex size-full max-h-[80%] max-w-2xl flex-col justify-between gap-2 rounded-lg bg-white p-5 shadow-2xl">
       <div className="flex w-full justify-between">
-        <Typography variant={TypographyVariant.H3}>Direct messages</Typography>
+        <Typography variant={TypographyVariant.Heading}>
+          Direct messages
+        </Typography>
 
         <IconButton
           onClick={clearActiveSidebarModal}
@@ -114,7 +116,7 @@ const DirectMessageModal: FC = () => {
       />
 
       <div className="flex h-full flex-col gap-2 overflow-hidden p-1">
-        <Typography variant={TypographyVariant.P}>
+        <Typography variant={TypographyVariant.Body}>
           RECENT CONVERSATIONS
         </Typography>
 
@@ -132,7 +134,7 @@ const DirectMessageModal: FC = () => {
                     displayNameColor={stringToColor(userProps.userId)}
                     avatarUrl={userProps.avatarUrl}
                     children={
-                      <Typography variant={TypographyVariant.P}>
+                      <Typography variant={TypographyVariant.Body}>
                         {userProps.userId}
                       </Typography>
                     }
@@ -155,9 +157,9 @@ const DirectMessageModal: FC = () => {
 
         <div className="flex flex-row items-center rounded-md border border-black p-2">
           <Typography
-            variant={TypographyVariant.Span}
+            variant={TypographyVariant.BodySmall}
             className="text-blue-500">
-            {invitationLink ?? "Generating link..."}
+            {invitationLink ?? "Generating link"}
           </Typography>
 
           <IconButton

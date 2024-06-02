@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/interactive-supports-focus */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import {useMemo, useState, type FC} from "react"
 import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
@@ -73,8 +71,11 @@ const ImageMessage: FC<ImageMessageProps> = ({
         </div>
       ) : (
         // TODO: Handle image size here. Preferably, make the component accept 'imageDimensions' as props.
+        // TODO: Add keyboard event listener for accessibility.
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events
         <div
           role="button"
+          tabIndex={0}
           className="max-h-52 max-w-44 overflow-hidden rounded-xl"
           onClick={() => {
             setImageModalShow(true)

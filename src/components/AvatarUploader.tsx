@@ -76,7 +76,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
             <img src={filesContent[0].content} alt={filesContent[0].name} />
 
             <Typography
-              variant={TypographyVariant.Span}
+              variant={TypographyVariant.BodySmall}
               className="absolute font-bold text-white">
               {imagePercent}%
             </Typography>

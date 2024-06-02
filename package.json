@@ -43,6 +43,7 @@
     "url": "^0.11.3",
     "use-file-picker": "^2.1.1",
     "web-vitals": "^3.5.2",
+    "zod": "^3.23.8",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
