@@ -28,36 +28,38 @@ const LoginView: FC = () => {
   } = useLogin()
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <div className="flex size-full max-h-[900px] max-w-4xl gap-16 p-6">
-        <div className="flex grow flex-col justify-center gap-6 p-3">
-          <div className="flex w-full justify-center">
-            <div className="m-2 flex items-center">
-              <ReactSVG src={StaticAssetPath.AppLogoSmall} />
+    <div className="flex size-full max-h-screen items-center justify-center p-6">
+      {/* Decorative background */}
+      <div className="flex h-full items-center justify-center">
+        <img
+          className="max-h-full max-w-full object-contain"
+          src={StaticAssetPath.LoginPhoto}
+          alt="Abstract background for login page"
+        />
+      </div>
 
-              <div className="flex items-end font-iowan">
-                <div>Mirage</div>
+      {/* Login form */}
+      <div className="h-full max-w-[500px] p-6">
+        <div className="flex h-full grow flex-col justify-center gap-6 p-3">
+          <Logo />
 
-                <span className="ml-[2px] text-xs italic">©</span>
-              </div>
-            </div>
-          </div>
+          {/* Welcome message */}
           <div className="flex flex-col items-center">
             <Typography
-              variant={TypographyVariant.HeadingMedium}
-              className="font-bold">
+              variant={TypographyVariant.HeadingLarge}
+              className="text-center">
               Welcome Back
             </Typography>
 
-            <Typography className="text-center">
-              Enter your email and password to
-              <br />
-              access your account
+            <Typography className="mt-4 text-center">
+              Glad to see you here! Already have an account? Please enter your
+              email and password to sign in.
             </Typography>
           </div>
 
-          <div className="flex size-full flex-col justify-center gap-2">
-            <LoginInputSection
+          {/* Controls */}
+          <div className="flex flex-col justify-center gap-2">
+            <InputSection
               title="User ID"
               onValueChange={setUserId}
               icon={IoIosContact}
@@ -65,7 +67,7 @@ const LoginView: FC = () => {
               constraints={[userIdConstraint, nonEmptyConstraint]}
             />
 
-            <LoginInputSection
+            <InputSection
               title="Password"
               onValueChange={setPassword}
               icon={IoKey}
@@ -102,29 +104,39 @@ const LoginView: FC = () => {
               />
             </div>
           </div>
-
-          <div className="flex w-full items-center justify-center gap-1">
-            <Typography>Don&apos;t have an account?</Typography>
-
-            <Link to="">
-              <Typography className="font-bold">Sign up</Typography>
-            </Link>
-          </div>
         </div>
 
-        <div className="flex grow overflow-hidden rounded-xl">
-          <img
-            className="object-fill"
-            src={StaticAssetPath.LoginPhoto}
-            alt="Matrix Protocol, that connects you to the world"
-          />
+        {/* Bottom sign up link */}
+        <div className="flex w-full items-center justify-center gap-1">
+          <Typography>Don&apos;t have an account?</Typography>
+
+          {/* TODO: Provide link. */}
+          <Link to="">
+            <Typography className="font-bold">Sign up</Typography>
+          </Link>
         </div>
       </div>
     </div>
   )
 }
 
-type LoginInputSectionProps = {
+const Logo: FC = () => {
+  return (
+    <div className="flex w-full justify-center">
+      <div className="m-2 flex items-center">
+        <ReactSVG src={StaticAssetPath.AppLogoSmall} />
+
+        <div className="flex items-end font-iowan">
+          <div>Mirage</div>
+
+          <span className="ml-[2px] text-xs italic">©</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+type InputSectionProps = {
   title: string
   onValueChange: (value: string) => void
   icon: IconType
@@ -134,7 +146,7 @@ type LoginInputSectionProps = {
   isPassword?: boolean
 }
 
-const LoginInputSection: FC<LoginInputSectionProps> = ({
+const InputSection: FC<InputSectionProps> = ({
   icon,
   onValueChange,
   title,
@@ -145,7 +157,7 @@ const LoginInputSection: FC<LoginInputSectionProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-1">
-      <Typography variant={TypographyVariant.BodySmall}>{title}</Typography>
+      <Typography className="font-medium">{title}</Typography>
 
       <Input
         className="w-full"
