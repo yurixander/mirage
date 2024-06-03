@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from "react"
+import {useCallback, useEffect, useState} from "react"
 import {type PartialRoom} from "../SpaceList"
 import useConnection from "@/hooks/matrix/useConnection"
 import useList from "@/hooks/util/useList"
@@ -41,6 +41,7 @@ const processHierarchyRoom = (
 
 const useSpaceRooms = (spaceId: string) => {
   const {client} = useConnection()
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     items,
@@ -54,6 +55,8 @@ const useSpaceRooms = (spaceId: string) => {
       return
     }
 
+    setIsLoading(true)
+
     try {
       const childRooms = await client.getRoomHierarchy(spaceId)
 
@@ -66,6 +69,8 @@ const useSpaceRooms = (spaceId: string) => {
 
         addRoom(childRoomProcessed)
       }
+
+      setIsLoading(false)
     } catch (error) {
       console.error(
         "An error occurred while retrieving rooms from the space:",
@@ -141,6 +146,7 @@ const useSpaceRooms = (spaceId: string) => {
 
   return {
     childRooms: items,
+    isLoading,
   }
 }
 
