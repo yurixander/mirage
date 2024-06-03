@@ -1,5 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import CallModal, {type CallModalProps} from "../components/CallModal"
+import CallModal, {Variant, type CallModalProps} from "../components/CallModal"
 
 type Story = StoryObj<typeof CallModal>
 
@@ -12,7 +12,7 @@ export const Default: Story = {
   render,
   args: {
     name: "Jose Luis Reyes",
-    time: "00:40",
+    variant: Variant.CallInProgress,
   },
 }
 
