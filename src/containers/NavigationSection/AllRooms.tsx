@@ -1,7 +1,7 @@
 import {type FC} from "react"
 import {type PartialRoom} from "./SpaceList"
 import {emojiRandom, generateUniqueNumber} from "@/utils/util"
-import {SpaceDetail} from "./Space"
+import {SpaceDetail} from "./SpaceDetail"
 import Room from "@/components/Room"
 
 export type AllRoomsProps = {

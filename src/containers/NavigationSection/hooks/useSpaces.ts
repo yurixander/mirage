@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from "react"
+import {useEffect} from "react"
 import useList from "../../../hooks/util/useList"
 import useConnection from "../../../hooks/matrix/useConnection"
 import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
@@ -8,15 +8,15 @@ import {generateUniqueNumber} from "@/utils/util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {hasRoomRepeat} from "@/components/Room"
 
-export type Space = {
+export type PartialSpace = {
   name: string
   spaceId: string
 }
 
-const hasSpaceRepeat = (space1: Space, space2: Space): boolean =>
+const hasSpaceRepeat = (space1: PartialSpace, space2: PartialSpace): boolean =>
   space1.spaceId === space2.spaceId
 
-const processSpace = (space: Room): Space => {
+const processSpace = (space: Room): PartialSpace => {
   return {
     name: space.name,
     spaceId: space.roomId,
@@ -31,7 +31,6 @@ const useSpaces = () => {
     addItem: addRoom,
     updateItem: updateRoom,
     deleteWhen: deleteRoomWhen,
-    clearItems: clearRooms,
   } = useList<PartialRoom>(hasRoomRepeat)
 
   const {
@@ -39,27 +38,7 @@ const useSpaces = () => {
     addItem: addSpace,
     updateItem: updateSpace,
     deleteWhen: deleteSpaceWhen,
-  } = useList<Space>(hasSpaceRepeat)
-
-  const onReloadRooms = useCallback(() => {
-    if (client === null) {
-      return
-    }
-
-    clearRooms()
-
-    for (const room of client.getRooms()) {
-      if (room.isSpaceRoom()) {
-        continue
-      }
-
-      addRoom({
-        roomId: room.roomId,
-        roomName: room.name,
-        id: generateUniqueNumber(),
-      })
-    }
-  }, [addRoom, clearRooms, client])
+  } = useList<PartialSpace>(hasSpaceRepeat)
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -136,7 +115,7 @@ const useSpaces = () => {
     deleteRoomWhen(roomIter => roomIter.roomId === room.roomId)
   })
 
-  return {spaces, allRooms, onReloadRooms}
+  return {spaces, allRooms}
 }
 
 export default useSpaces

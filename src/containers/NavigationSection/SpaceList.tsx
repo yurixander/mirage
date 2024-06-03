@@ -5,8 +5,14 @@ import useSpaces from "./hooks/useSpaces"
 import RoomChildList from "./RoomChildList"
 import {generateUniqueNumber} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import {SpaceDetail} from "./Space"
+import {SpaceDetail} from "./SpaceDetail"
 import AllRooms from "./AllRooms"
+import {IoAddCircle, IoSearchCircle} from "react-icons/io5"
+import {type ContextMenuItem} from "@/components/ContextMenu"
+import {
+  SidebarModals,
+  useSidebarModalActiveStore,
+} from "./hooks/useSidebarActions"
 
 export type PartialRoom = {
   id: number
@@ -18,6 +24,21 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
   const {spaces, allRooms} = useSpaces()
   const {setActiveRoomId} = useActiveRoomIdStore()
   const [roomSelectedId, setRoomSelectedId] = useState<number>()
+  const {setActiveSidebarModal} = useSidebarModalActiveStore()
+
+  const CONTEXT_MENU_EXPLORE_ROOM: ContextMenuItem = {
+    icon: IoSearchCircle,
+    text: "Explore rooms",
+    onClick: () => {},
+  }
+
+  const CONTEXT_MENU_CREATE_ROOM: ContextMenuItem = {
+    icon: IoAddCircle,
+    text: "Create room",
+    onClick: () => {
+      setActiveSidebarModal(SidebarModals.CreateRoom)
+    },
+  }
 
   return (
     <>
@@ -38,7 +59,11 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
               <SpaceDetail
                 id={generateUniqueNumber()}
                 title={space.name}
-                key={space.spaceId}>
+                key={space.spaceId}
+                menuElements={[
+                  CONTEXT_MENU_CREATE_ROOM,
+                  CONTEXT_MENU_EXPLORE_ROOM,
+                ]}>
                 <RoomChildList
                   spaceId={space.spaceId}
                   roomSelected={roomSelectedId}

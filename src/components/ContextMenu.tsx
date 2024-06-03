@@ -12,6 +12,7 @@ import {
 } from "react-icons/io5"
 import {IoIosSettings, IoMdDownload, IoMdTrash} from "react-icons/io"
 import useClickOutside from "@/hooks/util/useClickOutside"
+import {createPortal} from "react-dom"
 
 export const CONTEXT_MENU_REPLY = {
   text: "Reply",
@@ -128,41 +129,44 @@ const ContextMenu: FC<ContextMenuProps> = ({
         {children}
       </div>
 
-      {isActive && points !== null && (
-        <div
-          ref={dropdownRef}
-          className="absolute z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-gray-100 bg-white p-1.5 shadow-lg"
-          style={{
-            left: `${points.x}px`,
-            top: `${points.y}px`,
-          }}>
-          {elements.map((element, index) => (
-            <div
-              className="flex max-h-7 cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-gray-100"
-              onClick={() => {
-                element.onClick()
-                hideMenu()
-              }}
-              role="button"
-              aria-hidden
-              key={index}>
-              <div className="flex size-5 items-center justify-center">
-                <element.icon
-                  className="text-gray-700"
-                  size={20}
-                  style={{color: element.color}}
-                />
-              </div>
+      {isActive &&
+        points !== null &&
+        createPortal(
+          <div
+            ref={dropdownRef}
+            className="fixed z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-gray-100 bg-white p-1.5 shadow-lg"
+            style={{
+              left: `${points.x}px`,
+              top: `${points.y}px`,
+            }}>
+            {elements.map((element, index) => (
+              <div
+                className="flex max-h-7 cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-gray-100"
+                onClick={() => {
+                  element.onClick()
+                  hideMenu()
+                }}
+                role="button"
+                aria-hidden
+                key={index}>
+                <div className="flex size-5 items-center justify-center">
+                  <element.icon
+                    className="text-gray-700"
+                    size={20}
+                    style={{color: element.color}}
+                  />
+                </div>
 
-              <Typography
-                style={{color: element.color}}
-                className="font-medium text-gray-700">
-                {element.text}
-              </Typography>
-            </div>
-          ))}
-        </div>
-      )}
+                <Typography
+                  style={{color: element.color}}
+                  className="font-medium text-gray-700">
+                  {element.text}
+                </Typography>
+              </div>
+            ))}
+          </div>,
+          document.body
+        )}
     </>
   )
 }
