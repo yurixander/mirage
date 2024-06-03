@@ -78,7 +78,6 @@ const ImageMessage: FC<ImageMessageProps> = ({
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events
         <div
           role="button"
-          tabIndex={0}
           aria-hidden
           className="max-h-52 max-w-44 overflow-hidden rounded-xl"
           onClick={() => {
