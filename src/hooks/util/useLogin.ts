@@ -3,8 +3,8 @@ import {createClient, SyncState} from "matrix-js-sdk"
 import {useState, useCallback, useEffect} from "react"
 import {useNavigate} from "react-router-dom"
 import useConnection from "../matrix/useConnection"
-import Servers from "@/utils/servers"
 import useLocalStorage, {LocalStorageKey} from "./useLocalStorage"
+import {MATRIX_SERVER} from "@/utils/servers"
 
 const useLogin = () => {
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ const useLogin = () => {
     useConnection()
 
   // FIXME: Temporary default server, replace with Servers Dropdown component.
-  const baseUrl = Servers.Matrix
+  const baseUrl = MATRIX_SERVER.url
 
   const login = useCallback(async () => {
     if (isConnecting) {
