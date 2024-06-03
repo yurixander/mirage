@@ -8,15 +8,15 @@ import {generateUniqueNumber} from "@/utils/util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {hasRoomRepeat} from "@/components/Room"
 
-export type SpaceProps = {
+export type Space = {
   name: string
   spaceId: string
 }
 
-const hasSpaceRepeat = (space1: SpaceProps, space2: SpaceProps): boolean =>
+const hasSpaceRepeat = (space1: Space, space2: Space): boolean =>
   space1.spaceId === space2.spaceId
 
-const processSpace = (space: Room): SpaceProps => {
+const processSpace = (space: Room): Space => {
   return {
     name: space.name,
     spaceId: space.roomId,
@@ -39,7 +39,7 @@ const useSpaces = () => {
     addItem: addSpace,
     updateItem: updateSpace,
     deleteWhen: deleteSpaceWhen,
-  } = useList<SpaceProps>(hasSpaceRepeat)
+  } = useList<Space>(hasSpaceRepeat)
 
   const onReloadRooms = useCallback(() => {
     if (client === null) {

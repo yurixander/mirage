@@ -144,7 +144,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
                 hideMenu()
               }}
               role="button"
-              aria-hidden="true"
+              aria-hidden
               key={index}>
               <div className="flex size-5 items-center justify-center">
                 <element.icon

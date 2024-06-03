@@ -13,9 +13,7 @@ export type DetailsProps = {
   children?: React.ReactNode
 }
 
-const SPACE_CONTEXT_MENU_ID = 991
-
-export const Space: FC<DetailsProps> = ({title, children}) => {
+export const SpaceDetail: FC<DetailsProps> = ({title, children, id}) => {
   const CONTEXT_MENU_EXPLORE_ROOM: ContextMenuItem = {
     icon: IoAddCircle,
     text: "Explore rooms",
@@ -32,15 +30,9 @@ export const Space: FC<DetailsProps> = ({title, children}) => {
         <div className="ml-auto">
           <ContextMenu
             actionType={ClickActions.LeftClick}
-            id={SPACE_CONTEXT_MENU_ID}
+            id={id}
             elements={[CONTEXT_MENU_EXPLORE_ROOM]}>
-            <IconButton
-              onClick={() => {}}
-              size={14}
-              iconClassName="text-slate-500"
-              tooltip="More actions"
-              Icon={IoEllipsisHorizontal}
-            />
+            <IoEllipsisHorizontal className="text-slate-500" size={14} />
           </ContextMenu>
         </div>
       </summary>
@@ -50,4 +42,4 @@ export const Space: FC<DetailsProps> = ({title, children}) => {
   )
 }
 
-export default Space
+export default SpaceDetail

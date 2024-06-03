@@ -1,7 +1,7 @@
 import {type FC} from "react"
 import {type PartialRoom} from "./SpaceList"
 import {emojiRandom, generateUniqueNumber} from "@/utils/util"
-import {Space} from "./Space"
+import {SpaceDetail} from "./Space"
 import Room from "@/components/Room"
 
 export type AllRoomsProps = {
@@ -12,7 +12,7 @@ export type AllRoomsProps = {
 
 const AllRooms: FC<AllRoomsProps> = ({rooms, onRoomClick, roomSelectedId}) => {
   return (
-    <Space id={generateUniqueNumber()} title="All rooms">
+    <SpaceDetail id={generateUniqueNumber()} title="All rooms">
       <div className="flex flex-col gap-1">
         {rooms.map((room, index) => (
           <Room
@@ -26,7 +26,7 @@ const AllRooms: FC<AllRoomsProps> = ({rooms, onRoomClick, roomSelectedId}) => {
           />
         ))}
       </div>
-    </Space>
+    </SpaceDetail>
   )
 }
 

@@ -5,7 +5,7 @@ import useSpaces from "./hooks/useSpaces"
 import RoomChildList from "./RoomChildList"
 import {generateUniqueNumber} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import {Space} from "./Space"
+import {SpaceDetail} from "./Space"
 import AllRooms from "./AllRooms"
 
 export type PartialRoom = {
@@ -35,7 +35,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
             />
 
             {spaces.map(space => (
-              <Space
+              <SpaceDetail
                 id={generateUniqueNumber()}
                 title={space.name}
                 key={space.spaceId}>
@@ -44,7 +44,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
                   roomSelected={roomSelectedId}
                   setRoomSelected={setRoomSelectedId}
                 />
-              </Space>
+              </SpaceDetail>
             ))}
           </>
         ) : (
