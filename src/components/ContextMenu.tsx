@@ -139,7 +139,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
           {elements.map((element, index) => (
             <div
               className="flex max-h-7 cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-gray-100"
-              onClick={e => {
+              onClick={() => {
                 element.onClick()
                 hideMenu()
               }}

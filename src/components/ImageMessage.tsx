@@ -111,19 +111,19 @@ const ImageMessage: FC<ImageMessageProps> = ({
         }
       />
 
-      <ContextMenu id={timestamp} elements={contextMenuItems} />
-
-      <MessageContainer
-        authorDisplayName={authorDisplayName}
-        authorDisplayNameColor={authorDisplayNameColor}
-        authorAvatarUrl={authorAvatarUrl}
-        children={content}
-        timestamp={timestamp}
-        onAuthorClick={onAuthorClick}
-        onMessageRightClick={event => {
-          showMenu(timestamp, event)
-        }}
-      />
+      <ContextMenu id={timestamp} elements={contextMenuItems}>
+        <MessageContainer
+          authorDisplayName={authorDisplayName}
+          authorDisplayNameColor={authorDisplayNameColor}
+          authorAvatarUrl={authorAvatarUrl}
+          children={content}
+          timestamp={timestamp}
+          onAuthorClick={onAuthorClick}
+          onMessageRightClick={event => {
+            showMenu(timestamp, event)
+          }}
+        />
+      </ContextMenu>
     </>
   )
 }
