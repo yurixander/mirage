@@ -6,7 +6,7 @@ import Room from "@/components/Room"
 
 export type AllRoomsProps = {
   rooms: PartialRoom[]
-  onRoomClick: (roomId: string) => void
+  onRoomClick: (room: PartialRoom) => void
   roomSelectedId?: number
 }
 
@@ -21,7 +21,7 @@ const AllRooms: FC<AllRoomsProps> = ({rooms, onRoomClick, roomSelectedId}) => {
             tagEmoji={emojiRandom()}
             isSelected={roomSelectedId === room.id}
             onRoomClick={() => {
-              onRoomClick(room.roomId)
+              onRoomClick(room)
             }}
           />
         ))}

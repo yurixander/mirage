@@ -1,4 +1,4 @@
-import {useEffect} from "react"
+import {useCallback, useEffect} from "react"
 import useList from "../../../hooks/util/useList"
 import useConnection from "../../../hooks/matrix/useConnection"
 import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
@@ -39,6 +39,17 @@ const useSpaces = () => {
     updateItem: updateSpace,
     deleteWhen: deleteSpaceWhen,
   } = useList<PartialSpace>(hasSpaceRepeat)
+
+  const onSpaceExit = useCallback(
+    (spaceId: string) => {
+      if (client === null) {
+        return
+      }
+
+      void client.leave(spaceId)
+    },
+    [client]
+  )
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -115,7 +126,7 @@ const useSpaces = () => {
     deleteRoomWhen(roomIter => roomIter.roomId === room.roomId)
   })
 
-  return {spaces, allRooms}
+  return {spaces, allRooms, onSpaceExit}
 }
 
 export default useSpaces

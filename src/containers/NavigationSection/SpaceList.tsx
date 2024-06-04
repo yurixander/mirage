@@ -13,6 +13,7 @@ import {
   SidebarModals,
   useSidebarModalActiveStore,
 } from "./hooks/useSidebarActions"
+import {IoMdLogOut} from "react-icons/io"
 
 export type PartialRoom = {
   id: number
@@ -21,7 +22,7 @@ export type PartialRoom = {
 }
 
 const SpaceList: FC<{className?: string}> = ({className}) => {
-  const {spaces, allRooms} = useSpaces()
+  const {spaces, allRooms, onSpaceExit} = useSpaces()
   const {setActiveRoomId} = useActiveRoomIdStore()
   const [roomSelectedId, setRoomSelectedId] = useState<number>()
   const {setActiveSidebarModal} = useSidebarModalActiveStore()
@@ -51,7 +52,10 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
           <>
             <AllRooms
               rooms={allRooms}
-              onRoomClick={setActiveRoomId}
+              onRoomClick={room => {
+                setActiveRoomId(room.roomId)
+                setRoomSelectedId(room.id)
+              }}
               roomSelectedId={roomSelectedId}
             />
 
@@ -63,6 +67,14 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
                 menuElements={[
                   CONTEXT_MENU_CREATE_ROOM,
                   CONTEXT_MENU_EXPLORE_ROOM,
+                  {
+                    icon: IoMdLogOut,
+                    text: "Exit",
+                    color: "red",
+                    onClick() {
+                      onSpaceExit(space.spaceId)
+                    },
+                  },
                 ]}>
                 <RoomChildList
                   spaceId={space.spaceId}
