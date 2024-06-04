@@ -11,6 +11,7 @@ import useConnection from "@/hooks/matrix/useConnection"
 import {EventType} from "matrix-js-sdk"
 import AvatarUploader from "./AvatarUploader"
 import {useSidebarModalActiveStore} from "@/containers/NavigationSection/hooks/useSidebarActions"
+import Loader from "./Loader"
 
 const CreateSpaceModal: FC = () => {
   const {client} = useConnection()
@@ -66,62 +67,70 @@ const CreateSpaceModal: FC = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-6 border-b border-slate-300 p-6">
-        <div className="flex items-center gap-2">
-          <AvatarUploader onAvatarUploaded={setSpaceAvatarUrl} />
-
-          <div className="flex flex-col">
-            <Typography
-              className="font-bold text-black"
-              variant={TypographyVariant.H3}>
-              Create Space
-            </Typography>
-
-            <Typography variant={TypographyVariant.P}>
-              Spaces are a new way of grouping rooms and people. What kind of
-              space you want to create you can change
-            </Typography>
-          </div>
+      {client === null ? (
+        <div className="flex h-96 w-full items-center justify-center">
+          <Loader text="Loading" />
         </div>
+      ) : (
+        <>
+          <div className="flex flex-col gap-6 border-b border-slate-300 p-6">
+            <div className="flex items-center gap-2">
+              <AvatarUploader onAvatarUploaded={setSpaceAvatarUrl} />
 
-        <div className="flex flex-col gap-3">
-          <InputSection
-            title="* Space Name"
-            placeholder="Ej. Figma Community"
-            onValueChange={setSpaceName}
-          />
+              <div className="flex flex-col">
+                <Typography
+                  className="font-bold text-black"
+                  variant={TypographyVariant.H3}>
+                  Create Space
+                </Typography>
 
-          {/* TODO: This input description prefer use `text-area` */}
-          <div className="flex flex-col gap-1">
-            <Typography variant={TypographyVariant.Span}>
-              Description (optional)
-            </Typography>
+                <Typography variant={TypographyVariant.P}>
+                  Spaces are a new way of grouping rooms and people. What kind
+                  of space you want to create you can change
+                </Typography>
+              </div>
+            </div>
 
-            <InputArea
-              className="w-full"
-              onValueChange={setSpaceDescription}
-              value={spaceDescription}
-              placeholder="Write a brief description of what your space will be about."
+            <div className="flex flex-col gap-3">
+              <InputSection
+                title="* Space Name"
+                placeholder="Ej. Figma Community"
+                onValueChange={setSpaceName}
+              />
+
+              {/* TODO: This input description prefer use `text-area` */}
+              <div className="flex flex-col gap-1">
+                <Typography variant={TypographyVariant.Span}>
+                  Description (optional)
+                </Typography>
+
+                <InputArea
+                  className="w-full"
+                  onValueChange={setSpaceDescription}
+                  value={spaceDescription}
+                  placeholder="Write a brief description of what your space will be about."
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-1 overflow-hidden">
+              <ReactSVG src={StaticAssetPath.DotGrid} />
+
+              <ReactSVG src={StaticAssetPath.DotGrid} />
+            </div>
+          </div>
+
+          <div className="flex justify-end bg-gray-50 p-3">
+            <Button
+              size={ButtonSize.Small}
+              label="Create Space"
+              isLoading={isCreatingSpace}
+              isDisabled={client === null || spaceName.length <= 0}
+              onClick={onCreateSpace}
             />
           </div>
-        </div>
-
-        <div className="flex gap-1 overflow-hidden">
-          <ReactSVG src={StaticAssetPath.DotGrid} />
-
-          <ReactSVG src={StaticAssetPath.DotGrid} />
-        </div>
-      </div>
-
-      <div className="flex justify-end bg-gray-50 p-3">
-        <Button
-          size={ButtonSize.Small}
-          label="Create Space"
-          isLoading={isCreatingSpace}
-          isDisabled={client === null || spaceName.length <= 0}
-          onClick={onCreateSpace}
-        />
-      </div>
+        </>
+      )}
     </div>
   )
 }

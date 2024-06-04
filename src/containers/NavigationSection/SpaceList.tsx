@@ -41,6 +41,14 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
     },
   }
 
+  const CONTEXT_MENU_CREATE_SPACE: ContextMenuItem = {
+    icon: IoAddCircle,
+    text: "Create space",
+    onClick: () => {
+      setActiveSidebarModal(SidebarModals.CreateSpace)
+    },
+  }
+
   return (
     <>
       <div
@@ -65,6 +73,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
                 title={space.name}
                 key={space.spaceId}
                 menuElements={[
+                  CONTEXT_MENU_CREATE_SPACE,
                   CONTEXT_MENU_CREATE_ROOM,
                   CONTEXT_MENU_EXPLORE_ROOM,
                   {
