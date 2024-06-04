@@ -5,7 +5,6 @@ import {emojiRandom} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import Room from "@/components/Room"
 import LoadingEffect from "@/components/LoadingEffect"
-import Typography, {TypographyVariant} from "@/components/Typography"
 
 export type RoomChildListProps = {
   spaceId: string
@@ -46,19 +45,23 @@ const RoomChildList: FC<RoomChildListProps> = ({
 }
 
 const ChildListPlaceholder: FC = () => {
-  const itemsCount = Array.from({length: 2}, (_, number) => "A".repeat(number))
+  const itemsCount = Array.from(
+    {length: 2},
+    (_, number) => (number + 1) * 20 + 60
+  )
 
-  return itemsCount.map(item => (
-    <div
-      key={item}
-      className="ml-4 w-max overflow-hidden rounded-md bg-neutral-300 p-1 px-2">
-      <Typography variant={TypographyVariant.P} className="text-neutral-300">
-        Example 3-5{item}
-      </Typography>
-
-      <LoadingEffect />
+  return (
+    <div className="flex flex-col gap-1">
+      {itemsCount.map(item => (
+        <div
+          key={item}
+          className="ml-3 h-5 w-20 overflow-hidden rounded-md bg-neutral-300"
+          style={{width: `${item}px`}}>
+          <LoadingEffect />
+        </div>
+      ))}
     </div>
-  ))
+  )
 }
 
 export default RoomChildList
