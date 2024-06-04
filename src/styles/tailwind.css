@@ -64,6 +64,7 @@ textarea:disabled {
   border-radius: 10px;
   box-shadow: 0 0 5px 0 solid rgba(0, 0, 0, 0.5);
 }
+
 .slider::-moz-range-thumb {
   appearance: none;
   width: 14px;
