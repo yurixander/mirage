@@ -1,23 +1,21 @@
+import Modal, {type ModalProps} from "@/components/Modal"
+import Typography from "@/components/Typography"
 import {type Meta, type StoryObj} from "@storybook/react"
-import Button from "../components/Button"
-import Modal, {
-  type ModalProps as ModalProperties,
-} from "../components/ModalHandler"
 
 type Story = StoryObj<typeof Modal>
 
 const meta: Meta<typeof Modal> = {component: Modal}
-const render = (arguments_: ModalProperties) => <Modal {...arguments_} />
 
-export const WithTwoDialogs: Story = {
+const render = (args: ModalProps) => <Modal {...args} />
+
+export const Default: Story = {
   render,
   args: {
-    children: (
-      <div key={0}>
-        <Button onClick={() => {}} label="showPopup2" />
-      </div>
-    ),
-    isVisible: true,
+    title: "New Space",
+    actionText: "Create Space",
+    children: <Typography>Helooooo</Typography>,
+    onAccept: () => {},
+    onClose: () => {},
   },
 }
 
