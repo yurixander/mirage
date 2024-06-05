@@ -12,7 +12,16 @@ const meta: Meta<typeof ProgressBar> = {
 }
 const render = (args: ProgressBarProps) => <ProgressBar {...args} />
 
-export const Default: Story = {
+export const LinearProgress: Story = {
+  render,
+  args: {
+    className: "max-w-44",
+    state: ProgressBarState.Progress,
+    progress: 51,
+  },
+}
+
+export const LinearError: Story = {
   render,
   args: {
     className: "max-w-44",
@@ -21,10 +30,37 @@ export const Default: Story = {
   },
 }
 
-export const Circular: Story = {
+export const LinearCompleted: Story = {
+  render,
+  args: {
+    className: "max-w-44",
+    state: ProgressBarState.Completed,
+    progress: 51,
+  },
+}
+
+export const CircularProgress: Story = {
   render,
   args: {
     state: ProgressBarState.Progress,
+    variant: ProgressBarVariant.Circular,
+    progress: 51,
+  },
+}
+
+export const CircularError: Story = {
+  render,
+  args: {
+    state: ProgressBarState.Error,
+    variant: ProgressBarVariant.Circular,
+    progress: 51,
+  },
+}
+
+export const CircularCompleted: Story = {
+  render,
+  args: {
+    state: ProgressBarState.Completed,
     variant: ProgressBarVariant.Circular,
     progress: 51,
   },

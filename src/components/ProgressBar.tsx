@@ -74,10 +74,11 @@ const LinearProgressBar: FC<LinearProgressBarProps> = ({
   className,
 }) => {
   return (
-    <div className={twMerge("flex items-center gap-1", className)}>
+    <div className={twMerge("flex items-center gap-1")}>
       <div
         className={twMerge(
-          "h-2 w-full overflow-hidden rounded-full bg-gray-300"
+          "h-2 w-full overflow-hidden rounded-full bg-gray-300",
+          className
         )}>
         <div
           className={twMerge(
@@ -121,8 +122,8 @@ const CircularProgressBar: FC<CircularProgressBarProps> = ({
       className={twMerge(
         "flex size-14 items-center justify-center rounded-full border-4",
         isCompleted && "border-green-500",
-        isError && "shadow-circleProgressError border-red-500",
-        !(isCompleted || isError) && "shadow-circleProgress border-purple-500",
+        isError && "border-red-500 shadow-circleProgressError",
+        !(isCompleted || isError) && "border-purple-500 shadow-circleProgress",
         className
       )}>
       <Typography
