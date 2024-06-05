@@ -50,7 +50,7 @@ const Modal: FC<ModalProps> = ({
         />
       </div>
 
-      <div className="flex flex-col gap-6 border-b border-slate-300 p-6">
+      <div className="flex w-full flex-col gap-6 border-b border-slate-300 bg-white p-6">
         {children}
 
         <div className="flex gap-1 overflow-hidden">
