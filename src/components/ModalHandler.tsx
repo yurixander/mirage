@@ -27,7 +27,7 @@ const popupPositionClass: {[key in ModalPosition]: string} = {
   [ModalPosition.Center]: "items-center justify-center",
 }
 
-const Modal: FC = () => {
+const ModalHandler: FC = () => {
   const {modalActive, position, renderLocation} = useActiveModalStore()
 
   const targetElement =
@@ -52,4 +52,4 @@ const Modal: FC = () => {
   )
 }
 
-export default Modal
+export default ModalHandler

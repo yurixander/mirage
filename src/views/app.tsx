@@ -6,7 +6,7 @@ import {useEffect, type FC} from "react"
 import {useNavigate} from "react-router-dom"
 import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
 import NavigationSection from "@/containers/NavigationSection"
-import Modal from "@/components/Modal"
+import ModalHandler from "@/components/ModalHandler"
 
 const AppView: FC = () => {
   const navigate = useNavigate()
@@ -32,7 +32,7 @@ const AppView: FC = () => {
 
   return (
     <>
-      <Modal />
+      <ModalHandler />
 
       <div className="flex size-full flex-row">
         <NavigationSection />
