@@ -17,6 +17,7 @@ export type TypographyProps = {
   variant?: TypographyVariant
   as?: keyof React.JSX.IntrinsicElements
   children?: React.ReactNode
+  onClick?: () => void
 }
 
 function getTagFromVariant(
@@ -41,6 +42,7 @@ function getTagFromVariant(
 }
 
 const Typography: FC<TypographyProps> = ({
+  onClick,
   variant = TypographyVariant.Body,
   as,
   className,
@@ -57,13 +59,14 @@ const Typography: FC<TypographyProps> = ({
         : variant === TypographyVariant.Heading
           ? "font-unbounded xl:text-xl text-lg font-medium"
           : variant === TypographyVariant.Body
-            ? "xl:text-base text-sm"
+            ? "text-base"
             : variant === TypographyVariant.BodyMedium
               ? "text-sm"
               : "text-xs"
 
   return (
     <Component
+      onClick={onClick}
       style={style}
       className={twMerge("leading-160", className, variantClass)}>
       {children}

@@ -100,18 +100,15 @@ const ImageMessage: FC<ImageMessageProps> = ({
   // NOTE: `id` attribute should be unique to avoid duplicate context menus.
   return (
     <>
-      <Modal
-        isVisible={isImageModalShowed}
-        children={
-          <ImageModal
-            onDeleteImage={onDeleteMessage}
-            imageUrl={imageUrl}
-            onClose={() => {
-              setImageModalShow(false)
-            }}
-          />
-        }
-      />
+      <Modal isVisible={isImageModalShowed}>
+        <ImageModal
+          onDeleteImage={onDeleteMessage}
+          imageUrl={imageUrl}
+          onClose={() => {
+            setImageModalShow(false)
+          }}
+        />
+      </Modal>
 
       <ContextMenu id={timestamp} elements={contextMenuItems} />
 

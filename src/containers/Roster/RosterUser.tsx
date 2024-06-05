@@ -44,10 +44,11 @@ const RosterUser: FC<RosterUserProps> = ({
       <UserProfile
         avatarUrl={avatarUrl}
         displayName={displayName}
-        displayNameColor={stringToColor(userId)}>
+        displayNameColor={stringToColor(userId)}
+        isNameShorted>
         <Typography
           className="line-clamp-1"
-          variant={TypographyVariant.BodyMedium}>
+          variant={TypographyVariant.BodySmall}>
           {text}
         </Typography>
       </UserProfile>

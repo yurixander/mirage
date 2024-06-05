@@ -77,7 +77,7 @@ const CreateSpaceModal: FC = () => {
               Create Space
             </Typography>
 
-            <Typography variant={TypographyVariant.Body}>
+            <Typography variant={TypographyVariant.BodySmall}>
               Spaces are a new way of grouping rooms and people. What kind of
               space you want to create you can change
             </Typography>

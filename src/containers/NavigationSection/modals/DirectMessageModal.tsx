@@ -133,13 +133,11 @@ const DirectMessageModal: FC = () => {
                   <UserProfile
                     displayName={userProps.displayName}
                     displayNameColor={stringToColor(userProps.userId)}
-                    avatarUrl={userProps.avatarUrl}
-                    children={
-                      <Typography variant={TypographyVariant.Body}>
-                        {userProps.userId}
-                      </Typography>
-                    }
-                  />
+                    avatarUrl={userProps.avatarUrl}>
+                    <Typography variant={TypographyVariant.BodySmall}>
+                      {userProps.userId}
+                    </Typography>
+                  </UserProfile>
                 </div>
               ))}
         </div>

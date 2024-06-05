@@ -7,6 +7,7 @@ import ContextMenu, {
   useContextMenuStore,
   type ContextMenuItem,
 } from "./ContextMenu"
+import Typography, {TypographyVariant} from "./Typography"
 
 const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
@@ -46,10 +47,12 @@ const TextMessage: FC<MessageBaseProps> = ({
         onMessageRightClick={event => {
           showMenu(timestamp, event)
         }}>
-        <div className="max-w-messageMaxWidth select-text break-words leading-160">
+        <Typography
+          className="max-w-messageMaxWidth select-text break-words"
+          variant={TypographyVariant.Body}>
           {/* TODO: Process line breaks (\n). */}
           {text}
-        </div>
+        </Typography>
       </MessageContainer>
     </>
   )

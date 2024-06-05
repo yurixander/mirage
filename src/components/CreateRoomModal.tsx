@@ -53,7 +53,7 @@ const CreateRoomModal: FC = () => {
           />
 
           <div className="flex flex-col gap-1">
-            <Typography variant={TypographyVariant.BodySmall}>
+            <Typography variant={TypographyVariant.BodyMedium}>
               Room Privacy
             </Typography>
 
@@ -89,11 +89,11 @@ const CreateRoomModal: FC = () => {
               <div className="flex max-w-64 flex-col">
                 <Typography
                   className="font-medium text-black"
-                  variant={TypographyVariant.BodySmall}>
+                  variant={TypographyVariant.Body}>
                   Turn on end-to-end encryption
                 </Typography>
 
-                <Typography variant={TypographyVariant.Body}>
+                <Typography variant={TypographyVariant.BodySmall}>
                   You won't be able to turn it off later. Bridges and most of
                   robots still won't work.
                 </Typography>
