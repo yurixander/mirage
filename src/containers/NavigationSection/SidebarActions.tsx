@@ -83,13 +83,17 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
       aria-hidden="true">
       <Icon className="text-slate-400" />
 
-      <Typography className="line-clamp-1 font-medium text-slate-600">
+      <Typography
+        variant={TypographyVariant.BodyMedium}
+        className="line-clamp-1 font-medium text-slate-600">
         {name}
       </Typography>
 
       {unreadNotifications !== undefined && (
         <div className="flex size-5 items-center justify-center rounded-full bg-red-500 font-medium">
-          <Typography variant={TypographyVariant.Body} className="text-white">
+          <Typography
+            variant={TypographyVariant.BodySmall}
+            className="text-white">
             {unreadNotifications}
           </Typography>
         </div>

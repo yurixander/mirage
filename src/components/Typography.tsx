@@ -7,6 +7,7 @@ export enum TypographyVariant {
   HeadingMedium,
   Heading,
   Body,
+  BodyMedium,
   BodySmall,
 }
 
@@ -32,7 +33,8 @@ function getTagFromVariant(
       return "h3"
     }
     case TypographyVariant.Body:
-    case TypographyVariant.BodySmall: {
+    case TypographyVariant.BodySmall:
+    case TypographyVariant.BodyMedium: {
       return "p"
     }
   }
@@ -49,14 +51,16 @@ const Typography: FC<TypographyProps> = ({
 
   const variantClass =
     variant === TypographyVariant.HeadingLarge
-      ? "font-unbounded text-4xl font-semibold"
+      ? "font-unbounded xl:text-4xl text-2xl font-semibold"
       : variant === TypographyVariant.HeadingMedium
-        ? "font-unbounded text-2xl font-medium"
+        ? "font-unbounded xl:text-2xl text-xl font-medium"
         : variant === TypographyVariant.Heading
-          ? "font-unbounded text-xl font-medium"
+          ? "font-unbounded xl:text-xl text-lg font-medium"
           : variant === TypographyVariant.Body
-            ? "text-base"
-            : "text-sm"
+            ? "xl:text-base text-sm"
+            : variant === TypographyVariant.BodyMedium
+              ? "text-sm"
+              : "text-xs"
 
   return (
     <Component

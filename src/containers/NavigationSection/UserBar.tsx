@@ -30,6 +30,7 @@ const UserBar: FC<{className?: string}> = ({className}) => {
 
             <div className="flex flex-col">
               <Typography
+                variant={TypographyVariant.BodyMedium}
                 style={{color: stringToColor(userData.userId)}}
                 className="line-clamp-1 font-bold">
                 {userData.displayName}
@@ -37,7 +38,7 @@ const UserBar: FC<{className?: string}> = ({className}) => {
 
               <Typography
                 className="line-clamp-1"
-                variant={TypographyVariant.Body}>
+                variant={TypographyVariant.BodySmall}>
                 {trim(getUsernameByUserId(userData.userId), MAX_USER_ID_LENGTH)}
               </Typography>
             </div>

@@ -26,18 +26,20 @@ const Room: FC<RoomProps> = ({
   return (
     <div
       className={twMerge(
-        "flex gap-2 rounded-md p-1 px-2",
+        "flex items-center gap-2 rounded-md p-1 px-2",
         isSelected ? "bg-purple-500" : "hover:bg-slate-200"
       )}
       role="button"
       aria-hidden="true"
       onClick={onRoomClick}>
       <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
-        <Typography variant={TypographyVariant.Body}>{tagEmoji}</Typography>
+        <Typography variant={TypographyVariant.BodyMedium}>
+          {tagEmoji}
+        </Typography>
       </div>
 
       <Typography
-        variant={TypographyVariant.Body}
+        variant={TypographyVariant.BodySmall}
         className={twMerge(
           "line-clamp-1 font-bold",
           isSelected ? "text-white" : "text-slate-500"

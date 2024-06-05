@@ -1,5 +1,5 @@
 import IconButton from "@/components/IconButton"
-import Typography from "@/components/Typography"
+import Typography, {TypographyVariant} from "@/components/Typography"
 import React, {memo, type FC} from "react"
 import {IoEllipsisHorizontal} from "react-icons/io5"
 
@@ -18,7 +18,11 @@ export const Details: FC<DetailsProps> = ({
   return (
     <details className="cursor-pointer">
       <summary className="flex gap-1.5 text-sm font-bold text-slate-500">
-        <Typography className="line-clamp-1">{title.toUpperCase()}</Typography>
+        <Typography
+          className="line-clamp-1"
+          variant={TypographyVariant.BodyMedium}>
+          {title.toUpperCase()}
+        </Typography>
 
         <IconButton
           className="ml-auto"
