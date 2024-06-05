@@ -2,6 +2,7 @@ import {type Meta, type StoryObj} from "@storybook/react"
 import ProgressBar, {
   type ProgressBarProps,
   ProgressBarState,
+  ProgressBarVariant,
 } from "../components/ProgressBar"
 
 type Story = StoryObj<typeof ProgressBar>
@@ -16,6 +17,15 @@ export const Default: Story = {
   args: {
     className: "max-w-44",
     state: ProgressBarState.Error,
+    progress: 51,
+  },
+}
+
+export const Circular: Story = {
+  render,
+  args: {
+    state: ProgressBarState.Progress,
+    variant: ProgressBarVariant.Circular,
     progress: 51,
   },
 }
