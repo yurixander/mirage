@@ -105,7 +105,7 @@ const DirectMessageModal: FC = () => {
         />
       </div>
 
-      <Typography>
+      <Typography variant={TypographyVariant.BodyMedium}>
         Start a conversation with someone using their name or username
         (@username:matrix.org).
       </Typography>
@@ -117,11 +117,11 @@ const DirectMessageModal: FC = () => {
       />
 
       <div className="flex h-full flex-col gap-2 overflow-hidden p-1">
-        <Typography variant={TypographyVariant.Body}>
+        <Typography variant={TypographyVariant.BodyMedium}>
           RECENT CONVERSATIONS
         </Typography>
 
-        <div className="flex h-full flex-col gap-1 overflow-y-scroll scrollbar-hide">
+        <div className="flex h-full flex-col gap-1 overflow-y-scroll">
           {results === null
             ? directChats.map((directChatProps, index) => (
                 <DirectChatRecent key={index} {...directChatProps} />
@@ -144,7 +144,7 @@ const DirectMessageModal: FC = () => {
               ))}
         </div>
 
-        <Typography>
+        <Typography variant={TypographyVariant.BodyMedium}>
           Some suggestions may not be shown for privacy reasons. If you don't
           find who you're looking for, send them your invitation link below.
         </Typography>
@@ -154,7 +154,9 @@ const DirectMessageModal: FC = () => {
       <div className="flex flex-col gap-2">
         <div className="h-px w-full bg-neutral-400" />
 
-        <Typography>INVITATION LINK</Typography>
+        <Typography variant={TypographyVariant.BodyMedium}>
+          INVITATION LINK
+        </Typography>
 
         <div className="flex flex-row items-center rounded-md border border-black p-2">
           <Typography

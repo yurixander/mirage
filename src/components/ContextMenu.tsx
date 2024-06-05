@@ -134,7 +134,7 @@ const ContextMenu: FC<ContextMenuProps> = ({id, elements}) => {
                 </div>
 
                 <Typography
-                  variant={TypographyVariant.BodySmall}
+                  variant={TypographyVariant.BodyMedium}
                   style={{color: element.color}}
                   className="font-medium text-gray-700">
                   {element.text}

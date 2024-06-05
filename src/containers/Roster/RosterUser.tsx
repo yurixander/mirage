@@ -31,7 +31,7 @@ const RosterUser: FC<RosterUserProps> = ({
   const text =
     lastPresenceAge === undefined
       ? "Seen long ago"
-      : `Last presence age ${timeFormatter(lastPresenceAge)}`
+      : `Seen ${timeFormatter(lastPresenceAge)} ago`
 
   return (
     <div
@@ -45,7 +45,9 @@ const RosterUser: FC<RosterUserProps> = ({
         avatarUrl={avatarUrl}
         displayName={displayName}
         displayNameColor={stringToColor(userId)}>
-        <Typography className="line-clamp-1" variant={TypographyVariant.Body}>
+        <Typography
+          className="line-clamp-1"
+          variant={TypographyVariant.BodyMedium}>
           {text}
         </Typography>
       </UserProfile>

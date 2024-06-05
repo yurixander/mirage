@@ -39,9 +39,7 @@ const NotificationsModal: FC = () => {
         "flex max-h-[80%] min-h-[300px] w-full max-w-sm flex-col gap-2 rounded-xl bg-white p-2"
       )}>
       <div className="flex w-full p-2">
-        <Typography
-          className="mr-auto text-black"
-          variant={TypographyVariant.Heading}>
+        <Typography className="mr-auto" variant={TypographyVariant.Heading}>
           Notifications
         </Typography>
 
