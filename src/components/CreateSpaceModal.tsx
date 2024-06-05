@@ -10,7 +10,7 @@ import InputArea from "./InputArea"
 import useConnection from "@/hooks/matrix/useConnection"
 import {EventType} from "matrix-js-sdk"
 import AvatarUploader from "./AvatarUploader"
-import {useSidebarModalActiveStore} from "@/containers/NavigationSection/hooks/useSidebarActions"
+import useActiveModalStore from "@/hooks/util/useActiveModal"
 
 const CreateSpaceModal: FC = () => {
   const {client} = useConnection()
@@ -18,7 +18,7 @@ const CreateSpaceModal: FC = () => {
   const [spaceDescription, setSpaceDescription] = useState("")
   const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
   const [isCreatingSpace, setIsCreatingSpace] = useState(false)
-  const {clearActiveSidebarModal} = useSidebarModalActiveStore()
+  const {clearActiveModal} = useActiveModalStore()
 
   const onCreateSpace = () => {
     if (client === null) {
@@ -43,7 +43,7 @@ const CreateSpaceModal: FC = () => {
         // TODO: Send here notification that the room has been created.
 
         setIsCreatingSpace(false)
-        clearActiveSidebarModal()
+        clearActiveModal()
       })
       .catch(_error => {
         // TODO: Send here notification that the room has not been created.
@@ -62,7 +62,7 @@ const CreateSpaceModal: FC = () => {
         <IconButton
           tooltip="Close Modal"
           Icon={IoCloseCircle}
-          onClick={clearActiveSidebarModal}
+          onClick={clearActiveModal}
         />
       </div>
 

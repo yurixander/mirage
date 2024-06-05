@@ -1,71 +1,53 @@
-import {assert} from "@/utils/util"
+import DirectMessageModal from "@/containers/NavigationSection/modals/DirectMessageModal"
+import NotificationsModal from "@/containers/NavigationSection/modals/NotificationsModal"
 import React from "react"
 import {type FC} from "react"
 import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
+import CreateRoomModal from "./CreateRoomModal"
+import CreateSpaceModal from "./CreateSpaceModal"
+import useActiveModalStore, {
+  ModalPosition,
+  Modals,
+} from "@/hooks/util/useActiveModal"
+import {assert} from "@/utils/util"
 
-export enum ModalRenderLocation {
-  ChatContainer = "chat-container",
+const modalComponents: {[key in Modals]: React.JSX.Element} = {
+  [Modals.DirectMessages]: <DirectMessageModal />,
+  [Modals.Notifications]: <NotificationsModal />,
+  [Modals.CreateRoom]: <CreateRoomModal />,
+  [Modals.CreateSpace]: <CreateSpaceModal />,
 }
 
-export enum ModalPosition {
-  Left = "left",
-  Right = "right",
-  Top = "top",
-  Bottom = "bottom",
+const popupPositionClass: {[key in ModalPosition]: string} = {
+  [ModalPosition.Left]: "items-center justify-start",
+  [ModalPosition.Right]: "items-center justify-end",
+  [ModalPosition.Top]: "items-start justify-center",
+  [ModalPosition.Bottom]: "items-end justify-center",
+  [ModalPosition.Center]: "items-center justify-center",
 }
 
-export type ModalProps = {
-  children: React.JSX.Element
-  isVisible: boolean
-  position?: ModalPosition
-  renderLocation?: ModalRenderLocation
-}
+const Modal: FC = () => {
+  const {modalActive, position, renderLocation} = useActiveModalStore()
 
-const getPopupPositionClassName = (position?: ModalPosition): string => {
-  switch (position) {
-    case ModalPosition.Left: {
-      return "items-center justify-start"
-    }
-    case ModalPosition.Right: {
-      return "items-center justify-end"
-    }
-    case ModalPosition.Top: {
-      return "items-start justify-center"
-    }
-    case ModalPosition.Bottom: {
-      return "items-end justify-center"
-    }
-    case undefined: {
-      return "items-center justify-center"
-    }
-  }
-}
-
-const Modal: FC<ModalProps> = ({
-  position,
-  children,
-  isVisible,
-  renderLocation,
-}) => {
   const targetElement =
-    renderLocation === undefined
+    renderLocation === null
       ? document.body
       : document.querySelector(renderLocation)
 
   assert(targetElement !== null, "The render location does not exist")
 
   return (
-    isVisible &&
+    modalActive !== null &&
     createPortal(
       <div
         className={twMerge(
           "fixed inset-0 z-50 flex size-full w-screen flex-col bg-modalOverlay",
-          getPopupPositionClassName(position)
+          popupPositionClass[position]
         )}>
-        {children}
+        {modalComponents[modalActive]}
       </div>,
-      targetElement
+      document.body
     )
   )
 }

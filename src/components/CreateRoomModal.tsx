@@ -24,7 +24,7 @@ const CreateRoomModal: FC = () => {
     roomVisibility,
     enableEncryption,
     isDisabled,
-    clearActiveSidebarModal,
+    clearActiveModal,
     isValidAlias,
   } = useCreateRoom()
 
@@ -129,7 +129,7 @@ const CreateRoomModal: FC = () => {
           label="Cancel"
           variant={ButtonVariant.TextLink}
           size={ButtonSize.Small}
-          onClick={clearActiveSidebarModal}
+          onClick={clearActiveModal}
         />
 
         <Button
