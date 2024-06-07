@@ -1,6 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Button, {
-  ButtonSize,
   ButtonVariant,
   type ButtonProps as ButtonProperties,
 } from "../components/Button"
@@ -52,7 +51,7 @@ export const Small: Story = {
   args: {
     label: "Small button",
     variant: ButtonVariant.Primary,
-    size: ButtonSize.Small,
+    isSmall: true,
     onClick: () => {},
   },
 }
