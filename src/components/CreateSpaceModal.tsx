@@ -5,7 +5,7 @@ import {IoCloseCircle} from "react-icons/io5"
 import InputSection from "./InputSection"
 import {ReactSVG} from "react-svg"
 import {createSpace, StaticAssetPath} from "@/utils/util"
-import Button, {ButtonSize} from "./Button"
+import Button, {ButtonVariant} from "./Button"
 import InputArea from "./InputArea"
 import useConnection from "@/hooks/matrix/useConnection"
 import {EventType} from "matrix-js-sdk"
@@ -122,9 +122,9 @@ const CreateSpaceModal: FC = () => {
 
           <div className="flex justify-end bg-gray-50 p-3">
             <Button
-              size={ButtonSize.Small}
               label="Create Space"
               isLoading={isCreatingSpace}
+              variant={ButtonVariant.Primary}
               isDisabled={client === null || spaceName.length <= 0}
               onClick={onCreateSpace}
             />

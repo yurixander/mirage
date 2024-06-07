@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import Button, {ButtonSize, ButtonVariant} from "./Button"
+import Button, {ButtonVariant} from "./Button"
 import Typography, {TypographyVariant} from "./Typography"
 import Dropdown from "./DropdownActions"
 import {Visibility} from "matrix-js-sdk"
@@ -128,15 +128,14 @@ const CreateRoomModal: FC = () => {
         <Button
           label="Cancel"
           variant={ButtonVariant.TextLink}
-          size={ButtonSize.Small}
           onClick={clearActiveSidebarModal}
         />
 
         <Button
           label="Create Room"
+          variant={ButtonVariant.Primary}
           isDisabled={isDisabled || !isValidAlias}
           isLoading={isCreatingRoom}
-          size={ButtonSize.Small}
           onClick={onCreateRoom}
         />
       </div>
