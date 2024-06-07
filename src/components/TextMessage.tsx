@@ -35,22 +35,22 @@ const TextMessage: FC<MessageBaseProps> = ({
   // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
     <>
-      <ContextMenu id={timestamp} elements={contextMenuItems} />
-
-      <MessageContainer
-        authorDisplayName={authorDisplayName}
-        authorDisplayNameColor={authorDisplayNameColor}
-        authorAvatarUrl={authorAvatarUrl}
-        timestamp={timestamp}
-        onAuthorClick={onAuthorClick}
-        onMessageRightClick={event => {
-          showMenu(timestamp, event)
-        }}>
-        <div className="max-w-messageMaxWidth select-text break-words leading-160">
-          {/* TODO: Process line breaks (\n). */}
-          {text}
-        </div>
-      </MessageContainer>
+      <ContextMenu id={timestamp} elements={contextMenuItems}>
+        <MessageContainer
+          authorDisplayName={authorDisplayName}
+          authorDisplayNameColor={authorDisplayNameColor}
+          authorAvatarUrl={authorAvatarUrl}
+          timestamp={timestamp}
+          onAuthorClick={onAuthorClick}
+          onMessageRightClick={event => {
+            showMenu(timestamp, event)
+          }}>
+          <div className="max-w-messageMaxWidth select-text break-words leading-160">
+            {/* TODO: Process line breaks (\n). */}
+            {text}
+          </div>
+        </MessageContainer>
+      </ContextMenu>
     </>
   )
 }

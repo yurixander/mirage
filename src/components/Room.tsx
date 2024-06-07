@@ -1,6 +1,6 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
-import {memo, type FC} from "react"
+import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type RoomProps = {
@@ -46,4 +46,4 @@ const Room: FC<RoomProps> = ({
   )
 }
 
-export default memo(Room)
+export default Room

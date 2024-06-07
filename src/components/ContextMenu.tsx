@@ -11,6 +11,7 @@ import {
   IoSearchCircle,
 } from "react-icons/io5"
 import {IoIosSettings, IoMdDownload, IoMdTrash} from "react-icons/io"
+import useClickOutside from "@/hooks/util/useClickOutside"
 import {createPortal} from "react-dom"
 
 export const CONTEXT_MENU_REPLY = {
@@ -61,9 +62,18 @@ export type ContextMenuItem = {
   onClick: () => void
 }
 
+export enum ClickActions {
+  RightClick,
+  LeftClick,
+  Hold,
+}
+
 export type ContextMenuProps = {
   id: number
+  children: React.JSX.Element
   elements: ContextMenuItem[]
+  actionType?: ClickActions
+  className?: string
 }
 
 export type Points = {
@@ -91,26 +101,40 @@ export const useContextMenuStore = create<ContextMenuState>(set => ({
   },
 }))
 
-const ContextMenu: FC<ContextMenuProps> = ({id, elements}) => {
-  const {activeMenuId, hideMenu, points} = useContextMenuStore()
+const ContextMenu: FC<ContextMenuProps> = ({
+  id,
+  elements,
+  children,
+  className,
+  actionType = ClickActions.RightClick,
+}) => {
+  const {activeMenuId, hideMenu, points, showMenu} = useContextMenuStore()
+  const {dropdownRef} = useClickOutside<HTMLDivElement>(hideMenu)
   const isActive = activeMenuId === id
+  const isRightClick = actionType === ClickActions.RightClick
+  const isLeftClick = actionType === ClickActions.LeftClick
+
+  const onShowMenu = (event: React.MouseEvent<HTMLDivElement>) => {
+    showMenu(id, event)
+  }
 
   return (
     <>
-      {isActive && points !== null && (
-        <>
-          {createPortal(
-            <div
-              role="button"
-              aria-hidden
-              className="fixed inset-0 z-20 size-full h-screen w-screen cursor-default bg-transparent"
-              onClick={hideMenu}
-            />,
-            document.body
-          )}
+      <div
+        className={className}
+        role="button"
+        aria-hidden
+        onClick={isLeftClick ? onShowMenu : undefined}
+        onContextMenu={isRightClick ? onShowMenu : undefined}>
+        {children}
+      </div>
 
+      {isActive &&
+        points !== null &&
+        createPortal(
           <div
-            className="absolute z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-gray-100 bg-white p-1.5 shadow-lg"
+            ref={dropdownRef}
+            className="fixed z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-gray-100 bg-white p-1.5 shadow-lg"
             style={{
               left: `${points.x}px`,
               top: `${points.y}px`,
@@ -118,12 +142,12 @@ const ContextMenu: FC<ContextMenuProps> = ({id, elements}) => {
             {elements.map((element, index) => (
               <div
                 className="flex max-h-7 cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-gray-100"
-                onClick={e => {
+                onClick={() => {
                   element.onClick()
                   hideMenu()
                 }}
                 role="button"
-                aria-hidden="true"
+                aria-hidden
                 key={index}>
                 <div className="flex size-5 items-center justify-center">
                   <element.icon
@@ -140,9 +164,9 @@ const ContextMenu: FC<ContextMenuProps> = ({id, elements}) => {
                 </Typography>
               </div>
             ))}
-          </div>
-        </>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   )
 }
