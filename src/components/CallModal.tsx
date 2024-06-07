@@ -4,7 +4,7 @@ import IconButton from "./IconButton"
 import AvatarImage, {AvatarType} from "./Avatar"
 import {assert, validateUrl} from "@/utils/util"
 import {IoMdMic, IoMdMicOff} from "react-icons/io"
-import {IoCall, IoPause, IoVolumeHigh} from "react-icons/io5"
+import {IoCall, IoPause, IoPlay, IoVolumeHigh} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 
 export type CallModalProps = {
@@ -42,13 +42,7 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
             {name}
           </Typography>
           <Typography className="text-black" variant={TypographyVariant.P}>
-            {action === Variant.CallInProgress
-              ? "Call in Progress..."
-              : action === Variant.IcomingCall
-                ? "Incoming Call..."
-                : action === Variant.Calling
-                  ? "Conecting..."
-                  : ""}
+            {getCallAction(action)}
           </Typography>
         </div>
       </div>
@@ -71,7 +65,7 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
             onClickMic={() => {
               // TODO: Implement function to turn the microphone on or off
             }}
-            onClickPause={() => {
+            onClickPaused={() => {
               // TODO: Implement pause call function
             }}
             onClickCallEnd={() => {
@@ -93,7 +87,7 @@ const IncomingCallButtons: FC<{
       <IconButton
         className="rounded-full bg-green-400 p-3 shadow hover:bg-green-300"
         color="black"
-        tooltip="Calling"
+        tooltip="Acept"
         onClick={onClickAcept}
         Icon={IoCall}
       />
@@ -101,7 +95,7 @@ const IncomingCallButtons: FC<{
       <IconButton
         className="rotate-[135deg] rounded-full bg-red-400 p-3 shadow hover:bg-red-300 active:shadow-none"
         color="black"
-        tooltip="Call off"
+        tooltip="Decline"
         onClick={onClickCancel}
         Icon={IoCall}
       />
@@ -112,12 +106,12 @@ const IncomingCallButtons: FC<{
 const CallInProgressButtons: FC<{
   onClickSpeaker: () => void
   onClickMic: () => void
-  onClickPause: () => void
+  onClickPaused: () => void
   onClickCallEnd: () => void
-}> = ({onClickSpeaker, onClickMic, onClickPause, onClickCallEnd}) => {
+}> = ({onClickSpeaker, onClickMic, onClickPaused, onClickCallEnd}) => {
   const [micState, setMicState] = useState(true)
   const [isSpeacker, setIsSpeacker] = useState(false)
-  const [isCallPause, setIsCallPause] = useState(false)
+  const [isCallPaused, setIsCallPaused] = useState(false)
 
   return (
     <>
@@ -127,7 +121,7 @@ const CallInProgressButtons: FC<{
           isSpeacker ? "bg-purple-400 hover:bg-purple-300" : "bg-slate-100"
         )}
         color="black"
-        tooltip="Audio"
+        tooltip="Toggle speaker"
         onClick={() => {
           setIsSpeacker(!isSpeacker)
           onClickSpeaker()
@@ -138,7 +132,7 @@ const CallInProgressButtons: FC<{
       <IconButton
         className="rounded-full bg-slate-100 p-3 shadow"
         color="black"
-        tooltip="Mic off"
+        tooltip="Toggle microphone"
         onClick={() => {
           setMicState(!micState)
           onClickMic()
@@ -147,17 +141,14 @@ const CallInProgressButtons: FC<{
       />
 
       <IconButton
-        className={twMerge(
-          "rounded-full p-3 shadow",
-          isCallPause ? "bg-purple-400 hover:bg-purple-300" : "bg-slate-100"
-        )}
+        className="rounded-full bg-slate-100 p-3 shadow"
         color="black"
-        tooltip="Pause"
+        tooltip={isCallPaused ? "Play" : "Pause"}
         onClick={() => {
-          setIsCallPause(!isCallPause)
-          onClickPause()
+          setIsCallPaused(!isCallPaused)
+          onClickPaused()
         }}
-        Icon={IoPause}
+        Icon={isCallPaused ? IoPlay : IoPause}
       />
 
       <IconButton
@@ -169,6 +160,26 @@ const CallInProgressButtons: FC<{
       />
     </>
   )
+}
+
+const getCallAction = (action: Variant) => {
+  switch (action) {
+    case Variant.CallInProgress: {
+      return "Call in Progress..."
+    }
+
+    case Variant.Calling: {
+      return "Conecting..."
+    }
+
+    case Variant.IcomingCall: {
+      return "Incoming Call..."
+    }
+
+    default: {
+      return "Error in Component Call"
+    }
+  }
 }
 
 export default CallModal
