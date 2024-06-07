@@ -9,13 +9,13 @@ import {twMerge} from "tailwind-merge"
 
 export type CallModalProps = {
   name: string
+  variant: VariantCall
   avatarUrl?: string
-  variant: Variant
 }
 
-export enum Variant {
+export enum VariantCall {
   CallInProgress,
-  IcomingCall,
+  IncomingCall,
   Calling,
 }
 
@@ -41,35 +41,36 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
           <Typography className="text-black" variant={TypographyVariant.H2}>
             {name}
           </Typography>
+
           <Typography className="text-black" variant={TypographyVariant.P}>
             {getCallAction(action)}
           </Typography>
         </div>
       </div>
       <div className="flex items-center justify-center gap-3 rounded-b border-t-2 border-t-slate-200 bg-gray-50 p-2">
-        {action === Variant.IcomingCall ? (
+        {action === VariantCall.IncomingCall ? (
           <IncomingCallButtons
             onClickAcept={() => {
-              setAction(Variant.CallInProgress)
-              // TODO: Implement function to accept incoming calls
+              setAction(VariantCall.CallInProgress)
+              // TODO: Accept incoming calls
             }}
             onClickCancel={() => {
-              // TODO: Implement function to reject calls
+              // TODO: Reject calls
             }}
           />
         ) : (
           <CallInProgressButtons
             onClickSpeaker={() => {
-              // TODO: Implement function to turn audio output on and off by speaker
+              // TODO: Turn audio output on and off by speaker
             }}
             onClickMic={() => {
-              // TODO: Implement function to turn the microphone on or off
+              // TODO: Turn the microphone on or off
             }}
             onClickPaused={() => {
-              // TODO: Implement pause call function
+              // TODO: Pause call
             }}
             onClickCallEnd={() => {
-              // TODO: Implement function to terminate calls
+              // TODO: End call
             }}
           />
         )}
@@ -87,7 +88,7 @@ const IncomingCallButtons: FC<{
       <IconButton
         className="rounded-full bg-green-400 p-3 shadow hover:bg-green-300"
         color="black"
-        tooltip="Acept"
+        tooltip="Accept"
         onClick={onClickAcept}
         Icon={IoCall}
       />
@@ -162,17 +163,17 @@ const CallInProgressButtons: FC<{
   )
 }
 
-const getCallAction = (action: Variant) => {
+const getCallAction = (action: VariantCall) => {
   switch (action) {
-    case Variant.CallInProgress: {
+    case VariantCall.CallInProgress: {
       return "Call in Progress..."
     }
 
-    case Variant.Calling: {
+    case VariantCall.Calling: {
       return "Conecting..."
     }
 
-    case Variant.IcomingCall: {
+    case VariantCall.IncomingCall: {
       return "Incoming Call..."
     }
 
