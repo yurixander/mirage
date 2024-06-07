@@ -17,6 +17,8 @@ module.exports = {
       boxShadow: {
         checkBox: "inset 0 0 5px #D9D9D9",
         contextMenu: "0 0 15px 0 #bbbbbb71",
+        circleProgress: "0 2px 8px 0 #bf00ff9c",
+        circleProgressError: "0 2px 8px 0 #ff00009c",
         userCard: "0 0 5px 0 #bebebe71",
         constraint: "0 0 8px 0",
         serverSelected: "0 3px 5px 2px #D9D9D9",
