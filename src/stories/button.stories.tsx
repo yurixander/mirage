@@ -66,4 +66,14 @@ export const Loading: Story = {
   },
 }
 
+export const SecondaryLoading: Story = {
+  render,
+  args: {
+    label: "Loading",
+    variant: ButtonVariant.Secondary,
+    isLoading: true,
+    onClick: () => {},
+  },
+}
+
 export default meta
