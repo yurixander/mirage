@@ -110,8 +110,8 @@ const CallInProgressButtons: FC<{
   onClickPaused: () => void
   onClickCallEnd: () => void
 }> = ({onClickSpeaker, onClickMic, onClickPaused, onClickCallEnd}) => {
-  const [micState, setMicState] = useState(true)
-  const [isSpeacker, setIsSpeacker] = useState(false)
+  const [isMicEnabled, setIsMicEnabled] = useState(true)
+  const [isSpeackerMode, setIsSpeackerMode] = useState(false)
   const [isCallPaused, setIsCallPaused] = useState(false)
 
   return (
@@ -119,12 +119,12 @@ const CallInProgressButtons: FC<{
       <IconButton
         className={twMerge(
           "rounded-full p-3 shadow",
-          isSpeacker ? "bg-purple-400 hover:bg-purple-300" : "bg-slate-100"
+          isSpeackerMode ? "bg-purple-400 hover:bg-purple-300" : "bg-slate-100"
         )}
         color="black"
         tooltip="Toggle speaker"
         onClick={() => {
-          setIsSpeacker(!isSpeacker)
+          setIsSpeackerMode(!isSpeackerMode)
           onClickSpeaker()
         }}
         Icon={IoVolumeHigh}
@@ -135,10 +135,10 @@ const CallInProgressButtons: FC<{
         color="black"
         tooltip="Toggle microphone"
         onClick={() => {
-          setMicState(!micState)
+          setIsMicEnabled(!isMicEnabled)
           onClickMic()
         }}
-        Icon={micState ? IoMdMic : IoMdMicOff}
+        Icon={isMicEnabled ? IoMdMic : IoMdMicOff}
       />
 
       <IconButton
@@ -175,10 +175,6 @@ const getCallAction = (action: VariantCall) => {
 
     case VariantCall.IncomingCall: {
       return "Incoming Call..."
-    }
-
-    default: {
-      return "Error in Component Call"
     }
   }
 }
