@@ -9,11 +9,8 @@ import {SpaceDetail} from "./SpaceDetail"
 import AllRooms from "./AllRooms"
 import {IoAddCircle, IoSearchCircle} from "react-icons/io5"
 import {type ContextMenuItem} from "@/components/ContextMenu"
-import {
-  SidebarModals,
-  useSidebarModalActiveStore,
-} from "./hooks/useSidebarActions"
 import {IoMdLogOut} from "react-icons/io"
+import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 
 export type PartialRoom = {
   id: number
@@ -25,7 +22,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
   const {spaces, allRooms, onSpaceExit} = useSpaces()
   const {setActiveRoomId} = useActiveRoomIdStore()
   const [roomSelectedId, setRoomSelectedId] = useState<number>()
-  const {setActiveSidebarModal} = useSidebarModalActiveStore()
+  const {setActiveModal} = useActiveModalStore()
 
   const CONTEXT_MENU_EXPLORE_ROOM: ContextMenuItem = {
     icon: IoSearchCircle,
@@ -37,7 +34,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
     icon: IoAddCircle,
     text: "Create room",
     onClick: () => {
-      setActiveSidebarModal(SidebarModals.CreateRoom)
+      setActiveModal(Modals.CreateRoom)
     },
   }
 
@@ -45,7 +42,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
     icon: IoAddCircle,
     text: "Create space",
     onClick: () => {
-      setActiveSidebarModal(SidebarModals.CreateSpace)
+      setActiveModal(Modals.CreateSpace)
     },
   }
 
