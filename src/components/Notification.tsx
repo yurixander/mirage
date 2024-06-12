@@ -8,7 +8,7 @@ import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./AvatarImage"
-import Button, {ButtonSize, ButtonVariant} from "./Button"
+import Button, {ButtonVariant} from "./Button"
 import IconButton from "./IconButton"
 import Typography, {TypographyVariant} from "./Typography"
 import {type LocalNotificationData} from "../containers/NavigationSection/hooks/useCachedNotifications"
@@ -91,7 +91,7 @@ const Notification: FC<NotificationProps> = ({
           <div className="mt-2 flex flex-row gap-1">
             <Button
               label="Accept"
-              size={ButtonSize.Small}
+              isSmall
               onClick={() => {
                 if (onJoinRoom === null) {
                   return
@@ -104,7 +104,7 @@ const Notification: FC<NotificationProps> = ({
             <Button
               label="Decline"
               variant={ButtonVariant.TextLink}
-              size={ButtonSize.Small}
+              isSmall
               onClick={() => {
                 if (onLeaveRoom === null) {
                   return

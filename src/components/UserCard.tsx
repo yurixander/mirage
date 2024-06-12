@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import {timeFormatter} from "../utils/util"
-import Button, {ButtonSize, ButtonVariant} from "./Button"
+import Button, {ButtonVariant} from "./Button"
 import Label from "./Label"
 import UserProfile, {
   type UserProfileProps as UserProfileProperties,
@@ -65,14 +65,12 @@ const UserCard: FC<UserCardProps> = ({
             <Button
               label="Cancel"
               variant={ButtonVariant.TextLink}
-              size={ButtonSize.Small}
               onClick={onCancel}
             />
 
             <Button
               label="View messages ⟶"
               variant={ButtonVariant.Primary}
-              size={ButtonSize.Small}
               onClick={() => {
                 // TODO: Handle click on View messages button.
               }}

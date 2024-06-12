@@ -18,14 +18,8 @@ import {type IconType} from "react-icons"
 const LoginView: FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
-  const {
-    lastSyncError,
-    login,
-    setPassword,
-    setUserId,
-    syncState,
-    isConnecting,
-  } = useLogin()
+  const {lastSyncError, login, setPassword, setUserId, isConnecting} =
+    useLogin()
 
   return (
     <div className="flex size-full max-h-screen items-center justify-center p-6">
@@ -87,7 +81,6 @@ const LoginView: FC = () => {
             <div className="flex flex-col gap-1">
               <Button
                 label={isConnecting ? "Connecting..." : "Sign in →"}
-                isDisabled={syncState === null}
                 isLoading={isConnecting}
                 onClick={() => {
                   void login()

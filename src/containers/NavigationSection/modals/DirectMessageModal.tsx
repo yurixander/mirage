@@ -13,8 +13,8 @@ import {getDirectRoomsIds, getPartnerUserIdFromRoomDirect} from "@/utils/rooms"
 import IconButton from "@/components/IconButton"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import UserProfile from "@/components/UserProfile"
-import {useSidebarModalActiveStore} from "../hooks/useSidebarActions"
 import Input from "@/components/Input"
+import useActiveModalStore from "@/hooks/util/useActiveModal"
 
 type DirectChatRecentProps = {
   userId: string
@@ -50,7 +50,7 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
 
 const DirectMessageModal: FC = () => {
   const {client} = useConnection()
-  const {clearActiveSidebarModal} = useSidebarModalActiveStore()
+  const {clearActiveModal} = useActiveModalStore()
   const [userId, setUserId] = useState<string | null>(null)
   const [directChats, setDirectChats] = useState<DirectChatRecentProps[]>([])
   const {setQuery, results} = useUsersSearch(client)
@@ -98,7 +98,7 @@ const DirectMessageModal: FC = () => {
         </Typography>
 
         <IconButton
-          onClick={clearActiveSidebarModal}
+          onClick={clearActiveModal}
           tooltip="Close"
           Icon={IoCloseCircle}
           color="gray"

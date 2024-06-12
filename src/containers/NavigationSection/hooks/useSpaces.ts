@@ -1,17 +1,22 @@
-import {useEffect} from "react"
+import {useCallback, useEffect} from "react"
 import useList from "../../../hooks/util/useList"
 import useConnection from "../../../hooks/matrix/useConnection"
-import {
-  type PartialRoom,
-  type Space,
-} from "@/containers/NavigationSection/SpaceList"
+import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {generateUniqueNumber} from "@/utils/util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {hasRoomRepeat} from "@/components/Room"
 
-const processSpace = (space: Room): Space => {
+export type PartialSpace = {
+  name: string
+  spaceId: string
+}
+
+const hasSpaceRepeat = (space1: PartialSpace, space2: PartialSpace): boolean =>
+  space1.spaceId === space2.spaceId
+
+const processSpace = (space: Room): PartialSpace => {
   return {
     name: space.name,
     spaceId: space.roomId,
@@ -22,7 +27,7 @@ const useSpaces = () => {
   const {client} = useConnection()
 
   const {
-    items,
+    items: allRooms,
     addItem: addRoom,
     updateItem: updateRoom,
     deleteWhen: deleteRoomWhen,
@@ -33,7 +38,18 @@ const useSpaces = () => {
     addItem: addSpace,
     updateItem: updateSpace,
     deleteWhen: deleteSpaceWhen,
-  } = useList<Space>((a, b) => a.spaceId === b.spaceId)
+  } = useList<PartialSpace>(hasSpaceRepeat)
+
+  const onSpaceExit = useCallback(
+    (spaceId: string) => {
+      if (client === null) {
+        return
+      }
+
+      void client.leave(spaceId)
+    },
+    [client]
+  )
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -110,7 +126,7 @@ const useSpaces = () => {
     deleteRoomWhen(roomIter => roomIter.roomId === room.roomId)
   })
 
-  return {spaces, allRooms: items}
+  return {spaces, allRooms, onSpaceExit}
 }
 
 export default useSpaces

@@ -1,16 +1,13 @@
 import {useState, type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
-import IconButton from "./IconButton"
-import {IoCloseCircle} from "react-icons/io5"
 import InputSection from "./InputSection"
-import {ReactSVG} from "react-svg"
-import {createSpace, StaticAssetPath} from "@/utils/util"
-import Button, {ButtonSize} from "./Button"
+import {createSpace} from "@/utils/util"
 import InputArea from "./InputArea"
 import useConnection from "@/hooks/matrix/useConnection"
 import {EventType} from "matrix-js-sdk"
 import AvatarUploader from "./AvatarUploader"
-import {useSidebarModalActiveStore} from "@/containers/NavigationSection/hooks/useSidebarActions"
+import useActiveModalStore from "@/hooks/util/useActiveModal"
+import Modal from "./Modal"
 
 const CreateSpaceModal: FC = () => {
   const {client} = useConnection()
@@ -18,7 +15,7 @@ const CreateSpaceModal: FC = () => {
   const [spaceDescription, setSpaceDescription] = useState("")
   const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
   const [isCreatingSpace, setIsCreatingSpace] = useState(false)
-  const {clearActiveSidebarModal} = useSidebarModalActiveStore()
+  const {clearActiveModal} = useActiveModalStore()
 
   const onCreateSpace = () => {
     if (client === null) {
@@ -43,7 +40,7 @@ const CreateSpaceModal: FC = () => {
         // TODO: Send here notification that the room has been created.
 
         setIsCreatingSpace(false)
-        clearActiveSidebarModal()
+        clearActiveModal()
       })
       .catch(_error => {
         // TODO: Send here notification that the room has not been created.
@@ -53,20 +50,14 @@ const CreateSpaceModal: FC = () => {
   }
 
   return (
-    <div className="flex max-w-md flex-col overflow-hidden rounded-md border border-slate-300 bg-white">
-      <div className="flex w-full items-center justify-between border-b border-slate-300 bg-gray-50 py-3 pl-6 pr-3">
-        <Typography className="font-bold text-black" as="span">
-          New Space
-        </Typography>
-
-        <IconButton
-          tooltip="Close Modal"
-          Icon={IoCloseCircle}
-          onClick={clearActiveSidebarModal}
-        />
-      </div>
-
-      <div className="flex flex-col gap-6 border-b border-slate-300 p-6">
+    <Modal
+      title="New Space"
+      actionText="Create Space"
+      isLoading={isCreatingSpace}
+      isDisabled={client === null || spaceName.length <= 0}
+      onAccept={onCreateSpace}
+      onClose={clearActiveModal}>
+      <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
           <AvatarUploader onAvatarUploaded={setSpaceAvatarUrl} />
 
@@ -105,24 +96,8 @@ const CreateSpaceModal: FC = () => {
             />
           </div>
         </div>
-
-        <div className="flex gap-1 overflow-hidden">
-          <ReactSVG src={StaticAssetPath.DotGrid} />
-
-          <ReactSVG src={StaticAssetPath.DotGrid} />
-        </div>
       </div>
-
-      <div className="flex justify-end bg-gray-50 p-3">
-        <Button
-          size={ButtonSize.Small}
-          label="Create Space"
-          isLoading={isCreatingSpace}
-          isDisabled={client === null || spaceName.length <= 0}
-          onClick={onCreateSpace}
-        />
-      </div>
-    </div>
+    </Modal>
   )
 }
 

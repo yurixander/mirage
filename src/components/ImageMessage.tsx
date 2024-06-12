@@ -3,7 +3,6 @@ import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import {saveAs} from "file-saver"
 import {IoIosAlert} from "react-icons/io"
 import ImageModal from "@/containers/ChatContainer/ImageModal"
-import Modal from "./Modal"
 import ContextMenu, {
   CONTEXT_MENU_DELETE,
   CONTEXT_MENU_REPLY,
@@ -12,6 +11,7 @@ import ContextMenu, {
   useContextMenuStore,
   type ContextMenuItem,
 } from "./ContextMenu"
+import {createPortal} from "react-dom"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
@@ -100,29 +100,33 @@ const ImageMessage: FC<ImageMessageProps> = ({
   // NOTE: `id` attribute should be unique to avoid duplicate context menus.
   return (
     <>
-      <Modal isVisible={isImageModalShowed}>
-        <ImageModal
-          onDeleteImage={onDeleteMessage}
-          imageUrl={imageUrl}
-          onClose={() => {
-            setImageModalShow(false)
+      {isImageModalShowed &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay">
+            <ImageModal
+              onDeleteImage={onDeleteMessage}
+              imageUrl={imageUrl}
+              onClose={() => {
+                setImageModalShow(false)
+              }}
+            />
+          </div>,
+          document.body
+        )}
+
+      <ContextMenu id={timestamp} elements={contextMenuItems}>
+        <MessageContainer
+          authorDisplayName={authorDisplayName}
+          authorDisplayNameColor={authorDisplayNameColor}
+          authorAvatarUrl={authorAvatarUrl}
+          children={content}
+          timestamp={timestamp}
+          onAuthorClick={onAuthorClick}
+          onMessageRightClick={event => {
+            showMenu(timestamp, event)
           }}
         />
-      </Modal>
-
-      <ContextMenu id={timestamp} elements={contextMenuItems} />
-
-      <MessageContainer
-        authorDisplayName={authorDisplayName}
-        authorDisplayNameColor={authorDisplayNameColor}
-        authorAvatarUrl={authorAvatarUrl}
-        children={content}
-        timestamp={timestamp}
-        onAuthorClick={onAuthorClick}
-        onMessageRightClick={event => {
-          showMenu(timestamp, event)
-        }}
-      />
+      </ContextMenu>
     </>
   )
 }
