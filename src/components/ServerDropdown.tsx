@@ -14,11 +14,15 @@ import {IoMdCheckmark} from "react-icons/io"
 const servers = [MATRIX_SERVER, CUTEFUNNYART_SERVER, TRYGVEME_SERVER]
 
 export type ServerDropdownProps = {
+  initiallyServerSelected: Server
   onServerSelected: (server: Server) => void
 }
 
-const ServerDropdown: FC<ServerDropdownProps> = ({onServerSelected}) => {
-  const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
+const ServerDropdown: FC<ServerDropdownProps> = ({
+  onServerSelected,
+  initiallyServerSelected,
+}) => {
+  const [serverSelected, setServerSelected] = useState(initiallyServerSelected)
 
   return (
     <>
