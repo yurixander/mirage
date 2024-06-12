@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
-import Dropdown from "./DropdownActions"
+import Dropdown, {type DropdownOption} from "./DropdownActions"
 import {Visibility} from "matrix-js-sdk"
 import {IoIosLock, IoMdGlobe} from "react-icons/io"
 import InputSection from "./InputSection"
@@ -9,6 +9,16 @@ import {IoGlobe} from "react-icons/io5"
 import useCreateRoom from "@/hooks/matrix/useCreateRoom"
 import {FaHashtag} from "react-icons/fa6"
 import Modal from "./Modal"
+
+const PRIVATE_DROPDOWN_OPTION: DropdownOption = {
+  Icon: IoIosLock,
+  text: "Private Room",
+}
+
+const PUBLIC_DROPDOWN_OPTION: DropdownOption = {
+  Icon: IoMdGlobe,
+  text: "Public Room",
+}
 
 const CreateRoomModal: FC = () => {
   const {
@@ -55,22 +65,17 @@ const CreateRoomModal: FC = () => {
               </Typography>
 
               <Dropdown
-                options={[
-                  {
-                    Icon: IoIosLock,
-                    label: "Private Room",
-                    onClick: () => {
-                      setRoomVisibility(Visibility.Private)
-                    },
-                  },
-                  {
-                    Icon: IoMdGlobe,
-                    label: "Public Room",
-                    onClick: () => {
-                      setRoomVisibility(Visibility.Public)
-                    },
-                  },
-                ]}
+                options={[PRIVATE_DROPDOWN_OPTION, PUBLIC_DROPDOWN_OPTION]}
+                initiallyOption={PRIVATE_DROPDOWN_OPTION}
+                onOptionSelected={option => {
+                  if (option === PRIVATE_DROPDOWN_OPTION) {
+                    setRoomVisibility(Visibility.Private)
+
+                    return
+                  }
+
+                  setRoomVisibility(Visibility.Public)
+                }}
               />
             </div>
           </div>
