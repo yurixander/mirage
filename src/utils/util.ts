@@ -58,28 +58,37 @@ export function validateUrl(url: string): boolean {
   }
 }
 
-export function stringToColor(string_: string): string {
-  let hash = 0
+const hexValues = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+]
 
-  // Iterate over string letter by letter
-  for (let index = 0; index < string_.length; index++) {
-    // hash << 5 move the bit 5 digits (00000010 to 00100000) to the left and subtract the hash value.
-    hash = string_.charCodeAt(index) + ((hash << 5) - hash)
-  }
-
+export function stringToColor(str: string): string {
   let color = "#"
 
-  // Extract the 3 byte values, red, green and blue
-  for (let index = 0; index < 3; index++) {
-    // When index = 0 is green, index = 1 is blue, index = 2 is red
-    // Move hash index * 8 digits to the right for extract the color.
-    // 0xff is equal to 255 and the AND operator (&) is limiting to 8 bits.
-    const value = (hash >> (index * 8)) & 0xff
+  assert(str.length >= 3, "The string should be at least 3 characters long.")
 
-    // value.toString(16) convert value to hex string.
-    // 00 if the hexadecimal string is less than two characters ensuring consistent formatting.
-    // .slice(-2) extracts the last two characters from the resulting string.
-    color += ("00" + value.toString(16)).slice(-2)
+  for (let index = 0; index < 3; index++) {
+    const code = str.charCodeAt(index)
+
+    assert(code <= 255, "The character code should be less than 255")
+
+    const [firstRGB, secondRGB] = [Math.floor(code / 16), code % 16]
+
+    color += hexValues[firstRGB] + hexValues[secondRGB]
   }
 
   return color

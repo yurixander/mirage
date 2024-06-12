@@ -1,11 +1,11 @@
 import {useState, type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import IconButton from "./IconButton"
-import AvatarImage, {AvatarType} from "./Avatar"
 import {assert, validateUrl} from "@/utils/util"
 import {IoMdMic, IoMdMicOff} from "react-icons/io"
 import {IoCall, IoPause, IoPlay, IoVolumeHigh} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
+import AvatarImage, {AvatarType} from "./AvatarImage"
 
 export type CallModalProps = {
   name: string

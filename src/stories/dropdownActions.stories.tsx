@@ -15,10 +15,24 @@ const render = (args: DropdownActionsProps) => <DropdownActions {...args} />
 export const Default: Story = {
   render,
   args: {
+    onOptionSelected: () => {},
+    initiallyOption: {
+      text: "Option 1",
+      Icon: IoFlame,
+    },
     options: [
-      {label: "Option 1", Icon: IoFlame, onClick: () => {}},
-      {label: "Option 2", Icon: IoAdd, onClick: () => {}},
-      {label: "Option 3", Icon: IoAccessibility, onClick: () => {}},
+      {
+        text: "Option 1",
+        Icon: IoFlame,
+      },
+      {
+        text: "Option 2",
+        Icon: IoAdd,
+      },
+      {
+        text: "Option 3",
+        Icon: IoAccessibility,
+      },
     ],
   },
 }
