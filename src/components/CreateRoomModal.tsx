@@ -82,7 +82,9 @@ const CreateRoomModal: FC = () => {
 
           {roomVisibility === Visibility.Private ? (
             <div className="flex flex-col gap-2">
-              <Typography className="text-black" variant={TypographyVariant.Body}>
+              <Typography
+                className="text-black"
+                variant={TypographyVariant.Body}>
                 Only those who are invited will be able to find and join this
                 room. You can change this at any time from the room settings
               </Typography>
