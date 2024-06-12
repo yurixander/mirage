@@ -1,6 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Button, {
-  ButtonSize,
   ButtonVariant,
   type ButtonProps as ButtonProperties,
 } from "../components/Button"
@@ -52,7 +51,7 @@ export const Small: Story = {
   args: {
     label: "Small button",
     variant: ButtonVariant.Primary,
-    size: ButtonSize.Small,
+    isSmall: true,
     onClick: () => {},
   },
 }
@@ -62,6 +61,16 @@ export const Loading: Story = {
   args: {
     label: "Loading",
     variant: ButtonVariant.Primary,
+    isLoading: true,
+    onClick: () => {},
+  },
+}
+
+export const SecondaryLoading: Story = {
+  render,
+  args: {
+    label: "Loading",
+    variant: ButtonVariant.Secondary,
     isLoading: true,
     onClick: () => {},
   },
