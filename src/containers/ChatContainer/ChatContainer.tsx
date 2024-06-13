@@ -6,7 +6,6 @@ import EventMessage from "../../components/EventMessage"
 import {twMerge} from "tailwind-merge"
 import Button, {ButtonVariant} from "../../components/Button"
 import UnreadIndicator from "../../components/UnreadIndicator"
-import Modal, {ModalRenderLocation} from "../../components/Modal"
 import SmartActionBar from "@/components/SmartActionBar"
 import useChatInput from "./useChatInput"
 import ChatHeader from "./ChatHeader"
@@ -14,6 +13,8 @@ import ChatInput from "./ChatInput"
 import {useMemo, type FC} from "react"
 import WelcomeChat from "./WelcomeChat"
 import MessagesPlaceholder from "./MessagesPlaceholder"
+import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
+import {createPortal} from "react-dom"
 
 export type ChatContainerProps = {
   className?: string
@@ -53,30 +54,34 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   return (
     <>
-      <Modal isVisible={filesContent.length > 0}>
-        <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
-          {filesContent.length > 0 && (
-            <img
-              className="h-auto w-full rounded-lg object-cover shadow-md"
-              src={filesContent[0].content}
-              alt={filesContent[0].name}
-            />
-          )}
-          <div className="flex w-full items-center justify-end gap-1">
-            <Button
-              variant={ButtonVariant.Secondary}
-              onClick={clear}
-              label="Cancel"
-            />
-            <Button
-              onClick={() => {
-                void sendImageMessage()
-              }}
-              label="Send Image"
-            />
-          </div>
-        </div>
-      </Modal>
+      {filesContent.length > 0 &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay">
+            <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
+              {filesContent.length > 0 && (
+                <img
+                  className="h-auto w-full rounded-lg object-cover shadow-md"
+                  src={filesContent[0].content}
+                  alt={filesContent[0].name}
+                />
+              )}
+              <div className="flex w-full items-center justify-end gap-1">
+                <Button
+                  variant={ButtonVariant.Secondary}
+                  onClick={clear}
+                  label="Cancel"
+                />
+                <Button
+                  onClick={() => {
+                    void sendImageMessage()
+                  }}
+                  label="Send Image"
+                />
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
 
       {activeRoomId === null ? (
         <WelcomeChat />

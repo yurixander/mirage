@@ -1,22 +1,27 @@
-import {type FC} from "react"
+import {useState, type FC} from "react"
 import SidebarActions from "./SidebarActions"
 import SpaceList from "./SpaceList"
 import UserBar from "./UserBar"
-import useSidebarActions, {SidebarModals} from "./hooks/useSidebarActions"
-import SidebarModalsHandler from "./modals/SidebarModalsHandler"
+import useSidebarActions from "./hooks/useSidebarActions"
 import useGlobalEventListeners from "@/hooks/matrix/useGlobalEventListeners"
+import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
+import ServerDropdown from "@/components/ServerDropdown"
+import {MATRIX_SERVER} from "@/utils/servers"
 
 const NavigationSection: FC = () => {
-  const {onLogout, setActiveSidebarModal} = useSidebarActions()
+  const {onLogout} = useSidebarActions()
   const {containsUnreadNotifications} = useGlobalEventListeners()
+  const {setActiveModal} = useActiveModalStore()
+  const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
 
   return (
     <>
-      <SidebarModalsHandler />
-
       <div className="flex size-full max-w-52 flex-col gap-1 border border-slate-300 bg-slate-100">
-        <div className="max-h-12 border-b border-b-slate-300">
-          {/* Put here the Server dropdown */}
+        <div className="max-h-12 border-b border-b-slate-300 p-2">
+          <ServerDropdown
+            initiallyServerSelected={serverSelected}
+            onServerSelected={setServerSelected}
+          />
         </div>
 
         <SpaceList className="p-4" />
@@ -28,10 +33,10 @@ const NavigationSection: FC = () => {
           onSearch={() => {}}
           onExit={onLogout}
           onNotification={() => {
-            setActiveSidebarModal(SidebarModals.Notifications)
+            setActiveModal(Modals.Notifications)
           }}
           onDirectMessages={() => {
-            setActiveSidebarModal(SidebarModals.DirectMessages)
+            setActiveModal(Modals.DirectMessages)
           }}
         />
 

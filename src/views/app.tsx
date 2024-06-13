@@ -6,6 +6,7 @@ import {useEffect, type FC} from "react"
 import {useNavigate} from "react-router-dom"
 import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
 import NavigationSection from "@/containers/NavigationSection"
+import ModalHandler from "@/components/ModalHandler"
 
 const AppView: FC = () => {
   const navigate = useNavigate()
@@ -30,12 +31,16 @@ const AppView: FC = () => {
   }, [connect, credentials, navigate])
 
   return (
-    <div className="flex size-full flex-row">
-      <NavigationSection />
+    <>
+      <ModalHandler />
 
-      <ChatContainer className="w-full grow" />
-      <Roster className="grow" />
-    </div>
+      <div className="flex size-full flex-row">
+        <NavigationSection />
+
+        <ChatContainer className="w-full grow" />
+        <Roster className="grow" />
+      </div>
+    </>
   )
 }
 

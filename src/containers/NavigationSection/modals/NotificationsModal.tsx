@@ -1,16 +1,16 @@
 import {useMemo, type FC} from "react"
 import {IoCloseCircle} from "react-icons/io5"
-import Button, {ButtonSize, ButtonVariant} from "../../../components/Button"
+import Button, {ButtonVariant} from "../../../components/Button"
 import Typography, {TypographyVariant} from "../../../components/Typography"
 import {twMerge} from "tailwind-merge"
 import IconButton from "../../../components/IconButton"
-import {useSidebarModalActiveStore} from "../hooks/useSidebarActions"
 import useCachedNotifications, {
   useNotificationsStateStore,
   type LocalNotificationData,
 } from "../hooks/useCachedNotifications"
 import {markAllNotificationsAsRead} from "@/utils/notifications"
 import Notification from "../../../components/Notification"
+import useActiveModalStore from "@/hooks/util/useActiveModal"
 
 export type NotificationActions = {
   name: string
@@ -19,7 +19,7 @@ export type NotificationActions = {
 }
 
 const NotificationsModal: FC = () => {
-  const {clearActiveSidebarModal} = useSidebarModalActiveStore()
+  const {clearActiveModal} = useActiveModalStore()
   const {onRequestChanges} = useNotificationsStateStore()
   const {notifications} = useCachedNotifications()
 
@@ -47,17 +47,17 @@ const NotificationsModal: FC = () => {
 
         <Button
           variant={ButtonVariant.TextLink}
-          size={ButtonSize.Small}
+          isSmall
           label="Mark all as read"
           onClick={() => {
             markAllNotificationsAsRead()
             onRequestChanges()
-            clearActiveSidebarModal()
+            clearActiveModal()
           }}
         />
 
         <IconButton
-          onClick={clearActiveSidebarModal}
+          onClick={clearActiveModal}
           tooltip="Close"
           Icon={IoCloseCircle}
         />
