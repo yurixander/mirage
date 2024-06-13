@@ -17,7 +17,7 @@ export const Default: Story = {
   render,
   args: {
     isRead: true,
-    notificationId: 0,
+    notificationId: "",
     roomName: "Figma Utils",
     sender: "Emerald branch",
     type: NotificationType.Invited,

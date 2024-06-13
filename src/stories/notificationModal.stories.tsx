@@ -23,7 +23,7 @@ const notifications: AnyNotification[] = [
     data: {
       isRead: false,
       type: NotificationType.Invited,
-      notificationId: 0,
+      notificationId: "",
       roomName: "Design Utils",
       sender: "Emerald Branch",
       markAsRead() {},
@@ -37,7 +37,7 @@ const notifications: AnyNotification[] = [
     data: {
       isRead: false,
       type: NotificationType.Banned,
-      notificationId: 0,
+      notificationId: "",
       roomName: "Design Utils",
       sender: "Emerald Branch",
       markAsRead() {},
