@@ -1,5 +1,6 @@
 import {type ActionNotificationProps} from "@/components/ActionNotification"
 import {type InlineNotificationProps} from "@/components/InlineNotification"
+import {setNotificationsData} from "@/utils/notifications"
 import {useState} from "react"
 
 export enum NotificationKind {
@@ -44,14 +45,36 @@ const useNotification = () => {
   const [notifications, setNotifications] = useState<AnyNotification[]>([])
 
   const saveNotification = (notification: AnyNotification) => {
-    setNotifications(prevNotification => [...prevNotification, notification])
+    setNotifications(prevNotifications => {
+      const notificationsCleaned = prevNotifications.filter(
+        prevNotification =>
+          prevNotification.data.notificationId ===
+          notification.data.notificationId
+      )
 
-    // TODO: Save in local storage.
+      const newNotifications = [...notificationsCleaned, notification]
+      setNotificationsData(newNotifications)
+
+      return newNotifications
+    })
+  }
+
+  const deleteNotificationById = (notificationId: string) => {
+    setNotifications(prevNotification => {
+      const newNotifications = prevNotification.filter(
+        notification => notification.data.notificationId !== notificationId
+      )
+
+      setNotificationsData(newNotifications)
+
+      return newNotifications
+    })
   }
 
   return {
     notifications,
     saveNotification,
+    deleteNotificationById,
   }
 }
 

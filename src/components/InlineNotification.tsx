@@ -12,7 +12,7 @@ import Typography, {TypographyVariant} from "./Typography"
 
 export interface InlineNotificationProps {
   type: NotificationType
-  notificationId: number
+  notificationId: string
   isRead: boolean
   roomName: string
   sender: string

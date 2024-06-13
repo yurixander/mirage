@@ -49,6 +49,9 @@ const SidebarActions: FC<SidebarActionsProps> = ({
               onClose={() => {
                 setNotificationsModalVisible(false)
               }}
+              markAllNotificationsAsRead={function (): void {
+                throw new Error("Function not implemented.")
+              }}
             />
           </div>,
           document.body

@@ -1,8 +1,8 @@
-import {type LocalNotificationData} from "@/containers/NavigationSection/hooks/useCachedNotifications"
+import {type AnyNotification} from "@/containers/NavigationSection/hooks/useNotification"
 
-const NOTIFICATIONS_LOCAL_STORAGE_KEY = "notifications"
+const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications"
 
-export function getNotificationsData(): LocalNotificationData[] {
+export function getNotificationsData(): AnyNotification[] {
   const savedNotifications = localStorage.getItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY
   )
@@ -10,64 +10,35 @@ export function getNotificationsData(): LocalNotificationData[] {
   return savedNotifications ? JSON.parse(savedNotifications) : []
 }
 
-export function setNotificationsData(notifications: LocalNotificationData[]) {
+export function setNotificationsData(notifications: AnyNotification[]) {
   localStorage.setItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY,
     JSON.stringify(notifications)
   )
 }
 
-export function saveNotification(notification: LocalNotificationData | null) {
-  if (notification === null) {
-    return
-  }
+// export function markAllNotificationsAsRead() {
+//   const updatedNotifications = getNotificationsData().map(notification => {
+//     return {
+//       ...notification,
+//       isRead: true,
+//     }
+//   })
 
-  const savedNotifications = getNotificationsData()
+//   // setNotificationsData(updatedNotifications)
+// }
 
-  const exists = savedNotifications.some(
-    prevNotification =>
-      prevNotification.notificationId === notification.notificationId
-  )
+// export function markAsReadByNotificationId(notificationId: string) {
+//   const updatedNotifications = getNotificationsData().map(notification => {
+//     if (notification.data.notificationId === notificationId) {
+//       return {
+//         ...notification,
+//         isRead: true,
+//       }
+//     }
 
-  if (exists) {
-    return
-  }
+//     return notification
+//   })
 
-  savedNotifications.unshift(notification)
-
-  setNotificationsData(savedNotifications)
-}
-
-export function deleteNotificationById(notificationId: string) {
-  const updatedNotifications = getNotificationsData().filter(
-    notification => notification.notificationId !== notificationId
-  )
-
-  setNotificationsData(updatedNotifications)
-}
-
-export function markAllNotificationsAsRead() {
-  const updatedNotifications = getNotificationsData().map(notification => {
-    return {
-      ...notification,
-      isRead: true,
-    }
-  })
-
-  setNotificationsData(updatedNotifications)
-}
-
-export function markAsReadByNotificationId(notificationId: string) {
-  const updatedNotifications = getNotificationsData().map(notification => {
-    if (notification.notificationId === notificationId) {
-      return {
-        ...notification,
-        isRead: true,
-      }
-    }
-
-    return notification
-  })
-
-  setNotificationsData(updatedNotifications)
-}
+//   // setNotificationsData(updatedNotifications)
+// }
