@@ -40,7 +40,7 @@ const Dropdown: FC<DropdownProps> = ({
         </div>
       </div>
 
-      {isOpen && children}
+      <div className="z-50 bg-gray-50">{isOpen && children}</div>
     </div>
   )
 }

@@ -44,7 +44,12 @@ const SidebarActions: FC<SidebarActionsProps> = ({
             className={twMerge(
               "fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay"
             )}>
-            <NotificationsModal notifications={notifications} />
+            <NotificationsModal
+              notifications={notifications}
+              onClose={() => {
+                setNotificationsModalVisible(false)
+              }}
+            />
           </div>,
           document.body
         )}

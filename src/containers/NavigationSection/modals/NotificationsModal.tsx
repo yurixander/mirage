@@ -4,14 +4,9 @@ import Button, {ButtonVariant} from "../../../components/Button"
 import Typography, {TypographyVariant} from "../../../components/Typography"
 import {twMerge} from "tailwind-merge"
 import IconButton from "../../../components/IconButton"
-import useCachedNotifications, {
-  useNotificationsStateStore,
-  type LocalNotificationData,
-} from "../hooks/useCachedNotifications"
-import {markAllNotificationsAsRead} from "@/utils/notifications"
-import Notification from "../../../components/Notification"
-import useActiveModalStore from "@/hooks/util/useActiveModal"
-import {type AnyNotification} from "../hooks/useNotification"
+import {NotificationKind, type AnyNotification} from "../hooks/useNotification"
+import ActionNotification from "@/components/ActionNotification"
+import InlineNotification from "@/components/InlineNotification"
 
 export type NotificationActions = {
   name: string
@@ -19,25 +14,31 @@ export type NotificationActions = {
   onClick: () => void
 }
 
-const NotificationsModal: FC<{notifications: AnyNotification[]}> = () => {
-  const {clearActiveModal} = useActiveModalStore()
-  const {onRequestChanges} = useNotificationsStateStore()
-  const {notifications} = useCachedNotifications()
+export type NotificationModalProps = {
+  notifications: AnyNotification[]
+  markAllNotificationsAsRead: () => void
+  onClose: () => void
+}
 
-  const notificationsUnread: LocalNotificationData[] = useMemo(
-    () => notifications.filter(notification => !notification.isRead),
+const NotificationsModal: FC<NotificationModalProps> = ({
+  onClose,
+  notifications,
+  markAllNotificationsAsRead,
+}) => {
+  const notificationsUnread: AnyNotification[] = useMemo(
+    () => notifications.filter(notification => !notification.data.isRead),
     [notifications]
   )
 
-  const notificationsMarkAsRead: LocalNotificationData[] = useMemo(
-    () => notifications.filter(notification => notification.isRead),
+  const notificationsMarkAsRead: AnyNotification[] = useMemo(
+    () => notifications.filter(notification => notification.data.isRead),
     [notifications]
   )
 
   return (
     <div
       className={twMerge(
-        "flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl bg-white p-2"
+        "flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl bg-gray-50 p-2"
       )}>
       <div className="flex w-full p-2">
         <Typography
@@ -52,38 +53,31 @@ const NotificationsModal: FC<{notifications: AnyNotification[]}> = () => {
           label="Mark all as read"
           onClick={() => {
             markAllNotificationsAsRead()
-            onRequestChanges()
-            clearActiveModal()
+            onClose()
           }}
         />
 
-        <IconButton
-          onClick={clearActiveModal}
-          tooltip="Close"
-          Icon={IoCloseCircle}
-        />
+        <IconButton onClick={onClose} tooltip="Close" Icon={IoCloseCircle} />
       </div>
 
       <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
         <div className="bg-slate-100">
-          {notificationsUnread.map(notification => (
-            <Notification
-              key={notification.notificationId}
-              {...notification}
-              hasActions={notification.hasActions ?? false}
-              onRequestChanges={onRequestChanges}
-            />
-          ))}
+          {notificationsUnread.map(notification =>
+            notification.kind === NotificationKind.ActionNotification ? (
+              <ActionNotification {...notification.data} />
+            ) : (
+              <InlineNotification {...notification.data} />
+            )
+          )}
         </div>
 
-        {notificationsMarkAsRead.map(notification => (
-          <Notification
-            key={notification.notificationId}
-            {...notification}
-            hasActions={notification.hasActions ?? false}
-            onRequestChanges={onRequestChanges}
-          />
-        ))}
+        {notificationsMarkAsRead.map(notification =>
+          notification.kind === NotificationKind.ActionNotification ? (
+            <ActionNotification {...notification.data} />
+          ) : (
+            <InlineNotification {...notification.data} />
+          )
+        )}
       </div>
     </div>
   )

@@ -2,11 +2,15 @@ import {type NotificationType} from "@/containers/NavigationSection/hooks/useNot
 import {type FC} from "react"
 
 export interface InlineNotificationProps {
+  type: NotificationType
   notificationId: number
   isRead: boolean
   roomName: string
   sender: string
-  type: NotificationType
+  notificationTime: number
+  senderAvatarUrl?: string
+  onDelete: () => void
+  markAsRead: () => void
 }
 
 const InlineNotification: FC<InlineNotificationProps> = ({

@@ -2,7 +2,7 @@ import {type ActionNotificationProps} from "@/components/ActionNotification"
 import {type InlineNotificationProps} from "@/components/InlineNotification"
 import {useState} from "react"
 
-enum NotificationKind {
+export enum NotificationKind {
   ActionNotification,
   InlineNotification,
 }
@@ -14,6 +14,16 @@ export enum NotificationType {
   UpgradeToAdmin,
   UpgradeToModerator,
   DowngradeToMember,
+}
+
+// TODO: Convert to english.
+export const notificationsBody: {[key in NotificationType]: string} = {
+  [NotificationType.Invited]: "te ha invitado a",
+  [NotificationType.Banned]: "",
+  [NotificationType.Leaved]: "",
+  [NotificationType.UpgradeToAdmin]: "",
+  [NotificationType.UpgradeToModerator]: "",
+  [NotificationType.DowngradeToMember]: "",
 }
 
 type NotificationOf<Kind extends NotificationKind> =
