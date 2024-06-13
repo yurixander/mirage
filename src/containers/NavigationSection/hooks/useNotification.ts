@@ -1,3 +1,5 @@
+import {type ActionNotificationProps} from "@/components/ActionNotification"
+import {type InlineNotificationProps} from "@/components/InlineNotification"
 import {useState} from "react"
 
 enum NotificationKind {
@@ -5,7 +7,7 @@ enum NotificationKind {
   InlineNotification,
 }
 
-enum NotificationType {
+export enum NotificationType {
   Banned,
   Leaved,
   Invited,
@@ -14,23 +16,10 @@ enum NotificationType {
   DowngradeToMember,
 }
 
-type ActionNotification = {
-  onAccept: () => void
-  onDismiss: () => void
-} & InlineNotification
-
-interface InlineNotification {
-  notificationId: number
-  isRead: boolean
-  roomName: string
-  sender: string
-  type: NotificationType
-}
-
 type NotificationOf<Kind extends NotificationKind> =
   Kind extends NotificationKind.ActionNotification
-    ? ActionNotification
-    : InlineNotification
+    ? ActionNotificationProps
+    : InlineNotificationProps
 
 type Notification<Kind extends NotificationKind> = {
   kind: Kind
