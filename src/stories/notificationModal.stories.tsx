@@ -19,6 +19,7 @@ const render = (args: NotificationModalProps) => (
 
 const notifications: AnyNotification[] = [
   {
+    kind: NotificationKind.ActionNotification,
     data: {
       isRead: false,
       type: NotificationType.Invited,
@@ -30,7 +31,19 @@ const notifications: AnyNotification[] = [
       onDelete() {},
       notificationTime: Date.now(),
     },
-    kind: NotificationKind.ActionNotification,
+  },
+  {
+    kind: NotificationKind.InlineNotification,
+    data: {
+      isRead: false,
+      type: NotificationType.Banned,
+      notificationId: 0,
+      roomName: "Design Utils",
+      sender: "Emerald Branch",
+      markAsRead() {},
+      onDelete() {},
+      notificationTime: Date.now(),
+    },
   },
 ]
 

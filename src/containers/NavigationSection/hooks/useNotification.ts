@@ -19,7 +19,7 @@ export enum NotificationType {
 // TODO: Convert to english.
 export const notificationsBody: {[key in NotificationType]: string} = {
   [NotificationType.Invited]: "te ha invitado a",
-  [NotificationType.Banned]: "",
+  [NotificationType.Banned]: "te ha baneado de",
   [NotificationType.Leaved]: "",
   [NotificationType.UpgradeToAdmin]: "",
   [NotificationType.UpgradeToModerator]: "",
