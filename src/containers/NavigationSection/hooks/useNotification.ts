@@ -1,7 +1,7 @@
 import {type ActionNotificationProps} from "@/components/ActionNotification"
 import {type InlineNotificationProps} from "@/components/InlineNotification"
 import {getNotificationsData, setNotificationsData} from "@/utils/notifications"
-import {useCallback, useEffect, useState} from "react"
+import {useCallback, useMemo, useState} from "react"
 
 export enum NotificationKind {
   ActionNotification,
@@ -47,6 +47,10 @@ const useNotification = () => {
 
     return getNotificationsData()
   })
+
+  const containsUnreadNotifications = useMemo(() => {
+    return notifications.some(notification => !notification.data.isRead)
+  }, [notifications])
 
   const saveNotification = useCallback((notification: AnyNotification) => {
     setNotifications(prevNotifications => {
@@ -145,6 +149,7 @@ const useNotification = () => {
     deleteNotificationById,
     markAllNotificationsAsRead,
     markAsReadByNotificationId,
+    containsUnreadNotifications,
   }
 }
 
