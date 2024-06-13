@@ -5,12 +5,26 @@ enum NotificationKind {
   InlineNotification,
 }
 
-type ActionNotification = {
-  roomName: string
+enum NotificationType {
+  Banned,
+  Leaved,
+  Invited,
+  UpgradeToAdmin,
+  UpgradeToModerator,
+  DowngradeToMember,
 }
 
-type InlineNotification = {
+type ActionNotification = {
+  onAccept: () => void
+  onDismiss: () => void
+} & InlineNotification
+
+interface InlineNotification {
+  notificationId: number
+  isRead: boolean
   roomName: string
+  sender: string
+  type: NotificationType
 }
 
 type NotificationOf<Kind extends NotificationKind> =
@@ -38,6 +52,7 @@ const useNotification = () => {
 
   return {
     notifications,
+    saveNotification,
   }
 }
 
