@@ -1,7 +1,7 @@
 import {type ActionNotificationProps} from "@/components/ActionNotification"
 import {type InlineNotificationProps} from "@/components/InlineNotification"
 import {setNotificationsData} from "@/utils/notifications"
-import {useState} from "react"
+import {useCallback, useState} from "react"
 
 export enum NotificationKind {
   ActionNotification,
@@ -44,7 +44,7 @@ export type AnyNotification =
 const useNotification = () => {
   const [notifications, setNotifications] = useState<AnyNotification[]>([])
 
-  const saveNotification = (notification: AnyNotification) => {
+  const saveNotification = useCallback((notification: AnyNotification) => {
     setNotifications(prevNotifications => {
       const notificationsCleaned = prevNotifications.filter(
         prevNotification =>
@@ -57,9 +57,9 @@ const useNotification = () => {
 
       return newNotifications
     })
-  }
+  }, [])
 
-  const deleteNotificationById = (notificationId: string) => {
+  const deleteNotificationById = useCallback((notificationId: string) => {
     setNotifications(prevNotification => {
       const newNotifications = prevNotification.filter(
         notification => notification.data.notificationId !== notificationId
@@ -69,11 +69,11 @@ const useNotification = () => {
 
       return newNotifications
     })
-  }
+  }, [])
 
-  const markAllNotificationsAsRead = () => {
-    setNotifications(prevNotification => {
-      const newNotifications: AnyNotification[] = prevNotification.map(
+  const markAllNotificationsAsRead = useCallback(() => {
+    setNotifications(prevNotifications => {
+      const newNotifications: AnyNotification[] = prevNotifications.map(
         prevNotification => {
           if (prevNotification.kind === NotificationKind.ActionNotification) {
             return {
@@ -99,13 +99,48 @@ const useNotification = () => {
 
       return newNotifications
     })
-  }
+  }, [])
+
+  const markAsReadByNotificationId = useCallback((notificationId: string) => {
+    setNotifications(prevNotifications => {
+      const newNotifications: AnyNotification[] = prevNotifications.map(
+        prevNotification => {
+          if (prevNotification.data.notificationId !== notificationId) {
+            return prevNotification
+          }
+
+          if (prevNotification.kind === NotificationKind.ActionNotification) {
+            return {
+              kind: NotificationKind.ActionNotification,
+              data: {
+                ...prevNotification.data,
+                isRead: true,
+              },
+            }
+          }
+
+          return {
+            kind: NotificationKind.InlineNotification,
+            data: {
+              ...prevNotification.data,
+              isRead: true,
+            },
+          }
+        }
+      )
+
+      setNotificationsData(newNotifications)
+
+      return newNotifications
+    })
+  }, [])
 
   return {
     notifications,
     saveNotification,
     deleteNotificationById,
     markAllNotificationsAsRead,
+    markAsReadByNotificationId,
   }
 }
 

@@ -17,17 +17,6 @@ export function setNotificationsData(notifications: AnyNotification[]) {
   )
 }
 
-// export function markAllNotificationsAsRead() {
-//   const updatedNotifications = getNotificationsData().map(notification => {
-//     return {
-//       ...notification,
-//       isRead: true,
-//     }
-//   })
-
-//   // setNotificationsData(updatedNotifications)
-// }
-
 // export function markAsReadByNotificationId(notificationId: string) {
 //   const updatedNotifications = getNotificationsData().map(notification => {
 //     if (notification.data.notificationId === notificationId) {
