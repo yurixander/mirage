@@ -48,8 +48,9 @@ const useNotification = () => {
     return getNotificationsData()
   })
 
-  const containsUnreadNotifications = useMemo(() => {
-    return notifications.some(notification => !notification.data.isRead)
+  const unreadNotifications = useMemo(() => {
+    return notifications.filter(notification => !notification.data.isRead)
+      .length
   }, [notifications])
 
   const saveNotification = useCallback((notification: AnyNotification) => {
@@ -149,7 +150,7 @@ const useNotification = () => {
     deleteNotificationById,
     markAllNotificationsAsRead,
     markAsReadByNotificationId,
-    containsUnreadNotifications,
+    unreadNotifications,
   }
 }
 

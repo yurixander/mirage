@@ -31,7 +31,8 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onSearch,
   notificationsCount,
 }) => {
-  const {notifications} = useNotification()
+  const {notifications, markAllNotificationsAsRead, unreadNotifications} =
+    useNotification()
 
   const [notificationsModalVisible, setNotificationsModalVisible] =
     useState(false)
@@ -49,9 +50,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
               onClose={() => {
                 setNotificationsModalVisible(false)
               }}
-              markAllNotificationsAsRead={function (): void {
-                throw new Error("Function not implemented.")
-              }}
+              markAllNotificationsAsRead={markAllNotificationsAsRead}
             />
           </div>,
           document.body
@@ -69,7 +68,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
           onClick={() => {
             setNotificationsModalVisible(true)
           }}
-          unreadNotifications={notificationsCount}
+          unreadNotifications={unreadNotifications}
         />
 
         <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
