@@ -16,18 +16,3 @@ export function setNotificationsData(notifications: AnyNotification[]) {
     JSON.stringify(notifications)
   )
 }
-
-// export function markAsReadByNotificationId(notificationId: string) {
-//   const updatedNotifications = getNotificationsData().map(notification => {
-//     if (notification.data.notificationId === notificationId) {
-//       return {
-//         ...notification,
-//         isRead: true,
-//       }
-//     }
-
-//     return notification
-//   })
-
-//   // setNotificationsData(updatedNotifications)
-// }

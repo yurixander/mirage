@@ -1,7 +1,7 @@
 import {type ActionNotificationProps} from "@/components/ActionNotification"
 import {type InlineNotificationProps} from "@/components/InlineNotification"
-import {setNotificationsData} from "@/utils/notifications"
-import {useCallback, useState} from "react"
+import {getNotificationsData, setNotificationsData} from "@/utils/notifications"
+import {useCallback, useEffect, useState} from "react"
 
 export enum NotificationKind {
   ActionNotification,
@@ -42,7 +42,11 @@ export type AnyNotification =
   | Notification<NotificationKind.InlineNotification>
 
 const useNotification = () => {
-  const [notifications, setNotifications] = useState<AnyNotification[]>([])
+  const [notifications, setNotifications] = useState<AnyNotification[]>(() => {
+    // Initially fetch notifications from local storage.
+
+    return getNotificationsData()
+  })
 
   const saveNotification = useCallback((notification: AnyNotification) => {
     setNotifications(prevNotifications => {
