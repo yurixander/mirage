@@ -1,6 +1,6 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {assert} from "@/utils/util"
-import {type FC} from "react"
+import {useState, type FC} from "react"
 import {type IconType} from "react-icons"
 import {
   IoCall,
@@ -10,9 +10,11 @@ import {
   IoSearch,
 } from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
+import useNotification from "./hooks/useNotification"
+import {createPortal} from "react-dom"
+import NotificationsModal from "./modals/NotificationsModal"
 
 export type SidebarActionsProps = {
-  onNotification: () => void
   onDirectMessages: () => void
   onSearch: () => void
   onCalls: () => void
@@ -26,31 +28,49 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onCalls,
   onDirectMessages,
   onExit,
-  onNotification,
   onSearch,
   notificationsCount,
 }) => {
+  const {notifications} = useNotification()
+
+  const [notificationsModalVisible, setNotificationsModalVisible] =
+    useState(false)
+
   return (
-    <div className={twMerge("flex flex-col gap-2", className)}>
-      <SidebarActionItem
-        name="Direct Chats"
-        icon={IoPaperPlane}
-        onClick={onDirectMessages}
-      />
+    <>
+      {notificationsModalVisible &&
+        createPortal(
+          <div
+            className={twMerge(
+              "fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay"
+            )}>
+            <NotificationsModal notifications={notifications} />
+          </div>,
+          document.body
+        )}
+      <div className={twMerge("flex flex-col gap-2", className)}>
+        <SidebarActionItem
+          name="Direct Chats"
+          icon={IoPaperPlane}
+          onClick={onDirectMessages}
+        />
 
-      <SidebarActionItem
-        name="Notifications"
-        icon={IoNotifications}
-        onClick={onNotification}
-        unreadNotifications={notificationsCount}
-      />
+        <SidebarActionItem
+          name="Notifications"
+          icon={IoNotifications}
+          onClick={() => {
+            setNotificationsModalVisible(true)
+          }}
+          unreadNotifications={notificationsCount}
+        />
 
-      <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
+        <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
 
-      <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />
+        <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />
 
-      <SidebarActionItem name="Exit" icon={IoExit} onClick={onExit} />
-    </div>
+        <SidebarActionItem name="Exit" icon={IoExit} onClick={onExit} />
+      </div>
+    </>
   )
 }
 

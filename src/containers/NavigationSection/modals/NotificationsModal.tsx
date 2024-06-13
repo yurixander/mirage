@@ -11,6 +11,7 @@ import useCachedNotifications, {
 import {markAllNotificationsAsRead} from "@/utils/notifications"
 import Notification from "../../../components/Notification"
 import useActiveModalStore from "@/hooks/util/useActiveModal"
+import {type AnyNotification} from "../hooks/useNotification"
 
 export type NotificationActions = {
   name: string
@@ -18,7 +19,7 @@ export type NotificationActions = {
   onClick: () => void
 }
 
-const NotificationsModal: FC = () => {
+const NotificationsModal: FC<{notifications: AnyNotification[]}> = () => {
   const {clearActiveModal} = useActiveModalStore()
   const {onRequestChanges} = useNotificationsStateStore()
   const {notifications} = useCachedNotifications()

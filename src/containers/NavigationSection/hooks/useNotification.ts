@@ -37,7 +37,7 @@ type Notification<Kind extends NotificationKind> = {
   data: NotificationOf<Kind>
 }
 
-type AnyNotification =
+export type AnyNotification =
   | Notification<NotificationKind.ActionNotification>
   | Notification<NotificationKind.InlineNotification>
 

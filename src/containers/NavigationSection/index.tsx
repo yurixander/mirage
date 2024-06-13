@@ -32,9 +32,6 @@ const NavigationSection: FC = () => {
           onCalls={() => {}}
           onSearch={() => {}}
           onExit={onLogout}
-          onNotification={() => {
-            setActiveModal(Modals.Notifications)
-          }}
           onDirectMessages={() => {
             setActiveModal(Modals.DirectMessages)
           }}
