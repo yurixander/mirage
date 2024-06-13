@@ -1,44 +1,46 @@
-import {useState} from "react"
+import {useCallback, useState} from "react"
 
-export enum LocalStorageKeys {
+export enum LocalStorageKey {
   Credentials = "credentials",
 }
 
-const reFetchLocalStorageValue = <T>(key: LocalStorageKeys): T | null => {
+const getLocalStorageValue = <T>(key: LocalStorageKey): T | null => {
   const storedValue = localStorage.getItem(key)
 
   if (storedValue === null) {
     return null
   }
 
-  const value: T = JSON.parse(storedValue)
-
-  return value
+  // TODO: Use `zod` library to verify stored item's types.
+  return JSON.parse(storedValue) as T
 }
 
-const useLocalStorage = <T>(key: LocalStorageKeys) => {
-  const [cachedValue, setCachedValue] = useState<T | null>(
-    reFetchLocalStorageValue<T>(key)
+const useLocalStorage = <T>(key: LocalStorageKey) => {
+  const [value, setCachedValue] = useState<T | null>(
+    useCallback(() => getLocalStorageValue<T>(key), [key])
   )
 
-  const refreshValue = () => {
-    setCachedValue(reFetchLocalStorageValue<T>(key))
-  }
+  const refresh = useCallback(() => {
+    setCachedValue(getLocalStorageValue<T>(key))
+  }, [key])
 
-  const saveValue = (value: T) => {
-    localStorage.setItem(key, JSON.stringify(value))
-    setCachedValue(value)
-  }
+  const put = useCallback(
+    (value: T) => {
+      localStorage.setItem(key, JSON.stringify(value))
+      setCachedValue(value)
+    },
+    [key]
+  )
 
-  const removeValue = () => {
+  const remove = useCallback(() => {
     localStorage.removeItem(key)
-  }
+  }, [key])
 
   return {
-    cachedValue,
-    refreshValue,
-    saveValue,
-    removeValue,
+    value,
+    refresh,
+    put,
+    remove,
   }
 }
 

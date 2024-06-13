@@ -1,8 +1,9 @@
 import {type FC} from "react"
-import {assert, normalizeName, trim, validateUrl} from "../utils/util"
+import {assert, cleanDisplayName, trim, validateUrl} from "../utils/util"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
+import Typography, {TypographyVariant} from "./Typography"
 
 export type UserProfileProps = {
   displayName: string
@@ -52,13 +53,14 @@ const UserProfile: FC<UserProfileProps> = ({
 
       {/* TODO: Update this to use `Typography` */}
       <div className="mr-auto inline-flex flex-col gap-[2px]">
-        <div
+        <Typography
+          variant={TypographyVariant.BodyMedium}
           style={{color: displayNameColor}}
-          className="line-clamp-1 text-sm font-bold leading-[100%] text-slate-500">
+          className="line-clamp-1 font-bold text-slate-500">
           {isNameShorted
-            ? trim(normalizeName(displayName), MAX_DISPLAY_NAME_LENGTH)
+            ? trim(cleanDisplayName(displayName), MAX_DISPLAY_NAME_LENGTH)
             : displayName}
-        </div>
+        </Typography>
 
         {children}
       </div>

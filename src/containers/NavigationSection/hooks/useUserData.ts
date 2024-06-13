@@ -1,5 +1,5 @@
 import useConnection from "@/hooks/matrix/useConnection"
-import useLocalStorage, {LocalStorageKeys} from "@/hooks/util/useLocalStorage"
+import useLocalStorage, {LocalStorageKey} from "@/hooks/util/useLocalStorage"
 import {
   assert,
   cleanDisplayName,
@@ -18,8 +18,8 @@ const useUserData = () => {
   const [userData, setUserData] = useState<UserData>()
   const {client, isConnecting} = useConnection()
 
-  const {cachedValue: credentials} = useLocalStorage<Credentials>(
-    LocalStorageKeys.Credentials
+  const {value: credentials} = useLocalStorage<Credentials>(
+    LocalStorageKey.Credentials
   )
 
   const fetchUserData = useCallback(() => {

@@ -74,7 +74,7 @@ const Notification: FC<NotificationProps> = ({
 
       <div className="flex flex-col gap-1">
         <div className="flex flex-row">
-          <Typography variant={TypographyVariant.P}>
+          <Typography variant={TypographyVariant.Body}>
             {userComponent} {body}
           </Typography>
         </div>
@@ -82,7 +82,7 @@ const Notification: FC<NotificationProps> = ({
         <div className="flex items-center gap-[2px]">
           <IoTime size={13} />
 
-          <Typography variant={TypographyVariant.P}>
+          <Typography variant={TypographyVariant.Body}>
             {timeFormatter(notificationTime)}
           </Typography>
         </div>

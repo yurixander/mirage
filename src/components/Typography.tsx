@@ -3,12 +3,12 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export enum TypographyVariant {
-  H1,
-  H2,
-  H3,
-  H4,
-  P,
-  Span,
+  HeadingLarge,
+  HeadingMedium,
+  Heading,
+  Body,
+  BodyMedium,
+  BodySmall,
 }
 
 export type TypographyProps = {
@@ -17,35 +17,33 @@ export type TypographyProps = {
   variant?: TypographyVariant
   as?: keyof React.JSX.IntrinsicElements
   children?: React.ReactNode
+  onClick?: () => void
 }
 
 function getTagFromVariant(
   variant: TypographyVariant
 ): keyof React.JSX.IntrinsicElements {
   switch (variant) {
-    case TypographyVariant.H1: {
+    case TypographyVariant.HeadingLarge: {
       return "h1"
     }
-    case TypographyVariant.H2: {
+    case TypographyVariant.HeadingMedium: {
       return "h2"
     }
-    case TypographyVariant.H3: {
+    case TypographyVariant.Heading: {
       return "h3"
     }
-    case TypographyVariant.H4: {
-      return "h4"
-    }
-    case TypographyVariant.P: {
+    case TypographyVariant.Body:
+    case TypographyVariant.BodySmall:
+    case TypographyVariant.BodyMedium: {
       return "p"
-    }
-    case TypographyVariant.Span: {
-      return "span"
     }
   }
 }
 
 const Typography: FC<TypographyProps> = ({
-  variant = TypographyVariant.Span,
+  onClick,
+  variant = TypographyVariant.Body,
   as,
   className,
   children,
@@ -54,20 +52,21 @@ const Typography: FC<TypographyProps> = ({
   const Component = as ?? getTagFromVariant(variant)
 
   const variantClass =
-    variant === TypographyVariant.H1
-      ? "text-3xl"
-      : variant === TypographyVariant.H2
-        ? "text-2xl"
-        : variant === TypographyVariant.H3
-          ? "text-xl"
-          : variant === TypographyVariant.H4
-            ? "text-lg"
-            : variant === TypographyVariant.P
-              ? "text-xs"
-              : "text-sm"
+    variant === TypographyVariant.HeadingLarge
+      ? "font-unbounded xl:text-4xl text-2xl font-semibold"
+      : variant === TypographyVariant.HeadingMedium
+        ? "font-unbounded xl:text-2xl text-xl font-medium"
+        : variant === TypographyVariant.Heading
+          ? "font-unbounded xl:text-xl text-lg font-medium"
+          : variant === TypographyVariant.Body
+            ? "text-base"
+            : variant === TypographyVariant.BodyMedium
+              ? "text-sm"
+              : "text-xs"
 
   return (
     <Component
+      onClick={onClick}
       style={style}
       className={twMerge("leading-160", className, variantClass)}>
       {children}

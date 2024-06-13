@@ -17,7 +17,7 @@ export const Default: Story = {
   render,
   args: {
     children: "This is a default typography component.",
-    variant: TypographyVariant.H1,
+    variant: TypographyVariant.HeadingLarge,
     as: "h1",
   },
 }
