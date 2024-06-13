@@ -71,10 +71,41 @@ const useNotification = () => {
     })
   }
 
+  const markAllNotificationsAsRead = () => {
+    setNotifications(prevNotification => {
+      const newNotifications: AnyNotification[] = prevNotification.map(
+        prevNotification => {
+          if (prevNotification.kind === NotificationKind.ActionNotification) {
+            return {
+              kind: NotificationKind.ActionNotification,
+              data: {
+                ...prevNotification.data,
+                isRead: true,
+              },
+            }
+          }
+
+          return {
+            kind: NotificationKind.InlineNotification,
+            data: {
+              ...prevNotification.data,
+              isRead: true,
+            },
+          }
+        }
+      )
+
+      setNotificationsData(newNotifications)
+
+      return newNotifications
+    })
+  }
+
   return {
     notifications,
     saveNotification,
     deleteNotificationById,
+    markAllNotificationsAsRead,
   }
 }
 
