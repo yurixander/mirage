@@ -45,8 +45,9 @@ const ServerDropdown: FC<ServerDropdownProps> = ({
           </div>
         }>
         <div className="flex h-max w-full flex-col border-t border-t-slate-300">
-          {servers.map(server => (
+          {servers.map((server, index) => (
             <DropdownServerItem
+              key={index}
               serverName={server.name}
               isSelected={server === serverSelected}
               className="p-1 hover:bg-neutral-100"

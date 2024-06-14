@@ -1,5 +1,4 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {assert} from "@/utils/util"
 import {useState, type FC} from "react"
 import {type IconType} from "react-icons"
 import {
@@ -19,7 +18,6 @@ export type SidebarActionsProps = {
   onSearch: () => void
   onCalls: () => void
   onExit: () => void
-  notificationsCount?: number
   className?: string
 }
 
@@ -29,7 +27,6 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onDirectMessages,
   onExit,
   onSearch,
-  notificationsCount,
 }) => {
   const {notifications, markAllNotificationsAsRead, unreadNotifications} =
     useNotification()
@@ -65,10 +62,10 @@ const SidebarActions: FC<SidebarActionsProps> = ({
         <SidebarActionItem
           name="Notifications"
           icon={IoNotifications}
+          unreadNotifications={unreadNotifications}
           onClick={() => {
             setNotificationsModalVisible(true)
           }}
-          unreadNotifications={unreadNotifications}
         />
 
         <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
@@ -96,12 +93,6 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
 }) => {
   const Icon = icon
 
-  assert(
-    unreadNotifications === undefined ||
-      (unreadNotifications !== undefined && unreadNotifications > 0),
-    "If there are unread notifications, they cannot be zero"
-  )
-
   return (
     <div
       className="flex cursor-pointer items-center gap-2 rounded-md p-1 hover:bg-slate-200"
@@ -114,7 +105,7 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
         {name}
       </Typography>
 
-      {unreadNotifications !== undefined && (
+      {unreadNotifications !== undefined && unreadNotifications > 0 && (
         <div className="flex size-5 items-center justify-center rounded-full bg-red-500">
           <Typography
             variant={TypographyVariant.P}
