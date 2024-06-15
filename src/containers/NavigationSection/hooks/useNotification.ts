@@ -1,6 +1,14 @@
 import {type ActionNotificationProps} from "@/components/ActionNotification"
 import {type InlineNotificationProps} from "@/components/InlineNotification"
-import {getNotificationsData, setNotificationsData} from "@/utils/notifications"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import useConnection from "@/hooks/matrix/useConnection"
+import useEventListener from "@/hooks/matrix/useEventListener"
+import {
+  getNotificationFromMembersEvent,
+  getNotificationsData,
+  setNotificationsData,
+} from "@/utils/notifications"
+import {RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useMemo, useState} from "react"
 
 export enum NotificationKind {
@@ -12,6 +20,7 @@ export enum NotificationType {
   Banned,
   Leaved,
   Invited,
+  RejectInvitation,
   UpgradeToAdmin,
   UpgradeToModerator,
   DowngradeToMember,
@@ -25,6 +34,7 @@ export const notificationsBody: {[key in NotificationType]: string} = {
   [NotificationType.UpgradeToAdmin]: "",
   [NotificationType.UpgradeToModerator]: "",
   [NotificationType.DowngradeToMember]: "",
+  [NotificationType.RejectInvitation]: "",
 }
 
 type NotificationOf<Kind extends NotificationKind> =
@@ -42,6 +52,8 @@ export type AnyNotification =
   | Notification<NotificationKind.InlineNotification>
 
 const useNotification = () => {
+  const {client} = useConnection()
+
   const [notifications, setNotifications] = useState<AnyNotification[]>(() => {
     // Initially fetch notifications from local storage.
 
@@ -143,6 +155,19 @@ const useNotification = () => {
       return newNotifications
     })
   }, [])
+
+  // #region Listeners
+
+  useEventListener(
+    RoomMemberEvent.Membership,
+    (event, member, oldMembership) => {
+      if (client === null || member.userId !== client.getUserId()) {
+        return
+      }
+
+      getNotificationFromMembersEvent(event, client, member, oldMembership)
+    }
+  )
 
   return {
     notifications,
