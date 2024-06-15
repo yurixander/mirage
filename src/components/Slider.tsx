@@ -44,7 +44,7 @@ const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
         step={step ?? 1}
         value={progress}
         onInput={handleOnInput}
-        className="slider absolute h-3 w-60 cursor-pointer appearance-none rounded-full bg-transparent p-0"
+        className="absolute h-3 w-60 cursor-pointer appearance-none rounded-full bg-transparent p-0"
         type="range"
       />
     </label>
