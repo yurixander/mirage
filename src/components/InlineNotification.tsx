@@ -1,7 +1,7 @@
 import {
   notificationsBody,
   type NotificationType,
-} from "@/containers/NavigationSection/hooks/useNotification"
+} from "@/containers/NavigationSection/hooks/useCachedNotification"
 import {stringToColor, timeFormatter} from "@/utils/util"
 import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"
@@ -15,6 +15,7 @@ export interface InlineNotificationProps {
   notificationId: string
   isRead: boolean
   roomName: string
+  roomId: string
   notificationTime: number
   senderAvatarUrl?: string
   sender?: string

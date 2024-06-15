@@ -9,9 +9,9 @@ import {
   IoSearch,
 } from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import useNotification from "./hooks/useNotification"
 import {createPortal} from "react-dom"
 import NotificationsModal from "./modals/NotificationsModal"
+import useCachedNotification from "./hooks/useCachedNotification"
 
 export type SidebarActionsProps = {
   onDirectMessages: () => void
@@ -29,7 +29,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onSearch,
 }) => {
   const {notifications, markAllNotificationsAsRead, unreadNotifications} =
-    useNotification()
+    useCachedNotification()
 
   const [notificationsModalVisible, setNotificationsModalVisible] =
     useState(false)
@@ -106,7 +106,7 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
       </Typography>
 
       {unreadNotifications !== undefined && unreadNotifications > 0 && (
-        <div className="flex size-5 items-center justify-center rounded-full bg-red-500">
+        <div className="flex size-4 items-center justify-center rounded-full bg-red-500">
           <Typography
             variant={TypographyVariant.P}
             className="font-bold text-white">

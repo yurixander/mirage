@@ -4,7 +4,10 @@ import Button, {ButtonVariant} from "../../../components/Button"
 import Typography, {TypographyVariant} from "../../../components/Typography"
 import {twMerge} from "tailwind-merge"
 import IconButton from "../../../components/IconButton"
-import {NotificationKind, type AnyNotification} from "../hooks/useNotification"
+import {
+  NotificationKind,
+  type AnyNotification,
+} from "../hooks/useCachedNotification"
 import ActionNotification from "@/components/ActionNotification"
 import InlineNotification from "@/components/InlineNotification"
 

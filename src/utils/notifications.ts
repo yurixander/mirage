@@ -1,7 +1,7 @@
 import {
+  NotificationKind,
   NotificationType,
-  type AnyNotification,
-} from "@/containers/NavigationSection/hooks/useNotification"
+} from "@/containers/NavigationSection/hooks/useCachedNotification"
 import {
   type MatrixClient,
   type MatrixEvent,
@@ -12,7 +12,7 @@ import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications"
 
-export function getNotificationsData(): AnyNotification[] {
+export function getLocalNotificationsData(): LocalNotificationData[] {
   const savedNotifications = localStorage.getItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY
   )
@@ -20,7 +20,9 @@ export function getNotificationsData(): AnyNotification[] {
   return savedNotifications ? JSON.parse(savedNotifications) : []
 }
 
-export function setNotificationsData(notifications: AnyNotification[]) {
+export function setLocalNotificationsData(
+  notifications: LocalNotificationData[]
+) {
   localStorage.setItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY,
     JSON.stringify(notifications)
@@ -29,8 +31,10 @@ export function setNotificationsData(notifications: AnyNotification[]) {
 
 export type LocalNotificationData = {
   type: NotificationType
+  notificationKind: NotificationKind
   isRead: boolean
   roomName: string
+  roomId: string
   notificationTime: number
   notificationId: string
   sender?: string
@@ -38,8 +42,10 @@ export type LocalNotificationData = {
 }
 
 type NotificationPartialData = {
+  notificationKind: NotificationKind
   isRead: boolean
   roomName: string
+  roomId: string
   notificationTime: number
   notificationId: string
   sender?: string
@@ -56,8 +62,6 @@ export const getNotificationFromMembersEvent = (
   const sender = event.getSender()
   const room = client.getRoom(member.roomId)
 
-  console.log(event, member, oldMembership)
-
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
 
   // A null room in this case is a room that is being created and the notification should not be processed.
@@ -67,9 +71,11 @@ export const getNotificationFromMembersEvent = (
 
   const partialNotification: NotificationPartialData = {
     isRead: false,
+    notificationKind: NotificationKind.InlineNotification,
     notificationId: eventId,
     notificationTime: event.localTimestamp,
     roomName: room.name,
+    roomId: member.roomId,
     sender: event.sender?.name,
     senderMxcAvatarUrl: event.sender?.getMxcAvatarUrl(),
   }

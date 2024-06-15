@@ -7,7 +7,7 @@ import IconButton from "./IconButton"
 import Typography, {TypographyVariant} from "./Typography"
 import {twMerge} from "tailwind-merge"
 import {stringToColor, timeFormatter} from "@/utils/util"
-import {notificationsBody} from "@/containers/NavigationSection/hooks/useNotification"
+import {notificationsBody} from "@/containers/NavigationSection/hooks/useCachedNotification"
 
 export type ActionNotificationProps = {
   onAction: () => void
@@ -31,21 +31,25 @@ const ActionNotification: FC<ActionNotificationProps> = ({
         !isRead && "rounded-lg bg-slate-100"
       )}>
       {/* TODO: Replace later for use new variation `Small` */}
-      <AvatarImage
-        isRounded={false}
-        isLarge={false}
-        avatarType={AvatarType.Message}
-        displayName={sender}
-        avatarUrl={senderAvatarUrl}
-      />
+      {sender !== undefined && (
+        <AvatarImage
+          isRounded={false}
+          isLarge={false}
+          avatarType={AvatarType.Message}
+          displayName={sender}
+          avatarUrl={senderAvatarUrl}
+        />
+      )}
 
       <div className="flex flex-col gap-1">
         <div className="flex flex-row gap-1">
-          <Typography
-            variant={TypographyVariant.P}
-            style={{color: stringToColor(sender)}}>
-            {sender}
-          </Typography>
+          {sender !== undefined && (
+            <Typography
+              variant={TypographyVariant.P}
+              style={{color: stringToColor(sender)}}>
+              {sender}
+            </Typography>
+          )}
 
           <Typography variant={TypographyVariant.P}>
             {notificationsBody[type]}
