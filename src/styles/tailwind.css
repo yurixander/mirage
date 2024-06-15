@@ -58,7 +58,7 @@ textarea:disabled {
 
 input[type="range"]::-webkit-slider-thumb {
   @apply size-4 appearance-none rounded-full border border-fuchsia-600 bg-slate-50 shadow;
-  
+  border: 1px solid rgb(192, 38, 211);
 }
 
 input[type="range"]::-moz-range-thumb {
