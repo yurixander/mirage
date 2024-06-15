@@ -26,8 +26,8 @@ const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
             left: `${progress * (240 / max) - ((progress * 100) / max / 100) * 15}px`,
           }}
           className="absolute flex flex-col items-center justify-center">
-          <div className="size-4 rotate-45 bg-fuchsia-500" />
-          <div className="absolute mb-4 flex h-5 w-10 items-center justify-center rounded bg-fuchsia-500 text-white">
+          <div className="size-4 rotate-45 bg-fuchsia-600" />
+          <div className="absolute mb-4 flex h-5 w-10 items-center justify-center rounded bg-fuchsia-600 text-white">
             {progress}%
           </div>
         </div>
@@ -56,7 +56,7 @@ const BasicProgressBar: FC<{progress: number}> = ({progress}) => {
     <div className="absolute h-3 w-56 overflow-hidden rounded-full bg-slate-100 shadow">
       <div
         style={{width: `${progress}%`}}
-        className="h-3 bg-fuchsia-400 shadow"
+        className="h-3 bg-fuchsia-500 shadow"
       />
     </div>
   )
