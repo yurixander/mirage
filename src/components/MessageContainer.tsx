@@ -2,6 +2,7 @@ import {type FC} from "react"
 import {cleanDisplayName, timeFormatter} from "../utils/util"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
+import Typography, {TypographyVariant} from "./Typography"
 
 export type MessageBaseProps = {
   authorAvatarUrl?: string
@@ -57,13 +58,13 @@ const MessageContainer: FC<MessageContainerProps> = ({
         </div>
 
         <div className="w-full">
-          <span
-            className="select-text font-semibold"
+          <Typography
+            className="select-text font-bold"
             style={{color: authorDisplayNameColor}}
             onClick={onAuthorClick}
-            aria-hidden="true">
-            {authorDisplayName}
-          </span>
+            variant={TypographyVariant.Body}>
+            {cleanDisplayName(authorDisplayName)}
+          </Typography>
 
           <div className="flex w-full justify-between">
             {children}

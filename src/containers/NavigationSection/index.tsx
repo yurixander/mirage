@@ -29,6 +29,7 @@ const NavigationSection: FC = () => {
         <SidebarActions
           className="mt-auto p-4"
           notificationsCount={containsUnreadNotifications}
+          // TODO: Handle other events.
           onCalls={() => {}}
           onSearch={() => {}}
           onExit={onLogout}

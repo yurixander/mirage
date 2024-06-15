@@ -64,11 +64,11 @@ const CreateSpaceModal: FC = () => {
           <div className="flex flex-col">
             <Typography
               className="font-bold text-black"
-              variant={TypographyVariant.H3}>
+              variant={TypographyVariant.Heading}>
               Create Space
             </Typography>
 
-            <Typography variant={TypographyVariant.P}>
+            <Typography variant={TypographyVariant.BodySmall}>
               Spaces are a new way of grouping rooms and people. What kind of
               space you want to create you can change
             </Typography>
@@ -84,7 +84,7 @@ const CreateSpaceModal: FC = () => {
 
           {/* TODO: This input description prefer use `text-area` */}
           <div className="flex flex-col gap-1">
-            <Typography variant={TypographyVariant.Span}>
+            <Typography variant={TypographyVariant.BodySmall}>
               Description (optional)
             </Typography>
 

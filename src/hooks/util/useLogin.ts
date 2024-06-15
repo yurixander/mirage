@@ -3,7 +3,7 @@ import {createClient, SyncState} from "matrix-js-sdk"
 import {useState, useCallback, useEffect} from "react"
 import {useNavigate} from "react-router-dom"
 import useConnection from "../matrix/useConnection"
-import useLocalStorage, {LocalStorageKeys} from "./useLocalStorage"
+import useLocalStorage, {LocalStorageKey} from "./useLocalStorage"
 import {MATRIX_SERVER} from "@/utils/servers"
 
 const useLogin = () => {
@@ -11,8 +11,8 @@ const useLogin = () => {
   const [userId, setUserId] = useState("")
   const [password, setPassword] = useState("")
 
-  const {cachedValue: credentials, saveValue: saveCredentials} =
-    useLocalStorage<Credentials>(LocalStorageKeys.Credentials)
+  const {value: credentials, put: saveCredentials} =
+    useLocalStorage<Credentials>(LocalStorageKey.Credentials)
 
   const {connect, disconnect, syncState, lastSyncError, isConnecting, client} =
     useConnection()

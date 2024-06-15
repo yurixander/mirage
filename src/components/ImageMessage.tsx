@@ -74,6 +74,8 @@ const ImageMessage: FC<ImageMessageProps> = ({
         </div>
       ) : (
         // TODO: Handle image size here. Preferably, make the component accept 'imageDimensions' as props.
+        // TODO: Add keyboard event listener for accessibility.
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events
         <div
           role="button"
           aria-hidden
