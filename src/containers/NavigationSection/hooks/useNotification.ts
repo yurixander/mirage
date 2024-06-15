@@ -1,6 +1,5 @@
 import {type ActionNotificationProps} from "@/components/ActionNotification"
 import {type InlineNotificationProps} from "@/components/InlineNotification"
-import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {
@@ -165,7 +164,29 @@ const useNotification = () => {
         return
       }
 
-      getNotificationFromMembersEvent(event, client, member, oldMembership)
+      const notificationData = getNotificationFromMembersEvent(
+        event,
+        client,
+        member,
+        oldMembership
+      )
+
+      if (notificationData === null) {
+        return
+      }
+
+      saveNotification({
+        kind: NotificationKind.InlineNotification,
+        data: {
+          ...notificationData,
+          markAsRead() {
+            markAsReadByNotificationId(notificationData.notificationId)
+          },
+          onDelete() {
+            deleteNotificationById(notificationData.notificationId)
+          },
+        },
+      })
     }
   )
 

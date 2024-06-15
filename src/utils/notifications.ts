@@ -1,4 +1,3 @@
-import {type InlineNotificationProps} from "@/components/InlineNotification"
 import {
   NotificationType,
   type AnyNotification,
@@ -8,7 +7,7 @@ import {
   type MatrixEvent,
   type RoomMember,
 } from "matrix-js-sdk"
-import {assert, CommonAssertion, getImageUrl} from "./util"
+import {assert, CommonAssertion} from "./util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications"
@@ -30,19 +29,21 @@ export function setNotificationsData(notifications: AnyNotification[]) {
 
 export type LocalNotificationData = {
   type: NotificationType
+  isRead: boolean
   roomName: string
   notificationTime: number
   notificationId: string
   sender?: string
-  senderAvatarUrl?: string
+  senderMxcAvatarUrl?: string
 }
 
 type NotificationPartialData = {
+  isRead: boolean
   roomName: string
   notificationTime: number
   notificationId: string
   sender?: string
-  senderAvatarUrl?: string
+  senderMxcAvatarUrl?: string
 }
 
 export const getNotificationFromMembersEvent = (
@@ -65,11 +66,12 @@ export const getNotificationFromMembersEvent = (
   }
 
   const partialNotification: NotificationPartialData = {
+    isRead: false,
     notificationId: eventId,
     notificationTime: event.localTimestamp,
     roomName: room.name,
     sender: event.sender?.name,
-    senderAvatarUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
+    senderMxcAvatarUrl: event.sender?.getMxcAvatarUrl(),
   }
 
   switch (member.membership) {
