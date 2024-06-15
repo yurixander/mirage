@@ -63,20 +63,13 @@ const BasicProgressBar: FC<{progress: number}> = ({progress}) => {
 }
 
 const StepProgressBar: FC<{steps: number}> = ({steps}) => {
-  const step = []
-
-  for (let i = 0; i < steps; i++) {
-    step.push(i)
-  }
-
   return (
     <div className="absolute flex h-3 w-60 items-center overflow-hidden rounded-full bg-slate-200 shadow">
       <div className="rounded-full bg-slate-300 text-end">
         <div className="size-2 rounded-full bg-white shadow" />
       </div>
-
-      {step.map((_opt, index) => (
-        <Step key={index} />
+      {Array.from({length: steps}, (_, i) => (
+        <Step key={i} />
       ))}
     </div>
   )
