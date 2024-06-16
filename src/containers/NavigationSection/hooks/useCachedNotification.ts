@@ -73,7 +73,7 @@ const useCachedNotification = () => {
       setCachedNotifications(prevNotifications => {
         const notificationsCleaned = prevNotifications.filter(
           prevNotification =>
-            prevNotification.notificationId === notification.notificationId
+            prevNotification.notificationId !== notification.notificationId
         )
 
         const newNotifications = [...notificationsCleaned, notification]
