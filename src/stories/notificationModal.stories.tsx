@@ -2,7 +2,7 @@ import {
   type AnyNotification,
   NotificationKind,
   NotificationType,
-} from "@/containers/NavigationSection/hooks/useCachedNotification"
+} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 import NotificationsModal, {
   type NotificationModalProps,
 } from "@/containers/NavigationSection/modals/NotificationsModal"

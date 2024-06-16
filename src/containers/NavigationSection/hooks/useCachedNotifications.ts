@@ -51,7 +51,7 @@ export type AnyNotification =
   | Notification<NotificationKind.ActionNotification>
   | Notification<NotificationKind.InlineNotification>
 
-const useCachedNotification = () => {
+const useCachedNotifications = () => {
   const {client} = useConnection()
   const [notifications, setNotifications] = useState<AnyNotification[]>([])
 
@@ -210,4 +210,4 @@ const useCachedNotification = () => {
   }
 }
 
-export default useCachedNotification
+export default useCachedNotifications

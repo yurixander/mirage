@@ -7,7 +7,7 @@ import IconButton from "./IconButton"
 import Typography, {TypographyVariant} from "./Typography"
 import {twMerge} from "tailwind-merge"
 import {stringToColor, timeFormatter} from "@/utils/util"
-import {notificationsBody} from "@/containers/NavigationSection/hooks/useCachedNotification"
+import {notificationsBody} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 
 export type ActionNotificationProps = {
   onAction: () => void

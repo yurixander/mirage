@@ -1,7 +1,7 @@
 import {
   notificationsBody,
   type NotificationType,
-} from "@/containers/NavigationSection/hooks/useCachedNotification"
+} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 import {stringToColor, timeFormatter} from "@/utils/util"
 import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"

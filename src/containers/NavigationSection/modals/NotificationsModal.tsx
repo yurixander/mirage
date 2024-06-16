@@ -7,7 +7,7 @@ import IconButton from "../../../components/IconButton"
 import {
   NotificationKind,
   type AnyNotification,
-} from "../hooks/useCachedNotification"
+} from "../hooks/useCachedNotifications"
 import ActionNotification from "@/components/ActionNotification"
 import InlineNotification from "@/components/InlineNotification"
 

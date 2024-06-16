@@ -11,7 +11,7 @@ import {
 import {twMerge} from "tailwind-merge"
 import {createPortal} from "react-dom"
 import NotificationsModal from "./modals/NotificationsModal"
-import useCachedNotification from "./hooks/useCachedNotification"
+import useCachedNotifications from "./hooks/useCachedNotifications"
 
 export type SidebarActionsProps = {
   onDirectMessages: () => void
@@ -29,7 +29,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onSearch,
 }) => {
   const {notifications, markAllNotificationsAsRead, unreadNotifications} =
-    useCachedNotification()
+    useCachedNotifications()
 
   const [notificationsModalVisible, setNotificationsModalVisible] =
     useState(false)

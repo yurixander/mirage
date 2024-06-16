@@ -2,7 +2,7 @@ import {type Meta, type StoryObj} from "@storybook/react"
 import ActionNotification, {
   type ActionNotificationProps,
 } from "../components/ActionNotification"
-import {NotificationType} from "@/containers/NavigationSection/hooks/useCachedNotification"
+import {NotificationType} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 
 type Story = StoryObj<typeof ActionNotification>
 

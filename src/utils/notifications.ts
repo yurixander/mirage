@@ -1,7 +1,7 @@
 import {
   NotificationKind,
   NotificationType,
-} from "@/containers/NavigationSection/hooks/useCachedNotification"
+} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 import {
   type MatrixClient,
   type MatrixEvent,
