@@ -51,23 +51,19 @@ const InlineNotification: FC<InlineNotificationProps> = ({
       )}
 
       <div className="flex flex-col gap-1">
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row gap-2">
           {sender !== undefined && (
             <Typography
+              className="shrink-0"
               variant={TypographyVariant.P}
               style={{color: stringToColor(sender)}}>
               {sender}
             </Typography>
           )}
 
-          <Typography variant={TypographyVariant.P}>
-            {notificationsBody[type]}
-          </Typography>
-
-          <Typography
-            variant={TypographyVariant.P}
-            style={{color: stringToColor(roomName)}}>
-            {roomName}
+          <Typography className="break-words" variant={TypographyVariant.P}>
+            {notificationsBody[type]}{" "}
+            <span style={{color: stringToColor(roomName)}}>{roomName}</span>
           </Typography>
         </div>
 

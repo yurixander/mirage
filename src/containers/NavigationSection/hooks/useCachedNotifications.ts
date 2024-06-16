@@ -20,6 +20,7 @@ export enum NotificationType {
   Banned,
   Leaved,
   Invited,
+  BanRemoved,
   RejectInvitation,
   UpgradeToAdmin,
   UpgradeToModerator,
@@ -30,11 +31,12 @@ export enum NotificationType {
 export const notificationsBody: {[key in NotificationType]: string} = {
   [NotificationType.Invited]: "te ha invitado a",
   [NotificationType.Banned]: "te ha baneado de",
-  [NotificationType.Leaved]: "",
-  [NotificationType.UpgradeToAdmin]: "",
-  [NotificationType.UpgradeToModerator]: "",
-  [NotificationType.DowngradeToMember]: "",
-  [NotificationType.RejectInvitation]: "",
+  [NotificationType.Leaved]: "te han expulsado de",
+  [NotificationType.BanRemoved]: "te ha quitado el veto en",
+  [NotificationType.UpgradeToAdmin]: "te han ascendido a admin",
+  [NotificationType.UpgradeToModerator]: "te han ascendido a moderador",
+  [NotificationType.DowngradeToMember]: "te han descendido a miembro",
+  [NotificationType.RejectInvitation]: "has rechazado la invitacion",
 }
 
 type NotificationOf<Kind extends NotificationKind> =

@@ -82,16 +82,21 @@ export const getNotificationFromMembersEvent = (
 
   switch (member.membership) {
     case KnownMembership.Invite: {
-      // getNotificationFromInviteEvent(
-      //   room.roomId,
-      //   room.name,
-      //   getImageUrl(room.getMxcAvatarUrl(), client)
-      // )
-
-      break
+      return {
+        ...partialNotification,
+        notificationKind: NotificationKind.ActionNotification,
+        type: NotificationType.Invited,
+      }
     }
     case KnownMembership.Leave: {
       const isCurrentUser = sender === member.userId
+
+      if (!isCurrentUser && oldMembership === KnownMembership.Ban) {
+        return {
+          ...partialNotification,
+          type: NotificationType.BanRemoved,
+        }
+      }
 
       const type =
         isCurrentUser && oldMembership === KnownMembership.Invite
@@ -110,16 +115,10 @@ export const getNotificationFromMembersEvent = (
       }
     }
     case KnownMembership.Ban: {
-      // return {
-      //   body: `you have been banned from the ${room.name} ${reason}`,
-      //   isRead: false,
-      //   notificationId: eventId,
-      //   notificationTime: event.localTimestamp,
-      //   senderName: event.sender?.name,
-      //   avatarSenderUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
-      // }
-
-      break
+      return {
+        ...partialNotification,
+        type: NotificationType.Banned,
+      }
     }
     case undefined: {
       break
@@ -131,14 +130,10 @@ export const getNotificationFromMembersEvent = (
     member.membership !== KnownMembership.Ban &&
     oldMembership === KnownMembership.Ban
   ) {
-    // return {
-    //   body: `your ban has been lifted in the ${room.name}`,
-    //   isRead: false,
-    //   notificationId: eventId,
-    //   notificationTime: event.localTimestamp,
-    //   senderName: event.sender?.name,
-    //   avatarSenderUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
-    // }
+    return {
+      ...partialNotification,
+      type: NotificationType.BanRemoved,
+    }
   }
 
   return null
