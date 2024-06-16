@@ -33,15 +33,15 @@ const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
         </div>
       </div>
       {step === undefined || step < 10 ? (
-        <BasicProgressBar progress={(progress * 100) / max ?? "50"} />
+        <BasicProgressBar progress={(progress * 100) / (max - min)} />
       ) : (
-        <StepProgressBar steps={(max - min) / (step ?? 1)} />
+        <StepProgressBar steps={(max - min) / step} />
       )}
 
       <input
-        max={max ?? 100}
-        min={min ?? 0}
-        step={step ?? 1}
+        max={max}
+        min={min}
+        step={step}
         value={progress}
         onInput={handleOnInput}
         className="absolute h-3 w-60 cursor-pointer appearance-none rounded-full bg-transparent p-0"
