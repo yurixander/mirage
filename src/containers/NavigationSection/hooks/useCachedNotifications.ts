@@ -3,11 +3,11 @@ import {type InlineNotificationProps} from "@/components/InlineNotification"
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {
-  getLocalNotificationsData,
   getNotificationFromMembersEvent,
   getNotificationFromPowerLevelEvent,
+  getNotificationsFromLocalStorage,
+  setNotificationsToLocalStorage,
   type LocalNotificationData,
-  setLocalNotificationsData,
 } from "@/utils/notifications"
 import {RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useMemo, useState} from "react"
@@ -63,7 +63,7 @@ const useCachedNotifications = () => {
   >(() => {
     // Initially fetch notifications from local storage.
 
-    return getLocalNotificationsData()
+    return getNotificationsFromLocalStorage()
   })
 
   const unreadNotifications = useMemo(() => {
@@ -83,7 +83,7 @@ const useCachedNotifications = () => {
         )
 
         const newNotifications = [...notificationsCleaned, notification]
-        setLocalNotificationsData(newNotifications)
+        setNotificationsToLocalStorage(newNotifications)
 
         return newNotifications
       })
@@ -97,7 +97,7 @@ const useCachedNotifications = () => {
         notification => notification.notificationId !== notificationId
       )
 
-      setLocalNotificationsData(newNotifications)
+      setNotificationsToLocalStorage(newNotifications)
 
       return newNotifications
     })
@@ -114,7 +114,7 @@ const useCachedNotifications = () => {
         }
       )
 
-      setLocalNotificationsData(newNotifications)
+      setNotificationsToLocalStorage(newNotifications)
 
       return newNotifications
     })
@@ -135,7 +135,7 @@ const useCachedNotifications = () => {
         }
       )
 
-      setLocalNotificationsData(newNotifications)
+      setNotificationsToLocalStorage(newNotifications)
 
       return newNotifications
     })

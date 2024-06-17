@@ -13,7 +13,7 @@ import {UserPowerLevel} from "@/containers/Roster/RosterUser"
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications"
 
-export function getLocalNotificationsData(): LocalNotificationData[] {
+export function getNotificationsFromLocalStorage(): LocalNotificationData[] {
   const savedNotifications = localStorage.getItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY
   )
@@ -21,7 +21,7 @@ export function getLocalNotificationsData(): LocalNotificationData[] {
   return savedNotifications ? JSON.parse(savedNotifications) : []
 }
 
-export function setLocalNotificationsData(
+export function setNotificationsToLocalStorage(
   notifications: LocalNotificationData[]
 ) {
   localStorage.setItem(
@@ -42,7 +42,7 @@ export type LocalNotificationData = {
   senderMxcAvatarUrl?: string
 }
 
-type NotificationPartialData = {
+type PartialNotificationData = {
   notificationKind: NotificationKind
   isRead: boolean
   roomName: string
@@ -71,7 +71,7 @@ export function getNotificationFromMembersEvent(
     return null
   }
 
-  const partialNotification: NotificationPartialData = {
+  const partialNotification: PartialNotificationData = {
     isRead: false,
     notificationKind: NotificationKind.InlineNotification,
     notificationId: eventId,
@@ -163,7 +163,7 @@ export function getNotificationFromPowerLevelEvent(
     return null
   }
 
-  const partialNotification: NotificationPartialData = {
+  const partialNotification: PartialNotificationData = {
     isRead: false,
     notificationId: eventId,
     notificationKind: NotificationKind.InlineNotification,
