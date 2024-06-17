@@ -71,9 +71,12 @@ const useCachedNotifications = () => {
       .length
   }, [cachedNotifications])
 
+  // #region Functions
+
   const saveNotification = useCallback(
     (notification: LocalNotificationData) => {
       setCachedNotifications(prevNotifications => {
+        // Avoid saving a duplicate notification.
         const notificationsCleaned = prevNotifications.filter(
           prevNotification =>
             prevNotification.notificationId !== notification.notificationId
