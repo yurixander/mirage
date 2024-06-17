@@ -30,6 +30,7 @@ const notifications: AnyNotification[] = [
       onAction() {},
       onDelete() {},
       notificationTime: Date.now(),
+      roomId: "",
     },
   },
   {
@@ -43,6 +44,7 @@ const notifications: AnyNotification[] = [
       markAsRead() {},
       onDelete() {},
       notificationTime: Date.now(),
+      roomId: "",
     },
   },
 ]
