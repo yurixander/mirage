@@ -9,6 +9,7 @@ import {
 } from "matrix-js-sdk"
 import {assert, CommonAssertion} from "./util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import {UserPowerLevel} from "@/containers/Roster/RosterUser"
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications"
 
@@ -37,7 +38,7 @@ export type LocalNotificationData = {
   roomId: string
   notificationTime: number
   notificationId: string
-  sender?: string
+  sender: string
   senderMxcAvatarUrl?: string
 }
 
@@ -52,12 +53,12 @@ type NotificationPartialData = {
   senderMxcAvatarUrl?: string
 }
 
-export const getNotificationFromMembersEvent = (
+export function getNotificationFromMembersEvent(
   event: MatrixEvent,
   client: MatrixClient,
   member: RoomMember,
   oldMembership?: string
-): LocalNotificationData | null => {
+): LocalNotificationData | null {
   const eventId = event.getId()
   const sender = event.getSender()
   const room = client.getRoom(member.roomId)
@@ -138,4 +139,64 @@ export const getNotificationFromMembersEvent = (
   }
 
   return null
+}
+
+export function getNotificationFromPowerLevelEvent(
+  client: MatrixClient,
+  event: MatrixEvent,
+  currentLevels: number,
+  userId: string
+): LocalNotificationData | null {
+  const isAdmin = currentLevels === UserPowerLevel.Admin
+  const isMod = currentLevels === UserPowerLevel.Moderator
+  const eventId = event.getId()
+  const room = client.getRoom(event.getRoomId())
+  const sender = event.getSender()
+  const prevContent = event.getPrevContent()
+
+  assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
+  assert(room !== null, "The room should be exist")
+  assert(sender !== undefined, CommonAssertion.EventSenderNotFount)
+
+  // If it does not have users, is a Room in creation, it cannot be processed.
+  if (prevContent.users === undefined) {
+    return null
+  }
+
+  const partialNotification: NotificationPartialData = {
+    isRead: false,
+    notificationId: eventId,
+    notificationKind: NotificationKind.InlineNotification,
+    notificationTime: event.localTimestamp,
+    roomId: room.roomId,
+    roomName: room.name,
+    sender: event.sender?.name ?? sender,
+    senderMxcAvatarUrl: event.sender?.getMxcAvatarUrl(),
+  }
+
+  const previousLevels: number = prevContent.users[userId] ?? 0
+  let type: NotificationType | null = null
+
+  if (currentLevels > previousLevels) {
+    type = isAdmin
+      ? NotificationType.UpgradeToAdmin
+      : isMod
+        ? NotificationType.UpgradeToModerator
+        : null
+  } else if (currentLevels < previousLevels) {
+    type =
+      currentLevels === UserPowerLevel.Member
+        ? NotificationType.DowngradeToMember
+        : null
+  }
+
+  // Check that an event with magic numbers is not processed.
+  if (type === null) {
+    return null
+  }
+
+  return {
+    ...partialNotification,
+    type,
+  }
 }

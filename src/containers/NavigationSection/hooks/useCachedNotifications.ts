@@ -5,6 +5,7 @@ import useEventListener from "@/hooks/matrix/useEventListener"
 import {
   getLocalNotificationsData,
   getNotificationFromMembersEvent,
+  getNotificationFromPowerLevelEvent,
   type LocalNotificationData,
   setLocalNotificationsData,
 } from "@/utils/notifications"
@@ -201,6 +202,21 @@ const useCachedNotifications = () => {
       saveNotification(notificationData)
     }
   )
+
+  useEventListener(RoomMemberEvent.PowerLevel, (event, member) => {
+    if (client === null || member.userId !== client.getUserId()) {
+      return
+    }
+
+    console.log(
+      getNotificationFromPowerLevelEvent(
+        client,
+        event,
+        member.powerLevel,
+        member.userId
+      )
+    )
+  })
 
   return {
     notifications,

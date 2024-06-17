@@ -16,42 +16,6 @@
 // import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 const useGlobalEventListeners = () => {
-  // const {client} = useConnection()
-  // const {activeRoomId} = useActiveRoomIdStore()
-
-  // const containsUnreadNotifications = useMemo(() => {
-  //   if (state === NotificationsSyncState.Processed) {
-  //     return
-  //   }
-
-  //   // const notificationsUnread = getNotificationsData().filter(
-  //   //   notification => !notification.isRead
-  //   // )
-
-  //   return notificationsUnread.length > 0
-  //     ? notificationsUnread.length
-  //     : undefined
-  // }, [state])
-
-  // useEventListener(
-  //   RoomMemberEvent.Membership,
-  //   (event, member, oldMembership) => {
-  //     if (
-  //       client === null ||
-  //       event.getRoomId() === activeRoomId ||
-  //       member.userId !== client.getUserId()
-  //     ) {
-  //       return
-  //     }
-
-  //     saveNotification(
-  //       getNotificationFromMembersEvent(event, client, member, oldMembership)
-  //     )
-
-  //     onRequestChanges()
-  //   }
-  // // )
-
   // useEventListener(RoomMemberEvent.PowerLevel, (event, member) => {
   //   if (
   //     client === null ||
@@ -73,44 +37,8 @@ const useGlobalEventListeners = () => {
   //   onRequestChanges()
   // })
 
-  // useEventListener(RoomEvent.Timeline, (event, room, toStartOfTimeline) => {
-  //   // Ignore past events when starting sync.
-  //   if (toStartOfTimeline) {
-  //     return
-  //   }
-
-  //   // If there is no room, the event may not be a mention event.
-  //   if (room === undefined || client === null) {
-  //     return
-  //   }
-
-  //   // If the room is the one that is active, no notification is sent.
-  //   if (activeRoomId === room.roomId) {
-  //     return
-  //   }
-
-  //   saveNotification(getNotificationFromMentionEvent(client, event, room))
-  //   onRequestChanges()
-  // })
-
   return {}
 }
-
-// export const getNotificationFromInviteEvent = (
-//   roomId: string,
-//   roomName: string,
-//   roomAvatarUrl?: string
-// ): LocalNotificationData | null => {
-//   return {
-//     body: "invited you to join this room",
-//     notificationId: roomId,
-//     notificationTime: Date.now(),
-//     avatarSenderUrl: roomAvatarUrl,
-//     senderName: roomName,
-//     isRead: false,
-//     hasActions: true,
-//   }
-// }
 
 // const getNotificationFromPowerLevelEvent = (
 //   client: MatrixClient,
@@ -155,124 +83,6 @@ const useGlobalEventListeners = () => {
 //     avatarSenderUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
 //     senderName: event.sender?.name,
 //   }
-// }
-
-// // TODO: If the room is encrypted, you will have to decrypt the message first.
-// const getNotificationFromMentionEvent = (
-//   client: MatrixClient,
-//   event: MatrixEvent,
-//   room: Room
-// ): LocalNotificationData | null => {
-//   const eventId = event.getId()
-
-//   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
-
-//   // If there are no mentions there is no mention event.
-//   if (!event.getContent()["m.mentions"]?.user_ids?.includes(room.myUserId)) {
-//     return null
-//   }
-
-//   return {
-//     body: `mentioned you in room: ${room.name}`,
-//     isRead: false,
-//     notificationId: eventId,
-//     notificationTime: event.localTimestamp,
-//     avatarSenderUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
-//     senderName: event.sender?.name,
-//   }
-// }
-
-// const getNotificationFromMembersEvent = (
-//   event: MatrixEvent,
-//   client: MatrixClient,
-//   member: RoomMember,
-//   oldMembership?: string
-// ): LocalNotificationData | null => {
-//   const eventId = event.getId()
-//   const sender = event.getSender()
-//   const room = client.getRoom(member.roomId)
-//   const hasReason = event.getContent().reason
-//   const reason = hasReason === undefined ? "" : `for <<${hasReason}>>`
-
-//   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
-
-//   // A null room in this case is a room that is being created and the notification should not be processed.
-//   if (room === null) {
-//     return null
-//   }
-
-//   switch (member.membership) {
-//     case KnownMembership.Invite: {
-//       saveNotification(
-//         getNotificationFromInviteEvent(
-//           room.roomId,
-//           room.name,
-//           getImageUrl(room.getMxcAvatarUrl(), client)
-//         )
-//       )
-
-//       break
-//     }
-//     case KnownMembership.Leave: {
-//       if (
-//         sender === member.userId &&
-//         oldMembership === KnownMembership.Invite
-//       ) {
-//         return {
-//           body: "you rejected the invitation",
-//           isRead: false,
-//           notificationId: eventId,
-//           notificationTime: event.localTimestamp,
-//           senderName: room?.name,
-//           avatarSenderUrl: getImageUrl(room?.getMxcAvatarUrl(), client),
-//         }
-//       } else if (
-//         sender !== member.userId &&
-//         oldMembership === KnownMembership.Join
-//       ) {
-//         return {
-//           body: `expelled you from the ${room.name} ${reason}`,
-//           isRead: false,
-//           notificationId: eventId,
-//           notificationTime: event.localTimestamp,
-//           senderName: event.sender?.name,
-//           avatarSenderUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
-//         }
-//       }
-
-//       break
-//     }
-//     case KnownMembership.Ban: {
-//       return {
-//         body: `you have been banned from the ${room.name} ${reason}`,
-//         isRead: false,
-//         notificationId: eventId,
-//         notificationTime: event.localTimestamp,
-//         senderName: event.sender?.name,
-//         avatarSenderUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
-//       }
-//     }
-//     case undefined: {
-//       break
-//     }
-//   }
-
-//   // The user ban was removed.
-//   if (
-//     member.membership !== KnownMembership.Ban &&
-//     oldMembership === KnownMembership.Ban
-//   ) {
-//     return {
-//       body: `your ban has been lifted in the ${room.name}`,
-//       isRead: false,
-//       notificationId: eventId,
-//       notificationTime: event.localTimestamp,
-//       senderName: event.sender?.name,
-//       avatarSenderUrl: getImageUrl(event.sender?.getMxcAvatarUrl(), client),
-//     }
-//   }
-
-//   return null
 // }
 
 export default useGlobalEventListeners
