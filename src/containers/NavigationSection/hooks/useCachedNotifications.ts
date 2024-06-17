@@ -34,9 +34,9 @@ export const notificationsBody: {[key in NotificationType]: string} = {
   [NotificationType.Banned]: "te ha baneado de",
   [NotificationType.Leaved]: "te han expulsado de",
   [NotificationType.BanRemoved]: "te ha quitado el veto en",
-  [NotificationType.UpgradeToAdmin]: "te han ascendido a admin",
-  [NotificationType.UpgradeToModerator]: "te han ascendido a moderador",
-  [NotificationType.DowngradeToMember]: "te han descendido a miembro",
+  [NotificationType.UpgradeToAdmin]: "te han ascendido a admin en",
+  [NotificationType.UpgradeToModerator]: "te han ascendido a moderador en",
+  [NotificationType.DowngradeToMember]: "te han descendido a miembro en",
   [NotificationType.RejectInvitation]: "has rechazado la invitacion",
 }
 
@@ -208,14 +208,18 @@ const useCachedNotifications = () => {
       return
     }
 
-    console.log(
-      getNotificationFromPowerLevelEvent(
-        client,
-        event,
-        member.powerLevel,
-        member.userId
-      )
+    const notificationData = getNotificationFromPowerLevelEvent(
+      client,
+      event,
+      member.powerLevel,
+      member.userId
     )
+
+    if (notificationData === null) {
+      return
+    }
+
+    saveNotification(notificationData)
   })
 
   return {
