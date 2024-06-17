@@ -41,7 +41,7 @@ const NotificationsModal: FC<NotificationModalProps> = ({
   return (
     <div
       className={twMerge(
-        "flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl bg-gray-50 p-2"
+        "m-2 flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl border border-slate-300 bg-gray-50 p-2 shadow-2xl"
       )}>
       <div className="flex w-full p-2">
         <Typography

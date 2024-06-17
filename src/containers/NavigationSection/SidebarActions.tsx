@@ -12,6 +12,7 @@ import {twMerge} from "tailwind-merge"
 import {createPortal} from "react-dom"
 import NotificationsModal from "./modals/NotificationsModal"
 import useCachedNotifications from "./hooks/useCachedNotifications"
+import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 
 export type SidebarActionsProps = {
   onDirectMessages: () => void
@@ -40,7 +41,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
         createPortal(
           <div
             className={twMerge(
-              "fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay"
+              "absolute z-50 flex size-full w-screen flex-col items-start justify-end"
             )}>
             <NotificationsModal
               notifications={notifications}
@@ -50,7 +51,8 @@ const SidebarActions: FC<SidebarActionsProps> = ({
               markAllNotificationsAsRead={markAllNotificationsAsRead}
             />
           </div>,
-          document.body
+          document.querySelector(`#${ModalRenderLocation.ChatContainer}`) ??
+            document.body
         )}
       <div className={twMerge("flex flex-col gap-2", className)}>
         <SidebarActionItem

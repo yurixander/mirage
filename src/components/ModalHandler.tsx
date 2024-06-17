@@ -31,7 +31,7 @@ const ModalHandler: FC = () => {
   const targetElement =
     renderLocation === null
       ? document.body
-      : document.querySelector(renderLocation)
+      : document.querySelector(`#${renderLocation}`)
 
   assert(targetElement !== null, "The render location does not exist")
 
