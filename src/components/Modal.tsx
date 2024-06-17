@@ -37,7 +37,7 @@ const Modal: FC<ModalProps> = ({
       )}>
       <div className="flex w-full items-center justify-between border-b border-slate-300 bg-gray-50 py-3 pl-6 pr-3">
         <Typography
-          variant={TypographyVariant.H4}
+          variant={TypographyVariant.Heading}
           className="font-bold text-black"
           as="span">
           {title}

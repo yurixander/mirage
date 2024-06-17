@@ -52,12 +52,14 @@ const InlineNotification: FC<InlineNotificationProps> = ({
         <div className="flex flex-row gap-2">
           <Typography
             className="shrink-0"
-            variant={TypographyVariant.P}
+            variant={TypographyVariant.BodySmall}
             style={{color: stringToColor(sender)}}>
             {sender}
           </Typography>
 
-          <Typography className="break-words" variant={TypographyVariant.P}>
+          <Typography
+            className="break-words"
+            variant={TypographyVariant.BodySmall}>
             {notificationsBody[type]}{" "}
             <span style={{color: stringToColor(roomName)}}>{roomName}</span>
           </Typography>
@@ -66,7 +68,7 @@ const InlineNotification: FC<InlineNotificationProps> = ({
         <div className="flex items-center gap-[2px]">
           <IoTime size={13} />
 
-          <Typography variant={TypographyVariant.P}>
+          <Typography variant={TypographyVariant.BodySmall}>
             {timeFormatter(notificationTime)}
           </Typography>
         </div>

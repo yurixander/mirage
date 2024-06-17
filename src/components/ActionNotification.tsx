@@ -42,17 +42,17 @@ const ActionNotification: FC<ActionNotificationProps> = ({
       <div className="flex flex-col gap-1">
         <div className="flex flex-row gap-1">
           <Typography
-            variant={TypographyVariant.P}
+            variant={TypographyVariant.BodySmall}
             style={{color: stringToColor(sender)}}>
             {sender}
           </Typography>
 
-          <Typography variant={TypographyVariant.P}>
+          <Typography variant={TypographyVariant.BodySmall}>
             {notificationsBody[type]}
           </Typography>
 
           <Typography
-            variant={TypographyVariant.P}
+            variant={TypographyVariant.BodySmall}
             style={{color: stringToColor(roomName)}}>
             {roomName}
           </Typography>
@@ -61,7 +61,7 @@ const ActionNotification: FC<ActionNotificationProps> = ({
         <div className="flex items-center gap-[2px]">
           <IoTime size={13} />
 
-          <Typography variant={TypographyVariant.P}>
+          <Typography variant={TypographyVariant.BodySmall}>
             {timeFormatter(notificationTime)}
           </Typography>
         </div>

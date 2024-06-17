@@ -38,11 +38,15 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
           avatarUrl={avatarUrl}
         />
         <div className="w-full px-3 text-center">
-          <Typography className="text-black" variant={TypographyVariant.H2}>
+          <Typography
+            className="text-black"
+            variant={TypographyVariant.Heading}>
             {name}
           </Typography>
 
-          <Typography className="text-black" variant={TypographyVariant.P}>
+          <Typography
+            className="text-black"
+            variant={TypographyVariant.BodySmall}>
             {getCallAction(action)}
           </Typography>
         </div>
