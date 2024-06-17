@@ -17,8 +17,8 @@ export interface InlineNotificationProps {
   roomName: string
   roomId: string
   notificationTime: number
+  sender: string
   senderAvatarUrl?: string
-  sender?: string
   onDelete: () => void
   markAsRead: () => void
 }
@@ -40,26 +40,22 @@ const InlineNotification: FC<InlineNotificationProps> = ({
         !isRead && "rounded-lg bg-slate-100"
       )}>
       {/* TODO: Replace later for use new variation `Small` */}
-      {sender !== undefined && (
-        <AvatarImage
-          isRounded={false}
-          isLarge={false}
-          avatarType={AvatarType.Message}
-          displayName={sender}
-          avatarUrl={senderAvatarUrl}
-        />
-      )}
+      <AvatarImage
+        isRounded={false}
+        isLarge={false}
+        avatarType={AvatarType.Message}
+        displayName={sender}
+        avatarUrl={senderAvatarUrl}
+      />
 
       <div className="flex flex-col gap-1">
         <div className="flex flex-row gap-2">
-          {sender !== undefined && (
-            <Typography
-              className="shrink-0"
-              variant={TypographyVariant.P}
-              style={{color: stringToColor(sender)}}>
-              {sender}
-            </Typography>
-          )}
+          <Typography
+            className="shrink-0"
+            variant={TypographyVariant.P}
+            style={{color: stringToColor(sender)}}>
+            {sender}
+          </Typography>
 
           <Typography className="break-words" variant={TypographyVariant.P}>
             {notificationsBody[type]}{" "}

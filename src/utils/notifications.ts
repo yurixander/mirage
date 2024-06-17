@@ -48,7 +48,7 @@ type NotificationPartialData = {
   roomId: string
   notificationTime: number
   notificationId: string
-  sender?: string
+  sender: string
   senderMxcAvatarUrl?: string
 }
 
@@ -63,6 +63,7 @@ export const getNotificationFromMembersEvent = (
   const room = client.getRoom(member.roomId)
 
   assert(eventId !== undefined, CommonAssertion.EventIdNotFound)
+  assert(sender !== undefined, CommonAssertion.EventSenderNotFount)
 
   // A null room in this case is a room that is being created and the notification should not be processed.
   if (room === null) {
@@ -76,7 +77,7 @@ export const getNotificationFromMembersEvent = (
     notificationTime: event.localTimestamp,
     roomName: room.name,
     roomId: member.roomId,
-    sender: event.sender?.name,
+    sender: event.sender?.name ?? sender,
     senderMxcAvatarUrl: event.sender?.getMxcAvatarUrl(),
   }
 
