@@ -13,6 +13,8 @@ import {UserPowerLevel} from "@/containers/Roster/RosterUser"
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications"
 
+// #region Set and Get
+
 export function getNotificationsFromLocalStorage(): LocalNotificationData[] {
   const savedNotifications = localStorage.getItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY
@@ -52,6 +54,8 @@ type PartialNotificationData = {
   sender: string
   senderMxcAvatarUrl?: string
 }
+
+// #region Member
 
 export function getNotificationFromMembersEvent(
   event: MatrixEvent,
@@ -141,6 +145,7 @@ export function getNotificationFromMembersEvent(
   return null
 }
 
+// #region Power level
 export function getNotificationFromPowerLevelEvent(
   client: MatrixClient,
   event: MatrixEvent,
