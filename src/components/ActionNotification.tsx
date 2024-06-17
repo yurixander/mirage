@@ -39,54 +39,57 @@ const ActionNotification: FC<ActionNotificationProps> = ({
         avatarUrl={senderAvatarUrl}
       />
 
-      <div className="flex flex-col gap-1">
-        <div className="flex flex-row gap-1">
+      <div className="flex w-full flex-col">
+        <div className="flex h-max items-center gap-2">
           <Typography
-            variant={TypographyVariant.BodySmall}
+            variant={TypographyVariant.BodyMedium}
             style={{color: stringToColor(sender)}}>
             {sender}
           </Typography>
 
-          <Typography variant={TypographyVariant.BodySmall}>
-            {notificationsBody[type]}
-          </Typography>
+          <div className="flex h-max items-center gap-[2px]">
+            <IoTime size={13} className="text-gray-300" />
 
+            <Typography
+              className="text-gray-300"
+              variant={TypographyVariant.BodySmall}>
+              {timeFormatter(notificationTime)}
+            </Typography>
+          </div>
+
+          <div className="ml-auto flex">
+            {!isRead && (
+              <IconButton
+                className="size-min"
+                size={14}
+                tooltip="Remove notification"
+                Icon={IoCheckbox}
+                onClick={markAsRead}
+              />
+            )}
+
+            <IconButton
+              className="size-min"
+              size={14}
+              tooltip="Remove notification"
+              Icon={IoTrash}
+              onClick={onDelete}
+            />
+          </div>
+        </div>
+
+        <Typography
+          className="flex gap-1"
+          variant={TypographyVariant.BodyMedium}>
+          {notificationsBody[type]}
           <Typography
-            variant={TypographyVariant.BodySmall}
+            variant={TypographyVariant.BodyMedium}
             style={{color: stringToColor(roomName)}}>
             {roomName}
           </Typography>
-        </div>
+        </Typography>
 
-        <div className="flex items-center gap-[2px]">
-          <IoTime size={13} />
-
-          <Typography variant={TypographyVariant.BodySmall}>
-            {timeFormatter(notificationTime)}
-          </Typography>
-        </div>
-
-        <Button isSmall onClick={onAction} label="Go to" className="max-w-14" />
-      </div>
-
-      <div className="ml-auto flex">
-        {!isRead && (
-          <IconButton
-            className="size-min"
-            size={14}
-            tooltip="Remove notification"
-            Icon={IoCheckbox}
-            onClick={markAsRead}
-          />
-        )}
-
-        <IconButton
-          className="size-min"
-          size={14}
-          tooltip="Remove notification"
-          Icon={IoTrash}
-          onClick={onDelete}
-        />
+        <Button isSmall onClick={onAction} label="View" className="max-w-14" />
       </div>
     </div>
   )
