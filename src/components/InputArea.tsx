@@ -28,8 +28,8 @@ const InputArea: FC<InputAreaProps> = ({
       }
   }
 
+  // Move scroll to last message.
   useEffect(() => {
-    // Move scroll to last message.
     const textarea = textareaReference.current
 
     if (textarea !== null) {
@@ -45,6 +45,7 @@ const InputArea: FC<InputAreaProps> = ({
         className
       )}>
       <textarea
+        className="flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
         onKeyDown={handleKeyDown}
         rows={rows}
         ref={textareaReference}
@@ -54,7 +55,6 @@ const InputArea: FC<InputAreaProps> = ({
         onChange={value => {
           onValueChange(value.target.value)
         }}
-        className="flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
       />
     </div>
   )

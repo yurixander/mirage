@@ -11,7 +11,7 @@ import useChatInput from "./useChatInput"
 import ChatHeader from "./ChatHeader"
 import ChatInput from "./ChatInput"
 import {useMemo, type FC} from "react"
-import WelcomeChat from "./WelcomeChat"
+import WelcomeSplash from "./WelcomeSplash"
 import MessagesPlaceholder from "./MessagesPlaceholder"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import {createPortal} from "react-dom"
@@ -87,7 +87,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         className="relative flex size-full"
         id={ModalRenderLocation.ChatContainer}>
         {activeRoomId === null ? (
-          <WelcomeChat />
+          <WelcomeSplash />
         ) : (
           <div className={twMerge("flex h-screen flex-col gap-4", className)}>
             <ChatHeader roomName={roomName} />

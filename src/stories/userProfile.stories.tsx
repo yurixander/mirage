@@ -61,7 +61,7 @@ export const Large: Story = {
     displayName,
     displayNameColor: "#5CC679",
     children: (
-      <Typography variant={TypographyVariant.P}>
+      <Typography variant={TypographyVariant.Body}>
         Last presence age 4:00pm
       </Typography>
     ),

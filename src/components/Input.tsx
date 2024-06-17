@@ -22,7 +22,6 @@ export type InputProps = {
   className?: string
   placeholder: string
   constraints?: InputConstraint[]
-  alwaysShowAllConstraints?: boolean
   onValueChange?: (value: string) => void
   initialValue?: string
   parentValue?: string
@@ -86,7 +85,6 @@ const Input: FC<InputProps> = ({
   className,
   placeholder,
   constraints,
-  alwaysShowAllConstraints,
   onValueChange,
   initialValue,
   parentValue,

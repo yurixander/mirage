@@ -19,7 +19,9 @@ createRoot($root).render(
     <BrowserRouter>
       <Routes>
         <Route path={ViewPath.App} element={<AppView />} />
+
         <Route path={ViewPath.Login} element={<LoginView />} />
+
         <Route path={ViewPath.Development} element={<DevPreview />} />
       </Routes>
     </BrowserRouter>

@@ -44,9 +44,7 @@ const NotificationsModal: FC<NotificationModalProps> = ({
         "m-2 flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl border border-slate-300 bg-gray-50 p-2 shadow-2xl"
       )}>
       <div className="flex w-full p-2">
-        <Typography
-          className="mr-auto font-bold text-black "
-          variant={TypographyVariant.H3}>
+        <Typography className="mr-auto" variant={TypographyVariant.Heading}>
           Notifications
         </Typography>
 
@@ -62,6 +60,14 @@ const NotificationsModal: FC<NotificationModalProps> = ({
 
         <IconButton onClick={onClose} tooltip="Close" Icon={IoCloseCircle} />
       </div>
+
+      {notifications.length === 0 && (
+        <div className="flex size-full items-center justify-center">
+          <Typography className="text-center text-slate-400">
+            No notifications
+          </Typography>
+        </div>
+      )}
 
       <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
         <div className="bg-slate-100">

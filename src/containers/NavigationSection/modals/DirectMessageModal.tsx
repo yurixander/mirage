@@ -34,13 +34,13 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
         isNameShorted={false}
         displayName={displayName}
         displayNameColor={stringToColor(userId)}>
-        <Typography variant={TypographyVariant.P}>
+        <Typography variant={TypographyVariant.Body}>
           {getUsernameByUserId(userId)}
         </Typography>
       </UserProfile>
 
       {lastMessageSentDate !== undefined && (
-        <Typography variant={TypographyVariant.P}>
+        <Typography variant={TypographyVariant.Body}>
           {timeFormatter(lastMessageSentDate)}
         </Typography>
       )}
@@ -58,7 +58,8 @@ const DirectMessageModal: FC = () => {
   const {invitationLink, isLinkCopied, copyToClipboard} =
     useInvitationLink(userId)
 
-  // Initially retrieves all direct chat conversations associated with the current user.
+  // Initially retrieves all direct chat conversations associated
+  // with the current user.
   useEffect(() => {
     if (client === null) {
       return
@@ -92,7 +93,9 @@ const DirectMessageModal: FC = () => {
     // TODO: Should be pixels value, replace by the future design.
     <div className="flex size-full max-h-[80%] max-w-2xl flex-col justify-between gap-2 rounded-lg bg-white p-5 shadow-2xl">
       <div className="flex w-full justify-between">
-        <Typography variant={TypographyVariant.H3}>Direct messages</Typography>
+        <Typography variant={TypographyVariant.Heading}>
+          Direct messages
+        </Typography>
 
         <IconButton
           onClick={clearActiveModal}
@@ -102,7 +105,7 @@ const DirectMessageModal: FC = () => {
         />
       </div>
 
-      <Typography>
+      <Typography variant={TypographyVariant.BodyMedium}>
         Start a conversation with someone using their name or username
         (@username:matrix.org).
       </Typography>
@@ -114,11 +117,11 @@ const DirectMessageModal: FC = () => {
       />
 
       <div className="flex h-full flex-col gap-2 overflow-hidden p-1">
-        <Typography variant={TypographyVariant.P}>
+        <Typography variant={TypographyVariant.BodyMedium}>
           RECENT CONVERSATIONS
         </Typography>
 
-        <div className="flex h-full flex-col gap-1 overflow-y-scroll scrollbar-hide">
+        <div className="flex h-full flex-col gap-1 overflow-y-scroll">
           {results === null
             ? directChats.map((directChatProps, index) => (
                 <DirectChatRecent key={index} {...directChatProps} />
@@ -130,18 +133,16 @@ const DirectMessageModal: FC = () => {
                   <UserProfile
                     displayName={userProps.displayName}
                     displayNameColor={stringToColor(userProps.userId)}
-                    avatarUrl={userProps.avatarUrl}
-                    children={
-                      <Typography variant={TypographyVariant.P}>
-                        {userProps.userId}
-                      </Typography>
-                    }
-                  />
+                    avatarUrl={userProps.avatarUrl}>
+                    <Typography variant={TypographyVariant.BodySmall}>
+                      {userProps.userId}
+                    </Typography>
+                  </UserProfile>
                 </div>
               ))}
         </div>
 
-        <Typography>
+        <Typography variant={TypographyVariant.BodyMedium}>
           Some suggestions may not be shown for privacy reasons. If you don't
           find who you're looking for, send them your invitation link below.
         </Typography>
@@ -151,13 +152,15 @@ const DirectMessageModal: FC = () => {
       <div className="flex flex-col gap-2">
         <div className="h-px w-full bg-neutral-400" />
 
-        <Typography>INVITATION LINK</Typography>
+        <Typography variant={TypographyVariant.BodyMedium}>
+          INVITATION LINK
+        </Typography>
 
         <div className="flex flex-row items-center rounded-md border border-black p-2">
           <Typography
-            variant={TypographyVariant.Span}
+            variant={TypographyVariant.BodySmall}
             className="text-blue-500">
-            {invitationLink ?? "Generating link..."}
+            {invitationLink ?? "Generating link"}
           </Typography>
 
           <IconButton

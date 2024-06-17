@@ -2,16 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+
     <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <meta name="theme-color" content="#000000" />
+
     <meta
       name="description"
       content="A simple, lightweight, and easy-to-use web client for the [Matrix] protocol." />
 
+    <!-- Satoshi font -->
     <link
       href="https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap"
       rel="stylesheet" />
+
+    <!-- Unbounded font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap"
+      rel="stylesheet" />
+
     <!-- <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" /> -->
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -30,18 +41,13 @@
     <title>Mirage &mdash; Matrix web client</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript
+      >You need to enable JavaScript to run this app. Otherwise, try using a
+      different browser.</noscript
+    >
+
     <div id="root"></div>
+
     <script type="module" src="/src/index.tsx"></script>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

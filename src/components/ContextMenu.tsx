@@ -1,5 +1,5 @@
 import {type CSSProperties, type FC} from "react"
-import Typography from "./Typography"
+import Typography, {TypographyVariant} from "./Typography"
 import {type IconType} from "react-icons"
 import React from "react"
 import {create} from "zustand"
@@ -158,6 +158,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
                 </div>
 
                 <Typography
+                  variant={TypographyVariant.BodyMedium}
                   style={{color: element.color}}
                   className="font-medium text-gray-700">
                   {element.text}

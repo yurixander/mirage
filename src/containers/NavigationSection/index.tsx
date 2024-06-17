@@ -1,11 +1,11 @@
 import {useState, type FC} from "react"
-import SidebarActions from "./SidebarActions"
 import SpaceList from "./SpaceList"
 import UserBar from "./UserBar"
 import useSidebarActions from "./hooks/useSidebarActions"
 import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 import ServerDropdown from "@/components/ServerDropdown"
 import {MATRIX_SERVER} from "@/utils/servers"
+import SidebarActions from "./SidebarActions"
 
 const NavigationSection: FC = () => {
   const {onLogout} = useSidebarActions()

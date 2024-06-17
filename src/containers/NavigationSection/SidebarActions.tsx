@@ -97,21 +97,23 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
 
   return (
     <div
-      className="flex cursor-pointer items-center gap-2 rounded-md p-1 hover:bg-slate-200"
+      className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-slate-200"
       onClick={onClick}
       role="button"
       aria-hidden="true">
       <Icon className="text-slate-400" />
 
-      <Typography className="line-clamp-1 font-bold text-slate-600">
+      <Typography
+        variant={TypographyVariant.BodyMedium}
+        className="line-clamp-1 font-medium text-slate-600">
         {name}
       </Typography>
 
       {unreadNotifications !== undefined && unreadNotifications > 0 && (
         <div className="flex size-4 items-center justify-center rounded-full bg-red-500">
           <Typography
-            variant={TypographyVariant.P}
-            className="font-bold text-white">
+            variant={TypographyVariant.BodySmall}
+            className="text-white">
             {unreadNotifications}
           </Typography>
         </div>
