@@ -26,7 +26,10 @@ const NotificationsModal: FC<NotificationModalProps> = ({
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
       notifications.map(anyNotification => (
-        <Notification {...anyNotification} />
+        <Notification
+          {...anyNotification}
+          key={anyNotification.notificationId}
+        />
       )),
     [notifications]
   )
