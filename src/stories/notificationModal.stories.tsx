@@ -1,8 +1,5 @@
-import {
-  type AnyNotification,
-  NotificationKind,
-  NotificationType,
-} from "@/containers/NavigationSection/hooks/useCachedNotifications"
+import {type NotificationProps} from "@/components/Notification"
+import {NotificationType} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 import NotificationsModal, {
   type NotificationModalProps,
 } from "@/containers/NavigationSection/modals/NotificationsModal"
@@ -17,35 +14,29 @@ const render = (args: NotificationModalProps) => (
   <NotificationsModal {...args} />
 )
 
-const notifications: AnyNotification[] = [
+const notifications: NotificationProps[] = [
   {
-    kind: NotificationKind.ActionNotification,
-    data: {
-      isRead: false,
-      type: NotificationType.Invited,
-      notificationId: "",
-      roomName: "Design Utils",
-      sender: "Emerald Branch",
-      markAsRead() {},
-      onAction() {},
-      onDelete() {},
-      notificationTime: Date.now(),
-      roomId: "",
-    },
+    isRead: false,
+    type: NotificationType.Invited,
+    notificationId: "",
+    roomName: "Design Utils",
+    sender: "Emerald Branch",
+    markAsRead() {},
+    action() {},
+    onDelete() {},
+    notificationTime: Date.now(),
+    roomId: "",
   },
   {
-    kind: NotificationKind.InlineNotification,
-    data: {
-      isRead: true,
-      type: NotificationType.Banned,
-      notificationId: "",
-      roomName: "Design Utils",
-      sender: "Emerald Branch",
-      markAsRead() {},
-      onDelete() {},
-      notificationTime: Date.now(),
-      roomId: "",
-    },
+    isRead: true,
+    type: NotificationType.Banned,
+    notificationId: "",
+    roomName: "Design Utils",
+    sender: "Emerald Branch",
+    markAsRead() {},
+    onDelete() {},
+    notificationTime: Date.now(),
+    roomId: "",
   },
 ]
 

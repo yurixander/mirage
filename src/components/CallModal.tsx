@@ -3,9 +3,16 @@ import Typography, {TypographyVariant} from "./Typography"
 import IconButton from "./IconButton"
 import {assert, validateUrl} from "@/utils/util"
 import {IoMdMic, IoMdMicOff} from "react-icons/io"
-import {IoCall, IoPause, IoPlay, IoVolumeHigh} from "react-icons/io5"
+import {IoPause, IoPlay, IoVolumeHigh} from "react-icons/io5"
+import {MdCall, MdCallEnd} from "react-icons/md"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./AvatarImage"
+
+export enum VariantCall {
+  CallInProgress,
+  IncomingCall,
+  Calling,
+}
 
 export type CallModalProps = {
   name: string
@@ -13,10 +20,10 @@ export type CallModalProps = {
   avatarUrl?: string
 }
 
-export enum VariantCall {
-  CallInProgress,
-  IncomingCall,
-  Calling,
+const callAction: {[key in VariantCall]: string} = {
+  [VariantCall.CallInProgress]: "Call in Progress...",
+  [VariantCall.IncomingCall]: "Incoming Call...",
+  [VariantCall.Calling]: "Connecting...",
 }
 
 const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
@@ -37,6 +44,7 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
           displayName={name}
           avatarUrl={avatarUrl}
         />
+
         <div className="w-full px-3 text-center">
           <Typography
             className="text-black"
@@ -47,21 +55,31 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
           <Typography
             className="text-black"
             variant={TypographyVariant.BodySmall}>
-            {getCallAction(action)}
+            {callAction[action]}
           </Typography>
         </div>
       </div>
+
       <div className="flex items-center justify-center gap-3 rounded-b border-t-2 border-t-slate-200 bg-gray-50 p-2">
         {action === VariantCall.IncomingCall ? (
-          <IncomingCallButtons
-            onClickAcept={() => {
-              setAction(VariantCall.CallInProgress)
-              // TODO: Accept incoming calls
-            }}
-            onClickCancel={() => {
-              // TODO: Reject calls
-            }}
-          />
+          <>
+            <IconButton
+              className="rounded-full bg-green-400 p-3 shadow hover:bg-green-300"
+              color="black"
+              tooltip="Accept"
+              onClick={() => {
+                setAction(VariantCall.CallInProgress)
+                // TODO: Accept incoming calls
+              }}
+              Icon={MdCall}
+            />
+
+            <CallDeclineButton
+              onCallEnd={() => {
+                // TODO: Reject calls
+              }}
+            />
+          </>
         ) : (
           <CallInProgressButtons
             onClickSpeaker={() => {
@@ -70,10 +88,10 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
             onClickMic={() => {
               // TODO: Turn the microphone on or off
             }}
-            onClickPaused={() => {
+            onPause={() => {
               // TODO: Pause call
             }}
-            onClickCallEnd={() => {
+            onCallEnd={() => {
               // TODO: End call
             }}
           />
@@ -83,39 +101,14 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
   )
 }
 
-const IncomingCallButtons: FC<{
-  onClickAcept: () => void
-  onClickCancel: () => void
-}> = ({onClickAcept, onClickCancel}) => {
-  return (
-    <>
-      <IconButton
-        className="rounded-full bg-green-400 p-3 shadow hover:bg-green-300"
-        color="black"
-        tooltip="Accept"
-        onClick={onClickAcept}
-        Icon={IoCall}
-      />
-
-      <IconButton
-        className="rotate-[135deg] rounded-full bg-red-400 p-3 shadow hover:bg-red-300 active:shadow-none"
-        color="black"
-        tooltip="Decline"
-        onClick={onClickCancel}
-        Icon={IoCall}
-      />
-    </>
-  )
-}
-
 const CallInProgressButtons: FC<{
   onClickSpeaker: () => void
   onClickMic: () => void
-  onClickPaused: () => void
-  onClickCallEnd: () => void
-}> = ({onClickSpeaker, onClickMic, onClickPaused, onClickCallEnd}) => {
+  onPause: () => void
+  onCallEnd: () => void
+}> = ({onClickSpeaker, onClickMic, onPause, onCallEnd}) => {
   const [isMicEnabled, setIsMicEnabled] = useState(true)
-  const [isSpeackerMode, setIsSpeackerMode] = useState(false)
+  const [isSpeakerMode, setIsSpeakerMode] = useState(false)
   const [isCallPaused, setIsCallPaused] = useState(false)
 
   return (
@@ -123,12 +116,12 @@ const CallInProgressButtons: FC<{
       <IconButton
         className={twMerge(
           "rounded-full p-3 shadow",
-          isSpeackerMode ? "bg-purple-400 hover:bg-purple-300" : "bg-slate-100"
+          isSpeakerMode ? "bg-purple-400 hover:bg-purple-300" : "bg-slate-100"
         )}
         color="black"
         tooltip="Toggle speaker"
         onClick={() => {
-          setIsSpeackerMode(!isSpeackerMode)
+          setIsSpeakerMode(!isSpeakerMode)
           onClickSpeaker()
         }}
         Icon={IoVolumeHigh}
@@ -151,36 +144,26 @@ const CallInProgressButtons: FC<{
         tooltip={isCallPaused ? "Play" : "Pause"}
         onClick={() => {
           setIsCallPaused(!isCallPaused)
-          onClickPaused()
+          onPause()
         }}
         Icon={isCallPaused ? IoPlay : IoPause}
       />
 
-      <IconButton
-        className="rotate-[135deg] rounded-full bg-red-400 p-3 shadow hover:bg-red-300 active:shadow-none"
-        color="black"
-        tooltip="Call off"
-        onClick={onClickCallEnd}
-        Icon={IoCall}
-      />
+      <CallDeclineButton onCallEnd={onCallEnd} />
     </>
   )
 }
 
-const getCallAction = (action: VariantCall) => {
-  switch (action) {
-    case VariantCall.CallInProgress: {
-      return "Call in Progress..."
-    }
-
-    case VariantCall.Calling: {
-      return "Conecting..."
-    }
-
-    case VariantCall.IncomingCall: {
-      return "Incoming Call..."
-    }
-  }
+const CallDeclineButton: FC<{onCallEnd: () => void}> = ({onCallEnd}) => {
+  return (
+    <IconButton
+      className="rounded-full bg-red-400 p-3 shadow hover:bg-red-300 active:shadow-none"
+      color="black"
+      tooltip="Call off"
+      onClick={onCallEnd}
+      Icon={MdCallEnd}
+    />
+  )
 }
 
 export default CallModal

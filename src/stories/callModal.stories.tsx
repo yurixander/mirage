@@ -15,7 +15,7 @@ export const Default: Story = {
   render,
   args: {
     name: "Jose Luis Reyes",
-    variant: VariantCall.CallInProgress,
+    variant: VariantCall.IncomingCall,
   },
 }
 
