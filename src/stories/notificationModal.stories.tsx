@@ -36,7 +36,7 @@ const notifications: AnyNotification[] = [
   {
     kind: NotificationKind.InlineNotification,
     data: {
-      isRead: false,
+      isRead: true,
       type: NotificationType.Banned,
       notificationId: "",
       roomName: "Design Utils",

@@ -4,12 +4,7 @@ import Button, {ButtonVariant} from "../../../components/Button"
 import Typography, {TypographyVariant} from "../../../components/Typography"
 import {twMerge} from "tailwind-merge"
 import IconButton from "../../../components/IconButton"
-import {
-  NotificationKind,
-  type AnyNotification,
-} from "../hooks/useCachedNotifications"
-import ActionNotification from "@/components/ActionNotification"
-import InlineNotification from "@/components/InlineNotification"
+import Notification, {type NotificationProps} from "@/components/Notification"
 
 export type NotificationActions = {
   name: string
@@ -18,7 +13,7 @@ export type NotificationActions = {
 }
 
 export type NotificationModalProps = {
-  notifications: AnyNotification[]
+  notifications: NotificationProps[]
   markAllNotificationsAsRead: () => void
   onClose: () => void
 }
@@ -30,13 +25,9 @@ const NotificationsModal: FC<NotificationModalProps> = ({
 }) => {
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
-      notifications.map(anyNotification => {
-        if (anyNotification.kind === NotificationKind.InlineNotification) {
-          return <InlineNotification {...anyNotification.data} />
-        }
-
-        return <ActionNotification {...anyNotification.data} />
-      }),
+      notifications.map(anyNotification => (
+        <Notification {...anyNotification} />
+      )),
     [notifications]
   )
 

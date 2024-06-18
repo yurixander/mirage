@@ -7,10 +7,11 @@ import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./AvatarImage"
+import Button from "./Button"
 import IconButton from "./IconButton"
 import Typography, {TypographyVariant} from "./Typography"
 
-export interface InlineNotificationProps {
+export type NotificationProps = {
   type: NotificationType
   notificationId: string
   isRead: boolean
@@ -19,19 +20,22 @@ export interface InlineNotificationProps {
   notificationTime: number
   sender: string
   senderAvatarUrl?: string
-  onDelete: () => void
-  markAsRead: () => void
+  onDelete: (notificationId: string) => void
+  markAsRead: (notificationId: string) => void
+  action?: () => void
 }
 
-const InlineNotification: FC<InlineNotificationProps> = ({
+const Notification: FC<NotificationProps> = ({
   isRead,
-  roomName,
-  sender,
-  senderAvatarUrl,
   markAsRead,
   notificationTime,
   onDelete,
+  roomName,
+  sender,
   type,
+  action,
+  senderAvatarUrl,
+  notificationId,
 }) => {
   return (
     <div
@@ -73,7 +77,9 @@ const InlineNotification: FC<InlineNotificationProps> = ({
                 size={14}
                 tooltip="Remove notification"
                 Icon={IoCheckbox}
-                onClick={markAsRead}
+                onClick={() => {
+                  markAsRead(notificationId)
+                }}
               />
             )}
 
@@ -82,7 +88,9 @@ const InlineNotification: FC<InlineNotificationProps> = ({
               size={14}
               tooltip="Remove notification"
               Icon={IoTrash}
-              onClick={onDelete}
+              onClick={() => {
+                onDelete(notificationId)
+              }}
             />
           </div>
         </div>
@@ -97,9 +105,13 @@ const InlineNotification: FC<InlineNotificationProps> = ({
             {roomName}
           </Typography>
         </Typography>
+
+        {action !== undefined && (
+          <Button isSmall onClick={action} label="View" className="max-w-14" />
+        )}
       </div>
     </div>
   )
 }
 
-export default InlineNotification
+export default Notification

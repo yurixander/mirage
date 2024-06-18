@@ -1,5 +1,4 @@
-import {type ActionNotificationProps} from "@/components/ActionNotification"
-import {type InlineNotificationProps} from "@/components/InlineNotification"
+import {type NotificationProps} from "@/components/Notification"
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {
@@ -40,23 +39,9 @@ export const notificationsBody: {[key in NotificationType]: string} = {
     "you have been promoted to moderator in",
 }
 
-type NotificationOf<Kind extends NotificationKind> =
-  Kind extends NotificationKind.ActionNotification
-    ? ActionNotificationProps
-    : InlineNotificationProps
-
-type Notification<Kind extends NotificationKind> = {
-  kind: Kind
-  data: NotificationOf<Kind>
-}
-
-export type AnyNotification =
-  | Notification<NotificationKind.ActionNotification>
-  | Notification<NotificationKind.InlineNotification>
-
 const useCachedNotifications = () => {
   const {client} = useConnection()
-  const [notifications, setNotifications] = useState<AnyNotification[]>([])
+  const [notifications, setNotifications] = useState<NotificationProps[]>([])
 
   const [cachedNotifications, setCachedNotifications] = useState<
     LocalNotificationData[]
@@ -149,34 +134,20 @@ const useCachedNotifications = () => {
     setNotifications(
       cachedNotifications.map(notification => {
         if (
-          notification.notificationKind === NotificationKind.InlineNotification
+          notification.notificationKind === NotificationKind.ActionNotification
         ) {
           return {
-            kind: notification.notificationKind,
-            data: {
-              ...notification,
-              markAsRead() {
-                markAsReadByNotificationId(notification.notificationId)
-              },
-              onDelete() {
-                deleteNotificationById(notification.notificationId)
-              },
-            },
+            ...notification,
+            onDelete: deleteNotificationById,
+            markAsRead: markAsReadByNotificationId,
+            action() {},
           }
         }
 
         return {
-          kind: NotificationKind.ActionNotification,
-          data: {
-            ...notification,
-            onAction() {},
-            markAsRead() {
-              markAsReadByNotificationId(notification.notificationId)
-            },
-            onDelete() {
-              deleteNotificationById(notification.notificationId)
-            },
-          },
+          ...notification,
+          onDelete: deleteNotificationById,
+          markAsRead: markAsReadByNotificationId,
         }
       })
     )
