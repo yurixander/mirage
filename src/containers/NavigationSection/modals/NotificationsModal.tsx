@@ -1,4 +1,4 @@
-import {useMemo, type FC} from "react"
+import React, {useMemo, type FC} from "react"
 import {IoCloseCircle} from "react-icons/io5"
 import Button, {ButtonVariant} from "../../../components/Button"
 import Typography, {TypographyVariant} from "../../../components/Typography"
@@ -28,13 +28,15 @@ const NotificationsModal: FC<NotificationModalProps> = ({
   notifications,
   markAllNotificationsAsRead,
 }) => {
-  const notificationsUnread: AnyNotification[] = useMemo(
-    () => notifications.filter(notification => !notification.data.isRead),
-    [notifications]
-  )
+  const notificationsComponents: React.JSX.Element[] = useMemo(
+    () =>
+      notifications.map(anyNotification => {
+        if (anyNotification.kind === NotificationKind.InlineNotification) {
+          return <InlineNotification {...anyNotification.data} />
+        }
 
-  const notificationsMarkAsRead: AnyNotification[] = useMemo(
-    () => notifications.filter(notification => notification.data.isRead),
+        return <ActionNotification {...anyNotification.data} />
+      }),
     [notifications]
   )
 
@@ -70,23 +72,7 @@ const NotificationsModal: FC<NotificationModalProps> = ({
       )}
 
       <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
-        <div className="bg-slate-100">
-          {notificationsUnread.map(notification =>
-            notification.kind === NotificationKind.ActionNotification ? (
-              <ActionNotification {...notification.data} />
-            ) : (
-              <InlineNotification {...notification.data} />
-            )
-          )}
-        </div>
-
-        {notificationsMarkAsRead.map(notification =>
-          notification.kind === NotificationKind.ActionNotification ? (
-            <ActionNotification {...notification.data} />
-          ) : (
-            <InlineNotification {...notification.data} />
-          )
-        )}
+        {notificationsComponents}
       </div>
     </div>
   )
