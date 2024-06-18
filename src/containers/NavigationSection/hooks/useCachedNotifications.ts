@@ -11,11 +11,6 @@ import {
 import {RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useMemo, useState} from "react"
 
-export enum NotificationKind {
-  ActionNotification,
-  InlineNotification,
-}
-
 export enum NotificationType {
   Banned,
   Leaved,
@@ -133,9 +128,7 @@ const useCachedNotifications = () => {
 
     setNotifications(
       cachedNotifications.map(notification => {
-        if (
-          notification.notificationKind === NotificationKind.ActionNotification
-        ) {
+        if (notification.containsAction) {
           return {
             ...notification,
             onDelete: deleteNotificationById,

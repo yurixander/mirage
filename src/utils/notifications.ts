@@ -1,7 +1,4 @@
-import {
-  NotificationKind,
-  NotificationType,
-} from "@/containers/NavigationSection/hooks/useCachedNotifications"
+import {NotificationType} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 import {
   type MatrixClient,
   type MatrixEvent,
@@ -34,7 +31,7 @@ export function setNotificationsToLocalStorage(
 
 export type LocalNotificationData = {
   type: NotificationType
-  notificationKind: NotificationKind
+  containsAction: boolean
   isRead: boolean
   roomName: string
   roomId: string
@@ -45,7 +42,7 @@ export type LocalNotificationData = {
 }
 
 type PartialNotificationData = {
-  notificationKind: NotificationKind
+  containsAction: boolean
   isRead: boolean
   roomName: string
   roomId: string
@@ -77,7 +74,7 @@ export function getNotificationFromMembersEvent(
 
   const partialNotification: PartialNotificationData = {
     isRead: false,
-    notificationKind: NotificationKind.InlineNotification,
+    containsAction: false,
     notificationId: eventId,
     notificationTime: event.localTimestamp,
     roomName: room.name,
@@ -90,7 +87,7 @@ export function getNotificationFromMembersEvent(
     case KnownMembership.Invite: {
       return {
         ...partialNotification,
-        notificationKind: NotificationKind.ActionNotification,
+        containsAction: true,
         type: NotificationType.Invited,
       }
     }
@@ -171,7 +168,7 @@ export function getNotificationFromPowerLevelEvent(
   const partialNotification: PartialNotificationData = {
     isRead: false,
     notificationId: eventId,
-    notificationKind: NotificationKind.InlineNotification,
+    containsAction: false,
     notificationTime: event.localTimestamp,
     roomId: room.roomId,
     roomName: room.name,
