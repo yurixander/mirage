@@ -52,7 +52,6 @@ const useCachedNotifications = () => {
   }, [cachedNotifications])
 
   // #region Functions
-
   const saveNotification = useCallback(
     (notification: LocalNotificationData) => {
       setCachedNotifications(prevNotifications => {
@@ -63,6 +62,7 @@ const useCachedNotifications = () => {
         )
 
         const newNotifications = [...notificationsCleaned, notification]
+
         setNotificationsToLocalStorage(newNotifications)
 
         return newNotifications
@@ -125,7 +125,6 @@ const useCachedNotifications = () => {
 
   useEffect(() => {
     // Convert local storage notifications to notifications for the component.
-
     setNotifications(
       cachedNotifications.map(notification => {
         if (notification.containsAction) {
