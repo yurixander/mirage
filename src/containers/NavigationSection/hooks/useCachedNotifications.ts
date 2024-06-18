@@ -122,7 +122,6 @@ const useCachedNotifications = () => {
   }, [])
 
   // #region Converter
-
   useEffect(() => {
     // Convert local storage notifications to notifications for the component.
     setNotifications(
@@ -146,7 +145,6 @@ const useCachedNotifications = () => {
   }, [cachedNotifications, deleteNotificationById, markAsReadByNotificationId])
 
   // #region Listeners
-
   useEventListener(
     RoomMemberEvent.Membership,
     (event, member, oldMembership) => {
