@@ -1,5 +1,11 @@
 import {IoMdDownload, IoMdTrash, IoIosSettings} from "react-icons/io"
-import {IoArrowUndo, IoArrowRedo, IoReloadCircle, IoAddCircle, IoSearchCircle} from "react-icons/io5"
+import {
+  IoArrowUndo,
+  IoArrowRedo,
+  IoReloadCircle,
+  IoAddCircle,
+  IoSearchCircle,
+} from "react-icons/io5"
 
 export const CONTEXT_MENU_REPLY = {
   text: "Reply",

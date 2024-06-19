@@ -1,9 +1,6 @@
 import {useMemo, type FC} from "react"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
-import ContextMenu, {
-  useContextMenuStore,
-  type ContextMenuItem,
-} from "./ContextMenu"
+import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
 import {
   CONTEXT_MENU_DELETE,
@@ -20,8 +17,6 @@ const TextMessage: FC<MessageBaseProps> = ({
   timestamp,
   onDeleteMessage,
 }) => {
-  const {showMenu} = useContextMenuStore()
-
   const contextMenuItems = useMemo(() => {
     const items: ContextMenuItem[] = [
       {...CONTEXT_MENU_REPLY, onClick: () => {}},
@@ -44,10 +39,7 @@ const TextMessage: FC<MessageBaseProps> = ({
           authorDisplayNameColor={authorDisplayNameColor}
           authorAvatarUrl={authorAvatarUrl}
           timestamp={timestamp}
-          onAuthorClick={onAuthorClick}
-          onMessageRightClick={event => {
-            showMenu(timestamp, event)
-          }}>
+          onAuthorClick={onAuthorClick}>
           <Typography
             className="max-w-messageMaxWidth select-text break-words"
             variant={TypographyVariant.Body}>

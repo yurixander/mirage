@@ -22,7 +22,6 @@ export type MessageContainerProps = {
   children: React.JSX.Element
   timestamp: number
   onAuthorClick: () => void
-  onMessageRightClick: <T>(e: React.MouseEvent<T>) => void
 }
 
 const MessageContainer: FC<MessageContainerProps> = ({
@@ -32,14 +31,11 @@ const MessageContainer: FC<MessageContainerProps> = ({
   children,
   timestamp,
   onAuthorClick,
-  onMessageRightClick,
 }) => {
   const localeTimeString = timeFormatter(timestamp)
 
   return (
-    <div
-      className="flex w-full items-start justify-start"
-      onContextMenu={onMessageRightClick}>
+    <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">
         <div
           className="flex size-10 cursor-pointer items-center justify-center
@@ -50,7 +46,6 @@ const MessageContainer: FC<MessageContainerProps> = ({
           aria-hidden="true">
           <AvatarImage
             isRounded={false}
-            isLarge={false}
             avatarType={AvatarType.Message}
             displayName={cleanDisplayName(authorDisplayName)}
             avatarUrl={authorAvatarUrl}
@@ -59,7 +54,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
 
         <div className="w-full">
           <Typography
-            className="select-text font-bold"
+            className="w-max select-text font-bold"
             style={{color: authorDisplayNameColor}}
             onClick={onAuthorClick}
             variant={TypographyVariant.Body}>
