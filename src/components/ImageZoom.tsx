@@ -1,5 +1,4 @@
 import React, {type FC, useState} from "react"
-import {twMerge} from "tailwind-merge"
 
 export type ImageZoomProps = {
   className?: string
@@ -67,12 +66,12 @@ const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
 
   return (
     <div
-      className={twMerge("max-w-screen-lg", className)}
+      className={className}
       onDoubleClick={toggleZoom}
       onMouseMove={handleMouseMove}
       onWheel={handleWheel}>
       <img
-        className="cursor-zoom-in transition-transform duration-300"
+        className="size-full cursor-zoom-in object-cover transition-transform duration-300"
         src={src}
         alt="Img message zoom"
         style={{
