@@ -38,7 +38,7 @@ const variantClass: {[key in TypographyVariant]: string} = {
     "font-unbounded xl:text-2xl text-xl font-medium",
   [TypographyVariant.Heading]: "font-unbounded xl:text-xl text-lg font-medium",
   [TypographyVariant.Body]: "text-base",
-  [TypographyVariant.BodyMedium]: "text-s",
+  [TypographyVariant.BodyMedium]: "text-sm",
   [TypographyVariant.BodySmall]: "text-xs",
 }
 

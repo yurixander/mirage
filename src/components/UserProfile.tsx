@@ -20,8 +20,8 @@ const UserProfile: FC<UserProfileProps> = ({
   displayName,
   displayNameColor,
   avatarUrl,
-  isLarge,
   children,
+  isLarge = false,
   isNameShorted = true,
   avatarType = AvatarType.Profile,
   className,
@@ -35,23 +35,25 @@ const UserProfile: FC<UserProfileProps> = ({
 
   const MAX_DISPLAY_NAME_LENGTH = 16
 
+  const typographyVariant = isLarge
+    ? TypographyVariant.Body
+    : TypographyVariant.BodyMedium
+
   return (
     <div className={twMerge("flex gap-2", className)}>
-      <div className="relative">
-        <AvatarImage
-          isRounded={false}
-          isLarge={isLarge ?? false}
-          avatarType={avatarType}
-          displayName={displayName}
-          avatarUrl={avatarUrl}
-        />
-      </div>
+      <AvatarImage
+        isRounded={false}
+        isLarge={isLarge}
+        avatarType={avatarType}
+        displayName={displayName}
+        avatarUrl={avatarUrl}
+      />
 
       <div className="mr-auto inline-flex flex-col gap-0.5">
         <Typography
-          variant={TypographyVariant.BodyMedium}
+          variant={typographyVariant}
           style={{color: displayNameColor}}
-          className="line-clamp-1 font-bold text-slate-500">
+          className="line-clamp-1 font-bold leading-[100%] text-slate-500">
           {isNameShorted
             ? trim(cleanDisplayName(displayName), MAX_DISPLAY_NAME_LENGTH)
             : displayName}
