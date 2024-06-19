@@ -43,7 +43,6 @@ const Notification: FC<NotificationProps> = ({
         "flex gap-2 p-2",
         !isRead && "rounded-lg bg-slate-100"
       )}>
-      {/* TODO: Replace later for use new variation `Small` */}
       <AvatarImage
         isRounded={false}
         avatarType={AvatarType.Message}
