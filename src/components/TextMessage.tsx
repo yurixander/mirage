@@ -1,13 +1,15 @@
 import {useMemo, type FC} from "react"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import ContextMenu, {
-  CONTEXT_MENU_DELETE,
-  CONTEXT_MENU_REPLY,
-  CONTEXT_MENU_RESEND,
   useContextMenuStore,
   type ContextMenuItem,
 } from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
+import {
+  CONTEXT_MENU_DELETE,
+  CONTEXT_MENU_REPLY,
+  CONTEXT_MENU_RESEND,
+} from "@/utils/menu"
 
 const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,

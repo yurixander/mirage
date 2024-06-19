@@ -4,14 +4,16 @@ import {saveAs} from "file-saver"
 import {IoIosAlert} from "react-icons/io"
 import ImageModal from "@/containers/ChatContainer/ImageModal"
 import ContextMenu, {
-  CONTEXT_MENU_DELETE,
-  CONTEXT_MENU_REPLY,
-  CONTEXT_MENU_RESEND,
-  CONTEXT_MENU_SAVE,
   useContextMenuStore,
   type ContextMenuItem,
 } from "./ContextMenu"
 import {createPortal} from "react-dom"
+import {
+  CONTEXT_MENU_DELETE,
+  CONTEXT_MENU_REPLY,
+  CONTEXT_MENU_RESEND,
+  CONTEXT_MENU_SAVE,
+} from "@/utils/menu"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
