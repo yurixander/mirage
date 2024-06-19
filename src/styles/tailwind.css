@@ -44,6 +44,7 @@ textarea:disabled {
   @apply outline-2 outline-offset-2 outline-blue-500 transition-all;
 }
 
+
 ::-webkit-scrollbar {
   @apply h-4 w-2;
 }
