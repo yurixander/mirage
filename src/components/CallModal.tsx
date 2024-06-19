@@ -28,6 +28,9 @@ const callAction: {[key in VariantCall]: string} = {
 
 const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
   const [action, setAction] = useState(variant)
+  const [isMicEnabled, setIsMicEnabled] = useState(true)
+  const [isSpeakerMode, setIsSpeakerMode] = useState(false)
+  const [isCallPaused, setIsCallPaused] = useState(false)
 
   if (avatarUrl !== undefined) {
     assert(validateUrl(avatarUrl), "avatar URL should be valid if defined")
@@ -37,9 +40,9 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
     <div className="flex w-80 animate-enter flex-col rounded bg-white shadow-lg">
       <div className="flex items-center justify-center gap-2 p-3 px-5 shadow">
         <AvatarImage
+          isRounded
+          isLarge
           className="shadow"
-          isRounded={true}
-          isLarge={true}
           avatarType={AvatarType.Profile}
           displayName={name}
           avatarUrl={avatarUrl}
@@ -67,90 +70,71 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
               className="rounded-full bg-green-400 p-3 shadow hover:bg-green-300"
               color="black"
               tooltip="Accept"
+              Icon={MdCall}
               onClick={() => {
                 setAction(VariantCall.CallInProgress)
-                // TODO: Accept incoming calls
+                // TODO: Handle here incoming calls acceptance.
               }}
-              Icon={MdCall}
             />
 
             <CallDeclineButton
               onCallEnd={() => {
-                // TODO: Reject calls
+                throw new Error("Call end not handled.")
               }}
             />
           </>
         ) : (
-          <CallInProgressButtons
-            onClickSpeaker={() => {
-              // TODO: Turn audio output on and off by speaker
-            }}
-            onClickMic={() => {
-              // TODO: Turn the microphone on or off
-            }}
-            onPause={() => {
-              // TODO: Pause call
-            }}
-            onCallEnd={() => {
-              // TODO: End call
-            }}
-          />
+          <>
+            <IconButton
+              className={twMerge(
+                "rounded-full p-3 shadow",
+                isSpeakerMode
+                  ? "bg-purple-500 hover:bg-purple-300"
+                  : "bg-slate-100"
+              )}
+              color="black"
+              tooltip="Toggle speaker"
+              Icon={IoVolumeHigh}
+              onClick={() => {
+                setIsSpeakerMode(!isSpeakerMode)
+
+                throw new Error("Speaker mode not handled.")
+              }}
+            />
+
+            <IconButton
+              className="rounded-full bg-slate-100 p-3 shadow"
+              color="black"
+              tooltip="Toggle microphone"
+              Icon={isMicEnabled ? IoMdMic : IoMdMicOff}
+              onClick={() => {
+                setIsMicEnabled(!isMicEnabled)
+
+                throw new Error("Mic enabled/disabled not handled.")
+              }}
+            />
+
+            <IconButton
+              className="rounded-full bg-slate-100 p-3 shadow"
+              color="black"
+              tooltip={isCallPaused ? "Play" : "Pause"}
+              Icon={isCallPaused ? IoPlay : IoPause}
+              onClick={() => {
+                setIsCallPaused(!isCallPaused)
+
+                throw new Error("Call paused not handled.")
+              }}
+            />
+
+            <CallDeclineButton
+              onCallEnd={() => {
+                throw new Error("Call end not handled.")
+              }}
+            />
+          </>
         )}
       </div>
     </div>
-  )
-}
-
-const CallInProgressButtons: FC<{
-  onClickSpeaker: () => void
-  onClickMic: () => void
-  onPause: () => void
-  onCallEnd: () => void
-}> = ({onClickSpeaker, onClickMic, onPause, onCallEnd}) => {
-  const [isMicEnabled, setIsMicEnabled] = useState(true)
-  const [isSpeakerMode, setIsSpeakerMode] = useState(false)
-  const [isCallPaused, setIsCallPaused] = useState(false)
-
-  return (
-    <>
-      <IconButton
-        className={twMerge(
-          "rounded-full p-3 shadow",
-          isSpeakerMode ? "bg-purple-400 hover:bg-purple-300" : "bg-slate-100"
-        )}
-        color="black"
-        tooltip="Toggle speaker"
-        onClick={() => {
-          setIsSpeakerMode(!isSpeakerMode)
-          onClickSpeaker()
-        }}
-        Icon={IoVolumeHigh}
-      />
-
-      <IconButton
-        className="rounded-full bg-slate-100 p-3 shadow"
-        color="black"
-        tooltip="Toggle microphone"
-        onClick={() => {
-          setIsMicEnabled(!isMicEnabled)
-          onClickMic()
-        }}
-        Icon={isMicEnabled ? IoMdMic : IoMdMicOff}
-      />
-
-      <IconButton
-        className="rounded-full bg-slate-100 p-3 shadow"
-        color="black"
-        tooltip={isCallPaused ? "Play" : "Pause"}
-        onClick={() => {
-          setIsCallPaused(!isCallPaused)
-          onPause()
-        }}
-        Icon={isCallPaused ? IoPlay : IoPause}
-      />
-
-      <CallDeclineButton onCallEnd={onCallEnd} />
-    </>
   )
 }
 
