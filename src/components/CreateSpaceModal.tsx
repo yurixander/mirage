@@ -91,7 +91,7 @@ const CreateSpaceModal: FC = () => {
             <InputArea
               className="w-full"
               onValueChange={setSpaceDescription}
-              value={spaceDescription}
+              initialValue={spaceDescription}
               placeholder="Write a brief description of what your space will be about."
             />
           </div>
