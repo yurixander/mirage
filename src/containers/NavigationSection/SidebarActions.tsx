@@ -1,6 +1,5 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {assert} from "@/utils/util"
-import {type FC} from "react"
+import {useState, type FC} from "react"
 import {type IconType} from "react-icons"
 import {
   IoCall,
@@ -10,14 +9,16 @@ import {
   IoSearch,
 } from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
+import {createPortal} from "react-dom"
+import NotificationsModal from "./modals/NotificationsModal"
+import useCachedNotifications from "./hooks/useCachedNotifications"
+import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 
 export type SidebarActionsProps = {
-  onNotification: () => void
   onDirectMessages: () => void
   onSearch: () => void
   onCalls: () => void
   onExit: () => void
-  notificationsCount?: number
   className?: string
 }
 
@@ -26,31 +27,56 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onCalls,
   onDirectMessages,
   onExit,
-  onNotification,
   onSearch,
-  notificationsCount,
 }) => {
+  const {notifications, markAllNotificationsAsRead, unreadNotifications} =
+    useCachedNotifications()
+
+  const [notificationsModalVisible, setNotificationsModalVisible] =
+    useState(false)
+
   return (
-    <div className={twMerge("flex flex-col gap-2", className)}>
-      <SidebarActionItem
-        name="Direct Messages"
-        icon={IoPaperPlane}
-        onClick={onDirectMessages}
-      />
+    <>
+      {notificationsModalVisible &&
+        createPortal(
+          <div
+            className={twMerge(
+              "absolute z-50 flex size-full w-screen flex-col items-start justify-end"
+            )}>
+            <NotificationsModal
+              notifications={notifications}
+              onClose={() => {
+                setNotificationsModalVisible(false)
+              }}
+              markAllNotificationsAsRead={markAllNotificationsAsRead}
+            />
+          </div>,
+          document.querySelector(`#${ModalRenderLocation.ChatContainer}`) ??
+            document.body
+        )}
+      <div className={twMerge("flex flex-col gap-2", className)}>
+        <SidebarActionItem
+          name="Direct Chats"
+          icon={IoPaperPlane}
+          onClick={onDirectMessages}
+        />
 
-      <SidebarActionItem
-        name="Notifications"
-        icon={IoNotifications}
-        onClick={onNotification}
-        unreadNotifications={notificationsCount}
-      />
+        <SidebarActionItem
+          name="Notifications"
+          icon={IoNotifications}
+          unreadNotifications={unreadNotifications}
+          onClick={() => {
+            setNotificationsModalVisible(true)
+          }}
+        />
 
-      <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
+        <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
 
-      <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />
+        <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />
 
-      <SidebarActionItem name="Exit" icon={IoExit} onClick={onExit} />
-    </div>
+        <SidebarActionItem name="Exit" icon={IoExit} onClick={onExit} />
+      </div>
+    </>
   )
 }
 
@@ -69,12 +95,6 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
 }) => {
   const Icon = icon
 
-  assert(
-    unreadNotifications === undefined ||
-      (unreadNotifications !== undefined && unreadNotifications > 0),
-    "If there are unread notifications, they cannot be zero"
-  )
-
   return (
     <div
       className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-slate-200"
@@ -89,8 +109,8 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
         {name}
       </Typography>
 
-      {unreadNotifications !== undefined && (
-        <div className="flex size-5 items-center justify-center rounded-full bg-red-500 font-medium">
+      {unreadNotifications !== undefined && unreadNotifications > 0 && (
+        <div className="flex size-4 items-center justify-center rounded-full bg-red-500">
           <Typography
             variant={TypographyVariant.BodySmall}
             className="text-white">

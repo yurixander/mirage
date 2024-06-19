@@ -40,7 +40,7 @@ const Button: FC<ButtonProps> = ({
         "flex items-center justify-center border font-medium outline-none duration-75 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50",
         isLoading ? "cursor-not-allowed" : "active:translate-y-[1px]",
         isSmall
-          ? "rounded-md px-2 py-1 text-xs"
+          ? "max-h-6 rounded-md px-2 py-1 text-xs"
           : "rounded-md p-1 px-2 text-sm",
         variantClass[variant],
         className
