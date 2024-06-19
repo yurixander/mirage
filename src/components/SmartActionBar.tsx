@@ -5,32 +5,13 @@ import {type FC} from "react"
 import {IoMdMedical} from "react-icons/io"
 import {IoAccessibility, IoContrast, IoGlobe} from "react-icons/io5"
 
-function getSyncStateText(syncState: SyncState | null) {
-  // Haven't started initial connection yet.
-  if (syncState === null) {
-    return "Waiting"
-  }
-
-  switch (syncState) {
-    case SyncState.Syncing: {
-      return "Syncing"
-    }
-    case SyncState.Error: {
-      return "Sync error"
-    }
-    case SyncState.Prepared: {
-      return "Ready"
-    }
-    case SyncState.Catchup: {
-      return "Catching up"
-    }
-    case SyncState.Stopped: {
-      return "Disconnected"
-    }
-    case SyncState.Reconnecting: {
-      return "Reconnecting"
-    }
-  }
+const syncStateText: {[key in SyncState]: string} = {
+  [SyncState.Error]: "Sync error",
+  [SyncState.Prepared]: "Ready",
+  [SyncState.Stopped]: "Disconnected",
+  [SyncState.Syncing]: "Syncing",
+  [SyncState.Catchup]: "Catching up",
+  [SyncState.Reconnecting]: "Reconnecting",
 }
 
 const SmartActionBar: FC = () => {
@@ -64,7 +45,7 @@ const SmartActionBar: FC = () => {
 
       <SmartAction
         Icon={IoGlobe}
-        text={getSyncStateText(syncState)}
+        text={syncState === null ? "Waiting" : syncStateText[syncState]}
         onClick={() => {}}
       />
     </div>

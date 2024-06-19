@@ -7,6 +7,7 @@ import {
   CONTEXT_MENU_REPLY,
   CONTEXT_MENU_RESEND,
 } from "@/utils/menu"
+import {generateUniqueNumber} from "@/utils/util"
 
 const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
@@ -19,8 +20,18 @@ const TextMessage: FC<MessageBaseProps> = ({
 }) => {
   const contextMenuItems = useMemo(() => {
     const items: ContextMenuItem[] = [
-      {...CONTEXT_MENU_REPLY, onClick: () => {}},
-      {...CONTEXT_MENU_RESEND, onClick: () => {}},
+      {
+        ...CONTEXT_MENU_REPLY,
+        onClick: () => {
+          throw new Error("Reply message not handled.")
+        },
+      },
+      {
+        ...CONTEXT_MENU_RESEND,
+        onClick: () => {
+          throw new Error("Resend message not handled.")
+        },
+      },
     ]
 
     if (onDeleteMessage !== undefined) {
@@ -30,25 +41,22 @@ const TextMessage: FC<MessageBaseProps> = ({
     return items
   }, [onDeleteMessage])
 
-  // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
-    <>
-      <ContextMenu id={timestamp} elements={contextMenuItems}>
-        <MessageContainer
-          authorDisplayName={authorDisplayName}
-          authorDisplayNameColor={authorDisplayNameColor}
-          authorAvatarUrl={authorAvatarUrl}
-          timestamp={timestamp}
-          onAuthorClick={onAuthorClick}>
-          <Typography
-            className="max-w-messageMaxWidth select-text break-words"
-            variant={TypographyVariant.Body}>
-            {/* TODO: Process line breaks (\n). */}
-            {text}
-          </Typography>
-        </MessageContainer>
+    <MessageContainer
+      authorDisplayName={authorDisplayName}
+      authorDisplayNameColor={authorDisplayNameColor}
+      authorAvatarUrl={authorAvatarUrl}
+      timestamp={timestamp}
+      onAuthorClick={onAuthorClick}>
+      <ContextMenu id={generateUniqueNumber()} elements={contextMenuItems}>
+        <Typography
+          className="max-w-messageMaxWidth cursor-text select-text break-words"
+          variant={TypographyVariant.Body}>
+          {/* TODO: Process line breaks (\n). */}
+          {text}
+        </Typography>
       </ContextMenu>
-    </>
+    </MessageContainer>
   )
 }
 

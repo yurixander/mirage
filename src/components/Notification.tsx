@@ -46,7 +46,6 @@ const Notification: FC<NotificationProps> = ({
       {/* TODO: Replace later for use new variation `Small` */}
       <AvatarImage
         isRounded={false}
-        isLarge={false}
         avatarType={AvatarType.Message}
         displayName={sender}
         avatarUrl={senderAvatarUrl}
@@ -60,7 +59,7 @@ const Notification: FC<NotificationProps> = ({
             {sender}
           </Typography>
 
-          <div className="flex h-max items-center gap-[2px]">
+          <div className="flex h-max items-center gap-0.5">
             <IoTime size={13} className="text-gray-300" />
 
             <Typography

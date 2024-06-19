@@ -9,6 +9,7 @@ export type UserProfileProps = {
   displayName: string
   displayNameColor: string
   children: React.JSX.Element
+  avatarType?: AvatarType
   isNameShorted?: boolean
   avatarUrl?: string
   isLarge?: boolean
@@ -22,6 +23,7 @@ const UserProfile: FC<UserProfileProps> = ({
   isLarge,
   children,
   isNameShorted = true,
+  avatarType = AvatarType.Profile,
   className,
 }) => {
   if (avatarUrl !== undefined) {
@@ -36,23 +38,16 @@ const UserProfile: FC<UserProfileProps> = ({
   return (
     <div className={twMerge("flex gap-2", className)}>
       <div className="relative">
-        <div
-          className={twMerge(
-            "relative overflow-hidden rounded-lg bg-red-500",
-            isLarge ? "size-[50px]" : "size-[37px]"
-          )}>
-          <AvatarImage
-            isRounded={false}
-            isLarge={isLarge ?? false}
-            avatarType={AvatarType.Profile}
-            displayName={displayName}
-            avatarUrl={avatarUrl}
-          />
-        </div>
+        <AvatarImage
+          isRounded={false}
+          isLarge={isLarge ?? false}
+          avatarType={avatarType}
+          displayName={displayName}
+          avatarUrl={avatarUrl}
+        />
       </div>
 
-      {/* TODO: Update this to use `Typography` */}
-      <div className="mr-auto inline-flex flex-col gap-[2px]">
+      <div className="mr-auto inline-flex flex-col gap-0.5">
         <Typography
           variant={TypographyVariant.BodyMedium}
           style={{color: displayNameColor}}

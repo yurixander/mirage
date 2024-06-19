@@ -25,41 +25,37 @@ const ServerDropdown: FC<ServerDropdownProps> = ({
   const [serverSelected, setServerSelected] = useState(initiallyServerSelected)
 
   return (
-    <>
-      <Dropdown
-        initiallyContent={
-          <div className="flex items-center gap-2">
-            <div className="size-6 overflow-hidden rounded-md border-2 border-orange-500">
-              <Avatar
-                square
-                variant="bauhaus"
-                size={28}
-                name={serverSelected.name}
-                colors={["#FF6B00", "#F21F26", "#FFFF8E", "#EBC83A", "#15C070"]}
-              />
-            </div>
-
-            <Typography className="font-medium">
-              {serverSelected.name}
-            </Typography>
-          </div>
-        }>
-        <div className="flex h-max w-full flex-col border-t border-t-slate-300">
-          {servers.map((server, index) => (
-            <DropdownServerItem
-              key={index}
-              serverName={server.name}
-              isSelected={server === serverSelected}
-              className="p-1 hover:bg-neutral-100"
-              onClick={() => {
-                setServerSelected(server)
-                onServerSelected(server)
-              }}
+    <Dropdown
+      initiallyContent={
+        <div className="flex items-center gap-2">
+          <div className="size-6 overflow-hidden rounded-md border-2 border-orange-500">
+            <Avatar
+              square
+              variant="bauhaus"
+              size={28}
+              name={serverSelected.name}
+              colors={["#FF6B00", "#F21F26", "#FFFF8E", "#EBC83A", "#15C070"]}
             />
-          ))}
+          </div>
+
+          <Typography className="font-medium">{serverSelected.name}</Typography>
         </div>
-      </Dropdown>
-    </>
+      }>
+      <div className="flex h-max w-full flex-col border-t border-t-slate-300">
+        {servers.map((server, index) => (
+          <DropdownServerItem
+            key={index}
+            serverName={server.name}
+            isSelected={server === serverSelected}
+            className="p-1 hover:bg-neutral-100"
+            onClick={() => {
+              setServerSelected(server)
+              onServerSelected(server)
+            }}
+          />
+        ))}
+      </div>
+    </Dropdown>
   )
 }
 
@@ -77,9 +73,7 @@ const DropdownServerItem: FC<DropdownServerItemProps> = ({
   className,
 }) => {
   return (
-    <div
-      role="button"
-      aria-hidden
+    <button
       onClick={onClick}
       className={twMerge("flex items-center gap-2", className)}>
       <div className="size-6 overflow-hidden rounded-md border-2 border-orange-500">
@@ -95,7 +89,7 @@ const DropdownServerItem: FC<DropdownServerItemProps> = ({
       <Typography className="font-medium">{serverName}</Typography>
 
       {isSelected && <IoMdCheckmark className="ml-auto text-slate-300" />}
-    </div>
+    </button>
   )
 }
 

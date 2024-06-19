@@ -22,20 +22,20 @@ const SwitchButton: FC<SwitchButtonProps> = ({
     <div
       className={twMerge(
         "flex items-center gap-3",
-        isDisabled ? "cursor-not-allowed opacity-50" : ""
+        isDisabled === true && "cursor-not-allowed opacity-50"
       )}>
       <div
         onClick={isDisabled ? undefined : handleSelectionChanged}
         tabIndex={isDisabled ? undefined : 0}
         onKeyDown={handleKeyDown}
+        aria-hidden="true"
+        aria-checked="false"
+        role="switch"
         className={twMerge(
           "flex h-6 w-11 items-center rounded-full p-1",
           isSelected ? "justify-end bg-purple-500" : "bg-gray-300",
           isDisabled ? "cursor-not-allowed" : "cursor-pointer"
-        )}
-        aria-hidden="true"
-        aria-checked="false"
-        role="switch">
+        )}>
         <div className="relative size-4 rounded-full bg-white shadow-md" />
       </div>
       {label}

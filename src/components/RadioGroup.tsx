@@ -8,7 +8,7 @@ export type RadioGroupProps = {
 }
 
 const RadioGroup: FC<RadioGroupProps> = ({items, className = "flex-col"}) => {
-  // TODO: Handle here selection radiobutton group by name, value, checked, onChange
+  // TODO: Handle here selection radiobutton group by name, value, checked, onChange.
   return (
     <div className={twMerge("flex gap-4", className)}>
       {items.map((props, index) => (

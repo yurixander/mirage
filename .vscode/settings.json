@@ -18,6 +18,6 @@
   },
   "eslint.enable": true,
   "eslint.validate": ["html"],
-  "cSpell.words": ["commitlint"],
+  "cSpell.words": ["commitlint", "CUTEFUNNYART", "TRYGVEME"],
   "css.customData": [".vscode/tailwind.json"]
 }

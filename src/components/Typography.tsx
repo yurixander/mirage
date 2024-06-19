@@ -20,25 +20,26 @@ export type TypographyProps = {
   onClick?: () => void
 }
 
-function getTagFromVariant(
-  variant: TypographyVariant
-): keyof React.JSX.IntrinsicElements {
-  switch (variant) {
-    case TypographyVariant.HeadingLarge: {
-      return "h1"
-    }
-    case TypographyVariant.HeadingMedium: {
-      return "h2"
-    }
-    case TypographyVariant.Heading: {
-      return "h3"
-    }
-    case TypographyVariant.Body:
-    case TypographyVariant.BodySmall:
-    case TypographyVariant.BodyMedium: {
-      return "p"
-    }
-  }
+const tagFromVariant: {
+  [key in TypographyVariant]: keyof React.JSX.IntrinsicElements
+} = {
+  [TypographyVariant.HeadingLarge]: "h1",
+  [TypographyVariant.HeadingMedium]: "h2",
+  [TypographyVariant.Heading]: "h3",
+  [TypographyVariant.Body]: "p",
+  [TypographyVariant.BodyMedium]: "p",
+  [TypographyVariant.BodySmall]: "p",
+}
+
+const variantClass: {[key in TypographyVariant]: string} = {
+  [TypographyVariant.HeadingLarge]:
+    "font-unbounded xl:text-4xl text-2xl font-semibold",
+  [TypographyVariant.HeadingMedium]:
+    "font-unbounded xl:text-2xl text-xl font-medium",
+  [TypographyVariant.Heading]: "font-unbounded xl:text-xl text-lg font-medium",
+  [TypographyVariant.Body]: "text-base",
+  [TypographyVariant.BodyMedium]: "text-s",
+  [TypographyVariant.BodySmall]: "text-xs",
 }
 
 const Typography: FC<TypographyProps> = ({
@@ -49,26 +50,13 @@ const Typography: FC<TypographyProps> = ({
   children,
   style,
 }) => {
-  const Component = as ?? getTagFromVariant(variant)
-
-  const variantClass =
-    variant === TypographyVariant.HeadingLarge
-      ? "font-unbounded xl:text-4xl text-2xl font-semibold"
-      : variant === TypographyVariant.HeadingMedium
-        ? "font-unbounded xl:text-2xl text-xl font-medium"
-        : variant === TypographyVariant.Heading
-          ? "font-unbounded xl:text-xl text-lg font-medium"
-          : variant === TypographyVariant.Body
-            ? "text-base"
-            : variant === TypographyVariant.BodyMedium
-              ? "text-sm"
-              : "text-xs"
+  const Component = as ?? tagFromVariant[variant]
 
   return (
     <Component
       onClick={onClick}
       style={style}
-      className={twMerge("leading-160", className, variantClass)}>
+      className={twMerge("leading-160", className, variantClass[variant])}>
       {children}
     </Component>
   )

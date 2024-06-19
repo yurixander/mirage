@@ -37,20 +37,16 @@ const MessageContainer: FC<MessageContainerProps> = ({
   return (
     <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">
-        <div
-          className="flex size-10 cursor-pointer items-center justify-center
-          overflow-hidden rounded-lg bg-neutral-50"
-          onClick={() => {
-            onAuthorClick()
-          }}
-          aria-hidden="true">
+        <button
+          className="size-10 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-neutral-50"
+          onClick={onAuthorClick}>
           <AvatarImage
             isRounded={false}
             avatarType={AvatarType.Message}
             displayName={cleanDisplayName(authorDisplayName)}
             avatarUrl={authorAvatarUrl}
           />
-        </div>
+        </button>
 
         <div className="w-full">
           <Typography
