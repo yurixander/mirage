@@ -4,7 +4,7 @@ import {
   getUsernameByUserId,
   normalizeName,
   stringToColor,
-  timeFormatter,
+  formatTime,
 } from "@/utils/util"
 import useConnection from "@/hooks/matrix/useConnection"
 import useInvitationLink from "@/hooks/matrix/useInvitationLink"
@@ -42,7 +42,7 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
 
       {lastMessageSentDate !== undefined && (
         <Typography variant={TypographyVariant.BodySmall}>
-          {timeFormatter(lastMessageSentDate)}
+          {formatTime(lastMessageSentDate)}
         </Typography>
       )}
     </div>

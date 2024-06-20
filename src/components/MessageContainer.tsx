@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import {cleanDisplayName, timeFormatter} from "../utils/util"
+import {cleanDisplayName, formatTime} from "../utils/util"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
 import Typography, {TypographyVariant} from "./Typography"
@@ -32,7 +32,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
   timestamp,
   onAuthorClick,
 }) => {
-  const localeTimeString = timeFormatter(timestamp)
+  const localeTimeString = formatTime(timestamp)
 
   return (
     <div className="flex w-full items-start justify-start">

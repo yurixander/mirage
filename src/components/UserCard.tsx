@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import {timeFormatter} from "../utils/util"
+import {formatTime} from "../utils/util"
 import Button, {ButtonVariant} from "./Button"
 import Label from "./Label"
 import UserProfile, {
@@ -44,15 +44,15 @@ const UserCard: FC<UserCardProps> = ({
             <Label text="Account" />
 
             <Typography variant={TypographyVariant.BodySmall}>
-              Created <b>{timeFormatter(accountCreationTime)}</b>
+              Created <b>{formatTime(accountCreationTime)}</b>
             </Typography>
 
             <Typography variant={TypographyVariant.BodySmall}>
-              Joined server <b>{timeFormatter(serverJoinTime)}</b>
+              Joined server <b>{formatTime(serverJoinTime)}</b>
             </Typography>
 
             <Typography variant={TypographyVariant.BodySmall}>
-              Last message sent was <b>{timeFormatter(lastMessageTime)}</b>
+              Last message sent was <b>{formatTime(lastMessageTime)}</b>
             </Typography>
           </div>
         </div>

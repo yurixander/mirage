@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import {timeFormatter} from "../utils/util"
+import {formatTime} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
 
 export type EventMessageProps = {
@@ -9,7 +9,7 @@ export type EventMessageProps = {
 }
 
 const EventMessage: FC<EventMessageProps> = ({timestamp, text}) => {
-  const localeTimeString = timeFormatter(timestamp)
+  const localeTimeString = formatTime(timestamp)
 
   return (
     <div className="flex items-center gap-3">

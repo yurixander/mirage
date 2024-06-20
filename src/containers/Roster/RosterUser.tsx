@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import UserProfile from "../../components/UserProfile"
-import {stringToColor, timeFormatter} from "@/utils/util"
+import {stringToColor, formatTime} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "@/components/Typography"
 
@@ -31,7 +31,7 @@ const RosterUser: FC<RosterUserProps> = ({
   const text =
     lastPresenceAge === undefined
       ? "Seen long ago"
-      : `Seen ${timeFormatter(lastPresenceAge)} ago`
+      : `Seen ${formatTime(lastPresenceAge)} ago`
 
   return (
     <div
