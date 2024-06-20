@@ -7,7 +7,6 @@ import {
   CONTEXT_MENU_REPLY,
   CONTEXT_MENU_RESEND,
 } from "@/utils/menu"
-import {generateUniqueNumber} from "@/utils/util"
 
 const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
@@ -17,6 +16,7 @@ const TextMessage: FC<MessageBaseProps> = ({
   text,
   timestamp,
   onDeleteMessage,
+  id,
 }) => {
   const contextMenuItems = useMemo(() => {
     const items: ContextMenuItem[] = [
@@ -48,7 +48,7 @@ const TextMessage: FC<MessageBaseProps> = ({
       authorAvatarUrl={authorAvatarUrl}
       timestamp={timestamp}
       onAuthorClick={onAuthorClick}>
-      <ContextMenu id={generateUniqueNumber()} elements={contextMenuItems}>
+      <ContextMenu id={`text-message-${id}`} elements={contextMenuItems}>
         <Typography
           className="max-w-messageMaxWidth cursor-text select-text break-words"
           variant={TypographyVariant.Body}>

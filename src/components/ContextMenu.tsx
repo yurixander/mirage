@@ -21,7 +21,7 @@ export enum ClickActions {
 }
 
 export type ContextMenuProps = {
-  id: number
+  id: string
   children: React.JSX.Element
   elements: ContextMenuItem[]
   actionType?: ClickActions
@@ -34,9 +34,9 @@ export type Points = {
 }
 
 type ContextMenuState = {
-  activeMenuId: number | null
+  activeMenuId: string | null
   points: Points | null
-  showMenu: <T>(id: number, e: React.MouseEvent<T>) => void
+  showMenu: <T>(id: string, e: React.MouseEvent<T>) => void
   hideMenu: () => void
 }
 

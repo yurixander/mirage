@@ -11,7 +11,6 @@ import {
   CONTEXT_MENU_RESEND,
   CONTEXT_MENU_SAVE,
 } from "@/utils/menu"
-import {generateUniqueNumber} from "@/utils/util"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
@@ -26,6 +25,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
   text,
   timestamp,
   onDeleteMessage,
+  id,
 }) => {
   const [isImageModalShowed, setImageModalShow] = useState(false)
 
@@ -78,7 +78,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
       ) : (
         // TODO: Handle image size here. Preferably, make the component accept 'imageDimensions' as props.
         // TODO: Add keyboard event listener for accessibility.
-        <ContextMenu id={generateUniqueNumber()} elements={contextMenuItems}>
+        <ContextMenu id={`image-menu-${id}`} elements={contextMenuItems}>
           <button
             className="max-h-52 max-w-44 appearance-none overflow-hidden rounded-xl"
             onClick={() => {

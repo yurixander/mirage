@@ -3,7 +3,6 @@ import {twMerge} from "tailwind-merge"
 import Loader from "@/components/Loader"
 import useSpaces from "./hooks/useSpaces"
 import RoomChildList from "./RoomChildList"
-import {generateUniqueNumber} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {SpaceDetail} from "./SpaceDetail"
 import AllRooms from "./AllRooms"
@@ -66,7 +65,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
 
             {spaces.map(space => (
               <SpaceDetail
-                id={generateUniqueNumber()}
+                spaceId={space.spaceId}
                 title={space.name}
                 key={space.spaceId}
                 menuElements={[
