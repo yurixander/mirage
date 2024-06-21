@@ -1,26 +1,17 @@
 import TypingIndicator from "../../components/TypingIndicator"
-import useActiveRoom, {
-  type AnyMessage,
-  MessageKind,
-  MessagesState,
-  RoomState,
-} from "@/hooks/matrix/useActiveRoom"
-import ImageMessage from "../../components/ImageMessage"
-import TextMessage from "../../components/TextMessage"
-import EventMessage from "../../components/EventMessage"
+import useActiveRoom, {RoomState} from "@/hooks/matrix/useActiveRoom"
 import {twMerge} from "tailwind-merge"
 import Button, {ButtonVariant} from "../../components/Button"
-import UnreadIndicator from "../../components/UnreadIndicator"
 import useChatInput from "./useChatInput"
 import ChatHeader from "./ChatHeader"
 import ChatInput from "./ChatInput"
-import {useMemo, type FC} from "react"
+import {type FC} from "react"
 import WelcomeSplash from "./WelcomeSplash"
-import MessagesPlaceholder from "./MessagesPlaceholder"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import {createPortal} from "react-dom"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import Loader from "@/components/Loader"
+import {ChatMessages} from "./ChatMessages"
 
 export type ChatContainerProps = {
   className?: string
@@ -91,13 +82,13 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
             <div className="mx-4 flex flex-col gap-3">
               <ChatInput
                 onAttach={openFilePicker}
-                onSend={() => {
-                  void sendTextMessage(messageText)
-
-                  setMessageText("")
-                }}
                 onValueChange={setMessageText}
                 value={messageText}
+                onSend={() => {
+                  void sendTextMessage(messageText).then(() => {
+                    setMessageText("")
+                  })
+                }}
               />
 
               <div className="flex gap-3">
@@ -118,50 +109,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         )}
       </div>
     </>
-  )
-}
-
-type ChatMessagesProps = {
-  messages: AnyMessage[]
-  messagesState: MessagesState
-}
-
-const ChatMessages: FC<ChatMessagesProps> = ({messages, messagesState}) => {
-  const messageElements = useMemo(
-    () =>
-      messages.map(message =>
-        message.kind === MessageKind.Text ? (
-          <TextMessage key={message.data.id} {...message.data} />
-        ) : message.kind === MessageKind.Image ? (
-          <ImageMessage key={message.data.id} {...message.data} />
-        ) : message.kind === MessageKind.Event ? (
-          <EventMessage key={message.data.id} {...message.data} />
-        ) : (
-          <UnreadIndicator key="unread-indicator" {...message.data} />
-        )
-      ),
-    [messages]
-  )
-
-  return (
-    <div
-      ref={scrollReference => {
-        if (scrollReference === null) {
-          return
-        }
-
-        scrollReference.scrollTo({
-          top: scrollReference.scrollHeight - scrollReference.clientHeight,
-          behavior: "smooth",
-        })
-      }}
-      className="mx-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
-      {messagesState === MessagesState.Loading ? (
-        <MessagesPlaceholder />
-      ) : (
-        messageElements
-      )}
-    </div>
   )
 }
 

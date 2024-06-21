@@ -72,7 +72,7 @@ const useActiveRoom = () => {
   const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const isMountedReference = useIsMountedRef()
-  const [roomName, setRoomName] = useState<string>(" ")
+  const [roomName, setRoomName] = useState("")
   const [roomState, setRoomState] = useState<RoomState>()
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
