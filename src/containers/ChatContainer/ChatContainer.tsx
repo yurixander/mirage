@@ -11,12 +11,15 @@ import Typography, {TypographyVariant} from "@/components/Typography"
 import Loader from "@/components/Loader"
 import {ChatMessages} from "./ChatMessages"
 import Button, {ButtonVariant} from "@/components/Button"
+import useChatInput from "./useChatInput"
 
 export type ChatContainerProps = {
   className?: string
 }
 
 const ChatContainer: FC<ChatContainerProps> = ({className}) => {
+  const {messageText, setMessageText} = useChatInput()
+
   const {
     client,
     messagesProp,
@@ -27,8 +30,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     roomState,
     messagesState,
     imagePreviewProps,
-    messageText,
-    setMessageText,
   } = useActiveRoom()
 
   return (
@@ -38,12 +39,12 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
       )}
 
       <div
-        className={twMerge("relative flex size-full", className)}
+        className="relative flex size-full"
         id={ModalRenderLocation.ChatContainer}>
         {roomState === RoomState.Idle ? (
           <WelcomeSplash />
         ) : roomState === RoomState.Prepared ? (
-          <div className="flex h-screen flex-col gap-4">
+          <div className={twMerge("flex h-screen flex-col gap-4", className)}>
             <ChatHeader roomName={roomName} />
 
             <ChatMessages
@@ -57,7 +58,11 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
                 onAttach={openFilePicker}
                 onValueChange={setMessageText}
                 value={messageText}
-                onSend={sendTextMessage}
+                onSend={() => {
+                  void sendTextMessage(messageText)
+
+                  setMessageText("")
+                }}
               />
 
               <div className="flex gap-3">

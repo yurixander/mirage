@@ -25,7 +25,6 @@ import {isUserRoomAdmin} from "@/utils/members"
 import {handleEvents, handleRoomEvents} from "@/utils/rooms"
 import {type ImageModalPreviewProps} from "@/containers/ChatContainer/ChatContainer"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import useChatInput from "@/containers/ChatContainer/useChatInput"
 
 export enum MessageKind {
   Text,
@@ -78,7 +77,6 @@ const useActiveRoom = () => {
   const [roomState, setRoomState] = useState(RoomState.Idle)
 
   // Messages and Typing
-  const {messageText, setMessageText} = useChatInput()
   const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
@@ -117,26 +115,20 @@ const useActiveRoom = () => {
     [isMountedReference]
   )
 
-  const sendTextMessage = () => {
-    if (activeRoomId === null || client === null) {
-      return
-    }
+  const sendTextMessage = useCallback(
+    async (body: string) => {
+      if (activeRoomId === null || client === null) {
+        return
+      }
 
-    void client
-      .sendMessage(activeRoomId, {
-        messageText,
+      // TODO: Show toast when an error has occurred.
+      await client.sendMessage(activeRoomId, {
+        body,
         msgtype: MsgType.Text,
       })
-      .then(_eventResponse => {
-        // Clear text for chat input.
-        setMessageText("")
-      })
-      .catch(error => {
-        // TODO: Show toast when an error has occurred.
-
-        console.error(`An error ocurred while sending message: ${error}`)
-      })
-  }
+    },
+    [activeRoomId, client]
+  )
 
   const imagePreviewProps = useMemo(() => {
     if (filesContent.length <= 0) {
@@ -293,8 +285,6 @@ const useActiveRoom = () => {
     roomState,
     messagesState,
     imagePreviewProps,
-    messageText,
-    setMessageText,
   }
 }
 
