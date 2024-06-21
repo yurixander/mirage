@@ -1,7 +1,6 @@
 import TypingIndicator from "../../components/TypingIndicator"
 import useActiveRoom, {RoomState} from "@/hooks/matrix/useActiveRoom"
 import {twMerge} from "tailwind-merge"
-import Button, {ButtonVariant} from "../../components/Button"
 import useChatInput from "./useChatInput"
 import ChatHeader from "./ChatHeader"
 import ChatInput from "./ChatInput"
@@ -12,7 +11,7 @@ import {createPortal} from "react-dom"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import Loader from "@/components/Loader"
 import {ChatMessages} from "./ChatMessages"
-import {type FileContent} from "use-file-picker/dist/interfaces"
+import Button, {ButtonVariant} from "@/components/Button"
 
 export type ChatContainerProps = {
   className?: string
@@ -24,27 +23,20 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
   const {
     messagesProp,
     typingUsers,
-    sendImageMessage,
     sendTextMessage,
     roomName,
-    filesContent,
-    clear,
     openFilePicker,
     activeRoomId,
     roomState,
     messagesState,
+    imagePreviewProps,
   } = useActiveRoom()
 
   return (
     <>
-      <ImageModalPreview
-        isVisible={filesContent.length > 0}
-        fileContent={filesContent.length > 0 && filesContent[0]}
-        onClear={clear}
-        onSendImage={() => {
-          void sendImageMessage()
-        }}
-      />
+      {imagePreviewProps !== undefined && (
+        <ImageModalPreview {...imagePreviewProps} />
+      )}
 
       <div
         className="relative flex size-full"
@@ -93,43 +85,49 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
   )
 }
 
-type ImageModalPreviewProps = {
-  isVisible: boolean
+export type ImageModalPreviewProps = {
+  imageUrl: string
+  imageName: string
   onClear: () => void
   onSendImage: () => void
-  fileContent: FileContent<string> | false
 }
 
 const ImageModalPreview: FC<ImageModalPreviewProps> = ({
-  isVisible,
+  imageName,
+  imageUrl,
   onSendImage,
   onClear,
-  fileContent,
 }) => {
   return (
     <>
-      {isVisible &&
-        fileContent !== false &&
-        createPortal(
-          <div className="fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay">
-            <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
-              <img
-                className="h-auto w-full rounded-lg object-cover shadow-md"
-                src={fileContent.content}
-                alt={fileContent.name}
+      {createPortal(
+        <div className="fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay">
+          <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
+            <img
+              className="h-auto w-full rounded-lg object-cover shadow-md"
+              src={imageUrl}
+              alt={imageName}
+            />
+            <div className="flex w-full items-center justify-end gap-1">
+              <Button
+                variant={ButtonVariant.Secondary}
+                onClick={onClear}
+                label="Cancel"
               />
-              <div className="flex w-full items-center justify-end gap-1">
-                <Button
-                  variant={ButtonVariant.Secondary}
-                  onClick={onClear}
-                  label="Cancel"
-                />
-                <Button onClick={onSendImage} label="Send Image" />
-              </div>
+
+              <Button
+                variant={ButtonVariant.Primary}
+                label="Send Image"
+                onClick={() => {
+                  onSendImage()
+                  onClear()
+                }}
+              />
             </div>
-          </div>,
-          document.body
-        )}
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   )
 }

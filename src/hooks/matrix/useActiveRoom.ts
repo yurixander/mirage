@@ -8,7 +8,7 @@ import {
   type Room,
   type MatrixClient,
 } from "matrix-js-sdk"
-import {useCallback, useEffect, useState} from "react"
+import {useCallback, useEffect, useMemo, useState} from "react"
 import useEventListener from "./useEventListener"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {
@@ -24,6 +24,7 @@ import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useFilePicker} from "use-file-picker"
 import {isUserRoomAdmin} from "@/utils/members"
 import {handleEvents, handleRoomEvents} from "@/utils/rooms"
+import {type ImageModalPreviewProps} from "@/containers/ChatContainer/ChatContainer"
 
 export enum MessageKind {
   Text,
@@ -82,6 +83,8 @@ const useActiveRoom = () => {
     readAs: "DataURL",
   })
 
+  // #region Functions
+
   const fetchRoomMessages = useCallback(
     async (client: MatrixClient, room: Room) => {
       if (!isMountedReference.current) {
@@ -109,6 +112,54 @@ const useActiveRoom = () => {
     [isMountedReference]
   )
 
+  const sendTextMessage = useCallback(
+    async (body: string) => {
+      if (activeRoomId === null || client === null) {
+        return
+      }
+
+      // TODO: Show toast when an error has occurred.
+      await client.sendMessage(activeRoomId, {
+        body,
+        msgtype: MsgType.Text,
+      })
+    },
+    [activeRoomId, client]
+  )
+
+  const sendEventTyping = useCallback(async () => {
+    if (activeRoomId === null || client === null) {
+      return
+    }
+
+    await client.sendTyping(activeRoomId, true, 2000)
+  }, [activeRoomId, client])
+
+  const imagePreviewProps = useMemo(() => {
+    if (filesContent.length <= 0) {
+      return
+    }
+
+    const imageModalPreviewProps: ImageModalPreviewProps = {
+      imageName: filesContent[0].name,
+      imageUrl: filesContent[0].content,
+      onClear: clear,
+      onSendImage() {
+        void sendImageMessageFromFile(
+          filesContent[0],
+          client,
+          activeRoomId
+        ).then(() => {
+          clear()
+        })
+      },
+    }
+
+    return imageModalPreviewProps
+  }, [activeRoomId, clear, client, filesContent])
+
+  // #region Init useEffect
+
   useEffect(() => {
     if (
       client === null ||
@@ -134,6 +185,7 @@ const useActiveRoom = () => {
     void fetchRoomMessages(client, room)
   }, [client, activeRoomId, isMountedReference, fetchRoomMessages])
 
+  // #region Listeners
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId !== activeRoomId || client === null) {
       return
@@ -183,8 +235,8 @@ const useActiveRoom = () => {
     }
 
     if (member.typing) {
-      setTypingUsers(typingUsers => [
-        ...typingUsers,
+      setTypingUsers(prevTypingUsers => [
+        ...prevTypingUsers,
         {
           displayName: member.name,
           color: stringToColor(member.userId),
@@ -192,45 +244,16 @@ const useActiveRoom = () => {
         },
       ])
     } else {
-      setTypingUsers(typingUsers =>
-        typingUsers.filter(user => user.displayName !== member.name)
+      setTypingUsers(prevTypingUsers =>
+        prevTypingUsers.filter(user => user.displayName !== member.name)
       )
     }
   })
-
-  const sendImageMessage = useCallback(async () => {
-    await sendImageMessageFromFile(filesContent[0], client, activeRoomId)
-    clear()
-  }, [activeRoomId, clear, client, filesContent])
-
-  const sendTextMessage = useCallback(
-    async (body: string) => {
-      if (activeRoomId === null || client === null) {
-        return
-      }
-
-      // TODO: Show toast when an error has occurred.
-      await client.sendMessage(activeRoomId, {
-        body,
-        msgtype: MsgType.Text,
-      })
-    },
-    [activeRoomId, client]
-  )
-
-  const sendEventTyping = useCallback(async () => {
-    if (activeRoomId === null || client === null) {
-      return
-    }
-
-    await client.sendTyping(activeRoomId, true, 2000)
-  }, [activeRoomId, client])
 
   return {
     activeRoomId,
     messagesProp,
     sendTextMessage,
-    sendImageMessage,
     openFilePicker,
     typingUsers,
     sendEventTyping,
@@ -241,6 +264,7 @@ const useActiveRoom = () => {
     clear,
     roomState,
     messagesState,
+    imagePreviewProps,
   }
 }
 
