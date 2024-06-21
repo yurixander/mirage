@@ -9,6 +9,7 @@ export type ChatInputProps = {
   onAttach: () => void
   onSend: () => void
   onValueChange: (value: string) => void
+  isDisabled?: boolean
 }
 
 const ChatInput: FC<ChatInputProps> = ({
@@ -16,6 +17,7 @@ const ChatInput: FC<ChatInputProps> = ({
   onSend,
   onValueChange,
   value,
+  isDisabled = false,
 }) => {
   const textareaReference = useRef<HTMLTextAreaElement>(null)
 
@@ -60,7 +62,7 @@ const ChatInput: FC<ChatInputProps> = ({
           ref={textareaReference}
           placeholder="Write a message or simply say 👋🏼 hello..."
           value={value}
-          disabled={false}
+          disabled={isDisabled}
           onChange={value => {
             onValueChange(value.target.value)
           }}
@@ -72,7 +74,7 @@ const ChatInput: FC<ChatInputProps> = ({
             tooltip="Send"
             Icon={IoPaperPlane}
             color="#C463FF"
-            isDisabled={false}
+            isDisabled={isDisabled}
             onClick={onSend}
           />
         </div>

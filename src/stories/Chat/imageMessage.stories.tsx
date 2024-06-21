@@ -1,12 +1,14 @@
+import ImageMessage, {type ImageMessageProps} from "@/components/ImageMessage"
 import {type Meta, type StoryObj} from "@storybook/react"
-import ImageMessage, {
-  type ImageMessageProps as ImageMessageProperties,
-} from "../components/ImageMessage"
 
 type Story = StoryObj<typeof ImageMessage>
 
-const meta: Meta<typeof ImageMessage> = {component: ImageMessage}
-const render = (arguments_: ImageMessageProperties) => (
+const meta: Meta<typeof ImageMessage> = {
+  component: ImageMessage,
+  title: "Chat/ImageMessage",
+}
+
+const render = (arguments_: ImageMessageProps) => (
   <ImageMessage {...arguments_} />
 )
 

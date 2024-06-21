@@ -1,12 +1,17 @@
 import {type EventMessageProps} from "@/components/EventMessage"
 import {type ImageMessageProps} from "@/components/ImageMessage"
 import useConnection from "@/hooks/matrix/useConnection"
-import {MsgType, RoomMemberEvent, RoomEvent} from "matrix-js-sdk"
-import {useCallback, useEffect, useState} from "react"
+import {
+  MsgType,
+  type Room,
+  RoomMemberEvent,
+  RoomEvent,
+  type MatrixClient,
+} from "matrix-js-sdk"
+import {useCallback, useEffect, useMemo, useState} from "react"
 import useEventListener from "./useEventListener"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {
-  deleteMessage,
   getImageUrl,
   sendImageMessageFromFile,
   stringToColor,
@@ -18,12 +23,29 @@ import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useFilePicker} from "use-file-picker"
 import {isUserRoomAdmin} from "@/utils/members"
 import {handleEvents, handleRoomEvents} from "@/utils/rooms"
+import {type ImageModalPreviewProps} from "@/containers/ChatContainer/ChatContainer"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 export enum MessageKind {
   Text,
   Image,
   Event,
   Unread,
+}
+
+export enum MessagesState {
+  Loading,
+  Loaded,
+  NotMessages,
+  Error,
+}
+
+export enum RoomState {
+  Loading,
+  Prepared,
+  Idle,
+  NotFound,
+  Invited,
 }
 
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
@@ -46,13 +68,18 @@ export type AnyMessage =
   | Message<MessageKind.Unread>
 
 const useActiveRoom = () => {
-  const {activeRoomId} = useActiveRoomIdStore()
   const {client} = useConnection()
+  const isMountedReference = useIsMountedRef()
+
+  // Room
+  const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()
+  const [roomName, setRoomName] = useState("")
+  const [roomState, setRoomState] = useState(RoomState.Idle)
+
+  // Messages and Typing
   const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
-  const isMountedReference = useIsMountedRef()
-  const [roomName, setRoomName] = useState<string>(" ")
-  const [isLoadingMessages, setIsMessagesLoading] = useState(false)
+  const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
   const {openFilePicker, filesContent, clear} = useFilePicker({
     accept: "image/*",
@@ -60,6 +87,73 @@ const useActiveRoom = () => {
     readAs: "DataURL",
   })
 
+  // #region Functions
+  const fetchRoomMessages = useCallback(
+    async (client: MatrixClient, room: Room) => {
+      if (!isMountedReference.current) {
+        return
+      }
+
+      try {
+        setMessagesState(MessagesState.Loading)
+
+        const anyMessages = await handleRoomEvents(client, room)
+
+        if (anyMessages.length === 0) {
+          setMessagesState(MessagesState.NotMessages)
+
+          return
+        }
+
+        setMessagesProp(anyMessages)
+        setMessagesState(MessagesState.Loaded)
+      } catch {
+        // TODO: Handle error fetching messages.
+        setMessagesState(MessagesState.Error)
+      }
+    },
+    [isMountedReference]
+  )
+
+  const sendTextMessage = useCallback(
+    async (body: string) => {
+      if (activeRoomId === null || client === null) {
+        return
+      }
+
+      // TODO: Show toast when an error has occurred.
+      await client.sendMessage(activeRoomId, {
+        body,
+        msgtype: MsgType.Text,
+      })
+    },
+    [activeRoomId, client]
+  )
+
+  const imagePreviewProps = useMemo(() => {
+    if (filesContent.length <= 0) {
+      return
+    }
+
+    const imageModalPreviewProps: ImageModalPreviewProps = {
+      imageName: filesContent[0].name,
+      imageUrl: filesContent[0].content,
+      onClear: clear,
+      onSendImage() {
+        void sendImageMessageFromFile(
+          filesContent[0],
+          client,
+          activeRoomId
+        ).then(() => {
+          clear()
+        })
+      },
+    }
+
+    return imageModalPreviewProps
+  }, [activeRoomId, clear, client, filesContent])
+
+  // #region Init useEffect
   useEffect(() => {
     if (
       client === null ||
@@ -69,32 +163,38 @@ const useActiveRoom = () => {
       return
     }
 
+    setRoomState(RoomState.Loading)
+
     const room = client.getRoom(activeRoomId)
 
-    setIsMessagesLoading(true)
-
-    void client.getRoomSummary(activeRoomId).then(roomSummary => {
-      if (roomSummary.name === undefined) {
-        return
-      }
-
-      setRoomName(roomSummary.name)
-    })
-
     if (room === null) {
-      throw new Error(`Room with ID ${activeRoomId} does not exist`)
+      setRoomState(RoomState.NotFound)
+
+      return
     }
 
-    void handleRoomEvents(client, room).then(newMessages => {
-      if (!isMountedReference.current) {
-        return
-      }
+    if (room.getMyMembership() !== KnownMembership.Join) {
+      // TODO: Handle other types of memberships.
 
-      setMessagesProp(newMessages)
-      setIsMessagesLoading(false)
-    })
-  }, [client, activeRoomId, isMountedReference])
+      setRoomState(RoomState.NotFound)
+      clearActiveRoomId()
 
+      return
+    }
+
+    setRoomName(room.name)
+    setRoomState(RoomState.Prepared)
+
+    void fetchRoomMessages(client, room)
+  }, [
+    client,
+    activeRoomId,
+    isMountedReference,
+    fetchRoomMessages,
+    clearActiveRoomId,
+  ])
+
+  // #region Listeners
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId !== activeRoomId || client === null) {
       return
@@ -144,8 +244,8 @@ const useActiveRoom = () => {
     }
 
     if (member.typing) {
-      setTypingUsers(typingUsers => [
-        ...typingUsers,
+      setTypingUsers(prevTypingUsers => [
+        ...prevTypingUsers,
         {
           displayName: member.name,
           color: stringToColor(member.userId),
@@ -153,54 +253,38 @@ const useActiveRoom = () => {
         },
       ])
     } else {
-      setTypingUsers(typingUsers =>
-        typingUsers.filter(user => user.displayName !== member.name)
+      setTypingUsers(prevTypingUsers =>
+        prevTypingUsers.filter(user => user.displayName !== member.name)
       )
     }
   })
 
-  const sendImageMessage = useCallback(async () => {
-    await sendImageMessageFromFile(filesContent[0], client, activeRoomId)
-    clear()
-  }, [activeRoomId, clear, client, filesContent])
-
-  const sendTextMessage = useCallback(
-    async (body: string) => {
-      if (activeRoomId === null || client === null) {
-        return
-      }
-
-      // TODO: Show toast when an error has occurred.
-      await client.sendMessage(activeRoomId, {
-        body,
-        msgtype: MsgType.Text,
-      })
-    },
-    [activeRoomId, client]
-  )
-
-  const sendEventTyping = useCallback(async () => {
-    if (activeRoomId === null || client === null) {
+  useEventListener(RoomMemberEvent.Membership, (_, member) => {
+    if (client === null || member.userId !== client.getUserId()) {
       return
     }
 
-    await client.sendTyping(activeRoomId, true, 2000)
-  }, [activeRoomId, client])
+    // If you are kicked out of the room, update the UI so that you cannot access the room.
+    if (
+      member.membership === KnownMembership.Leave ||
+      member.membership === KnownMembership.Ban
+    ) {
+      setRoomState(RoomState.NotFound)
+
+      clearActiveRoomId()
+    }
+  })
 
   return {
-    activeRoomId,
+    client,
     messagesProp,
     sendTextMessage,
-    sendImageMessage,
     openFilePicker,
     typingUsers,
-    sendEventTyping,
-    client,
-    deleteMessage,
     roomName,
-    filesContent,
-    clear,
-    isLoadingMessages,
+    roomState,
+    messagesState,
+    imagePreviewProps,
   }
 }
 
