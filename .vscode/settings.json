@@ -18,6 +18,6 @@
   },
   "eslint.enable": true,
   "eslint.validate": ["html"],
-  "cSpell.words": ["commitlint", "msgtype"],
+  "cSpell.words": ["commitlint", "msgtype", "uuidv"],
   "css.customData": [".vscode/tailwind.json"]
 }

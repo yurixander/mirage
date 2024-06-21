@@ -12,6 +12,7 @@ import {createPortal} from "react-dom"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import Loader from "@/components/Loader"
 import {ChatMessages} from "./ChatMessages"
+import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export type ChatContainerProps = {
   className?: string
@@ -36,34 +37,14 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   return (
     <>
-      {filesContent.length > 0 &&
-        createPortal(
-          <div className="fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay">
-            <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
-              {filesContent.length > 0 && (
-                <img
-                  className="h-auto w-full rounded-lg object-cover shadow-md"
-                  src={filesContent[0].content}
-                  alt={filesContent[0].name}
-                />
-              )}
-              <div className="flex w-full items-center justify-end gap-1">
-                <Button
-                  variant={ButtonVariant.Secondary}
-                  onClick={clear}
-                  label="Cancel"
-                />
-                <Button
-                  onClick={() => {
-                    void sendImageMessage()
-                  }}
-                  label="Send Image"
-                />
-              </div>
-            </div>
-          </div>,
-          document.body
-        )}
+      <ImageModalPreview
+        isVisible={filesContent.length > 0}
+        fileContent={filesContent.length > 0 && filesContent[0]}
+        onClear={clear}
+        onSendImage={() => {
+          void sendImageMessage()
+        }}
+      />
 
       <div
         className="relative flex size-full"
@@ -108,6 +89,47 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           <ChatNotFound />
         )}
       </div>
+    </>
+  )
+}
+
+type ImageModalPreviewProps = {
+  isVisible: boolean
+  onClear: () => void
+  onSendImage: () => void
+  fileContent: FileContent<string> | false
+}
+
+const ImageModalPreview: FC<ImageModalPreviewProps> = ({
+  isVisible,
+  onSendImage,
+  onClear,
+  fileContent,
+}) => {
+  return (
+    <>
+      {isVisible &&
+        fileContent !== false &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay">
+            <div className="flex max-h-[600px] max-w-xl flex-col gap-4 rounded-xl bg-slate-50 p-6 px-8 shadow-md">
+              <img
+                className="h-auto w-full rounded-lg object-cover shadow-md"
+                src={fileContent.content}
+                alt={fileContent.name}
+              />
+              <div className="flex w-full items-center justify-end gap-1">
+                <Button
+                  variant={ButtonVariant.Secondary}
+                  onClick={onClear}
+                  label="Cancel"
+                />
+                <Button onClick={onSendImage} label="Send Image" />
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   )
 }
