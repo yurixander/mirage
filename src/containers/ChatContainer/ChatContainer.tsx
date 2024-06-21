@@ -26,7 +26,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     sendTextMessage,
     roomName,
     openFilePicker,
-    activeRoomId,
     roomState,
     messagesState,
     imagePreviewProps,
@@ -41,7 +40,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
       <div
         className="relative flex size-full"
         id={ModalRenderLocation.ChatContainer}>
-        {activeRoomId === null ? (
+        {roomState === RoomState.Idle ? (
           <WelcomeSplash />
         ) : roomState === RoomState.Prepared ? (
           <div className={twMerge("flex h-screen flex-col gap-4", className)}>
@@ -136,11 +135,11 @@ const ChatNotFound: FC = () => {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
       <Typography variant={TypographyVariant.HeadingMedium}>
-        Fatal error
+        Room Not Found
       </Typography>
 
       <Typography>
-        You not have access to this room or this room not found
+        You not have access to this room or this room not found.
       </Typography>
     </div>
   )

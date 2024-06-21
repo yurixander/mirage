@@ -3,9 +3,9 @@ import {type ImageMessageProps} from "@/components/ImageMessage"
 import useConnection from "@/hooks/matrix/useConnection"
 import {
   MsgType,
+  type Room,
   RoomMemberEvent,
   RoomEvent,
-  type Room,
   type MatrixClient,
 } from "matrix-js-sdk"
 import {useCallback, useEffect, useMemo, useState} from "react"
@@ -25,6 +25,7 @@ import {useFilePicker} from "use-file-picker"
 import {isUserRoomAdmin} from "@/utils/members"
 import {handleEvents, handleRoomEvents} from "@/utils/rooms"
 import {type ImageModalPreviewProps} from "@/containers/ChatContainer/ChatContainer"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 export enum MessageKind {
   Text,
@@ -43,8 +44,8 @@ export enum MessagesState {
 export enum RoomState {
   Loading,
   Prepared,
+  Idle,
   NotFound,
-  Left,
   Invited,
 }
 
@@ -68,13 +69,13 @@ export type AnyMessage =
   | Message<MessageKind.Unread>
 
 const useActiveRoom = () => {
-  const {activeRoomId} = useActiveRoomIdStore()
+  const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()
   const {client} = useConnection()
   const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const isMountedReference = useIsMountedRef()
   const [roomName, setRoomName] = useState("")
-  const [roomState, setRoomState] = useState<RoomState>()
+  const [roomState, setRoomState] = useState(RoomState.Idle)
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
   const {openFilePicker, filesContent, clear} = useFilePicker({
@@ -179,11 +180,26 @@ const useActiveRoom = () => {
       return
     }
 
+    if (room.getMyMembership() !== KnownMembership.Join) {
+      // TODO: Handle other types of memberships.
+
+      setRoomState(RoomState.NotFound)
+      clearActiveRoomId()
+
+      return
+    }
+
     setRoomName(room.name)
     setRoomState(RoomState.Prepared)
 
     void fetchRoomMessages(client, room)
-  }, [client, activeRoomId, isMountedReference, fetchRoomMessages])
+  }, [
+    client,
+    activeRoomId,
+    isMountedReference,
+    fetchRoomMessages,
+    clearActiveRoomId,
+  ])
 
   // #region Listeners
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
@@ -247,6 +263,22 @@ const useActiveRoom = () => {
       setTypingUsers(prevTypingUsers =>
         prevTypingUsers.filter(user => user.displayName !== member.name)
       )
+    }
+  })
+
+  useEventListener(RoomMemberEvent.Membership, (_, member) => {
+    if (client === null || member.userId !== client.getUserId()) {
+      return
+    }
+
+    // If you are kicked out of the room, update the UI so that you cannot access the room.
+    if (
+      member.membership === KnownMembership.Leave ||
+      member.membership === KnownMembership.Ban
+    ) {
+      setRoomState(RoomState.NotFound)
+
+      clearActiveRoomId()
     }
   })
 
