@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom"
 import useLocalStorage, {LocalStorageKey} from "@/hooks/util/useLocalStorage"
 import NavigationSection from "@/containers/NavigationSection"
 import ModalHandler from "@/components/ModalHandler"
+import SmartActionBar from "@/components/SmartActionBar"
 
 const AppView: FC = () => {
   const navigate = useNavigate()
@@ -43,7 +44,11 @@ const AppView: FC = () => {
       <div className="flex size-full flex-row">
         <NavigationSection />
 
-        <ChatContainer className="w-full grow" />
+        <div className="flex size-full flex-col">
+          <ChatContainer className="w-full grow" />
+
+          <SmartActionBar />
+        </div>
         <Roster className="grow" />
       </div>
     </>

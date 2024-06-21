@@ -1,7 +1,13 @@
 import {type EventMessageProps} from "@/components/EventMessage"
 import {type ImageMessageProps} from "@/components/ImageMessage"
 import useConnection from "@/hooks/matrix/useConnection"
-import {MsgType, RoomMemberEvent, RoomEvent} from "matrix-js-sdk"
+import {
+  MsgType,
+  RoomMemberEvent,
+  RoomEvent,
+  type Room,
+  type MatrixClient,
+} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 import useEventListener from "./useEventListener"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
@@ -24,6 +30,21 @@ export enum MessageKind {
   Image,
   Event,
   Unread,
+}
+
+export enum MessagesState {
+  Loading,
+  Loaded,
+  NotMessages,
+  Error,
+}
+
+export enum RoomState {
+  Loading,
+  Prepared,
+  NotFound,
+  Left,
+  Invited,
 }
 
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
@@ -52,13 +73,41 @@ const useActiveRoom = () => {
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const isMountedReference = useIsMountedRef()
   const [roomName, setRoomName] = useState<string>(" ")
-  const [isLoadingMessages, setIsMessagesLoading] = useState(false)
+  const [roomState, setRoomState] = useState<RoomState>()
+  const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
   const {openFilePicker, filesContent, clear} = useFilePicker({
     accept: "image/*",
     multiple: false,
     readAs: "DataURL",
   })
+
+  const fetchRoomMessages = useCallback(
+    async (client: MatrixClient, room: Room) => {
+      if (!isMountedReference.current) {
+        return
+      }
+
+      try {
+        setMessagesState(MessagesState.Loading)
+
+        const anyMessages = await handleRoomEvents(client, room)
+
+        if (anyMessages.length === 0) {
+          setMessagesState(MessagesState.NotMessages)
+
+          return
+        }
+
+        setMessagesProp(anyMessages)
+        setMessagesState(MessagesState.Loaded)
+      } catch {
+        // TODO: Handle error fetching messages.
+        setMessagesState(MessagesState.Error)
+      }
+    },
+    [isMountedReference]
+  )
 
   useEffect(() => {
     if (
@@ -69,31 +118,21 @@ const useActiveRoom = () => {
       return
     }
 
+    setRoomState(RoomState.Loading)
+
     const room = client.getRoom(activeRoomId)
 
-    setIsMessagesLoading(true)
-
-    void client.getRoomSummary(activeRoomId).then(roomSummary => {
-      if (roomSummary.name === undefined) {
-        return
-      }
-
-      setRoomName(roomSummary.name)
-    })
-
     if (room === null) {
-      throw new Error(`Room with ID ${activeRoomId} does not exist`)
+      setRoomState(RoomState.NotFound)
+
+      return
     }
 
-    void handleRoomEvents(client, room).then(newMessages => {
-      if (!isMountedReference.current) {
-        return
-      }
+    setRoomName(room.name)
+    setRoomState(RoomState.Prepared)
 
-      setMessagesProp(newMessages)
-      setIsMessagesLoading(false)
-    })
-  }, [client, activeRoomId, isMountedReference])
+    void fetchRoomMessages(client, room)
+  }, [client, activeRoomId, isMountedReference, fetchRoomMessages])
 
   useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
     if (room === undefined || room.roomId !== activeRoomId || client === null) {
@@ -200,7 +239,8 @@ const useActiveRoom = () => {
     roomName,
     filesContent,
     clear,
-    isLoadingMessages,
+    roomState,
+    messagesState,
   }
 }
 

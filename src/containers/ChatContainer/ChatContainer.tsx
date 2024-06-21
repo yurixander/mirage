@@ -1,12 +1,16 @@
 import TypingIndicator from "../../components/TypingIndicator"
-import useActiveRoom, {MessageKind} from "@/hooks/matrix/useActiveRoom"
+import useActiveRoom, {
+  type AnyMessage,
+  MessageKind,
+  MessagesState,
+  RoomState,
+} from "@/hooks/matrix/useActiveRoom"
 import ImageMessage from "../../components/ImageMessage"
 import TextMessage from "../../components/TextMessage"
 import EventMessage from "../../components/EventMessage"
 import {twMerge} from "tailwind-merge"
 import Button, {ButtonVariant} from "../../components/Button"
 import UnreadIndicator from "../../components/UnreadIndicator"
-import SmartActionBar from "@/components/SmartActionBar"
 import useChatInput from "./useChatInput"
 import ChatHeader from "./ChatHeader"
 import ChatInput from "./ChatInput"
@@ -15,6 +19,8 @@ import WelcomeSplash from "./WelcomeSplash"
 import MessagesPlaceholder from "./MessagesPlaceholder"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import {createPortal} from "react-dom"
+import Typography, {TypographyVariant} from "@/components/Typography"
+import Loader from "@/components/Loader"
 
 export type ChatContainerProps = {
   className?: string
@@ -33,24 +39,9 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     clear,
     openFilePicker,
     activeRoomId,
-    isLoadingMessages,
+    roomState,
+    messagesState,
   } = useActiveRoom()
-
-  const messages = useMemo(
-    () =>
-      messagesProp.map(message =>
-        message.kind === MessageKind.Text ? (
-          <TextMessage key={message.data.id} {...message.data} />
-        ) : message.kind === MessageKind.Image ? (
-          <ImageMessage key={message.data.id} {...message.data} />
-        ) : message.kind === MessageKind.Event ? (
-          <EventMessage key={message.data.id} {...message.data} />
-        ) : (
-          <UnreadIndicator key="unread-indicator" {...message.data} />
-        )
-      ),
-    [messagesProp]
-  )
 
   return (
     <>
@@ -88,25 +79,14 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         id={ModalRenderLocation.ChatContainer}>
         {activeRoomId === null ? (
           <WelcomeSplash />
-        ) : (
+        ) : roomState === RoomState.Prepared ? (
           <div className={twMerge("flex h-screen flex-col gap-4", className)}>
             <ChatHeader roomName={roomName} />
 
-            <div
-              ref={scrollReference => {
-                if (scrollReference === null) {
-                  return
-                }
-
-                scrollReference.scrollTo({
-                  top:
-                    scrollReference.scrollHeight - scrollReference.clientHeight,
-                  behavior: "smooth",
-                })
-              }}
-              className="mx-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
-              {isLoadingMessages ? <MessagesPlaceholder /> : messages}
-            </div>
+            <ChatMessages
+              messages={messagesProp}
+              messagesState={messagesState}
+            />
 
             <div className="mx-4 flex flex-col gap-3">
               <ChatInput
@@ -130,12 +110,80 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
                 )}
               </div>
             </div>
-
-            <SmartActionBar />
           </div>
+        ) : roomState === RoomState.Loading ? (
+          <ChatLoading />
+        ) : (
+          <ChatNotFound />
         )}
       </div>
     </>
+  )
+}
+
+type ChatMessagesProps = {
+  messages: AnyMessage[]
+  messagesState: MessagesState
+}
+
+const ChatMessages: FC<ChatMessagesProps> = ({messages, messagesState}) => {
+  const messageElements = useMemo(
+    () =>
+      messages.map(message =>
+        message.kind === MessageKind.Text ? (
+          <TextMessage key={message.data.id} {...message.data} />
+        ) : message.kind === MessageKind.Image ? (
+          <ImageMessage key={message.data.id} {...message.data} />
+        ) : message.kind === MessageKind.Event ? (
+          <EventMessage key={message.data.id} {...message.data} />
+        ) : (
+          <UnreadIndicator key="unread-indicator" {...message.data} />
+        )
+      ),
+    [messages]
+  )
+
+  return (
+    <div
+      ref={scrollReference => {
+        if (scrollReference === null) {
+          return
+        }
+
+        scrollReference.scrollTo({
+          top: scrollReference.scrollHeight - scrollReference.clientHeight,
+          behavior: "smooth",
+        })
+      }}
+      className="mx-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
+      {messagesState === MessagesState.Loading ? (
+        <MessagesPlaceholder />
+      ) : (
+        messageElements
+      )}
+    </div>
+  )
+}
+
+const ChatNotFound: FC = () => {
+  return (
+    <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
+      <Typography variant={TypographyVariant.HeadingMedium}>
+        Fatal error
+      </Typography>
+
+      <Typography>
+        You not have access to this room or this room not found
+      </Typography>
+    </div>
+  )
+}
+
+const ChatLoading: FC = () => {
+  return (
+    <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
+      <Loader text="Loading room" />
+    </div>
   )
 }
 
