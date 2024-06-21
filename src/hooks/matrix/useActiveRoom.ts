@@ -12,7 +12,6 @@ import {useCallback, useEffect, useMemo, useState} from "react"
 import useEventListener from "./useEventListener"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {
-  deleteMessage,
   getImageUrl,
   sendImageMessageFromFile,
   stringToColor,
@@ -26,6 +25,7 @@ import {isUserRoomAdmin} from "@/utils/members"
 import {handleEvents, handleRoomEvents} from "@/utils/rooms"
 import {type ImageModalPreviewProps} from "@/containers/ChatContainer/ChatContainer"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import useChatInput from "@/containers/ChatContainer/useChatInput"
 
 export enum MessageKind {
   Text,
@@ -69,13 +69,18 @@ export type AnyMessage =
   | Message<MessageKind.Unread>
 
 const useActiveRoom = () => {
-  const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()
   const {client} = useConnection()
-  const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
-  const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const isMountedReference = useIsMountedRef()
+
+  // Room
+  const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()
   const [roomName, setRoomName] = useState("")
   const [roomState, setRoomState] = useState(RoomState.Idle)
+
+  // Messages and Typing
+  const {messageText, setMessageText} = useChatInput()
+  const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
+  const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
   const {openFilePicker, filesContent, clear} = useFilePicker({
@@ -85,7 +90,6 @@ const useActiveRoom = () => {
   })
 
   // #region Functions
-
   const fetchRoomMessages = useCallback(
     async (client: MatrixClient, room: Room) => {
       if (!isMountedReference.current) {
@@ -113,28 +117,26 @@ const useActiveRoom = () => {
     [isMountedReference]
   )
 
-  const sendTextMessage = useCallback(
-    async (body: string) => {
-      if (activeRoomId === null || client === null) {
-        return
-      }
-
-      // TODO: Show toast when an error has occurred.
-      await client.sendMessage(activeRoomId, {
-        body,
-        msgtype: MsgType.Text,
-      })
-    },
-    [activeRoomId, client]
-  )
-
-  const sendEventTyping = useCallback(async () => {
+  const sendTextMessage = () => {
     if (activeRoomId === null || client === null) {
       return
     }
 
-    await client.sendTyping(activeRoomId, true, 2000)
-  }, [activeRoomId, client])
+    void client
+      .sendMessage(activeRoomId, {
+        messageText,
+        msgtype: MsgType.Text,
+      })
+      .then(_eventResponse => {
+        // Clear text for chat input.
+        setMessageText("")
+      })
+      .catch(error => {
+        // TODO: Show toast when an error has occurred.
+
+        console.error(`An error ocurred while sending message: ${error}`)
+      })
+  }
 
   const imagePreviewProps = useMemo(() => {
     if (filesContent.length <= 0) {
@@ -160,7 +162,6 @@ const useActiveRoom = () => {
   }, [activeRoomId, clear, client, filesContent])
 
   // #region Init useEffect
-
   useEffect(() => {
     if (
       client === null ||
@@ -283,20 +284,17 @@ const useActiveRoom = () => {
   })
 
   return {
-    activeRoomId,
+    client,
     messagesProp,
     sendTextMessage,
     openFilePicker,
     typingUsers,
-    sendEventTyping,
-    client,
-    deleteMessage,
     roomName,
-    filesContent,
-    clear,
     roomState,
     messagesState,
     imagePreviewProps,
+    messageText,
+    setMessageText,
   }
 }
 

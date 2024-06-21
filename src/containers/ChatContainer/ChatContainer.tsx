@@ -1,7 +1,6 @@
 import TypingIndicator from "../../components/TypingIndicator"
 import useActiveRoom, {RoomState} from "@/hooks/matrix/useActiveRoom"
 import {twMerge} from "tailwind-merge"
-import useChatInput from "./useChatInput"
 import ChatHeader from "./ChatHeader"
 import ChatInput from "./ChatInput"
 import {type FC} from "react"
@@ -18,9 +17,8 @@ export type ChatContainerProps = {
 }
 
 const ChatContainer: FC<ChatContainerProps> = ({className}) => {
-  const {messageText, setMessageText} = useChatInput()
-
   const {
+    client,
     messagesProp,
     typingUsers,
     sendTextMessage,
@@ -29,6 +27,8 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     roomState,
     messagesState,
     imagePreviewProps,
+    messageText,
+    setMessageText,
   } = useActiveRoom()
 
   return (
@@ -38,12 +38,12 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
       )}
 
       <div
-        className="relative flex size-full"
+        className={twMerge("relative flex size-full", className)}
         id={ModalRenderLocation.ChatContainer}>
         {roomState === RoomState.Idle ? (
           <WelcomeSplash />
         ) : roomState === RoomState.Prepared ? (
-          <div className={twMerge("flex h-screen flex-col gap-4", className)}>
+          <div className="flex h-screen flex-col gap-4">
             <ChatHeader roomName={roomName} />
 
             <ChatMessages
@@ -53,14 +53,11 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
             <div className="mx-4 flex flex-col gap-3">
               <ChatInput
+                isDisabled={client === null}
                 onAttach={openFilePicker}
                 onValueChange={setMessageText}
                 value={messageText}
-                onSend={() => {
-                  void sendTextMessage(messageText).then(() => {
-                    setMessageText("")
-                  })
-                }}
+                onSend={sendTextMessage}
               />
 
               <div className="flex gap-3">
@@ -75,9 +72,19 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
             </div>
           </div>
         ) : roomState === RoomState.Loading ? (
-          <ChatLoading />
+          <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
+            <Loader text="Loading room" />
+          </div>
         ) : (
-          <ChatNotFound />
+          <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
+            <Typography variant={TypographyVariant.HeadingLarge}>
+              Room Not Found
+            </Typography>
+
+            <Typography>
+              You not have access to this room or this room not found.
+            </Typography>
+          </div>
         )}
       </div>
     </>
@@ -128,28 +135,6 @@ const ImageModalPreview: FC<ImageModalPreviewProps> = ({
         document.body
       )}
     </>
-  )
-}
-
-const ChatNotFound: FC = () => {
-  return (
-    <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
-      <Typography variant={TypographyVariant.HeadingMedium}>
-        Room Not Found
-      </Typography>
-
-      <Typography>
-        You not have access to this room or this room not found.
-      </Typography>
-    </div>
-  )
-}
-
-const ChatLoading: FC = () => {
-  return (
-    <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
-      <Loader text="Loading room" />
-    </div>
   )
 }
 
