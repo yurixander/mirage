@@ -43,7 +43,21 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         id={ModalRenderLocation.ChatContainer}>
         {roomState === RoomState.Idle ? (
           <WelcomeSplash />
-        ) : roomState === RoomState.Prepared ? (
+        ) : roomState === RoomState.NotFound ? (
+          <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
+            <Typography variant={TypographyVariant.HeadingLarge}>
+              Room Not Found
+            </Typography>
+
+            <Typography>
+              You not have access to this room or this room not found.
+            </Typography>
+          </div>
+        ) : roomState === RoomState.Loading ? (
+          <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
+            <Loader text="Loading room" />
+          </div>
+        ) : (
           <div className={twMerge("flex h-screen flex-col gap-4", className)}>
             <ChatHeader roomName={roomName} />
 
@@ -53,6 +67,11 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
             />
 
             <div className="mx-4 flex flex-col gap-3">
+              {/* TODO: Temporally remove this later */}
+              {roomState === RoomState.Invited && (
+                <Typography>Send message for join to this room</Typography>
+              )}
+
               <ChatInput
                 isDisabled={client === null}
                 onAttach={openFilePicker}
@@ -75,20 +94,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
                 )}
               </div>
             </div>
-          </div>
-        ) : roomState === RoomState.Loading ? (
-          <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
-            <Loader text="Loading room" />
-          </div>
-        ) : (
-          <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
-            <Typography variant={TypographyVariant.HeadingLarge}>
-              Room Not Found
-            </Typography>
-
-            <Typography>
-              You not have access to this room or this room not found.
-            </Typography>
           </div>
         )}
       </div>

@@ -173,7 +173,12 @@ const useActiveRoom = () => {
       return
     }
 
-    if (room.getMyMembership() !== KnownMembership.Join) {
+    const currentMembership = room.getMyMembership()
+
+    if (
+      currentMembership !== KnownMembership.Join &&
+      currentMembership !== KnownMembership.Invite
+    ) {
       // TODO: Handle other types of memberships.
 
       setRoomState(RoomState.NotFound)
@@ -183,7 +188,13 @@ const useActiveRoom = () => {
     }
 
     setRoomName(room.name)
-    setRoomState(RoomState.Prepared)
+
+    const roomState =
+      currentMembership === KnownMembership.Invite
+        ? RoomState.Invited
+        : RoomState.Prepared
+
+    setRoomState(roomState)
 
     void fetchRoomMessages(client, room)
   }, [

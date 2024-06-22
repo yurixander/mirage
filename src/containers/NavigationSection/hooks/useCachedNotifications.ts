@@ -1,4 +1,5 @@
 import {type NotificationProps} from "@/components/Notification"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {
@@ -37,6 +38,7 @@ export const notificationsBody: {[key in NotificationType]: string} = {
 const useCachedNotifications = () => {
   const {client} = useConnection()
   const [notifications, setNotifications] = useState<NotificationProps[]>([])
+  const {setActiveRoomId} = useActiveRoomIdStore()
 
   const [cachedNotifications, setCachedNotifications] = useState<
     LocalNotificationData[]
@@ -131,7 +133,9 @@ const useCachedNotifications = () => {
             ...notification,
             onDelete: deleteNotificationById,
             markAsRead: markAsReadByNotificationId,
-            action() {},
+            action() {
+              setActiveRoomId(notification.roomId)
+            },
           }
         }
 
@@ -142,7 +146,12 @@ const useCachedNotifications = () => {
         }
       })
     )
-  }, [cachedNotifications, deleteNotificationById, markAsReadByNotificationId])
+  }, [
+    cachedNotifications,
+    deleteNotificationById,
+    markAsReadByNotificationId,
+    setActiveRoomId,
+  ])
 
   // #region Listeners
   useEventListener(

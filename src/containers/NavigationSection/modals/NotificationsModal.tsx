@@ -1,4 +1,4 @@
-import React, {useMemo, type FC} from "react"
+import React, {useCallback, useMemo, type FC} from "react"
 import {IoCloseCircle} from "react-icons/io5"
 import Button, {ButtonVariant} from "../../../components/Button"
 import Typography, {TypographyVariant} from "../../../components/Typography"
@@ -18,20 +18,37 @@ export type NotificationModalProps = {
   onClose: () => void
 }
 
+type Action = (() => void) | undefined
+
 const NotificationsModal: FC<NotificationModalProps> = ({
   onClose,
   notifications,
   markAllNotificationsAsRead,
 }) => {
+  const onAction = useCallback(
+    (action: Action): Action => {
+      return () => {
+        if (action === undefined) {
+          return
+        }
+
+        action()
+        onClose()
+      }
+    },
+    [onClose]
+  )
+
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
       notifications.map(anyNotification => (
         <Notification
           {...anyNotification}
           key={anyNotification.notificationId}
+          action={onAction(anyNotification.action)}
         />
       )),
-    [notifications]
+    [notifications, onAction]
   )
 
   return (
