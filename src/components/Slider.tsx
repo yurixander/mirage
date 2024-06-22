@@ -6,7 +6,7 @@ export type SliderProps = {
   max: number
   value: number
   step?: number
-  className?: string
+  width?: string
   onProgressChange: (value: number) => void
 }
 
@@ -16,7 +16,7 @@ const Slider: FC<SliderProps> = ({
   max,
   value,
   step,
-  className = "w-full",
+  width,
 }) => {
   const [progress, setProgress] = useState(value)
 
@@ -29,28 +29,24 @@ const Slider: FC<SliderProps> = ({
 
   return (
     <label
-      className={twMerge(
-        "flex flex-col items-center justify-center",
-        className
-      )}>
+      style={{width: width ?? "100%"}}
+      className="flex flex-col items-center justify-center">
       {step === undefined || step < 10 ? (
         <BasicProgressBar
-          width={className}
+          width={width ?? "100%"}
           progress={(progress * 100) / (max - min)}
         />
       ) : (
-        <StepProgressBar width={className} steps={(max - min) / step} />
+        <StepProgressBar width={width ?? "100%"} steps={(max - min) / step} />
       )}
       <input
+        style={{width: width ?? "100%"}}
         max={max}
         min={min}
         step={step}
         value={progress}
         onInput={handleOnInput}
-        className={twMerge(
-          "relative h-3 cursor-pointer appearance-none rounded-full bg-transparent p-0",
-          className
-        )}
+        className="relative h-3 cursor-pointer appearance-none rounded-full bg-transparent p-0"
         type="range"
       />
     </label>
@@ -63,10 +59,8 @@ const BasicProgressBar: FC<{progress: number; width: string}> = ({
 }) => {
   return (
     <div
-      className={twMerge(
-        "relative -mb-3 h-3 overflow-hidden rounded-full bg-slate-100 shadow",
-        width
-      )}>
+      style={{width: width}}
+      className="relative -mb-3 h-3 overflow-hidden rounded-full bg-slate-100 shadow">
       <div
         style={{width: `${progress}%`}}
         className="h-3 bg-fuchsia-500 shadow"
@@ -81,10 +75,8 @@ const StepProgressBar: FC<{steps: number; width: string}> = ({
 }) => {
   return (
     <div
-      className={twMerge(
-        "relative -mb-3 flex h-3 items-center overflow-hidden rounded-full bg-slate-200 shadow",
-        width
-      )}>
+      style={{width: width}}
+      className="relative -mb-3 flex h-3 items-center overflow-hidden rounded-full bg-slate-200 shadow">
       <div className="rounded-full bg-slate-300 text-end">
         <div className="size-2 rounded-full bg-slate-200" />
       </div>
