@@ -25,10 +25,8 @@ const DropdownActions: FC<DropdownActionsProps> = ({
   return (
     <Dropdown
       initiallyContent={
-        <div
-          className="flex w-max items-center gap-1 hover:bg-neutral-100"
-          role="button"
-          aria-hidden
+        <button
+          className="flex w-max appearance-none items-center gap-1 hover:bg-neutral-100"
           onClick={() => {
             onOptionSelected(optionSelected)
           }}>
@@ -37,11 +35,12 @@ const DropdownActions: FC<DropdownActionsProps> = ({
           </div>
 
           <Typography className="font-medium">{optionSelected.text}</Typography>
-        </div>
+        </button>
       }>
       <>
-        {options.map(option => (
+        {options.map((option, index) => (
           <DropdownItem
+            key={index}
             {...option}
             isSelected={option.text === optionSelected.text}
             onClick={() => {
@@ -69,11 +68,9 @@ const DropdownItem: FC<DropdownOptionProps> = ({
   onClick,
 }) => {
   return (
-    <div
-      role="button"
-      aria-hidden
+    <button
       onClick={onClick}
-      className="flex w-full items-center gap-1 p-1 hover:bg-neutral-100">
+      className="flex w-full appearance-none items-center gap-1 p-1 hover:bg-neutral-100">
       <div className="flex size-6 items-center justify-center">
         <Icon size={20} />
       </div>
@@ -81,7 +78,7 @@ const DropdownItem: FC<DropdownOptionProps> = ({
       <Typography className="font-medium">{text}</Typography>
 
       {isSelected && <IoMdCheckmark className="ml-auto text-slate-300" />}
-    </div>
+    </button>
   )
 }
 

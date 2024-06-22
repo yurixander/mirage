@@ -24,13 +24,14 @@ export type Credentials = {
   deviceId: string
 }
 
-export function timeFormatter(timestamp: number): string {
+export function formatTime(timestamp: number): string {
   return dayjs(timestamp).format("hh:mm a")
 }
 
 export enum CommonAssertion {
   EventIdNotFound = "To confirm that an event happened, event id should not be undefined.",
   UserIdNotFound = "The client should be logged in.",
+  EventSenderNotFount = "The event should has a send origin",
 }
 
 export function assert(

@@ -1,16 +1,14 @@
 import {useState, type FC} from "react"
-import SidebarActions from "./SidebarActions"
 import SpaceList from "./SpaceList"
 import UserBar from "./UserBar"
 import useSidebarActions from "./hooks/useSidebarActions"
-import useGlobalEventListeners from "@/hooks/matrix/useGlobalEventListeners"
 import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 import ServerDropdown from "@/components/ServerDropdown"
 import {MATRIX_SERVER} from "@/utils/servers"
+import SidebarActions from "./SidebarActions"
 
 const NavigationSection: FC = () => {
   const {onLogout} = useSidebarActions()
-  const {containsUnreadNotifications} = useGlobalEventListeners()
   const {setActiveModal} = useActiveModalStore()
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
 
@@ -28,14 +26,9 @@ const NavigationSection: FC = () => {
 
         <SidebarActions
           className="mt-auto p-4"
-          notificationsCount={containsUnreadNotifications}
-          // TODO: Handle other events.
           onCalls={() => {}}
           onSearch={() => {}}
           onExit={onLogout}
-          onNotification={() => {
-            setActiveModal(Modals.Notifications)
-          }}
           onDirectMessages={() => {
             setActiveModal(Modals.DirectMessages)
           }}

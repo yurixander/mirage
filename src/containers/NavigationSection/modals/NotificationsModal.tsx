@@ -1,16 +1,10 @@
-import {useMemo, type FC} from "react"
+import React, {useMemo, type FC} from "react"
 import {IoCloseCircle} from "react-icons/io5"
 import Button, {ButtonVariant} from "../../../components/Button"
 import Typography, {TypographyVariant} from "../../../components/Typography"
 import {twMerge} from "tailwind-merge"
 import IconButton from "../../../components/IconButton"
-import useCachedNotifications, {
-  useNotificationsStateStore,
-  type LocalNotificationData,
-} from "../hooks/useCachedNotifications"
-import {markAllNotificationsAsRead} from "@/utils/notifications"
-import Notification from "../../../components/Notification"
-import useActiveModalStore from "@/hooks/util/useActiveModal"
+import Notification, {type NotificationProps} from "@/components/Notification"
 
 export type NotificationActions = {
   name: string
@@ -18,25 +12,32 @@ export type NotificationActions = {
   onClick: () => void
 }
 
-const NotificationsModal: FC = () => {
-  const {clearActiveModal} = useActiveModalStore()
-  const {onRequestChanges} = useNotificationsStateStore()
-  const {notifications} = useCachedNotifications()
+export type NotificationModalProps = {
+  notifications: NotificationProps[]
+  markAllNotificationsAsRead: () => void
+  onClose: () => void
+}
 
-  const unreadNotifications: LocalNotificationData[] = useMemo(
-    () => notifications.filter(notification => !notification.isRead),
-    [notifications]
-  )
-
-  const readNotifications: LocalNotificationData[] = useMemo(
-    () => notifications.filter(notification => notification.isRead),
+const NotificationsModal: FC<NotificationModalProps> = ({
+  onClose,
+  notifications,
+  markAllNotificationsAsRead,
+}) => {
+  const notificationsComponents: React.JSX.Element[] = useMemo(
+    () =>
+      notifications.map(anyNotification => (
+        <Notification
+          {...anyNotification}
+          key={anyNotification.notificationId}
+        />
+      )),
     [notifications]
   )
 
   return (
     <div
       className={twMerge(
-        "flex max-h-[80%] min-h-[300px] w-full max-w-sm flex-col gap-2 rounded-xl bg-white p-2"
+        "m-2 flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl border border-slate-300 bg-gray-50 p-2 shadow-2xl"
       )}>
       <div className="flex w-full p-2">
         <Typography className="mr-auto" variant={TypographyVariant.Heading}>
@@ -49,19 +50,14 @@ const NotificationsModal: FC = () => {
           label="Mark all as read"
           onClick={() => {
             markAllNotificationsAsRead()
-            onRequestChanges()
-            clearActiveModal()
+            onClose()
           }}
         />
 
-        <IconButton
-          onClick={clearActiveModal}
-          tooltip="Close"
-          Icon={IoCloseCircle}
-        />
+        <IconButton onClick={onClose} tooltip="Close" Icon={IoCloseCircle} />
       </div>
 
-      {unreadNotifications.length === 0 && readNotifications.length === 0 && (
+      {notifications.length === 0 && (
         <div className="flex size-full items-center justify-center">
           <Typography className="text-center text-slate-400">
             No notifications
@@ -70,25 +66,7 @@ const NotificationsModal: FC = () => {
       )}
 
       <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
-        <div className="bg-slate-100">
-          {unreadNotifications.map(notification => (
-            <Notification
-              key={notification.notificationId}
-              {...notification}
-              hasActions={notification.hasActions ?? false}
-              onRequestChanges={onRequestChanges}
-            />
-          ))}
-        </div>
-
-        {readNotifications.map(notification => (
-          <Notification
-            key={notification.notificationId}
-            {...notification}
-            hasActions={notification.hasActions ?? false}
-            onRequestChanges={onRequestChanges}
-          />
-        ))}
+        {notificationsComponents}
       </div>
     </div>
   )

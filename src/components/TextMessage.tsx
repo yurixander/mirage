@@ -1,13 +1,12 @@
 import {useMemo, type FC} from "react"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
-import ContextMenu, {
+import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
+import Typography, {TypographyVariant} from "./Typography"
+import {
   CONTEXT_MENU_DELETE,
   CONTEXT_MENU_REPLY,
   CONTEXT_MENU_RESEND,
-  useContextMenuStore,
-  type ContextMenuItem,
-} from "./ContextMenu"
-import Typography, {TypographyVariant} from "./Typography"
+} from "@/utils/menu"
 
 const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
@@ -17,13 +16,22 @@ const TextMessage: FC<MessageBaseProps> = ({
   text,
   timestamp,
   onDeleteMessage,
+  id,
 }) => {
-  const {showMenu} = useContextMenuStore()
-
   const contextMenuItems = useMemo(() => {
     const items: ContextMenuItem[] = [
-      {...CONTEXT_MENU_REPLY, onClick: () => {}},
-      {...CONTEXT_MENU_RESEND, onClick: () => {}},
+      {
+        ...CONTEXT_MENU_REPLY,
+        onClick: () => {
+          throw new Error("Reply message not handled.")
+        },
+      },
+      {
+        ...CONTEXT_MENU_RESEND,
+        onClick: () => {
+          throw new Error("Resend message not handled.")
+        },
+      },
     ]
 
     if (onDeleteMessage !== undefined) {
@@ -33,28 +41,22 @@ const TextMessage: FC<MessageBaseProps> = ({
     return items
   }, [onDeleteMessage])
 
-  // NOTE: `id` should be unique for avoid duplicates `ContextMenus`.
   return (
-    <>
-      <ContextMenu id={timestamp} elements={contextMenuItems}>
-        <MessageContainer
-          authorDisplayName={authorDisplayName}
-          authorDisplayNameColor={authorDisplayNameColor}
-          authorAvatarUrl={authorAvatarUrl}
-          timestamp={timestamp}
-          onAuthorClick={onAuthorClick}
-          onMessageRightClick={event => {
-            showMenu(timestamp, event)
-          }}>
-          <Typography
-            className="max-w-messageMaxWidth select-text break-words"
-            variant={TypographyVariant.Body}>
-            {/* TODO: Process line breaks (\n). */}
-            {text}
-          </Typography>
-        </MessageContainer>
+    <MessageContainer
+      authorDisplayName={authorDisplayName}
+      authorDisplayNameColor={authorDisplayNameColor}
+      authorAvatarUrl={authorAvatarUrl}
+      timestamp={timestamp}
+      onAuthorClick={onAuthorClick}>
+      <ContextMenu id={`text-message-${id}`} elements={contextMenuItems}>
+        <Typography
+          className="max-w-messageMaxWidth cursor-text select-text break-words"
+          variant={TypographyVariant.Body}>
+          {/* TODO: Process line breaks (\n). */}
+          {text}
+        </Typography>
       </ContextMenu>
-    </>
+    </MessageContainer>
   )
 }
 

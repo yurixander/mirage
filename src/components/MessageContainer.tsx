@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import {cleanDisplayName, timeFormatter} from "../utils/util"
+import {cleanDisplayName, formatTime} from "../utils/util"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
 import Typography, {TypographyVariant} from "./Typography"
@@ -22,7 +22,6 @@ export type MessageContainerProps = {
   children: React.JSX.Element
   timestamp: number
   onAuthorClick: () => void
-  onMessageRightClick: <T>(e: React.MouseEvent<T>) => void
 }
 
 const MessageContainer: FC<MessageContainerProps> = ({
@@ -32,34 +31,26 @@ const MessageContainer: FC<MessageContainerProps> = ({
   children,
   timestamp,
   onAuthorClick,
-  onMessageRightClick,
 }) => {
-  const localeTimeString = timeFormatter(timestamp)
+  const localeTimeString = formatTime(timestamp)
 
   return (
-    <div
-      className="flex w-full items-start justify-start"
-      onContextMenu={onMessageRightClick}>
+    <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">
-        <div
-          className="flex size-10 cursor-pointer items-center justify-center
-          overflow-hidden rounded-lg bg-neutral-50"
-          onClick={() => {
-            onAuthorClick()
-          }}
-          aria-hidden="true">
+        <button
+          className="size-10 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-neutral-50"
+          onClick={onAuthorClick}>
           <AvatarImage
             isRounded={false}
-            isLarge={false}
             avatarType={AvatarType.Message}
             displayName={cleanDisplayName(authorDisplayName)}
             avatarUrl={authorAvatarUrl}
           />
-        </div>
+        </button>
 
         <div className="w-full">
           <Typography
-            className="select-text font-bold"
+            className="w-max select-text font-bold"
             style={{color: authorDisplayNameColor}}
             onClick={onAuthorClick}
             variant={TypographyVariant.Body}>

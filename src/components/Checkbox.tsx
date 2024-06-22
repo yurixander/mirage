@@ -15,33 +15,24 @@ const Checkbox: FC<CheckboxProps> = ({
   label,
   isDisabled,
 }) => {
-  const {isSelected, handleSelectionChanged, handleKeyDown} =
+  const {handleSelectionChanged, handleKeyDown, isSelected} =
     useSelectionToggle(isInitiallySelected, onSelectionChange)
-
-  const isDisabledClass = isDisabled
-    ? "cursor-not-allowed active:animate-none active:transform-none"
-    : "cursor-pointer active:scale-90 active:animate-hold"
-
-  const isSelectedClass = isSelected
-    ? "bg-purple-500"
-    : "border border-neutral-300"
 
   return (
     <div className="flex size-max items-center gap-1">
-      <div
-        className={twMerge(
-          "size-[13px] rounded-[3px] focus-visible:outline-[2px] focus-visible:outline-offset-[1px] focus-visible:outline-outlineTab focus-visible:duration-150",
-          isSelectedClass,
-          isDisabledClass
-        )}
-        onClick={isDisabled ? undefined : handleSelectionChanged}
-        tabIndex={0}
+      <input
+        checked={isSelected}
+        type="checkbox"
+        onClick={handleSelectionChanged}
         onKeyDown={handleKeyDown}
-        role="checkbox"
-        aria-checked="false"
+        tabIndex={0}
+        disabled={isDisabled}
+        className="size-3.5 cursor-pointer accent-purple-500 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-blue-400 focus-visible:duration-150"
       />
 
-      {label && <div>{label}</div>}
+      {label && (
+        <div className={twMerge(isDisabled && "opacity-60")}>{label}</div>
+      )}
     </div>
   )
 }

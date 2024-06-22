@@ -3,57 +3,9 @@ import Typography, {TypographyVariant} from "./Typography"
 import {type IconType} from "react-icons"
 import React from "react"
 import {create} from "zustand"
-import {
-  IoAddCircle,
-  IoArrowRedo,
-  IoArrowUndo,
-  IoReloadCircle,
-  IoSearchCircle,
-} from "react-icons/io5"
-import {IoIosSettings, IoMdDownload, IoMdTrash} from "react-icons/io"
 import useClickOutside from "@/hooks/util/useClickOutside"
 import {createPortal} from "react-dom"
-
-export const CONTEXT_MENU_REPLY = {
-  text: "Reply",
-  icon: IoArrowUndo,
-}
-
-export const CONTEXT_MENU_RESEND = {
-  text: "Resend",
-  icon: IoArrowRedo,
-}
-
-export const CONTEXT_MENU_SAVE = {
-  text: "Save",
-  icon: IoMdDownload,
-}
-
-export const CONTEXT_MENU_DELETE = {
-  text: "Delete",
-  icon: IoMdTrash,
-  color: "red",
-}
-
-export const CONTEXT_MENU_SETTINGS = {
-  text: "Settings",
-  icon: IoIosSettings,
-}
-
-export const CONTEXT_MENU_RELOAD = {
-  text: "Reload",
-  icon: IoReloadCircle,
-}
-
-export const CONTEXT_MENU_ADD = {
-  text: "Add",
-  icon: IoAddCircle,
-}
-
-export const CONTEXT_MENU_SEARCH = {
-  text: "Search",
-  icon: IoSearchCircle,
-}
+import {twMerge} from "tailwind-merge"
 
 export type ContextMenuItem = {
   text: string
@@ -69,7 +21,7 @@ export enum ClickActions {
 }
 
 export type ContextMenuProps = {
-  id: number
+  id: string
   children: React.JSX.Element
   elements: ContextMenuItem[]
   actionType?: ClickActions
@@ -82,9 +34,9 @@ export type Points = {
 }
 
 type ContextMenuState = {
-  activeMenuId: number | null
+  activeMenuId: string | null
   points: Points | null
-  showMenu: <T>(id: number, e: React.MouseEvent<T>) => void
+  showMenu: <T>(id: string, e: React.MouseEvent<T>) => void
   hideMenu: () => void
 }
 
@@ -114,20 +66,18 @@ const ContextMenu: FC<ContextMenuProps> = ({
   const isRightClick = actionType === ClickActions.RightClick
   const isLeftClick = actionType === ClickActions.LeftClick
 
-  const onShowMenu = (event: React.MouseEvent<HTMLDivElement>) => {
+  const onShowMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     showMenu(id, event)
   }
 
   return (
     <>
-      <div
-        className={className}
-        role="button"
-        aria-hidden
-        onClick={isLeftClick ? onShowMenu : undefined}
-        onContextMenu={isRightClick ? onShowMenu : undefined}>
+      <button
+        className={twMerge("appearance-none", className)}
+        onContextMenu={isRightClick ? onShowMenu : undefined}
+        onClick={isLeftClick ? onShowMenu : undefined}>
         {children}
-      </div>
+      </button>
 
       {isActive &&
         points !== null &&

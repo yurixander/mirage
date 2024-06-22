@@ -4,7 +4,7 @@ import {
   getUsernameByUserId,
   normalizeName,
   stringToColor,
-  timeFormatter,
+  formatTime,
 } from "@/utils/util"
 import useConnection from "@/hooks/matrix/useConnection"
 import useInvitationLink from "@/hooks/matrix/useInvitationLink"
@@ -15,6 +15,7 @@ import Typography, {TypographyVariant} from "@/components/Typography"
 import UserProfile from "@/components/UserProfile"
 import Input from "@/components/Input"
 import useActiveModalStore from "@/hooks/util/useActiveModal"
+import {AvatarType} from "@/components/AvatarImage"
 
 type DirectChatRecentProps = {
   userId: string
@@ -34,14 +35,14 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
         isNameShorted={false}
         displayName={displayName}
         displayNameColor={stringToColor(userId)}>
-        <Typography variant={TypographyVariant.Body}>
+        <Typography variant={TypographyVariant.BodySmall}>
           {getUsernameByUserId(userId)}
         </Typography>
       </UserProfile>
 
       {lastMessageSentDate !== undefined && (
-        <Typography variant={TypographyVariant.Body}>
-          {timeFormatter(lastMessageSentDate)}
+        <Typography variant={TypographyVariant.BodySmall}>
+          {formatTime(lastMessageSentDate)}
         </Typography>
       )}
     </div>
@@ -131,6 +132,7 @@ const DirectMessageModal: FC = () => {
                   key={index}
                   className="w-full cursor-pointer rounded-lg p-2 hover:bg-neutral-200">
                   <UserProfile
+                    avatarType={AvatarType.Profile}
                     displayName={userProps.displayName}
                     displayNameColor={stringToColor(userProps.userId)}
                     avatarUrl={userProps.avatarUrl}>

@@ -83,56 +83,58 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           document.body
         )}
 
-      {activeRoomId === null ? (
-        <WelcomeSplash />
-      ) : (
-        <div
-          id={ModalRenderLocation.ChatContainer}
-          className={twMerge("flex h-screen flex-col gap-4", className)}>
-          <ChatHeader roomName={roomName} />
+      <div
+        className="relative flex size-full"
+        id={ModalRenderLocation.ChatContainer}>
+        {activeRoomId === null ? (
+          <WelcomeSplash />
+        ) : (
+          <div className={twMerge("flex h-screen flex-col gap-4", className)}>
+            <ChatHeader roomName={roomName} />
 
-          <div
-            ref={scrollReference => {
-              if (scrollReference === null) {
-                return
-              }
+            <div
+              ref={scrollReference => {
+                if (scrollReference === null) {
+                  return
+                }
 
-              scrollReference.scrollTo({
-                top:
-                  scrollReference.scrollHeight - scrollReference.clientHeight,
-                behavior: "smooth",
-              })
-            }}
-            className="mx-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
-            {isLoadingMessages ? <MessagesPlaceholder /> : messages}
-          </div>
-
-          <div className="mx-4 flex flex-col gap-3">
-            <ChatInput
-              onAttach={openFilePicker}
-              onSend={() => {
-                void sendTextMessage(messageText)
-
-                setMessageText("")
+                scrollReference.scrollTo({
+                  top:
+                    scrollReference.scrollHeight - scrollReference.clientHeight,
+                  behavior: "smooth",
+                })
               }}
-              onValueChange={setMessageText}
-              value={messageText}
-            />
-
-            <div className="flex gap-3">
-              <div className="size-6" />
-
-              <div className="size-6" />
-
-              {typingUsers.length > 0 && (
-                <TypingIndicator users={typingUsers} />
-              )}
+              className="mx-4 flex max-h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
+              {isLoadingMessages ? <MessagesPlaceholder /> : messages}
             </div>
-          </div>
 
-          <SmartActionBar />
-        </div>
-      )}
+            <div className="mx-4 flex flex-col gap-3">
+              <ChatInput
+                onAttach={openFilePicker}
+                onSend={() => {
+                  void sendTextMessage(messageText)
+
+                  setMessageText("")
+                }}
+                onValueChange={setMessageText}
+                value={messageText}
+              />
+
+              <div className="flex gap-3">
+                <div className="size-6" />
+
+                <div className="size-6" />
+
+                {typingUsers.length > 0 && (
+                  <TypingIndicator users={typingUsers} />
+                )}
+              </div>
+            </div>
+
+            <SmartActionBar />
+          </div>
+        )}
+      </div>
     </>
   )
 }

@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import UserProfile from "../../components/UserProfile"
-import {stringToColor, timeFormatter} from "@/utils/util"
+import {stringToColor, formatTime} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "@/components/Typography"
 
@@ -31,13 +31,13 @@ const RosterUser: FC<RosterUserProps> = ({
   const text =
     lastPresenceAge === undefined
       ? "Seen long ago"
-      : `Seen ${timeFormatter(lastPresenceAge)} ago`
+      : `Seen ${formatTime(lastPresenceAge)} ago`
 
   return (
     <div
       onClick={onClick}
       className={twMerge(
-        "w-full cursor-pointer p-1 hover:rounded-xl hover:bg-neutral-100 focus-visible:rounded-md focus-visible:border-2 focus-visible:border-outlineTab focus-visible:outline-none focus-visible:transition focus-visible:duration-150",
+        "w-full cursor-pointer p-1 hover:rounded-xl hover:bg-neutral-100 focus-visible:rounded-md focus-visible:border-2 focus-visible:border-blue-400 focus-visible:outline-none focus-visible:transition focus-visible:duration-150",
         className
       )}
       aria-hidden="true">

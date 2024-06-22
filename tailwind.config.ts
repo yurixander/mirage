@@ -33,7 +33,6 @@ module.exports = {
       },
       colors: {
         cardActionsBg: "#F7F7F7",
-        outlineTab: "#56b0ff",
         profileGhost: "#ffffff00",
         statusMessageColor: "#e53e3eb2",
         borderLoading: "rgba(255, 255, 255, 0.5)",

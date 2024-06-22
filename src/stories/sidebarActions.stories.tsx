@@ -14,7 +14,6 @@ export const Default: Story = {
   args: {
     onCalls: () => {},
     onDirectMessages: () => {},
-    onNotification: () => {},
     onExit: () => {},
   },
 }

@@ -1,4 +1,4 @@
-import {type CSSProperties, memo, type FC} from "react"
+import {type CSSProperties, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import NotificationDot from "./NotificationDot"
 import {type IconType} from "react-icons"
@@ -46,4 +46,4 @@ const IconButton: FC<IconButtonProps> = ({
   )
 }
 
-export default memo(IconButton)
+export default IconButton
