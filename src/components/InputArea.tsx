@@ -1,10 +1,10 @@
-import {useEffect, useRef, type FC} from "react"
+import {useEffect, useRef, useState, type FC} from "react"
 import React from "react"
 import {twMerge} from "tailwind-merge"
 
 export type InputAreaProps = {
-  value: string
-  rows?: number
+  initialValue?: string
+  initiallyRows?: number
   className?: string
   placeholder?: string
   onValueChange: (value: string) => void
@@ -12,17 +12,19 @@ export type InputAreaProps = {
 
 const InputArea: FC<InputAreaProps> = ({
   onValueChange,
-  value,
+  initialValue,
   className,
   placeholder,
-  rows = 1,
+  initiallyRows = 1,
 }) => {
+  const [value, setValue] = useState(initialValue ?? "")
   const textareaReference = useRef<HTMLTextAreaElement>(null)
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter")
       if (event.ctrlKey) {
         onValueChange(value + "\n")
+        setValue(value + "\n")
       } else {
         event.preventDefault()
       }
@@ -47,13 +49,16 @@ const InputArea: FC<InputAreaProps> = ({
       <textarea
         className="flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
         onKeyDown={handleKeyDown}
-        rows={rows}
+        rows={initiallyRows}
         ref={textareaReference}
         placeholder={placeholder}
         value={value}
         disabled={false}
-        onChange={value => {
-          onValueChange(value.target.value)
+        onChange={event => {
+          const value = event.target.value
+
+          setValue(value)
+          onValueChange(value)
         }}
       />
     </div>

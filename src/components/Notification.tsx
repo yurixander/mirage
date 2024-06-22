@@ -2,7 +2,7 @@ import {
   notificationsBody,
   type NotificationType,
 } from "@/containers/NavigationSection/hooks/useCachedNotifications"
-import {stringToColor, timeFormatter} from "@/utils/util"
+import {stringToColor, formatTime} from "@/utils/util"
 import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
@@ -43,10 +43,8 @@ const Notification: FC<NotificationProps> = ({
         "flex gap-2 p-2",
         !isRead && "rounded-lg bg-slate-100"
       )}>
-      {/* TODO: Replace later for use new variation `Small` */}
       <AvatarImage
         isRounded={false}
-        isLarge={false}
         avatarType={AvatarType.Message}
         displayName={sender}
         avatarUrl={senderAvatarUrl}
@@ -60,13 +58,13 @@ const Notification: FC<NotificationProps> = ({
             {sender}
           </Typography>
 
-          <div className="flex h-max items-center gap-[2px]">
+          <div className="flex h-max items-center gap-0.5">
             <IoTime size={13} className="text-gray-300" />
 
             <Typography
               className="text-gray-300"
               variant={TypographyVariant.BodySmall}>
-              {timeFormatter(notificationTime)}
+              {formatTime(notificationTime)}
             </Typography>
           </div>
 

@@ -24,8 +24,8 @@ export type ProgressBarProps = {
 
 const ProgressBar: FC<ProgressBarProps> = ({
   state,
-  progress = ProgressBarState.Progress,
   containsIcon = true,
+  progress = ProgressBarState.Progress,
   variant = ProgressBarVariant.Linear,
   className,
 }) => {
@@ -74,7 +74,7 @@ const LinearProgressBar: FC<LinearProgressBarProps> = ({
   className,
 }) => {
   return (
-    <div className={twMerge("flex items-center gap-1")}>
+    <div className="flex items-center gap-1">
       <div
         className={twMerge(
           "h-2 w-full overflow-hidden rounded-full bg-gray-300",

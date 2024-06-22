@@ -39,7 +39,6 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
               isRounded
               displayName={user.displayName}
               avatarUrl={user.avatarUrl}
-              isLarge={false}
               avatarType={AvatarType.Message}
             />
           </div>
@@ -47,12 +46,11 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
       )
   )
 
-  const dotClass =
-    "h-[10px] w-[10px] animate-dot-jump rounded-full bg-neutral-300"
+  const dotClass = "h-2 w-2 animate-dot-jump rounded-full bg-neutral-300"
 
   return (
     <div className="inline-flex items-center gap-3">
-      <div className="flex gap-[2px]">
+      <div className="flex gap-0.5">
         <div className={dotClass} />
 
         <div className={twMerge(dotClass, "animation-delay-150")} />

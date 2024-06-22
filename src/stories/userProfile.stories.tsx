@@ -11,32 +11,14 @@ const render = (arguments_: UserProfileProps) => <UserProfile {...arguments_} />
 const displayName = "Emerald Branch"
 const username = "@emerald_branch"
 
-export const Offline: Story = {
+export const Default: Story = {
   render,
   args: {
     displayName,
     displayNameColor: "#5CC679",
-    children: <div>{username}</div>,
-    isLarge: false,
-  },
-}
-
-export const Online: Story = {
-  render,
-  args: {
-    displayName,
-    displayNameColor: "#5CC679",
-    children: <div>{username}</div>,
-    isLarge: false,
-  },
-}
-
-export const Idle: Story = {
-  render,
-  args: {
-    displayName,
-    displayNameColor: "#5CC679",
-    children: <div>{username}</div>,
+    children: (
+      <Typography variant={TypographyVariant.BodySmall}>{username}</Typography>
+    ),
     isLarge: false,
   },
 }
@@ -48,8 +30,10 @@ export const WithActivityIcon: Story = {
     displayNameColor: "#5CC679",
     isLarge: false,
     children: (
-      <Typography>
-        Listening to <b>Spotify</b> <IoHeadsetSharp size={16} />
+      <Typography
+        className="flex items-center gap-1"
+        variant={TypographyVariant.BodySmall}>
+        Listening to <b>Spotify</b> <IoHeadsetSharp size={12} />
       </Typography>
     ),
   },
@@ -61,7 +45,7 @@ export const Large: Story = {
     displayName,
     displayNameColor: "#5CC679",
     children: (
-      <Typography variant={TypographyVariant.Body}>
+      <Typography variant={TypographyVariant.BodyMedium}>
         Last presence age 4:00pm
       </Typography>
     ),

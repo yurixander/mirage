@@ -24,7 +24,7 @@ export type Credentials = {
   deviceId: string
 }
 
-export function timeFormatter(timestamp: number): string {
+export function formatTime(timestamp: number): string {
   return dayjs(timestamp).format("hh:mm a")
 }
 
