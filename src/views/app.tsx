@@ -45,10 +45,11 @@ const AppView: FC = () => {
         <NavigationSection />
 
         <div className="flex size-full flex-col">
-          <ChatContainer className="w-full grow" />
+          <ChatContainer />
 
-          <SmartActionBar />
+          <SmartActionBar className="shrink-0" />
         </div>
+
         <Roster className="grow" />
       </div>
     </>

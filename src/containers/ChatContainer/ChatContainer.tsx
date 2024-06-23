@@ -34,57 +34,60 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
   return (
     <>
-      {imagePreviewProps !== undefined && (
-        <ImageModalPreview {...imagePreviewProps} />
-      )}
+      <>
+        {imagePreviewProps !== undefined && (
+          <ImageModalPreview {...imagePreviewProps} />
+        )}
 
-      <div
-        className="relative flex size-full"
-        id={ModalRenderLocation.ChatContainer}>
-        {roomState === RoomState.Idle ? (
-          <WelcomeSplash />
-        ) : roomState === RoomState.NotFound ? (
-          <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
-            <Typography variant={TypographyVariant.HeadingLarge}>
-              Room Not Found
-            </Typography>
+        <div
+          className="relative flex size-full"
+          id={ModalRenderLocation.ChatContainer}>
+          {roomState === RoomState.Idle ? (
+            <WelcomeSplash />
+          ) : roomState === RoomState.NotFound ? (
+            <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
+              <Typography variant={TypographyVariant.HeadingLarge}>
+                Room Not Found
+              </Typography>
 
-            <Typography>
-              You not have access to this room or this room not found.
-            </Typography>
-          </div>
-        ) : roomState === RoomState.Loading ? (
-          <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
-            <Loader text="Loading room" />
-          </div>
-        ) : (
-          <div className={twMerge("flex size-full flex-col gap-4", className)}>
-            <ChatHeader roomName={roomName} />
+              <Typography>
+                You not have access to this room or this room not found.
+              </Typography>
+            </div>
+          ) : roomState === RoomState.Loading ? (
+            <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
+              <Loader text="Loading room" />
+            </div>
+          ) : (
+            <div
+              className={twMerge("flex size-full flex-col gap-1", className)}>
+              <ChatHeader className="size-full shrink-0" roomName={roomName} />
 
-            <ChatMessages
-              messages={messagesProp}
-              messagesState={messagesState}
-            />
-
-            <div className="mx-4 flex shrink-0 flex-col gap-3">
-              {/* TODO: Temporally remove this later */}
-              {roomState === RoomState.Invited && (
-                <Typography>Send message for join to this room</Typography>
-              )}
-
-              <ChatInput
-                isDisabled={client === null || roomState === RoomState.Joining}
-                onAttach={openFilePicker}
-                onValueChange={setMessageText}
-                value={messageText}
-                onSend={() => {
-                  void sendTextMessage(messageText)
-
-                  setMessageText("")
-                }}
+              <ChatMessages
+                messages={messagesProp}
+                messagesState={messagesState}
               />
 
-              {roomState !== RoomState.Prepared && (
+              <div className="mx-4 flex shrink-0 flex-col gap-3">
+                {/* TODO: Temporally remove this later */}
+                {roomState === RoomState.Invited && (
+                  <Typography>Send message for join to this room</Typography>
+                )}
+
+                <ChatInput
+                  isDisabled={
+                    client === null || roomState === RoomState.Joining
+                  }
+                  onAttach={openFilePicker}
+                  onValueChange={setMessageText}
+                  value={messageText}
+                  onSend={() => {
+                    void sendTextMessage(messageText)
+
+                    setMessageText("")
+                  }}
+                />
+
                 <div className="flex gap-3">
                   <div className="size-6" />
 
@@ -94,11 +97,11 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
                     <TypingIndicator users={typingUsers} />
                   )}
                 </div>
-              )}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </>
     </>
   )
 }

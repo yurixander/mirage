@@ -8,19 +8,24 @@ import {
   MessagesState,
   MessageKind,
 } from "@/hooks/matrix/useActiveRoom"
-import {type FC, useMemo} from "react"
+import {type FC, useEffect, useMemo, useRef} from "react"
 import MessagesPlaceholder from "./MessagesPlaceholder"
 import {assert} from "@/utils/util"
+import {twMerge} from "tailwind-merge"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
   messagesState: MessagesState
+  className?: string
 }
 
 export const ChatMessages: FC<ChatMessagesProps> = ({
   messages,
   messagesState,
+  className,
 }) => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+
   if (messagesState === MessagesState.Loaded) {
     assert(
       messages.length > 0,
@@ -44,19 +49,24 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     [messages]
   )
 
+  useEffect(() => {
+    if (!scrollRef.current) {
+      return
+    }
+
+    scrollRef.current.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    })
+  }, [messages])
+
   return (
     <div
-      ref={scrollReference => {
-        if (scrollReference === null) {
-          return
-        }
-
-        scrollReference.scrollTo({
-          top: scrollReference.scrollHeight - scrollReference.clientHeight,
-          behavior: "smooth",
-        })
-      }}
-      className="mx-4 flex h-full grow flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide">
+      ref={scrollRef}
+      className={twMerge(
+        "flex size-full max-h-[450px] flex-col gap-4 overflow-y-auto scroll-smooth p-2 scrollbar-hide",
+        className
+      )}>
       {messagesState === MessagesState.Loaded ? (
         messageElements
       ) : messagesState === MessagesState.Loading ? (
