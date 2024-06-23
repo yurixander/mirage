@@ -58,7 +58,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
             <Loader text="Loading room" />
           </div>
         ) : (
-          <div className={twMerge("flex h-screen flex-col gap-4", className)}>
+          <div className={twMerge("flex size-full flex-col gap-4", className)}>
             <ChatHeader roomName={roomName} />
 
             <ChatMessages
@@ -66,14 +66,14 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               messagesState={messagesState}
             />
 
-            <div className="mx-4 flex flex-col gap-3">
+            <div className="mx-4 flex shrink-0 flex-col gap-3">
               {/* TODO: Temporally remove this later */}
               {roomState === RoomState.Invited && (
                 <Typography>Send message for join to this room</Typography>
               )}
 
               <ChatInput
-                isDisabled={client === null}
+                isDisabled={client === null || roomState === RoomState.Joining}
                 onAttach={openFilePicker}
                 onValueChange={setMessageText}
                 value={messageText}
@@ -84,15 +84,17 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
                 }}
               />
 
-              <div className="flex gap-3">
-                <div className="size-6" />
+              {roomState !== RoomState.Prepared && (
+                <div className="flex gap-3">
+                  <div className="size-6" />
 
-                <div className="size-6" />
+                  <div className="size-6" />
 
-                {typingUsers.length > 0 && (
-                  <TypingIndicator users={typingUsers} />
-                )}
-              </div>
+                  {typingUsers.length > 0 && (
+                    <TypingIndicator users={typingUsers} />
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}

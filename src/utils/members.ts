@@ -2,16 +2,16 @@ import {
   type RosterUserProps,
   UserPowerLevel,
 } from "@/containers/Roster/RosterUser"
-import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
+import {type Room, EventTimeline} from "matrix-js-sdk"
 import {getImageUrl, normalizeName} from "./util"
 import {ImageSizes} from "./rooms"
 
 // TODO: Check why existing two const for admin power level.
 const MIN_ADMIN_POWER_LEVEL = 50
 
-export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
+export function isUserRoomAdmin(room: Room): boolean {
   const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
-  const userId = client.getUserId()
+  const userId = room.client.getUserId()
 
   if (roomState === undefined || userId === null) {
     return false
@@ -21,16 +21,25 @@ export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
     .getStateEvents("m.room.power_levels", "")
     ?.getContent().users
 
-  const users = Object.entries(powerLevels)
+  try {
+    const users = Object.entries(powerLevels)
 
-  for (const [adminId, powerLevel] of users) {
-    if (typeof powerLevel !== "number" || powerLevel < MIN_ADMIN_POWER_LEVEL) {
-      continue
-    }
+    for (const [adminId, powerLevel] of users) {
+      if (
+        typeof powerLevel !== "number" ||
+        powerLevel < MIN_ADMIN_POWER_LEVEL
+      ) {
+        continue
+      }
 
-    if (adminId === userId) {
-      return true
+      if (adminId === userId) {
+        return true
+      }
     }
+  } catch {
+    console.error(
+      "Error fetching power level for users or currentMembership is invited"
+    )
   }
 
   return false

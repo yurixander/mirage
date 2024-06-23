@@ -42,6 +42,7 @@ export enum MessagesState {
 
 export enum RoomState {
   Loading,
+  Joining,
   Prepared,
   Idle,
   NotFound,
@@ -107,8 +108,11 @@ const useActiveRoom = () => {
 
         setMessagesProp(anyMessages)
         setMessagesState(MessagesState.Loaded)
-      } catch {
+      } catch (error) {
         // TODO: Handle error fetching messages.
+
+        console.log("Error fetching messages", error)
+
         setMessagesState(MessagesState.Error)
       }
     },
@@ -121,13 +125,33 @@ const useActiveRoom = () => {
         return
       }
 
-      // TODO: Show toast when an error has occurred.
-      await client.sendMessage(activeRoomId, {
-        body,
-        msgtype: MsgType.Text,
-      })
+      try {
+        if (roomState !== RoomState.Invited) {
+          await client.sendMessage(activeRoomId, {
+            body,
+            msgtype: MsgType.Text,
+          })
+
+          return
+        }
+
+        setRoomState(RoomState.Joining)
+
+        const joinedRoom = await client.joinRoom(activeRoomId)
+
+        setRoomState(RoomState.Prepared)
+
+        await client.sendMessage(joinedRoom.roomId, {
+          body,
+          msgtype: MsgType.Text,
+        })
+      } catch (error) {
+        // TODO: Show toast when an error has occurred.
+
+        console.error("Error sending message:", error)
+      }
     },
-    [activeRoomId, client]
+    [activeRoomId, client, roomState]
   )
 
   const imagePreviewProps = useMemo(() => {
@@ -211,7 +235,7 @@ const useActiveRoom = () => {
       return
     }
 
-    const isAdminOrModerator = isUserRoomAdmin(room, client)
+    const isAdminOrModerator = isUserRoomAdmin(room)
 
     void handleEvents(client, event, room.roomId, isAdminOrModerator).then(
       messageOrEvent => {

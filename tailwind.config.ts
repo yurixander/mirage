@@ -63,9 +63,15 @@ module.exports = {
       "loading": "loading 1.5s infinite ease-in-out",
       "indicator": "indicator 300ms",
       "rotation": "rotation 1s infinite linear",
+      "pulse": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
     },
     keyframes: {
       // Usage: animate-[keyframe-name]
+      "pulse": {
+        "50%": {
+          opacity: ".5",
+        },
+      },
       "hold": {
         from: {
           transform: "scale(0.9)",

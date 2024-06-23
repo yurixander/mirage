@@ -142,7 +142,7 @@ export const handleRoomEvents = async (
   const roomHistory = await client.scrollback(activeRoom, 30)
   const events = roomHistory.getLiveTimeline().getEvents()
   const lastReadEventId = getLastReadEventIdFromRoom(activeRoom, client)
-  const isAdminOrModerator = isUserRoomAdmin(activeRoom, client)
+  const isAdminOrModerator = isUserRoomAdmin(activeRoom)
   const allMessageProperties: AnyMessage[] = []
 
   for (let index = 0; index < events.length; index++) {

@@ -69,14 +69,14 @@ const useSpaceRooms = (spaceId: string) => {
 
         addRoom(childRoomProcessed)
       }
-
-      setIsLoading(false)
     } catch (error) {
       console.error(
         "An error occurred while retrieving rooms from the space:",
         error
       )
     }
+
+    setIsLoading(false)
   }, [addRoom, client, spaceId])
 
   useEffect(() => {
