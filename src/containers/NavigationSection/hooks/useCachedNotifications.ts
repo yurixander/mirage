@@ -9,7 +9,9 @@ import {
   setNotificationsToLocalStorage,
   type LocalNotificationData,
 } from "@/utils/notifications"
+import {getImageUrl} from "@/utils/util"
 import {RoomMemberEvent} from "matrix-js-sdk"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {useCallback, useEffect, useMemo, useState} from "react"
 
 export enum NotificationType {
@@ -123,6 +125,42 @@ const useCachedNotifications = () => {
     })
   }, [])
 
+  const fetchInvitedRooms = useCallback(() => {
+    if (client === null) {
+      return
+    }
+
+    const invitedRooms = client
+      .getRooms()
+      .filter(room => room.getMyMembership() === KnownMembership.Invite)
+
+    for (const invitedRoom of invitedRooms) {
+      setNotifications(prevNotification => [
+        {
+          isRead: false,
+          notificationId: invitedRoom.roomId,
+          notificationTime: Date.now(),
+          roomId: invitedRoom.roomId,
+          roomName: invitedRoom.name,
+          type: NotificationType.Invited,
+          sender: invitedRoom.name,
+          markAsRead: markAsReadByNotificationId,
+          onDelete: deleteNotificationById,
+          senderAvatarUrl: getImageUrl(invitedRoom.getMxcAvatarUrl(), client),
+          action: () => {
+            setActiveRoomId(invitedRoom.roomId)
+          },
+        },
+        ...prevNotification,
+      ])
+    }
+  }, [
+    client,
+    deleteNotificationById,
+    markAsReadByNotificationId,
+    setActiveRoomId,
+  ])
+
   // #region Converter
   useEffect(() => {
     // Convert local storage notifications to notifications for the component.
@@ -146,9 +184,12 @@ const useCachedNotifications = () => {
         }
       })
     )
+
+    fetchInvitedRooms()
   }, [
     cachedNotifications,
     deleteNotificationById,
+    fetchInvitedRooms,
     markAsReadByNotificationId,
     setActiveRoomId,
   ])

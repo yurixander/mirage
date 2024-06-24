@@ -60,7 +60,7 @@ const Notification: FC<NotificationProps> = ({
             {sender}
           </Typography>
 
-          <div className="flex h-max items-center gap-[2px]">
+          <div className="flex h-max items-center gap-0.5">
             <IoTime size={13} className="text-gray-300" />
 
             <Typography
@@ -107,7 +107,7 @@ const Notification: FC<NotificationProps> = ({
         </Typography>
 
         {action !== undefined && (
-          <Button isSmall onClick={action} label="View" className="max-w-14" />
+          <Button isSmall onClick={action} label="Go to" className="max-w-14" />
         )}
       </div>
     </div>

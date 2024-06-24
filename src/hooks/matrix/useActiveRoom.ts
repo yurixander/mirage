@@ -3,7 +3,7 @@ import {type ImageMessageProps} from "@/components/ImageMessage"
 import useConnection from "@/hooks/matrix/useConnection"
 import {
   MsgType,
-  type Room,
+  Room,
   RoomMemberEvent,
   RoomEvent,
   type MatrixClient,
@@ -42,11 +42,10 @@ export enum MessagesState {
 
 export enum RoomState {
   Loading,
-  Joining,
+  Invited,
   Prepared,
   Idle,
   NotFound,
-  Invited,
 }
 
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
@@ -110,7 +109,6 @@ const useActiveRoom = () => {
         setMessagesState(MessagesState.Loaded)
       } catch (error) {
         // TODO: Handle error fetching messages.
-
         console.log("Error fetching messages", error)
 
         setMessagesState(MessagesState.Error)
@@ -121,27 +119,16 @@ const useActiveRoom = () => {
 
   const sendTextMessage = useCallback(
     async (body: string) => {
-      if (activeRoomId === null || client === null) {
+      if (
+        activeRoomId === null ||
+        client === null ||
+        roomState !== RoomState.Prepared
+      ) {
         return
       }
 
       try {
-        if (roomState !== RoomState.Invited) {
-          await client.sendMessage(activeRoomId, {
-            body,
-            msgtype: MsgType.Text,
-          })
-
-          return
-        }
-
-        setRoomState(RoomState.Joining)
-
-        const joinedRoom = await client.joinRoom(activeRoomId)
-
-        setRoomState(RoomState.Prepared)
-
-        await client.sendMessage(joinedRoom.roomId, {
+        await client.sendMessage(activeRoomId, {
           body,
           msgtype: MsgType.Text,
         })
@@ -320,6 +307,7 @@ const useActiveRoom = () => {
     roomState,
     messagesState,
     imagePreviewProps,
+    activeRoomId,
   }
 }
 

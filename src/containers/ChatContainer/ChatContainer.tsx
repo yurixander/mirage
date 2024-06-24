@@ -69,15 +69,8 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               />
 
               <div className="mx-4 flex shrink-0 flex-col gap-3">
-                {/* TODO: Temporally remove this later */}
-                {roomState === RoomState.Invited && (
-                  <Typography>Send message for join to this room</Typography>
-                )}
-
                 <ChatInput
-                  isDisabled={
-                    client === null || roomState === RoomState.Joining
-                  }
+                  isDisabled={client === null}
                   onAttach={openFilePicker}
                   onValueChange={setMessageText}
                   value={messageText}
