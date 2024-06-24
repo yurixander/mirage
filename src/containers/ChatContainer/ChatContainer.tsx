@@ -7,11 +7,12 @@ import {type FC} from "react"
 import WelcomeSplash from "./WelcomeSplash"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import {createPortal} from "react-dom"
-import Typography, {TypographyVariant} from "@/components/Typography"
 import Loader from "@/components/Loader"
 import {ChatMessages} from "./ChatMessages"
 import Button, {ButtonVariant} from "@/components/Button"
 import useChatInput from "./useChatInput"
+import RoomInvitedSplash from "./RoomInvitedSplash"
+import RoomNotFoundSplash from "./RoomNotFoundSplash"
 
 export type ChatContainerProps = {
   className?: string
@@ -30,6 +31,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     roomState,
     messagesState,
     imagePreviewProps,
+    activeRoomId,
   } = useActiveRoom()
 
   return (
@@ -45,19 +47,13 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
           {roomState === RoomState.Idle ? (
             <WelcomeSplash />
           ) : roomState === RoomState.NotFound ? (
-            <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
-              <Typography variant={TypographyVariant.HeadingLarge}>
-                Room Not Found
-              </Typography>
-
-              <Typography>
-                You not have access to this room or this room not found.
-              </Typography>
-            </div>
+            <RoomNotFoundSplash />
           ) : roomState === RoomState.Loading ? (
             <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
               <Loader text="Loading room" />
             </div>
+          ) : roomState === RoomState.Invited ? (
+            <RoomInvitedSplash roomId={activeRoomId} />
           ) : (
             <div
               className={twMerge("flex size-full flex-col gap-1", className)}>

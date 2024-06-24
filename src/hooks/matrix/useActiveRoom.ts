@@ -3,7 +3,7 @@ import {type ImageMessageProps} from "@/components/ImageMessage"
 import useConnection from "@/hooks/matrix/useConnection"
 import {
   MsgType,
-  Room,
+  type Room,
   RoomMemberEvent,
   RoomEvent,
   type MatrixClient,
