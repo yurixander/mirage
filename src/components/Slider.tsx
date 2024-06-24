@@ -6,7 +6,7 @@ export type SliderProps = {
   max: number
   value: number
   step?: number
-  width?: string
+  width?: number
   onProgressChange: (value: number) => void
 }
 
@@ -32,12 +32,9 @@ const Slider: FC<SliderProps> = ({
       style={{width: width ?? "100%"}}
       className="flex flex-col items-center justify-center">
       {step === undefined || step < 10 ? (
-        <BasicProgressBar
-          width={width ?? "100%"}
-          progress={(progress * 100) / (max - min)}
-        />
+        <BasicProgressBar w={width} progress={(progress * 100) / (max - min)} />
       ) : (
-        <StepProgressBar width={width ?? "100%"} steps={(max - min) / step} />
+        <StepProgressBar w={width} steps={(max - min) / step} />
       )}
       <input
         style={{width: width ?? "100%"}}
@@ -53,13 +50,13 @@ const Slider: FC<SliderProps> = ({
   )
 }
 
-const BasicProgressBar: FC<{progress: number; width: string}> = ({
+const BasicProgressBar: FC<{progress: number; w?: number}> = ({
   progress,
-  width,
+  w,
 }) => {
   return (
     <div
-      style={{width: width}}
+      style={w === undefined ? {width: "97%"} : {width: w - 10}}
       className="relative -mb-3 h-3 overflow-hidden rounded-full bg-slate-100 shadow">
       <div
         style={{width: `${progress}%`}}
@@ -69,13 +66,10 @@ const BasicProgressBar: FC<{progress: number; width: string}> = ({
   )
 }
 
-const StepProgressBar: FC<{steps: number; width: string}> = ({
-  steps,
-  width,
-}) => {
+const StepProgressBar: FC<{steps: number; w?: number}> = ({steps, w}) => {
   return (
     <div
-      style={{width: width}}
+      style={{width: w ?? "100%"}}
       className="relative -mb-3 flex h-3 items-center overflow-hidden rounded-full bg-slate-200 shadow">
       <div className="rounded-full bg-slate-300 text-end">
         <div className="size-2 rounded-full bg-slate-200" />
