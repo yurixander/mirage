@@ -1,4 +1,5 @@
 import {type NotificationProps} from "@/components/Notification"
+import {RoomState} from "@/hooks/matrix/useActiveRoom"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
@@ -148,7 +149,7 @@ const useCachedNotifications = () => {
           onDelete: deleteNotificationById,
           senderAvatarUrl: getImageUrl(invitedRoom.getMxcAvatarUrl(), client),
           action: () => {
-            setActiveRoomId(invitedRoom.roomId)
+            setActiveRoomId(invitedRoom.roomId, RoomState.Invited)
           },
         },
         ...prevNotification,
@@ -172,7 +173,7 @@ const useCachedNotifications = () => {
             onDelete: deleteNotificationById,
             markAsRead: markAsReadByNotificationId,
             action() {
-              setActiveRoomId(notification.roomId)
+              setActiveRoomId(notification.roomId, RoomState.Invited)
             },
           }
         }
@@ -181,6 +182,7 @@ const useCachedNotifications = () => {
           ...notification,
           onDelete: deleteNotificationById,
           markAsRead: markAsReadByNotificationId,
+          action: undefined,
         }
       })
     )

@@ -72,9 +72,10 @@ const useActiveRoom = () => {
   const isMountedReference = useIsMountedRef()
 
   // Room
-  const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()
+  const {activeRoomId, clearActiveRoomId, roomState, setRoomState} =
+    useActiveRoomIdStore()
+
   const [roomName, setRoomName] = useState("")
-  const [roomState, setRoomState] = useState(RoomState.Idle)
 
   // Messages and Typing
   const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
@@ -90,7 +91,7 @@ const useActiveRoom = () => {
   // #region Functions
   const fetchRoomMessages = useCallback(
     async (client: MatrixClient, room: Room) => {
-      if (!isMountedReference.current) {
+      if (!isMountedReference.current || roomState !== RoomState.Prepared) {
         return
       }
 
@@ -114,7 +115,7 @@ const useActiveRoom = () => {
         setMessagesState(MessagesState.Error)
       }
     },
-    [isMountedReference]
+    [isMountedReference, roomState]
   )
 
   const sendTextMessage = useCallback(
@@ -200,12 +201,11 @@ const useActiveRoom = () => {
 
     setRoomName(room.name)
 
-    const roomState =
+    setRoomState(
       currentMembership === KnownMembership.Invite
         ? RoomState.Invited
         : RoomState.Prepared
-
-    setRoomState(roomState)
+    )
 
     void fetchRoomMessages(client, room)
   }, [
@@ -214,6 +214,8 @@ const useActiveRoom = () => {
     isMountedReference,
     fetchRoomMessages,
     clearActiveRoomId,
+    setRoomState,
+    roomState,
   ])
 
   // #region Listeners

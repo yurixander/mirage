@@ -44,7 +44,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         <div
           className="relative flex size-full"
           id={ModalRenderLocation.ChatContainer}>
-          {roomState === RoomState.Idle ? (
+          {roomState === RoomState.Idle || roomState === null ? (
             <WelcomeSplash />
           ) : roomState === RoomState.NotFound ? (
             <RoomNotFoundSplash />
