@@ -7,12 +7,12 @@ import {
 import {assert, CommonAssertion} from "./util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {UserPowerLevel} from "@/containers/Roster/RosterUser"
+import {type MembershipNotificationData} from "@/containers/NavigationSection/hooks/useNotifications"
 
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications"
 
 // #region Set and Get
-
-export function getNotificationsFromLocalStorage(): LocalNotificationData[] {
+export function getNotificationsFromLocalStorage(): MembershipNotificationData[] {
   const savedNotifications = localStorage.getItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY
   )
@@ -21,7 +21,7 @@ export function getNotificationsFromLocalStorage(): LocalNotificationData[] {
 }
 
 export function setNotificationsToLocalStorage(
-  notifications: LocalNotificationData[]
+  notifications: MembershipNotificationData[]
 ) {
   localStorage.setItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY,
