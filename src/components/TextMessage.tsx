@@ -48,13 +48,18 @@ const TextMessage: FC<MessageBaseProps> = ({
       authorAvatarUrl={authorAvatarUrl}
       timestamp={timestamp}
       onAuthorClick={onAuthorClick}>
-      <ContextMenu id={`text-message-${id}`} elements={contextMenuItems}>
-        <Typography
-          className="max-w-messageMaxWidth cursor-text select-text break-words"
-          variant={TypographyVariant.Body}>
-          {/* TODO: Process line breaks (\n). */}
-          {text}
-        </Typography>
+      <ContextMenu
+        className="flex flex-col"
+        id={`text-message-${id}`}
+        elements={contextMenuItems}>
+        {text.split("\n").map((line, index) => (
+          <Typography
+            key={index}
+            className="max-w-messageMaxWidth cursor-text select-text break-words"
+            variant={TypographyVariant.Body}>
+            {line}
+          </Typography>
+        ))}
       </ContextMenu>
     </MessageContainer>
   )

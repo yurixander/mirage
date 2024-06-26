@@ -22,7 +22,7 @@ export enum ClickActions {
 
 export type ContextMenuProps = {
   id: string
-  children: React.JSX.Element
+  children: React.ReactNode
   elements: ContextMenuItem[]
   actionType?: ClickActions
   className?: string
