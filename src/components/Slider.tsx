@@ -1,4 +1,4 @@
-import React, {useState, type FC} from "react"
+import React, {useRef, useState, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type SliderProps = {
@@ -26,13 +26,17 @@ const Slider: FC<SliderProps> = ({
     setProgress(value)
     onProgressChange(value)
   }
-
+  const size = document.querySelector("#refLabel")
   return (
     <label
       style={{width: width ?? "100%"}}
-      className="flex flex-col items-center justify-center">
+      className="flex flex-col items-center justify-center"
+      id="refLabel">
       {step === undefined || step < 10 ? (
-        <BasicProgressBar w={width} progress={(progress * 100) / (max - min)} />
+        <BasicProgressBar
+          w={width ?? size === null ? -1 : getElementSize(size)}
+          progress={(progress * 100) / (max - min)}
+        />
       ) : (
         <StepProgressBar w={width} steps={(max - min) / step} />
       )}
@@ -50,13 +54,10 @@ const Slider: FC<SliderProps> = ({
   )
 }
 
-const BasicProgressBar: FC<{progress: number; w?: number}> = ({
-  progress,
-  w,
-}) => {
+const BasicProgressBar: FC<{progress: number; w: number}> = ({progress, w}) => {
   return (
     <div
-      style={w === undefined ? {width: "97%"} : {width: w - 10}}
+      style={{width: w === -1 ? "98%" : w - 10}}
       className="relative -mb-3 h-3 overflow-hidden rounded-full bg-slate-100 shadow">
       <div
         style={{width: `${progress}%`}}
@@ -96,6 +97,16 @@ const Step: FC<{isEnd: boolean}> = ({isEnd}) => {
       </div>
     </>
   )
+}
+
+const getElementSize = (elemnt?: Element | null) => {
+  return elemnt === undefined
+    ? 200
+    : elemnt === null
+      ? 300
+      : Number.parseInt(
+          window.getComputedStyle(elemnt, null).getPropertyValue("width")
+        )
 }
 
 export default Slider
