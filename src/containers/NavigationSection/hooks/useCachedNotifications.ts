@@ -153,44 +153,59 @@ const useCachedNotifications = () => {
 
     setIsLoading(true)
 
-    const currentRooms = client.getRooms()
     const cachedLevelsHistory = getPowerLevelsHistory()
 
-    for (const room of currentRooms) {
-      const currentPowerLevel = getRoomPowerLevelByUserId(room, room.myUserId)
+    void client
+      .getJoinedRooms()
+      .then(joinedRooms => {
+        for (const roomId of joinedRooms.joined_rooms) {
+          const room = client.getRoom(roomId)
 
-      const cachedPowerLevel =
-        cachedLevelsHistory.find(
-          levelHistory => levelHistory.roomId === room.roomId
-        )?.currentPowerLevel ?? UserPowerLevel.Member
+          if (room === null) {
+            continue
+          }
 
-      saveCachedPowerLevel({roomId: room.roomId, currentPowerLevel})
+          const currentPowerLevel = getRoomPowerLevelByUserId(
+            room,
+            room.myUserId
+          )
 
-      const notificationType = notificationTypeTransformer(
-        currentPowerLevel,
-        cachedPowerLevel
-      )
+          const cachedPowerLevel =
+            cachedLevelsHistory.find(
+              levelHistory => levelHistory.roomId === room.roomId
+            )?.currentPowerLevel ?? UserPowerLevel.Member
 
-      if (notificationType === null) {
-        continue
-      }
+          saveCachedPowerLevel({roomId: room.roomId, currentPowerLevel})
 
-      const id = generateUniqueNumber()
+          const notificationType = notificationTypeTransformer(
+            currentPowerLevel,
+            cachedPowerLevel
+          )
 
-      saveNotification({
-        isRead: false,
-        notificationId: `notification${id}`,
-        roomId: room.roomId,
-        notificationTime: Date.now(),
-        roomName: room.name,
-        sender: "Room owners",
-        type: notificationType,
-        senderMxcAvatarUrl: room.getMxcAvatarUrl() ?? undefined,
-        containsAction: false,
+          if (notificationType === null) {
+            continue
+          }
+
+          const id = generateUniqueNumber()
+
+          saveNotification({
+            isRead: false,
+            notificationId: `notification${id}`,
+            roomId: room.roomId,
+            notificationTime: Date.now(),
+            roomName: room.name,
+            sender: "Room owners",
+            type: notificationType,
+            senderMxcAvatarUrl: room.getMxcAvatarUrl() ?? undefined,
+            containsAction: false,
+          })
+        }
+
+        setIsLoading(false)
       })
-    }
-
-    setIsLoading(false)
+      .catch(() => {
+        setIsLoading(false)
+      })
   }, [client, saveCachedPowerLevel, saveNotification])
 
   return {
