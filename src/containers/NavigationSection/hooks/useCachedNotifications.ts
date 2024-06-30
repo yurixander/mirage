@@ -1,6 +1,11 @@
 import {type NotificationProps} from "@/components/Notification"
 import useConnection from "@/hooks/matrix/useConnection"
-import {getRoomPowerLevelByUserId, UserPowerLevel} from "@/utils/members"
+import useEventListener from "@/hooks/matrix/useEventListener"
+import {
+  getRoomPowerLevelByUserId,
+  processPowerLevelByNumber,
+  UserPowerLevel,
+} from "@/utils/members"
 import {
   getPowerLevelsHistory,
   type LocalNotificationData,
@@ -11,6 +16,7 @@ import {
   setPowerLevelsHistory,
 } from "@/utils/notifications"
 import {generateUniqueNumber} from "@/utils/util"
+import {RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useMemo, useState} from "react"
 
 const useCachedNotifications = () => {
@@ -207,6 +213,56 @@ const useCachedNotifications = () => {
         setIsLoading(false)
       })
   }, [client, saveCachedPowerLevel, saveNotification])
+
+  // #region Listener
+  useEventListener(RoomMemberEvent.PowerLevel, (event, member) => {
+    if (client === null || member.userId !== client.getUserId() || isLoading) {
+      return
+    }
+
+    const room = client.getRoom(event.getRoomId())
+
+    // You cannot listen to an event in a room to which you do not have access.
+    if (room === null) {
+      return
+    }
+
+    const prevUsersPowerLevels = event.getPrevContent().users
+    const prevCurrentUserLevels = prevUsersPowerLevels[member.userId]
+
+    const prevPowerLevels =
+      prevCurrentUserLevels === undefined ||
+      typeof prevCurrentUserLevels !== "number"
+        ? UserPowerLevel.Member
+        : prevCurrentUserLevels
+
+    const currentPowerLevel = processPowerLevelByNumber(member.powerLevelNorm)
+    saveCachedPowerLevel({roomId: room.roomId, currentPowerLevel})
+
+    const notificationType = notificationTypeTransformer(
+      currentPowerLevel,
+      prevPowerLevels
+    )
+
+    // If `notificationType` is null there were no changes.
+    if (notificationType === null) {
+      return
+    }
+
+    const notificationId = event.getId() ?? event.localTimestamp
+
+    saveNotification({
+      isRead: false,
+      notificationId: `notification${notificationId}`,
+      roomId: room.roomId,
+      notificationTime: event.localTimestamp,
+      roomName: room.name,
+      sender: "Room owners",
+      type: notificationType,
+      senderMxcAvatarUrl: room.getMxcAvatarUrl() ?? undefined,
+      containsAction: false,
+    })
+  })
 
   return {
     notifications,
