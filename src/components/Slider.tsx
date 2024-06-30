@@ -1,85 +1,112 @@
-import React, {useState, type FC} from "react"
+import React, {useRef, useState, type FC} from "react"
+import {twMerge} from "tailwind-merge"
 
 export type SliderProps = {
   min: number
   max: number
-  step?: number
   value: number
+  step?: number
+  width?: number
   onProgressChange: (value: number) => void
 }
 
-const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
-  const [internalValue, setInternalValue] = useState(value)
+const Slider: FC<SliderProps> = ({
+  onProgressChange,
+  min,
+  max,
+  value,
+  step,
+  width,
+}) => {
+  const [progress, setProgress] = useState(value)
 
   const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value)
 
-    setInternalValue(value)
+    setProgress(value)
     onProgressChange(value)
   }
-
+  const size = document.querySelector("#refLabel")
   return (
-    <label className="flex flex-col gap-1">
+    <label
+      style={{width: width ?? "100%"}}
+      className="flex flex-col items-center justify-center"
+      id="refLabel">
       {step === undefined || step < 10 ? (
-        <BasicProgressBar progress={(internalValue * 100) / max ?? "50"} />
+        <BasicProgressBar
+          w={width ?? size === null ? -1 : getElementSize(size)}
+          progress={(progress * 100) / (max - min)}
+        />
       ) : (
-        <StepProgressBar steps={(max - min) / (step ?? 1)} />
+        <StepProgressBar w={width} steps={(max - min) / step} />
       )}
-
       <input
-        max={max ?? 100}
-        min={min ?? 0}
-        step={step ?? 1}
-        value={internalValue}
+        style={{width: width ?? "100%"}}
+        max={max}
+        min={min}
+        step={step}
+        value={progress}
         onInput={handleOnInput}
-        className="slider relative -top-4 h-3 w-60 cursor-pointer appearance-none rounded-full bg-transparent p-0"
+        className="relative h-3 cursor-pointer appearance-none rounded-full bg-transparent p-0"
         type="range"
       />
     </label>
   )
 }
 
-const BasicProgressBar: FC<{progress: number}> = ({progress}) => {
+const BasicProgressBar: FC<{progress: number; w: number}> = ({progress, w}) => {
   return (
-    <div className="h-3 w-60 overflow-hidden rounded-full bg-slate-200 shadow">
+    <div
+      style={{width: w === -1 ? "98%" : w - 10}}
+      className="relative -mb-3 h-3 overflow-hidden rounded-full bg-slate-100 shadow">
       <div
         style={{width: `${progress}%`}}
-        className="h-3 bg-purple-500 shadow"
+        className="h-3 bg-fuchsia-500 shadow"
       />
     </div>
   )
 }
 
-const StepProgressBar: FC<{steps: number}> = ({steps}) => {
-  const step = []
-
-  for (let i = 0; i < steps; i++) {
-    step.push(i)
-  }
-
+const StepProgressBar: FC<{steps: number; w?: number}> = ({steps, w}) => {
   return (
-    <div className="flex h-3 w-60 overflow-hidden rounded-full bg-slate-200 shadow">
+    <div
+      style={{width: w ?? "100%"}}
+      className="relative -mb-3 flex h-3 items-center overflow-hidden rounded-full bg-slate-200 shadow">
       <div className="rounded-full bg-slate-300 text-end">
-        <div className="size-3 rounded-full bg-white shadow" />
+        <div className="size-2 rounded-full bg-slate-200" />
       </div>
-
-      {step.map((_opt, index) => (
-        <Step key={index} />
+      {Array.from({length: steps}, (_, i) => (
+        <Step isEnd={i === steps - 1} key={i} />
       ))}
     </div>
   )
 }
 
-const Step: FC = () => {
+const Step: FC<{isEnd: boolean}> = ({isEnd}) => {
   return (
     <>
       <div className="w-full" />
 
       <div>
-        <div className="size-3 rounded-full bg-white shadow" />
+        <div
+          className={twMerge(
+            "size-2 rounded-full",
+            isEnd ? "bg-slate-200" : "bg-white"
+          )}
+        />
       </div>
     </>
   )
+}
+
+const getElementSize = (elemnt?: Element | null) => {
+  return elemnt === undefined
+    ? 200
+    : elemnt === null
+      ? 300
+      : Number.parseInt(
+          window.getComputedStyle(elemnt, null).getPropertyValue("width")
+        )
 }
 
 export default Slider
