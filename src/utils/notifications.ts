@@ -1,7 +1,7 @@
-import {type PowerLevelNotificationData} from "@/containers/NavigationSection/hooks/useNotifications"
-import {processPowerLevelByNumber, UserPowerLevel} from "./members"
+import {UserPowerLevel} from "./members"
 
 const POWER_LEVELS_LOCAL_STORAGE_KEY = "local_power_levels_notifications"
+const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications_history"
 
 export enum NotificationType {
   Banned,
@@ -27,32 +27,83 @@ export const notificationsBody: {[key in NotificationType]: string} = {
 }
 
 // #region Set and Get
-export function getLocalPowerLevelsHistory(): PowerLevelNotificationData[] {
-  const savedNotifications = localStorage.getItem(
-    POWER_LEVELS_LOCAL_STORAGE_KEY
-  )
-
-  return savedNotifications ? JSON.parse(savedNotifications) : []
+export type CurrentPowerLevelData = {
+  roomId: string
+  currentPowerLevel: UserPowerLevel
 }
 
-export function setLocalPowerLevelsHistory(
-  notifications: PowerLevelNotificationData[]
-) {
+export function getPowerLevelsHistory(): CurrentPowerLevelData[] {
+  const cachedPowerLevels = localStorage.getItem(POWER_LEVELS_LOCAL_STORAGE_KEY)
+
+  try {
+    return cachedPowerLevels === null ? [] : JSON.parse(cachedPowerLevels)
+  } catch {
+    return []
+  }
+}
+
+export function setPowerLevelsHistory(newPowerLevels: CurrentPowerLevelData[]) {
   localStorage.setItem(
     POWER_LEVELS_LOCAL_STORAGE_KEY,
+    JSON.stringify(newPowerLevels)
+  )
+
+  console.log("Actualizado PW")
+}
+
+export function removePowerLevelsHistory() {
+  localStorage.removeItem(POWER_LEVELS_LOCAL_STORAGE_KEY)
+
+  console.log("Borrado")
+}
+
+export type LocalNotificationData = {
+  type: NotificationType
+  containsAction: boolean
+  isRead: boolean
+  roomName: string
+  roomId: string
+  notificationTime: number
+  notificationId: string
+  sender: string
+  senderMxcAvatarUrl?: string
+}
+
+export function getNotificationsHistory(): LocalNotificationData[] {
+  const savedNotifications = localStorage.getItem(
+    NOTIFICATIONS_LOCAL_STORAGE_KEY
+  )
+
+  try {
+    return savedNotifications === null ? [] : JSON.parse(savedNotifications)
+  } catch {
+    return []
+  }
+}
+
+export function setNotificationsHistory(
+  notifications: LocalNotificationData[]
+) {
+  localStorage.setItem(
+    NOTIFICATIONS_LOCAL_STORAGE_KEY,
     JSON.stringify(notifications)
   )
+
+  console.log("Actualizado")
 }
 
 // #region Power level
 export function notificationTypeTransformer(
   currentPowerLevel: UserPowerLevel | null,
-  cachedPowerLevel: PowerLevelNotificationData | null
+  cachedPowerLevel: UserPowerLevel | null
 ): NotificationType | null {
-  const currentLevels = currentPowerLevel ?? UserPowerLevel.Member
+  // If they are the same there were no changes.
+  if (currentPowerLevel === cachedPowerLevel) {
+    return null
+  }
 
-  const previousLevels =
-    cachedPowerLevel?.currentPowerLevel ?? UserPowerLevel.Member
+  const currentLevels = currentPowerLevel ?? UserPowerLevel.Member
+  const previousLevels = cachedPowerLevel ?? UserPowerLevel.Member
 
   if (currentLevels.valueOf() > previousLevels.valueOf()) {
     return currentLevels === UserPowerLevel.Admin
@@ -65,16 +116,6 @@ export function notificationTypeTransformer(
       ? NotificationType.DowngradeToMember
       : null
   }
-
-  return null
-}
-
-export function getNotificationFromPowerLevelEvent(
-  currentLevels: number,
-  userId: string,
-  cachedPowerLevelNotifications: PowerLevelNotificationData[]
-): null {
-  const powerLevelProcessed = processPowerLevelByNumber(currentLevels)
 
   return null
 }

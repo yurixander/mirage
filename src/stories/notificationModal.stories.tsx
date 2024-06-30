@@ -1,8 +1,8 @@
 import {type NotificationProps} from "@/components/Notification"
-import {NotificationType} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 import NotificationsModal, {
   type NotificationModalProps,
 } from "@/containers/NavigationSection/modals/NotificationsModal"
+import {NotificationType} from "@/utils/notifications"
 import {type Meta, type StoryObj} from "@storybook/react"
 
 type Story = StoryObj<typeof NotificationsModal>

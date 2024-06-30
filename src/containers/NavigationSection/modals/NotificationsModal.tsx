@@ -5,6 +5,7 @@ import Typography, {TypographyVariant} from "../../../components/Typography"
 import {twMerge} from "tailwind-merge"
 import IconButton from "../../../components/IconButton"
 import Notification, {type NotificationProps} from "@/components/Notification"
+import Loader from "@/components/Loader"
 
 export type NotificationActions = {
   name: string
@@ -14,6 +15,7 @@ export type NotificationActions = {
 
 export type NotificationModalProps = {
   notifications: NotificationProps[]
+  isLoading: boolean
   markAllNotificationsAsRead: () => void
   onClose: () => void
 }
@@ -21,6 +23,7 @@ export type NotificationModalProps = {
 const NotificationsModal: FC<NotificationModalProps> = ({
   onClose,
   notifications,
+  isLoading,
   markAllNotificationsAsRead,
 }) => {
   const notificationsComponents: React.JSX.Element[] = useMemo(
@@ -57,17 +60,21 @@ const NotificationsModal: FC<NotificationModalProps> = ({
         <IconButton onClick={onClose} tooltip="Close" Icon={IoCloseCircle} />
       </div>
 
-      {notifications.length === 0 && (
+      {notifications.length > 0 ? (
+        <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
+          {notificationsComponents}
+        </div>
+      ) : (
         <div className="flex size-full items-center justify-center">
-          <Typography className="text-center text-slate-400">
-            No notifications
-          </Typography>
+          {isLoading ? (
+            <Loader text="Loading notifications" />
+          ) : (
+            <Typography className="text-center text-slate-400">
+              No notifications
+            </Typography>
+          )}
         </div>
       )}
-
-      <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
-        {notificationsComponents}
-      </div>
     </div>
   )
 }

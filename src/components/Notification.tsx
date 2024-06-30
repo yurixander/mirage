@@ -1,7 +1,3 @@
-import {
-  notificationsBody,
-  type NotificationType,
-} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 import {stringToColor, formatTime} from "@/utils/util"
 import {type FC} from "react"
 import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"
@@ -10,6 +6,7 @@ import AvatarImage, {AvatarType} from "./AvatarImage"
 import Button from "./Button"
 import IconButton from "./IconButton"
 import Typography, {TypographyVariant} from "./Typography"
+import {notificationsBody, type NotificationType} from "@/utils/notifications"
 
 export type NotificationProps = {
   type: NotificationType

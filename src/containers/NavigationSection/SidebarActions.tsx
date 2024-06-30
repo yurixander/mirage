@@ -11,8 +11,8 @@ import {
 import {twMerge} from "tailwind-merge"
 import {createPortal} from "react-dom"
 import NotificationsModal from "./modals/NotificationsModal"
-import useCachedNotifications from "./hooks/useCachedNotifications"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
+import useCachedNotifications from "./hooks/useCachedNotifications"
 
 export type SidebarActionsProps = {
   onDirectMessages: () => void
@@ -29,8 +29,12 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onExit,
   onSearch,
 }) => {
-  const {notifications, markAllNotificationsAsRead, unreadNotifications} =
-    useCachedNotifications()
+  const {
+    isLoading,
+    markAllNotificationsAsRead,
+    notifications,
+    unreadNotifications,
+  } = useCachedNotifications()
 
   const [notificationsModalVisible, setNotificationsModalVisible] =
     useState(false)
@@ -44,11 +48,12 @@ const SidebarActions: FC<SidebarActionsProps> = ({
               "absolute z-50 flex size-full w-screen flex-col items-start justify-end"
             )}>
             <NotificationsModal
+              isLoading={isLoading}
               notifications={notifications}
+              markAllNotificationsAsRead={markAllNotificationsAsRead}
               onClose={() => {
                 setNotificationsModalVisible(false)
               }}
-              markAllNotificationsAsRead={markAllNotificationsAsRead}
             />
           </div>,
           document.querySelector(`#${ModalRenderLocation.ChatContainer}`) ??
