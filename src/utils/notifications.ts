@@ -47,8 +47,6 @@ export function setPowerLevelsHistory(newPowerLevels: CurrentPowerLevelData[]) {
     POWER_LEVELS_LOCAL_STORAGE_KEY,
     JSON.stringify(newPowerLevels)
   )
-
-  console.log("SET Actualizado PW")
 }
 
 export function removePowerLevelsHistory() {
@@ -86,8 +84,6 @@ export function setNotificationsHistory(
     NOTIFICATIONS_LOCAL_STORAGE_KEY,
     JSON.stringify(notifications)
   )
-
-  console.log("SET Actualizado")
 }
 
 // #region Power level

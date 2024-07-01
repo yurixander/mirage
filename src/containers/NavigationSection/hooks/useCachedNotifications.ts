@@ -147,7 +147,6 @@ const useCachedNotifications = () => {
     }
 
     setNotificationsState(NotificationState.Loading)
-    console.log("Use effect")
 
     const cachedLevelsHistory = getPowerLevelsHistory()
     const joinedRooms = await client.getJoinedRooms()
