@@ -9,10 +9,8 @@ import {
   IoSearch,
 } from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import {createPortal} from "react-dom"
-import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
-import useCachedNotifications from "./hooks/useCachedNotifications"
 import NotificationBoxPopup from "./modals/NotificationBoxPopup"
+import useNotifications from "./hooks/useNotifications"
 
 export type SidebarActionsProps = {
   onDirectMessages: () => void
@@ -29,33 +27,26 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onExit,
   onSearch,
 }) => {
+  const [isNotificationBoxVisible, setNotificationBoxVisible] = useState(false)
+
   const {
     isLoading,
     markAllNotificationsAsRead,
     notifications,
     unreadNotifications,
-  } = useCachedNotifications()
-
-  const [notificationsModalVisible, setNotificationsModalVisible] =
-    useState(false)
+  } = useNotifications()
 
   return (
     <>
-      {notificationsModalVisible &&
-        createPortal(
-          <div className="absolute z-50 flex size-full w-screen flex-col items-start justify-end">
-            <NotificationBoxPopup
-              isLoading={isLoading}
-              notifications={notifications}
-              markAllNotificationsAsRead={markAllNotificationsAsRead}
-              onClose={() => {
-                setNotificationsModalVisible(false)
-              }}
-            />
-          </div>,
-          document.querySelector(`#${ModalRenderLocation.ChatContainer}`) ??
-            document.body
-        )}
+      <NotificationBoxPopup
+        isVisible={isNotificationBoxVisible}
+        isLoading={isLoading}
+        notifications={notifications}
+        markAllNotificationsAsRead={markAllNotificationsAsRead}
+        onClose={() => {
+          setNotificationBoxVisible(false)
+        }}
+      />
 
       <div className={twMerge("flex flex-col gap-2", className)}>
         <SidebarActionItem
@@ -69,7 +60,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
           icon={IoNotifications}
           unreadNotifications={unreadNotifications}
           onClick={() => {
-            setNotificationsModalVisible(true)
+            setNotificationBoxVisible(true)
           }}
         />
 

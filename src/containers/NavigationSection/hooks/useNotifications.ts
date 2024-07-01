@@ -21,7 +21,7 @@ enum NotificationState {
   Prepared,
 }
 
-const useCachedNotifications = () => {
+const useNotifications = () => {
   const {client} = useConnection()
   const [notificationsState, setNotificationsState] = useState(
     NotificationState.Waiting
@@ -227,4 +227,4 @@ const useCachedNotifications = () => {
   }
 }
 
-export default useCachedNotifications
+export default useNotifications
