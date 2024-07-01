@@ -29,7 +29,7 @@ const notifications: NotificationProps[] = [
   },
   {
     isRead: true,
-    type: NotificationType.Banned,
+    type: NotificationType.DowngradeToMember,
     notificationId: "",
     roomName: "Design Utils",
     sender: "Emerald Branch",
