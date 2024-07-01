@@ -28,13 +28,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onSearch,
 }) => {
   const [isNotificationBoxVisible, setNotificationBoxVisible] = useState(false)
-
-  const {
-    isLoading,
-    markAllNotificationsAsRead,
-    notifications,
-    unreadNotifications,
-  } = useNotifications()
+  const {isLoading, notifications, unreadNotifications} = useNotifications()
 
   return (
     <>
@@ -42,7 +36,6 @@ const SidebarActions: FC<SidebarActionsProps> = ({
         isVisible={isNotificationBoxVisible}
         isLoading={isLoading}
         notifications={notifications}
-        markAllNotificationsAsRead={markAllNotificationsAsRead}
         onClose={() => {
           setNotificationBoxVisible(false)
         }}

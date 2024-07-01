@@ -18,7 +18,6 @@ export type NotificationBoxPopupProps = {
   notifications: NotificationProps[]
   isLoading: boolean
   isVisible: boolean
-  markAllNotificationsAsRead: () => void
   onClose: () => void
 }
 

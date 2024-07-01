@@ -45,7 +45,6 @@ export const Default: Story = {
   args: {
     notifications,
     onClose: () => {},
-    markAllNotificationsAsRead() {},
   },
 }
 

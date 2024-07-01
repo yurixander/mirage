@@ -11,7 +11,7 @@ import {
   notificationTypeTransformer,
   setPowerLevelsHistory,
 } from "@/utils/notifications"
-import {generateUniqueNumber} from "@/utils/util"
+import {generateRandomId} from "@/utils/util"
 import {RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useMemo, useState} from "react"
 
@@ -62,24 +62,6 @@ const useNotifications = () => {
     },
     []
   )
-
-  const markAllNotificationsAsRead = useCallback(() => {
-    setCachedNotifications(prevNotifications => {
-      const newNotifications: LocalNotificationData[] = prevNotifications.map(
-        prevNotification => {
-          return {
-            ...prevNotification,
-            isRead: true,
-          }
-        }
-      )
-
-      // Save in local storage.
-      setNotificationsHistory(newNotifications)
-
-      return newNotifications
-    })
-  }, [])
 
   const markAsReadByNotificationId = useCallback((notificationId: string) => {
     setCachedNotifications(prevNotifications => {
@@ -173,13 +155,11 @@ const useNotifications = () => {
         continue
       }
 
-      const id = generateUniqueNumber()
-
       saveCachedPowerLevel({roomId: room.roomId, currentPowerLevel})
 
       saveNotification({
         isRead: false,
-        notificationId: `notification${id}`,
+        notificationId: `notification-${generateRandomId()}`,
         roomId: room.roomId,
         notificationTime: Date.now(),
         roomName: room.name,
@@ -222,7 +202,6 @@ const useNotifications = () => {
   return {
     notifications,
     unreadNotifications,
-    markAllNotificationsAsRead,
     isLoading: notificationsState === NotificationState.Loading,
   }
 }
