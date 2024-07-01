@@ -59,7 +59,9 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
     isVisible &&
     createPortal(
       <div className="absolute z-50 flex size-full w-screen flex-col items-start justify-end">
-        <div className="m-2 flex size-full max-h-[80%] max-w-sm flex-col gap-2 rounded-xl border border-slate-300 bg-gray-50 p-3 shadow-2xl">
+        <div
+          className="m-2 flex size-full max-h-[80%] max-w-sm animate-enter flex-col gap-2 rounded-xl border border-slate-300 bg-gray-50 p-3 shadow-xl"
+          onMouseLeave={onClose}>
           <div className="flex w-full justify-between p-1">
             <Typography variant={TypographyVariant.Heading}>
               Notifications

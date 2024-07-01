@@ -282,3 +282,7 @@ export function generateRandomId(length: number = 10): string {
 
   return result
 }
+
+export async function delay(ms: number) {
+  return await new Promise(resolve => setTimeout(resolve, ms))
+}

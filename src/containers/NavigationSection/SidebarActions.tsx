@@ -46,18 +46,28 @@ const SidebarActions: FC<SidebarActionsProps> = ({
           name="Direct Chats"
           icon={IoPaperPlane}
           onClick={onDirectMessages}
+          onMouseEnter={() => {
+            setNotificationBoxVisible(false)
+          }}
         />
 
         <SidebarActionItem
           name="Notifications"
           icon={IoNotifications}
           unreadNotifications={unreadNotifications}
-          onClick={() => {
+          onMouseEnter={() => {
             setNotificationBoxVisible(true)
           }}
         />
 
-        <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
+        <SidebarActionItem
+          name="Search"
+          icon={IoSearch}
+          onClick={onSearch}
+          onMouseEnter={() => {
+            setNotificationBoxVisible(false)
+          }}
+        />
 
         <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />
 
@@ -70,7 +80,8 @@ const SidebarActions: FC<SidebarActionsProps> = ({
 type SidebarActionItemProps = {
   icon: IconType
   name: string
-  onClick: () => void
+  onClick?: () => void
+  onMouseEnter?: () => void
   unreadNotifications?: number
 }
 
@@ -78,6 +89,7 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
   icon,
   name,
   onClick,
+  onMouseEnter,
   unreadNotifications,
 }) => {
   const Icon = icon
@@ -86,6 +98,7 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
     <div
       className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-slate-200"
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
       role="button"
       aria-hidden="true">
       <Icon className="text-slate-400" />
