@@ -27,6 +27,7 @@ const NOTIFICATION_SENDER_NAME = "Room owners"
 
 const useNotifications = () => {
   const {client} = useConnection()
+
   const [notificationsState, setNotificationsState] = useState(
     NotificationState.Waiting
   )
@@ -36,13 +37,13 @@ const useNotifications = () => {
   >(getNotificationsHistory())
 
   // #region Functions
-  const saveCachedPowerLevel = useCallback(
-    (newCachedPowerLevel: CurrentPowerLevelData) => {
-      const powerLevelsCleaned = getPowerLevelsHistory().filter(
-        prevPowerLevel => prevPowerLevel.roomId !== newCachedPowerLevel.roomId
+  const saveCachedLevels = useCallback(
+    (newCachedLevels: CurrentPowerLevelData) => {
+      const levelsCleaned = getPowerLevelsHistory().filter(
+        prevLevels => prevLevels.roomId !== newCachedLevels.roomId
       )
 
-      setPowerLevelsHistory([...powerLevelsCleaned, newCachedPowerLevel])
+      setPowerLevelsHistory([...levelsCleaned, newCachedLevels])
     },
     []
   )
@@ -127,7 +128,6 @@ const useNotifications = () => {
     [cachedNotifications, deleteNotificationById, markAsReadByNotificationId]
   )
 
-  // TODO: Optimize and handle useEventListener for this.
   const fetchInvitedNotifications = useCallback(() => {
     if (client === null) {
       return
@@ -186,7 +186,7 @@ const useNotifications = () => {
         continue
       }
 
-      saveCachedPowerLevel({roomId: room.roomId, currentPowerLevel})
+      saveCachedLevels({roomId: room.roomId, currentPowerLevel})
 
       saveNotification({
         isRead: false,
@@ -202,7 +202,7 @@ const useNotifications = () => {
     }
 
     setNotificationsState(NotificationState.Prepared)
-  }, [client, notificationsState, saveCachedPowerLevel, saveNotification])
+  }, [client, notificationsState, saveCachedLevels, saveNotification])
 
   // #region useEffect
   useEffect(() => {

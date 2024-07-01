@@ -44,10 +44,6 @@ export function setPowerLevelsHistory(newPowerLevels: CurrentPowerLevelData[]) {
   )
 }
 
-export function removePowerLevelsHistory() {
-  localStorage.removeItem(POWER_LEVELS_LOCAL_STORAGE_KEY)
-}
-
 export type LocalNotificationData = {
   type: NotificationType
   containsAction: boolean

@@ -75,19 +75,11 @@ export function getRoomUsersIdWithPowerLevels(
   return usersWithPowerLevels
 }
 
+// #region RoomMembers
 export function isUserRoomAdminOrMod(room: Room): boolean {
-  const currentUserId = room.client.getUserId()
+  const currentUserPowerLevel = getRoomPowerLevelByUserId(room, room.myUserId)
 
-  if (currentUserId === null) {
-    return false
-  }
-
-  const currentUserPowerLevel = getRoomPowerLevelByUserId(room, currentUserId)
-
-  return (
-    currentUserPowerLevel !== null &&
-    currentUserPowerLevel !== UserPowerLevel.Member
-  )
+  return currentUserPowerLevel !== UserPowerLevel.Member
 }
 
 export async function getRoomAdminsAndModerators(
@@ -130,7 +122,6 @@ export async function getRoomAdminsAndModerators(
   return adminsOrModerators
 }
 
-// #region Current User
 export async function getUserLastPresence(
   room: Room,
   userId: string
