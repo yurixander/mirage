@@ -45,7 +45,12 @@ const DevelopmentPreview: FC = () => {
   return (
     <>
       <NotificationsModal
-        notifications={notifications}
+        notifications={[
+          ...notifications,
+          ...notifications,
+          ...notifications,
+          ...notifications,
+        ]}
         isLoading={false}
         markAllNotificationsAsRead={function (): void {
           throw new Error("Function not implemented.")
