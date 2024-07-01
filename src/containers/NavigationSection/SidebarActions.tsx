@@ -9,10 +9,8 @@ import {
   IoSearch,
 } from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import {createPortal} from "react-dom"
-import NotificationsModal from "./modals/NotificationsModal"
-import useCachedNotifications from "./hooks/useCachedNotifications"
-import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
+import NotificationBoxPopup from "./modals/NotificationBoxPopup"
+import useNotifications from "./hooks/useNotifications"
 
 export type SidebarActionsProps = {
   onDirectMessages: () => void
@@ -29,48 +27,47 @@ const SidebarActions: FC<SidebarActionsProps> = ({
   onExit,
   onSearch,
 }) => {
-  const {notifications, markAllNotificationsAsRead, unreadNotifications} =
-    useCachedNotifications()
-
-  const [notificationsModalVisible, setNotificationsModalVisible] =
-    useState(false)
+  const [isNotificationBoxVisible, setNotificationBoxVisible] = useState(false)
+  const {isLoading, notifications, unreadNotifications} = useNotifications()
 
   return (
     <>
-      {notificationsModalVisible &&
-        createPortal(
-          <div
-            className={twMerge(
-              "absolute z-50 flex size-full w-screen flex-col items-start justify-end"
-            )}>
-            <NotificationsModal
-              notifications={notifications}
-              onClose={() => {
-                setNotificationsModalVisible(false)
-              }}
-              markAllNotificationsAsRead={markAllNotificationsAsRead}
-            />
-          </div>,
-          document.querySelector(`#${ModalRenderLocation.ChatContainer}`) ??
-            document.body
-        )}
+      <NotificationBoxPopup
+        isVisible={isNotificationBoxVisible}
+        isLoading={isLoading}
+        notifications={notifications}
+        onClose={() => {
+          setNotificationBoxVisible(false)
+        }}
+      />
+
       <div className={twMerge("flex flex-col gap-2", className)}>
         <SidebarActionItem
           name="Direct Chats"
           icon={IoPaperPlane}
           onClick={onDirectMessages}
+          onMouseEnter={() => {
+            setNotificationBoxVisible(false)
+          }}
         />
 
         <SidebarActionItem
           name="Notifications"
           icon={IoNotifications}
           unreadNotifications={unreadNotifications}
-          onClick={() => {
-            setNotificationsModalVisible(true)
+          onMouseEnter={() => {
+            setNotificationBoxVisible(true)
           }}
         />
 
-        <SidebarActionItem name="Search" icon={IoSearch} onClick={onSearch} />
+        <SidebarActionItem
+          name="Search"
+          icon={IoSearch}
+          onClick={onSearch}
+          onMouseEnter={() => {
+            setNotificationBoxVisible(false)
+          }}
+        />
 
         <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />
 
@@ -83,7 +80,8 @@ const SidebarActions: FC<SidebarActionsProps> = ({
 type SidebarActionItemProps = {
   icon: IconType
   name: string
-  onClick: () => void
+  onClick?: () => void
+  onMouseEnter?: () => void
   unreadNotifications?: number
 }
 
@@ -91,6 +89,7 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
   icon,
   name,
   onClick,
+  onMouseEnter,
   unreadNotifications,
 }) => {
   const Icon = icon
@@ -99,6 +98,7 @@ const SidebarActionItem: FC<SidebarActionItemProps> = ({
     <div
       className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-slate-200"
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
       role="button"
       aria-hidden="true">
       <Icon className="text-slate-400" />

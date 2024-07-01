@@ -11,8 +11,12 @@ const getLocalStorageValue = <T>(key: LocalStorageKey): T | null => {
     return null
   }
 
-  // TODO: Use `zod` library to verify stored item's types.
-  return JSON.parse(storedValue) as T
+  try {
+    // TODO: Use `zod` library to verify stored item's types.
+    return JSON.parse(storedValue) as T
+  } catch {
+    return null
+  }
 }
 
 const useLocalStorage = <T>(key: LocalStorageKey) => {
@@ -24,6 +28,7 @@ const useLocalStorage = <T>(key: LocalStorageKey) => {
     setCachedValue(getLocalStorageValue<T>(key))
   }, [key])
 
+  // TODO: Update for better accessibility.
   const put = useCallback(
     (value: T) => {
       localStorage.setItem(key, JSON.stringify(value))

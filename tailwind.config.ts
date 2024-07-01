@@ -56,7 +56,8 @@ module.exports = {
     },
     animation: {
       "hold": "hold 200ms",
-      "fadeIn": "fadeIn 0.3s ease-out",
+      "fadeIn": "fadeIn 0.1s ease-out",
+      "fade": "fade 0.1s",
       "spin": "rotate 0.6s infinite linear",
       "enter": "enter 200ms",
       "dot-jump": "dot-jump 400ms ease-in-out infinite alternate",
@@ -128,6 +129,16 @@ module.exports = {
         from: {
           opacity: "0",
           transform: "translateY(-20px)",
+        },
+        to: {
+          opacity: "1",
+          transform: "translateY(0)",
+        },
+      },
+      "fade": {
+        from: {
+          opacity: "0",
+          transform: "translateY(+20px)",
         },
         to: {
           opacity: "1",

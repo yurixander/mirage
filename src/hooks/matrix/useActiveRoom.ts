@@ -16,8 +16,8 @@ import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {type MessageBaseProps} from "@/components/MessageContainer"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useFilePicker} from "use-file-picker"
-import {isUserRoomAdmin} from "@/utils/members"
 import {handleEvents, handleRoomEvents} from "@/utils/rooms"
+import {isUserRoomAdminOrMod} from "@/utils/members"
 
 export enum MessageKind {
   Text,
@@ -100,7 +100,7 @@ const useActiveRoom = () => {
       return
     }
 
-    const isAdminOrModerator = isUserRoomAdmin(room, client)
+    const isAdminOrModerator = isUserRoomAdminOrMod(room)
 
     void handleEvents(client, event, room.roomId, isAdminOrModerator).then(
       messageOrEvent => {
