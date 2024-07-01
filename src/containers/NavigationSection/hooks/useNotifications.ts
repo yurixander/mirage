@@ -10,9 +10,11 @@ import {
   setNotificationsHistory,
   notificationTypeTransformer,
   setPowerLevelsHistory,
+  NotificationType,
 } from "@/utils/notifications"
-import {generateRandomId} from "@/utils/util"
-import {RoomMemberEvent} from "matrix-js-sdk"
+import {generateRandomId, getImageUrl} from "@/utils/util"
+import {RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {useCallback, useEffect, useMemo, useState} from "react"
 
 enum NotificationState {
@@ -20,6 +22,8 @@ enum NotificationState {
   Loading,
   Prepared,
 }
+
+const NOTIFICATION_SENDER_NAME = "Room owners"
 
 const useNotifications = () => {
   const {client} = useConnection()
@@ -123,6 +127,33 @@ const useNotifications = () => {
     [cachedNotifications, deleteNotificationById, markAsReadByNotificationId]
   )
 
+  // TODO: Optimize and handle useEventListener for this.
+  const fetchInvitedNotifications = useCallback(() => {
+    if (client === null) {
+      return
+    }
+
+    const rooms = client.getRooms()
+
+    for (const room of rooms) {
+      if (room.getMyMembership() !== KnownMembership.Invite) {
+        continue
+      }
+
+      saveNotification({
+        isRead: false,
+        notificationId: `notification-${room.roomId}`,
+        roomId: room.roomId,
+        notificationTime: Date.now(),
+        roomName: room.name,
+        sender: NOTIFICATION_SENDER_NAME,
+        type: NotificationType.Invited,
+        containsAction: true,
+        senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),
+      })
+    }
+  }, [client, saveNotification])
+
   const fetchNotifications = useCallback(async () => {
     if (client === null || notificationsState !== NotificationState.Waiting) {
       return
@@ -163,9 +194,9 @@ const useNotifications = () => {
         roomId: room.roomId,
         notificationTime: Date.now(),
         roomName: room.name,
-        sender: "Room owners",
+        sender: NOTIFICATION_SENDER_NAME,
         type: notificationType,
-        senderMxcAvatarUrl: room.getMxcAvatarUrl() ?? undefined,
+        senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),
         containsAction: false,
       })
     }
@@ -177,12 +208,13 @@ const useNotifications = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       void fetchNotifications()
+      fetchInvitedNotifications()
     }, 1000)
 
     return () => {
       clearTimeout(timeout)
     }
-  }, [fetchNotifications])
+  }, [fetchInvitedNotifications, fetchNotifications])
 
   // #region Listener
   useEventListener(RoomMemberEvent.PowerLevel, (_, member) => {
@@ -198,6 +230,50 @@ const useNotifications = () => {
 
     void fetchNotifications()
   })
+
+  useEventListener(
+    RoomEvent.MyMembership,
+    (room, membership, prevMembership) => {
+      if (client === null) {
+        return
+      }
+
+      if (
+        membership === KnownMembership.Leave &&
+        prevMembership === KnownMembership.Invite
+      ) {
+        saveNotification({
+          isRead: false,
+          notificationId: `notification-${room.roomId}`,
+          roomId: room.roomId,
+          notificationTime: Date.now(),
+          roomName: room.name,
+          sender: NOTIFICATION_SENDER_NAME,
+          type: NotificationType.InvitationRemoved,
+          containsAction: false,
+          senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),
+        })
+
+        return
+      }
+
+      if (membership !== KnownMembership.Invite) {
+        return
+      }
+
+      saveNotification({
+        isRead: false,
+        notificationId: `notification-${room.roomId}`,
+        roomId: room.roomId,
+        notificationTime: Date.now(),
+        roomName: room.name,
+        sender: NOTIFICATION_SENDER_NAME,
+        type: NotificationType.Invited,
+        containsAction: true,
+        senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),
+      })
+    }
+  )
 
   return {
     notifications,

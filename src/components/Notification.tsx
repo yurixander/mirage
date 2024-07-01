@@ -42,9 +42,9 @@ const Notification: FC<NotificationProps> = ({
       )}>
       <AvatarImage
         isRounded
-        avatarType={AvatarType.Message}
         displayName={sender}
         avatarUrl={senderAvatarUrl}
+        avatarType={AvatarType.Profile}
       />
 
       <div className="flex w-full flex-col">

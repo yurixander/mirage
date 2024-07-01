@@ -4,11 +4,8 @@ const POWER_LEVELS_LOCAL_STORAGE_KEY = "local_power_levels_notifications"
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications_history"
 
 export enum NotificationType {
-  Banned,
-  Leaved,
   Invited,
-  BanRemoved,
-  RejectInvitation,
+  InvitationRemoved,
   UpgradeToAdmin,
   UpgradeToModerator,
   DowngradeToMember,
@@ -16,10 +13,8 @@ export enum NotificationType {
 
 export const notificationsBody: {[key in NotificationType]: string} = {
   [NotificationType.Invited]: "Has invited you to",
-  [NotificationType.Banned]: "Has banned you from",
-  [NotificationType.Leaved]: "You have been kicked from",
-  [NotificationType.RejectInvitation]: "You have rejected the invitation",
-  [NotificationType.BanRemoved]: "Your ban has been lifted in",
+  [NotificationType.InvitationRemoved]:
+    "The invitation to join has been withdrawn to",
   [NotificationType.DowngradeToMember]: "You have been demoted to member in",
   [NotificationType.UpgradeToAdmin]: "You have been promoted to admin in",
   [NotificationType.UpgradeToModerator]:
@@ -62,7 +57,7 @@ export type LocalNotificationData = {
   notificationTime: number
   notificationId: string
   sender: string
-  senderMxcAvatarUrl?: string
+  senderAvatarUrl?: string
 }
 
 export function getNotificationsHistory(): LocalNotificationData[] {
