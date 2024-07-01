@@ -1,5 +1,5 @@
 import {type RosterUserProps} from "@/containers/Roster/RosterUser"
-import {type Room, EventTimeline} from "matrix-js-sdk"
+import {type Room, EventTimeline, EventType} from "matrix-js-sdk"
 import {getImageUrl, normalizeName} from "./util"
 import {ImageSizes} from "./rooms"
 
@@ -24,7 +24,8 @@ function getPowerLevelsFromRoom(room: Room): PowerLevelResponse {
     return {}
   }
 
-  return roomState.getStateEvents("m.room.power_levels", "")?.getContent().users
+  return roomState.getStateEvents(EventType.RoomPowerLevels, "")?.getContent()
+    .users
 }
 
 export function processPowerLevelByNumber(powerLevel: number): UserPowerLevel {

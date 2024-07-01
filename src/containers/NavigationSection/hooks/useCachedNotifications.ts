@@ -1,11 +1,7 @@
 import {type NotificationProps} from "@/components/Notification"
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
-import {
-  getRoomPowerLevelByUserId,
-  processPowerLevelByNumber,
-  UserPowerLevel,
-} from "@/utils/members"
+import {getRoomPowerLevelByUserId, UserPowerLevel} from "@/utils/members"
 import {
   getPowerLevelsHistory,
   type LocalNotificationData,
@@ -19,36 +15,30 @@ import {generateUniqueNumber} from "@/utils/util"
 import {RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useMemo, useState} from "react"
 
+enum NotificationState {
+  Waiting,
+  Loading,
+  Prepared,
+}
+
 const useCachedNotifications = () => {
   const {client} = useConnection()
-  const [isLoading, setIsLoading] = useState(false)
+  const [notificationsState, setNotificationsState] = useState(
+    NotificationState.Waiting
+  )
 
   const [cachedNotifications, setCachedNotifications] = useState<
     LocalNotificationData[]
   >(getNotificationsHistory())
 
-  const [cachedPowerLevels, setCachedPowerLevels] = useState<
-    CurrentPowerLevelData[]
-  >(getPowerLevelsHistory())
-
   // #region Functions
   const saveCachedPowerLevel = useCallback(
     (newCachedPowerLevel: CurrentPowerLevelData) => {
-      setCachedPowerLevels(prevPowerLevels => {
-        const powerLevelsCleaned = prevPowerLevels.filter(
-          prevPowerLevel => prevPowerLevel.roomId !== newCachedPowerLevel.roomId
-        )
+      const powerLevelsCleaned = getPowerLevelsHistory().filter(
+        prevPowerLevel => prevPowerLevel.roomId !== newCachedPowerLevel.roomId
+      )
 
-        const newCachedPowerLevels = [
-          ...powerLevelsCleaned,
-          newCachedPowerLevel,
-        ]
-
-        // Save notifications in local storage.
-        setPowerLevelsHistory(newCachedPowerLevels)
-
-        return newCachedPowerLevels
-      })
+      setPowerLevelsHistory([...powerLevelsCleaned, newCachedPowerLevel])
     },
     []
   )
@@ -151,124 +141,90 @@ const useCachedNotifications = () => {
     [cachedNotifications, deleteNotificationById, markAsReadByNotificationId]
   )
 
-  // #region useEffect
-  useEffect(() => {
-    if (client === null) {
+  const fetchNotifications = useCallback(async () => {
+    if (client === null || notificationsState !== NotificationState.Waiting) {
       return
     }
 
-    setIsLoading(true)
+    setNotificationsState(NotificationState.Loading)
+    console.log("Use effect")
 
     const cachedLevelsHistory = getPowerLevelsHistory()
+    const joinedRooms = await client.getJoinedRooms()
 
-    void client
-      .getJoinedRooms()
-      .then(joinedRooms => {
-        for (const roomId of joinedRooms.joined_rooms) {
-          const room = client.getRoom(roomId)
+    for (const roomId of joinedRooms.joined_rooms) {
+      const room = client.getRoom(roomId)
 
-          if (room === null) {
-            continue
-          }
+      if (room === null) {
+        continue
+      }
 
-          const currentPowerLevel = getRoomPowerLevelByUserId(
-            room,
-            room.myUserId
-          )
+      const currentPowerLevel = getRoomPowerLevelByUserId(room, room.myUserId)
 
-          const cachedPowerLevel =
-            cachedLevelsHistory.find(
-              levelHistory => levelHistory.roomId === room.roomId
-            )?.currentPowerLevel ?? UserPowerLevel.Member
+      const cachedPowerLevel =
+        cachedLevelsHistory.find(levelHistory => levelHistory.roomId === roomId)
+          ?.currentPowerLevel ?? UserPowerLevel.Member
 
-          saveCachedPowerLevel({roomId: room.roomId, currentPowerLevel})
+      const notificationType = notificationTypeTransformer(
+        currentPowerLevel,
+        cachedPowerLevel
+      )
 
-          const notificationType = notificationTypeTransformer(
-            currentPowerLevel,
-            cachedPowerLevel
-          )
+      if (notificationType === null) {
+        continue
+      }
 
-          if (notificationType === null) {
-            continue
-          }
+      const id = generateUniqueNumber()
 
-          const id = generateUniqueNumber()
+      saveCachedPowerLevel({roomId: room.roomId, currentPowerLevel})
 
-          saveNotification({
-            isRead: false,
-            notificationId: `notification${id}`,
-            roomId: room.roomId,
-            notificationTime: Date.now(),
-            roomName: room.name,
-            sender: "Room owners",
-            type: notificationType,
-            senderMxcAvatarUrl: room.getMxcAvatarUrl() ?? undefined,
-            containsAction: false,
-          })
-        }
-
-        setIsLoading(false)
+      saveNotification({
+        isRead: false,
+        notificationId: `notification${id}`,
+        roomId: room.roomId,
+        notificationTime: Date.now(),
+        roomName: room.name,
+        sender: "Room owners",
+        type: notificationType,
+        senderMxcAvatarUrl: room.getMxcAvatarUrl() ?? undefined,
+        containsAction: false,
       })
-      .catch(() => {
-        setIsLoading(false)
-      })
-  }, [client, saveCachedPowerLevel, saveNotification])
+    }
+
+    setNotificationsState(NotificationState.Prepared)
+  }, [client, notificationsState, saveCachedPowerLevel, saveNotification])
+
+  // #region useEffect
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      void fetchNotifications()
+    }, 1000)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [fetchNotifications])
 
   // #region Listener
-  useEventListener(RoomMemberEvent.PowerLevel, (event, member) => {
-    if (client === null || member.userId !== client.getUserId() || isLoading) {
+  useEventListener(RoomMemberEvent.PowerLevel, (_, member) => {
+    if (
+      client === null ||
+      member.userId !== client.getUserId() ||
+      notificationsState !== NotificationState.Prepared
+    ) {
       return
     }
 
-    const room = client.getRoom(event.getRoomId())
+    setNotificationsState(NotificationState.Waiting)
 
-    // You cannot listen to an event in a room to which you do not have access.
-    if (room === null) {
-      return
-    }
-
-    const prevUsersPowerLevels = event.getPrevContent().users
-    const prevCurrentUserLevels = prevUsersPowerLevels[member.userId]
-
-    const prevPowerLevels =
-      prevCurrentUserLevels === undefined ||
-      typeof prevCurrentUserLevels !== "number"
-        ? UserPowerLevel.Member
-        : prevCurrentUserLevels
-
-    const currentPowerLevel = processPowerLevelByNumber(member.powerLevelNorm)
-    saveCachedPowerLevel({roomId: room.roomId, currentPowerLevel})
-
-    const notificationType = notificationTypeTransformer(
-      currentPowerLevel,
-      prevPowerLevels
-    )
-
-    // If `notificationType` is null there were no changes.
-    if (notificationType === null) {
-      return
-    }
-
-    const notificationId = event.getId() ?? event.localTimestamp
-
-    saveNotification({
-      isRead: false,
-      notificationId: `notification${notificationId}`,
-      roomId: room.roomId,
-      notificationTime: event.localTimestamp,
-      roomName: room.name,
-      sender: "Room owners",
-      type: notificationType,
-      senderMxcAvatarUrl: room.getMxcAvatarUrl() ?? undefined,
-      containsAction: false,
-    })
+    void fetchNotifications()
   })
 
   return {
     notifications,
     unreadNotifications,
     markAllNotificationsAsRead,
-    isLoading,
+    isLoading: notificationsState === NotificationState.Loading,
   }
 }
 
