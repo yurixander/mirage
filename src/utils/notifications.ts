@@ -15,15 +15,15 @@ export enum NotificationType {
 }
 
 export const notificationsBody: {[key in NotificationType]: string} = {
-  [NotificationType.Invited]: "has invited you to",
-  [NotificationType.Banned]: "has banned you from",
-  [NotificationType.Leaved]: "you have been kicked from",
-  [NotificationType.RejectInvitation]: "you have rejected the invitation",
-  [NotificationType.BanRemoved]: "your ban has been lifted in",
-  [NotificationType.DowngradeToMember]: "you have been demoted to member in",
-  [NotificationType.UpgradeToAdmin]: "you have been promoted to admin in",
+  [NotificationType.Invited]: "Has invited you to",
+  [NotificationType.Banned]: "Has banned you from",
+  [NotificationType.Leaved]: "You have been kicked from",
+  [NotificationType.RejectInvitation]: "You have rejected the invitation",
+  [NotificationType.BanRemoved]: "Your ban has been lifted in",
+  [NotificationType.DowngradeToMember]: "You have been demoted to member in",
+  [NotificationType.UpgradeToAdmin]: "You have been promoted to admin in",
   [NotificationType.UpgradeToModerator]:
-    "you have been promoted to moderator in",
+    "You have been promoted to moderator in",
 }
 
 // #region Set and Get

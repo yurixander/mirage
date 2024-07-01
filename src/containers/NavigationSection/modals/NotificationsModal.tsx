@@ -20,6 +20,17 @@ export type NotificationModalProps = {
   onClose: () => void
 }
 
+const sortNotificationsByReadState = (
+  a: NotificationProps,
+  b: NotificationProps
+): number => {
+  if (a.isRead === b.isRead) {
+    return a.notificationTime - b.notificationTime
+  }
+
+  return a.isRead ? 1 : -1
+}
+
 const NotificationsModal: FC<NotificationModalProps> = ({
   onClose,
   notifications,
@@ -28,12 +39,14 @@ const NotificationsModal: FC<NotificationModalProps> = ({
 }) => {
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
-      notifications.map(anyNotification => (
-        <Notification
-          {...anyNotification}
-          key={anyNotification.notificationId}
-        />
-      )),
+      notifications
+        .sort(sortNotificationsByReadState)
+        .map(anyNotification => (
+          <Notification
+            {...anyNotification}
+            key={anyNotification.notificationId}
+          />
+        )),
     [notifications]
   )
 
