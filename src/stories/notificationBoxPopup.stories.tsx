@@ -1,17 +1,17 @@
 import {type NotificationProps} from "@/components/Notification"
-import NotificationsModal, {
-  type NotificationModalProps,
-} from "@/containers/NavigationSection/modals/NotificationsModal"
+import NotificationBoxPopup, {
+  type NotificationBoxPopupProps,
+} from "@/containers/NavigationSection/modals/NotificationBoxPopup"
 import {NotificationType} from "@/utils/notifications"
 import {type Meta, type StoryObj} from "@storybook/react"
 
-type Story = StoryObj<typeof NotificationsModal>
+type Story = StoryObj<typeof NotificationBoxPopup>
 
-const meta: Meta<typeof NotificationsModal> = {
-  component: NotificationsModal,
+const meta: Meta<typeof NotificationBoxPopup> = {
+  component: NotificationBoxPopup,
 }
-const render = (args: NotificationModalProps) => (
-  <NotificationsModal {...args} />
+const render = (args: NotificationBoxPopupProps) => (
+  <NotificationBoxPopup {...args} />
 )
 
 const notifications: NotificationProps[] = [

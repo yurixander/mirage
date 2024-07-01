@@ -1,5 +1,5 @@
 import {type NotificationProps} from "@/components/Notification"
-import NotificationsModal from "@/containers/NavigationSection/modals/NotificationsModal"
+import NotificationBoxPopup from "@/containers/NavigationSection/modals/NotificationBoxPopup"
 import {NotificationType} from "@/utils/notifications"
 import {type FC} from "react"
 
@@ -44,7 +44,7 @@ const notifications: NotificationProps[] = [
 const DevelopmentPreview: FC = () => {
   return (
     <>
-      <NotificationsModal
+      <NotificationBoxPopup
         notifications={[
           ...notifications,
           ...notifications,

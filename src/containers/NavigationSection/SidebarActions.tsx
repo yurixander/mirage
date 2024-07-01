@@ -10,9 +10,9 @@ import {
 } from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import {createPortal} from "react-dom"
-import NotificationsModal from "./modals/NotificationsModal"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import useCachedNotifications from "./hooks/useCachedNotifications"
+import NotificationBoxPopup from "./modals/NotificationBoxPopup"
 
 export type SidebarActionsProps = {
   onDirectMessages: () => void
@@ -43,11 +43,8 @@ const SidebarActions: FC<SidebarActionsProps> = ({
     <>
       {notificationsModalVisible &&
         createPortal(
-          <div
-            className={twMerge(
-              "absolute z-50 flex size-full w-screen flex-col items-start justify-end"
-            )}>
-            <NotificationsModal
+          <div className="absolute z-50 flex size-full w-screen flex-col items-start justify-end">
+            <NotificationBoxPopup
               isLoading={isLoading}
               notifications={notifications}
               markAllNotificationsAsRead={markAllNotificationsAsRead}
@@ -59,6 +56,7 @@ const SidebarActions: FC<SidebarActionsProps> = ({
           document.querySelector(`#${ModalRenderLocation.ChatContainer}`) ??
             document.body
         )}
+
       <div className={twMerge("flex flex-col gap-2", className)}>
         <SidebarActionItem
           name="Direct Chats"
