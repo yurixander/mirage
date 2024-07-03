@@ -1,7 +1,6 @@
 import dayjs from "dayjs"
 import {type ICreateRoomOpts, type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
-import {v4 as uuidv4} from "uuid"
 
 export enum ViewPath {
   App = "/",
@@ -267,6 +266,7 @@ export function getUsernameByUserId(userId: string): string {
 }
 
 export const generateUniqueNumber = (): number => {
-  const partialUUID = uuidv4().replaceAll("-", "").slice(0, 15)
-  return Number.parseInt(partialUUID, 16)
+  const timestamp = Date.now()
+  const randomNum = Math.floor(Math.random() * 100_000)
+  return Number.parseInt(`${timestamp}${randomNum}`)
 }
