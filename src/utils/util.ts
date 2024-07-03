@@ -266,5 +266,7 @@ export function getUsernameByUserId(userId: string): string {
 }
 
 export const generateUniqueNumber = (): number => {
-  return 1000
+  const timestamp = Date.now()
+  const randomNum = Math.floor(Math.random() * 100_000)
+  return Number.parseInt(`${timestamp}${randomNum}`)
 }
