@@ -81,6 +81,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
 
       {isActive &&
         points !== null &&
+        elements.length > 0 &&
         createPortal(
           <div
             ref={dropdownRef}
