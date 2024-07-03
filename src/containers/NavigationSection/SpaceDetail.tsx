@@ -8,7 +8,7 @@ import {IoEllipsisHorizontal} from "react-icons/io5"
 
 export type DetailsDetailProps = {
   title: string
-  id: number
+  spaceId: string
   children?: React.ReactNode
   menuElements?: ContextMenuItem[]
 }
@@ -16,7 +16,7 @@ export type DetailsDetailProps = {
 export const SpaceDetail: FC<DetailsDetailProps> = ({
   title,
   children,
-  id,
+  spaceId,
   menuElements,
 }) => {
   return (
@@ -28,7 +28,7 @@ export const SpaceDetail: FC<DetailsDetailProps> = ({
           <div className="ml-auto">
             <ContextMenu
               actionType={ClickActions.LeftClick}
-              id={id}
+              id={`space-menu-${spaceId}`}
               elements={menuElements}>
               <IoEllipsisHorizontal className="text-slate-500" size={14} />
             </ContextMenu>

@@ -15,14 +15,13 @@ const Checkbox: FC<CheckboxProps> = ({
   label,
   isDisabled,
 }) => {
-  const {handleSelectionChanged, handleKeyDown} = useSelectionToggle(
-    isInitiallySelected,
-    onSelectionChange
-  )
+  const {handleSelectionChanged, handleKeyDown, isSelected} =
+    useSelectionToggle(isInitiallySelected, onSelectionChange)
 
   return (
     <div className="flex size-max items-center gap-1">
       <input
+        checked={isSelected}
         type="checkbox"
         onClick={handleSelectionChanged}
         onKeyDown={handleKeyDown}

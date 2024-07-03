@@ -1,7 +1,6 @@
 import dayjs from "dayjs"
 import {type ICreateRoomOpts, type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
-import {v4 as uuidv4} from "uuid"
 
 export enum ViewPath {
   App = "/",
@@ -24,7 +23,7 @@ export type Credentials = {
   deviceId: string
 }
 
-export function timeFormatter(timestamp: number): string {
+export function formatTime(timestamp: number): string {
   return dayjs(timestamp).format("hh:mm a")
 }
 
@@ -267,6 +266,5 @@ export function getUsernameByUserId(userId: string): string {
 }
 
 export const generateUniqueNumber = (): number => {
-  const partialUUID = uuidv4().replaceAll("-", "").slice(0, 15)
-  return Number.parseInt(partialUUID, 16)
+  return 1000
 }

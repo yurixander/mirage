@@ -9,6 +9,7 @@ export type UserProfileProps = {
   displayName: string
   displayNameColor: string
   children: React.JSX.Element
+  avatarType?: AvatarType
   isNameShorted?: boolean
   avatarUrl?: string
   isLarge?: boolean
@@ -19,9 +20,10 @@ const UserProfile: FC<UserProfileProps> = ({
   displayName,
   displayNameColor,
   avatarUrl,
-  isLarge,
   children,
+  isLarge = false,
   isNameShorted = true,
+  avatarType = AvatarType.Profile,
   className,
 }) => {
   if (avatarUrl !== undefined) {
@@ -33,30 +35,25 @@ const UserProfile: FC<UserProfileProps> = ({
 
   const MAX_DISPLAY_NAME_LENGTH = 16
 
+  const typographyVariant = isLarge
+    ? TypographyVariant.Body
+    : TypographyVariant.BodyMedium
+
   return (
     <div className={twMerge("flex gap-2", className)}>
-      <div className="relative">
-        <div
-          className={twMerge(
-            "relative overflow-hidden rounded-lg bg-red-500",
-            isLarge ? "size-[50px]" : "size-[37px]"
-          )}>
-          <AvatarImage
-            isRounded={false}
-            isLarge={isLarge ?? false}
-            avatarType={AvatarType.Profile}
-            displayName={displayName}
-            avatarUrl={avatarUrl}
-          />
-        </div>
-      </div>
+      <AvatarImage
+        isRounded={false}
+        isLarge={isLarge}
+        avatarType={avatarType}
+        displayName={displayName}
+        avatarUrl={avatarUrl}
+      />
 
-      {/* TODO: Update this to use `Typography` */}
-      <div className="mr-auto inline-flex flex-col gap-[2px]">
+      <div className="mr-auto inline-flex flex-col gap-0.5">
         <Typography
-          variant={TypographyVariant.BodyMedium}
+          variant={typographyVariant}
           style={{color: displayNameColor}}
-          className="line-clamp-1 font-bold text-slate-500">
+          className="line-clamp-1 font-bold leading-[100%] text-slate-500">
           {isNameShorted
             ? trim(cleanDisplayName(displayName), MAX_DISPLAY_NAME_LENGTH)
             : displayName}

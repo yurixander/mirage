@@ -122,7 +122,7 @@ const Logo: FC = () => {
         <div className="flex items-end font-iowan">
           <div>Mirage</div>
 
-          <span className="ml-[2px] text-xs italic">©</span>
+          <span className="ml-0.5 text-xs italic">©</span>
         </div>
       </div>
     </div>

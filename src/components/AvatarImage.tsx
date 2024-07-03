@@ -34,10 +34,11 @@ const AvatarImage: FC<AvatarProps> = ({
     <div
       className={twMerge(
         "size-9 shrink-0 overflow-hidden rounded-lg",
-        isRounded && "rounded-full"
+        isRounded && "rounded-full",
+        isLarge ? "size-14" : "size-9"
       )}>
       <Avatar
-        size={isProfile && isLarge ? 60 : 40}
+        size={isLarge ? 60 : 40}
         square={isSquare}
         name={displayName}
         variant="beam"
