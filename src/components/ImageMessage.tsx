@@ -17,7 +17,6 @@ const ImageMessage: FC<ImageMessageProps> = ({
   onAuthorClick,
   text,
   timestamp,
-  onDeleteMessage,
   contextMenuItems,
   id,
 }) => {
@@ -59,7 +58,9 @@ const ImageMessage: FC<ImageMessageProps> = ({
         createPortal(
           <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-modalOverlay">
             <ImageModal
-              onDeleteImage={onDeleteMessage}
+              onDeleteImage={() => {
+                throw new Error("Handle here delete message function.")
+              }}
               imageUrl={imageUrl}
               onClose={() => {
                 setImageModalShow(false)

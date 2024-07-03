@@ -66,18 +66,20 @@ const ContextMenu: FC<ContextMenuProps> = ({
   const isRightClick = actionType === ClickActions.RightClick
   const isLeftClick = actionType === ClickActions.LeftClick
 
-  const onShowMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onShowMenu = (event: React.MouseEvent<HTMLDivElement>) => {
     showMenu(id, event)
   }
 
   return (
     <>
-      <button
+      <div
+        role="button"
+        aria-hidden
         className={twMerge("appearance-none", className)}
         onContextMenu={isRightClick ? onShowMenu : undefined}
         onClick={isLeftClick ? onShowMenu : undefined}>
         {children}
-      </button>
+      </div>
 
       {isActive &&
         points !== null &&
