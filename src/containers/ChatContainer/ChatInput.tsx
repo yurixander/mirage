@@ -12,7 +12,9 @@ export type ChatInputProps = {
 
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
   const textareaReference = useRef<HTMLTextAreaElement>(null)
-  const {messageText, setMessageText, isDisabled} = useChatInput()
+
+  const {messageText, setMessageText, isDisabled, sendTextMessage} =
+    useChatInput(roomId)
 
   useEffect(() => {
     const textarea = textareaReference.current
@@ -27,21 +29,21 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
     <div className={twMerge("flex gap-2", className)}>
       <div className="flex h-full items-center gap-3">
         <IconButton
-          onClick={() => {
-            /* TODO: Handle `emoji` button click. */
-          }}
           tooltip="Emoji"
           Icon={IoIosHappy}
           isDisabled={isDisabled}
+          onClick={() => {
+            /* TODO: Handle `emoji` button click. */
+          }}
         />
 
         <IconButton
-          onClick={() => {
-            // TODO: Handle here onAttach function.
-          }}
           tooltip="Attach"
           Icon={IoAttach}
           isDisabled={isDisabled}
+          onClick={() => {
+            // TODO: Handle here onAttach function.
+          }}
         />
       </div>
 
@@ -62,7 +64,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
                 setMessageText(afterText => afterText + "\n")
               } else {
                 event.preventDefault()
-                // onSend()
+                void sendTextMessage(messageText)
               }
             }
           }}
@@ -75,7 +77,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
             color="#C463FF"
             isDisabled={isDisabled}
             onClick={() => {
-              // TODO: Handle here onSend message.
+              void sendTextMessage(messageText)
             }}
           />
         </div>

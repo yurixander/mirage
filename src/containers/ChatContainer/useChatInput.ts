@@ -1,31 +1,46 @@
-import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useConnection from "@/hooks/matrix/useConnection"
 import useDebounced from "@/hooks/util/useDebounced"
-import {useCallback, useEffect, useState} from "react"
+import {MsgType} from "matrix-js-sdk"
+import {useEffect, useState} from "react"
 
-const useChatInput = () => {
+const useChatInput = (roomId: string) => {
   const {client} = useConnection()
-  const {activeRoomId} = useActiveRoomIdStore()
   const [messageText, setMessageText] = useState("")
   const debouncedText = useDebounced(messageText, 500)
 
-  const sendEventTyping = useCallback(async () => {
-    if (activeRoomId === null || client === null) {
+  const sendTextMessage = async (text: string) => {
+    if (client === null) {
       return
     }
 
-    await client.sendTyping(activeRoomId, true, 2000)
-  }, [activeRoomId, client])
+    try {
+      await client.sendMessage(roomId, {
+        body: text,
+        msgtype: MsgType.Text,
+      })
+
+      setMessageText("")
+    } catch (error) {
+      // TODO: Show toast when an error has occurred.
+
+      console.error("Error sending message:", error)
+    }
+  }
 
   useEffect(() => {
-    if (debouncedText.length === 0) {
+    if (debouncedText.length === 0 || client === null) {
       return
     }
 
-    void sendEventTyping()
-  }, [debouncedText, sendEventTyping])
+    void client.sendTyping(roomId, true, 2000)
+  }, [client, debouncedText, roomId])
 
-  return {messageText, setMessageText, isDisabled: client === null}
+  return {
+    messageText,
+    setMessageText,
+    isDisabled: client === null,
+    sendTextMessage,
+  }
 }
 
 export default useChatInput
