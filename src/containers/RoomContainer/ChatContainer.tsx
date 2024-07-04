@@ -5,6 +5,7 @@ import {RoomMembershipState} from "@/hooks/matrix/useActiveRoom"
 import RoomInvitedSplash from "../ChatContainer/RoomInvitedSplash"
 import ChatHeader from "../ChatContainer/ChatHeader"
 import {ChatMessages} from "../ChatContainer/ChatMessages"
+import ChatInput from "../ChatContainer/ChatInput"
 
 type ChatContainerProps = {
   roomId: string
@@ -36,7 +37,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
         messagesState={messagesState}
       />
 
-      <div id="ChatInput" className="size-full max-h-14 shrink-0 bg-black" />
+      <ChatInput roomId={roomId} className="size-full max-h-14 shrink-0" />
 
       <div id="Typing Users" className="size-full max-h-12 bg-fuchsia-500" />
     </div>

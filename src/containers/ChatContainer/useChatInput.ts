@@ -18,14 +18,14 @@ const useChatInput = () => {
   }, [activeRoomId, client])
 
   useEffect(() => {
-    if (debouncedText === "") {
+    if (debouncedText.length === 0) {
       return
     }
 
     void sendEventTyping()
   }, [debouncedText, sendEventTyping])
 
-  return {messageText, setMessageText}
+  return {messageText, setMessageText, isDisabled: client === null}
 }
 
 export default useChatInput

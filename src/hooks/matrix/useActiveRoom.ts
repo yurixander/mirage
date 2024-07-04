@@ -21,8 +21,6 @@ import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {type MessageBaseProps} from "@/components/MessageContainer"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useFilePicker} from "use-file-picker"
-import {isUserRoomAdmin} from "@/utils/members"
-import {handleEvents, handleRoomEvents} from "@/utils/rooms"
 import {type ImageModalPreviewProps} from "@/containers/ChatContainer/ChatContainer"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
@@ -93,36 +91,6 @@ const useActiveRoom = () => {
     multiple: false,
     readAs: "DataURL",
   })
-
-  // #region Functions
-  const fetchRoomMessages = useCallback(
-    async (client: MatrixClient, room: Room) => {
-      if (!isMountedReference.current) {
-        return
-      }
-
-      try {
-        setMessagesState(MessagesState.Loading)
-
-        const anyMessages = await handleRoomEvents(client, room)
-
-        if (anyMessages.length === 0) {
-          setMessagesState(MessagesState.NotMessages)
-
-          return
-        }
-
-        setMessagesProp(anyMessages)
-        setMessagesState(MessagesState.Loaded)
-      } catch (error) {
-        // TODO: Handle error fetching messages.
-        console.log("Error fetching messages", error)
-
-        setMessagesState(MessagesState.Error)
-      }
-    },
-    [isMountedReference, roomState]
-  )
 
   const sendTextMessage = useCallback(
     async (body: string) => {

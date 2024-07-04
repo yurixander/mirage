@@ -1,48 +1,30 @@
 import IconButton from "@/components/IconButton"
-import {type FC, useRef, useEffect} from "react"
+import {type FC, useEffect, useRef} from "react"
 import {IoIosHappy} from "react-icons/io"
 import {IoAttach, IoPaperPlane} from "react-icons/io5"
-import React from "react"
+import {twMerge} from "tailwind-merge"
+import useChatInput from "./useChatInput"
 
 export type ChatInputProps = {
-  value: string
-  onAttach: () => void
-  onSend: () => void
-  onValueChange: (value: string) => void
-  isDisabled?: boolean
+  roomId: string
+  className?: string
 }
 
-const ChatInput: FC<ChatInputProps> = ({
-  onAttach,
-  onSend,
-  onValueChange,
-  value,
-  isDisabled = false,
-}) => {
+const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
   const textareaReference = useRef<HTMLTextAreaElement>(null)
-
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter")
-      if (event.ctrlKey) {
-        onValueChange(value + "\n")
-      } else {
-        event.preventDefault()
-        onSend()
-      }
-  }
+  const {messageText, setMessageText, isDisabled} = useChatInput()
 
   useEffect(() => {
-    // Move scroll to last message.
     const textarea = textareaReference.current
 
     if (textarea !== null) {
       textarea.style.height = "auto"
       textarea.style.height = `${textarea.scrollHeight}px`
     }
-  }, [value])
+  }, [messageText])
 
   return (
-    <div className="flex gap-2">
+    <div className={twMerge("flex gap-2", className)}>
       <div className="flex h-full items-center gap-3">
         <IconButton
           onClick={() => {
@@ -50,23 +32,40 @@ const ChatInput: FC<ChatInputProps> = ({
           }}
           tooltip="Emoji"
           Icon={IoIosHappy}
+          isDisabled={isDisabled}
         />
 
-        <IconButton onClick={onAttach} tooltip="Attach" Icon={IoAttach} />
+        <IconButton
+          onClick={() => {
+            // TODO: Handle here onAttach function.
+          }}
+          tooltip="Attach"
+          Icon={IoAttach}
+          isDisabled={isDisabled}
+        />
       </div>
 
       <div className="flex w-full rounded-md border border-neutral-300 bg-neutral-50">
         <textarea
-          onKeyDown={handleKeyDown}
+          className="flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
           rows={1}
           ref={textareaReference}
           placeholder="Write a message or simply say 👋🏼 hello..."
-          value={value}
+          value={messageText}
           disabled={isDisabled}
           onChange={value => {
-            onValueChange(value.target.value)
+            setMessageText(value.target.value)
           }}
-          className="flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
+          onKeyDown={event => {
+            if (event.key === "Enter") {
+              if (event.ctrlKey) {
+                setMessageText(afterText => afterText + "\n")
+              } else {
+                event.preventDefault()
+                // onSend()
+              }
+            }
+          }}
         />
 
         <div className="m-1 size-max">
@@ -75,7 +74,9 @@ const ChatInput: FC<ChatInputProps> = ({
             Icon={IoPaperPlane}
             color="#C463FF"
             isDisabled={isDisabled}
-            onClick={onSend}
+            onClick={() => {
+              // TODO: Handle here onSend message.
+            }}
           />
         </div>
       </div>
