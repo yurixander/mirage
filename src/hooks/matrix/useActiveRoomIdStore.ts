@@ -1,12 +1,9 @@
 import {create} from "zustand"
-import {type RoomState} from "./useActiveRoom"
 
 type ActiveRoomIdStore = {
   activeRoomId: string | null
-  roomState: RoomState | null
   clearActiveRoomId: () => void
-  setRoomState: (roomState: RoomState) => void
-  setActiveRoomId: (roomId: string, roomState?: RoomState) => void
+  setActiveRoomId: (roomId: string) => void
 }
 
 const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
@@ -15,11 +12,8 @@ const useActiveRoomIdStore = create<ActiveRoomIdStore>(set => ({
   clearActiveRoomId() {
     set(_state => ({activeRoomId: null}))
   },
-  setRoomState(roomState) {
-    set(_state => ({roomState}))
-  },
-  setActiveRoomId(roomId, roomState) {
-    set(_state => ({activeRoomId: roomId, roomState}))
+  setActiveRoomId(roomId) {
+    set(_state => ({activeRoomId: roomId}))
   },
 }))
 

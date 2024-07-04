@@ -1,12 +1,7 @@
-import RoomContainer from "@/containers/RoomContainer/RoomContainer"
 import {type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
-  return (
-    <>
-      <RoomContainer />
-    </>
-  )
+  return <></>
 }
 
 export default DevelopmentPreview

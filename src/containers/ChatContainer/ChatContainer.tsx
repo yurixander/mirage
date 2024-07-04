@@ -44,51 +44,38 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
         <div
           className="relative flex size-full"
           id={ModalRenderLocation.ChatContainer}>
-          {roomState === RoomState.Idle || roomState === null ? (
-            <WelcomeSplash />
-          ) : roomState === RoomState.NotFound ? (
-            <RoomNotFoundSplash />
-          ) : roomState === RoomState.Loading ? (
-            <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
-              <Loader text="Loading room" />
-            </div>
-          ) : roomState === RoomState.Invited ? (
-            <RoomInvitedSplash roomId={activeRoomId} />
-          ) : (
-            <div
-              className={twMerge("flex size-full flex-col gap-1", className)}>
-              <ChatHeader className="size-full shrink-0" roomName={roomName} />
+          <div className={twMerge("flex size-full flex-col gap-1", className)}>
+            <ChatHeader className="size-full shrink-0" roomName={roomName} />
 
-              <ChatMessages
-                messages={messagesProp}
-                messagesState={messagesState}
+            <ChatMessages
+              messages={messagesProp}
+              messagesState={messagesState}
+            />
+
+            <div className="mx-4 flex shrink-0 flex-col gap-3">
+              <ChatInput
+                isDisabled={client === null}
+                onAttach={openFilePicker}
+                onValueChange={setMessageText}
+                value={messageText}
+                onSend={() => {
+                  void sendTextMessage(messageText)
+
+                  setMessageText("")
+                }}
               />
 
-              <div className="mx-4 flex shrink-0 flex-col gap-3">
-                <ChatInput
-                  isDisabled={client === null}
-                  onAttach={openFilePicker}
-                  onValueChange={setMessageText}
-                  value={messageText}
-                  onSend={() => {
-                    void sendTextMessage(messageText)
+              <div className="flex gap-3">
+                <div className="size-6" />
 
-                    setMessageText("")
-                  }}
-                />
+                <div className="size-6" />
 
-                <div className="flex gap-3">
-                  <div className="size-6" />
-
-                  <div className="size-6" />
-
-                  {typingUsers.length > 0 && (
-                    <TypingIndicator users={typingUsers} />
-                  )}
-                </div>
+                {typingUsers.length > 0 && (
+                  <TypingIndicator users={typingUsers} />
+                )}
               </div>
             </div>
-          )}
+          </div>
         </div>
       </>
     </>

@@ -1,22 +1,39 @@
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import useRoomChat from "./hooks/useRoomChat"
+import {RoomMembershipState} from "@/hooks/matrix/useActiveRoom"
+import RoomInvitedSplash from "../ChatContainer/RoomInvitedSplash"
+import ChatHeader from "../ChatContainer/ChatHeader"
+import {ChatMessages} from "../ChatContainer/ChatMessages"
 
 type ChatContainerProps = {
   roomId: string
+  roomState: RoomMembershipState.Invited | RoomMembershipState.Joined
   className?: string
 }
 
-const ChatContainer: FC<ChatContainerProps> = ({roomId, className}) => {
-  const {messagesState} = useRoomChat(roomId)
+const ChatContainer: FC<ChatContainerProps> = ({
+  roomId,
+  roomState,
+  className,
+}) => {
+  const {messagesState, roomName, isChatLoading, messages} = useRoomChat(roomId)
 
-  return (
+  return roomState === RoomMembershipState.Invited ? (
+    <RoomInvitedSplash roomId={roomId} />
+  ) : isChatLoading ? (
+    <></>
+  ) : (
     <div className={twMerge(className)}>
-      <div id="ChatHeader" className="size-full max-h-10 bg-green-500" />
+      <ChatHeader
+        className="flex size-full max-h-10 items-center gap-2 border-b border-b-stone-200 px-3"
+        roomName={roomName}
+      />
 
-      <div
-        id="MessageList"
-        className="size-full max-h-[450px] shrink-0 bg-slate-500"
+      <ChatMessages
+        className="size-full max-h-[450px] shrink-0 p-2"
+        messages={messages}
+        messagesState={messagesState}
       />
 
       <div id="ChatInput" className="size-full max-h-14 shrink-0 bg-black" />

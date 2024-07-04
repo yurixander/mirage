@@ -48,6 +48,13 @@ export enum RoomState {
   NotFound,
 }
 
+export enum RoomMembershipState {
+  Idle,
+  Invited,
+  Joined,
+  NoAccess,
+}
+
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
   ? MessageBaseProps
   : Kind extends MessageKind.Image
@@ -70,10 +77,9 @@ export type AnyMessage =
 const useActiveRoom = () => {
   const {client} = useConnection()
   const isMountedReference = useIsMountedRef()
+  const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()
 
-  // Room
-  const {activeRoomId, clearActiveRoomId, roomState, setRoomState} =
-    useActiveRoomIdStore()
+  const [roomState, setRoomState] = useState(RoomMembershipState.Idle)
 
   const [roomName, setRoomName] = useState("")
 
@@ -91,7 +97,7 @@ const useActiveRoom = () => {
   // #region Functions
   const fetchRoomMessages = useCallback(
     async (client: MatrixClient, room: Room) => {
-      if (!isMountedReference.current || roomState !== RoomState.Prepared) {
+      if (!isMountedReference.current) {
         return
       }
 
@@ -120,11 +126,7 @@ const useActiveRoom = () => {
 
   const sendTextMessage = useCallback(
     async (body: string) => {
-      if (
-        activeRoomId === null ||
-        client === null ||
-        roomState !== RoomState.Prepared
-      ) {
+      if (activeRoomId === null || client === null) {
         return
       }
 
@@ -139,7 +141,7 @@ const useActiveRoom = () => {
         console.error("Error sending message:", error)
       }
     },
-    [activeRoomId, client, roomState]
+    [activeRoomId, client]
   )
 
   const imagePreviewProps = useMemo(() => {
@@ -165,139 +167,139 @@ const useActiveRoom = () => {
     return imageModalPreviewProps
   }, [activeRoomId, clear, client, filesContent])
 
-  // #region Init useEffect
-  useEffect(() => {
-    if (
-      client === null ||
-      activeRoomId === null ||
-      !isMountedReference.current
-    ) {
-      return
-    }
+  // // #region Init useEffect
+  // useEffect(() => {
+  //   if (
+  //     client === null ||
+  //     activeRoomId === null ||
+  //     !isMountedReference.current
+  //   ) {
+  //     return
+  //   }
 
-    setRoomState(RoomState.Loading)
+  //   setRoomState(RoomState.Loading)
 
-    const room = client.getRoom(activeRoomId)
+  //   const room = client.getRoom(activeRoomId)
 
-    if (room === null) {
-      setRoomState(RoomState.NotFound)
+  //   if (room === null) {
+  //     setRoomState(RoomState.NotFound)
 
-      return
-    }
+  //     return
+  //   }
 
-    const currentMembership = room.getMyMembership()
+  //   const currentMembership = room.getMyMembership()
 
-    if (
-      currentMembership !== KnownMembership.Join &&
-      currentMembership !== KnownMembership.Invite
-    ) {
-      // TODO: Handle other types of memberships.
+  //   if (
+  //     currentMembership !== KnownMembership.Join &&
+  //     currentMembership !== KnownMembership.Invite
+  //   ) {
+  //     // TODO: Handle other types of memberships.
 
-      setRoomState(RoomState.NotFound)
-      clearActiveRoomId()
+  //     setRoomState(RoomState.NotFound)
+  //     clearActiveRoomId()
 
-      return
-    }
+  //     return
+  //   }
 
-    setRoomName(room.name)
+  //   setRoomName(room.name)
 
-    setRoomState(
-      currentMembership === KnownMembership.Invite
-        ? RoomState.Invited
-        : RoomState.Prepared
-    )
+  //   setRoomState(
+  //     currentMembership === KnownMembership.Invite
+  //       ? RoomState.Invited
+  //       : RoomState.Prepared
+  //   )
 
-    void fetchRoomMessages(client, room)
-  }, [
-    client,
-    activeRoomId,
-    isMountedReference,
-    fetchRoomMessages,
-    clearActiveRoomId,
-    setRoomState,
-    roomState,
-  ])
+  //   void fetchRoomMessages(client, room)
+  // }, [
+  //   client,
+  //   activeRoomId,
+  //   isMountedReference,
+  //   fetchRoomMessages,
+  //   clearActiveRoomId,
+  //   setRoomState,
+  //   roomState,
+  // ])
 
-  // #region Listeners
-  useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
-    if (room === undefined || room.roomId !== activeRoomId || client === null) {
-      return
-    }
+  // // #region Listeners
+  // useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
+  //   if (room === undefined || room.roomId !== activeRoomId || client === null) {
+  //     return
+  //   }
 
-    const isAdminOrModerator = isUserRoomAdmin(room)
+  //   const isAdminOrModerator = isUserRoomAdmin(room)
 
-    void handleEvents(client, event, room.roomId, isAdminOrModerator).then(
-      messageOrEvent => {
-        if (messageOrEvent === null) {
-          return
-        }
+  //   void handleEvents(client, event, room.roomId, isAdminOrModerator).then(
+  //     messageOrEvent => {
+  //       if (messageOrEvent === null) {
+  //         return
+  //       }
 
-        setMessagesProp(messages => [...messages, messageOrEvent])
-        void client.sendReadReceipt(event)
-      }
-    )
-  })
+  //       setMessagesProp(messages => [...messages, messageOrEvent])
+  //       void client.sendReadReceipt(event)
+  //     }
+  //   )
+  // })
 
-  useEventListener(RoomEvent.Redaction, (event, room, _toStartOfTimeline) => {
-    if (room === undefined || room.roomId !== activeRoomId || client === null) {
-      return
-    }
+  // useEventListener(RoomEvent.Redaction, (event, room, _toStartOfTimeline) => {
+  //   if (room === undefined || room.roomId !== activeRoomId || client === null) {
+  //     return
+  //   }
 
-    const eventContent = event.getContent()
+  //   const eventContent = event.getContent()
 
-    if (eventContent.msgtype !== undefined) {
-      return
-    }
+  //   if (eventContent.msgtype !== undefined) {
+  //     return
+  //   }
 
-    void handleRoomEvents(client, room).then(messagesOrEvents => {
-      if (messagesOrEvents === null) {
-        return
-      }
+  //   void handleRoomEvents(client, room).then(messagesOrEvents => {
+  //     if (messagesOrEvents === null) {
+  //       return
+  //     }
 
-      setMessagesProp(messagesOrEvents)
-      void client.sendReadReceipt(event)
-    })
-  })
+  //     setMessagesProp(messagesOrEvents)
+  //     void client.sendReadReceipt(event)
+  //   })
+  // })
 
-  // When users begin typing, add them to the list of typing users.
-  useEventListener(RoomMemberEvent.Typing, (_event, member) => {
-    const userId = client?.getUserId()
+  // // When users begin typing, add them to the list of typing users.
+  // useEventListener(RoomMemberEvent.Typing, (_event, member) => {
+  //   const userId = client?.getUserId()
 
-    if (member.userId === userId || member.roomId !== activeRoomId) {
-      return
-    }
+  //   if (member.userId === userId || member.roomId !== activeRoomId) {
+  //     return
+  //   }
 
-    if (member.typing) {
-      setTypingUsers(prevTypingUsers => [
-        ...prevTypingUsers,
-        {
-          displayName: member.name,
-          color: stringToColor(member.userId),
-          avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
-        },
-      ])
-    } else {
-      setTypingUsers(prevTypingUsers =>
-        prevTypingUsers.filter(user => user.displayName !== member.name)
-      )
-    }
-  })
+  //   if (member.typing) {
+  //     setTypingUsers(prevTypingUsers => [
+  //       ...prevTypingUsers,
+  //       {
+  //         displayName: member.name,
+  //         color: stringToColor(member.userId),
+  //         avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
+  //       },
+  //     ])
+  //   } else {
+  //     setTypingUsers(prevTypingUsers =>
+  //       prevTypingUsers.filter(user => user.displayName !== member.name)
+  //     )
+  //   }
+  // })
 
-  useEventListener(RoomMemberEvent.Membership, (_, member) => {
-    if (client === null || member.userId !== client.getUserId()) {
-      return
-    }
+  // useEventListener(RoomMemberEvent.Membership, (_, member) => {
+  //   if (client === null || member.userId !== client.getUserId()) {
+  //     return
+  //   }
 
-    // If you are kicked out of the room, update the UI so that you cannot access the room.
-    if (
-      member.membership === KnownMembership.Leave ||
-      member.membership === KnownMembership.Ban
-    ) {
-      setRoomState(RoomState.NotFound)
+  //   // If you are kicked out of the room, update the UI so that you cannot access the room.
+  //   if (
+  //     member.membership === KnownMembership.Leave ||
+  //     member.membership === KnownMembership.Ban
+  //   ) {
+  //     setRoomState(RoomState.NotFound)
 
-      clearActiveRoomId()
-    }
-  })
+  //     clearActiveRoomId()
+  //   }
+  // })
 
   return {
     client,
