@@ -1,45 +1,45 @@
 import {type FC} from "react"
-import {twMerge} from "tailwind-merge"
 import useRoomChat from "./hooks/useRoomChat"
-import {RoomMembershipState} from "@/hooks/matrix/useActiveRoom"
-import RoomInvitedSplash from "../ChatContainer/RoomInvitedSplash"
 import ChatHeader from "../ChatContainer/ChatHeader"
 import {ChatMessages} from "../ChatContainer/ChatMessages"
 import ChatInput from "../ChatContainer/ChatInput"
+import TypingIndicator from "@/components/TypingIndicator"
 
 type ChatContainerProps = {
   roomId: string
-  roomState: RoomMembershipState.Invited | RoomMembershipState.Joined
   className?: string
 }
 
-const ChatContainer: FC<ChatContainerProps> = ({
-  roomId,
-  roomState,
-  className,
-}) => {
-  const {messagesState, roomName, isChatLoading, messages} = useRoomChat(roomId)
+const ChatContainer: FC<ChatContainerProps> = ({roomId, className}) => {
+  const {messagesState, roomName, isChatLoading, messages, typingUsers} =
+    useRoomChat(roomId)
 
-  return roomState === RoomMembershipState.Invited ? (
-    <RoomInvitedSplash roomId={roomId} />
-  ) : isChatLoading ? (
+  return isChatLoading ? (
     <></>
   ) : (
-    <div className={twMerge(className)}>
+    <div className={className}>
       <ChatHeader
-        className="flex size-full max-h-10 items-center gap-2 border-b border-b-stone-200 px-3"
+        className="flex size-full max-h-12 shrink-0 items-center gap-2 border-b border-b-stone-200 px-3"
         roomName={roomName}
       />
 
       <ChatMessages
-        className="size-full max-h-[450px] shrink-0 p-2"
+        className="size-full max-h-[450px] shrink-0 p-3"
         messages={messages}
         messagesState={messagesState}
       />
 
-      <ChatInput roomId={roomId} className="size-full max-h-14 shrink-0" />
+      <ChatInput roomId={roomId} className="size-full" />
 
-      <div id="Typing Users" className="size-full max-h-12 bg-fuchsia-500" />
+      <div className="mx-4 flex size-full max-h-12 shrink-0 flex-col gap-3">
+        <div className="flex gap-3">
+          <div className="size-6" />
+
+          <div className="size-6" />
+
+          {typingUsers.length > 0 && <TypingIndicator users={typingUsers} />}
+        </div>
+      </div>
     </div>
   )
 }

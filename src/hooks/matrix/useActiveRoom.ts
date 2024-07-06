@@ -1,28 +1,13 @@
 import {type EventMessageProps} from "@/components/EventMessage"
 import {type ImageMessageProps} from "@/components/ImageMessage"
 import useConnection from "@/hooks/matrix/useConnection"
-import {
-  MsgType,
-  type Room,
-  RoomMemberEvent,
-  RoomEvent,
-  type MatrixClient,
-} from "matrix-js-sdk"
-import {useCallback, useEffect, useMemo, useState} from "react"
-import useEventListener from "./useEventListener"
-import {type TypingIndicatorUser} from "@/components/TypingIndicator"
-import {
-  getImageUrl,
-  sendImageMessageFromFile,
-  stringToColor,
-} from "@/utils/util"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {type MessageBaseProps} from "@/components/MessageContainer"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
-import {useFilePicker} from "use-file-picker"
-import {type ImageModalPreviewProps} from "@/containers/ChatContainer/ChatContainer"
+import {useEffect, useState} from "react"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import useEventListener from "./useEventListener"
+import {RoomMemberEvent} from "matrix-js-sdk"
 
 export enum MessageKind {
   Text,
@@ -39,18 +24,10 @@ export enum MessagesState {
 }
 
 export enum RoomState {
-  Loading,
-  Invited,
-  Prepared,
-  Idle,
-  NotFound,
-}
-
-export enum RoomMembershipState {
   Idle,
   Invited,
   Joined,
-  NoAccess,
+  NotFound,
 }
 
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
@@ -74,211 +51,93 @@ export type AnyMessage =
 
 const useActiveRoom = () => {
   const {client} = useConnection()
-  const isMountedReference = useIsMountedRef()
+  const [roomState, setRoomState] = useState(RoomState.Idle)
   const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()
 
-  const [roomState, setRoomState] = useState(RoomMembershipState.Idle)
-
-  const [roomName, setRoomName] = useState("")
-
-  // Messages and Typing
-  const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
-  const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
-  const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
-
-  const {openFilePicker, filesContent, clear} = useFilePicker({
-    accept: "image/*",
-    multiple: false,
-    readAs: "DataURL",
-  })
-
-  const sendTextMessage = useCallback(
-    async (body: string) => {
-      if (activeRoomId === null || client === null) {
-        return
-      }
-
-      try {
-        await client.sendMessage(activeRoomId, {
-          body,
-          msgtype: MsgType.Text,
-        })
-      } catch (error) {
-        // TODO: Show toast when an error has occurred.
-
-        console.error("Error sending message:", error)
-      }
-    },
-    [activeRoomId, client]
-  )
-
-  const imagePreviewProps = useMemo(() => {
-    if (filesContent.length <= 0) {
+  useEffect(() => {
+    if (client === null || activeRoomId === null) {
       return
     }
 
-    const imageModalPreviewProps: ImageModalPreviewProps = {
-      imageName: filesContent[0].name,
-      imageUrl: filesContent[0].content,
-      onClear: clear,
-      onSendImage() {
-        void sendImageMessageFromFile(
-          filesContent[0],
-          client,
-          activeRoomId
-        ).then(() => {
-          clear()
-        })
-      },
+    const room = client.getRoom(activeRoomId)
+
+    if (room === null) {
+      setRoomState(RoomState.NotFound)
+
+      return
     }
 
-    return imageModalPreviewProps
-  }, [activeRoomId, clear, client, filesContent])
+    const membership = room.getMyMembership()
 
-  // // #region Init useEffect
-  // useEffect(() => {
-  //   if (
-  //     client === null ||
-  //     activeRoomId === null ||
-  //     !isMountedReference.current
-  //   ) {
-  //     return
-  //   }
+    setRoomState(() => {
+      if (
+        membership !== KnownMembership.Join &&
+        membership !== KnownMembership.Invite
+      ) {
+        return RoomState.NotFound
+      }
 
-  //   setRoomState(RoomState.Loading)
+      return membership === KnownMembership.Join
+        ? RoomState.Joined
+        : RoomState.Invited
+    })
+  }, [activeRoomId, client])
 
-  //   const room = client.getRoom(activeRoomId)
-
-  //   if (room === null) {
-  //     setRoomState(RoomState.NotFound)
-
-  //     return
-  //   }
-
-  //   const currentMembership = room.getMyMembership()
-
-  //   if (
-  //     currentMembership !== KnownMembership.Join &&
-  //     currentMembership !== KnownMembership.Invite
-  //   ) {
-  //     // TODO: Handle other types of memberships.
-
-  //     setRoomState(RoomState.NotFound)
-  //     clearActiveRoomId()
-
-  //     return
-  //   }
-
-  //   setRoomName(room.name)
-
-  //   setRoomState(
-  //     currentMembership === KnownMembership.Invite
-  //       ? RoomState.Invited
-  //       : RoomState.Prepared
-  //   )
-
-  //   void fetchRoomMessages(client, room)
-  // }, [
-  //   client,
-  //   activeRoomId,
-  //   isMountedReference,
-  //   fetchRoomMessages,
-  //   clearActiveRoomId,
-  //   setRoomState,
-  //   roomState,
-  // ])
-
-  // // #region Listeners
-  // useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
-  //   if (room === undefined || room.roomId !== activeRoomId || client === null) {
-  //     return
-  //   }
-
-  //   const isAdminOrModerator = isUserRoomAdmin(room)
-
-  //   void handleEvents(client, event, room.roomId, isAdminOrModerator).then(
-  //     messageOrEvent => {
-  //       if (messageOrEvent === null) {
-  //         return
-  //       }
-
-  //       setMessagesProp(messages => [...messages, messageOrEvent])
-  //       void client.sendReadReceipt(event)
-  //     }
-  //   )
+  // const {openFilePicker, filesContent, clear} = useFilePicker({
+  //   accept: "image/*",
+  //   multiple: false,
+  //   readAs: "DataURL",
   // })
 
-  // useEventListener(RoomEvent.Redaction, (event, room, _toStartOfTimeline) => {
-  //   if (room === undefined || room.roomId !== activeRoomId || client === null) {
+  // const imagePreviewProps = useMemo(() => {
+  //   if (filesContent.length <= 0) {
   //     return
   //   }
 
-  //   const eventContent = event.getContent()
-
-  //   if (eventContent.msgtype !== undefined) {
-  //     return
+  //   const imageModalPreviewProps: ImageModalPreviewProps = {
+  //     imageName: filesContent[0].name,
+  //     imageUrl: filesContent[0].content,
+  //     onClear: clear,
+  //     onSendImage() {
+  //       void sendImageMessageFromFile(
+  //         filesContent[0],
+  //         client,
+  //         activeRoomId
+  //       ).then(() => {
+  //         clear()
+  //       })
+  //     },
   //   }
 
-  //   void handleRoomEvents(client, room).then(messagesOrEvents => {
-  //     if (messagesOrEvents === null) {
-  //       return
-  //     }
+  //   return imageModalPreviewProps
+  // }, [activeRoomId, clear, client, filesContent])
 
-  //     setMessagesProp(messagesOrEvents)
-  //     void client.sendReadReceipt(event)
-  //   })
-  // })
+  useEventListener(RoomMemberEvent.Membership, (_, member) => {
+    if (client === null || member.userId !== client.getUserId()) {
+      return
+    }
 
-  // // When users begin typing, add them to the list of typing users.
-  // useEventListener(RoomMemberEvent.Typing, (_event, member) => {
-  //   const userId = client?.getUserId()
+    // If you are kicked out of the room, update the UI so that you cannot access the room.
+    if (
+      member.membership !== KnownMembership.Join &&
+      member.membership !== KnownMembership.Invite
+    ) {
+      setRoomState(RoomState.NotFound)
+      clearActiveRoomId()
 
-  //   if (member.userId === userId || member.roomId !== activeRoomId) {
-  //     return
-  //   }
+      return
+    }
 
-  //   if (member.typing) {
-  //     setTypingUsers(prevTypingUsers => [
-  //       ...prevTypingUsers,
-  //       {
-  //         displayName: member.name,
-  //         color: stringToColor(member.userId),
-  //         avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
-  //       },
-  //     ])
-  //   } else {
-  //     setTypingUsers(prevTypingUsers =>
-  //       prevTypingUsers.filter(user => user.displayName !== member.name)
-  //     )
-  //   }
-  // })
-
-  // useEventListener(RoomMemberEvent.Membership, (_, member) => {
-  //   if (client === null || member.userId !== client.getUserId()) {
-  //     return
-  //   }
-
-  //   // If you are kicked out of the room, update the UI so that you cannot access the room.
-  //   if (
-  //     member.membership === KnownMembership.Leave ||
-  //     member.membership === KnownMembership.Ban
-  //   ) {
-  //     setRoomState(RoomState.NotFound)
-
-  //     clearActiveRoomId()
-  //   }
-  // })
+    setRoomState(
+      member.membership === KnownMembership.Join
+        ? RoomState.Joined
+        : RoomState.Invited
+    )
+  })
 
   return {
     client,
-    messagesProp,
-    sendTextMessage,
-    openFilePicker,
-    typingUsers,
-    roomName,
     roomState,
-    messagesState,
-    imagePreviewProps,
     activeRoomId,
   }
 }

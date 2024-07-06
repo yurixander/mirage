@@ -19,8 +19,6 @@ export type ChatContainerProps = {
 }
 
 const ChatContainer: FC<ChatContainerProps> = ({className}) => {
-  const {messageText, setMessageText} = useChatInput()
-
   const {
     client,
     messagesProp,
@@ -51,30 +49,6 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
               messages={messagesProp}
               messagesState={messagesState}
             />
-
-            <div className="mx-4 flex shrink-0 flex-col gap-3">
-              <ChatInput
-                isDisabled={client === null}
-                onAttach={openFilePicker}
-                onValueChange={setMessageText}
-                value={messageText}
-                onSend={() => {
-                  void sendTextMessage(messageText)
-
-                  setMessageText("")
-                }}
-              />
-
-              <div className="flex gap-3">
-                <div className="size-6" />
-
-                <div className="size-6" />
-
-                {typingUsers.length > 0 && (
-                  <TypingIndicator users={typingUsers} />
-                )}
-              </div>
-            </div>
           </div>
         </div>
       </>

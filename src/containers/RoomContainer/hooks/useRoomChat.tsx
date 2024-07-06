@@ -1,3 +1,4 @@
+import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {type AnyMessage, MessagesState} from "@/hooks/matrix/useActiveRoom"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useConnection from "@/hooks/matrix/useConnection"
@@ -5,7 +6,8 @@ import useEventListener from "@/hooks/matrix/useEventListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {isUserRoomAdmin} from "@/utils/members"
 import {handleEvent, handleRoomEvents} from "@/utils/rooms"
-import {RoomEvent, type Room} from "matrix-js-sdk"
+import {getImageUrl} from "@/utils/util"
+import {RoomEvent, RoomMemberEvent, type Room} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 
 const useRoomChat = (roomId: string) => {
@@ -13,9 +15,10 @@ const useRoomChat = (roomId: string) => {
   const isMountedReference = useIsMountedRef()
   const {clearActiveRoomId} = useActiveRoomIdStore()
   const [roomName, setRoomName] = useState("")
-  const [isChatLoading, setChatLoading] = useState(false)
+  const [isChatLoading, setChatLoading] = useState(true)
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
   const [messages, setMessages] = useState<AnyMessage[]>([])
+  const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
 
   const fetchRoomMessages = useCallback(
     async (room: Room) => {
@@ -50,8 +53,6 @@ const useRoomChat = (roomId: string) => {
     if (client === null) {
       return
     }
-
-    setChatLoading(true)
 
     const room = client.getRoom(roomId)
 
@@ -113,7 +114,31 @@ const useRoomChat = (roomId: string) => {
     void room.client.sendReadReceipt(event)
   })
 
-  return {messagesState, isChatLoading, roomName, messages}
+  // When users begin typing, add them to the list of typing users.
+  useEventListener(RoomMemberEvent.Typing, (_event, member) => {
+    const userId = client?.getUserId()
+
+    if (member.userId === userId || member.roomId !== roomId) {
+      return
+    }
+
+    if (member.typing) {
+      setTypingUsers(prevTypingUsers => [
+        ...prevTypingUsers,
+        {
+          displayName: member.name,
+          userId: member.userId,
+          avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
+        },
+      ])
+    } else {
+      setTypingUsers(prevTypingUsers =>
+        prevTypingUsers.filter(user => user.userId !== member.userId)
+      )
+    }
+  })
+
+  return {messagesState, isChatLoading, roomName, messages, typingUsers}
 }
 
 export default useRoomChat

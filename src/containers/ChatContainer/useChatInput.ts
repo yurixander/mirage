@@ -14,12 +14,12 @@ const useChatInput = (roomId: string) => {
     }
 
     try {
+      setMessageText("")
+
       await client.sendMessage(roomId, {
         body: text,
         msgtype: MsgType.Text,
       })
-
-      setMessageText("")
     } catch (error) {
       // TODO: Show toast when an error has occurred.
 
