@@ -6,12 +6,15 @@ import WelcomeSplash from "../ChatContainer/WelcomeSplash"
 import RoomNotFoundSplash from "../ChatContainer/RoomNotFoundSplash"
 import useActiveRoom, {RoomState} from "@/hooks/matrix/useActiveRoom"
 import RoomInvitedSplash from "../ChatContainer/RoomInvitedSplash"
+import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
 
   return (
-    <div className="flex size-full flex-col">
+    <div
+      className="flex size-full flex-col"
+      id={ModalRenderLocation.RoomContainer}>
       {(roomState === RoomState.Joined || roomState === RoomState.Invited) &&
       activeRoomId !== null ? (
         <div className="flex size-full">

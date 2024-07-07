@@ -3,11 +3,12 @@ import {type AnyMessage, MessagesState} from "@/hooks/matrix/useActiveRoom"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
+import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {isUserRoomAdmin} from "@/utils/members"
 import {handleEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl} from "@/utils/util"
-import {RoomEvent, RoomMemberEvent, type Room} from "matrix-js-sdk"
+import {type Room, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 
 const useRoomChat = (roomId: string) => {
@@ -19,6 +20,7 @@ const useRoomChat = (roomId: string) => {
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
   const [messages, setMessages] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
+  const [currentRoom, setCurrentRoom] = useState<Room | null>(null)
 
   const fetchRoomMessages = useCallback(
     async (room: Room) => {
@@ -63,23 +65,20 @@ const useRoomChat = (roomId: string) => {
     }
 
     setRoomName(room.name)
-
-    // Fetch messages ect...
-
     setChatLoading(false)
 
     void fetchRoomMessages(room)
+
+    setCurrentRoom(room)
   }, [clearActiveRoomId, client, fetchRoomMessages, roomId])
 
-  // TODO: Handle listeners for room name ect...
-
-  useEventListener(RoomEvent.Name, room => {
+  // #region Listeners
+  useRoomListener(currentRoom, RoomEvent.Name, room => {
     setRoomName(room.name)
   })
 
-  // #region Listeners
-  useEventListener(RoomEvent.Timeline, (event, room, _toStartOfTimeline) => {
-    if (room === undefined || room.roomId !== roomId) {
+  useRoomListener(currentRoom, RoomEvent.Timeline, (event, room) => {
+    if (room === undefined) {
       return
     }
 
@@ -98,8 +97,9 @@ const useRoomChat = (roomId: string) => {
     )
   })
 
-  useEventListener(RoomEvent.Redaction, (event, room) => {
-    if (room === undefined || room.roomId !== roomId) {
+  // When someone deletes a message.
+  useRoomListener(currentRoom, RoomEvent.Redaction, (event, room) => {
+    if (room === undefined) {
       return
     }
 

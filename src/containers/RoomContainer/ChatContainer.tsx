@@ -4,6 +4,7 @@ import ChatHeader from "../ChatContainer/ChatHeader"
 import {ChatMessages} from "../ChatContainer/ChatMessages"
 import ChatInput from "../ChatContainer/ChatInput"
 import TypingIndicator from "@/components/TypingIndicator"
+import Loader from "@/components/Loader"
 
 type ChatContainerProps = {
   roomId: string
@@ -15,7 +16,9 @@ const ChatContainer: FC<ChatContainerProps> = ({roomId, className}) => {
     useRoomChat(roomId)
 
   return isChatLoading ? (
-    <></>
+    <div className="flex size-full items-center justify-center">
+      <Loader text="Loading room" />
+    </div>
   ) : (
     <div className={className}>
       <ChatHeader

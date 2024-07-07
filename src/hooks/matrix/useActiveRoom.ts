@@ -113,7 +113,11 @@ const useActiveRoom = () => {
   // }, [activeRoomId, clear, client, filesContent])
 
   useEventListener(RoomMemberEvent.Membership, (_, member) => {
-    if (client === null || member.userId !== client.getUserId()) {
+    if (
+      client === null ||
+      member.userId !== client.getUserId() ||
+      activeRoomId !== member.roomId
+    ) {
       return
     }
 
