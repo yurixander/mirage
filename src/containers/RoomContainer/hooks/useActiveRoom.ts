@@ -1,27 +1,9 @@
-import {type EventMessageProps} from "@/components/EventMessage"
-import {type ImageMessageProps} from "@/components/ImageMessage"
 import useConnection from "@/hooks/matrix/useConnection"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import {type MessageBaseProps} from "@/components/MessageContainer"
-import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useEffect, useState} from "react"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import useEventListener from "./useEventListener"
 import {RoomMemberEvent} from "matrix-js-sdk"
-
-export enum MessageKind {
-  Text,
-  Image,
-  Event,
-  Unread,
-}
-
-export enum MessagesState {
-  Loading,
-  Loaded,
-  NotMessages,
-  Error,
-}
+import useEventListener from "@/hooks/matrix/useEventListener"
 
 export enum RoomState {
   Idle,
@@ -29,25 +11,6 @@ export enum RoomState {
   Joined,
   NotFound,
 }
-
-export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
-  ? MessageBaseProps
-  : Kind extends MessageKind.Image
-    ? ImageMessageProps
-    : Kind extends MessageKind.Event
-      ? EventMessageProps
-      : UnreadIndicatorProps
-
-export type Message<Kind extends MessageKind> = {
-  kind: Kind
-  data: MessageOf<Kind>
-}
-
-export type AnyMessage =
-  | Message<MessageKind.Text>
-  | Message<MessageKind.Image>
-  | Message<MessageKind.Event>
-  | Message<MessageKind.Unread>
 
 const useActiveRoom = () => {
   const {client} = useConnection()

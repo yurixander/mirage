@@ -1,5 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import WelcomChatContainer from "../../containers/ChatContainer/WelcomeSplash"
+import WelcomChatContainer from "../../containers/RoomContainer/WelcomeSplash"
 
 type Story = StoryObj<typeof WelcomChatContainer>
 

@@ -2,11 +2,11 @@ import {type FC} from "react"
 import ChatContainer from "./ChatContainer"
 import Roster from "../Roster/Roster"
 import SmartActionBar from "@/components/SmartActionBar"
-import WelcomeSplash from "../ChatContainer/WelcomeSplash"
-import RoomNotFoundSplash from "../ChatContainer/RoomNotFoundSplash"
-import useActiveRoom, {RoomState} from "@/hooks/matrix/useActiveRoom"
-import RoomInvitedSplash from "../ChatContainer/RoomInvitedSplash"
+import WelcomeSplash from "./WelcomeSplash"
+import RoomNotFoundSplash from "./RoomNotFoundSplash"
+import RoomInvitedSplash from "./RoomInvitedSplash"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
+import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()

@@ -1,5 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import ChatContainerLoader from "../../containers/ChatContainer/MessagesPlaceholder"
+import ChatContainerLoader from "../../containers/RoomContainer/MessagesPlaceholder"
 
 type Story = StoryObj<typeof ChatContainerLoader>
 

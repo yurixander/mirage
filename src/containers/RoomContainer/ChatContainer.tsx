@@ -1,8 +1,8 @@
 import {type FC} from "react"
 import useRoomChat from "./hooks/useRoomChat"
-import ChatHeader from "../ChatContainer/ChatHeader"
-import {ChatMessages} from "../ChatContainer/ChatMessages"
-import ChatInput from "../ChatContainer/ChatInput"
+import ChatHeader from "./ChatHeader"
+import {ChatMessages} from "./ChatMessages"
+import ChatInput from "./ChatInput"
 import TypingIndicator from "@/components/TypingIndicator"
 import Loader from "@/components/Loader"
 

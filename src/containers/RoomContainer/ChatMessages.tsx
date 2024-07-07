@@ -3,15 +3,11 @@ import ImageMessage from "@/components/ImageMessage"
 import TextMessage from "@/components/TextMessage"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import UnreadIndicator from "@/components/UnreadIndicator"
-import {
-  type AnyMessage,
-  MessagesState,
-  MessageKind,
-} from "@/hooks/matrix/useActiveRoom"
 import {type FC, useEffect, useMemo, useRef} from "react"
 import MessagesPlaceholder from "./MessagesPlaceholder"
 import {assert} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
+import {type AnyMessage, MessageKind, MessagesState} from "./hooks/useRoomChat"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]

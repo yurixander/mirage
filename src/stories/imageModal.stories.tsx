@@ -1,5 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import ImageModal from "../containers/ChatContainer/ImageModal"
+import ImageModal from "../containers/RoomContainer/ImageModal"
 
 type Story = StoryObj<typeof ImageModal>
 
