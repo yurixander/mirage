@@ -8,7 +8,7 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
-import {isUserRoomAdmin} from "@/utils/members"
+import {isUserRoomAdminOrMod} from "@/utils/members"
 import {handleEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl} from "@/utils/util"
 import {type Room, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
@@ -119,7 +119,7 @@ const useRoomChat = (roomId: string) => {
     }
 
     // TODO: Optimize this with changes from https://github.com/yurixander/mirage/pull/57
-    const isAdminOrModerator = isUserRoomAdmin(room)
+    const isAdminOrModerator = isUserRoomAdminOrMod(room)
 
     void handleEvent(room.client, event, room.roomId, isAdminOrModerator).then(
       messageOrEvent => {

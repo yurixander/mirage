@@ -24,9 +24,12 @@ import {
   isUserRoomAdminOrMod,
   UserPowerLevel,
 } from "./members"
-import {type AnyMessage, MessageKind} from "@/hooks/matrix/useActiveRoom"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {type MessageBaseProps} from "@/components/MessageContainer"
+import {
+  type AnyMessage,
+  MessageKind,
+} from "@/containers/RoomContainer/hooks/useRoomChat"
 
 export enum ImageSizes {
   Server = 47,
