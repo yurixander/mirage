@@ -17,14 +17,12 @@ import {
   normalizeName,
   stringToColor,
 } from "./util"
-import {
-  type RosterUserProps,
-  UserPowerLevel,
-} from "@/containers/Roster/RosterUser"
+import {type RosterUserProps} from "@/containers/Roster/RosterUser"
 import {
   getRoomAdminsAndModerators,
   getUserLastPresence,
-  isUserRoomAdmin,
+  isUserRoomAdminOrMod,
+  UserPowerLevel,
 } from "./members"
 import {type AnyMessage, MessageKind} from "@/hooks/matrix/useActiveRoom"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
@@ -142,7 +140,7 @@ export const handleRoomEvents = async (
   const roomHistory = await client.scrollback(activeRoom, 30)
   const events = roomHistory.getLiveTimeline().getEvents()
   const lastReadEventId = getLastReadEventIdFromRoom(activeRoom, client)
-  const isAdminOrModerator = isUserRoomAdmin(activeRoom)
+  const isAdminOrModerator = isUserRoomAdminOrMod(activeRoom)
   const allMessageProperties: AnyMessage[] = []
 
   for (let index = 0; index < events.length; index++) {

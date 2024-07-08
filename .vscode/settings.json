@@ -23,7 +23,8 @@
     "msgtype",
     "uuidv",
     "CUTEFUNNYART",
-    "TRYGVEME"
+    "TRYGVEME",
+    "scrollback"
   ],
   "css.customData": [".vscode/tailwind.json"]
 }

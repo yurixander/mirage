@@ -1,10 +1,10 @@
-import {UserPowerLevel} from "@/containers/Roster/RosterUser"
 import useConnection from "../../../hooks/matrix/useConnection"
 import {useEffect, useState, useCallback} from "react"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {getRoomMembers} from "@/utils/rooms"
 import {type MemberSection} from "@/containers/Roster/MemberList"
 import {type Room} from "matrix-js-sdk"
+import {UserPowerLevel} from "@/utils/members"
 
 const useRoomMembers = (roomId: string) => {
   const {client} = useConnection()
