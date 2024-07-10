@@ -1,12 +1,42 @@
 import useConnection from "@/hooks/matrix/useConnection"
 import useDebounced from "@/hooks/util/useDebounced"
+import {sendImageMessageFromFile} from "@/utils/util"
 import {MsgType} from "matrix-js-sdk"
-import {useEffect, useState} from "react"
+import {useEffect, useMemo, useState} from "react"
+import {useFilePicker} from "use-file-picker"
+import {type ImageModalPreviewProps} from "./ImageModalPreview"
 
 const useChatInput = (roomId: string) => {
   const {client} = useConnection()
   const [messageText, setMessageText] = useState("")
   const debouncedText = useDebounced(messageText, 500)
+
+  const {openFilePicker, filesContent, clear} = useFilePicker({
+    accept: "image/*",
+    multiple: false,
+    readAs: "DataURL",
+  })
+
+  const imagePreviewProps = useMemo(() => {
+    if (filesContent.length <= 0) {
+      return
+    }
+
+    const imageModalPreviewProps: ImageModalPreviewProps = {
+      imageName: filesContent[0].name,
+      imageUrl: filesContent[0].content,
+      onClear: clear,
+      onSendImage() {
+        void sendImageMessageFromFile(filesContent[0], client, roomId).then(
+          () => {
+            clear()
+          }
+        )
+      },
+    }
+
+    return imageModalPreviewProps
+  }, [clear, client, filesContent, roomId])
 
   const sendTextMessage = async (text: string) => {
     if (client === null) {
@@ -40,6 +70,8 @@ const useChatInput = (roomId: string) => {
     setMessageText,
     isDisabled: client === null,
     sendTextMessage,
+    openFilePicker,
+    imagePreviewProps,
   }
 }
 

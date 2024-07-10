@@ -46,35 +46,6 @@ const useActiveRoom = () => {
     })
   }, [activeRoomId, client])
 
-  // const {openFilePicker, filesContent, clear} = useFilePicker({
-  //   accept: "image/*",
-  //   multiple: false,
-  //   readAs: "DataURL",
-  // })
-
-  // const imagePreviewProps = useMemo(() => {
-  //   if (filesContent.length <= 0) {
-  //     return
-  //   }
-
-  //   const imageModalPreviewProps: ImageModalPreviewProps = {
-  //     imageName: filesContent[0].name,
-  //     imageUrl: filesContent[0].content,
-  //     onClear: clear,
-  //     onSendImage() {
-  //       void sendImageMessageFromFile(
-  //         filesContent[0],
-  //         client,
-  //         activeRoomId
-  //       ).then(() => {
-  //         clear()
-  //       })
-  //     },
-  //   }
-
-  //   return imageModalPreviewProps
-  // }, [activeRoomId, clear, client, filesContent])
-
   useEventListener(RoomMemberEvent.Membership, (_, member) => {
     if (
       client === null ||
