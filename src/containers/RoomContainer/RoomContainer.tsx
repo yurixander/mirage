@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import {useState, type FC} from "react"
 import ChatContainer from "./ChatContainer"
 import Roster from "../Roster/Roster"
 import SmartActionBar from "@/components/SmartActionBar"
@@ -10,6 +10,7 @@ import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
+  const [isRosterExpanded, setIsRosterExpanded] = useState(true)
 
   return (
     <div
@@ -24,13 +25,17 @@ const RoomContainer: FC = () => {
             <ChatContainer
               className="flex size-full flex-col"
               roomId={activeRoomId}
+              isRosterExpanded={isRosterExpanded}
+              onExpandedRoster={setIsRosterExpanded}
             />
           )}
 
-          <Roster
-            className="flex size-full max-w-52 flex-col border border-l-slate-300 bg-gray-50"
-            roomId={activeRoomId}
-          />
+          {isRosterExpanded && (
+            <Roster
+              className="flex size-full max-w-52 flex-col border border-l-slate-300 bg-gray-50"
+              roomId={activeRoomId}
+            />
+          )}
         </div>
       ) : roomState === RoomState.Idle ? (
         <WelcomeSplash />

@@ -68,6 +68,14 @@ module.exports = {
     },
     keyframes: {
       // Usage: animate-[keyframe-name]
+      "slideIn": {
+        from: {
+          width: "0%",
+        },
+        to: {
+          width: "100%",
+        },
+      },
       "pulse": {
         "50%": {
           opacity: ".5",
