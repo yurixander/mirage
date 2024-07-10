@@ -1,14 +1,7 @@
-import {useMemo, type FC} from "react"
+import {type FC} from "react"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
-import {saveAs} from "file-saver"
 import {IoIosAlert} from "react-icons/io"
-import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
-import {
-  CONTEXT_MENU_DELETE,
-  CONTEXT_MENU_REPLY,
-  CONTEXT_MENU_RESEND,
-  CONTEXT_MENU_SAVE,
-} from "@/utils/menu"
+import ContextMenu from "./ContextMenu"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
@@ -21,48 +14,12 @@ const ImageMessage: FC<ImageMessageProps> = ({
   authorDisplayNameColor,
   imageUrl,
   onAuthorClick,
+  onClickImage,
   text,
   timestamp,
-  onDeleteMessage,
-  onClickImage,
+  contextMenuItems,
   id,
 }) => {
-  const contextMenuItems = useMemo(() => {
-    const items: ContextMenuItem[] = []
-
-    if (imageUrl !== undefined) {
-      items.push(
-        {
-          ...CONTEXT_MENU_SAVE,
-          onClick: () => {
-            saveAs(imageUrl, text)
-          },
-        },
-        {
-          ...CONTEXT_MENU_RESEND,
-          onClick: () => {
-            throw new Error("Handle resend message.")
-          },
-        },
-        {
-          ...CONTEXT_MENU_REPLY,
-          onClick: () => {
-            throw new Error("Handle reply message.")
-          },
-        }
-      )
-    }
-
-    if (onDeleteMessage !== undefined) {
-      items.push({
-        ...CONTEXT_MENU_DELETE,
-        onClick: onDeleteMessage,
-      })
-    }
-
-    return items
-  }, [imageUrl, onDeleteMessage, text])
-
   const content = (
     <div className="flex flex-col pt-1">
       {imageUrl === null ? (
