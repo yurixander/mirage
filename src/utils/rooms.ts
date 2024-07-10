@@ -671,6 +671,7 @@ export const handleMessagesEvent = async (
           ...messageBaseProperties,
           text: "",
           imageUrl: getImageUrl(eventContent.url as string, client),
+          onClickImage() {},
         },
       }
     }
