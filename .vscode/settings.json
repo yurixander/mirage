@@ -18,6 +18,12 @@
   },
   "eslint.enable": true,
   "eslint.validate": ["html"],
-  "cSpell.words": ["commitlint", "CUTEFUNNYART", "scrollback", "TRYGVEME"],
+  "cSpell.words": [
+    "commitlint",
+    "CUTEFUNNYART",
+    "msgtype",
+    "scrollback",
+    "TRYGVEME"
+  ],
   "css.customData": [".vscode/tailwind.json"]
 }

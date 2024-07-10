@@ -266,8 +266,9 @@ export function getUsernameByUserId(userId: string): string {
 }
 
 export const generateUniqueNumber = (): number => {
-  const partialUUID = generateRandomId().replaceAll("-", "").slice(0, 15)
-  return Number.parseInt(partialUUID, 16)
+  const timestamp = Date.now()
+  const randomNum = Math.floor(Math.random() * 100_000)
+  return Number.parseInt(`${timestamp}${randomNum}`)
 }
 
 export function generateRandomId(length: number = 10): string {

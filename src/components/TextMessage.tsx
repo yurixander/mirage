@@ -1,12 +1,7 @@
-import {useMemo, type FC} from "react"
+import {type FC} from "react"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
-import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
+import ContextMenu from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
-import {
-  CONTEXT_MENU_DELETE,
-  CONTEXT_MENU_REPLY,
-  CONTEXT_MENU_RESEND,
-} from "@/utils/menu"
 
 const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
@@ -15,32 +10,9 @@ const TextMessage: FC<MessageBaseProps> = ({
   onAuthorClick,
   text,
   timestamp,
-  onDeleteMessage,
+  contextMenuItems,
   id,
 }) => {
-  const contextMenuItems = useMemo(() => {
-    const items: ContextMenuItem[] = [
-      {
-        ...CONTEXT_MENU_REPLY,
-        onClick: () => {
-          throw new Error("Reply message not handled.")
-        },
-      },
-      {
-        ...CONTEXT_MENU_RESEND,
-        onClick: () => {
-          throw new Error("Resend message not handled.")
-        },
-      },
-    ]
-
-    if (onDeleteMessage !== undefined) {
-      items.push({...CONTEXT_MENU_DELETE, onClick: onDeleteMessage})
-    }
-
-    return items
-  }, [onDeleteMessage])
-
   return (
     <MessageContainer
       authorDisplayName={authorDisplayName}
@@ -52,8 +24,7 @@ const TextMessage: FC<MessageBaseProps> = ({
         <Typography
           className="max-w-messageMaxWidth cursor-text select-text break-words"
           variant={TypographyVariant.Body}>
-          {/* TODO: Process line breaks (\n). */}
-          {text}
+          {text.split(/(\n)/).map(line => (line === "\n" ? <br /> : line))}
         </Typography>
       </ContextMenu>
     </MessageContainer>

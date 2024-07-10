@@ -27,6 +27,7 @@ import {
 import {type AnyMessage, MessageKind} from "@/hooks/matrix/useActiveRoom"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {type MessageBaseProps} from "@/components/MessageContainer"
+import {buildMessageMenuItems} from "./menu"
 
 export enum ImageSizes {
   Server = 47,
@@ -617,7 +618,7 @@ export const handleMessagesEvent = async (
   event: MatrixEvent,
   roomId: string,
   sender: string,
-  isAdmin: boolean
+  isAdminOrModerator: boolean
 ): Promise<AnyMessage | null> => {
   const eventContent = event.getContent()
   const user = client.getUser(sender)
@@ -643,22 +644,34 @@ export const handleMessagesEvent = async (
     authorDisplayName,
     authorDisplayNameColor: stringToColor(authorDisplayName),
     id: eventId,
-    onAuthorClick: () => {},
+    onAuthorClick: () => {
+      // TODO: Handle onAuthorClick here.
+    },
     text: eventContent.body,
     timestamp,
-    onDeleteMessage:
-      isMessageOfMyUser || isAdmin
-        ? () => {
-            deleteMessage(client, roomId, eventId)
-          }
-        : undefined,
+    contextMenuItems: [],
   }
 
   switch (eventContent.msgtype) {
     case MsgType.Text: {
       return {
         kind: MessageKind.Text,
-        data: {...messageBaseProperties},
+        data: {
+          ...messageBaseProperties,
+          contextMenuItems: buildMessageMenuItems({
+            canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
+            isMessageError: false,
+            onReplyMessage() {
+              // TODO: Handle reply
+            },
+            onResendMessage() {
+              // TODO: Handle resend message here.
+            },
+            onDeleteMessage() {
+              deleteMessage(client, roomId, eventId)
+            },
+          }),
+        },
       }
     }
     case MsgType.Image: {
@@ -667,7 +680,25 @@ export const handleMessagesEvent = async (
         data: {
           ...messageBaseProperties,
           text: "",
+          // TODO: Change use `as` for cast and null handling.
           imageUrl: getImageUrl(eventContent.url as string, client),
+          contextMenuItems: buildMessageMenuItems({
+            canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
+            isMessageError: false,
+            isSaveable: true,
+            onReplyMessage() {
+              // TODO: Handle reply
+            },
+            onResendMessage() {
+              // TODO: Handle resend message here.
+            },
+            onSaveContent() {
+              // TODO: Handle image saving here.
+            },
+            onDeleteMessage() {
+              deleteMessage(client, roomId, eventId)
+            },
+          }),
         },
       }
     }
@@ -717,6 +748,10 @@ const convertToMessageDeletedProperties = (
       text,
       timestamp,
       id: eventId,
+      contextMenuItems: buildMessageMenuItems({
+        canDeleteMessage: false,
+        isMessageError: true,
+      }),
     },
   }
 }
