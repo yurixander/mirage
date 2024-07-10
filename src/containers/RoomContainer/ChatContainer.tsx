@@ -9,14 +9,14 @@ import Loader from "@/components/Loader"
 type ChatContainerProps = {
   roomId: string
   isRosterExpanded: boolean
-  onExpandedRoster: (isExpanded: boolean) => void
+  onRosterExpanded: (isExpanded: boolean) => void
   className?: string
 }
 
 const ChatContainer: FC<ChatContainerProps> = ({
   roomId,
   isRosterExpanded,
-  onExpandedRoster,
+  onRosterExpanded,
   className,
 }) => {
   const {messagesState, roomName, isChatLoading, messages, typingUsers} =
@@ -31,7 +31,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
       <ChatHeader
         className="flex size-full max-h-12 shrink-0 items-center gap-2 border-b border-b-stone-200 px-3"
         isRosterExpanded={isRosterExpanded}
-        onExpandedRoster={onExpandedRoster}
+        onRosterExpanded={onRosterExpanded}
         roomName={roomName}
       />
 

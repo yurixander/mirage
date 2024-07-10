@@ -13,14 +13,14 @@ import {LiaSlackHash} from "react-icons/lia"
 export type ChatHeaderProps = {
   roomName: string
   isRosterExpanded: boolean
-  onExpandedRoster: (isExpanded: boolean) => void
+  onRosterExpanded: (isExpanded: boolean) => void
   className?: string
 }
 
 const ChatHeader: FC<ChatHeaderProps> = ({
   roomName,
   isRosterExpanded,
-  onExpandedRoster,
+  onRosterExpanded,
   className,
 }) => {
   assert(roomName.length > 0, "room name should not be empty")
@@ -61,7 +61,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
 
       <IconButton
         onClick={() => {
-          onExpandedRoster(!isRosterExpanded)
+          onRosterExpanded(!isRosterExpanded)
         }}
         tooltip="More actions"
         Icon={isRosterExpanded ? IoChevronForward : IoChevronBack}

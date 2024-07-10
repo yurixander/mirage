@@ -26,7 +26,7 @@ const RoomContainer: FC = () => {
               className="flex size-full flex-col"
               roomId={activeRoomId}
               isRosterExpanded={isRosterExpanded}
-              onExpandedRoster={setIsRosterExpanded}
+              onRosterExpanded={setIsRosterExpanded}
             />
           )}
 
