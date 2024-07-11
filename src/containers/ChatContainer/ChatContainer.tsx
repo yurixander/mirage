@@ -34,6 +34,7 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
     openFilePicker,
     activeRoomId,
     isLoadingMessages,
+    sendEventTyping,
   } = useActiveRoom()
 
   const messages = useMemo(
@@ -116,7 +117,11 @@ const ChatContainer: FC<ChatContainerProps> = ({className}) => {
 
                   setMessageText("")
                 }}
-                onValueChange={setMessageText}
+                onValueChange={value => {
+                  setMessageText(value)
+
+                  void sendEventTyping()
+                }}
                 value={messageText}
               />
 

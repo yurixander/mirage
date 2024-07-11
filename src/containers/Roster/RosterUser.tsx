@@ -3,12 +3,7 @@ import UserProfile from "../../components/UserProfile"
 import {stringToColor, formatTime} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "@/components/Typography"
-
-export enum UserPowerLevel {
-  Admin = 100,
-  Moderator = 50,
-  Member = 0,
-}
+import {type UserPowerLevel} from "@/utils/members"
 
 export type RosterUserProps = {
   displayName: string
