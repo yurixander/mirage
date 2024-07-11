@@ -22,7 +22,7 @@ module.exports = {
     "plugin:promise/recommended",
     "plugin:regexp/recommended",
   ],
-  ignorePatterns: ["dist", ".eslintrc.cjs", "postcss.config.cts"],
+  ignorePatterns: ["dist", ".eslintrc.cjs", "postcss.config.js"],
   parser: "@typescript-eslint/parser",
   plugins: [
     "prettier",

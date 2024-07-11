@@ -9,7 +9,7 @@ const UserProfilePlaceholder: FC = () => {
           <LoadingEffect />
         </div>
         <div className="flex-col gap-1">
-          <div className=" overflow-hidden rounded-lg bg-neutral-300 text-base leading-[100%] text-transparent">
+          <div className="overflow-hidden rounded-lg bg-neutral-300 text-base leading-[100%] text-transparent">
             Emerald branch
             <LoadingEffect />
           </div>
