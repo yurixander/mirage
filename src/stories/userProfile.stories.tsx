@@ -2,11 +2,14 @@ import {type Meta, type StoryObj} from "@storybook/react"
 import UserProfile, {type UserProfileProps} from "../components/UserProfile"
 import {IoHeadsetSharp} from "react-icons/io5"
 import Typography, {TypographyVariant} from "@/components/Typography"
+import React from "react"
 
 type Story = StoryObj<typeof UserProfile>
 
 const meta: Meta<typeof UserProfile> = {component: UserProfile}
-const render = (arguments_: UserProfileProps) => <UserProfile {...arguments_} />
+const render = (args: UserProfileProps): React.JSX.Element => (
+  <UserProfile {...args} />
+)
 
 const displayName = "Emerald Branch"
 const username = "@emerald_branch"

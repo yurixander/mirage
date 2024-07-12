@@ -1,13 +1,13 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import RosterUser, {
-  type RosterUserProps as RosterUserProperties,
-} from "../containers/Roster/RosterUser"
+import RosterUser, {type RosterUserProps} from "../containers/Roster/RosterUser"
+import React from "react"
 
 type Story = StoryObj<typeof RosterUser>
 
 const meta: Meta<typeof RosterUser> = {component: RosterUser}
-const render = (arguments_: RosterUserProperties) => (
-  <RosterUser {...arguments_} />
+
+const render = (args: RosterUserProps): React.JSX.Element => (
+  <RosterUser {...args} />
 )
 
 export const Default: Story = {

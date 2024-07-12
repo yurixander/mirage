@@ -13,7 +13,22 @@ const ROOM_ENCRYPTION_OBJECT = {
   },
 }
 
-const useCreateRoom = () => {
+type UseCreateRoomReturnType = {
+  isCreatingRoom: boolean
+  isValidAlias: boolean
+  isDisabled: boolean
+  enableEncryption: boolean
+  roomVisibility: Visibility
+  onCreateRoom: () => void
+  clearActiveModal: () => void
+  setRoomName: React.Dispatch<React.SetStateAction<string>>
+  setRoomDescription: React.Dispatch<React.SetStateAction<string | undefined>>
+  setRoomAddress: React.Dispatch<React.SetStateAction<string>>
+  setRoomVisibility: React.Dispatch<React.SetStateAction<Visibility>>
+  setEnableEncryption: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const useCreateRoom = (): UseCreateRoomReturnType => {
   const [roomName, setRoomName] = useState("")
   const [roomDescription, setRoomDescription] = useState<string>()
   const [roomVisibility, setRoomVisibility] = useState(Visibility.Private)
@@ -23,7 +38,7 @@ const useCreateRoom = () => {
   const {client} = useConnection()
   const {results, setRoomAddress, roomAddress} = usePublicRoomsSearch(client)
 
-  const onCreateRoom = () => {
+  const onCreateRoom = (): void => {
     if (client === null) {
       return
     }

@@ -1,14 +1,14 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import SmartAction, {
-  type SmartActionProps as SmartActionProperties,
-} from "../components/SmartAction"
+import SmartAction, {type SmartActionProps} from "../components/SmartAction"
 import {IoMdMedical} from "react-icons/io"
+import React from "react"
 
 type Story = StoryObj<typeof SmartAction>
 
 const meta: Meta<typeof SmartAction> = {component: SmartAction}
-const render = (arguments_: SmartActionProperties) => (
-  <SmartAction {...arguments_} />
+
+const render = (args: SmartActionProps): React.JSX.Element => (
+  <SmartAction {...args} />
 )
 
 export const Default: Story = {

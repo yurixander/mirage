@@ -11,7 +11,7 @@ export type SliderProps = {
 const Slider: FC<SliderProps> = ({onProgressChange, min, max, step, value}) => {
   const [internalValue, setInternalValue] = useState(value)
 
-  const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const value = Number(event.target.value)
 
     setInternalValue(value)

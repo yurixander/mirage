@@ -1,15 +1,22 @@
+import type React from "react"
 import {useCallback, useEffect, useRef} from "react"
 
-const useClickOutside = <T>(action: () => void) => {
-  const dropdownRef = useRef<T>(null)
+type UseClickOutsideReturnType<T> = {
+  elementRef: React.RefObject<T>
+}
+
+const useClickOutside = <T>(
+  action: () => void
+): UseClickOutsideReturnType<T> => {
+  const elementRef = useRef<T>(null)
 
   const handleClickOutside = useCallback(
     (e: MouseEvent) => {
-      if (!(dropdownRef.current instanceof HTMLElement)) {
+      if (!(elementRef.current instanceof HTMLElement)) {
         return
       }
 
-      if (e.target instanceof Node && dropdownRef.current?.contains(e.target)) {
+      if (e.target instanceof Node && elementRef.current?.contains(e.target)) {
         return
       }
 
@@ -28,7 +35,7 @@ const useClickOutside = <T>(action: () => void) => {
     }
   }, [handleClickOutside])
 
-  return {dropdownRef}
+  return {elementRef}
 }
 
 export default useClickOutside

@@ -11,13 +11,22 @@ type UserSearchResult = {
   avatarUrl?: string
 }
 
-const useUsersSearch = (client: MatrixClient | null, searchDelay = 500) => {
+type UseUserSearchReturnType = {
+  query: string
+  setQuery: React.Dispatch<React.SetStateAction<string>>
+  results: UserSearchResult[] | null
+}
+
+const useUsersSearch = (
+  client: MatrixClient | null,
+  searchDelay = 500
+): UseUserSearchReturnType => {
   const [query, setQuery] = useState("")
   const [results, setResult] = useState<UserSearchResult[] | null>(null)
   const debouncedText = useDebounced(query, searchDelay)
 
   useEffect(() => {
-    const search = async () => {
+    const search = async (): Promise<void> => {
       if (debouncedText.length <= 0 || client === null) {
         setResult(null)
 

@@ -3,7 +3,12 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useDebounced from "@/hooks/util/useDebounced"
 import {useCallback, useEffect, useState} from "react"
 
-const useChatInput = () => {
+type UseChatInputReturnType = {
+  messageText: string
+  setMessageText: React.Dispatch<React.SetStateAction<string>>
+}
+
+const useChatInput = (): UseChatInputReturnType => {
   const {client} = useConnection()
   const {activeRoomId} = useActiveRoomIdStore()
   const [messageText, setMessageText] = useState("")

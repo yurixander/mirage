@@ -19,7 +19,7 @@ const ChatInput: FC<ChatInputProps> = ({
 }) => {
   const textareaReference = useRef<HTMLTextAreaElement>(null)
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent): void => {
     if (event.key === "Enter")
       if (event.ctrlKey) {
         onValueChange(value + "\n")
