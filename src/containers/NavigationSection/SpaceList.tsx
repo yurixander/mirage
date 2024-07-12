@@ -49,7 +49,7 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
     <>
       <div
         className={twMerge(
-          "flex size-full flex-col gap-6 overflow-y-auto scroll-smooth ",
+          "flex size-full flex-col gap-6 overflow-y-auto scroll-smooth",
           className
         )}>
         {spaces.length > 0 ? (

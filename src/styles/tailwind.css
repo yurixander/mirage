@@ -27,7 +27,7 @@ input::-ms-clear {
 }
 
 body {
-  @apply relative m-0  select-none overflow-hidden antialiased;
+  @apply relative m-0 select-none overflow-hidden antialiased;
   @apply font-noto font-normal text-stone-600;
 }
 
