@@ -6,7 +6,7 @@ const DevelopmentPreview: FC = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-3 p-2">
+      <div className="flex w-max flex-col gap-3 overflow-hidden pt-2">
         <Space
           isSelected={spaceSelected === "space-1"}
           spaceId={"space-1"}
