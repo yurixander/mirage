@@ -11,14 +11,8 @@ import {type ContextMenuItem} from "@/components/ContextMenu"
 import {IoMdLogOut} from "react-icons/io"
 import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 
-export type PartialRoom = {
-  id: number
-  roomId: string
-  roomName: string
-}
-
 const SpaceList: FC<{className?: string}> = ({className}) => {
-  const {spaces, allRooms, onSpaceExit} = useSpaces()
+  const {spaces, onSpaceExit} = useSpaces()
   const {setActiveRoomId} = useActiveRoomIdStore()
   const [roomSelectedId, setRoomSelectedId] = useState<number>()
   const {setActiveModal} = useActiveModalStore()
@@ -54,15 +48,6 @@ const SpaceList: FC<{className?: string}> = ({className}) => {
         )}>
         {spaces.length > 0 ? (
           <>
-            <AllRooms
-              rooms={allRooms}
-              onRoomClick={room => {
-                setActiveRoomId(room.roomId)
-                setRoomSelectedId(room.id)
-              }}
-              roomSelectedId={roomSelectedId}
-            />
-
             {spaces.map(space => (
               <SpaceDetail
                 spaceId={space.spaceId}

@@ -24,22 +24,7 @@ const RoomChildList: FC<RoomChildListProps> = ({
 
   return (
     <div className={twMerge("flex flex-col gap-1", className)}>
-      {isLoading ? (
-        <ChildListPlaceholder />
-      ) : (
-        childRooms.map(childRoom => (
-          <Room
-            key={childRoom.roomId}
-            isSelected={roomSelected === childRoom.id}
-            roomName={childRoom.roomName}
-            tagEmoji={emojiRandom()}
-            onRoomClick={() => {
-              setActiveRoomId(childRoom.roomId)
-              setRoomSelected(childRoom.id)
-            }}
-          />
-        ))
-      )}
+      <ChildListPlaceholder />
     </div>
   )
 }

@@ -1,13 +1,20 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
+import {emojiRandom} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
+export enum RoomType {
+  Direct,
+  Group,
+}
+
 export type RoomProps = {
   roomName: string
-  tagEmoji: string
+  roomId: string
+  type: RoomType
   isSelected?: boolean
-  onRoomClick: () => void
+  onRoomClick: (roomId: string) => void
 }
 
 export const hasRoomRepeat = (
@@ -19,20 +26,22 @@ export const hasRoomRepeat = (
 
 const Room: FC<RoomProps> = ({
   roomName,
-  tagEmoji,
+  roomId,
   onRoomClick,
   isSelected = false,
 }) => {
   return (
     <button
-      onClick={onRoomClick}
+      onClick={() => {
+        onRoomClick(roomId)
+      }}
       className={twMerge(
         "flex items-center gap-2 rounded-md p-1 px-2",
         isSelected ? "bg-purple-500" : "hover:bg-slate-200"
       )}>
       <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
         <Typography variant={TypographyVariant.BodyMedium}>
-          {tagEmoji}
+          {emojiRandom()}
         </Typography>
       </div>
 
