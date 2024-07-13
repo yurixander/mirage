@@ -1,13 +1,14 @@
 import {type FC} from "react"
-import Space, {type SpaceProps} from "./Space"
+import Space from "./Space"
+import {type PartialSpace} from "./hooks/useSpaces"
 
 type SpacesNavProps = {
-  spaces: SpaceProps[]
+  spaces: PartialSpace[]
   spaceSelected?: string
   onSpaceSelected: (spaceId?: string) => void
 }
 
-const SpacesNav: FC<SpacesNavProps> = ({
+const Spaces: FC<SpacesNavProps> = ({
   spaces,
   onSpaceSelected,
   spaceSelected,
@@ -25,7 +26,13 @@ const SpacesNav: FC<SpacesNavProps> = ({
       />
 
       {spaces.map(space => (
-        <Space key={space.spaceId} {...space} />
+        <Space
+          key={space.spaceId}
+          spaceId={space.spaceId}
+          isSelected={space.spaceId === spaceSelected}
+          onSpaceSelected={onSpaceSelected}
+          avatarUrl={space.avatarUrl}
+        />
       ))}
 
       <div
@@ -44,4 +51,4 @@ const SpacesNav: FC<SpacesNavProps> = ({
   )
 }
 
-export default SpacesNav
+export default Spaces

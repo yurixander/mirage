@@ -2,17 +2,19 @@ import ServerDropdown from "@/components/ServerDropdown"
 import {MATRIX_SERVER} from "@/utils/servers"
 import {useState, type FC} from "react"
 import RoomList from "./RoomList"
-import SpacesNav from "./SpacesNav"
+import Spaces from "./Spaces"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import SidebarActions from "./SidebarActions"
 import UserBar from "./UserBar"
 import {twMerge} from "tailwind-merge"
+import useSpaces from "./hooks/useSpaces"
 
 const NavigationSection: FC<{className?: string}> = ({className}) => {
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
   const [spaceSelected, setSpaceSelected] = useState<string>()
+  const {spaces} = useSpaces()
 
   return (
     <div className={twMerge("flex size-full max-w-72 bg-gray-100", className)}>
@@ -30,8 +32,8 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
           <div className="mt-2 h-0.5 w-12 rounded-full bg-slate-300" />
         </div>
 
-        <SpacesNav
-          spaces={[]}
+        <Spaces
+          spaces={spaces}
           spaceSelected={spaceSelected}
           onSpaceSelected={setSpaceSelected}
         />
