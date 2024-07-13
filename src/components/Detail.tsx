@@ -1,26 +1,26 @@
-import ContextMenu, {
-  ClickActions,
-  type ContextMenuItem,
-} from "@/components/ContextMenu"
-import Typography from "@/components/Typography"
 import React, {type FC} from "react"
+import ContextMenu, {ClickActions, type ContextMenuItem} from "./ContextMenu"
+import Typography from "./Typography"
 import {IoEllipsisHorizontal} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
 
-export type DetailsDetailProps = {
+export type DetailProps = {
   title: string
-  spaceId: string
+  id: string
   children?: React.ReactNode
   menuElements?: ContextMenuItem[]
+  className?: string
 }
 
-export const SpaceDetail: FC<DetailsDetailProps> = ({
+const Detail: FC<DetailProps> = ({
   title,
-  children,
-  spaceId,
+  id,
   menuElements,
+  children,
+  className,
 }) => {
   return (
-    <details className="cursor-pointer">
+    <details className={twMerge("cursor-pointer", className)}>
       <summary className="flex items-center gap-1.5 text-sm font-bold text-slate-500">
         <Typography className="line-clamp-1">{title.toUpperCase()}</Typography>
 
@@ -28,7 +28,7 @@ export const SpaceDetail: FC<DetailsDetailProps> = ({
           <div className="ml-auto">
             <ContextMenu
               actionType={ClickActions.LeftClick}
-              id={`space-menu-${spaceId}`}
+              id={id}
               elements={menuElements}>
               <IoEllipsisHorizontal className="text-slate-500" size={14} />
             </ContextMenu>
@@ -41,4 +41,4 @@ export const SpaceDetail: FC<DetailsDetailProps> = ({
   )
 }
 
-export default SpaceDetail
+export default Detail

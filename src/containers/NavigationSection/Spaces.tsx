@@ -1,6 +1,7 @@
 import {type FC} from "react"
 import Space from "./Space"
 import {type PartialSpace} from "./hooks/useSpaces"
+import {StaticAssetPath} from "@/utils/util"
 
 type SpacesNavProps = {
   spaces: PartialSpace[]
@@ -19,7 +20,7 @@ const Spaces: FC<SpacesNavProps> = ({
         isSelected={spaceSelected === undefined}
         spaceId="home"
         // TODO: This avatar url is temporarily.
-        avatarUrl="public\space-home.png"
+        avatarUrl={StaticAssetPath.SpaceHome}
         onSpaceSelected={() => {
           onSpaceSelected()
         }}
