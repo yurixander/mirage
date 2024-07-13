@@ -7,6 +7,7 @@ import {twMerge} from "tailwind-merge"
 export type DetailProps = {
   title: string
   id: string
+  isInitiallyOpen?: boolean
   children?: React.ReactNode
   menuElements?: ContextMenuItem[]
   className?: string
@@ -17,10 +18,13 @@ const Detail: FC<DetailProps> = ({
   id,
   menuElements,
   children,
+  isInitiallyOpen = false,
   className,
 }) => {
   return (
-    <details className={twMerge("cursor-pointer", className)}>
+    <details
+      open={isInitiallyOpen}
+      className={twMerge("cursor-pointer", className)}>
       <summary className="flex items-center gap-1.5 text-sm font-bold text-slate-500">
         <Typography className="line-clamp-1">{title.toUpperCase()}</Typography>
 
