@@ -5,11 +5,18 @@ import {twMerge} from "tailwind-merge"
 export type SpaceProps = {
   isSelected: boolean
   spaceId: string
-  onClick: () => void
+  onSpaceSelected: (spaceId: string) => void
+  avatarUrl?: string
   classNames?: string
 }
 
-const Space: FC<SpaceProps> = ({isSelected, onClick, classNames}) => {
+const Space: FC<SpaceProps> = ({
+  isSelected,
+  onSpaceSelected,
+  spaceId,
+  avatarUrl,
+  classNames,
+}) => {
   return (
     <div className="group flex items-center gap-1">
       <div
@@ -20,14 +27,24 @@ const Space: FC<SpaceProps> = ({isSelected, onClick, classNames}) => {
       />
 
       <div
-        onClick={onClick}
+        onClick={() => {
+          onSpaceSelected(spaceId)
+        }}
         aria-hidden
         className={twMerge(
           "group box-border size-10 cursor-pointer overflow-hidden rounded-lg border-[3px] transition-colors",
-          isSelected ? "border-purple-500" : "border-transparent",
+          isSelected ? "border-purple-500 shadow-md" : "border-transparent",
           classNames
         )}>
-        <Avatar square size={70} variant="bauhaus" />
+        {avatarUrl === undefined ? (
+          <Avatar square size={70} variant="bauhaus" />
+        ) : (
+          <img
+            className="size-full object-cover"
+            src={avatarUrl}
+            alt={spaceId}
+          />
+        )}
       </div>
     </div>
   )

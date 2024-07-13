@@ -102,9 +102,8 @@ const useNotifications = () => {
   }, [])
 
   // #region MemoData
-  const unreadNotifications = useMemo(() => {
-    return cachedNotifications.filter(notification => !notification.isRead)
-      .length
+  const containsUnreadNotifications = useMemo(() => {
+    return cachedNotifications.some(notification => !notification.isRead)
   }, [cachedNotifications])
 
   const notifications: NotificationProps[] = useMemo(
@@ -277,7 +276,7 @@ const useNotifications = () => {
 
   return {
     notifications,
-    unreadNotifications,
+    containsUnreadNotifications,
     isLoading: notificationsState === NotificationState.Loading,
   }
 }

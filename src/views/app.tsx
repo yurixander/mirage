@@ -5,8 +5,8 @@ import {type Credentials, ViewPath} from "@/utils/util"
 import {useEffect, type FC} from "react"
 import {useNavigate} from "react-router-dom"
 import useLocalStorage, {LocalStorageKey} from "@/hooks/util/useLocalStorage"
-import NavigationSection from "@/containers/NavigationSection"
 import ModalHandler from "@/components/ModalHandler"
+import NavigationSection from "@/containers/NavigationSection/NavigationSection"
 
 const AppView: FC = () => {
   const navigate = useNavigate()
@@ -41,9 +41,10 @@ const AppView: FC = () => {
       <ModalHandler />
 
       <div className="flex size-full flex-row">
-        <NavigationSection />
+        <NavigationSection className="w-full" />
 
         <ChatContainer className="w-full grow" />
+
         <Roster className="grow" />
       </div>
     </>

@@ -1,6 +1,5 @@
-import Typography, {TypographyVariant} from "@/components/Typography"
+import IconButton from "@/components/IconButton"
 import {useState, type FC} from "react"
-import {type IconType} from "react-icons"
 import {
   IoCall,
   IoExit,
@@ -11,24 +10,14 @@ import {
 import {twMerge} from "tailwind-merge"
 import NotificationBoxPopup from "./modals/NotificationBoxPopup"
 import useNotifications from "./hooks/useNotifications"
+import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 
-export type SidebarActionsProps = {
-  onDirectMessages: () => void
-  onSearch: () => void
-  onCalls: () => void
-  onExit: () => void
-  className?: string
-}
-
-const SidebarActions: FC<SidebarActionsProps> = ({
-  className,
-  onCalls,
-  onDirectMessages,
-  onExit,
-  onSearch,
-}) => {
+const SidebarActions: FC<{className?: string}> = ({className}) => {
+  const {setActiveModal} = useActiveModalStore()
   const [isNotificationBoxVisible, setNotificationBoxVisible] = useState(false)
-  const {isLoading, notifications, unreadNotifications} = useNotifications()
+
+  const {isLoading, notifications, containsUnreadNotifications} =
+    useNotifications()
 
   return (
     <>
@@ -41,84 +30,56 @@ const SidebarActions: FC<SidebarActionsProps> = ({
         }}
       />
 
-      <div className={twMerge("flex flex-col gap-2", className)}>
-        <SidebarActionItem
-          name="Direct Chats"
-          icon={IoPaperPlane}
-          onClick={onDirectMessages}
+      <div
+        className={twMerge(
+          "flex flex-col items-center gap-2.5 pb-2",
+          className
+        )}>
+        <IconButton
+          tooltip="Direct Chats"
+          iconClassName="text-slate-400"
+          Icon={IoPaperPlane}
           onMouseEnter={() => {
             setNotificationBoxVisible(false)
           }}
+          onClick={() => {
+            setActiveModal(Modals.DirectMessages)
+          }}
         />
 
-        <SidebarActionItem
-          name="Notifications"
-          icon={IoNotifications}
-          unreadNotifications={unreadNotifications}
+        <IconButton
+          tooltip="Notifications"
+          iconClassName="text-slate-400"
+          Icon={IoNotifications}
+          isDotVisible={containsUnreadNotifications}
+          onClick={() => {}}
           onMouseEnter={() => {
             setNotificationBoxVisible(true)
           }}
         />
 
-        <SidebarActionItem
-          name="Search"
-          icon={IoSearch}
-          onClick={onSearch}
-          onMouseEnter={() => {
-            setNotificationBoxVisible(false)
-          }}
+        <IconButton
+          tooltip="Search"
+          iconClassName="text-slate-400"
+          Icon={IoSearch}
+          onClick={() => {}}
         />
 
-        <SidebarActionItem name="Calls" icon={IoCall} onClick={onCalls} />
+        <IconButton
+          tooltip="Calls"
+          iconClassName="text-slate-400"
+          Icon={IoCall}
+          onClick={() => {}}
+        />
 
-        <SidebarActionItem name="Exit" icon={IoExit} onClick={onExit} />
+        <IconButton
+          tooltip="Exit"
+          iconClassName="text-slate-400"
+          Icon={IoExit}
+          onClick={() => {}}
+        />
       </div>
     </>
-  )
-}
-
-type SidebarActionItemProps = {
-  icon: IconType
-  name: string
-  onClick?: () => void
-  onMouseEnter?: () => void
-  unreadNotifications?: number
-}
-
-const SidebarActionItem: FC<SidebarActionItemProps> = ({
-  icon,
-  name,
-  onClick,
-  onMouseEnter,
-  unreadNotifications,
-}) => {
-  const Icon = icon
-
-  return (
-    <div
-      className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-slate-200"
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      role="button"
-      aria-hidden="true">
-      <Icon className="text-slate-400" />
-
-      <Typography
-        variant={TypographyVariant.BodyMedium}
-        className="line-clamp-1 font-medium text-slate-600">
-        {name}
-      </Typography>
-
-      {unreadNotifications !== undefined && unreadNotifications > 0 && (
-        <div className="flex size-4 items-center justify-center rounded-full bg-red-500">
-          <Typography
-            variant={TypographyVariant.BodySmall}
-            className="text-white">
-            {unreadNotifications}
-          </Typography>
-        </div>
-      )}
-    </div>
   )
 }
 

@@ -40,8 +40,7 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
   isVisible,
 }) => {
   const renderLocation =
-    document.querySelector(`#${ModalRenderLocation.ChatContainer}`) ??
-    document.body
+    document.querySelector(`#${ModalRenderLocation.RoomList}`) ?? document.body
 
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
