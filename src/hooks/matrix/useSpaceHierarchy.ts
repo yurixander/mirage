@@ -13,6 +13,7 @@ export enum RoomsState {
 export type PartialRoom = {
   roomId: string
   roomName: string
+  emoji: string
   type: RoomType
 }
 
@@ -64,7 +65,10 @@ const useSpaceHierarchy = (spaceId: string | undefined) => {
     }
   }, [client, spaceId])
 
-  return {rooms, isLoading: roomsState === RoomsState.Loading}
+  return {
+    rooms,
+    isLoading: roomsState === RoomsState.Loading || client === null,
+  }
 }
 
 export default useSpaceHierarchy

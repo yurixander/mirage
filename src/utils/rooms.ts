@@ -1,7 +1,6 @@
 import {
   type Room,
   type MatrixClient,
-  Direction,
   EventType,
   HistoryVisibility,
   JoinRule,
@@ -12,6 +11,7 @@ import {
 import {
   assert,
   deleteMessage,
+  emojiRandom,
   getImageUrl,
   normalizeName,
   stringToColor,
@@ -40,6 +40,7 @@ export async function getAllJoinedRooms(
   client: MatrixClient
 ): Promise<PartialRoom[]> {
   const currentJoinedRooms: PartialRoom[] = []
+  const directRoomIds = getDirectRoomsIds(client)
 
   try {
     const joinedRooms = await client.getJoinedRooms()
@@ -54,7 +55,10 @@ export async function getAllJoinedRooms(
       currentJoinedRooms.push({
         roomId: joinedRoom.roomId,
         roomName: joinedRoom.name,
-        type: isDirectRoom(joinedRoom) ? RoomType.Direct : RoomType.Group,
+        type: directRoomIds.includes(joinedRoomId)
+          ? RoomType.Direct
+          : RoomType.Group,
+        emoji: emojiRandom(),
       })
     }
   } catch (error) {
@@ -113,7 +117,7 @@ export async function getRoomMembers(room: Room): Promise<RosterUserProps[]> {
 // #region Direct rooms
 
 export function getDirectRoomsIds(client: MatrixClient): string[] {
-  const directRooms = client.getAccountData("m.direct")
+  const directRooms = client.getAccountData(EventType.Direct)
   const content = directRooms?.event.content
 
   if (content === undefined) {
@@ -123,16 +127,10 @@ export function getDirectRoomsIds(client: MatrixClient): string[] {
   return Object.values(content).flat()
 }
 
-export function isDirectRoom(room: Room): boolean {
-  return (
-    room
-      .getLiveTimeline()
-      .getState(Direction.Forward)
-      ?.events.get(EventType.RoomMember)
-      // Find event by userId.
-      // If the client user is not in the room event then this room is not a direct chat for the user.
-      ?.get(room.myUserId)?.event.content?.is_direct ?? false
-  )
+export function isDirectRoom(client: MatrixClient, roomId: string): boolean {
+  const directRoomIds = getDirectRoomsIds(client)
+
+  return directRoomIds.includes(roomId)
 }
 
 export function getPartnerUserIdFromRoomDirect(room: Room): string {

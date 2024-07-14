@@ -1,7 +1,8 @@
 import {type MatrixClient, type Room} from "matrix-js-sdk"
-import {isDirectRoom} from "./rooms"
+import {getDirectRoomsIds} from "./rooms"
 import {RoomType} from "@/components/Room"
 import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
+import {emojiRandom} from "./util"
 
 export const addRoomToSpace = async (
   spaceId: Room,
@@ -30,6 +31,7 @@ export async function getRoomsFromSpace(
   client: MatrixClient
 ): Promise<PartialRoom[]> {
   const roomsHierarchy: PartialRoom[] = []
+  const directRoomIds = getDirectRoomsIds(client)
 
   try {
     const childRooms = await client.getRoomHierarchy(spaceId)
@@ -56,7 +58,10 @@ export async function getRoomsFromSpace(
       roomsHierarchy.push({
         roomId: room.roomId,
         roomName: room.name,
-        type: isDirectRoom(room) ? RoomType.Direct : RoomType.Group,
+        type: directRoomIds.includes(room.roomId)
+          ? RoomType.Direct
+          : RoomType.Group,
+        emoji: emojiRandom(),
       })
     }
   } catch (error) {

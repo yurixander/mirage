@@ -1,5 +1,4 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {emojiRandom} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -12,6 +11,7 @@ export type RoomProps = {
   roomName: string
   roomId: string
   type: RoomType
+  emoji: string
   isSelected?: boolean
   onRoomClick: (roomId: string) => void
 }
@@ -20,6 +20,7 @@ const Room: FC<RoomProps> = ({
   roomName,
   roomId,
   onRoomClick,
+  emoji,
   isSelected = false,
 }) => {
   return (
@@ -32,9 +33,7 @@ const Room: FC<RoomProps> = ({
         isSelected ? "bg-purple-500" : "hover:bg-slate-200"
       )}>
       <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
-        <Typography variant={TypographyVariant.BodyMedium}>
-          {emojiRandom()}
-        </Typography>
+        <Typography variant={TypographyVariant.BodyMedium}>{emoji}</Typography>
       </div>
 
       <Typography
