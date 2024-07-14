@@ -16,7 +16,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
   const {setActiveModal} = useActiveModalStore()
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
   const [spaceSelected, setSpaceSelected] = useState<string>()
-  const {spaces} = useSpaces()
+  const {spaces, isLoading} = useSpaces()
 
   return (
     <div className={twMerge("flex size-full max-w-72 bg-gray-100", className)}>
@@ -35,6 +35,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
         </div>
 
         <Spaces
+          isLoading={isLoading}
           spaces={spaces}
           spaceSelected={spaceSelected}
           onSpaceSelected={setSpaceSelected}

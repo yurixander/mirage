@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from "react"
+import {useCallback, useEffect, useState} from "react"
 import useList from "../../../hooks/util/useList"
 import useConnection from "../../../hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
@@ -25,6 +25,7 @@ const processSpace = (space: Room): PartialSpace => {
 
 const useSpaces = () => {
   const {client} = useConnection()
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     items: spaces,
@@ -50,6 +51,8 @@ const useSpaces = () => {
         return
       }
 
+      setIsLoading(true)
+
       for (const room of client.getRooms()) {
         if (!room.isSpaceRoom()) {
           continue
@@ -57,6 +60,8 @@ const useSpaces = () => {
 
         addSpace(processSpace(room))
       }
+
+      setIsLoading(false)
     }, 1000)
 
     return () => {
@@ -99,7 +104,7 @@ const useSpaces = () => {
     deleteSpaceWhen(spaceIter => spaceIter.spaceId === room.roomId)
   })
 
-  return {spaces, onSpaceExit}
+  return {spaces, onSpaceExit, isLoading}
 }
 
 export default useSpaces
