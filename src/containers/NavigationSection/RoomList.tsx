@@ -5,6 +5,8 @@ import {useMemo, useState, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import LoadingEffect from "@/components/LoadingEffect"
 import Typography, {TypographyVariant} from "@/components/Typography"
+import {buildDirectRoomsMenuItems, buildRoomsMenuItems} from "@/utils/menu"
+import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 
 export type RoomListProps = {
   spaceId?: string
@@ -14,6 +16,7 @@ export type RoomListProps = {
 const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
   const {rooms, isLoading} = useSpaceHierarchy(spaceId)
   const [roomSelected, setRoomSelected] = useState<string>()
+  const {setActiveModal} = useActiveModalStore()
 
   const directRooms = useMemo(
     () => rooms.filter(room => room.type === RoomType.Direct),
@@ -33,7 +36,16 @@ const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
         className
       )}>
       <div className="flex flex-col gap-4 p-3">
-        <Detail title="Direct chats" id="direct-chats-detail">
+        <Detail
+          title="Direct chats"
+          id="direct-chats-detail"
+          menuElements={buildDirectRoomsMenuItems({
+            isHome: spaceId === undefined,
+            onCreateDirectRoom() {
+              setActiveModal(Modals.DirectMessages)
+            },
+            addRoomToSpace() {},
+          })}>
           {isLoading ? (
             <RoomListPlaceHolder length={1} />
           ) : directRooms.length === 0 ? (
@@ -56,7 +68,19 @@ const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
           )}
         </Detail>
 
-        <Detail title="Rooms" id="rooms-detail" isInitiallyOpen>
+        <Detail
+          title="Rooms"
+          id="rooms-detail"
+          isInitiallyOpen
+          menuElements={buildRoomsMenuItems({
+            isHome: spaceId === undefined,
+            onCreateRoom() {
+              setActiveModal(Modals.CreateRoom)
+            },
+            searchPublicRooms() {},
+            searchPublicSpaces() {},
+            addRoomToSpace() {},
+          })}>
           {isLoading ? (
             <RoomListPlaceHolder />
           ) : groupRooms.length === 0 ? (
