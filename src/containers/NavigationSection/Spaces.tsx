@@ -33,7 +33,7 @@ const Spaces: FC<SpacesNavProps> = ({
       />
 
       {isLoading ? (
-        <SpacesPlaceHolder />
+        <SpacesPlaceHolder length={2} />
       ) : (
         spaces.map(space => (
           <Space
@@ -62,10 +62,14 @@ const Spaces: FC<SpacesNavProps> = ({
 
 const SpacesPlaceHolder: FC<{length?: number}> = ({length = 1}) => {
   return Array.from({length}).map((_, index) => (
-    <div
-      key={index}
-      className="size-10 overflow-hidden rounded-md bg-neutral-300">
-      <LoadingEffect />
+    <div className="flex items-center gap-1">
+      <div className="-ml-0.5 h-0.5 w-1.5 bg-transparent" />
+
+      <div
+        key={index}
+        className="size-10 overflow-hidden rounded-md bg-neutral-300">
+        <LoadingEffect />
+      </div>
     </div>
   ))
 }

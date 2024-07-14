@@ -104,7 +104,7 @@ const useSpaces = () => {
     deleteSpaceWhen(spaceIter => spaceIter.spaceId === room.roomId)
   })
 
-  return {spaces, onSpaceExit, isLoading}
+  return {spaces, onSpaceExit, isLoading: isLoading || client === null}
 }
 
 export default useSpaces
