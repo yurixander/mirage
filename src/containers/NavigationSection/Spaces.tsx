@@ -6,11 +6,13 @@ import {StaticAssetPath} from "@/utils/util"
 type SpacesNavProps = {
   spaces: PartialSpace[]
   spaceSelected?: string
+  onCreateSpace: () => void
   onSpaceSelected: (spaceId?: string) => void
 }
 
 const Spaces: FC<SpacesNavProps> = ({
   spaces,
+  onCreateSpace,
   onSpaceSelected,
   spaceSelected,
 }) => {
@@ -39,9 +41,7 @@ const Spaces: FC<SpacesNavProps> = ({
       <div
         className="flex w-full justify-end"
         aria-hidden
-        onClick={() => {
-          // TODO: Handle here onClick for create space.
-        }}>
+        onClick={onCreateSpace}>
         <div className="relative box-border flex size-10 max-h-10 max-w-10 cursor-pointer items-center justify-center rounded-lg border-4 border-zinc-200">
           <div className="absolute h-1 w-5 rounded-full bg-zinc-200" />
 

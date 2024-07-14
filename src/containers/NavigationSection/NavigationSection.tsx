@@ -1,7 +1,6 @@
 import ServerDropdown from "@/components/ServerDropdown"
 import {MATRIX_SERVER} from "@/utils/servers"
 import {useState, type FC} from "react"
-import RoomList from "./RoomList"
 import Spaces from "./Spaces"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
@@ -10,8 +9,11 @@ import SidebarActions from "./SidebarActions"
 import UserBar from "./UserBar"
 import {twMerge} from "tailwind-merge"
 import useSpaces from "./hooks/useSpaces"
+import RoomList from "./RoomList"
+import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 
 const NavigationSection: FC<{className?: string}> = ({className}) => {
+  const {setActiveModal} = useActiveModalStore()
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
   const [spaceSelected, setSpaceSelected] = useState<string>()
   const {spaces} = useSpaces()
@@ -36,6 +38,9 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
           spaces={spaces}
           spaceSelected={spaceSelected}
           onSpaceSelected={setSpaceSelected}
+          onCreateSpace={() => {
+            setActiveModal(Modals.CreateSpace)
+          }}
         />
 
         <SidebarActions className="mt-auto" />
