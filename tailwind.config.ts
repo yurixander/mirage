@@ -41,7 +41,7 @@ module.exports = {
         serverAvatarSize: "calc(47px * sqrt(2))",
         userProfileAvatarSize: "calc(37px * sqrt(2))",
         userProfileAvatarSizeLarge: "calc(50px * sqrt(2))",
-        serverSize: "47px",
+        spaceSize: "40px",
         messageMaxWidth: "450px",
       },
       fontFamily: {

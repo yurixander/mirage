@@ -42,10 +42,10 @@ const Spaces: FC<SpacesNavProps> = ({
         className="flex w-full justify-end"
         aria-hidden
         onClick={onCreateSpace}>
-        <div className="relative box-border flex size-10 max-h-10 max-w-10 cursor-pointer items-center justify-center rounded-lg border-4 border-zinc-200">
-          <div className="absolute h-1 w-5 rounded-full bg-zinc-200" />
+        <div className="relative box-border flex size-10 max-w-10 cursor-pointer items-center justify-center rounded-lg border-[3px] border-zinc-200">
+          <div className="absolute h-0.5 w-4 rounded-full bg-zinc-200" />
 
-          <div className="absolute h-5 w-1 rounded-full bg-zinc-200" />
+          <div className="absolute h-4 w-0.5 rounded-full bg-zinc-200" />
         </div>
       </div>
     </div>
