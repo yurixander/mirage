@@ -26,19 +26,22 @@ const Slider: FC<SliderProps> = ({
     setProgress(value)
     onProgressChange(value)
   }
-  const size = document.querySelector("#refLabel")
+
+  const labelRef = useRef<HTMLLabelElement>(null)
+  const labelWidth = labelRef.current?.clientWidth
+
   return (
     <label
       style={{width: width ?? "100%"}}
       className="flex flex-col items-center justify-center"
-      id="refLabel">
+      ref={labelRef}>
       {step === undefined || step < 10 ? (
         <BasicProgressBar
-          w={width ?? size === null ? -1 : getElementSize(size)}
+          barWidth={width ?? labelWidth ?? -1}
           progress={(progress * 100) / (max - min)}
         />
       ) : (
-        <StepProgressBar w={width} steps={(max - min) / step} />
+        <StepProgressBar barWidth={width} steps={(max - min) / step} />
       )}
       <input
         style={{width: width ?? "100%"}}
@@ -54,10 +57,15 @@ const Slider: FC<SliderProps> = ({
   )
 }
 
-const BasicProgressBar: FC<{progress: number; w: number}> = ({progress, w}) => {
+type BasicProgressBarProps = {
+  progress: number
+  barWidth: number
+}
+
+const BasicProgressBar: FC<BasicProgressBarProps> = ({progress, barWidth}) => {
   return (
     <div
-      style={{width: w === -1 ? "98%" : w - 10}}
+      style={{width: `${barWidth === -1 ? 100 : 100 - (10 * 100) / barWidth}%`}}
       className="relative -mb-3 h-3 overflow-hidden rounded-full bg-slate-100 shadow">
       <div
         style={{width: `${progress}%`}}
@@ -67,10 +75,13 @@ const BasicProgressBar: FC<{progress: number; w: number}> = ({progress, w}) => {
   )
 }
 
-const StepProgressBar: FC<{steps: number; w?: number}> = ({steps, w}) => {
+const StepProgressBar: FC<{steps: number; barWidth?: number}> = ({
+  steps,
+  barWidth,
+}) => {
   return (
     <div
-      style={{width: w ?? "100%"}}
+      style={{width: barWidth ?? "100%"}}
       className="relative -mb-3 flex h-3 items-center overflow-hidden rounded-full bg-slate-200 shadow">
       <div className="rounded-full bg-slate-300 text-end">
         <div className="size-2 rounded-full bg-slate-200" />
@@ -97,16 +108,6 @@ const Step: FC<{isEnd: boolean}> = ({isEnd}) => {
       </div>
     </>
   )
-}
-
-const getElementSize = (elemnt?: Element | null) => {
-  return elemnt === undefined
-    ? 200
-    : elemnt === null
-      ? 300
-      : Number.parseInt(
-          window.getComputedStyle(elemnt, null).getPropertyValue("width")
-        )
 }
 
 export default Slider
