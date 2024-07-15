@@ -29,7 +29,7 @@ const Room: FC<RoomProps> = ({
         onRoomClick(roomId)
       }}
       className={twMerge(
-        "flex w-full max-w-40 items-center gap-2 rounded-md p-1 px-2",
+        "flex w-full items-center gap-2 rounded-md p-1 px-2",
         isSelected ? "bg-purple-500" : "hover:bg-slate-200"
       )}>
       <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
