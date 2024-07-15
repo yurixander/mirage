@@ -25,7 +25,7 @@ const Detail: FC<DetailProps> = ({
     <details
       open={isInitiallyOpen}
       className={twMerge("cursor-pointer", className)}>
-      <summary className="flex items-center gap-1.5 text-sm font-bold text-slate-500">
+      <summary className="flex items-center gap-1.5 text-xs font-bold text-slate-500">
         <Typography
           variant={TypographyVariant.BodySmall}
           className="line-clamp-1">
