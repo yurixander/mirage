@@ -1,25 +1,28 @@
 import {type FC} from "react"
 import Typography, {TypographyVariant} from "../../components/Typography"
-import {ReactSVG} from "react-svg"
-import {StaticAssetPath} from "@/utils/util"
 import {type IconType} from "react-icons"
 import {FaCompass, FaGithub, FaHand} from "react-icons/fa6"
+import AppLogo from "@/components/AppLogo"
 
 const WelcomeSplash: FC = () => {
   return (
-    <div className="flex size-full flex-col items-center justify-center gap-4 border-r border-stone-200">
-      <div className="mb-6 flex flex-col items-center">
-        <ReactSVG src={StaticAssetPath.AppLogo} />
+    <div className="flex size-full flex-col items-center justify-center gap-3 border-r border-stone-200">
+      <div className="mb-6 flex flex-col items-center gap-3">
+        <AppLogo />
 
-        <Typography variant={TypographyVariant.HeadingLarge}>
-          Welcome to Mirage
-        </Typography>
+        <div className="flex flex-col items-center">
+          <Typography
+            variant={TypographyVariant.Heading}
+            className="text-black">
+            Welcome to Mirage
+          </Typography>
 
-        <Typography className="mt-2 max-w-text text-center">
-          Invite your friends to chat! Select a Room or a Direct Messages to
-          start a conversation. You can also select an action below to get
-          started quickly.
-        </Typography>
+          <Typography className="mt-2 max-w-text text-center text-black">
+            Invite your friends to chat! Select a Room or a Direct Messages to
+            start a conversation. You can also select an action below to get
+            started quickly.
+          </Typography>
+        </div>
       </div>
 
       <div className="flex gap-4">
@@ -27,18 +30,27 @@ const WelcomeSplash: FC = () => {
           title="Explore Servers"
           subtitle="join a relevant community"
           Icon={FaCompass}
+          onClick={() => {
+            // TODO: Handle here explore servers card click.
+          }}
         />
 
         <GetStartedCard
           title="Send a message"
           subtitle="to a colleague or friend"
           Icon={FaHand}
+          onClick={() => {
+            // TODO: Handle here send message card click.
+          }}
         />
 
         <GetStartedCard
           title="Checkout GitHub"
           subtitle="to view latest updates"
           Icon={FaGithub}
+          onClick={() => {
+            // TODO: Handle here checkout github card click.
+          }}
         />
       </div>
     </div>
@@ -49,18 +61,32 @@ type GetStartedCardProps = {
   title: string
   subtitle: string
   Icon: IconType
-  // TODO: Add `href` or `onClick` properties.
+  onClick: () => void
 }
 
-const GetStartedCard: FC<GetStartedCardProps> = ({title, subtitle, Icon}) => {
+const GetStartedCard: FC<GetStartedCardProps> = ({
+  title,
+  subtitle,
+  Icon,
+  onClick,
+}) => {
   return (
-    <div className="-hover:translate-y-1 flex cursor-pointer flex-col gap-3 rounded-md border border-gray-300 p-4 transition-all hover:bg-gray-50 hover:shadow-md">
-      <Icon className="fill-gray-500" size={24} />
+    <div
+      className="flex cursor-pointer flex-col gap-3 rounded-md border border-slate-300 bg-gray-50 px-4 py-3 transition-transform hover:translate-y-1 hover:shadow-md"
+      onClick={onClick}
+      aria-hidden>
+      <Icon className="fill-black" size={20} />
 
       <div>
-        <Typography variant={TypographyVariant.Heading}>{title}</Typography>
+        <Typography className="text-black" variant={TypographyVariant.Body}>
+          {title}
+        </Typography>
 
-        <Typography>{subtitle}</Typography>
+        <Typography
+          className="text-black"
+          variant={TypographyVariant.BodyMedium}>
+          {subtitle}
+        </Typography>
       </div>
     </div>
   )

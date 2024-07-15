@@ -11,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       maxWidth: {
-        text: "630px",
+        text: "660px",
       },
       backgroundColor: {
         statusMessageBg: "transparentize(#e53e3e, 0.9)",
