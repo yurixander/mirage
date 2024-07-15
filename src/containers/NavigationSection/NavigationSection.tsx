@@ -19,8 +19,8 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
   const {spaces, isLoading} = useSpaces()
 
   return (
-    <div className={twMerge("flex size-full max-w-72 bg-gray-100", className)}>
-      <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-slate-300">
+    <div className={twMerge("flex size-full max-w-72", className)}>
+      <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-slate-300 bg-gray-100">
         <div className="flex flex-col items-center p-1">
           <ReactSVG src={StaticAssetPath.NewAppLogo} />
 
@@ -47,7 +47,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
         <SidebarActions className="mt-auto" />
       </div>
 
-      <div className="flex size-full flex-col border-r border-r-slate-300">
+      <div className="flex size-full flex-col border-r border-r-slate-300 bg-gray-100">
         <div className="size-full max-h-12 shrink-0 border-b border-b-slate-300 p-2">
           <ServerDropdown
             initiallyServerSelected={serverSelected}

@@ -1,6 +1,6 @@
 import React, {type FC} from "react"
 import ContextMenu, {ClickActions, type ContextMenuItem} from "./ContextMenu"
-import Typography from "./Typography"
+import Typography, {TypographyVariant} from "./Typography"
 import {IoEllipsisHorizontal} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 
@@ -26,7 +26,11 @@ const Detail: FC<DetailProps> = ({
       open={isInitiallyOpen}
       className={twMerge("cursor-pointer", className)}>
       <summary className="flex items-center gap-1.5 text-sm font-bold text-slate-500">
-        <Typography className="line-clamp-1">{title.toUpperCase()}</Typography>
+        <Typography
+          variant={TypographyVariant.BodySmall}
+          className="line-clamp-1">
+          {title.toUpperCase()}
+        </Typography>
 
         {menuElements !== undefined && menuElements.length > 0 && (
           <div className="ml-auto">

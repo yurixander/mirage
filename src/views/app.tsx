@@ -41,7 +41,7 @@ const AppView: FC = () => {
       <ModalHandler />
 
       <div className="flex size-full flex-row">
-        <NavigationSection className="w-full" />
+        <NavigationSection />
 
         <ChatContainer className="w-full grow" />
 

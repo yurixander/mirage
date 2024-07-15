@@ -40,7 +40,7 @@ const Room: FC<RoomProps> = ({
         variant={TypographyVariant.BodySmall}
         className={twMerge(
           "line-clamp-1 font-bold",
-          isSelected ? "text-white" : "text-slate-500"
+          isSelected ? "text-white" : "text-slate-600"
         )}>
         {roomName}
       </Typography>
