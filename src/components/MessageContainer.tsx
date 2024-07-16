@@ -3,6 +3,7 @@ import {cleanDisplayName, formatTime} from "../utils/util"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
 import Typography, {TypographyVariant} from "./Typography"
+import {type ContextMenuItem} from "./ContextMenu"
 
 export type MessageBaseProps = {
   authorAvatarUrl?: string
@@ -11,7 +12,7 @@ export type MessageBaseProps = {
   timestamp: number
   id: string
   text: string
-  onDeleteMessage?: () => void
+  contextMenuItems: ContextMenuItem[]
   onAuthorClick: () => void
 }
 

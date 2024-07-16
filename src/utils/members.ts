@@ -1,96 +1,121 @@
-import {
-  type RosterUserProps,
-  UserPowerLevel,
-} from "@/containers/Roster/RosterUser"
-import {type Room, type MatrixClient, EventTimeline} from "matrix-js-sdk"
+import {type RosterUserProps} from "@/containers/Roster/RosterUser"
+import {type Room, EventTimeline, EventType} from "matrix-js-sdk"
 import {getImageUrl, normalizeName} from "./util"
 import {ImageSizes} from "./rooms"
 
-// TODO: Check why existing two const for admin power level.
-const MIN_ADMIN_POWER_LEVEL = 50
+// #region PowerLevels
+export enum UserPowerLevel {
+  Admin = 100,
+  Moderator = 50,
+  Member = 0,
+}
 
-export function isUserRoomAdmin(room: Room, client: MatrixClient): boolean {
+export type RoomMemberWithPowerLevel = {
+  userId: string
+  powerLevel: UserPowerLevel
+}
+
+type PowerLevelResponse = Record<string, {powerLevel: unknown}>
+
+function getPowerLevelsFromRoom(room: Room): PowerLevelResponse {
   const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
-  const userId = client.getUserId()
 
-  if (roomState === undefined || userId === null) {
-    return false
+  if (roomState === undefined) {
+    return {}
   }
 
-  const powerLevels: string[] = roomState
-    .getStateEvents("m.room.power_levels", "")
-    ?.getContent().users
+  return roomState.getStateEvents(EventType.RoomPowerLevels, "")?.getContent()
+    .users
+}
+
+export function processPowerLevelByNumber(powerLevel: number): UserPowerLevel {
+  return powerLevel === UserPowerLevel.Admin
+    ? UserPowerLevel.Admin
+    : powerLevel >= UserPowerLevel.Moderator &&
+        powerLevel < UserPowerLevel.Admin
+      ? UserPowerLevel.Moderator
+      : UserPowerLevel.Member
+}
+
+export function getRoomPowerLevelByUserId(
+  room: Room,
+  userId: string
+): UserPowerLevel {
+  const users = getPowerLevelsFromRoom(room)
+  const user = users[userId]
+
+  if (user === undefined || typeof user !== "number") {
+    return UserPowerLevel.Member
+  }
+
+  return processPowerLevelByNumber(user)
+}
+
+export function getRoomUsersIdWithPowerLevels(
+  room: Room
+): RoomMemberWithPowerLevel[] {
+  const powerLevels = getPowerLevelsFromRoom(room)
+  const usersWithPowerLevels: RoomMemberWithPowerLevel[] = []
 
   const users = Object.entries(powerLevels)
 
-  for (const [adminId, powerLevel] of users) {
-    if (typeof powerLevel !== "number" || powerLevel < MIN_ADMIN_POWER_LEVEL) {
+  for (const [userId, powerLevel] of users) {
+    if (typeof powerLevel !== "number") {
       continue
     }
 
-    if (adminId === userId) {
-      return true
-    }
+    const userPowerLevel = processPowerLevelByNumber(powerLevel)
+
+    usersWithPowerLevels.push({
+      userId,
+      powerLevel: userPowerLevel,
+    })
   }
 
-  return false
+  return usersWithPowerLevels
 }
 
-export type PartialRoomMember = {
-  userId: string
-  powerLevel: UserPowerLevel
+// #region RoomMembers
+export function isUserRoomAdminOrMod(room: Room): boolean {
+  const currentUserPowerLevel = getRoomPowerLevelByUserId(room, room.myUserId)
+
+  return currentUserPowerLevel !== UserPowerLevel.Member
 }
 
 export async function getRoomAdminsAndModerators(
   room: Room
 ): Promise<RosterUserProps[]> {
   const allMembers = await room.client.getJoinedRoomMembers(room.roomId)
-  const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
-
-  if (roomState === undefined) {
-    return []
-  }
-
-  const userPowerLevels: string[] =
-    roomState.getStateEvents("m.room.power_levels", "")?.getContent().users ??
-    []
-
-  const users = Object.entries(userPowerLevels)
+  const userPowerLevels = getRoomUsersIdWithPowerLevels(room)
   const adminsOrModerators: RosterUserProps[] = []
 
-  for (const [adminId, powerLevel] of users) {
-    if (
-      typeof powerLevel !== "number" ||
-      powerLevel < UserPowerLevel.Moderator
-    ) {
+  for (const user of userPowerLevels) {
+    if (user.powerLevel === UserPowerLevel.Member) {
       continue
     }
 
-    const member = allMembers.joined[adminId]
+    const member = allMembers.joined[user.userId]
 
     if (member === undefined) {
       continue
     }
 
-    const displayName = normalizeName(member.display_name ?? adminId)
-
-    const lastPresenceAge = await getUserLastPresence(room, adminId)
+    const displayName = normalizeName(member.display_name ?? user.userId)
+    const lastPresenceAge = await getUserLastPresence(room, user.userId)
 
     adminsOrModerators.push({
       displayName,
       lastPresenceAge: lastPresenceAge ?? undefined,
+      powerLevel: user.powerLevel,
+      userId: user.userId,
+      onClick: () => {
+        throw new Error("Roster user click not handled.")
+      },
       avatarUrl: getImageUrl(
         member.avatar_url,
         room.client,
         ImageSizes.MessageAndProfile
       ),
-      // TODO: Use actual props instead of dummy data.
-      powerLevel:
-        powerLevel === UserPowerLevel.Admin
-          ? UserPowerLevel.Admin
-          : UserPowerLevel.Member,
-      onClick: () => {},
-      userId: adminId,
     })
   }
 
