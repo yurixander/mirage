@@ -5,9 +5,7 @@ import {type MessageBaseProps} from "../components/MessageContainer"
 type Story = StoryObj<typeof TextMessage>
 
 const meta: Meta<typeof TextMessage> = {component: TextMessage}
-const render = (arguments_: MessageBaseProps) => (
-  <TextMessage {...arguments_} onDeleteMessage={() => {}} />
-)
+const render = (args: MessageBaseProps) => <TextMessage {...args} />
 
 export const Default: Story = {
   render,
@@ -16,10 +14,11 @@ export const Default: Story = {
     authorAvatarUrl:
       "https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     authorDisplayNameColor: "rgb(100, 200, 100)",
-    text: "Hello world!",
+    text: "Hello world! \n Que tal? \n \n Todo perfecto",
     timestamp: Date.now(),
     onAuthorClick: () => {},
-    onDeleteMessage() {},
+    contextMenuItems: [],
+    id: "text-message-id",
   },
 }
 

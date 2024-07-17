@@ -1,15 +1,12 @@
-import {
-  notificationsBody,
-  type NotificationType,
-} from "@/containers/NavigationSection/hooks/useCachedNotifications"
 import {stringToColor, formatTime} from "@/utils/util"
 import {type FC} from "react"
-import {IoTime, IoCheckbox, IoTrash} from "react-icons/io5"
+import {IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import Button from "./Button"
 import IconButton from "./IconButton"
 import Typography, {TypographyVariant} from "./Typography"
+import {notificationsBody, type NotificationType} from "@/utils/notifications"
 
 export type NotificationProps = {
   type: NotificationType
@@ -44,10 +41,10 @@ const Notification: FC<NotificationProps> = ({
         !isRead && "rounded-lg bg-slate-100"
       )}>
       <AvatarImage
-        isRounded={false}
-        avatarType={AvatarType.Message}
+        isRounded
         displayName={sender}
         avatarUrl={senderAvatarUrl}
+        avatarType={AvatarType.Profile}
       />
 
       <div className="flex w-full flex-col">
@@ -58,15 +55,11 @@ const Notification: FC<NotificationProps> = ({
             {sender}
           </Typography>
 
-          <div className="flex h-max items-center gap-0.5">
-            <IoTime size={13} className="text-gray-300" />
-
-            <Typography
-              className="text-gray-300"
-              variant={TypographyVariant.BodySmall}>
-              {formatTime(notificationTime)}
-            </Typography>
-          </div>
+          <Typography
+            className="text-gray-300"
+            variant={TypographyVariant.BodySmall}>
+            {formatTime(notificationTime)}
+          </Typography>
 
           <div className="ml-auto flex">
             {!isRead && (
@@ -93,19 +86,18 @@ const Notification: FC<NotificationProps> = ({
           </div>
         </div>
 
-        <Typography
-          className="flex gap-1"
-          variant={TypographyVariant.BodyMedium}>
-          {notificationsBody[type]}
-          <Typography
-            variant={TypographyVariant.BodyMedium}
-            style={{color: stringToColor(roomName)}}>
-            {roomName}
-          </Typography>
+        <Typography variant={TypographyVariant.BodyMedium}>
+          {notificationsBody[type]}{" "}
+          <b style={{color: stringToColor(roomName)}}>{roomName}</b>
         </Typography>
 
         {action !== undefined && (
-          <Button isSmall onClick={action} label="View" className="max-w-14" />
+          <Button
+            isSmall
+            onClick={action}
+            label="Go to ⟶"
+            className="mt-1 max-w-max"
+          />
         )}
       </div>
     </div>
