@@ -1,12 +1,14 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Slider, {type SliderProps} from "../components/Slider"
+import React from "react"
 
 type Story = StoryObj<typeof Slider>
 
 const meta: Meta<typeof Slider> = {
   component: Slider,
 }
-const render = (args: SliderProps) => <Slider {...args} />
+
+const render = (args: SliderProps): React.JSX.Element => <Slider {...args} />
 
 export const Default: Story = {
   render,

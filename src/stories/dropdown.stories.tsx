@@ -1,6 +1,7 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Typography from "@/components/Typography"
 import Dropdown, {type DropdownProps} from "@/components/Dropdown"
+import React from "react"
 
 type Story = StoryObj<typeof Dropdown>
 
@@ -8,7 +9,9 @@ const meta: Meta<typeof Dropdown> = {
   component: Dropdown,
 }
 
-const render = (args: DropdownProps) => <Dropdown {...args} />
+const render = (args: DropdownProps): React.JSX.Element => (
+  <Dropdown {...args} />
+)
 
 export const Default: Story = {
   render,

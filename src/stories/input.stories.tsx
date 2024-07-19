@@ -7,11 +7,12 @@ import Input, {
   userIdConstraint,
 } from "../components/Input"
 import {IoArrowUndo, IoTrash, IoArrowRedo} from "react-icons/io5"
+import React from "react"
 
 type Story = StoryObj<typeof Input>
 
 const meta: Meta<typeof Input> = {component: Input}
-const render = (arguments_: InputProperties) => <Input {...arguments_} />
+const render = (args: InputProperties): React.JSX.Element => <Input {...args} />
 
 export const Default: Story = {
   render,
