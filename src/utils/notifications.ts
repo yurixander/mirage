@@ -37,7 +37,9 @@ export function getPowerLevelsHistory(): CurrentPowerLevelData[] {
   }
 }
 
-export function setPowerLevelsHistory(newPowerLevels: CurrentPowerLevelData[]) {
+export function setPowerLevelsHistory(
+  newPowerLevels: CurrentPowerLevelData[]
+): void {
   localStorage.setItem(
     POWER_LEVELS_LOCAL_STORAGE_KEY,
     JSON.stringify(newPowerLevels)
@@ -70,7 +72,7 @@ export function getNotificationsHistory(): LocalNotificationData[] {
 
 export function setNotificationsHistory(
   notifications: LocalNotificationData[]
-) {
+): void {
   localStorage.setItem(
     NOTIFICATIONS_LOCAL_STORAGE_KEY,
     JSON.stringify(notifications)

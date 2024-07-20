@@ -20,7 +20,7 @@ const Slider: FC<SliderProps> = ({
 }) => {
   const [progress, setProgress] = useState(value)
 
-  const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const value = Number(event.target.value)
 
     setProgress(value)

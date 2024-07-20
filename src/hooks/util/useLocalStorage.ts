@@ -19,7 +19,16 @@ const getLocalStorageValue = <T>(key: LocalStorageKey): T | null => {
   }
 }
 
-const useLocalStorage = <T>(key: LocalStorageKey) => {
+type UseLocalStorageReturnType<T> = {
+  value: T | null
+  refresh: () => void
+  put: (value: T) => void
+  remove: () => void
+}
+
+const useLocalStorage = <T>(
+  key: LocalStorageKey
+): UseLocalStorageReturnType<T> => {
   const [value, setCachedValue] = useState<T | null>(
     useCallback(() => getLocalStorageValue<T>(key), [key])
   )

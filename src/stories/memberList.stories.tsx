@@ -1,13 +1,14 @@
 import MemberList from "@/containers/Roster/MemberList"
-import {UserPowerLevel} from "@/containers/Roster/RosterUser"
+import {UserPowerLevel} from "@/utils/members"
 import {type Meta, type StoryObj} from "@storybook/react"
+import React from "react"
 
 type Story = StoryObj<typeof MemberList>
 
 const meta: Meta<typeof MemberList> = {
   component: MemberList,
 }
-const render = () => (
+const render = (): React.JSX.Element => (
   <MemberList
     sections={[
       {
