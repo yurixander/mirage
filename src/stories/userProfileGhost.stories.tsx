@@ -1,13 +1,15 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import UserProfileGhost, {
-  type UserProfileGhostProps as UserProfileGhostProperties,
+  type UserProfileGhostProps,
 } from "../components/UserProfileGhost"
+import React from "react"
 
 type Story = StoryObj<typeof UserProfileGhost>
 
 const meta: Meta<typeof UserProfileGhost> = {component: UserProfileGhost}
-const render = (arguments_: UserProfileGhostProperties) => (
-  <UserProfileGhost {...arguments_} />
+
+const render = (args: UserProfileGhostProps): React.JSX.Element => (
+  <UserProfileGhost {...args} />
 )
 
 export const Default: Story = {

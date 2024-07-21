@@ -1,12 +1,14 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import Checkbox, {
-  type CheckboxProps as CheckboxProperties,
-} from "../components/Checkbox"
+import Checkbox, {type CheckboxProps} from "../components/Checkbox"
+import React from "react"
 
 type Story = StoryObj<typeof Checkbox>
 
 const meta: Meta<typeof Checkbox> = {component: Checkbox}
-const render = (arguments_: CheckboxProperties) => <Checkbox {...arguments_} />
+
+const render = (args: CheckboxProps): React.JSX.Element => (
+  <Checkbox {...args} />
+)
 
 export const WithoutLabel: Story = {
   render,

@@ -1,5 +1,6 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import RadioGroup, {type RadioGroupProps} from "../components/RadioGroup"
+import React from "react"
 
 type Story = StoryObj<typeof RadioGroup>
 
@@ -7,7 +8,9 @@ const meta: Meta<typeof RadioGroup> = {
   component: RadioGroup,
 }
 
-const render = (args: RadioGroupProps) => <RadioGroup {...args} />
+const render = (args: RadioGroupProps): React.JSX.Element => (
+  <RadioGroup {...args} />
+)
 
 export const Default: Story = {
   render,

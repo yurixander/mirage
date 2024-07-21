@@ -1,14 +1,14 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import IconButton, {
-  type IconButtonProps as IconButtonProperties,
-} from "../components/IconButton"
+import IconButton, {type IconButtonProps} from "../components/IconButton"
 import {IoPaperPlane, IoNotificationsSharp} from "react-icons/io5"
+import React from "react"
 
 type Story = StoryObj<typeof IconButton>
 
 const meta: Meta<typeof IconButton> = {component: IconButton}
-const render = (arguments_: IconButtonProperties) => (
-  <IconButton {...arguments_} />
+
+const render = (args: IconButtonProps): React.JSX.Element => (
+  <IconButton {...args} />
 )
 
 export const Settings: Story = {

@@ -1,9 +1,19 @@
 import {useCallback, useState} from "react"
 
+type UseListReturnType<T> = {
+  items: T[]
+  addItem: (newItem: T) => void
+  updateItem: (newItem: T) => void
+  deleteItem: (item: T) => void
+  clearItems: () => void
+  deleteWhen: (when: (element: T) => boolean) => void
+  updateWhen: (when: (element: T) => boolean, newItem: T) => void
+}
+
 const useList = <T>(
   hasRepeat?: (element1: T, element2: T) => boolean,
   initialList?: T[]
-) => {
+): UseListReturnType<T> => {
   const [items, setItem] = useState<T[]>(initialList ?? [])
 
   const addItem = useCallback(
@@ -71,7 +81,7 @@ const useList = <T>(
     setItem(prevItems => prevItems.filter(prevItem => !when(prevItem)))
   }, [])
 
-  const clearItems = () => {
+  const clearItems = (): void => {
     setItem([])
   }
 

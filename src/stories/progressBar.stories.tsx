@@ -4,13 +4,16 @@ import ProgressBar, {
   ProgressBarState,
   ProgressBarVariant,
 } from "../components/ProgressBar"
+import React from "react"
 
 type Story = StoryObj<typeof ProgressBar>
 
 const meta: Meta<typeof ProgressBar> = {
   component: ProgressBar,
 }
-const render = (args: ProgressBarProps) => <ProgressBar {...args} />
+const render = (args: ProgressBarProps): React.JSX.Element => (
+  <ProgressBar {...args} />
+)
 
 export const LinearProgress: Story = {
   render,

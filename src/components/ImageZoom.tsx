@@ -22,7 +22,7 @@ const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
   const [position, setPosition] = useState<ImagePoints>({x: 0, y: 0})
 
   // When in zoom state, move the zoom to where the cursor is.
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>): void => {
     if (!zoom) {
       return
     }
@@ -36,7 +36,7 @@ const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
     setPosition({x, y})
   }
 
-  const toggleZoom = () => {
+  const toggleZoom = (): void => {
     if (zoom) {
       setZoomLevel(DEFAULT_ZOOM_LEVEL)
     } else {
@@ -47,7 +47,7 @@ const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
   }
 
   // Zoom in and out with the mouse wheel.
-  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+  const handleWheel = (event: React.WheelEvent<HTMLDivElement>): void => {
     if (!zoom) {
       setZoom(true)
     }

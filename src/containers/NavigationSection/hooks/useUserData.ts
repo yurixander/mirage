@@ -14,7 +14,12 @@ export type UserData = {
   avatarUrl?: string
 }
 
-const useUserData = () => {
+type UseUserDataReturnType = {
+  isConnecting: boolean
+  userData: UserData | undefined
+}
+
+const useUserData = (): UseUserDataReturnType => {
   const [userData, setUserData] = useState<UserData>()
   const {client, isConnecting} = useConnection()
 

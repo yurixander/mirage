@@ -25,7 +25,13 @@ enum NotificationState {
 
 const NOTIFICATION_SENDER_NAME = "Room owners"
 
-const useNotifications = () => {
+type UseNotificationsReturnType = {
+  isLoading: boolean
+  notifications: NotificationProps[]
+  unreadNotifications: number
+}
+
+const useNotifications = (): UseNotificationsReturnType => {
   const {client} = useConnection()
 
   const [notificationsState, setNotificationsState] = useState(

@@ -1,15 +1,14 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import SwitchButton, {
-  type SwitchButtonProps as SwitchButtonProperties,
-} from "../components/SwitchButton"
+import SwitchButton, {type SwitchButtonProps} from "../components/SwitchButton"
+import React from "react"
 
 type Story = StoryObj<typeof SwitchButton>
 
 const meta: Meta<typeof SwitchButton> = {
   component: SwitchButton,
 }
-const render = (arguments_: SwitchButtonProperties) => (
-  <SwitchButton {...arguments_} />
+const render = (args: SwitchButtonProps): React.JSX.Element => (
+  <SwitchButton {...args} />
 )
 
 export const Default: Story = {

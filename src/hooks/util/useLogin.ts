@@ -6,7 +6,16 @@ import useConnection from "../matrix/useConnection"
 import useLocalStorage, {LocalStorageKey} from "./useLocalStorage"
 import {MATRIX_SERVER} from "@/utils/servers"
 
-const useLogin = () => {
+type UseLoginReturnType = {
+  isConnecting: boolean
+  syncState: SyncState | null
+  lastSyncError: Error | null
+  login: () => Promise<void>
+  setUserId: React.Dispatch<React.SetStateAction<string>>
+  setPassword: React.Dispatch<React.SetStateAction<string>>
+}
+
+const useLogin = (): UseLoginReturnType => {
   const navigate = useNavigate()
   const [userId, setUserId] = useState("")
   const [password, setPassword] = useState("")
