@@ -1,18 +1,15 @@
 import {type FC} from "react"
 import MessageContainer from "./MessageContainer"
-import {IoDocument, IoDownload} from "react-icons/io5"
 import Typography, {TypographyVariant} from "./Typography"
 import ProgressBar, {ProgressBarVariant} from "./ProgressBar"
 import IconButton from "./IconButton"
 import {
   FaDownload,
   FaFile,
-  FaFileCircleCheck,
   FaFileCode,
   FaFileExcel,
   FaFilePdf,
   FaFilePowerpoint,
-  FaFileShield,
   FaFileWord,
   FaFileZipper,
 } from "react-icons/fa6"
@@ -121,7 +118,11 @@ const IconFile: FC<{typeFile: string}> = ({typeFile}) => {
     case "c":
     case "js":
     case "html":
-    case "css": {
+    case "css":
+    case "php":
+    case "ts":
+    case "tsx":
+    case "jsx": {
       return <FaFileCode className="text-blue-600" size={20} />
     }
     default: {
