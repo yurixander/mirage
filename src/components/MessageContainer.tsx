@@ -50,19 +50,20 @@ const MessageContainer: FC<MessageContainerProps> = ({
         </button>
 
         <div className="w-full">
-          <Typography
-            className="w-max select-text font-bold"
-            style={{color: authorDisplayNameColor}}
-            onClick={onAuthorClick}
-            variant={TypographyVariant.Body}>
-            {cleanDisplayName(authorDisplayName)}
-          </Typography>
-
-          <div className="flex w-full justify-between">
-            {children}
-
-            <time className="flex text-gray-300">{localeTimeString}</time>
+          <div className="flex items-center gap-2 py-1">
+            <Typography
+              className="w-full select-text font-bold"
+              style={{color: authorDisplayNameColor}}
+              onClick={onAuthorClick}
+              variant={TypographyVariant.Body}>
+              {cleanDisplayName(authorDisplayName)}
+            </Typography>
+            <time className="flex min-w-20 text-right text-gray-300">
+              {localeTimeString}
+            </time>
           </div>
+
+          <div className="flex w-full justify-between">{children}</div>
         </div>
       </div>
     </div>
