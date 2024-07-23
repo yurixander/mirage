@@ -25,7 +25,7 @@ const processSpace = (space: Room): PartialSpace => {
 
 type UseSpacesReturnType = {
   spaces: PartialSpace[]
-  allRooms: PartialRoom[]
+  isLoading: boolean
   onSpaceExit: (spaceId: string) => void
 }
 
