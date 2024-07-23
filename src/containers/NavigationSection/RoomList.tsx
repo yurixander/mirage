@@ -1,12 +1,13 @@
 import Detail from "@/components/Detail"
 import Room, {RoomType} from "@/components/Room"
 import useSpaceHierarchy from "@/hooks/matrix/useSpaceHierarchy"
-import {useMemo, useState, type FC} from "react"
+import {useMemo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import LoadingEffect from "@/components/LoadingEffect"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {buildDirectRoomsMenuItems, buildRoomsMenuItems} from "@/utils/menu"
 import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 
 export type RoomListProps = {
   spaceId?: string
@@ -15,7 +16,7 @@ export type RoomListProps = {
 
 const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
   const {rooms, isLoading} = useSpaceHierarchy(spaceId)
-  const [roomSelected, setRoomSelected] = useState<string>()
+  const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const {setActiveModal} = useActiveModalStore()
 
   const directRooms = useMemo(
@@ -59,8 +60,8 @@ const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
                   roomName={directRoom.roomName}
                   roomId={directRoom.roomId}
                   type={directRoom.type}
-                  onRoomClick={setRoomSelected}
-                  isSelected={roomSelected === directRoom.roomId}
+                  onRoomClick={setActiveRoomId}
+                  isSelected={activeRoomId === directRoom.roomId}
                   emoji={directRoom.emoji}
                 />
               ))}
@@ -94,8 +95,8 @@ const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
                   roomName={room.roomName}
                   roomId={room.roomId}
                   type={room.type}
-                  onRoomClick={setRoomSelected}
-                  isSelected={roomSelected === room.roomId}
+                  onRoomClick={setActiveRoomId}
+                  isSelected={activeRoomId === room.roomId}
                   emoji={room.emoji}
                 />
               ))}
@@ -110,7 +111,7 @@ const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
 const RoomListPlaceHolder: FC<{length?: number}> = ({length = 2}) => {
   return (
     <div className="ml-2 flex flex-col gap-1">
-      {Array.from({length}).map((_, index) => (
+      {Array.from({length}, (_, index) => (
         <div
           key={index}
           className="h-5 w-32 overflow-hidden rounded-md bg-neutral-200">
