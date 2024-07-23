@@ -43,7 +43,7 @@ export function assert(
   }
 }
 
-export function trim(text: string, maxLength: number) {
+export function trim(text: string, maxLength: number): string {
   return text.length >= maxLength
     ? `${text.slice(0, Math.max(0, maxLength))}...`
     : text
@@ -152,7 +152,7 @@ export async function sendImageMessageFromFile(
   image: FileContent<string>,
   client: MatrixClient | null,
   destinationRoom: string | null
-) {
+): Promise<void> {
   if (client === null || destinationRoom === null) {
     return
   }
@@ -226,7 +226,7 @@ export function deleteMessage(
   client: MatrixClient,
   roomId: string,
   eventId: string
-) {
+): void {
   client.redactEvent(roomId, eventId).catch(error => {
     console.error("Error deleting message", error)
   })
@@ -285,6 +285,6 @@ export function generateRandomId(length: number = 10): string {
   return result
 }
 
-export async function delay(ms: number) {
-  return await new Promise(resolve => setTimeout(resolve, ms))
+export async function delay(ms: number): Promise<void> {
+  await new Promise(resolve => setTimeout(resolve, ms))
 }

@@ -17,7 +17,7 @@ const CreateSpaceModal: FC = () => {
   const [isCreatingSpace, setIsCreatingSpace] = useState(false)
   const {clearActiveModal} = useActiveModalStore()
 
-  const onCreateSpace = () => {
+  const onCreateSpace = (): void => {
     if (client === null) {
       return
     }

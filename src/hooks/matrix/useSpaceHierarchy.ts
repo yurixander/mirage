@@ -17,7 +17,14 @@ export type PartialRoom = {
   type: RoomType
 }
 
-const useSpaceHierarchy = (spaceId: string | undefined) => {
+type UseSpaceHierarchyReturnType = {
+  rooms: PartialRoom[]
+  isLoading: boolean
+}
+
+const useSpaceHierarchy = (
+  spaceId: string | undefined
+): UseSpaceHierarchyReturnType => {
   const {client} = useConnection()
   const [roomsState, setRoomsState] = useState<RoomsState>()
   const [rooms, setRooms] = useState<PartialRoom[]>([])

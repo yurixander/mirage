@@ -1,12 +1,12 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import KeyCue, {
-  type KeyCueProps as KeyCueProperties,
-} from "../components/KeyCue"
+import KeyCue, {type KeyCueProps} from "../components/KeyCue"
+import React from "react"
 
 type Story = StoryObj<typeof KeyCue>
 
 const meta: Meta<typeof KeyCue> = {component: KeyCue}
-const render = (arguments_: KeyCueProperties) => <KeyCue {...arguments_} />
+
+const render = (args: KeyCueProps): React.JSX.Element => <KeyCue {...args} />
 
 export const KeyOnly: Story = {
   render,

@@ -2,11 +2,15 @@ import useConnection from "../../../hooks/matrix/useConnection"
 import {useNavigate} from "react-router-dom"
 import {ViewPath} from "@/utils/util"
 
-const useSidebarActions = () => {
+type UseSidebarActions = {
+  onLogout: () => void
+}
+
+const useSidebarActions = (): UseSidebarActions => {
   const {disconnect} = useConnection()
   const navigate = useNavigate()
 
-  const onLogout = () => {
+  const onLogout = (): void => {
     void disconnect()
       .then(() => {
         navigate(ViewPath.Login)

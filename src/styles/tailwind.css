@@ -56,23 +56,13 @@ textarea:disabled {
   @apply m-1 rounded-xl bg-gray-300;
 }
 
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  background: #c0f;
-  border-radius: 10px;
-  box-shadow: 0 0 5px 0 solid rgba(0, 0, 0, 0.5);
+input[type="range"]::-webkit-slider-thumb {
+  @apply size-4 appearance-none rounded-full border border-fuchsia-600 bg-slate-50 shadow;
+  border: 1px solid rgb(192, 38, 211);
 }
 
-.slider::-moz-range-thumb {
-  appearance: none;
-  width: 14px;
-  height: 14px;
-  border: none;
-  background: #c0f;
-  border-radius: 10px;
-  box-shadow: 0 0 5px 0 solid rgba(0, 0, 0, 0.5);
+input[type="range"]::-moz-range-thumb {
+  @apply size-4 appearance-none rounded-full border border-fuchsia-600 bg-slate-50 shadow;
 }
 
 summary::before {

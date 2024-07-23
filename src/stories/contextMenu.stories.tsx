@@ -9,13 +9,17 @@ import {
   CONTEXT_MENU_RELOAD,
 } from "@/utils/menu"
 import Button from "@/components/Button"
+import React from "react"
 
 type Story = StoryObj<typeof ContextMenu>
 
 const meta: Meta<typeof ContextMenu> = {
   component: ContextMenu,
 }
-const render = (args: ContextMenuProps) => <ContextMenu {...args} />
+
+const render = (args: ContextMenuProps): React.JSX.Element => (
+  <ContextMenu {...args} />
+)
 
 export const RightClick: Story = {
   render,

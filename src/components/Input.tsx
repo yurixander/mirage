@@ -99,7 +99,7 @@ const Input: FC<InputProps> = ({
     InputConstraint[]
   >([])
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const value = event.target.value
 
     setValue(value)

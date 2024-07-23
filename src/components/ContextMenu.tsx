@@ -61,12 +61,12 @@ const ContextMenu: FC<ContextMenuProps> = ({
   actionType = ClickActions.RightClick,
 }) => {
   const {activeMenuId, hideMenu, points, showMenu} = useContextMenuStore()
-  const {dropdownRef} = useClickOutside<HTMLDivElement>(hideMenu)
+  const {elementRef} = useClickOutside<HTMLDivElement>(hideMenu)
   const isActive = activeMenuId === id
   const isRightClick = actionType === ClickActions.RightClick
   const isLeftClick = actionType === ClickActions.LeftClick
 
-  const onShowMenu = (event: React.MouseEvent<HTMLDivElement>) => {
+  const onShowMenu = (event: React.MouseEvent<HTMLDivElement>): void => {
     showMenu(id, event)
   }
 
@@ -86,7 +86,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         elements.length > 0 &&
         createPortal(
           <div
-            ref={dropdownRef}
+            ref={elementRef}
             className="fixed z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-gray-100 bg-white p-1.5 shadow-lg"
             style={{
               left: `${points.x}px`,

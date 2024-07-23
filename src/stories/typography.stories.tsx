@@ -1,16 +1,18 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Typography, {
   TypographyVariant,
-  type TypographyProps as TypographyProperties,
+  type TypographyProps,
 } from "../components/Typography"
+import React from "react"
 
 type Story = StoryObj<typeof Typography>
 
 const meta: Meta<typeof Typography> = {
   component: Typography,
 }
-const render = (arguments_: TypographyProperties) => (
-  <Typography {...arguments_} />
+
+const render = (args: TypographyProps): React.JSX.Element => (
+  <Typography {...args} />
 )
 
 export const Default: Story = {

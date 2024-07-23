@@ -23,7 +23,13 @@ const processSpace = (space: Room): PartialSpace => {
   }
 }
 
-const useSpaces = () => {
+type UseSpacesReturnType = {
+  spaces: PartialSpace[]
+  allRooms: PartialRoom[]
+  onSpaceExit: (spaceId: string) => void
+}
+
+const useSpaces = (): UseSpacesReturnType => {
   const {client} = useConnection()
   const [isLoading, setIsLoading] = useState(false)
 

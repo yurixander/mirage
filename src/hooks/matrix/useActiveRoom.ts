@@ -6,7 +6,6 @@ import {useCallback, useEffect, useState} from "react"
 import useEventListener from "./useEventListener"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {
-  deleteMessage,
   getImageUrl,
   sendImageMessageFromFile,
   stringToColor,
@@ -18,6 +17,7 @@ import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {useFilePicker} from "use-file-picker"
 import {handleEvents, handleRoomEvents} from "@/utils/rooms"
 import {isUserRoomAdminOrMod} from "@/utils/members"
+import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum MessageKind {
   Text,
@@ -45,7 +45,21 @@ export type AnyMessage =
   | Message<MessageKind.Event>
   | Message<MessageKind.Unread>
 
-const useActiveRoom = () => {
+type UseActiveRoomType = {
+  roomName: string
+  activeRoomId: string | null
+  isLoadingMessages: boolean
+  messagesProp: AnyMessage[]
+  typingUsers: TypingIndicatorUser[]
+  filesContent: Array<FileContent<string>>
+  sendTextMessage: (body: string) => Promise<void>
+  sendImageMessage: () => Promise<void>
+  openFilePicker: () => void
+  sendEventTyping: () => Promise<void>
+  clear: () => void
+}
+
+const useActiveRoom = (): UseActiveRoomType => {
   const {activeRoomId} = useActiveRoomIdStore()
   const {client} = useConnection()
   const [messagesProp, setMessagesProp] = useState<AnyMessage[]>([])
@@ -195,8 +209,6 @@ const useActiveRoom = () => {
     openFilePicker,
     typingUsers,
     sendEventTyping,
-    client,
-    deleteMessage,
     roomName,
     filesContent,
     clear,
