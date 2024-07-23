@@ -57,6 +57,7 @@ const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
             <div className="flex flex-col gap-0.5">
               {directRooms.map(directRoom => (
                 <Room
+                  key={directRoom.roomId}
                   roomName={directRoom.roomName}
                   roomId={directRoom.roomId}
                   type={directRoom.type}
@@ -92,6 +93,7 @@ const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
             <div className="flex flex-col gap-0.5">
               {groupRooms.map(room => (
                 <Room
+                  key={room.roomId}
                   roomName={room.roomName}
                   roomId={room.roomId}
                   type={room.type}
