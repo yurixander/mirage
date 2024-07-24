@@ -28,7 +28,7 @@ const NOTIFICATION_SENDER_NAME = "Room owners"
 type UseNotificationsReturnType = {
   isLoading: boolean
   notifications: NotificationProps[]
-  unreadNotifications: number
+  containsUnreadNotifications: boolean
 }
 
 const useNotifications = (): UseNotificationsReturnType => {

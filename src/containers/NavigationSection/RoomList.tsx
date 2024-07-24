@@ -6,7 +6,10 @@ import {twMerge} from "tailwind-merge"
 import LoadingEffect from "@/components/LoadingEffect"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {buildDirectRoomsMenuItems, buildRoomsMenuItems} from "@/utils/menu"
-import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
+import useActiveModalStore, {
+  ModalRenderLocation,
+  Modals,
+} from "@/hooks/util/useActiveModal"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 
 export type RoomListProps = {
@@ -31,7 +34,7 @@ const RoomList: FC<RoomListProps> = ({spaceId, className}) => {
 
   return (
     <div
-      id="room-list"
+      id={ModalRenderLocation.RoomList}
       className={twMerge(
         "flex flex-col overflow-y-scroll scrollbar-hide",
         className

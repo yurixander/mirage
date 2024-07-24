@@ -17,6 +17,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
   const [spaceSelected, setSpaceSelected] = useState<string>()
   const {spaces, isLoading} = useSpaces()
+  // const {isConnecting, userData} = useUserData()
 
   return (
     <div className={twMerge("flex size-full max-w-72", className)}>
@@ -60,7 +61,12 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
           className="size-full max-h-max border-b border-b-slate-300"
         />
 
-        <UserBar className="size-full max-h-14 shrink-0" />
+        <UserBar
+          className="w-full shrink-0"
+          isLoading={false}
+          userId="@tok"
+          displayName="Christopher"
+        />
       </div>
     </div>
   )
