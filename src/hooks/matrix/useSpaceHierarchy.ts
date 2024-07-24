@@ -1,8 +1,9 @@
 import {type RoomType} from "@/components/Room"
-import {useEffect, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
 import useConnection from "./useConnection"
 import {getAllJoinedRooms} from "@/utils/rooms"
 import {getRoomsFromSpace} from "@/utils/spaces"
+import {type MatrixClient} from "matrix-js-sdk"
 
 export enum RoomsState {
   Loaded,
@@ -19,24 +20,20 @@ export type PartialRoom = {
 
 type UseSpaceHierarchyReturnType = {
   rooms: PartialRoom[]
-  isLoading: boolean
+  roomsState: RoomsState
+  client: MatrixClient | null
+  onRefreshRooms: () => void
 }
 
 const useSpaceHierarchy = (
   spaceId: string | undefined
 ): UseSpaceHierarchyReturnType => {
   const {client} = useConnection()
-  const [roomsState, setRoomsState] = useState<RoomsState>()
+  const [roomsState, setRoomsState] = useState(RoomsState.Error)
   const [rooms, setRooms] = useState<PartialRoom[]>([])
 
-  useEffect(() => {
-    if (client === null) {
-      return
-    }
-
-    setRoomsState(RoomsState.Loading)
-
-    const handler = setTimeout(() => {
+  const fetchSpaceHierarchy = useCallback(
+    (client: MatrixClient) => {
       if (spaceId === undefined) {
         // If spaceId is not specified fetch all joined rooms.
         void getAllJoinedRooms(client)
@@ -65,16 +62,42 @@ const useSpaceHierarchy = (
 
           setRoomsState(RoomsState.Error)
         })
+    },
+    [spaceId]
+  )
+
+  const onRefreshRooms = (): void => {
+    if (client === null) {
+      return
+    }
+
+    setRoomsState(RoomsState.Loading)
+    fetchSpaceHierarchy(client)
+  }
+
+  useEffect(() => {
+    if (client === null) {
+      return
+    }
+
+    setRoomsState(RoomsState.Error)
+
+    const handler = setTimeout(() => {
+      fetchSpaceHierarchy(client)
     }, 1000)
 
     return () => {
       clearTimeout(handler)
     }
-  }, [client, spaceId])
+  }, [client, fetchSpaceHierarchy])
+
+  // TODO: Handle listeners for rooms.
 
   return {
     rooms,
-    isLoading: roomsState === RoomsState.Loading || client === null,
+    roomsState,
+    onRefreshRooms,
+    client,
   }
 }
 

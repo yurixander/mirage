@@ -58,6 +58,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
         </div>
 
         <RoomList
+          onSpaceSelected={setSpaceSelected}
           spaceId={spaceSelected}
           className="size-full max-h-max border-b border-b-slate-300"
         />
