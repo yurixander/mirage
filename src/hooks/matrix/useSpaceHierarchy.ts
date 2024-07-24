@@ -29,7 +29,7 @@ const useSpaceHierarchy = (
   spaceId: string | undefined
 ): UseSpaceHierarchyReturnType => {
   const {client} = useConnection()
-  const [roomsState, setRoomsState] = useState(RoomsState.Error)
+  const [roomsState, setRoomsState] = useState(RoomsState.Loading)
   const [rooms, setRooms] = useState<PartialRoom[]>([])
 
   const fetchSpaceHierarchy = useCallback(
@@ -80,7 +80,7 @@ const useSpaceHierarchy = (
       return
     }
 
-    setRoomsState(RoomsState.Error)
+    setRoomsState(RoomsState.Loading)
 
     const handler = setTimeout(() => {
       fetchSpaceHierarchy(client)
