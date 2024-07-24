@@ -11,13 +11,14 @@ import {twMerge} from "tailwind-merge"
 import useSpaces from "./hooks/useSpaces"
 import RoomList from "./RoomList"
 import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
+import useUserData from "./hooks/useUserData"
 
 const NavigationSection: FC<{className?: string}> = ({className}) => {
   const {setActiveModal} = useActiveModalStore()
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
   const [spaceSelected, setSpaceSelected] = useState<string>()
   const {spaces, isLoading} = useSpaces()
-  // const {isConnecting, userData} = useUserData()
+  const {userDataState, userData, onRefreshData} = useUserData()
 
   return (
     <div className={twMerge("flex size-full max-w-72", className)}>
@@ -63,9 +64,14 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
 
         <UserBar
           className="w-full shrink-0"
-          isLoading={false}
-          userId="@tok"
-          displayName="Christopher"
+          userDataState={userDataState}
+          userId={userData.userId}
+          displayName={userData.displayName}
+          avatarImageUrl={userData.avatarImageUrl}
+          onRefreshData={onRefreshData}
+          onOpenSettings={function (): void {
+            throw new Error("Open settings not implemented.")
+          }}
         />
       </div>
     </div>

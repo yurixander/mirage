@@ -12,26 +12,34 @@ import {
   validateUrl,
 } from "@/utils/util"
 import LoadingEffect from "@/components/LoadingEffect"
+import {UserDataState} from "./hooks/useUserData"
+import {IoAlertCircle, IoRefreshCircle} from "react-icons/io5"
 
 const MAX_USER_ID_LENGTH = 18
 
 type UserBarProps = {
-  isLoading: boolean
+  userDataState: UserDataState
   userId: string
   displayName: string
+  onRefreshData: () => void
+  onOpenSettings: () => void
   avatarImageUrl?: string
   className?: string
 }
 
 const UserBar: FC<UserBarProps> = ({
-  isLoading,
   avatarImageUrl,
   displayName,
   userId,
+  userDataState,
+  onRefreshData,
+  onOpenSettings,
   className,
 }) => {
-  assert(displayName.length > 0, "Display name should not be empty")
-  assert(userId.length > 0, "User id should not be empty")
+  if (userDataState === UserDataState.Prepared) {
+    assert(displayName.length > 0, "Display name should not be empty")
+    assert(userId.length > 0, "User id should not be empty")
+  }
 
   if (avatarImageUrl !== undefined) {
     assert(
@@ -43,8 +51,10 @@ const UserBar: FC<UserBarProps> = ({
   return (
     <div className={twMerge("max-h-14 p-2", className)}>
       <div className="flex items-center justify-between">
-        {isLoading ? (
+        {userDataState === UserDataState.Loading ? (
           <UserBarPlaceHolder />
+        ) : userDataState === UserDataState.Error ? (
+          <UserBarError />
         ) : (
           <div className="flex gap-1.5 overflow-hidden">
             <AvatarImage
@@ -73,13 +83,19 @@ const UserBar: FC<UserBarProps> = ({
         )}
 
         {/* TODO: Handle click on settings button. */}
-        <IconButton
-          onClick={() => {
-            throw new Error("Configurations not implemented")
-          }}
-          Icon={IoMdSettings}
-          tooltip="Settings"
-        />
+        {userDataState === UserDataState.Error ? (
+          <IconButton
+            onClick={onRefreshData}
+            Icon={IoRefreshCircle}
+            tooltip="Refresh"
+          />
+        ) : (
+          <IconButton
+            onClick={onOpenSettings}
+            Icon={IoMdSettings}
+            tooltip="Settings"
+          />
+        )}
       </div>
     </div>
   )
@@ -100,6 +116,28 @@ const UserBarPlaceHolder: FC = () => {
         <div className="h-3 w-14 overflow-hidden rounded-md bg-neutral-300">
           <LoadingEffect />
         </div>
+      </div>
+    </div>
+  )
+}
+
+const UserBarError: FC = () => {
+  return (
+    <div className="flex items-center gap-1.5">
+      <div className="flex size-9 items-center justify-center rounded-full bg-red-100">
+        <IoAlertCircle className="text-red-500" />
+      </div>
+
+      <div className="flex flex-col gap-0.5">
+        <Typography
+          className="font-bold text-red-500"
+          variant={TypographyVariant.BodyMedium}>
+          Client error
+        </Typography>
+
+        <Typography variant={TypographyVariant.BodySmall}>
+          Please refresh
+        </Typography>
       </div>
     </div>
   )
