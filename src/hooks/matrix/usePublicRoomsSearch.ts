@@ -2,16 +2,22 @@ import {useEffect, useState} from "react"
 import useDebounced from "../util/useDebounced"
 import {type IPublicRoomsChunkRoom, type MatrixClient} from "matrix-js-sdk"
 
+type UsePublicRoomsSearch = {
+  roomAddress: string
+  results: IPublicRoomsChunkRoom[] | null
+  setRoomAddress: React.Dispatch<React.SetStateAction<string>>
+}
+
 const usePublicRoomsSearch = (
   client: MatrixClient | null,
   searchDelay = 500
-) => {
+): UsePublicRoomsSearch => {
   const [roomAddress, setRoomAddress] = useState("")
   const debouncedAddress = useDebounced(roomAddress, searchDelay)
   const [results, setResult] = useState<IPublicRoomsChunkRoom[] | null>(null)
 
   useEffect(() => {
-    const search = async () => {
+    const search = async (): Promise<void> => {
       if (debouncedAddress.length <= 0 || client === null) {
         setResult(null)
 

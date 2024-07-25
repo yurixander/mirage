@@ -47,7 +47,15 @@ export type AnyMessage =
   | Message<MessageKind.Event>
   | Message<MessageKind.Unread>
 
-const useRoomChat = (roomId: string) => {
+type UseRoomChatReturnType = {
+  messagesState: MessagesState
+  isChatLoading: boolean
+  roomName: string
+  messages: AnyMessage[]
+  typingUsers: TypingIndicatorUser[]
+}
+
+const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const {client} = useConnection()
   const isMountedReference = useIsMountedRef()
   const {clearActiveRoomId} = useActiveRoomIdStore()

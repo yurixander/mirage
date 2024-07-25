@@ -83,7 +83,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
       <div
         ref={scrollRef}
         className={twMerge(
-          "flex flex-col  gap-4 overflow-y-auto scroll-smooth scrollbar-hide",
+          "flex flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide",
           className
         )}>
         {messagesState === MessagesState.Loaded ? (

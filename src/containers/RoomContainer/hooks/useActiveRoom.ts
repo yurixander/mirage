@@ -2,7 +2,7 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {useEffect, useState} from "react"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import {RoomMemberEvent} from "matrix-js-sdk"
+import {type MatrixClient, RoomMemberEvent} from "matrix-js-sdk"
 import useEventListener from "@/hooks/matrix/useEventListener"
 
 export enum RoomState {
@@ -12,7 +12,13 @@ export enum RoomState {
   NotFound,
 }
 
-const useActiveRoom = () => {
+type UseActiveRoomReturnType = {
+  client: MatrixClient | null
+  roomState: RoomState
+  activeRoomId: string | null
+}
+
+const useActiveRoom = (): UseActiveRoomReturnType => {
   const {client} = useConnection()
   const [roomState, setRoomState] = useState(RoomState.Idle)
   const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()

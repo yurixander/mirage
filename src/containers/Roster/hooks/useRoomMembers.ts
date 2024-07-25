@@ -1,12 +1,17 @@
-import useConnection from "../../../hooks/matrix/useConnection"
 import {useEffect, useState, useCallback} from "react"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {getRoomMembers} from "@/utils/rooms"
 import {type MemberSection} from "@/containers/Roster/MemberList"
 import {type Room} from "matrix-js-sdk"
 import {UserPowerLevel} from "@/utils/members"
+import useConnection from "@/hooks/matrix/useConnection"
 
-const useRoomMembers = (roomId: string) => {
+export type UseRoomMembersReturnType = {
+  sections: MemberSection[]
+  isMemberLoading: boolean
+}
+
+const useRoomMembers = (roomId: string): UseRoomMembersReturnType => {
   const {client} = useConnection()
   const isMountedReference = useIsMountedRef()
   const [sections, setSections] = useState<MemberSection[]>([])

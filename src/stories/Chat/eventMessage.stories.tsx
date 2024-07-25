@@ -1,15 +1,13 @@
-import {type Meta, type StoryObj} from "@storybook/react"
 import EventMessage, {type EventMessageProps} from "@/components/EventMessage"
+import {type Meta, type StoryObj} from "@storybook/react"
+import React from "react"
 
 type Story = StoryObj<typeof EventMessage>
 
-const meta: Meta<typeof EventMessage> = {
-  component: EventMessage,
-  title: "Chat/EventMessage",
-}
+const meta: Meta<typeof EventMessage> = {component: EventMessage}
 
-const render = (arguments_: EventMessageProps) => (
-  <EventMessage {...arguments_} />
+const render = (args: EventMessageProps): React.JSX.Element => (
+  <EventMessage {...args} />
 )
 
 export const Default: Story = {

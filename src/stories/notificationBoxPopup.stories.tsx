@@ -4,13 +4,14 @@ import NotificationBoxPopup, {
 } from "@/containers/NavigationSection/modals/NotificationBoxPopup"
 import {NotificationType} from "@/utils/notifications"
 import {type Meta, type StoryObj} from "@storybook/react"
+import React from "react"
 
 type Story = StoryObj<typeof NotificationBoxPopup>
 
 const meta: Meta<typeof NotificationBoxPopup> = {
   component: NotificationBoxPopup,
 }
-const render = (args: NotificationBoxPopupProps) => (
+const render = (args: NotificationBoxPopupProps): React.JSX.Element => (
   <NotificationBoxPopup {...args} />
 )
 

@@ -1,13 +1,14 @@
 import {
   ChatMessages,
   type ChatMessagesProps,
-} from "@/containers/ChatContainer/ChatMessages"
+} from "@/containers/RoomContainer/ChatMessages"
 import {
   type AnyMessage,
   MessageKind,
   MessagesState,
-} from "@/hooks/matrix/useActiveRoom"
+} from "@/containers/RoomContainer/hooks/useRoomChat"
 import {type Meta, type StoryObj} from "@storybook/react"
+import React from "react"
 
 type Story = StoryObj<typeof ChatMessages>
 
@@ -15,7 +16,9 @@ const meta: Meta<typeof ChatMessages> = {
   component: ChatMessages,
   title: "Chat/ChatMessages",
 }
-const render = (args: ChatMessagesProps) => <ChatMessages {...args} />
+const render = (args: ChatMessagesProps): React.JSX.Element => (
+  <ChatMessages {...args} />
+)
 
 const tempMessage: AnyMessage = {
   kind: MessageKind.Text,
@@ -24,9 +27,9 @@ const tempMessage: AnyMessage = {
     id: "@emerald_branch",
     text: "Hello world",
     timestamp: Date.now(),
-    onDeleteMessage() {},
     onAuthorClick() {},
     authorDisplayNameColor: "",
+    contextMenuItems: [],
   },
 }
 
@@ -60,7 +63,8 @@ export const Loaded: Story = {
           text: "",
           timestamp: Date.now(),
           onAuthorClick() {},
-          onDeleteMessage() {},
+          contextMenuItems: [],
+          onClickImage() {},
           imageUrl:
             "https://images.unsplash.com/photo-1706285644467-45769812f872?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         },

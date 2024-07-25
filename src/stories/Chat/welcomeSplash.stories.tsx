@@ -1,14 +1,15 @@
+import WelcomeSplash from "@/containers/RoomContainer/WelcomeSplash"
 import {type Meta, type StoryObj} from "@storybook/react"
-import WelcomChatContainer from "../../containers/RoomContainer/WelcomeSplash"
+import React from "react"
 
-type Story = StoryObj<typeof WelcomChatContainer>
+type Story = StoryObj<typeof WelcomeSplash>
 
-const meta: Meta<typeof WelcomChatContainer> = {
-  component: WelcomChatContainer,
+const meta: Meta<typeof WelcomeSplash> = {
+  component: WelcomeSplash,
   title: "Chat/WelcomeSplash",
 }
 
-const render = () => <WelcomChatContainer />
+const render = (): React.JSX.Element => <WelcomeSplash />
 
 export const Default: Story = {
   render,

@@ -1,13 +1,16 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import Notification, {type NotificationProps} from "../components/Notification"
-import {NotificationType} from "@/containers/NavigationSection/hooks/useCachedNotifications"
+import {NotificationType} from "@/utils/notifications"
+import React from "react"
 
 type Story = StoryObj<typeof Notification>
 
 const meta: Meta<typeof Notification> = {
   component: Notification,
 }
-const render = (args: NotificationProps) => <Notification {...args} />
+const render = (args: NotificationProps): React.JSX.Element => (
+  <Notification {...args} />
+)
 
 export const Default: Story = {
   render,

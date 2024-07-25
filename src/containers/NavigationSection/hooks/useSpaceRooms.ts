@@ -39,7 +39,12 @@ const processHierarchyRoom = (
   }
 }
 
-const useSpaceRooms = (spaceId: string) => {
+type UseSpaceRoomsReturnType = {
+  childRooms: PartialRoom[]
+  isLoading: boolean
+}
+
+const useSpaceRooms = (spaceId: string): UseSpaceRoomsReturnType => {
   const {client} = useConnection()
   const [isLoading, setIsLoading] = useState(false)
 

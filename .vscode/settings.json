@@ -24,7 +24,8 @@
     "uuidv",
     "CUTEFUNNYART",
     "TRYGVEME",
-    "scrollback"
+    "scrollback",
+    "Zustand"
   ],
   "css.customData": [".vscode/tailwind.json"]
 }

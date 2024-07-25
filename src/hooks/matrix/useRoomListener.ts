@@ -16,7 +16,7 @@ function useRoomListener<
   event: RoomEvent,
   listener: Listener<RoomEmittedEvents, RoomEventHandlerMap, RoomEvent>,
   isContinuous = true
-) {
+): void {
   useEffect(() => {
     if (room === null) {
       return

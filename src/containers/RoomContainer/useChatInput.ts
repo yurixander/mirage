@@ -6,7 +6,16 @@ import {useEffect, useMemo, useState} from "react"
 import {useFilePicker} from "use-file-picker"
 import {type ImageModalPreviewProps} from "./ImageModalPreview"
 
-const useChatInput = (roomId: string) => {
+type UseChatInputReturnType = {
+  messageText: string
+  setMessageText: React.Dispatch<React.SetStateAction<string>>
+  isDisabled: boolean
+  sendTextMessage: (text: string) => Promise<void>
+  openFilePicker: () => void
+  imagePreviewProps: ImageModalPreviewProps | undefined
+}
+
+const useChatInput = (roomId: string): UseChatInputReturnType => {
   const {client} = useConnection()
   const [messageText, setMessageText] = useState("")
   const debouncedText = useDebounced(messageText, 500)
@@ -38,7 +47,7 @@ const useChatInput = (roomId: string) => {
     return imageModalPreviewProps
   }, [clear, client, filesContent, roomId])
 
-  const sendTextMessage = async (text: string) => {
+  const sendTextMessage = async (text: string): Promise<void> => {
     if (client === null) {
       return
     }

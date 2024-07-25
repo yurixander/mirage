@@ -1,6 +1,12 @@
 import {useState, useRef, useCallback, useEffect} from "react"
 
-function useQueue<T>(delay: number = 10_000) {
+type UseQueueReturnType<T> = {
+  current: T | null
+  pushItem: (message: T) => void
+  clearItems: () => void
+}
+
+const useQueue = <T>(delay: number = 10_000): UseQueueReturnType<T> => {
   const [current, setCurrent] = useState<T | null>(null)
   const queue = useRef<T[]>([])
   const timeoutReference = useRef<number | null>(null)
