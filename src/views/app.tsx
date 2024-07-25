@@ -1,5 +1,3 @@
-import ChatContainer from "@/containers/ChatContainer/ChatContainer"
-import Roster from "@/containers/Roster/Roster"
 import useConnection from "@/hooks/matrix/useConnection"
 import {type Credentials, ViewPath} from "@/utils/util"
 import {useEffect, type FC} from "react"
@@ -7,6 +5,7 @@ import {useNavigate} from "react-router-dom"
 import useLocalStorage, {LocalStorageKey} from "@/hooks/util/useLocalStorage"
 import NavigationSection from "@/containers/NavigationSection"
 import ModalHandler from "@/components/ModalHandler"
+import RoomContainer from "@/containers/RoomContainer/RoomContainer"
 
 const AppView: FC = () => {
   const navigate = useNavigate()
@@ -43,8 +42,7 @@ const AppView: FC = () => {
       <div className="flex size-full flex-row">
         <NavigationSection />
 
-        <ChatContainer className="w-full grow" />
-        <Roster className="grow" />
+        <RoomContainer />
       </div>
     </>
   )

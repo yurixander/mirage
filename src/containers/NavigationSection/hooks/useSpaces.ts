@@ -70,6 +70,10 @@ const useSpaces = (): UseSpacesReturnType => {
           continue
         }
 
+        if (room.getMyMembership() !== KnownMembership.Join) {
+          continue
+        }
+
         addRoom({
           roomId: room.roomId,
           roomName: room.name,

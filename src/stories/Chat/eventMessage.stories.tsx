@@ -1,5 +1,5 @@
+import EventMessage, {type EventMessageProps} from "@/components/EventMessage"
 import {type Meta, type StoryObj} from "@storybook/react"
-import EventMessage, {type EventMessageProps} from "../components/EventMessage"
 import React from "react"
 
 type Story = StoryObj<typeof EventMessage>
