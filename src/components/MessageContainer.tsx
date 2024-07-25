@@ -36,7 +36,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
   const localeTimeString = formatTime(timestamp)
 
   return (
-    <div className="flex w-full items-start justify-start">
+    <div className="flex w-full">
       <div className="flex w-full gap-3">
         <button
           className="size-10 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-neutral-50"
@@ -50,20 +50,20 @@ const MessageContainer: FC<MessageContainerProps> = ({
         </button>
 
         <div className="w-full">
-          <div className="flex items-center gap-2 py-1">
-            <Typography
-              className="w-full select-text font-bold"
-              style={{color: authorDisplayNameColor}}
-              onClick={onAuthorClick}
-              variant={TypographyVariant.Body}>
-              {cleanDisplayName(authorDisplayName)}
-            </Typography>
-            <time className="flex min-w-20 text-right text-gray-300">
+          <Typography
+            className="w-max select-text font-bold"
+            style={{color: authorDisplayNameColor}}
+            onClick={onAuthorClick}
+            variant={TypographyVariant.Body}>
+            {cleanDisplayName(authorDisplayName)}
+          </Typography>
+
+          <div className="flex w-full justify-between">
+            {children}
+            <time className="min-w-16 text-right text-gray-300">
               {localeTimeString}
             </time>
           </div>
-
-          <div className="flex w-full justify-between">{children}</div>
         </div>
       </div>
     </div>
