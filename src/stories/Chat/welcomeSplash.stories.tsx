@@ -6,7 +6,6 @@ type Story = StoryObj<typeof WelcomeSplash>
 
 const meta: Meta<typeof WelcomeSplash> = {
   component: WelcomeSplash,
-  title: "Chat/WelcomeSplash",
 }
 
 const render = (): React.JSX.Element => <WelcomeSplash />
