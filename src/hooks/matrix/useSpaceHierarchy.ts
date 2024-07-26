@@ -3,7 +3,8 @@ import {useCallback, useEffect, useState} from "react"
 import useConnection from "./useConnection"
 import {getAllJoinedRooms} from "@/utils/rooms"
 import {getRoomsFromSpace} from "@/utils/spaces"
-import {type MatrixClient} from "matrix-js-sdk"
+import {type Room, RoomEvent, type MatrixClient, EventType} from "matrix-js-sdk"
+import useRoomListener from "./useRoomListener"
 
 export enum RoomsState {
   Loaded,
@@ -31,9 +32,12 @@ const useSpaceHierarchy = (
   const {client} = useConnection()
   const [roomsState, setRoomsState] = useState(RoomsState.Loading)
   const [rooms, setRooms] = useState<PartialRoom[]>([])
+  const [activeSpace, setActiveSpace] = useState<Room | null>(null)
 
   const fetchSpaceHierarchy = useCallback(
     (client: MatrixClient) => {
+      setActiveSpace(client.getRoom(spaceId))
+
       if (spaceId === undefined) {
         // If spaceId is not specified fetch all joined rooms.
         void getAllJoinedRooms(client)
@@ -91,7 +95,14 @@ const useSpaceHierarchy = (
     }
   }, [client, fetchSpaceHierarchy])
 
-  // TODO: Handle listeners for rooms.
+  // TODO: Handle space listener for see when room is removed from space.
+  useRoomListener(activeSpace, RoomEvent.Timeline, event => {
+    if (event.getType() !== EventType.SpaceChild || client === null) {
+      return
+    }
+
+    onRefreshRooms()
+  })
 
   return {
     rooms,
