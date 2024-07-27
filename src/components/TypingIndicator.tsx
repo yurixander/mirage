@@ -37,7 +37,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
     (user, index) =>
       user.avatarUrl && (
         <div key={index} className={index === 1 || index === 2 ? "-ml-4" : ""}>
-          <div className="size-8 object-contain">
+          <div className="size-8">
             <AvatarImage
               isRounded
               displayName={user.displayName}
