@@ -1,7 +1,6 @@
 import {
   type Room,
   type MatrixClient,
-  Direction,
   EventType,
   HistoryVisibility,
   JoinRule,
@@ -11,8 +10,8 @@ import {
 } from "matrix-js-sdk"
 import {
   assert,
-  CommonAssertion,
   deleteMessage,
+  emojiRandom,
   getImageUrl,
   normalizeName,
   stringToColor,
@@ -31,11 +30,45 @@ import {
   type AnyMessage,
   MessageKind,
 } from "@/containers/RoomContainer/hooks/useRoomChat"
+import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
+import {RoomType} from "@/components/Room"
 
 export enum ImageSizes {
   Server = 47,
   MessageAndProfile = 40,
   ProfileLarge = 60,
+}
+
+export async function getAllJoinedRooms(
+  client: MatrixClient
+): Promise<PartialRoom[]> {
+  const currentJoinedRooms: PartialRoom[] = []
+  const directRoomIds = getDirectRoomsIds(client)
+
+  try {
+    const joinedRooms = await client.getJoinedRooms()
+
+    for (const joinedRoomId of joinedRooms.joined_rooms) {
+      const joinedRoom = client.getRoom(joinedRoomId)
+
+      if (joinedRoom === null) {
+        continue
+      }
+
+      currentJoinedRooms.push({
+        roomId: joinedRoom.roomId,
+        roomName: joinedRoom.name,
+        type: directRoomIds.includes(joinedRoomId)
+          ? RoomType.Direct
+          : RoomType.Group,
+        emoji: emojiRandom(),
+      })
+    }
+  } catch (error) {
+    console.error("An error ocurred while getting all joined rooms", error)
+  }
+
+  return currentJoinedRooms
 }
 
 export async function getRoomMembers(room: Room): Promise<RosterUserProps[]> {
@@ -87,7 +120,7 @@ export async function getRoomMembers(room: Room): Promise<RosterUserProps[]> {
 // #region Direct rooms
 
 export function getDirectRoomsIds(client: MatrixClient): string[] {
-  const directRooms = client.getAccountData("m.direct")
+  const directRooms = client.getAccountData(EventType.Direct)
   const content = directRooms?.event.content
 
   if (content === undefined) {
@@ -97,24 +130,10 @@ export function getDirectRoomsIds(client: MatrixClient): string[] {
   return Object.values(content).flat()
 }
 
-export function isDirectRoom(client: MatrixClient | null, room: Room): boolean {
-  if (client === null) {
-    return false
-  }
+export function isDirectRoom(client: MatrixClient, roomId: string): boolean {
+  const directRoomIds = getDirectRoomsIds(client)
 
-  const myUserId = client.getUserId()
-
-  assert(myUserId !== null, CommonAssertion.UserIdNotFound)
-
-  return (
-    room
-      .getLiveTimeline()
-      .getState(Direction.Forward)
-      ?.events.get(EventType.RoomMember)
-      // Find event by userId.
-      // If the client user is not in the room event then this room is not a direct chat for the user.
-      ?.get(myUserId)?.event.content?.is_direct ?? false
-  )
+  return directRoomIds.includes(roomId)
 }
 
 export function getPartnerUserIdFromRoomDirect(room: Room): string {

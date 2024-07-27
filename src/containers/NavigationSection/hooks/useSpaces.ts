@@ -1,16 +1,15 @@
-import {useCallback, useEffect} from "react"
+import {useCallback, useEffect, useState} from "react"
 import useList from "../../../hooks/util/useList"
 import useConnection from "../../../hooks/matrix/useConnection"
-import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
-import {generateUniqueNumber} from "@/utils/util"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import {hasRoomRepeat} from "@/components/Room"
+import {getImageUrl} from "@/utils/util"
 
 export type PartialSpace = {
   name: string
   spaceId: string
+  avatarUrl?: string
 }
 
 const hasSpaceRepeat = (space1: PartialSpace, space2: PartialSpace): boolean =>
@@ -20,24 +19,19 @@ const processSpace = (space: Room): PartialSpace => {
   return {
     name: space.name,
     spaceId: space.roomId,
+    avatarUrl: getImageUrl(space.getMxcAvatarUrl(), space.client),
   }
 }
 
 type UseSpacesReturnType = {
   spaces: PartialSpace[]
-  allRooms: PartialRoom[]
+  isLoading: boolean
   onSpaceExit: (spaceId: string) => void
 }
 
 const useSpaces = (): UseSpacesReturnType => {
   const {client} = useConnection()
-
-  const {
-    items: allRooms,
-    addItem: addRoom,
-    updateItem: updateRoom,
-    deleteWhen: deleteRoomWhen,
-  } = useList<PartialRoom>(hasRoomRepeat)
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     items: spaces,
@@ -63,60 +57,42 @@ const useSpaces = (): UseSpacesReturnType => {
         return
       }
 
+      setIsLoading(true)
+
       for (const room of client.getRooms()) {
-        if (room.isSpaceRoom()) {
-          addSpace(processSpace(room))
-
+        if (!room.isSpaceRoom()) {
           continue
         }
 
-        if (room.getMyMembership() !== KnownMembership.Join) {
-          continue
-        }
-
-        addRoom({
-          roomId: room.roomId,
-          roomName: room.name,
-          id: generateUniqueNumber(),
-        })
+        addSpace(processSpace(room))
       }
+
+      setIsLoading(false)
     }, 1000)
 
     return () => {
       clearTimeout(handler)
     }
-  }, [addRoom, addSpace, client])
+  }, [addSpace, client])
 
   useEventListener(RoomEvent.Timeline, (event, room) => {
     if (event.getType() !== EventType.RoomCreate || room === undefined) {
       return
     }
 
-    if (room.isSpaceRoom()) {
-      addSpace(processSpace(room))
-
+    if (!room.isSpaceRoom()) {
       return
     }
 
-    addRoom({
-      id: generateUniqueNumber(),
-      roomId: room.roomId,
-      roomName: room.name,
-    })
+    addSpace(processSpace(room))
   })
 
   useEventListener(RoomEvent.Name, room => {
-    if (room.isSpaceRoom()) {
-      updateSpace(processSpace(room))
-
+    if (!room.isSpaceRoom()) {
       return
     }
 
-    updateRoom({
-      id: generateUniqueNumber(),
-      roomId: room.roomId,
-      roomName: room.name,
-    })
+    updateSpace(processSpace(room))
   })
 
   useEventListener(RoomEvent.MyMembership, (room, membership) => {
@@ -127,16 +103,14 @@ const useSpaces = (): UseSpacesReturnType => {
       return
     }
 
-    if (room.isSpaceRoom()) {
-      deleteSpaceWhen(spaceIter => spaceIter.spaceId === room.roomId)
-
+    if (!room.isSpaceRoom()) {
       return
     }
 
-    deleteRoomWhen(roomIter => roomIter.roomId === room.roomId)
+    deleteSpaceWhen(spaceIter => spaceIter.spaceId === room.roomId)
   })
 
-  return {spaces, allRooms, onSpaceExit}
+  return {spaces, onSpaceExit, isLoading: isLoading || client === null}
 }
 
 export default useSpaces
