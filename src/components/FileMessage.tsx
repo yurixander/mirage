@@ -14,6 +14,7 @@ import {
   FaFileZipper,
 } from "react-icons/fa6"
 import {IoCloseCircle} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
 
 export enum FileMessageVariant {
   Default,
@@ -173,7 +174,7 @@ const UploadFileMessage: FC<UploadFileMessageProps> = ({
           <Typography
             className="font-light text-slate-400"
             variant={TypographyVariant.BodySmall}>
-            Downloaded {fileSizeToString(fileSize * (progressUpload / 100))} /{" "}
+            Uploading {fileSizeToString(fileSize * (progressUpload / 100))} /{" "}
             {fileSizeToString(fileSize)}
           </Typography>
           <div className="w-full">
@@ -187,7 +188,10 @@ const UploadFileMessage: FC<UploadFileMessageProps> = ({
       </div>
       <div className="flex w-40 items-center gap-1">
         <Typography
-          className="w-full text-right text-indigo-600"
+          className={twMerge(
+            "w-full text-right",
+            progressUpload === 100 ? "text-green-600" : "text-indigo-600"
+          )}
           variant={TypographyVariant.BodySmall}>
           Complete {progressUpload}%
         </Typography>

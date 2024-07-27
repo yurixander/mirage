@@ -77,7 +77,7 @@ const LinearProgressBar: FC<LinearProgressBarProps> = ({
     <div className="flex items-center gap-1">
       <div
         className={twMerge(
-          "h-2 w-full overflow-hidden rounded-full bg-gray-300",
+          "h-1 w-full overflow-hidden rounded-full bg-gray-300",
           className
         )}>
         <div
@@ -94,11 +94,11 @@ const LinearProgressBar: FC<LinearProgressBarProps> = ({
       </div>
 
       {isError && containsIcon && (
-        <IoIosAlert className="text-red-500" size={13} />
+        <IoIosAlert className="text-red-500" size={8} />
       )}
 
       {isCompleted && containsIcon && (
-        <IoIosCheckmarkCircle className="text-green-500" size={13} />
+        <IoIosCheckmarkCircle className="text-green-500" size={8} />
       )}
     </div>
   )
