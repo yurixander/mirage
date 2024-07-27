@@ -9,7 +9,7 @@ const DevelopmentPreview: FC = () => {
       <AudioMessage
         id="audio-1"
         audioUrl="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
-        isCurrentPlaying={"audio-1" === audioPlaying}
+        isCurrentPlaying={audioPlaying === "audio-1"}
         authorDisplayName="John Doe"
         timestamp={Date.now()}
         contextMenuItems={[]}
@@ -28,7 +28,7 @@ const DevelopmentPreview: FC = () => {
       <AudioMessage
         id="audio-2"
         audioUrl="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
-        isCurrentPlaying={"audio-2" === audioPlaying}
+        isCurrentPlaying={audioPlaying === "audio-2"}
         authorDisplayName="John Doe"
         timestamp={Date.now()}
         contextMenuItems={[]}

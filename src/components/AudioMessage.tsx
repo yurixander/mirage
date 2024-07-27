@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState, type FC} from "react"
-import {IoPause, IoPlay, IoReload, IoWarning} from "react-icons/io5"
-import Typography, {TypographyVariant} from "./Typography"
+import {IoPause, IoPlay} from "react-icons/io5"
+import Typography from "./Typography"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import {type ContextMenuItem} from "./ContextMenu"
 import {formatTime} from "@/utils/util"
@@ -50,29 +50,24 @@ const AudioMessage: FC<AudioMessageProps> = ({
   return (
     <>
       <div className="flex size-full max-h-14 max-w-60 items-center rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm">
-        <IconButton
-          tooltip="Playback"
-          // TODO: Optimize icons change detection.
-          // TODO: Implement better icon for loading for more performance.
-          Icon={
-            isError
-              ? IoWarning
-              : isLoading
-                ? IoReload
-                : isCurrentPlaying
-                  ? IoPause
-                  : IoPlay
-          }
-          onClick={() => {
-            if (isCurrentPlaying) {
-              audioRef.current?.pause()
-              setCurrentPlaying(false)
-            } else {
-              void audioRef.current?.play()
-              setCurrentPlaying(true)
-            }
-          }}
-        />
+        {isLoading ? (
+          <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
+        ) : (
+          <IconButton
+            tooltip="Playback"
+            isDisabled={isError || isLoading}
+            Icon={isCurrentPlaying ? IoPause : IoPlay}
+            onClick={() => {
+              if (isCurrentPlaying) {
+                audioRef.current?.pause()
+                setCurrentPlaying(false)
+              } else {
+                void audioRef.current?.play()
+                setCurrentPlaying(true)
+              }
+            }}
+          />
+        )}
 
         <div className="ml-auto flex items-center gap-2">
           <Typography>{formatTime(timestamp)}</Typography>
