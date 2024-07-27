@@ -36,7 +36,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
   const localeTimeString = formatTime(timestamp)
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">
         <button
           className="size-10 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-neutral-50"
