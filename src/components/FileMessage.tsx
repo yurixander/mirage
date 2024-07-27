@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import MessageContainer from "./MessageContainer"
+import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import Typography, {TypographyVariant} from "./Typography"
 import ProgressBar, {ProgressBarState, ProgressBarVariant} from "./ProgressBar"
 import IconButton from "./IconButton"
@@ -21,14 +21,12 @@ export enum FileMessageVariant {
   Upload,
 }
 
-export type FileMessageProps = {
-  authorDisplayName: string
-  authorDisplayNameColor: string
+export interface FileMessageProps extends MessageBaseProps {
   fileName: string
   fileSize: number
-  typeFile: string
+  fileExtension: string
   onClick: () => void
-  isDownloadStarted?: boolean
+  hasDownloadStarted?: boolean
   progressDownloaded?: number
   variant?: FileMessageVariant
   progressBarState?: ProgressBarState
@@ -37,11 +35,14 @@ export type FileMessageProps = {
 const FileMessage: FC<FileMessageProps> = ({
   authorDisplayName,
   authorDisplayNameColor,
+  authorAvatarUrl,
+  onAuthorClick,
+  timestamp,
   fileName,
   fileSize,
-  typeFile,
+  fileExtension,
   onClick,
-  isDownloadStarted = false,
+  hasDownloadStarted = false,
   progressDownloaded = 0,
   variant = FileMessageVariant.Default,
   progressBarState = ProgressBarState.Progress,
@@ -50,14 +51,15 @@ const FileMessage: FC<FileMessageProps> = ({
     <MessageContainer
       authorDisplayName={authorDisplayName}
       authorDisplayNameColor={authorDisplayNameColor}
+      authorAvatarUrl={authorAvatarUrl}
       children={
         variant === FileMessageVariant.Default ? (
           <DefaultFileMessage
             fileName={fileName}
             fileSize={fileSize}
             onClick={onClick}
-            typeFile={typeFile}
-            isDownloadStarted={isDownloadStarted}
+            fileExtension={fileExtension}
+            hasDownloadStarted={hasDownloadStarted}
             progressDownloaded={progressDownloaded}
           />
         ) : (
@@ -65,14 +67,14 @@ const FileMessage: FC<FileMessageProps> = ({
             fileName={fileName}
             fileSize={fileSize}
             onClick={onClick}
-            typeFile={typeFile}
+            fileExtension={fileExtension}
             progressBarState={progressBarState}
             progressUpload={progressDownloaded}
           />
         )
       }
-      timestamp={0}
-      onAuthorClick={() => {}}
+      timestamp={timestamp}
+      onAuthorClick={onAuthorClick}
     />
   )
 }
@@ -80,18 +82,18 @@ const FileMessage: FC<FileMessageProps> = ({
 export type DefaultFileMessageProps = {
   fileName: string
   fileSize: number
-  typeFile: string
+  fileExtension: string
   onClick: () => void
-  isDownloadStarted?: boolean
+  hasDownloadStarted?: boolean
   progressDownloaded?: number
 }
 
 const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
   fileName,
   fileSize,
-  typeFile,
+  fileExtension: typeFile,
   onClick,
-  isDownloadStarted = false,
+  hasDownloadStarted: isDownloadStarted = false,
   progressDownloaded = 0,
 }) => {
   return (
@@ -106,6 +108,7 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
             {fileName}
           </Typography>
         </div>
+
         <div>
           <IconButton
             Icon={FaDownload}
@@ -133,6 +136,7 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
           variant={TypographyVariant.BodySmall}>
           {typeFile}
         </Typography>
+
         <Typography
           className="min-w-20 text-right font-semibold text-gray-400"
           variant={TypographyVariant.BodySmall}>
@@ -146,7 +150,7 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
 type UploadFileMessageProps = {
   fileName: string
   fileSize: number
-  typeFile: string
+  fileExtension: string
   onClick: () => void
   progressBarState: ProgressBarState
   progressUpload?: number
@@ -154,7 +158,7 @@ type UploadFileMessageProps = {
 
 const UploadFileMessage: FC<UploadFileMessageProps> = ({
   fileName,
-  typeFile,
+  fileExtension,
   progressUpload = 0,
   progressBarState,
   fileSize,
@@ -163,20 +167,23 @@ const UploadFileMessage: FC<UploadFileMessageProps> = ({
     <div className="flex w-messageMaxWidth rounded border bg-slate-100 p-2">
       <div className="flex w-full items-center gap-2">
         <div>
-          <IconFile typeFile={typeFile.toLowerCase()} />
+          <IconFile typeFile={fileExtension.toLowerCase()} />
         </div>
+
         <div className="w-full">
           <Typography
             className="font-light text-black"
             variant={TypographyVariant.Body}>
             {fileName}
           </Typography>
+
           <Typography
             className="font-light text-slate-400"
             variant={TypographyVariant.BodySmall}>
             Uploading {fileSizeToString(fileSize * (progressUpload / 100))} /{" "}
             {fileSizeToString(fileSize)}
           </Typography>
+
           <div className="w-full">
             <ProgressBar
               progress={progressUpload}
@@ -195,6 +202,7 @@ const UploadFileMessage: FC<UploadFileMessageProps> = ({
           variant={TypographyVariant.BodySmall}>
           Complete {progressUpload}%
         </Typography>
+
         <IoCloseCircle />
       </div>
     </div>
@@ -208,21 +216,26 @@ const IconFile: FC<{typeFile: string}> = ({typeFile}) => {
     case "gzip": {
       return <FaFileZipper className="text-yellow-500" size={20} />
     }
+
     case "doc":
     case "docx": {
       return <FaFileWord className="text-blue-600" size={20} />
     }
+
     case "xls":
     case "xlsx": {
       return <FaFileExcel className="text-green-600" size={20} />
     }
+
     case "ppt":
     case "pptx": {
       return <FaFilePowerpoint className="text-red-600" size={20} />
     }
+
     case "pdf": {
       return <FaFilePdf className="text-red-600" size={20} />
     }
+
     case "java":
     case "c":
     case "js":
@@ -234,6 +247,7 @@ const IconFile: FC<{typeFile: string}> = ({typeFile}) => {
     case "jsx": {
       return <FaFileCode className="text-blue-600" size={20} />
     }
+
     default: {
       return <FaFile className="text-blue-600" size={20} />
     }
@@ -258,8 +272,11 @@ const fileSizeToString = (fileSize: number) => {
   } else if (fileSize < TB) {
     const size = fileSize / GB
     return size.toFixed(2) + " GB"
+  } else if (fileSize < TB * 1024) {
+    const size = fileSize / TB
+    return size.toFixed(2) + " TB"
   }
 
-  return "0 B"
+  return "1024+ TB"
 }
 export default FileMessage
