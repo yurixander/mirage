@@ -40,7 +40,8 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
       <div
         className={twMerge(
           "mx-2 my-1 flex max-h-28 gap-2 rounded-2xl border border-slate-300 bg-gray-50 px-3 py-2",
-          "md:max-h-36 md:gap-3 md:rounded-3xl md:px-4 md:py-3"
+          "md:max-h-36 md:gap-3 md:rounded-3xl md:px-4 md:py-3",
+          className
         )}>
         <IoAddCircle
           className={twMerge("text-slate-400", BUTTON_SIZE)}

@@ -23,35 +23,45 @@ const ChatContainer: FC<ChatContainerProps> = ({
     useRoomChat(roomId)
 
   return isChatLoading ? (
-    <div className="flex size-full items-center justify-center">
+    <div className="flex size-full max-h-[78%] items-center justify-center">
       <Loader text="Loading room" />
     </div>
   ) : (
     <div className={className}>
-      <ChatHeader
-        className="flex size-full max-h-12 shrink-0 items-center gap-2 border-b border-b-stone-200 px-3"
-        isRosterExpanded={isRosterExpanded}
-        onRosterExpanded={onRosterExpanded}
-        roomName={roomName}
-      />
+      <main className="flex h-full flex-col">
+        <ChatHeader
+          className="relative flex size-full max-h-12 items-center gap-2 border-b border-b-stone-200 px-3 py-1"
+          isRosterExpanded={isRosterExpanded}
+          onRosterExpanded={onRosterExpanded}
+          roomName={roomName}
+        />
 
-      <ChatMessages
-        className="size-full max-h-[450px] shrink-0 p-3"
-        messages={messages}
-        messagesState={messagesState}
-      />
+        <main className="relative z-10 order-2 shrink-0 grow basis-0 overflow-y-auto">
+          <div className="shrink-0 grow-0 basis-auto pb-2">
+            <ChatMessages
+              className="relative grow p-3"
+              messages={messages}
+              messagesState={messagesState}
+            />
+          </div>
+        </main>
 
-      <ChatInput roomId={roomId} className="size-full" />
+        <footer className="relative order-3">
+          <ChatInput roomId={roomId} />
 
-      <div className="mx-4 flex size-full max-h-12 shrink-0 flex-col gap-3">
-        <div className="flex gap-3">
-          <div className="size-6" />
+          <div className="mx-4 flex size-full max-h-12 flex-col gap-3">
+            <div className="flex gap-3">
+              <div className="size-6" />
 
-          <div className="size-6" />
+              <div className="size-6" />
 
-          {typingUsers.length > 0 && <TypingIndicator users={typingUsers} />}
-        </div>
-      </div>
+              {typingUsers.length > 0 && (
+                <TypingIndicator users={typingUsers} />
+              )}
+            </div>
+          </div>
+        </footer>
+      </main>
     </div>
   )
 }
