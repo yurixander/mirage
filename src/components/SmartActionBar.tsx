@@ -14,11 +14,11 @@ const syncStateText: {[key in SyncState]: string} = {
   [SyncState.Reconnecting]: "Reconnecting",
 }
 
-const SmartActionBar: FC = () => {
+const SmartActionBar: FC<{className?: string}> = ({className}) => {
   const {syncState} = useConnection()
 
   return (
-    <div className="flex items-center justify-end gap-4 border-t border-t-stone-200 bg-neutral-50 p-1 pr-2">
+    <div className={className}>
       <SmartAction
         Icon={IoMdMedical}
         text="Quick menu"

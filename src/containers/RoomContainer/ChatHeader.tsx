@@ -2,14 +2,31 @@ import IconButton from "@/components/IconButton"
 import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {IoMdLink} from "react-icons/io"
-import {IoInformationCircle, IoEllipsisVertical} from "react-icons/io5"
+import {
+  IoInformationCircle,
+  IoEllipsisVertical,
+  IoChevronForward,
+  IoChevronBack,
+} from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
 
-const ChatHeader: FC<{roomName: string}> = ({roomName}) => {
+export type ChatHeaderProps = {
+  roomName: string
+  isRosterExpanded: boolean
+  onRosterExpanded: (isExpanded: boolean) => void
+  className?: string
+}
+
+const ChatHeader: FC<ChatHeaderProps> = ({
+  roomName,
+  isRosterExpanded,
+  onRosterExpanded,
+  className,
+}) => {
   assert(roomName.length > 0, "room name should not be empty")
 
   return (
-    <header className="flex h-full max-h-12 shrink-0 items-center gap-2 border-b border-b-stone-200 px-3">
+    <header className={className}>
       <div className="m-2 flex w-full gap-1">
         <LiaSlackHash className="text-purple-500" />
 
@@ -40,6 +57,14 @@ const ChatHeader: FC<{roomName: string}> = ({roomName}) => {
         }}
         tooltip="More actions"
         Icon={IoEllipsisVertical}
+      />
+
+      <IconButton
+        onClick={() => {
+          onRosterExpanded(!isRosterExpanded)
+        }}
+        tooltip="More actions"
+        Icon={isRosterExpanded ? IoChevronForward : IoChevronBack}
       />
     </header>
   )

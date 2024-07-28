@@ -28,7 +28,7 @@ const NOTIFICATION_SENDER_NAME = "Room owners"
 type UseNotificationsReturnType = {
   isLoading: boolean
   notifications: NotificationProps[]
-  unreadNotifications: number
+  containsUnreadNotifications: boolean
 }
 
 const useNotifications = (): UseNotificationsReturnType => {
@@ -108,9 +108,8 @@ const useNotifications = (): UseNotificationsReturnType => {
   }, [])
 
   // #region MemoData
-  const unreadNotifications = useMemo(() => {
-    return cachedNotifications.filter(notification => !notification.isRead)
-      .length
+  const containsUnreadNotifications = useMemo(() => {
+    return cachedNotifications.some(notification => !notification.isRead)
   }, [cachedNotifications])
 
   const notifications: NotificationProps[] = useMemo(
@@ -283,7 +282,7 @@ const useNotifications = (): UseNotificationsReturnType => {
 
   return {
     notifications,
-    unreadNotifications,
+    containsUnreadNotifications,
     isLoading: notificationsState === NotificationState.Loading,
   }
 }

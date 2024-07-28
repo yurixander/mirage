@@ -1,6 +1,8 @@
-import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
-import {RoomType, type Room} from "matrix-js-sdk"
-import {generateUniqueNumber} from "./util"
+import {type MatrixClient, type Room} from "matrix-js-sdk"
+import {getDirectRoomsIds} from "./rooms"
+import {RoomType} from "@/components/Room"
+import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
+import {emojiRandom} from "./util"
 
 export const addRoomToSpace = async (
   spaceId: Room,
@@ -24,22 +26,50 @@ export const addRoomToSpace = async (
   }
 }
 
-export async function getRoomsFromSpace(space: Room): Promise<PartialRoom[]> {
-  const roomHierarchy = await space.client.getRoomHierarchy(space.roomId)
+export async function getRoomsFromSpace(
+  spaceId: string,
+  client: MatrixClient
+): Promise<PartialRoom[]> {
+  const roomsHierarchy: PartialRoom[] = []
+  const directRoomIds = getDirectRoomsIds(client)
 
-  const childRooms: PartialRoom[] = []
+  try {
+    const childRooms = await client.getRoomHierarchy(spaceId)
 
-  for (const room of roomHierarchy.rooms) {
-    if (room.name === undefined || room.room_type === RoomType.Space) {
-      continue
+    for (const childRoom of childRooms.rooms) {
+      if (childRoom.room_type === "m.space") {
+        continue
+      }
+
+      const room = client.getRoom(childRoom.room_id)
+
+      if (room === null) {
+        if (childRoom.guest_can_join) {
+          // TODO: Handle if the user does not have the room but you can join.
+        }
+
+        continue
+      }
+
+      if (room.isSpaceRoom()) {
+        continue
+      }
+
+      roomsHierarchy.push({
+        roomId: room.roomId,
+        roomName: room.name,
+        type: directRoomIds.includes(room.roomId)
+          ? RoomType.Direct
+          : RoomType.Group,
+        emoji: emojiRandom(),
+      })
     }
-
-    childRooms.push({
-      id: generateUniqueNumber(),
-      roomId: room.room_id,
-      roomName: room.name,
-    })
+  } catch (error) {
+    console.error(
+      "An error occurred while retrieving rooms from the space:",
+      error
+    )
   }
 
-  return childRooms
+  return roomsHierarchy
 }
