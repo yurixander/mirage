@@ -27,21 +27,6 @@ export const Default: Story = {
   },
 }
 
-export const Download: Story = {
-  render,
-  args: {
-    authorDisplayName: "John Doe",
-    authorDisplayNameColor: "green",
-    fileName: "Document.doc",
-    fileSize: 2_500_000,
-    fileExtension: "DOC",
-    onClick: () => {},
-    variant: FileMessageVariant.Default,
-    hasDownloadStarted: true,
-    progressDownloaded: 60,
-  },
-}
-
 export const Upload: Story = {
   render,
   args: {
@@ -52,7 +37,7 @@ export const Upload: Story = {
     fileExtension: "DOC",
     onClick: () => {},
     variant: FileMessageVariant.Upload,
-    progressDownloaded: 40,
+    uploadProgress: 40,
   },
 }
 export default meta
