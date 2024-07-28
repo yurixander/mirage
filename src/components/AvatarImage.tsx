@@ -9,10 +9,11 @@ export enum AvatarType {
 }
 
 export enum AvatarSize {
+  ExtraSmall,
   Small,
-  Medium,
+  Normal,
   Large,
-  VeryLarge,
+  ExtraLarge,
 }
 
 export type AvatarProps = {
@@ -31,7 +32,7 @@ const AvatarImage: FC<AvatarProps> = ({
   avatarType,
   displayName,
   avatarUrl,
-  avatarSize = AvatarSize.Medium,
+  avatarSize = AvatarSize.Normal,
   className,
 }) => {
   const isAvatarMessage = avatarType === AvatarType.Message
@@ -67,36 +68,46 @@ const AvatarImage: FC<AvatarProps> = ({
   )
 }
 
-const getAvatarSizeByTailwindClass = (size: AvatarSize) => {
+const getAvatarSizeByTailwindClass = (size: AvatarSize): string => {
   switch (size) {
+    case AvatarSize.ExtraSmall: {
+      return "size-3"
+    }
+
     case AvatarSize.Small: {
-      return "size-5"
+      return "size-6"
     }
-    case AvatarSize.Medium: {
-      return "size-9"
+
+    case AvatarSize.Normal: {
+      return "size-10"
     }
+
     case AvatarSize.Large: {
       return "size-14"
     }
-    case AvatarSize.VeryLarge: {
-      return "size-28"
+
+    case AvatarSize.ExtraLarge: {
+      return "size-20"
     }
   }
 }
 
-const getAvatarSize = (size: AvatarSize) => {
+const getAvatarSize = (size: AvatarSize): number => {
   switch (size) {
-    case AvatarSize.Small: {
-      return 20
+    case AvatarSize.ExtraSmall: {
+      return 12
     }
-    case AvatarSize.Medium: {
-      return 36
+    case AvatarSize.Small: {
+      return 24
+    }
+    case AvatarSize.Normal: {
+      return 40
     }
     case AvatarSize.Large: {
       return 56
     }
-    case AvatarSize.VeryLarge: {
-      return 112
+    case AvatarSize.ExtraLarge: {
+      return 80
     }
   }
 }
