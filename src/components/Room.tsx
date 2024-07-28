@@ -1,46 +1,46 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {type PartialRoom} from "@/containers/NavigationSection/SpaceList"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
-export type RoomProps = {
-  roomName: string
-  tagEmoji: string
-  isSelected?: boolean
-  onRoomClick: () => void
+export enum RoomType {
+  Direct,
+  Group,
 }
 
-export const hasRoomRepeat = (
-  room1: PartialRoom,
-  room2: PartialRoom
-): boolean => {
-  return room1.roomId === room2.roomId
+export type RoomProps = {
+  roomName: string
+  roomId: string
+  type: RoomType
+  emoji: string
+  isSelected?: boolean
+  onRoomClick: (roomId: string) => void
 }
 
 const Room: FC<RoomProps> = ({
   roomName,
-  tagEmoji,
+  roomId,
   onRoomClick,
+  emoji,
   isSelected = false,
 }) => {
   return (
     <button
-      onClick={onRoomClick}
+      onClick={() => {
+        onRoomClick(roomId)
+      }}
       className={twMerge(
-        "flex items-center gap-2 rounded-md p-1 px-2",
+        "flex w-full items-center gap-2 rounded-md p-1 px-2",
         isSelected ? "bg-purple-500" : "hover:bg-slate-200"
       )}>
       <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
-        <Typography variant={TypographyVariant.BodyMedium}>
-          {tagEmoji}
-        </Typography>
+        <Typography variant={TypographyVariant.BodyMedium}>{emoji}</Typography>
       </div>
 
       <Typography
         variant={TypographyVariant.BodySmall}
         className={twMerge(
-          "line-clamp-1 font-bold",
-          isSelected ? "text-white" : "text-slate-500"
+          "line-clamp-1 font-medium",
+          isSelected ? "text-white" : "text-slate-600"
         )}>
         {roomName}
       </Typography>

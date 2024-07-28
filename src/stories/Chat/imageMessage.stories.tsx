@@ -1,10 +1,13 @@
+import ImageMessage, {type ImageMessageProps} from "@/components/ImageMessage"
 import {type Meta, type StoryObj} from "@storybook/react"
-import ImageMessage, {type ImageMessageProps} from "../components/ImageMessage"
 
 type Story = StoryObj<typeof ImageMessage>
 
 const meta: Meta<typeof ImageMessage> = {component: ImageMessage}
-const render = (args: ImageMessageProps) => <ImageMessage {...args} />
+
+const render = (args: ImageMessageProps): React.JSX.Element => (
+  <ImageMessage {...args} />
+)
 
 export const Default: Story = {
   render,

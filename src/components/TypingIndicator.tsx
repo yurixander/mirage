@@ -1,10 +1,11 @@
 import {type FC} from "react"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import {twMerge} from "tailwind-merge"
+import {stringToColor} from "@/utils/util"
 
 export type TypingIndicatorUser = {
   displayName: string
-  color: string
+  userId: string
   avatarUrl?: string
 }
 
@@ -17,7 +18,9 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
 
   const names = users.map((user, index, array) => (
     <span key={index}>
-      <span className="font-semibold" style={{color: user.color}}>
+      <span
+        className="font-semibold"
+        style={{color: stringToColor(user.userId)}}>
         {user.displayName}
       </span>
 

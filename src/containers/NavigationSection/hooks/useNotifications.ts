@@ -25,7 +25,13 @@ enum NotificationState {
 
 const NOTIFICATION_SENDER_NAME = "Room owners"
 
-const useNotifications = () => {
+type UseNotificationsReturnType = {
+  isLoading: boolean
+  notifications: NotificationProps[]
+  containsUnreadNotifications: boolean
+}
+
+const useNotifications = (): UseNotificationsReturnType => {
   const {client} = useConnection()
 
   const [notificationsState, setNotificationsState] = useState(
@@ -102,9 +108,8 @@ const useNotifications = () => {
   }, [])
 
   // #region MemoData
-  const unreadNotifications = useMemo(() => {
-    return cachedNotifications.filter(notification => !notification.isRead)
-      .length
+  const containsUnreadNotifications = useMemo(() => {
+    return cachedNotifications.some(notification => !notification.isRead)
   }, [cachedNotifications])
 
   const notifications: NotificationProps[] = useMemo(
@@ -277,7 +282,7 @@ const useNotifications = () => {
 
   return {
     notifications,
-    unreadNotifications,
+    containsUnreadNotifications,
     isLoading: notificationsState === NotificationState.Loading,
   }
 }

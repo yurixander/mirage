@@ -1,15 +1,18 @@
-import useConnection from "../../../hooks/matrix/useConnection"
 import {useEffect, useState, useCallback} from "react"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
-import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {getRoomMembers} from "@/utils/rooms"
 import {type MemberSection} from "@/containers/Roster/MemberList"
 import {type Room} from "matrix-js-sdk"
 import {UserPowerLevel} from "@/utils/members"
+import useConnection from "@/hooks/matrix/useConnection"
 
-const useRoomMembers = () => {
+export type UseRoomMembersReturnType = {
+  sections: MemberSection[]
+  isMemberLoading: boolean
+}
+
+const useRoomMembers = (roomId: string): UseRoomMembersReturnType => {
   const {client} = useConnection()
-  const {activeRoomId} = useActiveRoomIdStore()
   const isMountedReference = useIsMountedRef()
   const [sections, setSections] = useState<MemberSection[]>([])
   const [isMemberLoading, setMemberLoading] = useState(false)
@@ -57,25 +60,22 @@ const useRoomMembers = () => {
   )
 
   useEffect(() => {
-    if (
-      !isMountedReference.current ||
-      client === null ||
-      activeRoomId === null
-    ) {
+    if (!isMountedReference.current || client === null) {
       return
     }
 
-    const activeRoom = client.getRoom(activeRoomId)
+    const activeRoom = client.getRoom(roomId)
 
-    if (activeRoom) {
-      void fetchRoomMembers(activeRoom)
+    if (activeRoom === null) {
+      return
     }
-  }, [activeRoomId, client, fetchRoomMembers, isMountedReference])
+
+    void fetchRoomMembers(activeRoom)
+  }, [client, fetchRoomMembers, isMountedReference, roomId])
 
   return {
     sections,
     isMemberLoading,
-    isInitiallyActive: activeRoomId !== null,
   }
 }
 

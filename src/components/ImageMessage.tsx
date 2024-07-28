@@ -1,12 +1,11 @@
-import {useState, type FC} from "react"
+import {type FC} from "react"
 import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import {IoIosAlert} from "react-icons/io"
-import ImageModal from "@/containers/ChatContainer/ImageModal"
 import ContextMenu from "./ContextMenu"
-import {createPortal} from "react-dom"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
+  onClickImage: () => void
 }
 
 const ImageMessage: FC<ImageMessageProps> = ({
@@ -15,13 +14,12 @@ const ImageMessage: FC<ImageMessageProps> = ({
   authorDisplayNameColor,
   imageUrl,
   onAuthorClick,
+  onClickImage,
   text,
   timestamp,
   contextMenuItems,
   id,
 }) => {
-  const [isImageModalShowed, setImageModalShow] = useState(false)
-
   const content = (
     <div className="flex flex-col pt-1">
       {imageUrl === null ? (
@@ -38,9 +36,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
         <ContextMenu id={`image-menu-${id}`} elements={contextMenuItems}>
           <button
             className="max-h-52 max-w-44 appearance-none overflow-hidden rounded-xl"
-            onClick={() => {
-              setImageModalShow(true)
-            }}>
+            onClick={onClickImage}>
             <img
               className="cursor-pointer object-contain"
               src={imageUrl}
@@ -54,22 +50,6 @@ const ImageMessage: FC<ImageMessageProps> = ({
 
   return (
     <>
-      {isImageModalShowed &&
-        createPortal(
-          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-modalOverlay">
-            <ImageModal
-              onDeleteImage={() => {
-                throw new Error("Handle here delete message function.")
-              }}
-              imageUrl={imageUrl}
-              onClose={() => {
-                setImageModalShow(false)
-              }}
-            />
-          </div>,
-          document.body
-        )}
-
       <MessageContainer
         authorDisplayName={authorDisplayName}
         authorDisplayNameColor={authorDisplayNameColor}

@@ -11,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       maxWidth: {
-        text: "630px",
+        text: "660px",
       },
       backgroundColor: {
         statusMessageBg: "transparentize(#e53e3e, 0.9)",
@@ -41,7 +41,7 @@ module.exports = {
         serverAvatarSize: "calc(47px * sqrt(2))",
         userProfileAvatarSize: "calc(37px * sqrt(2))",
         userProfileAvatarSizeLarge: "calc(50px * sqrt(2))",
-        serverSize: "47px",
+        spaceSize: "40px",
         messageMaxWidth: "450px",
       },
       fontFamily: {
@@ -64,9 +64,23 @@ module.exports = {
       "loading": "loading 1.5s infinite ease-in-out",
       "indicator": "indicator 300ms",
       "rotation": "rotation 1s infinite linear",
+      "pulse": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
     },
     keyframes: {
       // Usage: animate-[keyframe-name]
+      "slideIn": {
+        from: {
+          width: "0%",
+        },
+        to: {
+          width: "100%",
+        },
+      },
+      "pulse": {
+        "50%": {
+          opacity: ".5",
+        },
+      },
       "hold": {
         from: {
           transform: "scale(0.9)",

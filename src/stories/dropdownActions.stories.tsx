@@ -2,6 +2,7 @@ import DropdownActions, {
   type DropdownActionsProps,
 } from "@/components/DropdownActions"
 import {type Meta, type StoryObj} from "@storybook/react"
+import React from "react"
 
 import {IoAccessibility, IoAdd, IoFlame} from "react-icons/io5"
 
@@ -10,7 +11,9 @@ type Story = StoryObj<typeof DropdownActions>
 const meta: Meta<typeof DropdownActions> = {
   component: DropdownActions,
 }
-const render = (args: DropdownActionsProps) => <DropdownActions {...args} />
+const render = (args: DropdownActionsProps): React.JSX.Element => (
+  <DropdownActions {...args} />
+)
 
 export const Default: Story = {
   render,

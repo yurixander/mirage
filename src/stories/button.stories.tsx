@@ -1,13 +1,11 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import Button, {
-  ButtonVariant,
-  type ButtonProps as ButtonProperties,
-} from "../components/Button"
+import Button, {ButtonVariant, type ButtonProps} from "../components/Button"
+import React from "react"
 
 type Story = StoryObj<typeof Button>
 
 const meta: Meta<typeof Button> = {component: Button}
-const render = (arguments_: ButtonProperties) => <Button {...arguments_} />
+const render = (args: ButtonProps): React.JSX.Element => <Button {...args} />
 
 export const Primary: Story = {
   render,

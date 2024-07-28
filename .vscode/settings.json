@@ -20,10 +20,12 @@
   "eslint.validate": ["html"],
   "cSpell.words": [
     "commitlint",
-    "CUTEFUNNYART",
     "msgtype",
+    "uuidv",
+    "CUTEFUNNYART",
+    "TRYGVEME",
     "scrollback",
-    "TRYGVEME"
+    "Zustand"
   ],
   "css.customData": [".vscode/tailwind.json"]
 }

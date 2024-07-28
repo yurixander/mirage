@@ -42,7 +42,16 @@ const useClientStore = create<ZustandClientStore>(set => ({
   },
 }))
 
-const useConnection = () => {
+type UseConnectionReturnType = {
+  client: MatrixClient | null
+  syncState: SyncState | null
+  lastSyncError: Error | null
+  isConnecting: boolean
+  connect: (credentials: Credentials) => Promise<boolean>
+  disconnect: () => Promise<void>
+}
+
+const useConnection = (): UseConnectionReturnType => {
   const {
     client,
     setClient,

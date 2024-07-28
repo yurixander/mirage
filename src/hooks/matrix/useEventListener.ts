@@ -19,7 +19,7 @@ function useEventListener<Event extends EmittedEvents | EventEmitterEvents>(
   event: Event,
   listener: Listener<EmittedEvents, ClientEventHandlerMap, Event>,
   isContinuous = true
-) {
+): void {
   const {client} = useConnection()
 
   useEffect(() => {

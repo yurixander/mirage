@@ -1,51 +1,64 @@
 import useConnection from "@/hooks/matrix/useConnection"
 import useLocalStorage, {LocalStorageKey} from "@/hooks/util/useLocalStorage"
-import {
-  assert,
-  cleanDisplayName,
-  type Credentials,
-  getImageUrl,
-} from "@/utils/util"
+import {cleanDisplayName, type Credentials, getImageUrl} from "@/utils/util"
 import {useCallback, useEffect, useState} from "react"
+
+export enum UserDataState {
+  Loading,
+  Prepared,
+  Error,
+}
 
 export type UserData = {
   displayName: string
   userId: string
-  avatarUrl?: string
+  avatarImageUrl?: string
 }
 
-const useUserData = () => {
-  const [userData, setUserData] = useState<UserData>()
-  const {client, isConnecting} = useConnection()
+type UseUserDataReturnType = {
+  userDataState: UserDataState
+  userData: UserData
+  onRefreshData: () => void
+}
+
+const useUserData = (): UseUserDataReturnType => {
+  const {client} = useConnection()
+  const [userDataState, setUserDataState] = useState(UserDataState.Loading)
 
   const {value: credentials} = useLocalStorage<Credentials>(
     LocalStorageKey.Credentials
   )
 
+  const [userData, setUserData] = useState<UserData>({
+    displayName: "",
+    userId: "",
+  })
+
   const fetchUserData = useCallback(() => {
-    if (client === null || !client.isLoggedIn() || credentials === null) {
+    if (client === null || credentials === null) {
       return
     }
 
-    const user = client.getUser(credentials.userId)
+    setUserDataState(UserDataState.Loading)
 
-    assert(
-      user !== null,
-      "Your same user should exist for there to be a session."
-    )
+    void client
+      .getProfileInfo(credentials.userId)
+      .then(profileInfo => {
+        setUserData({
+          userId: credentials.userId,
+          displayName: cleanDisplayName(
+            profileInfo.displayname ?? credentials.userId
+          ),
+          avatarImageUrl: getImageUrl(profileInfo.avatar_url, client, 48),
+        })
 
-    const displayName = user.displayName
+        setUserDataState(UserDataState.Prepared)
+      })
+      .catch(error => {
+        console.error("Error getting profile,", error)
 
-    if (displayName === undefined) {
-      // When connection is lost displayName is undefined.
-      return
-    }
-
-    setUserData({
-      userId: credentials.userId,
-      displayName: cleanDisplayName(displayName),
-      avatarUrl: getImageUrl(user.avatarUrl, client, 48),
-    })
+        setUserDataState(UserDataState.Error)
+      })
   }, [client, credentials])
 
   useEffect(() => {
@@ -58,7 +71,11 @@ const useUserData = () => {
     }
   }, [fetchUserData])
 
-  return {userData, isConnecting}
+  return {
+    userData,
+    userDataState,
+    onRefreshData: fetchUserData,
+  }
 }
 
 export default useUserData

@@ -1,34 +1,15 @@
-{
-  "root": true,
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    },
-    "import/extensions": [".ts", ".tsx"],
-    "import/resolver": {
-      "node": {
-        "extensions": [".ts", ".tsx"]
-      }
-    },
-    "boundaries/elements": [
-      {
-        "type": "components",
-        "pattern": "components/*/*",
-        "capture": ["family", "elementName"]
-      }
-    ]
-  },
-  "extends": [
+module.exports = {
+  root: true,
+  env: {browser: true, es2020: true},
+  extends: [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:storybook/recommended",
+    "plugin:prettier/recommended",
     "love",
     "eslint-config-prettier",
-    "plugin:storybook/recommended",
     "plugin:tailwindcss/recommended",
-    "plugin:react-hooks/recommended",
     "plugin:sonarjs/recommended",
     "plugin:github/react",
     "plugin:unicorn/recommended",
@@ -39,24 +20,22 @@
     "plugin:import/typescript",
     "plugin:no-use-extend-native/recommended",
     "plugin:promise/recommended",
-    "plugin:regexp/recommended"
+    "plugin:regexp/recommended",
   ],
-  "plugins": ["boundaries", "write-good-comments", "functional", "promise"],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module",
-    "project": true
-  },
-  "overrides": [
-    {
-      "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)", "*.ts', '*.tsx', '*.js"]
-    }
+  ignorePatterns: ["dist", ".eslintrc.cjs", "postcss.config.js"],
+  parser: "@typescript-eslint/parser",
+  plugins: [
+    "prettier",
+    "boundaries",
+    "write-good-comments",
+    "functional",
+    "promise",
   ],
-  "rules": {
+  rules: {
+    "prettier/prettier": "error",
+    "@typescript-eslint/explicit-function-return-type": "error",
     "@typescript-eslint/quotes": "off",
     "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/space-before-function-paren": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
@@ -77,12 +56,30 @@
     "write-good-comments/write-good-comments": [
       "warn",
       {
-        "passive": false,
-        "whitelist": ["read-only"]
-      }
+        passive: false,
+        whitelist: ["read-only"],
+      },
     ],
     "promise/always-return": "off",
     "unicorn/number-literal-case": "off",
-    "unicorn/prefer-spread": "off"
-  }
+    "unicorn/prefer-spread": "off",
+  },
+  settings: {
+    "react": {
+      version: "detect",
+    },
+    "import/extensions": [".ts", ".tsx"],
+    "import/resolver": {
+      node: {
+        extensions: [".ts", ".tsx"],
+      },
+    },
+    "boundaries/elements": [
+      {
+        type: "components",
+        pattern: "components/*/*",
+        capture: ["family", "elementName"],
+      },
+    ],
+  },
 }

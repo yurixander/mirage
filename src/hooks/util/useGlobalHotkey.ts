@@ -10,9 +10,9 @@ type KeyCombination = {
 const useGlobalHotkey = (
   keyCombination: KeyCombination,
   callback: () => void
-) => {
+): void => {
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       const {ctrl, shift, alt, key} = keyCombination
 
       if (
