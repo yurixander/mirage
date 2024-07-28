@@ -252,13 +252,11 @@ const fileSizeToString = (fileSize: number): string => {
   const MB = KB * 1024
 
   if (fileSize < KB) {
-    return "" + fileSize + " B"
+    return `${fileSize} bytes`
   } else if (fileSize < MB) {
-    const size = fileSize / KB
-    return size.toFixed(2) + " KB"
+    return `${(fileSize / KB).toFixed(2)} KB`
   } else {
-    const size = fileSize / MB
-    return size.toFixed(2) + " MB"
+    return `${(fileSize / MB).toFixed(2)} MB`
   }
 }
 export default FileMessage
