@@ -61,7 +61,9 @@ const MessageContainer: FC<MessageContainerProps> = ({
           <div className="flex w-full justify-between">
             {children}
 
-            <time className="flex text-gray-300">{localeTimeString}</time>
+            <time className="min-w-16 text-right text-gray-300">
+              {localeTimeString}
+            </time>
           </div>
         </div>
       </div>
