@@ -77,7 +77,7 @@ const useChatInput = (roomId: string): UseChatInputReturnType => {
   return {
     messageText,
     setMessageText,
-    isDisabled: client === null,
+    isDisabled: client === null || messageText.length === 0,
     sendTextMessage,
     openFilePicker,
     imagePreviewProps,
