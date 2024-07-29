@@ -158,11 +158,10 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     void room.client.sendReadReceipt(event)
   })
 
-  // When users begin typing, add them to the list of typing users.
   useEventListener(RoomMemberEvent.Typing, (_event, member) => {
-    const userId = client?.getUserId()
+    const currentUserId = client?.getUserId()
 
-    if (member.userId === userId || member.roomId !== roomId) {
+    if (member.userId === currentUserId || member.roomId !== roomId) {
       return
     }
 
@@ -175,11 +174,14 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
           avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
         },
       ])
-    } else {
-      setTypingUsers(prevTypingUsers =>
-        prevTypingUsers.filter(user => user.userId !== member.userId)
-      )
+
+      return
     }
+
+    // Remove user from typing users list if they stopped typing.
+    setTypingUsers(prevTypingUsers =>
+      prevTypingUsers.filter(user => user.userId !== member.userId)
+    )
   })
 
   return {messagesState, isChatLoading, roomName, messages, typingUsers}

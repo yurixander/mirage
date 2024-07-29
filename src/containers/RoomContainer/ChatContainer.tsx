@@ -43,7 +43,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
 
       <ChatInput roomId={roomId} className="size-full" />
 
-      <div className="mx-4 flex size-full max-h-12 shrink-0 flex-col gap-3">
+      <div className="mx-4 flex size-full max-h-12 shrink-0 flex-col justify-center gap-3">
         <div className="flex gap-3">
           <div className="size-6" />
 
