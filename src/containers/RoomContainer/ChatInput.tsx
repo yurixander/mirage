@@ -10,6 +10,8 @@ export type ChatInputProps = {
   className?: string
 }
 
+const BUTTON_SIZE = "size-5 md:size-7"
+
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -28,8 +30,6 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
     }
   }, [messageText])
-
-  const BUTTON_SIZE = "size-5 md:size-7"
 
   return (
     <>
@@ -66,11 +66,17 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         <IoIosHappy
           className={twMerge("text-slate-300", BUTTON_SIZE)}
           role="button"
+          onClick={() => {
+            // TODO: Show emoji picker.
+          }}
         />
 
         <IoMic
           className={twMerge("text-slate-300", BUTTON_SIZE)}
           role="button"
+          onClick={() => {
+            // TODO: Handle capture audio.
+          }}
         />
 
         <IoSend
