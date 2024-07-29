@@ -46,14 +46,14 @@ const ChatContainer: FC<ChatContainerProps> = ({
           </div>
         </main>
 
-        <footer className="relative order-3">
+        <footer className="relative order-3 flex flex-col">
           <ChatInput roomId={roomId} />
 
-          <div className="mx-4 flex size-full max-h-12 flex-col gap-3">
-            <div className="flex gap-3">
-              <div className="size-6" />
+          <div className="flex size-full max-h-9 flex-col">
+            <div className="flex gap-2">
+              <div className="h-9" />
 
-              <div className="size-6" />
+              <div className="h-9" />
 
               {typingUsers.length > 0 && (
                 <TypingIndicator users={typingUsers} />

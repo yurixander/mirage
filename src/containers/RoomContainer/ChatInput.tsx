@@ -81,7 +81,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           )}
           role="button"
           onClick={() => {
-            if (!isDisabled) {
+            if (isDisabled) {
               return
             }
 
