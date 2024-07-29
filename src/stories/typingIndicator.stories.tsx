@@ -22,7 +22,7 @@ export const OneUser: Story = {
   args: {
     users: [
       {
-        color: "#5CC679",
+        userId: "@emerald_branch",
         displayName: displayNameOne,
         avatarUrl: defaultAvatarUrl,
       },
@@ -35,12 +35,12 @@ export const TwoUsers: Story = {
   args: {
     users: [
       {
-        color: "#24B481",
+        userId: "@crimson_maple",
         displayName: "Crimson Maple",
         avatarUrl: defaultAvatarUrl,
       },
       {
-        color: "#7EC1FF",
+        userId: "@azure_stream",
         displayName: "Azure Stream",
         avatarUrl: defaultAvatarUrl,
       },
@@ -53,19 +53,16 @@ export const ThreeUsers: Story = {
   args: {
     users: [
       {
-        color: "#24B481",
+        userId: "@crimson_maple",
         displayName: "Crimson Maple",
-        avatarUrl: defaultAvatarUrl,
       },
       {
-        color: "#7EC1FF",
+        userId: "@azure_stream",
         displayName: "Azure Stream",
-        avatarUrl: defaultAvatarUrl,
       },
       {
-        color: "#E57EFF",
+        userId: "@emerald_branch",
         displayName: displayNameOne,
-        avatarUrl: defaultAvatarUrl,
       },
     ],
   },
@@ -76,19 +73,20 @@ export const SeveralPeople: Story = {
   args: {
     users: [
       {
-        color: "#5CC679",
+        userId: "@emerald_branch1",
+        displayName: displayNameOne,
+        avatarUrl: defaultAvatarUrl,
+      },
+      {
+        userId: "@emerald_branch2",
         displayName: displayNameOne,
       },
       {
-        color: "#5CC679",
+        userId: "@emerald_branch4",
         displayName: displayNameOne,
       },
       {
-        color: "#5CC679",
-        displayName: displayNameOne,
-      },
-      {
-        color: "#5CC679",
+        userId: "@emerald_branch5",
         displayName: displayNameOne,
       },
     ],
