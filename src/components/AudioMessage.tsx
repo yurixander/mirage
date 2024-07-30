@@ -82,7 +82,10 @@ const AudioMessage: FC<AudioMessageProps> = ({
 
   return (
     <>
-      <ContextMenu id={`audio-menu-${id}`} elements={contextMenuItems}>
+      <ContextMenu
+        id={`audio-menu-${id}`}
+        elements={contextMenuItems}
+        className="cursor-default">
         <div className="flex size-full max-h-14 max-w-72 items-center gap-1 rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm">
           {error ? (
             <Typography className="inline-flex items-center gap-1">
@@ -110,13 +113,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
                 <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
               )}
 
-              <div
-                ref={waveformRef}
-                className="max-h-12 w-full"
-                onError={() => {
-                  console.log("Error")
-                }}
-              />
+              <div ref={waveformRef} className="max-h-12 w-full" />
             </>
           )}
 
