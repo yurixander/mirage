@@ -63,6 +63,7 @@ module.exports = {
     "promise/always-return": "off",
     "unicorn/number-literal-case": "off",
     "unicorn/prefer-spread": "off",
+    "jsx-a11y/media-has-caption": [0],
   },
   settings: {
     "react": {
