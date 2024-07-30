@@ -10,7 +10,7 @@ export type ChatInputProps = {
   className?: string
 }
 
-const BUTTON_SIZE = "size-5 md:size-7"
+const BUTTON_SIZE_CLASS = "size-5 md:size-7"
 
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -44,7 +44,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           className
         )}>
         <IoAddCircle
-          className={twMerge("text-slate-400", BUTTON_SIZE)}
+          className={twMerge("text-slate-400", BUTTON_SIZE_CLASS)}
           role="button"
           onClick={openFilePicker}
         />
@@ -64,7 +64,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         />
 
         <IoIosHappy
-          className={twMerge("text-slate-300", BUTTON_SIZE)}
+          className={twMerge("text-slate-300", BUTTON_SIZE_CLASS)}
           role="button"
           onClick={() => {
             // TODO: Show emoji picker.
@@ -72,7 +72,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         />
 
         <IoMic
-          className={twMerge("text-slate-300", BUTTON_SIZE)}
+          className={twMerge("text-slate-300", BUTTON_SIZE_CLASS)}
           role="button"
           onClick={() => {
             // TODO: Handle capture audio.
@@ -82,7 +82,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         <IoSend
           className={twMerge(
             "text-blue-500",
-            BUTTON_SIZE,
+            BUTTON_SIZE_CLASS,
             isDisabled && "cursor-not-allowed opacity-50"
           )}
           role="button"
