@@ -50,9 +50,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         />
 
         <textarea
-          className={twMerge(
-            "max-h-24 w-full resize-none bg-transparent text-sm scrollbar-hide focus-visible:outline-none focus-visible:outline-0 md:max-h-32 md:text-xl"
-          )}
+          className="max-h-24 w-full resize-none bg-transparent text-sm scrollbar-hide focus-visible:outline-none focus-visible:outline-0 md:max-h-32 md:text-xl"
           ref={textareaRef}
           placeholder="Write a message or simply say 👋🏼 hello..."
           value={messageText}
