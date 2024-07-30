@@ -32,7 +32,7 @@ const IconButton: FC<IconButtonProps> = ({
       tabIndex={0}
       disabled={isDisabled}
       className={twMerge(
-        "inline-block size-max rounded-lg p-1 hover:bg-gray-50 focus-visible:duration-150 active:scale-90 active:animate-hold",
+        "inline-block size-max rounded-lg p-1 hover:bg-gray-50 focus-visible:duration-150 active:scale-90 active:animate-hold disabled:opacity-50",
         className
       )}>
       <NotificationDot isVisible={isDotVisible ?? false}>

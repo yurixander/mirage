@@ -1,16 +1,11 @@
 import {useEffect, useRef, useState, type FC} from "react"
-import {IoPause, IoPlay} from "react-icons/io5"
+import {IoAlertCircle, IoPause, IoPlay} from "react-icons/io5"
 import Typography from "./Typography"
 import AvatarImage, {AvatarType} from "./AvatarImage"
-import {type ContextMenuItem} from "./ContextMenu"
+import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import {formatTime} from "@/utils/util"
 import IconButton from "./IconButton"
-
-enum AudioState {
-  Ready,
-  Loading,
-  Error,
-}
+import {useWavesurfer} from "@wavesurfer/react"
 
 export type AudioMessageProps = {
   audioUrl: string
@@ -33,77 +28,110 @@ const AudioMessage: FC<AudioMessageProps> = ({
   timestamp,
   authorAvatarUrl,
   authorDisplayName,
+  id,
 }) => {
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const [audioState, setAudioState] = useState(AudioState.Loading)
-  const isError = audioState === AudioState.Error
-  const isLoading = audioState === AudioState.Loading
+  const waveformRef = useRef(null)
+  const [error, setError] = useState(false)
+
+  const {wavesurfer, isReady} = useWavesurfer({
+    container: waveformRef,
+    waveColor: "#ddd",
+    progressColor: "#4a90e2",
+    cursorColor: "#4a90e2",
+    barWidth: 3,
+    barGap: 4,
+    barRadius: 20,
+    cursorWidth: 0,
+    height: 50,
+    url: audioUrl,
+  })
 
   useEffect(() => {
-    if (isCurrentPlaying || audioRef.current === null) {
+    const loadTimeout = setTimeout(() => {
+      if (!isReady) setError(true)
+    }, 20_000)
+
+    return () => {
+      clearTimeout(loadTimeout)
+    }
+  }, [isReady])
+
+  useEffect(() => {
+    if (wavesurfer === null) {
       return
     }
 
-    audioRef.current.pause()
-  }, [isCurrentPlaying])
+    wavesurfer.on("ready", () => {
+      setError(false)
+    })
+
+    wavesurfer.on("finish", () => {
+      setCurrentPlaying(false)
+
+      wavesurfer.setTime(0)
+    })
+
+    wavesurfer.on("error", () => {
+      setError(true)
+    })
+
+    return () => {
+      wavesurfer.unAll()
+    }
+  }, [isReady, setCurrentPlaying, wavesurfer])
 
   return (
     <>
-      <div className="flex size-full max-h-14 max-w-60 items-center rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm">
-        {isLoading ? (
-          <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
-        ) : (
-          <IconButton
-            tooltip="Playback"
-            isDisabled={isError || isLoading}
-            Icon={isCurrentPlaying ? IoPause : IoPlay}
-            onClick={() => {
-              if (isCurrentPlaying) {
-                audioRef.current?.pause()
-                setCurrentPlaying(false)
-              } else {
-                void audioRef.current?.play()
-                setCurrentPlaying(true)
-              }
-            }}
-          />
-        )}
+      <ContextMenu id={`audio-menu-${id}`} elements={contextMenuItems}>
+        <div className="flex size-full max-h-14 max-w-72 items-center gap-1 rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm">
+          {error ? (
+            <Typography className="inline-flex items-center gap-1">
+              <IoAlertCircle className="text-red-500" /> Load error
+            </Typography>
+          ) : (
+            <>
+              {isReady ? (
+                <IconButton
+                  tooltip="Playback"
+                  Icon={isCurrentPlaying ? IoPause : IoPlay}
+                  onClick={() => {
+                    if (isCurrentPlaying) {
+                      wavesurfer?.pause()
 
-        <div className="ml-auto flex items-center gap-2">
-          <Typography>{formatTime(timestamp)}</Typography>
+                      setCurrentPlaying(false)
+                    } else {
+                      void wavesurfer?.play()
 
-          <AvatarImage
-            isRounded
-            avatarType={AvatarType.Profile}
-            displayName={authorDisplayName}
-            avatarUrl={authorAvatarUrl}
-          />
+                      setCurrentPlaying(true)
+                    }
+                  }}
+                />
+              ) : (
+                <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
+              )}
+
+              <div
+                ref={waveformRef}
+                className="max-h-12 w-full"
+                onError={() => {
+                  console.log("Error")
+                }}
+              />
+            </>
+          )}
+
+          <div className="ml-auto flex shrink-0 items-center gap-2">
+            <Typography>{formatTime(timestamp)}</Typography>
+
+            <AvatarImage
+              isRounded
+              avatarType={AvatarType.Profile}
+              displayName={authorDisplayName}
+              avatarUrl={authorAvatarUrl}
+            />
+          </div>
         </div>
-      </div>
-
-      <audio
-        ref={audioRef}
-        preload="auto"
-        src={audioUrl}
-        onLoadStart={() => {
-          setAudioState(AudioState.Loading)
-        }}
-        onCanPlayThrough={() => {
-          setAudioState(AudioState.Ready)
-        }}
-        onError={() => {
-          setAudioState(AudioState.Error)
-        }}
-        onEnded={() => {
-          if (audioRef.current === null) {
-            return
-          }
-
-          audioRef.current.currentTime = 0
-
-          setAudioState(AudioState.Ready)
-        }}
-      />
+      </ContextMenu>
     </>
   )
 }
