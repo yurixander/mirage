@@ -120,12 +120,14 @@ const AudioMessage: FC<AudioMessageProps> = ({
           <div className="ml-auto flex shrink-0 items-center gap-2">
             <Typography>{formatTime(timestamp)}</Typography>
 
-            <AvatarImage
-              isRounded
-              avatarType={AvatarType.Profile}
-              displayName={authorDisplayName}
-              avatarUrl={authorAvatarUrl}
-            />
+            <div role="button" onClick={onAuthorClick} aria-hidden>
+              <AvatarImage
+                isRounded
+                avatarType={AvatarType.Profile}
+                displayName={authorDisplayName}
+                avatarUrl={authorAvatarUrl}
+              />
+            </div>
           </div>
         </div>
       </ContextMenu>
