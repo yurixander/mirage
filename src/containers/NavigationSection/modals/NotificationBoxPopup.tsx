@@ -1,7 +1,7 @@
 import React, {useMemo, type FC} from "react"
 import {IoCloseCircle} from "react-icons/io5"
 import {type ButtonVariant} from "../../../components/Button"
-import Typography, {TypographyVariant} from "../../../components/Typography"
+import Typography, {TypographyVariant} from "@/components/Typography"
 import IconButton from "../../../components/IconButton"
 import Notification, {type NotificationProps} from "@/components/Notification"
 import Loader from "@/components/Loader"
@@ -40,8 +40,9 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
   isVisible,
 }) => {
   const renderLocation =
-    document.querySelector(`#${ModalRenderLocation.RoomContainer}`) ??
-    document.body
+    document.querySelector(`#${ModalRenderLocation.RoomList}`) ?? document.body
+
+  const isNotificationsEmpty = notifications.length === 0
 
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
@@ -64,10 +65,14 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
           <div
             className={twMerge(
               "flex h-max w-full flex-col gap-2 rounded-xl border border-slate-300 bg-gray-50 p-3 shadow-xl",
-              notifications.length === 0 && "translate-y-8"
+              isNotificationsEmpty && "translate-y-8"
             )}
             onMouseLeave={onClose}>
-            {notifications.length > 0 ? (
+            {isNotificationsEmpty ? (
+              <Typography className="w-full p-1">
+                You not have notifications
+              </Typography>
+            ) : (
               <>
                 <div className="flex w-full justify-between p-1">
                   <Typography variant={TypographyVariant.Heading}>
@@ -90,10 +95,6 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
                   </div>
                 )}
               </>
-            ) : (
-              <Typography className="w-full p-1">
-                You not have notifications
-              </Typography>
             )}
           </div>
         </div>

@@ -7,3 +7,4 @@ commitlint.config.ts
 tailwind.config.ts
 node_modules
 index.html
+postcss.config.js

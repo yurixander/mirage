@@ -8,6 +8,7 @@ import {
   IoSearchCircle,
 } from "react-icons/io5"
 import {assert} from "./util"
+import {MdPlaylistAddCircle} from "react-icons/md"
 
 export const CONTEXT_MENU_REPLY = {
   text: "Reply",
@@ -119,6 +120,90 @@ export function buildMessageMenuItems({
       icon: IoMdTrash,
       color: "red",
       onClick: onDeleteMessage,
+    })
+  }
+
+  return menuItems
+}
+
+export type BuildRoomsTemplate = {
+  isHome?: boolean
+  onCreateRoom: () => void
+  searchPublicRooms: () => void
+  searchPublicSpaces: () => void
+  addRoomToSpace?: () => void
+}
+
+export function buildRoomsMenuItems({
+  isHome = false,
+  onCreateRoom,
+  searchPublicRooms,
+  searchPublicSpaces,
+  addRoomToSpace,
+}: BuildRoomsTemplate): ContextMenuItem[] {
+  const menuItems: ContextMenuItem[] = [
+    {
+      icon: IoAddCircle,
+      text: "Create room",
+      onClick: onCreateRoom,
+    },
+    {
+      icon: IoSearchCircle,
+      text: "Search rooms",
+      onClick: searchPublicRooms,
+    },
+    {
+      icon: IoSearchCircle,
+      text: "Search spaces",
+      onClick: searchPublicSpaces,
+    },
+  ]
+
+  if (!isHome) {
+    assert(
+      addRoomToSpace !== undefined,
+      "If not home space addRoomToSpace should not be undefined."
+    )
+
+    menuItems.unshift({
+      icon: MdPlaylistAddCircle,
+      text: "Add to space",
+      onClick: addRoomToSpace,
+    })
+  }
+
+  return menuItems
+}
+
+export type BuildDirectRoomsTemplate = {
+  isHome?: boolean
+  onCreateDirectRoom: () => void
+  addRoomToSpace?: () => void
+}
+
+export function buildDirectRoomsMenuItems({
+  onCreateDirectRoom,
+  addRoomToSpace,
+  isHome,
+}: BuildDirectRoomsTemplate): ContextMenuItem[] {
+  const menuItems: ContextMenuItem[] = [
+    {
+      icon: IoAddCircle,
+      text: "Create direct rooms",
+      onClick: onCreateDirectRoom,
+    },
+  ]
+
+  if (!isHome) {
+    assert(
+      addRoomToSpace !== undefined,
+      "If not home space addRoomToSpace should not be undefined."
+    )
+
+    menuItems.unshift({
+      icon: MdPlaylistAddCircle,
+      text: "Add to space",
+      onClick: addRoomToSpace,
     })
   }
 

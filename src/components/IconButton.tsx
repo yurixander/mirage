@@ -14,11 +14,13 @@ export type IconButtonProps = {
   className?: string
   iconClassName?: string
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  onMouseEnter?: () => void
 }
 
 const IconButton: FC<IconButtonProps> = ({
   Icon,
   onClick,
+  onMouseEnter,
   color,
   isDisabled,
   isDotVisible,
@@ -29,6 +31,7 @@ const IconButton: FC<IconButtonProps> = ({
   return (
     <button
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
       tabIndex={0}
       disabled={isDisabled}
       className={twMerge(

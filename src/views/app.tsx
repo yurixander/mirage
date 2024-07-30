@@ -3,9 +3,9 @@ import {type Credentials, ViewPath} from "@/utils/util"
 import {useEffect, type FC} from "react"
 import {useNavigate} from "react-router-dom"
 import useLocalStorage, {LocalStorageKey} from "@/hooks/util/useLocalStorage"
-import NavigationSection from "@/containers/NavigationSection"
 import ModalHandler from "@/components/ModalHandler"
 import RoomContainer from "@/containers/RoomContainer/RoomContainer"
+import NavigationSection from "@/containers/NavigationSection/NavigationSection"
 
 const AppView: FC = () => {
   const navigate = useNavigate()

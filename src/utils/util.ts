@@ -10,10 +10,11 @@ export enum ViewPath {
 
 export enum StaticAssetPath {
   AppLogo = "logo.svg",
+  NewAppLogo = "new-logo.svg",
   AppLogoSmall = "logo-small.svg",
-  AddServerIcon = "icons/add-server.svg",
   LoginPhoto = "LoginPhoto.png",
   DotGrid = "icons/dot-grid.svg",
+  SpaceHome = "space-home.png",
 }
 
 export type Credentials = {

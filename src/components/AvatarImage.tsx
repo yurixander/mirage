@@ -8,23 +8,31 @@ export enum AvatarType {
   Message,
 }
 
+export enum AvatarSize {
+  ExtraSmall,
+  Small,
+  Normal,
+  Large,
+  ExtraLarge,
+}
+
 export type AvatarProps = {
   isRounded: boolean
   avatarType: AvatarType
   displayName: string
-  isLarge?: boolean
   isSquare?: boolean
   avatarUrl?: string
+  avatarSize?: AvatarSize
   className?: string
 }
 
 const AvatarImage: FC<AvatarProps> = ({
   isRounded,
-  isLarge = false,
   isSquare = true,
   avatarType,
   displayName,
   avatarUrl,
+  avatarSize = AvatarSize.Normal,
   className,
 }) => {
   const isAvatarMessage = avatarType === AvatarType.Message
@@ -33,12 +41,12 @@ const AvatarImage: FC<AvatarProps> = ({
   return avatarUrl === undefined ? (
     <div
       className={twMerge(
-        "size-9 shrink-0 overflow-hidden rounded-lg",
+        "shrink-0 overflow-hidden rounded-lg",
         isRounded && "rounded-full",
-        isLarge ? "size-14" : "size-9"
+        getAvatarSizeByTailwindClass(avatarSize)
       )}>
       <Avatar
-        size={isLarge ? 60 : 40}
+        size={getAvatarSize(avatarSize)}
         square={isSquare}
         name={displayName}
         variant="beam"
@@ -49,7 +57,8 @@ const AvatarImage: FC<AvatarProps> = ({
       src={avatarUrl}
       className={twMerge(
         isAvatarMessage && "size-full",
-        isProfile && twMerge("object-contain", isLarge ? "size-14" : "size-9"),
+        isProfile &&
+          twMerge("object-contain", getAvatarSizeByTailwindClass(avatarSize)),
         // TODO: Class `rounded-full` should be parent container with `overflow-hidden`.
         isRounded && "rounded-full",
         className
@@ -57,6 +66,50 @@ const AvatarImage: FC<AvatarProps> = ({
       alt={displayName}
     />
   )
+}
+
+const getAvatarSizeByTailwindClass = (size: AvatarSize): string => {
+  switch (size) {
+    case AvatarSize.ExtraSmall: {
+      return "size-3"
+    }
+
+    case AvatarSize.Small: {
+      return "size-6"
+    }
+
+    case AvatarSize.Normal: {
+      return "size-10"
+    }
+
+    case AvatarSize.Large: {
+      return "size-14"
+    }
+
+    case AvatarSize.ExtraLarge: {
+      return "size-20"
+    }
+  }
+}
+
+const getAvatarSize = (size: AvatarSize): number => {
+  switch (size) {
+    case AvatarSize.ExtraSmall: {
+      return 12
+    }
+    case AvatarSize.Small: {
+      return 24
+    }
+    case AvatarSize.Normal: {
+      return 40
+    }
+    case AvatarSize.Large: {
+      return 56
+    }
+    case AvatarSize.ExtraLarge: {
+      return 80
+    }
+  }
 }
 
 export default AvatarImage
