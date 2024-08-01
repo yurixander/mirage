@@ -1,60 +1,16 @@
-import AudioMessage from "@/components/AudioMessage"
-import {buildMessageMenuItems} from "@/utils/menu"
-import {useState, type FC} from "react"
+import EventMessage from "@/components/EventMessage"
+import {type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
-  const [audioPlaying, setAudioPlaying] = useState<string>()
-
   return (
-    <div className="flex flex-col gap-4">
-      <AudioMessage
-        id="audio-1"
-        audioUrl="https://matrix-client.matrix.org/_matrix/media/v3/download/matrix.org/oFzwIzoxnGrRQYkqQauXhcHA"
-        isCurrentPlaying={audioPlaying === "audio-1"}
-        authorDisplayName="John Doe"
+    <>
+      <EventMessage
+        body="has change avatar url"
+        eventId="event:test"
         timestamp={Date.now()}
-        contextMenuItems={buildMessageMenuItems({
-          canDeleteMessage: true,
-          onDeleteMessage() {},
-          onReplyMessage() {},
-          onResendMessage() {},
-        })}
-        onAuthorClick={function (): void {
-          throw new Error("Function not implemented.")
-        }}
-        setCurrentPlaying={(value: boolean) => {
-          if (value) {
-            setAudioPlaying("audio-1")
-          } else {
-            setAudioPlaying(undefined)
-          }
-        }}
+        sender={{displayName: "Emerald branch", userId: "@emerald_branch"}}
       />
-
-      <AudioMessage
-        id="audio-2"
-        audioUrl="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
-        isCurrentPlaying={audioPlaying === "audio-2"}
-        authorDisplayName="John Doe"
-        timestamp={Date.now()}
-        contextMenuItems={buildMessageMenuItems({
-          canDeleteMessage: true,
-          onDeleteMessage() {},
-          onReplyMessage() {},
-          onResendMessage() {},
-        })}
-        onAuthorClick={function (): void {
-          throw new Error("Function not implemented.")
-        }}
-        setCurrentPlaying={(value: boolean) => {
-          if (value) {
-            setAudioPlaying("audio-2")
-          } else {
-            setAudioPlaying(undefined)
-          }
-        }}
-      />
-    </div>
+    </>
   )
 }
 
