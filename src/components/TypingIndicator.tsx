@@ -1,7 +1,7 @@
-import {type FC} from "react"
-import AvatarImage, {AvatarType} from "./AvatarImage"
+import React, {useMemo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {stringToColor} from "@/utils/util"
+import Avatar from "boring-avatars"
 
 export type TypingIndicatorUser = {
   displayName: string
@@ -13,41 +13,62 @@ export type TypingIndicatorProps = {
   users: TypingIndicatorUser[]
 }
 
+const MAX_VISIBLE_TYPING_USERS = 3
+
 const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
-  const verbForm = users.length > 1 ? "are" : "is"
+  const usersLength = users.length
+  const verbForm = length > 1 ? "are" : "is"
 
-  const names = users.map((user, index, array) => (
-    <span key={index}>
-      <span
-        className="font-semibold"
-        style={{color: stringToColor(user.userId)}}>
-        {user.displayName}
+  const who: React.ReactNode = useMemo(() => {
+    if (usersLength > MAX_VISIBLE_TYPING_USERS) {
+      return "Several people"
+    }
+
+    return users.map((user, index) => (
+      <span key={index}>
+        <span
+          className="font-semibold"
+          style={{color: stringToColor(user.userId)}}>
+          {user.displayName}
+        </span>
+
+        {index < usersLength - 2
+          ? ", "
+          : index === usersLength - 2
+            ? " and "
+            : ""}
       </span>
+    ))
+  }, [users, usersLength])
 
-      {index < array.length - 2 ? ", " : ""}
+  const typingUserElements = useMemo(() => {
+    if (usersLength > MAX_VISIBLE_TYPING_USERS) {
+      return
+    }
 
-      {index === array.length - 2 ? " and " : ""}
-    </span>
-  ))
-
-  const MAX_VISIBLE_TYPING_USERS = 3
-  const who = users.length > MAX_VISIBLE_TYPING_USERS ? "Several people" : names
-
-  const typingUserElements = users.map(
-    (user, index) =>
-      user.avatarUrl && (
-        <div key={index} className={index === 1 || index === 2 ? "-ml-4" : ""}>
-          <div className="size-8 object-contain">
-            <AvatarImage
-              isRounded
-              displayName={user.displayName}
-              avatarUrl={user.avatarUrl}
-              avatarType={AvatarType.Message}
-            />
-          </div>
+    return users.map((user, index) =>
+      user.avatarUrl === undefined ? (
+        <div className={index === 1 || index === 2 ? "-ml-2.5" : ""}>
+          <Avatar
+            key={index}
+            size={24}
+            name={user.displayName}
+            variant="beam"
+          />
         </div>
+      ) : (
+        <img
+          className={twMerge(
+            "size-6 rounded-full",
+            index === 1 || index === 2 ? "-ml-2.5" : ""
+          )}
+          key={index}
+          src={user.avatarUrl}
+          alt={`${user.displayName} avatar`}
+        />
       )
-  )
+    )
+  }, [users, usersLength])
 
   const dotClass = "h-2 w-2 animate-dot-jump rounded-full bg-neutral-300"
 

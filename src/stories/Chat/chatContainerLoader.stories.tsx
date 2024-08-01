@@ -6,7 +6,6 @@ type Story = StoryObj<typeof ChatContainerLoader>
 
 const meta: Meta<typeof ChatContainerLoader> = {
   component: ChatContainerLoader,
-  title: "Chat/ChatContainerLoader",
 }
 
 const render = (): React.JSX.Element => <ChatContainerLoader />

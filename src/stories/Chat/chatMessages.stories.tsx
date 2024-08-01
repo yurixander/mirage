@@ -14,8 +14,8 @@ type Story = StoryObj<typeof ChatMessages>
 
 const meta: Meta<typeof ChatMessages> = {
   component: ChatMessages,
-  title: "Chat/ChatMessages",
 }
+
 const render = (args: ChatMessagesProps): React.JSX.Element => (
   <ChatMessages {...args} />
 )

@@ -24,6 +24,7 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
+    "@wavesurfer/react": "^1.0.7",
     "axios": "^1.6.7",
     "boring-avatars": "^1.10.1",
     "buffer": "^6.0.3",
@@ -46,6 +47,7 @@
     "tailwindcss-animation-delay": "^1.2.0",
     "url": "^0.11.3",
     "use-file-picker": "^2.1.1",
+    "wavesurfer.js": "^7.8.2",
     "web-vitals": "^3.5.2",
     "zod": "^3.23.8",
     "zustand": "^4.5.2"
