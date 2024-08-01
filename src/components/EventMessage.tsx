@@ -4,6 +4,7 @@ import {IoMdCreate} from "react-icons/io"
 import Typography from "./Typography"
 import ContextMenu, {ClickActions} from "./ContextMenu"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
+import {type IconType} from "react-icons"
 
 export type EventSender = {
   displayName: string
@@ -16,11 +17,17 @@ export type EventMessagePropsCommon = {
   timestamp: number
 }
 
-export type EventMessageProps = {
+export type EventMessageData = {
   eventId: string
   sender: EventSender
   body: string
   timestamp: number
+  icon?: IconType
+}
+
+export interface EventMessageProps extends EventMessageData {
+  onShowMember: () => void
+  onFindUser: () => void
 }
 
 const EventMessage: FC<EventMessageProps> = ({
@@ -28,13 +35,16 @@ const EventMessage: FC<EventMessageProps> = ({
   body,
   sender,
   eventId,
+  icon,
+  onFindUser,
+  onShowMember,
 }) => {
-  const localeTimeString = formatTime(timestamp)
+  const Icon = icon ?? IoMdCreate
 
   return (
     <div className="flex items-center gap-3">
       <div className="flex w-10 items-center justify-end">
-        <IoMdCreate className="text-neutral-200" />
+        <Icon className="text-neutral-200" />
       </div>
 
       <Typography className="flex max-w-messageMaxWidth select-text items-center gap-1 whitespace-pre-line break-words italic">
@@ -43,16 +53,12 @@ const EventMessage: FC<EventMessageProps> = ({
           elements={[
             {
               icon: IoPeopleCircle,
-              onClick() {
-                // TODO: Show room member.
-              },
+              onClick: onShowMember,
               text: "View member",
             },
             {
               icon: IoSearchCircle,
-              onClick() {
-                // TODO: Find user as direct chat.
-              },
+              onClick: onFindUser,
               text: "Find user",
             },
           ]}
@@ -64,7 +70,7 @@ const EventMessage: FC<EventMessageProps> = ({
         {body}
       </Typography>
 
-      <time className="ml-auto text-gray-300">{localeTimeString}</time>
+      <time className="ml-auto text-gray-300">{formatTime(timestamp)}</time>
     </div>
   )
 }
