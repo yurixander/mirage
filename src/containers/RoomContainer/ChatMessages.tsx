@@ -46,7 +46,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
             }}
           />
         ) : message.kind === MessageKind.Event ? (
-          <EventMessage key={message.data.id} {...message.data} />
+          <EventMessage key={message.data.eventId} {...message.data} />
         ) : (
           <UnreadIndicator key="unread-indicator" {...message.data} />
         )

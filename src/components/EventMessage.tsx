@@ -2,13 +2,25 @@ import {type FC} from "react"
 import {formatTime} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
 
-export type EventMessageProps = {
-  timestamp: number
-  text: string
-  id: string
+export type EventSender = {
+  displayName: string
+  userId: string
 }
 
-const EventMessage: FC<EventMessageProps> = ({timestamp, text}) => {
+export type EventMessagePropsCommon = {
+  eventId: string
+  sender: EventSender
+  timestamp: number
+}
+
+export type EventMessageProps = {
+  eventId: string
+  sender: EventSender
+  body: string
+  timestamp: number
+}
+
+const EventMessage: FC<EventMessageProps> = ({timestamp, body, sender}) => {
   const localeTimeString = formatTime(timestamp)
 
   return (
@@ -18,7 +30,7 @@ const EventMessage: FC<EventMessageProps> = ({timestamp, text}) => {
       </div>
 
       <div className="max-w-messageMaxWidth select-text whitespace-pre-line break-words italic leading-160">
-        {text}
+        {sender.displayName} {body}
       </div>
 
       <time className="ml-auto text-gray-300">{localeTimeString}</time>

@@ -6,7 +6,8 @@ import {
   JoinRule,
   type MatrixEvent,
   MsgType,
-  type User,
+  type RoomMember,
+  type IContent,
 } from "matrix-js-sdk"
 import {
   assert,
@@ -20,7 +21,7 @@ import {type RosterUserProps} from "@/containers/Roster/RosterUser"
 import {
   getRoomAdminsAndModerators,
   getUserLastPresence,
-  isUserRoomAdminOrMod,
+  isCurrentUserAdminOrMod,
   UserPowerLevel,
 } from "./members"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
@@ -32,6 +33,7 @@ import {
 } from "@/containers/RoomContainer/hooks/useRoomChat"
 import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
 import {RoomType} from "@/components/Room"
+import {type EventMessagePropsCommon} from "@/components/EventMessage"
 
 export enum ImageSizes {
   Server = 47,
@@ -163,18 +165,12 @@ export const handleRoomEvents = async (
   const roomHistory = await client.scrollback(activeRoom, 30)
   const events = roomHistory.getLiveTimeline().getEvents()
   const lastReadEventId = getLastReadEventIdFromRoom(activeRoom, client)
-  const isAdminOrModerator = isUserRoomAdminOrMod(activeRoom)
   const allMessageProperties: AnyMessage[] = []
 
   for (let index = 0; index < events.length; index++) {
     const event = events[index]
 
-    const messageProperties = await handleEvent(
-      client,
-      event,
-      roomHistory.roomId,
-      isAdminOrModerator
-    )
+    const messageProperties = await handleEvent(client, event, roomHistory)
 
     if (messageProperties === null) {
       continue
@@ -198,56 +194,74 @@ export const handleRoomEvents = async (
 export const handleEvent = async (
   client: MatrixClient,
   event: MatrixEvent,
-  roomId: string,
-  isAdminOrModerator: boolean
+  room: Room
 ): Promise<AnyMessage | null> => {
-  const timestamp = event.localTimestamp
-  const sender = event.sender?.userId ?? null
+  if (event.getType() === EventType.RoomMessage) {
+    return await handleMessagesEvent(client, event, room)
+  }
 
-  if (sender === null) {
+  const eventMessageBody = await handleEventMessage(event)
+
+  // TODO: Handle errors instead of throwing null.
+  if (
+    event.sender === null ||
+    event.event.event_id === undefined ||
+    eventMessageBody === null
+  ) {
     return null
   }
 
-  const user = client.getUser(sender)?.displayName
-
-  if (user === undefined) {
-    return null
+  const commonProps: EventMessagePropsCommon = {
+    eventId: event.event.event_id,
+    sender: {
+      displayName: event.sender.name,
+      userId: event.sender.userId,
+    },
+    timestamp: event.localTimestamp,
   }
+
+  return {
+    kind: MessageKind.Event,
+    data: {
+      ...commonProps,
+      body: eventMessageBody,
+    },
+  }
+}
+
+export async function handleEventMessage(
+  event: MatrixEvent
+): Promise<string | null> {
+  const eventContent = event.getContent()
 
   switch (event.getType()) {
-    case EventType.RoomMessage: {
-      return await handleMessagesEvent(
-        client,
-        timestamp,
-        event,
-        roomId,
-        sender,
-        isAdminOrModerator
+    case EventType.RoomMember: {
+      return handleMemberEvent(
+        event.getStateKey(),
+        eventContent,
+        event.getPrevContent()
       )
     }
-    case EventType.RoomMember: {
-      return handleMemberEvent(user, timestamp, client, event)
-    }
     case EventType.RoomTopic: {
-      return await handleRoomTopicEvent(user, timestamp, event)
+      return await handleRoomTopicEvent(eventContent)
     }
     case EventType.RoomGuestAccess: {
-      return await handleGuestAccessEvent(user, timestamp, event)
+      return await handleGuestAccessEvent(eventContent)
     }
     case EventType.RoomHistoryVisibility: {
-      return await handleHistoryVisibilityEvent(user, timestamp, event)
+      return await handleHistoryVisibilityEvent(eventContent)
     }
     case EventType.RoomJoinRules: {
-      return await handleJoinRulesEvent(user, timestamp, event)
+      return await handleJoinRulesEvent(eventContent)
     }
     case EventType.RoomCanonicalAlias: {
-      return await handleRoomCanonicalAliasEvent(user, timestamp, event)
+      return await handleRoomCanonicalAliasEvent(eventContent)
     }
     case EventType.RoomAvatar: {
-      return await handleRoomAvatarEvent(user, timestamp, event)
+      return await handleRoomAvatarEvent(eventContent)
     }
     case EventType.RoomName: {
-      return await handleRoomNameEvent(user, timestamp, event)
+      return await handleRoomNameEvent(eventContent)
     }
     default: {
       return null
@@ -274,403 +288,226 @@ export function getLastReadEventIdFromRoom(
   return room.findEventById(eventReadUpTo)?.getId() ?? null
 }
 
-export function handleMemberLeave(
-  user: string,
-  displayName?: string,
-  previousDisplayName?: string,
-  previousMembership?: string
-): string | null {
-  if (
-    displayName === undefined ||
-    previousDisplayName === undefined ||
-    previousMembership === undefined
-  ) {
-    return null
-  }
-
-  switch (previousMembership) {
-    case KnownMembership.Invite: {
-      return `${user} has canceled the invitation to ${previousDisplayName}`
-    }
-    case KnownMembership.Ban: {
-      return `${user} has removed the ban from ${displayName}`
-    }
-    case KnownMembership.Join: {
-      return `${user} has left the room`
-    }
-    default: {
-      return null
-    }
-  }
-}
-
 export const handleMemberEvent = (
-  user: string,
-  timestamp: number,
-  client: MatrixClient,
-  event: MatrixEvent
-): AnyMessage | null => {
-  const previousContent = event.getUnsigned().prev_content
-  const eventContent = event.getContent()
-  const stateKey = event.getStateKey()
-  const eventId = event.event.event_id
+  stateKey: string | undefined,
+  eventContent: IContent,
+  previousContent: IContent
+): string | null => {
   const displayName = eventContent.displayname
-  const previousMembership = previousContent?.membership
-  const previousDisplayName = previousContent?.displayname
-  let text: string | null = null
-
-  if (stateKey === undefined || eventId === undefined) {
-    return null
-  }
+  const previousMembership = previousContent.membership
+  const previousDisplayName = previousContent.displayname
 
   switch (eventContent.membership) {
-    // TODO: Handle here other types of RoomMember events.
     case KnownMembership.Join: {
       if (
         previousMembership === KnownMembership.Invite ||
         previousMembership !== KnownMembership.Join
       ) {
-        text = `${user} has joined to the room`
+        return "has joined to the room"
       } else if (
         previousDisplayName !== undefined &&
         displayName !== previousDisplayName
       ) {
-        text = `${previousDisplayName} has change the name to ${displayName}`
+        return `has change the name to ${displayName}`
       } else if (
         eventContent.avatar_url !== undefined &&
         previousContent?.avatar_url === undefined
       ) {
-        text = `${displayName} has put a profile photo`
+        return "has put a profile photo"
       } else if (
         eventContent.avatar_url !== undefined &&
         eventContent.avatar_url !== previousContent?.avatar_url
       ) {
-        text = `${displayName} has change to the profile photo`
+        return "has change to the profile photo"
       } else if (
         eventContent.avatar_url === undefined &&
         previousContent?.avatar_url !== undefined
       ) {
-        text = `${displayName} has remove the profile photo`
+        return "has remove the profile photo"
       }
 
       break
     }
     case KnownMembership.Invite: {
-      text = `${user} invited ${displayName}`
-
-      break
+      return `invited ${displayName}`
     }
     case KnownMembership.Ban: {
-      text = `${user} has banned ${previousDisplayName}: ${eventContent.reason}`
-
-      break
+      return `has banned ${previousDisplayName}: ${eventContent.reason}`
     }
     case KnownMembership.Leave: {
-      text = handleMemberLeave(
-        user,
-        client.getUser(stateKey)?.displayName,
-        previousDisplayName,
-        previousMembership
-      )
-
-      break
+      return handleMemberLeave(stateKey, eventContent, previousMembership)
     }
-    case undefined: {
+    default: {
+      console.warn("Unknown membership type:", eventContent.membership)
+    }
+  }
+
+  return null
+}
+
+export function handleMemberLeave(
+  stateKey: string | undefined,
+  eventContent: IContent,
+  previousMembership?: string
+): string | null {
+  switch (previousMembership) {
+    case KnownMembership.Invite: {
+      const userForCanceled = eventContent.displayname ?? stateKey
+
+      // TODO: Show error when not have userForCanceled.
+      if (userForCanceled === undefined) {
+        return null
+      }
+
+      return `has canceled the invitation to ${userForCanceled}`
+    }
+    case KnownMembership.Ban: {
+      // TODO: Show error when state key is undefined.
+      if (stateKey === undefined) {
+        return null
+      }
+
+      return `has removed the ban from ${stateKey}`
+    }
+    case KnownMembership.Join: {
+      return `has left the room`
+    }
+    default: {
       return null
     }
-  }
-
-  if (text === null) {
-    // If event is not handled or the event has error.
-    return null
-  }
-
-  return {
-    kind: MessageKind.Event,
-    data: {text, timestamp, id: eventId},
   }
 }
 
 export const handleGuestAccessEvent = async (
-  user: string,
-  timestamp: number,
-  event: MatrixEvent
-): Promise<AnyMessage | null> => {
-  let text: string | null = null
-  const guestAccess = event.getContent().guest_access
-
-  switch (guestAccess) {
+  eventContent: IContent
+): Promise<string | null> => {
+  switch (eventContent.guest_access) {
     case "can_join": {
-      text = `${user} authorized anyone to join the room`
-
-      break
+      return "authorized anyone to join the room"
     }
     case "forbidden": {
-      text = `${user} has prohibited guests from joining the room`
-
-      break
+      return "has prohibited guests from joining the room"
     }
     case "restricted": {
-      text = `${user} restricted guest access to the room. Only guests with valid tokens can join.`
-
-      break
+      return "restricted guest access to the room. Only guests with valid tokens can join."
     }
     case "knock": {
-      text = `${user} enabled "knocking" for guests. Guests must request access to join.`
-
-      break
+      return "enabled `knocking` for guests. Guests must request access to join."
     }
     default: {
-      console.warn("Unknown guest access type:", guestAccess)
+      console.warn("Unknown guest access type:", eventContent.guest_access)
     }
   }
 
-  const eventId = event.event.event_id
-
-  if (text === null || eventId === undefined) {
-    return null
-  }
-
-  return {
-    kind: MessageKind.Event,
-    data: {
-      text,
-      timestamp,
-      id: eventId,
-    },
-  }
+  return null
 }
 
 export const handleJoinRulesEvent = async (
-  user: string,
-  timestamp: number,
-  event: MatrixEvent
-): Promise<AnyMessage | null> => {
-  let text: string | null = null
-
-  switch (event.getContent().join_rule) {
+  eventContent: IContent
+): Promise<string | null> => {
+  switch (eventContent.join_rule) {
     case JoinRule.Invite: {
-      text = `${user} restricted the room to guests`
-
-      break
+      return "restricted the room to guests"
     }
     case JoinRule.Public: {
-      text = `${user} made the room public to anyone who knows the link.`
-
-      break
+      return "made the room public to anyone who knows the link"
     }
     case JoinRule.Restricted: {
-      text = `${user} made the room private. Only admins can invite now.`
-
-      break
+      return "made the room private. Only admins can invite now"
     }
     default: {
-      console.warn("Unknown join rule:", event.getContent().join_rule)
+      console.warn("Unknown join rule:", eventContent.join_rule)
     }
   }
 
-  const eventId = event.event.event_id
-
-  if (text === null || eventId === undefined) {
-    return null
-  }
-
-  return {
-    kind: MessageKind.Event,
-    data: {
-      text,
-      timestamp,
-      id: eventId,
-    },
-  }
+  return null
 }
 
 export const handleRoomTopicEvent = async (
-  user: string,
-  timestamp: number,
-  event: MatrixEvent
-): Promise<AnyMessage | null> => {
-  const topic = event.getContent().topic
-  const eventId = event.event.event_id
+  eventContent: IContent
+): Promise<string | null> => {
+  const topic = eventContent.topic
 
-  if (eventId === undefined) {
-    return null
-  }
-
-  const text =
-    topic === undefined
-      ? `${user} has remove the topic of the room`
-      : `${user} has change to the topic to <<${topic}>>`
-
-  return {
-    kind: MessageKind.Event,
-    data: {
-      text,
-      timestamp,
-      id: eventId,
-    },
-  }
+  return topic === undefined
+    ? `has remove the topic of the room`
+    : `has change to the topic to <<${topic}>>`
 }
 
 export const handleHistoryVisibilityEvent = async (
-  user: string,
-  timestamp: number,
-  event: MatrixEvent
-): Promise<AnyMessage | null> => {
-  let content: string | null = null
-
-  switch (event.getContent().history_visibility) {
+  eventContent: IContent
+): Promise<string | null> => {
+  switch (eventContent.history_visibility) {
     case HistoryVisibility.Shared: {
-      content = `${user} made the future history of the room visible to all members of the room`
-
-      break
+      return "made the future history of the room visible to all members of the room."
     }
     case HistoryVisibility.Invited: {
-      content = `${user} made the room future history visible to all room members, from the moment they are invited.`
-
-      break
+      return "made the room future history visible to all room members, from the moment they are invited."
     }
     case HistoryVisibility.Joined: {
-      content = `${user} made the room future history visible to all room members, from the moment they are joined.`
-
-      break
+      return "made the room future history visible to all room members, from the moment they are joined."
     }
     case HistoryVisibility.WorldReadable: {
-      content = `${user} made the future history of the room visible to anyone people.`
-
-      break
+      return "made the future history of the room visible to anyone people."
     }
   }
 
-  const eventId = event.event.event_id
-
-  if (content === null || eventId === undefined) {
-    return null
-  }
-
-  return {
-    kind: MessageKind.Event,
-    data: {
-      text: content,
-      timestamp,
-      id: eventId,
-    },
-  }
+  return null
 }
 
 export const handleRoomCanonicalAliasEvent = async (
-  user: string,
-  timestamp: number,
-  event: MatrixEvent
-): Promise<AnyMessage | null> => {
-  const alias = event.getContent().alias
-
-  const text =
-    alias === undefined
-      ? `${user} has remove the main address for this room`
-      : `${user} set the main address for this room as ${alias}`
-
-  const eventId = event.event.event_id
-
-  if (eventId === undefined) {
-    return null
-  }
-
-  return {
-    kind: MessageKind.Event,
-    data: {
-      text,
-      timestamp,
-      id: eventId,
-    },
-  }
+  eventContent: IContent
+): Promise<string | null> => {
+  return eventContent.alias === undefined
+    ? "has remove the main address for this room"
+    : `set the main address for this room as ${eventContent.alias}`
 }
 
 export const handleRoomAvatarEvent = async (
-  user: string,
-  timestamp: number,
-  event: MatrixEvent
-): Promise<AnyMessage | null> => {
-  const eventId = event.event.event_id
-
-  if (eventId === undefined) {
-    return null
-  }
-
-  const text =
-    event.getContent().url === undefined
-      ? `${user} has remove the avatar for this room`
-      : `${user} changed the avatar of the room`
-
-  return {
-    kind: MessageKind.Event,
-    data: {
-      text,
-      timestamp,
-      id: eventId,
-    },
-  }
+  eventContent: IContent
+): Promise<string | null> => {
+  return eventContent.url === undefined
+    ? "has remove the avatar for this room"
+    : "changed the avatar of the room"
 }
 
 export const handleRoomNameEvent = async (
-  user: string,
-  timestamp: number,
-  event: MatrixEvent
-): Promise<AnyMessage | null> => {
-  const text = `${user} has changed the room name to ${event.getContent().name}`
-  const eventId = event.event.event_id
-
-  if (eventId === undefined) {
-    return null
-  }
-
-  return {
-    kind: MessageKind.Event,
-    data: {
-      text,
-      timestamp,
-      id: eventId,
-    },
-  }
+  eventContent: IContent
+): Promise<string | null> => {
+  return eventContent.name === undefined
+    ? "has changed the room name"
+    : `has changed the room name to ${eventContent.name}`
 }
 
 export const handleMessagesEvent = async (
   client: MatrixClient,
-  timestamp: number,
   event: MatrixEvent,
-  roomId: string,
-  sender: string,
-  isAdminOrModerator: boolean
+  room: Room
 ): Promise<AnyMessage | null> => {
+  const sender = event.sender
   const eventContent = event.getContent()
-  const user = client.getUser(sender)
-  const isMessageOfMyUser = client.getUserId() === sender
-
-  if (user === null) {
-    return null
-  }
-
+  const isAdminOrModerator = isCurrentUserAdminOrMod(room)
+  const isMessageOfMyUser = client.getUserId() === sender?.userId
   const eventId = event.event.event_id
-  const authorDisplayName = user.displayName ?? user.userId
 
-  if (eventId === undefined) {
+  if (sender === null || eventId === undefined) {
     return null
   }
 
   const messageBaseProperties: MessageBaseProps = {
     authorAvatarUrl: getImageUrl(
-      user.avatarUrl,
+      sender.getMxcAvatarUrl(),
       client,
       ImageSizes.MessageAndProfile
     ),
-    authorDisplayName,
-    authorDisplayNameColor: stringToColor(authorDisplayName),
+    authorDisplayName: sender.name,
+    authorDisplayNameColor: stringToColor(sender.name),
     id: eventId,
     onAuthorClick: () => {
       // TODO: Handle onAuthorClick here.
     },
     text: eventContent.body,
-    timestamp,
+    timestamp: event.localTimestamp,
+    // TODO: Handle context menu for images.
     contextMenuItems: [],
   }
 
@@ -690,7 +527,7 @@ export const handleMessagesEvent = async (
               // TODO: Handle resend message here.
             },
             onDeleteMessage() {
-              deleteMessage(client, roomId, eventId)
+              deleteMessage(client, room.roomId, eventId)
             },
           }),
         },
@@ -718,7 +555,7 @@ export const handleMessagesEvent = async (
               // TODO: Handle image saving here.
             },
             onDeleteMessage() {
-              deleteMessage(client, roomId, eventId)
+              deleteMessage(client, room.roomId, eventId)
             },
           }),
           onClickImage() {},
@@ -726,7 +563,8 @@ export const handleMessagesEvent = async (
       }
     }
     case undefined: {
-      return convertToMessageDeletedProperties(client, user, timestamp, event)
+      // TODO: Return convertToMessageDeletedProperties(client, sender, event)
+      return null
     }
     default: {
       return null
@@ -736,13 +574,11 @@ export const handleMessagesEvent = async (
 
 const convertToMessageDeletedProperties = (
   client: MatrixClient,
-  user: User,
-  timestamp: number,
+  user: RoomMember,
   event: MatrixEvent
 ): AnyMessage | null => {
   const eventId = event.event.event_id
   const deletedBy = event.getUnsigned().redacted_because?.sender
-  const authorDisplayName = user.displayName ?? user.userId
 
   if (eventId === undefined || deletedBy === undefined) {
     return null
@@ -761,20 +597,23 @@ const convertToMessageDeletedProperties = (
       ? `${deletedByUser} has delete this message`
       : `${deletedByUser} has delete this message because <<${reason}>>`
 
-  return {
-    kind: MessageKind.Text,
-    data: {
-      authorAvatarUrl: getImageUrl(user.avatarUrl, client),
-      authorDisplayName,
-      authorDisplayNameColor: stringToColor(authorDisplayName),
-      onAuthorClick: () => {},
-      text,
-      timestamp,
-      id: eventId,
-      contextMenuItems: buildMessageMenuItems({
-        canDeleteMessage: false,
-        isMessageError: true,
-      }),
-    },
-  }
+  // TODO: Delete this return
+  return null
+
+  // return {
+  //   kind: MessageKind.Text,
+  //   data: {
+  //     authorAvatarUrl: getImageUrl(user.avatarUrl, client),
+  //     authorDisplayName,
+  //     authorDisplayNameColor: stringToColor(authorDisplayName),
+  //     onAuthorClick: () => {},
+  //     text,
+  //     timestamp,
+  //     id: eventId,
+  //     contextMenuItems: buildMessageMenuItems({
+  //       canDeleteMessage: false,
+  //       isMessageError: true,
+  //     }),
+  //   },
+  // }
 }
