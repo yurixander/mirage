@@ -6,7 +6,6 @@ import {
   JoinRule,
   type MatrixEvent,
   MsgType,
-  type RoomMember,
   type IContent,
 } from "matrix-js-sdk"
 import {
@@ -224,7 +223,7 @@ export const handleEvent = async (
   room: Room
 ): Promise<AnyMessage | null> => {
   if (event.getType() === EventType.RoomMessage) {
-    return await handleMessagesEvent(event, room)
+    return await handleMessages(event, room)
   }
 
   const eventMessageData = await handleEventMessage(event)
@@ -572,7 +571,7 @@ export const handleRoomNameEvent = async (
   }
 }
 
-export const handleMessagesEvent = async (
+export const handleMessages = async (
   event: MatrixEvent,
   room: Room
 ): Promise<AnyMessage | null> => {
@@ -656,8 +655,13 @@ export const handleMessagesEvent = async (
       }
     }
     case undefined: {
-      // TODO: Return convertToMessageDeletedProperties(client, sender, event)
-      return null
+      const unsigned = event.getUnsigned()
+
+      if (unsigned.redacted_because?.type !== EventType.RoomRedaction) {
+        return null
+      }
+
+      return convertToMessageDeleted(room, event)
     }
     default: {
       return null
@@ -666,23 +670,19 @@ export const handleMessagesEvent = async (
 }
 
 const convertToMessageDeleted = (
-  client: MatrixClient,
-  user: RoomMember,
+  room: Room,
   event: MatrixEvent
 ): AnyMessage | null => {
   const eventId = event.event.event_id
   const deletedBy = event.getUnsigned().redacted_because?.sender
+  const sender = event.sender
 
-  if (eventId === undefined || deletedBy === undefined) {
+  if (eventId === undefined || deletedBy === undefined || sender === null) {
     return null
   }
 
-  const deletedByUser = client.getUser(deletedBy)?.displayName
-
-  if (deletedByUser === undefined) {
-    return null
-  }
-
+  const member = room.getMember(deletedBy)
+  const deletedByUser = member?.name ?? deletedBy
   const reason = event.getUnsigned().redacted_because?.content.reason
 
   const text =
@@ -690,23 +690,20 @@ const convertToMessageDeleted = (
       ? `${deletedByUser} has delete this message`
       : `${deletedByUser} has delete this message because <<${reason}>>`
 
-  // TODO: Delete this return
-  return null
-
-  // return {
-  //   kind: MessageKind.Text,
-  //   data: {
-  //     authorAvatarUrl: getImageUrl(user.avatarUrl, client),
-  //     authorDisplayName,
-  //     authorDisplayNameColor: stringToColor(authorDisplayName),
-  //     onAuthorClick: () => {},
-  //     text,
-  //     timestamp,
-  //     id: eventId,
-  //     contextMenuItems: buildMessageMenuItems({
-  //       canDeleteMessage: false,
-  //       isMessageError: true,
-  //     }),
-  //   },
-  // }
+  return {
+    kind: MessageKind.Text,
+    data: {
+      authorAvatarUrl: getImageUrl(sender.getMxcAvatarUrl(), room.client),
+      authorDisplayName: sender.name,
+      authorDisplayNameColor: stringToColor(sender.name),
+      onAuthorClick: () => {},
+      text,
+      timestamp: event.localTimestamp,
+      id: eventId,
+      contextMenuItems: buildMessageMenuItems({
+        canDeleteMessage: false,
+        isMessageError: true,
+      }),
+    },
+  }
 }
