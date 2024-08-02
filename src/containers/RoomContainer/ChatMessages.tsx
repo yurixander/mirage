@@ -34,7 +34,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 
   const messageElements = useMemo(
     () =>
-      messages.map(message =>
+      messages.map((message, index) =>
         message.kind === MessageKind.Text ? (
           <TextMessage key={message.data.id} {...message.data} />
         ) : message.kind === MessageKind.Image ? (
@@ -56,6 +56,8 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
               // TODO: Handle show member here.
             }}
           />
+        ) : index === messages.length - 1 ? (
+          <></>
         ) : (
           <UnreadIndicator key="unread-indicator" {...message.data} />
         )
