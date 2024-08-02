@@ -38,7 +38,7 @@ const EventMessage: FC<EventMessageProps> = ({
   return (
     <div className="flex items-center gap-3">
       <div className="flex w-10 items-center justify-end">
-        <Icon className="text-neutral-200" />
+        <Icon className="text-neutral-300" />
       </div>
 
       <Typography className="inline-flex max-w-text select-text gap-1 whitespace-pre-line break-words italic">
@@ -58,7 +58,9 @@ const EventMessage: FC<EventMessageProps> = ({
               text: "Find user",
             },
           ]}>
-          <Typography style={{color: stringToColor(sender.userId)}}>
+          <Typography
+            className="font-bold"
+            style={{color: stringToColor(sender.displayName)}}>
             {sender.displayName}
           </Typography>
         </ContextMenu>
