@@ -11,12 +11,6 @@ export type EventSender = {
   userId: string
 }
 
-export type EventMessagePropsCommon = {
-  eventId: string
-  sender: EventSender
-  timestamp: number
-}
-
 export type EventMessageData = {
   eventId: string
   sender: EventSender
@@ -47,9 +41,11 @@ const EventMessage: FC<EventMessageProps> = ({
         <Icon className="text-neutral-200" />
       </div>
 
-      <Typography className="flex max-w-messageMaxWidth select-text items-center gap-1 whitespace-pre-line break-words italic">
+      <Typography className="inline-flex max-w-text select-text gap-1 whitespace-pre-line break-words italic">
         <ContextMenu
+          className="shrink-0"
           id={`context-menu-event-${eventId}`}
+          actionType={ClickActions.LeftClick}
           elements={[
             {
               icon: IoPeopleCircle,
@@ -61,8 +57,7 @@ const EventMessage: FC<EventMessageProps> = ({
               onClick: onFindUser,
               text: "Find user",
             },
-          ]}
-          actionType={ClickActions.LeftClick}>
+          ]}>
           <Typography style={{color: stringToColor(sender.userId)}}>
             {sender.displayName}
           </Typography>

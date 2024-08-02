@@ -33,7 +33,16 @@ import {
 } from "@/containers/RoomContainer/hooks/useRoomChat"
 import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
 import {RoomType} from "@/components/Room"
-import {type EventMessagePropsCommon} from "@/components/EventMessage"
+import {type IconType} from "react-icons"
+import {
+  IoAtCircle,
+  IoLockClosed,
+  IoPencil,
+  IoPeopleCircle,
+  IoPersonCircle,
+  IoReceipt,
+} from "react-icons/io5"
+import {IoIosPaper, IoIosText} from "react-icons/io"
 
 export enum ImageSizes {
   Server = 47,
@@ -119,6 +128,25 @@ export async function getRoomMembers(room: Room): Promise<RosterUserProps[]> {
   return membersProperty
 }
 
+export function getLastReadEventIdFromRoom(
+  room: Room,
+  client: MatrixClient
+): string | null {
+  const userId = client.getUserId()
+
+  if (userId === null) {
+    return null
+  }
+
+  const eventReadUpTo = room.getEventReadUpTo(userId)
+
+  if (eventReadUpTo === null) {
+    return null
+  }
+
+  return room.findEventById(eventReadUpTo)?.getId() ?? null
+}
+
 // #region Direct rooms
 
 export function getDirectRoomsIds(client: MatrixClient): string[] {
@@ -170,7 +198,7 @@ export const handleRoomEvents = async (
   for (let index = 0; index < events.length; index++) {
     const event = events[index]
 
-    const messageProperties = await handleEvent(client, event, roomHistory)
+    const messageProperties = await handleEvent(event, roomHistory)
 
     if (messageProperties === null) {
       continue
@@ -192,46 +220,47 @@ export const handleRoomEvents = async (
 }
 
 export const handleEvent = async (
-  client: MatrixClient,
   event: MatrixEvent,
   room: Room
 ): Promise<AnyMessage | null> => {
   if (event.getType() === EventType.RoomMessage) {
-    return await handleMessagesEvent(client, event, room)
+    return await handleMessagesEvent(event, room)
   }
 
-  const eventMessageBody = await handleEventMessage(event)
+  const eventMessageData = await handleEventMessage(event)
 
   // TODO: Handle errors instead of throwing null.
   if (
     event.sender === null ||
     event.event.event_id === undefined ||
-    eventMessageBody === null
+    eventMessageData === null
   ) {
     return null
-  }
-
-  const commonProps: EventMessagePropsCommon = {
-    eventId: event.event.event_id,
-    sender: {
-      displayName: event.sender.name,
-      userId: event.sender.userId,
-    },
-    timestamp: event.localTimestamp,
   }
 
   return {
     kind: MessageKind.Event,
     data: {
-      ...commonProps,
-      body: eventMessageBody,
+      eventId: event.event.event_id,
+      timestamp: event.localTimestamp,
+      body: eventMessageData.body,
+      icon: eventMessageData.icon ?? undefined,
+      sender: {
+        displayName: event.sender.name,
+        userId: event.sender.userId,
+      },
     },
   }
 }
 
+type EventMessagePartial = {
+  body: string
+  icon: IconType | null
+}
+
 export async function handleEventMessage(
   event: MatrixEvent
-): Promise<string | null> {
+): Promise<EventMessagePartial | null> {
   const eventContent = event.getContent()
 
   switch (event.getType()) {
@@ -269,30 +298,11 @@ export async function handleEventMessage(
   }
 }
 
-export function getLastReadEventIdFromRoom(
-  room: Room,
-  client: MatrixClient
-): string | null {
-  const userId = client.getUserId()
-
-  if (userId === null) {
-    return null
-  }
-
-  const eventReadUpTo = room.getEventReadUpTo(userId)
-
-  if (eventReadUpTo === null) {
-    return null
-  }
-
-  return room.findEventById(eventReadUpTo)?.getId() ?? null
-}
-
 export const handleMemberEvent = (
   stateKey: string | undefined,
   eventContent: IContent,
   previousContent: IContent
-): string | null => {
+): EventMessagePartial | null => {
   const displayName = eventContent.displayname
   const previousMembership = previousContent.membership
   const previousDisplayName = previousContent.displayname
@@ -303,39 +313,74 @@ export const handleMemberEvent = (
         previousMembership === KnownMembership.Invite ||
         previousMembership !== KnownMembership.Join
       ) {
-        return "has joined to the room"
+        return {
+          body: "has joined to the room",
+          icon: IoPeopleCircle,
+        }
       } else if (
         previousDisplayName !== undefined &&
         displayName !== previousDisplayName
       ) {
-        return `has change the name to ${displayName}`
+        return {
+          body: `has change the name to ${displayName}`,
+          icon: IoPeopleCircle,
+        }
       } else if (
         eventContent.avatar_url !== undefined &&
         previousContent?.avatar_url === undefined
       ) {
-        return "has put a profile photo"
+        return {
+          body: "has put a profile photo",
+          icon: IoPeopleCircle,
+        }
       } else if (
         eventContent.avatar_url !== undefined &&
         eventContent.avatar_url !== previousContent?.avatar_url
       ) {
-        return "has change to the profile photo"
+        return {
+          body: "has change to the profile photo",
+          icon: IoPeopleCircle,
+        }
       } else if (
         eventContent.avatar_url === undefined &&
         previousContent?.avatar_url !== undefined
       ) {
-        return "has remove the profile photo"
+        return {
+          body: "has remove the profile photo",
+          icon: IoPeopleCircle,
+        }
       }
 
       break
     }
     case KnownMembership.Invite: {
-      return `invited ${displayName}`
+      return {
+        body: `invited ${displayName}`,
+        icon: IoPeopleCircle,
+      }
     }
     case KnownMembership.Ban: {
-      return `has banned ${previousDisplayName}: ${eventContent.reason}`
+      return {
+        body: `has banned ${previousDisplayName}: ${eventContent.reason}`,
+        icon: IoPeopleCircle,
+      }
     }
     case KnownMembership.Leave: {
-      return handleMemberLeave(stateKey, eventContent, previousMembership)
+      const memberLeaveBody = handleMemberLeave(
+        stateKey,
+        eventContent,
+        previousMembership
+      )
+
+      // TODO: Handle error here instead throwing null.
+      if (memberLeaveBody === null) {
+        return null
+      }
+
+      return {
+        body: memberLeaveBody,
+        icon: IoPeopleCircle,
+      }
     }
     default: {
       console.warn("Unknown membership type:", eventContent.membership)
@@ -380,19 +425,31 @@ export function handleMemberLeave(
 
 export const handleGuestAccessEvent = async (
   eventContent: IContent
-): Promise<string | null> => {
+): Promise<EventMessagePartial | null> => {
   switch (eventContent.guest_access) {
     case "can_join": {
-      return "authorized anyone to join the room"
+      return {
+        body: "authorized anyone to join the room",
+        icon: IoLockClosed,
+      }
     }
     case "forbidden": {
-      return "has prohibited guests from joining the room"
+      return {
+        body: "has prohibited guests from joining the room",
+        icon: IoLockClosed,
+      }
     }
     case "restricted": {
-      return "restricted guest access to the room. Only guests with valid tokens can join."
+      return {
+        body: "restricted guest access to the room. Only guests with valid tokens can join.",
+        icon: IoLockClosed,
+      }
     }
     case "knock": {
-      return "enabled `knocking` for guests. Guests must request access to join."
+      return {
+        body: "enabled `knocking` for guests. Guests must request access to join.",
+        icon: IoLockClosed,
+      }
     }
     default: {
       console.warn("Unknown guest access type:", eventContent.guest_access)
@@ -404,16 +461,25 @@ export const handleGuestAccessEvent = async (
 
 export const handleJoinRulesEvent = async (
   eventContent: IContent
-): Promise<string | null> => {
+): Promise<EventMessagePartial | null> => {
   switch (eventContent.join_rule) {
     case JoinRule.Invite: {
-      return "restricted the room to guests"
+      return {
+        body: "restricted the room to guests",
+        icon: IoIosPaper,
+      }
     }
     case JoinRule.Public: {
-      return "made the room public to anyone who knows the link"
+      return {
+        body: "made the room public to anyone who knows the link",
+        icon: IoIosPaper,
+      }
     }
     case JoinRule.Restricted: {
-      return "made the room private. Only admins can invite now"
+      return {
+        body: "made the room private. Only admins can invite now",
+        icon: IoIosPaper,
+      }
     }
     default: {
       console.warn("Unknown join rule:", eventContent.join_rule)
@@ -425,29 +491,45 @@ export const handleJoinRulesEvent = async (
 
 export const handleRoomTopicEvent = async (
   eventContent: IContent
-): Promise<string | null> => {
+): Promise<EventMessagePartial | null> => {
   const topic = eventContent.topic
 
-  return topic === undefined
-    ? `has remove the topic of the room`
-    : `has change to the topic to <<${topic}>>`
+  return {
+    icon: IoIosText,
+    body:
+      topic === undefined
+        ? `has remove the topic of the room`
+        : `has change to the topic to <<${topic}>>`,
+  }
 }
 
 export const handleHistoryVisibilityEvent = async (
   eventContent: IContent
-): Promise<string | null> => {
+): Promise<EventMessagePartial | null> => {
   switch (eventContent.history_visibility) {
     case HistoryVisibility.Shared: {
-      return "made the future history of the room visible to all members of the room."
+      return {
+        body: "made the future history of the room visible to all members of the room.",
+        icon: IoReceipt,
+      }
     }
     case HistoryVisibility.Invited: {
-      return "made the room future history visible to all room members, from the moment they are invited."
+      return {
+        body: "made the room future history visible to all room members, from the moment they are invited.",
+        icon: IoReceipt,
+      }
     }
     case HistoryVisibility.Joined: {
-      return "made the room future history visible to all room members, from the moment they are joined."
+      return {
+        body: "made the room future history visible to all room members, from the moment they are joined.",
+        icon: IoReceipt,
+      }
     }
     case HistoryVisibility.WorldReadable: {
-      return "made the future history of the room visible to anyone people."
+      return {
+        body: "made the future history of the room visible to anyone people.",
+        icon: IoReceipt,
+      }
     }
   }
 
@@ -456,37 +538,48 @@ export const handleHistoryVisibilityEvent = async (
 
 export const handleRoomCanonicalAliasEvent = async (
   eventContent: IContent
-): Promise<string | null> => {
-  return eventContent.alias === undefined
-    ? "has remove the main address for this room"
-    : `set the main address for this room as ${eventContent.alias}`
+): Promise<EventMessagePartial | null> => {
+  return {
+    icon: IoAtCircle,
+    body:
+      eventContent.alias === undefined
+        ? "has remove the main address for this room"
+        : `set the main address for this room as ${eventContent.alias}`,
+  }
 }
 
 export const handleRoomAvatarEvent = async (
   eventContent: IContent
-): Promise<string | null> => {
-  return eventContent.url === undefined
-    ? "has remove the avatar for this room"
-    : "changed the avatar of the room"
+): Promise<EventMessagePartial | null> => {
+  return {
+    icon: IoPersonCircle,
+    body:
+      eventContent.url === undefined
+        ? "has remove the avatar for this room"
+        : "changed the avatar of the room",
+  }
 }
 
 export const handleRoomNameEvent = async (
   eventContent: IContent
-): Promise<string | null> => {
-  return eventContent.name === undefined
-    ? "has changed the room name"
-    : `has changed the room name to ${eventContent.name}`
+): Promise<EventMessagePartial | null> => {
+  return {
+    icon: IoPencil,
+    body:
+      eventContent.name === undefined
+        ? "has changed the room name"
+        : `has changed the room name to ${eventContent.name}`,
+  }
 }
 
 export const handleMessagesEvent = async (
-  client: MatrixClient,
   event: MatrixEvent,
   room: Room
 ): Promise<AnyMessage | null> => {
   const sender = event.sender
   const eventContent = event.getContent()
   const isAdminOrModerator = isCurrentUserAdminOrMod(room)
-  const isMessageOfMyUser = client.getUserId() === sender?.userId
+  const isMessageOfMyUser = room.myUserId === sender?.userId
   const eventId = event.event.event_id
 
   if (sender === null || eventId === undefined) {
@@ -496,7 +589,7 @@ export const handleMessagesEvent = async (
   const messageBaseProperties: MessageBaseProps = {
     authorAvatarUrl: getImageUrl(
       sender.getMxcAvatarUrl(),
-      client,
+      room.client,
       ImageSizes.MessageAndProfile
     ),
     authorDisplayName: sender.name,
@@ -527,7 +620,7 @@ export const handleMessagesEvent = async (
               // TODO: Handle resend message here.
             },
             onDeleteMessage() {
-              deleteMessage(client, room.roomId, eventId)
+              deleteMessage(room.client, room.roomId, eventId)
             },
           }),
         },
@@ -540,7 +633,7 @@ export const handleMessagesEvent = async (
           ...messageBaseProperties,
           text: "",
           // TODO: Change use `as` for cast and null handling.
-          imageUrl: getImageUrl(eventContent.url as string, client),
+          imageUrl: getImageUrl(eventContent.url as string, room.client),
           contextMenuItems: buildMessageMenuItems({
             canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
             isMessageError: false,
@@ -555,7 +648,7 @@ export const handleMessagesEvent = async (
               // TODO: Handle image saving here.
             },
             onDeleteMessage() {
-              deleteMessage(client, room.roomId, eventId)
+              deleteMessage(room.client, room.roomId, eventId)
             },
           }),
           onClickImage() {},
@@ -572,7 +665,7 @@ export const handleMessagesEvent = async (
   }
 }
 
-const convertToMessageDeletedProperties = (
+const convertToMessageDeleted = (
   client: MatrixClient,
   user: RoomMember,
   event: MatrixEvent
