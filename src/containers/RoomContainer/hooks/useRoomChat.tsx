@@ -1,6 +1,6 @@
 import {type EventMessageData} from "@/components/EventMessage"
-import {type ImageMessageProps} from "@/components/ImageMessage"
-import {type MessageBaseProps} from "@/components/MessageContainer"
+import {type ImageMessageData} from "@/components/ImageMessage"
+import {type TextMessageData} from "@/components/TextMessage"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
@@ -28,9 +28,9 @@ export enum MessagesState {
 }
 
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
-  ? MessageBaseProps
+  ? TextMessageData
   : Kind extends MessageKind.Image
-    ? ImageMessageProps
+    ? ImageMessageData
     : Kind extends MessageKind.Event
       ? EventMessageData
       : UnreadIndicatorProps
@@ -125,7 +125,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       return
     }
 
-    void handleEvent(room.client, event, room).then(messageOrEvent => {
+    void handleEvent(event, room).then(messageOrEvent => {
       if (messageOrEvent === null) {
         return
       }

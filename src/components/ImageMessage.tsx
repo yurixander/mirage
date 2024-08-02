@@ -1,11 +1,18 @@
 import {type FC} from "react"
-import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
+import MessageContainer, {
+  type MessageBaseData,
+  type MessageBaseProps,
+} from "./MessageContainer"
 import {IoIosAlert} from "react-icons/io"
 import ContextMenu from "./ContextMenu"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
   onClickImage: () => void
+}
+
+export interface ImageMessageData extends MessageBaseData {
+  imageUrl?: string
 }
 
 const ImageMessage: FC<ImageMessageProps> = ({
@@ -15,10 +22,9 @@ const ImageMessage: FC<ImageMessageProps> = ({
   imageUrl,
   onAuthorClick,
   onClickImage,
-  text,
   timestamp,
   contextMenuItems,
-  id,
+  messageId,
 }) => {
   const content = (
     <div className="flex flex-col pt-1">
@@ -33,14 +39,14 @@ const ImageMessage: FC<ImageMessageProps> = ({
       ) : (
         // TODO: Handle image size here. Preferably, make the component accept 'imageDimensions' as props.
         // TODO: Add keyboard event listener for accessibility.
-        <ContextMenu id={`image-menu-${id}`} elements={contextMenuItems}>
+        <ContextMenu id={`image-menu-${messageId}`} elements={contextMenuItems}>
           <button
             className="max-h-52 max-w-44 appearance-none overflow-hidden rounded-xl"
             onClick={onClickImage}>
             <img
               className="cursor-pointer object-contain"
               src={imageUrl}
-              alt={text}
+              alt={`Message by ${authorDisplayName}`}
             />
           </button>
         </ContextMenu>

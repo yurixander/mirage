@@ -10,7 +10,6 @@ import {
 } from "matrix-js-sdk"
 import {
   assert,
-  deleteMessage,
   emojiRandom,
   getImageUrl,
   normalizeName,
@@ -24,8 +23,6 @@ import {
   UserPowerLevel,
 } from "./members"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import {type MessageBaseProps} from "@/components/MessageContainer"
-import {buildMessageMenuItems} from "./menu"
 import {
   type AnyMessage,
   MessageKind,
@@ -42,6 +39,7 @@ import {
   IoReceipt,
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
+import {type MessageBaseData} from "@/components/MessageContainer"
 
 export enum ImageSizes {
   Server = 47,
@@ -184,7 +182,6 @@ export function getPartnerUserIdFromRoomDirect(room: Room): string {
 }
 
 // #region Events
-
 export const handleRoomEvents = async (
   activeRoom: Room
 ): Promise<AnyMessage[]> => {
@@ -585,22 +582,17 @@ export const handleMessages = async (
     return null
   }
 
-  const messageBaseProperties: MessageBaseProps = {
+  const messageBaseProperties: MessageBaseData = {
+    authorDisplayName: sender.name,
+    authorDisplayNameColor: stringToColor(sender.name),
+    timestamp: event.localTimestamp,
+    messageId: eventId,
+    canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
     authorAvatarUrl: getImageUrl(
       sender.getMxcAvatarUrl(),
       room.client,
       ImageSizes.MessageAndProfile
     ),
-    authorDisplayName: sender.name,
-    authorDisplayNameColor: stringToColor(sender.name),
-    id: eventId,
-    onAuthorClick: () => {
-      // TODO: Handle onAuthorClick here.
-    },
-    text: eventContent.body,
-    timestamp: event.localTimestamp,
-    // TODO: Handle context menu for images.
-    contextMenuItems: [],
   }
 
   switch (eventContent.msgtype) {
@@ -609,48 +601,22 @@ export const handleMessages = async (
         kind: MessageKind.Text,
         data: {
           ...messageBaseProperties,
-          contextMenuItems: buildMessageMenuItems({
-            canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
-            isMessageError: false,
-            onReplyMessage() {
-              // TODO: Handle reply
-            },
-            onResendMessage() {
-              // TODO: Handle resend message here.
-            },
-            onDeleteMessage() {
-              deleteMessage(room.client, room.roomId, eventId)
-            },
-          }),
+          text: eventContent.body,
         },
       }
     }
     case MsgType.Image: {
+      if (typeof eventContent.url !== "string") {
+        console.warn("Image url should be valid,", eventContent.url)
+
+        return null
+      }
+
       return {
         kind: MessageKind.Image,
         data: {
           ...messageBaseProperties,
-          text: "",
-          // TODO: Change use `as` for cast and null handling.
-          imageUrl: getImageUrl(eventContent.url as string, room.client),
-          contextMenuItems: buildMessageMenuItems({
-            canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
-            isMessageError: false,
-            isSaveable: true,
-            onReplyMessage() {
-              // TODO: Handle reply
-            },
-            onResendMessage() {
-              // TODO: Handle resend message here.
-            },
-            onSaveContent() {
-              // TODO: Handle image saving here.
-            },
-            onDeleteMessage() {
-              deleteMessage(room.client, room.roomId, eventId)
-            },
-          }),
-          onClickImage() {},
+          imageUrl: getImageUrl(eventContent.url, room.client),
         },
       }
     }
@@ -696,14 +662,10 @@ const convertToMessageDeleted = (
       authorAvatarUrl: getImageUrl(sender.getMxcAvatarUrl(), room.client),
       authorDisplayName: sender.name,
       authorDisplayNameColor: stringToColor(sender.name),
-      onAuthorClick: () => {},
       text,
       timestamp: event.localTimestamp,
-      id: eventId,
-      contextMenuItems: buildMessageMenuItems({
-        canDeleteMessage: false,
-        isMessageError: true,
-      }),
+      messageId: eventId,
+      isDeleted: true,
     },
   }
 }
