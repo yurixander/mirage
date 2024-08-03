@@ -61,11 +61,9 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <ImageMessage
             key={message.data.messageId}
             {...message.data}
+            onClickImage={setImagePrevUrl}
             onAuthorClick={() => {
               throw new Error("Function not implemented.")
-            }}
-            onClickImage={() => {
-              setImagePrevUrl(message.data.imageUrl)
             }}
             contextMenuItems={buildMessageMenuItems({
               canDeleteMessage: message.data.canDeleteMessage === true,

@@ -15,7 +15,7 @@ import {
   normalizeName,
   stringToColor,
 } from "./util"
-import {type RosterUserProps} from "@/containers/Roster/RosterUser"
+import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {
   getRoomAdminsAndModerators,
   getUserLastPresence,
@@ -59,6 +59,7 @@ export async function getAllJoinedRooms(
     for (const joinedRoomId of joinedRooms.joined_rooms) {
       const joinedRoom = client.getRoom(joinedRoomId)
 
+      // TODO: Handle errors instead continue.
       if (joinedRoom === null) {
         continue
       }
@@ -79,44 +80,40 @@ export async function getAllJoinedRooms(
   return currentJoinedRooms
 }
 
-export async function getRoomMembers(room: Room): Promise<RosterUserProps[]> {
+export async function getRoomMembers(room: Room): Promise<RosterUserData[]> {
   const members = await room.client.getJoinedRoomMembers(room.roomId)
   const adminsOrModerators = await getRoomAdminsAndModerators(room)
   const joinedMembers = members.joined
-  const membersProperty: RosterUserProps[] = adminsOrModerators
+  const membersProperty: RosterUserData[] = adminsOrModerators
 
   let memberCount = 0
 
-  for (const userId in joinedMembers) {
+  for (const joinedMemberId in joinedMembers) {
     if (memberCount >= 30) {
       break
     }
 
-    const member = joinedMembers[userId]
+    const member = joinedMembers[joinedMemberId]
 
     const isAdminOrModerator = adminsOrModerators.some(
-      adminOrModerator => adminOrModerator.userId === userId
+      adminOrModerator => adminOrModerator.userId === joinedMemberId
     )
 
     if (member === undefined || isAdminOrModerator) {
       continue
     }
 
-    const lastPresenceAge =
-      (await getUserLastPresence(room, userId)) ?? undefined
-
-    // TODO: Use actual props instead of dummy data.
     membersProperty.push({
-      displayName: normalizeName(member.display_name ?? userId),
-      lastPresenceAge,
+      displayName: normalizeName(member.display_name),
+      powerLevel: UserPowerLevel.Member,
+      userId: joinedMemberId,
+      lastPresenceAge:
+        (await getUserLastPresence(room, joinedMemberId)) ?? undefined,
       avatarUrl: getImageUrl(
         member.avatar_url,
         room.client,
         ImageSizes.MessageAndProfile
       ),
-      powerLevel: UserPowerLevel.Member,
-      onClick: () => {},
-      userId,
     })
 
     memberCount += 1
@@ -145,7 +142,6 @@ export function getLastReadEventIdFromRoom(
 }
 
 // #region Direct rooms
-
 export function getDirectRoomsIds(client: MatrixClient): string[] {
   const directRooms = client.getAccountData(EventType.Direct)
   const content = directRooms?.event.content

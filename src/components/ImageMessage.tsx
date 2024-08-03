@@ -8,7 +8,7 @@ import ContextMenu from "./ContextMenu"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
-  onClickImage: () => void
+  onClickImage: (imgUrl: string) => void
 }
 
 export interface ImageMessageData extends MessageBaseData {
@@ -28,7 +28,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
 }) => {
   const content = (
     <div className="flex flex-col pt-1">
-      {imageUrl === null ? (
+      {imageUrl === undefined ? (
         <div className="flex flex-row items-center gap-1">
           <IoIosAlert className="text-red-500" />
 
@@ -42,7 +42,9 @@ const ImageMessage: FC<ImageMessageProps> = ({
         <ContextMenu id={`image-menu-${messageId}`} elements={contextMenuItems}>
           <button
             className="max-h-52 max-w-44 appearance-none overflow-hidden rounded-xl"
-            onClick={onClickImage}>
+            onClick={() => {
+              onClickImage(imageUrl)
+            }}>
             <img
               className="cursor-pointer object-contain"
               src={imageUrl}
