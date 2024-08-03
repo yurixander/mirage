@@ -51,17 +51,13 @@ export async function getRoomsFromSpace(
         continue
       }
 
-      if (room.isSpaceRoom()) {
-        continue
-      }
-
       roomsHierarchy.push({
         roomId: room.roomId,
         roomName: room.name,
+        emoji: emojiRandom(),
         type: directRoomIds.includes(room.roomId)
           ? RoomType.Direct
           : RoomType.Group,
-        emoji: emojiRandom(),
       })
     }
   } catch (error) {
