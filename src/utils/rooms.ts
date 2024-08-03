@@ -158,12 +158,14 @@ export function getPartnerUserIdFromRoomDirect(room: Room): string {
   return userId
 }
 
+const SCROLLBACK_MAX = 30
+
 // #region Events
 export const handleRoomEvents = async (
   activeRoom: Room
 ): Promise<AnyMessage[]> => {
   const client = activeRoom.client
-  const roomHistory = await client.scrollback(activeRoom, 30)
+  const roomHistory = await client.scrollback(activeRoom, SCROLLBACK_MAX)
   const events = roomHistory.getLiveTimeline().getEvents()
   const lastReadEventId = activeRoom.getEventReadUpTo(activeRoom.myUserId)
   const allMessageProperties: AnyMessage[] = []
@@ -195,7 +197,7 @@ export const handleEvent = async (
   room: Room
 ): Promise<AnyMessage | null> => {
   if (event.getType() === EventType.RoomMessage) {
-    return await handleMessages(event, room)
+    return await handleMessage(event, room)
   }
 
   const eventMessageData = await handleEventMessage(event)
@@ -543,7 +545,7 @@ export const handleRoomNameEvent = async (
   }
 }
 
-export const handleMessages = async (
+export const handleMessage = async (
   event: MatrixEvent,
   room: Room
 ): Promise<AnyMessage | null> => {
