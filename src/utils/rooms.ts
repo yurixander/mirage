@@ -127,27 +127,7 @@ export async function getRoomMembers(room: Room): Promise<RosterUserProps[]> {
   return membersProperty
 }
 
-export function getLastReadEventIdFromRoom(
-  room: Room,
-  client: MatrixClient
-): string | null {
-  const userId = client.getUserId()
-
-  if (userId === null) {
-    return null
-  }
-
-  const eventReadUpTo = room.getEventReadUpTo(userId)
-
-  if (eventReadUpTo === null) {
-    return null
-  }
-
-  return room.findEventById(eventReadUpTo)?.getId() ?? null
-}
-
 // #region Direct rooms
-
 export function getDirectRoomsIds(client: MatrixClient): string[] {
   const directRooms = client.getAccountData(EventType.Direct)
   const content = directRooms?.event.content
@@ -184,19 +164,16 @@ export function getPartnerUserIdFromRoomDirect(room: Room): string {
 }
 
 // #region Events
-
 export const handleRoomEvents = async (
   activeRoom: Room
 ): Promise<AnyMessage[]> => {
   const client = activeRoom.client
   const roomHistory = await client.scrollback(activeRoom, 30)
   const events = roomHistory.getLiveTimeline().getEvents()
-  const lastReadEventId = getLastReadEventIdFromRoom(activeRoom, client)
+  const lastReadEventId = activeRoom.getEventReadUpTo(activeRoom.myUserId)
   const allMessageProperties: AnyMessage[] = []
 
-  for (let index = 0; index < events.length; index++) {
-    const event = events[index]
-
+  for (const event of events) {
     const messageProperties = await handleEvent(event, roomHistory)
 
     if (messageProperties === null) {
@@ -205,7 +182,7 @@ export const handleRoomEvents = async (
 
     allMessageProperties.push(messageProperties)
 
-    if (lastReadEventId === event.getId() && index !== events.length - 1) {
+    if (lastReadEventId === event.event.event_id) {
       allMessageProperties.push({
         kind: MessageKind.Unread,
         data: {lastReadEventId},
