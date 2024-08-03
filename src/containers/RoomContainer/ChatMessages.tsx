@@ -56,10 +56,10 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
               // TODO: Handle show member here.
             }}
           />
-        ) : index === messages.length - 1 ? (
-          <></>
         ) : (
-          <UnreadIndicator key="unread-indicator" {...message.data} />
+          index !== messages.length - 1 && (
+            <UnreadIndicator key="unread-indicator" {...message.data} />
+          )
         )
       ),
     [messages]
