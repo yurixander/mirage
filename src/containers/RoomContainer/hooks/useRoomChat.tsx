@@ -1,6 +1,6 @@
-import {type EventMessageProps} from "@/components/EventMessage"
-import {type ImageMessageProps} from "@/components/ImageMessage"
-import {type MessageBaseProps} from "@/components/MessageContainer"
+import {type EventMessageData} from "@/components/EventMessage"
+import {type ImageMessageData} from "@/components/ImageMessage"
+import {type TextMessageData} from "@/components/TextMessage"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
@@ -8,7 +8,6 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
-import {isUserRoomAdminOrMod} from "@/utils/members"
 import {handleEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl} from "@/utils/util"
 import {type Room, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
@@ -29,11 +28,11 @@ export enum MessagesState {
 }
 
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
-  ? MessageBaseProps
+  ? TextMessageData
   : Kind extends MessageKind.Image
-    ? ImageMessageProps
+    ? ImageMessageData
     : Kind extends MessageKind.Event
-      ? EventMessageProps
+      ? EventMessageData
       : UnreadIndicatorProps
 
 export type Message<Kind extends MessageKind> = {
@@ -126,19 +125,14 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       return
     }
 
-    // TODO: Optimize this with changes from https://github.com/yurixander/mirage/pull/57
-    const isAdminOrModerator = isUserRoomAdminOrMod(room)
-
-    void handleEvent(room.client, event, room.roomId, isAdminOrModerator).then(
-      messageOrEvent => {
-        if (messageOrEvent === null) {
-          return
-        }
-
-        setMessages(messages => [...messages, messageOrEvent])
-        void room.client.sendReadReceipt(event)
+    void handleEvent(event, room).then(messageOrEvent => {
+      if (messageOrEvent === null) {
+        return
       }
-    )
+
+      setMessages(messages => [...messages, messageOrEvent])
+      void room.client.sendReadReceipt(event)
+    })
   })
 
   // When someone deletes a message.
