@@ -10,6 +10,7 @@ import {twMerge} from "tailwind-merge"
 import {type AnyMessage, MessageKind, MessagesState} from "./hooks/useRoomChat"
 import {createPortal} from "react-dom"
 import ImageModal from "./ImageModal"
+import {buildMessageMenuItems} from "@/utils/menu"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -36,14 +37,51 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     () =>
       messages.map((message, index) =>
         message.kind === MessageKind.Text ? (
-          <TextMessage key={message.data.id} {...message.data} />
+          <TextMessage
+            key={message.data.messageId}
+            {...message.data}
+            contextMenuItems={buildMessageMenuItems({
+              isMessageError: message.data.isDeleted === true,
+              canDeleteMessage: message.data.canDeleteMessage === true,
+              onReplyMessage() {
+                // TODO: Handle reply
+              },
+              onResendMessage() {
+                // TODO: Handle resend message here.
+              },
+              onDeleteMessage() {
+                // deleteMessage(room.client, room.roomId, eventId)
+              },
+            })}
+            onAuthorClick={() => {
+              throw new Error("Function not implemented.")
+            }}
+          />
         ) : message.kind === MessageKind.Image ? (
           <ImageMessage
-            key={message.data.id}
+            key={message.data.messageId}
             {...message.data}
-            onClickImage={() => {
-              setImagePrevUrl(message.data.imageUrl)
+            onClickImage={setImagePrevUrl}
+            onAuthorClick={() => {
+              throw new Error("Function not implemented.")
             }}
+            contextMenuItems={buildMessageMenuItems({
+              canDeleteMessage: message.data.canDeleteMessage === true,
+              isMessageError: false,
+              isSaveable: true,
+              onReplyMessage() {
+                // TODO: Handle reply
+              },
+              onResendMessage() {
+                // TODO: Handle resend message here.
+              },
+              onSaveContent() {
+                // TODO: Handle image saving here.
+              },
+              onDeleteMessage() {
+                // deleteMessage(room.client, room.roomId, eventId)
+              },
+            })}
           />
         ) : message.kind === MessageKind.Event ? (
           <EventMessage
