@@ -11,6 +11,7 @@ import {type AnyMessage, MessageKind, MessagesState} from "./hooks/useRoomChat"
 import {createPortal} from "react-dom"
 import ImageModal from "./ImageModal"
 import {buildMessageMenuItems} from "@/utils/menu"
+import AudioMessage from "@/components/AudioMessage"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -25,6 +26,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [imagePrevUrl, setImagePrevUrl] = useState<string>()
+  const [audioPlaying, setAudioPlaying] = useState<string>()
 
   if (messagesState === MessagesState.Loaded) {
     assert(
@@ -54,7 +56,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
               },
             })}
             onAuthorClick={() => {
-              throw new Error("Function not implemented.")
+              // TODO: Handle `onAuthorClick` for `TextMessage`.
             }}
           />
         ) : message.kind === MessageKind.Image ? (
@@ -63,7 +65,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
             {...message.data}
             onClickImage={setImagePrevUrl}
             onAuthorClick={() => {
-              throw new Error("Function not implemented.")
+              // TODO: Handle `onAuthorClick` for `ImageMessage`.
             }}
             contextMenuItems={buildMessageMenuItems({
               canDeleteMessage: message.data.canDeleteMessage === true,
@@ -92,6 +94,16 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
             }}
             onShowMember={() => {
               // TODO: Handle show member here.
+            }}
+          />
+        ) : message.kind === MessageKind.Audio ? (
+          <AudioMessage
+            {...message.data}
+            setCurrentPlaying={isPlaying => {}}
+            isCurrentPlaying={false}
+            contextMenuItems={[]}
+            onAuthorClick={() => {
+              // TODO: Handle `onAuthorClick` for `AudioMessage`.
             }}
           />
         ) : (

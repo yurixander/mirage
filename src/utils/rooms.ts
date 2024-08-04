@@ -11,6 +11,7 @@ import {
 import {
   assert,
   emojiRandom,
+  getFileUrl,
   getImageUrl,
   normalizeName,
   stringToColor,
@@ -594,6 +595,22 @@ export const handleMessage = async (
         data: {
           ...messageBaseProperties,
           imageUrl: getImageUrl(eventContent.url, room.client),
+        },
+      }
+    }
+    case MsgType.Audio: {
+      const audioUrl = event.getContent().url
+
+      // TODO: Throw `MessageError` component instead null.
+      if (typeof audioUrl !== "string") {
+        return null
+      }
+
+      return {
+        kind: MessageKind.Audio,
+        data: {
+          ...messageBaseProperties,
+          audioUrl: getFileUrl(audioUrl, room.client),
         },
       }
     }

@@ -3,8 +3,6 @@ import {buildMessageMenuItems} from "@/utils/menu"
 import {useState, type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
-  const [audioPlaying, setAudioPlaying] = useState<string>()
-
   return (
     <div className="flex flex-col gap-4">
       <AudioMessage

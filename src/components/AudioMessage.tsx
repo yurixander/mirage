@@ -8,14 +8,22 @@ import IconButton from "./IconButton"
 import {useWavesurfer} from "@wavesurfer/react"
 
 export type AudioMessageProps = {
-  audioUrl: string
+  audioUrl?: string
   setCurrentPlaying: (value: boolean) => void
   isCurrentPlaying: boolean
   authorDisplayName: string
   timestamp: number
-  id: string
+  messageId: string
   contextMenuItems: ContextMenuItem[]
   onAuthorClick: () => void
+  authorAvatarUrl?: string
+}
+
+export type AudioMessageData = {
+  audioUrl?: string
+  authorDisplayName: string
+  timestamp: number
+  messageId: string
   authorAvatarUrl?: string
 }
 
@@ -28,10 +36,10 @@ const AudioMessage: FC<AudioMessageProps> = ({
   timestamp,
   authorAvatarUrl,
   authorDisplayName,
-  id,
+  messageId,
 }) => {
   const waveformRef = useRef(null)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(audioUrl === undefined)
 
   const {wavesurfer, isReady} = useWavesurfer({
     container: waveformRef,
@@ -83,7 +91,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
   return (
     <>
       <ContextMenu
-        id={`audio-menu-${id}`}
+        id={`audio-menu-${messageId}`}
         elements={contextMenuItems}
         className="cursor-default">
         <div className="flex size-full max-h-14 max-w-72 items-center gap-1 rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm">
