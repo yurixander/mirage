@@ -10,12 +10,13 @@ import {
 } from "matrix-js-sdk"
 import {
   assert,
+  deleteMessage,
   emojiRandom,
   getImageUrl,
   normalizeName,
   stringToColor,
 } from "./util"
-import {type RosterUserData} from "@/containers/Roster/RosterUser"
+import {type RosterUserProps} from "@/containers/Roster/RosterUser"
 import {
   getRoomAdminsAndModerators,
   getUserLastPresence,
@@ -23,6 +24,8 @@ import {
   UserPowerLevel,
 } from "./members"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import {type MessageBaseProps} from "@/components/MessageContainer"
+import {buildMessageMenuItems} from "./menu"
 import {
   type AnyMessage,
   MessageKind,
@@ -39,7 +42,6 @@ import {
   IoReceipt,
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
-import {type MessageBaseData} from "@/components/MessageContainer"
 
 export enum ImageSizes {
   Server = 47,
@@ -59,7 +61,6 @@ export async function getAllJoinedRooms(
     for (const joinedRoomId of joinedRooms.joined_rooms) {
       const joinedRoom = client.getRoom(joinedRoomId)
 
-      // TODO: Handle errors instead continue.
       if (joinedRoom === null) {
         continue
       }
@@ -80,40 +81,44 @@ export async function getAllJoinedRooms(
   return currentJoinedRooms
 }
 
-export async function getRoomMembers(room: Room): Promise<RosterUserData[]> {
+export async function getRoomMembers(room: Room): Promise<RosterUserProps[]> {
   const members = await room.client.getJoinedRoomMembers(room.roomId)
   const adminsOrModerators = await getRoomAdminsAndModerators(room)
   const joinedMembers = members.joined
-  const membersProperty: RosterUserData[] = adminsOrModerators
+  const membersProperty: RosterUserProps[] = adminsOrModerators
 
   let memberCount = 0
 
-  for (const joinedMemberId in joinedMembers) {
+  for (const userId in joinedMembers) {
     if (memberCount >= 30) {
       break
     }
 
-    const member = joinedMembers[joinedMemberId]
+    const member = joinedMembers[userId]
 
     const isAdminOrModerator = adminsOrModerators.some(
-      adminOrModerator => adminOrModerator.userId === joinedMemberId
+      adminOrModerator => adminOrModerator.userId === userId
     )
 
     if (member === undefined || isAdminOrModerator) {
       continue
     }
 
+    const lastPresenceAge =
+      (await getUserLastPresence(room, userId)) ?? undefined
+
+    // TODO: Use actual props instead of dummy data.
     membersProperty.push({
-      displayName: normalizeName(member.display_name),
-      powerLevel: UserPowerLevel.Member,
-      userId: joinedMemberId,
-      lastPresenceAge:
-        (await getUserLastPresence(room, joinedMemberId)) ?? undefined,
+      displayName: normalizeName(member.display_name ?? userId),
+      lastPresenceAge,
       avatarUrl: getImageUrl(
         member.avatar_url,
         room.client,
         ImageSizes.MessageAndProfile
       ),
+      powerLevel: UserPowerLevel.Member,
+      onClick: () => {},
+      userId,
     })
 
     memberCount += 1
@@ -158,14 +163,12 @@ export function getPartnerUserIdFromRoomDirect(room: Room): string {
   return userId
 }
 
-const SCROLLBACK_MAX = 30
-
 // #region Events
 export const handleRoomEvents = async (
   activeRoom: Room
 ): Promise<AnyMessage[]> => {
   const client = activeRoom.client
-  const roomHistory = await client.scrollback(activeRoom, SCROLLBACK_MAX)
+  const roomHistory = await client.scrollback(activeRoom, 30)
   const events = roomHistory.getLiveTimeline().getEvents()
   const lastReadEventId = activeRoom.getEventReadUpTo(activeRoom.myUserId)
   const allMessageProperties: AnyMessage[] = []
@@ -197,7 +200,7 @@ export const handleEvent = async (
   room: Room
 ): Promise<AnyMessage | null> => {
   if (event.getType() === EventType.RoomMessage) {
-    return await handleMessage(event, room)
+    return await handleMessages(event, room)
   }
 
   const eventMessageData = await handleEventMessage(event)
@@ -545,7 +548,7 @@ export const handleRoomNameEvent = async (
   }
 }
 
-export const handleMessage = async (
+export const handleMessages = async (
   event: MatrixEvent,
   room: Room
 ): Promise<AnyMessage | null> => {
@@ -559,17 +562,22 @@ export const handleMessage = async (
     return null
   }
 
-  const messageBaseProperties: MessageBaseData = {
-    authorDisplayName: sender.name,
-    authorDisplayNameColor: stringToColor(sender.name),
-    timestamp: event.localTimestamp,
-    messageId: eventId,
-    canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
+  const messageBaseProperties: MessageBaseProps = {
     authorAvatarUrl: getImageUrl(
       sender.getMxcAvatarUrl(),
       room.client,
       ImageSizes.MessageAndProfile
     ),
+    authorDisplayName: sender.name,
+    authorDisplayNameColor: stringToColor(sender.name),
+    id: eventId,
+    onAuthorClick: () => {
+      // TODO: Handle onAuthorClick here.
+    },
+    text: eventContent.body,
+    timestamp: event.localTimestamp,
+    // TODO: Handle context menu for images.
+    contextMenuItems: [],
   }
 
   switch (eventContent.msgtype) {
@@ -578,22 +586,48 @@ export const handleMessage = async (
         kind: MessageKind.Text,
         data: {
           ...messageBaseProperties,
-          text: eventContent.body,
+          contextMenuItems: buildMessageMenuItems({
+            canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
+            isMessageError: false,
+            onReplyMessage() {
+              // TODO: Handle reply
+            },
+            onResendMessage() {
+              // TODO: Handle resend message here.
+            },
+            onDeleteMessage() {
+              deleteMessage(room.client, room.roomId, eventId)
+            },
+          }),
         },
       }
     }
     case MsgType.Image: {
-      if (typeof eventContent.url !== "string") {
-        console.warn("Image url should be valid,", eventContent.url)
-
-        return null
-      }
-
       return {
         kind: MessageKind.Image,
         data: {
           ...messageBaseProperties,
-          imageUrl: getImageUrl(eventContent.url, room.client),
+          text: "",
+          // TODO: Change use `as` for cast and null handling.
+          imageUrl: getImageUrl(eventContent.url as string, room.client),
+          contextMenuItems: buildMessageMenuItems({
+            canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
+            isMessageError: false,
+            isSaveable: true,
+            onReplyMessage() {
+              // TODO: Handle reply
+            },
+            onResendMessage() {
+              // TODO: Handle resend message here.
+            },
+            onSaveContent() {
+              // TODO: Handle image saving here.
+            },
+            onDeleteMessage() {
+              deleteMessage(room.client, room.roomId, eventId)
+            },
+          }),
+          onClickImage() {},
         },
       }
     }
@@ -639,10 +673,14 @@ const convertToMessageDeleted = (
       authorAvatarUrl: getImageUrl(sender.getMxcAvatarUrl(), room.client),
       authorDisplayName: sender.name,
       authorDisplayNameColor: stringToColor(sender.name),
+      onAuthorClick: () => {},
       text,
       timestamp: event.localTimestamp,
-      messageId: eventId,
-      isDeleted: true,
+      id: eventId,
+      contextMenuItems: buildMessageMenuItems({
+        canDeleteMessage: false,
+        isMessageError: true,
+      }),
     },
   }
 }

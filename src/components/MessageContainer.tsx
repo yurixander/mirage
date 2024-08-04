@@ -6,28 +6,19 @@ import Typography, {TypographyVariant} from "./Typography"
 import {type ContextMenuItem} from "./ContextMenu"
 
 export type MessageBaseProps = {
-  authorDisplayName: string
-  authorDisplayNameColor?: string
   authorAvatarUrl?: string
+  authorDisplayName: string
+  authorDisplayNameColor: string
   timestamp: number
-  messageId: string
+  id: string
+  text: string
   contextMenuItems: ContextMenuItem[]
   onAuthorClick: () => void
 }
 
-export type MessageBaseData = {
-  authorDisplayName: string
-  authorDisplayNameColor?: string
-  authorAvatarUrl?: string
-  timestamp: number
-  messageId: string
-  isDeleted?: boolean
-  canDeleteMessage?: boolean
-}
-
 export type MessageContainerProps = {
   authorDisplayName: string
-  authorDisplayNameColor?: string
+  authorDisplayNameColor: string
   authorAvatarUrl?: string
   children: React.JSX.Element
   timestamp: number

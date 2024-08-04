@@ -245,15 +245,15 @@ export async function createSpace(
   })
 }
 
-const emojiRanges: Array<[number, number]> = [
-  [0x1_f6_00, 0x1_f6_4f], // Emoticons
-  [0x1_f6_80, 0x1_f6_ff], // Transport and Map Symbols
-  [0x26_00, 0x26_ff], // Miscellaneous Symbols
-  [0x27_00, 0x27_bf], // Dingbats
-  [0x1_f9_00, 0x1_f9_ff], // Supplemental Symbols and Pictographs
-]
-
 export const emojiRandom = (): string => {
+  const emojiRanges: Array<[number, number]> = [
+    [0x1_f6_00, 0x1_f6_4f], // Emoticons
+    [0x1_f6_80, 0x1_f6_ff], // Transport and Map Symbols
+    [0x26_00, 0x26_ff], // Miscellaneous Symbols
+    [0x27_00, 0x27_bf], // Dingbats
+    [0x1_f9_00, 0x1_f9_ff], // Supplemental Symbols and Pictographs
+  ]
+
   const [start, end] =
     emojiRanges[Math.floor(Math.random() * emojiRanges.length)]
 

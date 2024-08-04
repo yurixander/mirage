@@ -1,21 +1,9 @@
 import {type FC} from "react"
-import MessageContainer, {
-  type MessageBaseData,
-  type MessageBaseProps,
-} from "./MessageContainer"
+import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
 import ContextMenu from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
 
-export interface TextMessageProps extends MessageBaseProps {
-  text: string
-}
-
-export interface TextMessageData extends MessageBaseData {
-  text: string
-  isDeleted?: boolean
-}
-
-const TextMessage: FC<TextMessageProps> = ({
+const TextMessage: FC<MessageBaseProps> = ({
   authorAvatarUrl,
   authorDisplayName,
   authorDisplayNameColor,
@@ -23,7 +11,7 @@ const TextMessage: FC<TextMessageProps> = ({
   text,
   timestamp,
   contextMenuItems,
-  messageId,
+  id,
 }) => {
   return (
     <MessageContainer
@@ -32,7 +20,7 @@ const TextMessage: FC<TextMessageProps> = ({
       authorAvatarUrl={authorAvatarUrl}
       timestamp={timestamp}
       onAuthorClick={onAuthorClick}>
-      <ContextMenu id={`text-message-${messageId}`} elements={contextMenuItems}>
+      <ContextMenu id={`text-message-${id}`} elements={contextMenuItems}>
         <Typography
           className="max-w-messageMaxWidth cursor-text select-text break-words"
           variant={TypographyVariant.Body}>

@@ -1,4 +1,4 @@
-import {type RosterUserData} from "@/containers/Roster/RosterUser"
+import {type RosterUserProps} from "@/containers/Roster/RosterUser"
 import {type Room, EventTimeline, EventType} from "matrix-js-sdk"
 import {getImageUrl, normalizeName} from "./util"
 import {ImageSizes} from "./rooms"
@@ -86,10 +86,10 @@ export function isCurrentUserAdminOrMod(room: Room): boolean {
 
 export async function getRoomAdminsAndModerators(
   room: Room
-): Promise<RosterUserData[]> {
+): Promise<RosterUserProps[]> {
   const allMembers = await room.client.getJoinedRoomMembers(room.roomId)
   const userPowerLevels = getRoomUsersIdWithPowerLevels(room)
-  const adminsOrModerators: RosterUserData[] = []
+  const adminsOrModerators: RosterUserProps[] = []
 
   for (const user of userPowerLevels) {
     if (user.powerLevel === UserPowerLevel.Member) {
@@ -102,13 +102,17 @@ export async function getRoomAdminsAndModerators(
       continue
     }
 
+    const displayName = normalizeName(member.display_name ?? user.userId)
     const lastPresenceAge = await getUserLastPresence(room, user.userId)
 
     adminsOrModerators.push({
-      displayName: normalizeName(member.display_name),
+      displayName,
       lastPresenceAge: lastPresenceAge ?? undefined,
       powerLevel: user.powerLevel,
       userId: user.userId,
+      onClick: () => {
+        throw new Error("Roster user click not handled.")
+      },
       avatarUrl: getImageUrl(
         member.avatar_url,
         room.client,

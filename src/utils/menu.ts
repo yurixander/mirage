@@ -72,8 +72,9 @@ export function buildMessageMenuItems({
 }: BuildMessageTemplate): ContextMenuItem[] {
   const menuItems: ContextMenuItem[] = []
 
-  // If is a message error, should not have context items.
   if (isMessageError) {
+    // If is a message error, should not have context items.
+
     return []
   }
 

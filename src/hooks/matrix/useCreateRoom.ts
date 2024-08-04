@@ -33,7 +33,6 @@ const useCreateRoom = (): UseCreateRoomReturnType => {
   const [roomDescription, setRoomDescription] = useState<string>()
   const [roomVisibility, setRoomVisibility] = useState(Visibility.Private)
   const [enableEncryption, setEnableEncryption] = useState(false)
-
   const [isCreatingRoom, setIsCreatingRoom] = useState(false)
   const {clearActiveModal} = useActiveModalStore()
   const {client} = useConnection()

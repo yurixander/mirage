@@ -1,7 +1,7 @@
 import {type FC} from "react"
 import {assert, cleanDisplayName, trim, validateUrl} from "../utils/util"
 import {twMerge} from "tailwind-merge"
-import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
+import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
 import Typography, {TypographyVariant} from "./Typography"
 
@@ -15,8 +15,6 @@ export type UserProfileProps = {
   isLarge?: boolean
   className?: string
 }
-
-// TODO: Fix with new `AvatarImage`
 
 const UserProfile: FC<UserProfileProps> = ({
   displayName,
@@ -45,7 +43,7 @@ const UserProfile: FC<UserProfileProps> = ({
     <div className={twMerge("flex gap-2", className)}>
       <AvatarImage
         isRounded={false}
-        avatarSize={AvatarSize.Large}
+        isLarge={isLarge}
         avatarType={avatarType}
         displayName={displayName}
         avatarUrl={avatarUrl}
