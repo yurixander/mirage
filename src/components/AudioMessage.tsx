@@ -6,11 +6,10 @@ import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
 import {formatTime} from "@/utils/util"
 import IconButton from "./IconButton"
 import {useWavesurfer} from "@wavesurfer/react"
+import useAudioPlayerStore from "@/hooks/util/useAudioPlayerStore"
 
 export type AudioMessageProps = {
   audioUrl?: string
-  setCurrentPlaying: (value: boolean) => void
-  isCurrentPlaying: boolean
   authorDisplayName: string
   timestamp: number
   messageId: string
@@ -29,8 +28,6 @@ export type AudioMessageData = {
 
 const AudioMessage: FC<AudioMessageProps> = ({
   audioUrl,
-  isCurrentPlaying,
-  setCurrentPlaying,
   contextMenuItems,
   onAuthorClick,
   timestamp,
@@ -40,6 +37,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
 }) => {
   const waveformRef = useRef(null)
   const [error, setError] = useState(audioUrl === undefined)
+  const {audioPlayingId, setAudioPlayingId, stopPlayer} = useAudioPlayerStore()
 
   const {wavesurfer, isReady} = useWavesurfer({
     container: waveformRef,
@@ -50,14 +48,14 @@ const AudioMessage: FC<AudioMessageProps> = ({
     barGap: 4,
     barRadius: 20,
     cursorWidth: 0,
-    height: 50,
+    height: 40,
     url: audioUrl,
   })
 
   useEffect(() => {
     const loadTimeout = setTimeout(() => {
       if (!isReady) setError(true)
-    }, 20_000)
+    }, 40_000)
 
     return () => {
       clearTimeout(loadTimeout)
@@ -69,12 +67,22 @@ const AudioMessage: FC<AudioMessageProps> = ({
       return
     }
 
+    if (audioPlayingId !== messageId) {
+      wavesurfer.pause()
+    }
+  }, [audioPlayingId, messageId, wavesurfer])
+
+  useEffect(() => {
+    if (wavesurfer === null) {
+      return
+    }
+
     wavesurfer.on("ready", () => {
       setError(false)
     })
 
     wavesurfer.on("finish", () => {
-      setCurrentPlaying(false)
+      stopPlayer()
 
       wavesurfer.setTime(0)
     })
@@ -86,7 +94,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
     return () => {
       wavesurfer.unAll()
     }
-  }, [isReady, setCurrentPlaying, wavesurfer])
+  }, [isReady, stopPlayer, wavesurfer])
 
   return (
     <>
@@ -104,16 +112,16 @@ const AudioMessage: FC<AudioMessageProps> = ({
               {isReady ? (
                 <IconButton
                   tooltip="Playback"
-                  Icon={isCurrentPlaying ? IoPause : IoPlay}
+                  Icon={audioPlayingId === messageId ? IoPause : IoPlay}
                   onClick={() => {
-                    if (isCurrentPlaying) {
+                    if (audioPlayingId === messageId) {
                       wavesurfer?.pause()
 
-                      setCurrentPlaying(false)
+                      stopPlayer()
                     } else {
                       void wavesurfer?.play()
 
-                      setCurrentPlaying(true)
+                      setAudioPlayingId(messageId)
                     }
                   }}
                 />

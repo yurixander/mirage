@@ -26,7 +26,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [imagePrevUrl, setImagePrevUrl] = useState<string>()
-  const [audioPlaying, setAudioPlaying] = useState<string>()
 
   if (messagesState === MessagesState.Loaded) {
     assert(
@@ -99,8 +98,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
         ) : message.kind === MessageKind.Audio ? (
           <AudioMessage
             {...message.data}
-            setCurrentPlaying={isPlaying => {}}
-            isCurrentPlaying={false}
             contextMenuItems={[]}
             onAuthorClick={() => {
               // TODO: Handle `onAuthorClick` for `AudioMessage`.
