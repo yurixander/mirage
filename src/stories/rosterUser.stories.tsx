@@ -16,7 +16,7 @@ export const Default: Story = {
     displayName: "Emerald Branch",
     lastPresenceAge: Date.now(),
     userId: "@emerald_branch",
-    onClick: () => {},
+    onUserClick: () => {},
   },
 }
 

@@ -1,13 +1,12 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import TextMessage from "@/components/TextMessage"
-import {type MessageBaseProps} from "@/components/MessageContainer"
+import TextMessage, {type TextMessageProps} from "@/components/TextMessage"
 import React from "react"
 
 type Story = StoryObj<typeof TextMessage>
 
 const meta: Meta<typeof TextMessage> = {component: TextMessage}
 
-const render = (args: MessageBaseProps): React.JSX.Element => (
+const render = (args: TextMessageProps): React.JSX.Element => (
   <TextMessage {...args} />
 )
 
@@ -22,7 +21,7 @@ export const Default: Story = {
     timestamp: Date.now(),
     onAuthorClick: () => {},
     contextMenuItems: [],
-    id: "text-message-id",
+    messageId: "text-message-id",
   },
 }
 
