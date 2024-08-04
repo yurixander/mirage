@@ -5,6 +5,8 @@ import {ChatMessages} from "./ChatMessages"
 import ChatInput from "./ChatInput"
 import TypingIndicator from "@/components/TypingIndicator"
 import Loader from "@/components/Loader"
+import {twMerge} from "tailwind-merge"
+import {assert} from "@/utils/util"
 
 type ChatContainerProps = {
   roomId: string
@@ -22,37 +24,45 @@ const ChatContainer: FC<ChatContainerProps> = ({
   const {messagesState, roomName, isChatLoading, messages, typingUsers} =
     useRoomChat(roomId)
 
+  assert(roomId.length > 0, "The roomId should not be empty.")
+
   return isChatLoading ? (
-    <div className="flex size-full items-center justify-center">
+    <main className="flex size-full items-center justify-center">
       <Loader text="Loading room" />
-    </div>
+    </main>
   ) : (
-    <div className={className}>
+    <main className={twMerge("flex h-full flex-col", className)}>
       <ChatHeader
-        className="flex size-full max-h-12 shrink-0 items-center gap-2 border-b border-b-stone-200 px-3"
+        className="relative flex size-full max-h-12 items-center gap-2 border-b border-b-stone-200 px-3 py-1"
         isRosterExpanded={isRosterExpanded}
         onRosterExpanded={onRosterExpanded}
         roomName={roomName}
       />
 
-      <ChatMessages
-        className="size-full max-h-[450px] shrink-0 p-3"
-        messages={messages}
-        messagesState={messagesState}
-      />
-
-      <ChatInput roomId={roomId} className="size-full" />
-
-      <div className="mx-4 flex size-full max-h-12 shrink-0 flex-col justify-center gap-3">
-        <div className="flex gap-3">
-          <div className="size-6" />
-
-          <div className="size-6" />
-
-          {typingUsers.length > 0 && <TypingIndicator users={typingUsers} />}
+      <div className="relative z-10 order-2 shrink-0 grow basis-0 overflow-y-auto">
+        <div className="shrink-0 grow-0 basis-auto pb-2">
+          <ChatMessages
+            className="relative grow p-3"
+            messages={messages}
+            messagesState={messagesState}
+          />
         </div>
       </div>
-    </div>
+
+      <footer className="relative order-3 flex flex-col">
+        <ChatInput roomId={roomId} />
+
+        <div className="flex size-full max-h-9 flex-col">
+          <div className="flex gap-2">
+            <div className="h-9" />
+
+            <div className="h-9" />
+
+            {typingUsers.length > 0 && <TypingIndicator users={typingUsers} />}
+          </div>
+        </div>
+      </footer>
+    </main>
   )
 }
 

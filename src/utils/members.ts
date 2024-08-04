@@ -78,7 +78,7 @@ export function getRoomUsersIdWithPowerLevels(
 }
 
 // #region RoomMembers
-export function isUserRoomAdminOrMod(room: Room): boolean {
+export function isCurrentUserAdminOrMod(room: Room): boolean {
   const currentUserPowerLevel = getRoomPowerLevelByUserId(room, room.myUserId)
 
   return currentUserPowerLevel !== UserPowerLevel.Member

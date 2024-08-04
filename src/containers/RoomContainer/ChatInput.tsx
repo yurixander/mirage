@@ -1,17 +1,20 @@
-import IconButton from "@/components/IconButton"
-import {type FC} from "react"
-import {IoIosHappy} from "react-icons/io"
-import {IoAttach, IoPaperPlane} from "react-icons/io5"
-import {twMerge} from "tailwind-merge"
+import {useEffect, useRef, type FC} from "react"
 import useChatInput from "./useChatInput"
 import ImageModalPreview from "./ImageModalPreview"
+import {IoIosHappy} from "react-icons/io"
+import {IoAddCircle, IoMic, IoSend} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
 
 export type ChatInputProps = {
   roomId: string
   className?: string
 }
 
+const BUTTON_SIZE_CLASS = "size-5 md:size-7"
+
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
   const {
     messageText,
     setMessageText,
@@ -21,65 +24,73 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
     imagePreviewProps,
   } = useChatInput(roomId)
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+    }
+  }, [messageText])
+
   return (
     <>
       {imagePreviewProps !== undefined && (
         <ImageModalPreview {...imagePreviewProps} />
       )}
 
-      <div className={twMerge("flex gap-2 px-4", className)}>
-        <div className="flex h-full items-center gap-3">
-          <IconButton
-            tooltip="Emoji"
-            Icon={IoIosHappy}
-            isDisabled={isDisabled}
-            onClick={() => {
-              /* TODO: Handle `emoji` button click. */
-            }}
-          />
+      <div
+        className={twMerge(
+          "mx-2 my-1 flex max-h-28 gap-2 rounded-2xl border border-slate-300 bg-gray-50 px-3 py-2",
+          "md:max-h-36 md:gap-3 md:rounded-3xl md:px-4 md:py-3",
+          className
+        )}>
+        <IoAddCircle
+          className={twMerge("text-slate-400", BUTTON_SIZE_CLASS)}
+          role="button"
+          onClick={openFilePicker}
+        />
 
-          <IconButton
-            tooltip="Attach"
-            Icon={IoAttach}
-            isDisabled={isDisabled}
-            onClick={openFilePicker}
-          />
-        </div>
+        <textarea
+          className="max-h-24 w-full resize-none bg-transparent text-sm scrollbar-hide focus-visible:outline-none focus-visible:outline-0 md:max-h-32 md:text-xl"
+          ref={textareaRef}
+          placeholder="Write a message or simply say 👋🏼 hello..."
+          value={messageText}
+          rows={1}
+          onChange={event => {
+            setMessageText(event.target.value)
+          }}
+        />
 
-        <div className="flex w-full rounded-md border border-neutral-300 bg-neutral-50">
-          <textarea
-            className="flex w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
-            rows={1}
-            placeholder="Write a message or simply say 👋🏼 hello..."
-            value={messageText}
-            disabled={isDisabled}
-            onChange={value => {
-              setMessageText(value.target.value)
-            }}
-            onKeyDown={event => {
-              if (event.key === "Enter") {
-                if (event.ctrlKey) {
-                  setMessageText(afterText => afterText + "\n")
-                } else {
-                  event.preventDefault()
-                  void sendTextMessage(messageText)
-                }
-              }
-            }}
-          />
+        <IoIosHappy
+          className={twMerge("text-slate-300", BUTTON_SIZE_CLASS)}
+          role="button"
+          onClick={() => {
+            // TODO: Show emoji picker.
+          }}
+        />
 
-          <div className="m-1 size-max">
-            <IconButton
-              tooltip="Send"
-              Icon={IoPaperPlane}
-              color="#C463FF"
-              isDisabled={isDisabled}
-              onClick={() => {
-                void sendTextMessage(messageText)
-              }}
-            />
-          </div>
-        </div>
+        <IoMic
+          className={twMerge("text-slate-300", BUTTON_SIZE_CLASS)}
+          role="button"
+          onClick={() => {
+            // TODO: Handle capture audio.
+          }}
+        />
+
+        <IoSend
+          className={twMerge(
+            "text-blue-500",
+            BUTTON_SIZE_CLASS,
+            isDisabled && "cursor-not-allowed opacity-50"
+          )}
+          role="button"
+          onClick={() => {
+            if (isDisabled) {
+              return
+            }
+
+            void sendTextMessage(messageText)
+          }}
+        />
       </div>
     </>
   )

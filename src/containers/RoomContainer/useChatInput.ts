@@ -48,7 +48,7 @@ const useChatInput = (roomId: string): UseChatInputReturnType => {
   }, [clear, client, filesContent, roomId])
 
   const sendTextMessage = async (text: string): Promise<void> => {
-    if (client === null) {
+    if (client === null || text.length === 0) {
       return
     }
 
@@ -77,7 +77,7 @@ const useChatInput = (roomId: string): UseChatInputReturnType => {
   return {
     messageText,
     setMessageText,
-    isDisabled: client === null,
+    isDisabled: client === null || messageText.length === 0,
     sendTextMessage,
     openFilePicker,
     imagePreviewProps,
