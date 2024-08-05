@@ -4,6 +4,8 @@ import {twMerge} from "tailwind-merge"
 import LoadingEffect from "./LoadingEffect"
 import Typography, {TypographyVariant} from "./Typography"
 import {type Skin} from "@emoji-mart/data"
+import {createPortal} from "react-dom"
+import {type Points} from "./ContextMenu"
 
 const EmojiPicker: FC<{onPickEmoji: (emoji: string) => void}> = ({
   onPickEmoji,
@@ -81,7 +83,7 @@ type EmojiItemProps = {
 const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
   const [isVariationOpen, setIsVariationOpen] = useState(false)
   const [emojiHeaderSelected, setEmojiHeaderSelected] = useState("")
-  const [popupOffset, setPopupOffset] = useState({top: 0, left: 0})
+  const [points, setPoints] = useState<Points | null>(null)
   const emojiRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -92,41 +94,36 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
     setEmojiHeaderSelected(skins[0].native)
   }, [skins])
 
-  useEffect(() => {
-    if (emojiRef.current === null) {
-      return
-    }
-
-    setPopupOffset({
-      left: emojiRef.current.offsetLeft,
-      top: emojiRef.current.offsetTop,
-    })
-  }, [])
-
   return skins.length > 1 ? (
     <div className="relative flex flex-col">
-      {isVariationOpen && (
-        <div
-          className="absolute bottom-full left-1/2 z-50 flex -translate-x-1/2 rounded-md bg-white p-2 shadow-sm"
-          onMouseLeave={() => {
-            setIsVariationOpen(false)
-          }}>
-          {skins.map((skin, index) => (
-            <li
-              key={index}
-              aria-hidden
-              className="flex size-8 items-center justify-center rounded-md text-2xl hover:bg-gray-300"
-              onClick={() => {
-                setEmojiHeaderSelected(skin.native)
-                onPickEmoji(skin.native)
+      {isVariationOpen &&
+        points !== null &&
+        createPortal(
+          <div
+            className="fixed z-50 flex size-max -translate-x-1/2 rounded-md bg-white p-2 shadow-sm"
+            style={{left: `${points.x}px`, top: `${points.y}px`}}
+            onMouseLeave={() => {
+              setIsVariationOpen(false)
 
-                setIsVariationOpen(false)
-              }}>
-              {skin.native}
-            </li>
-          ))}
-        </div>
-      )}
+              setPoints(null)
+            }}>
+            {skins.map((skin, index) => (
+              <div
+                key={index}
+                aria-hidden
+                className="relative size-8 items-center justify-center rounded-md text-2xl hover:bg-gray-300"
+                onClick={() => {
+                  setEmojiHeaderSelected(skin.native)
+                  onPickEmoji(skin.native)
+
+                  setIsVariationOpen(false)
+                }}>
+                {skin.native}
+              </div>
+            ))}
+          </div>,
+          document.body
+        )}
 
       <div
         ref={emojiRef}
@@ -142,6 +139,11 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
           className="absolute bottom-0 right-0"
           onClick={event => {
             event.stopPropagation()
+
+            setPoints({
+              x: event.clientX,
+              y: event.clientY,
+            })
 
             setIsVariationOpen(!isVariationOpen)
           }}>
