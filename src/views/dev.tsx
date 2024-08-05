@@ -4,7 +4,9 @@ import {type FC} from "react"
 const DevelopmentPreview: FC = () => {
   return (
     <>
-      <EmojiPicker />
+      <div className="flex size-full items-center justify-center bg-slate-600">
+        <EmojiPicker />
+      </div>
     </>
   )
 }
