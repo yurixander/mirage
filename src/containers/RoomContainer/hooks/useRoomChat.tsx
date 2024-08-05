@@ -1,5 +1,5 @@
 import {type EventMessageData} from "@/components/EventMessage"
-import {FileMessageProps} from "@/components/FileMessage"
+import {type FileMessageProps} from "@/components/FileMessage"
 import {type ImageMessageData} from "@/components/ImageMessage"
 import {type TextMessageData} from "@/components/TextMessage"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"

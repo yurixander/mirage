@@ -40,7 +40,7 @@ import {
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
-import {Console} from "console"
+import {Console} from "node:console"
 
 export enum ImageSizes {
   Server = 47,
