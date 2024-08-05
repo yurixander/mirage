@@ -11,6 +11,7 @@ import {type AnyMessage, MessageKind, MessagesState} from "./hooks/useRoomChat"
 import {createPortal} from "react-dom"
 import ImageModal from "./ImageModal"
 import {buildMessageMenuItems} from "@/utils/menu"
+import FileMessage from "@/components/FileMessage"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -83,6 +84,8 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
               },
             })}
           />
+        ) : message.kind === MessageKind.File ? (
+          <FileMessage {...message.data} />
         ) : message.kind === MessageKind.Event ? (
           <EventMessage
             key={message.data.eventId}

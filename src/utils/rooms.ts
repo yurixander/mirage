@@ -40,6 +40,7 @@ import {
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
+import {Console} from "console"
 
 export enum ImageSizes {
   Server = 47,
@@ -594,6 +595,24 @@ export const handleMessage = async (
         data: {
           ...messageBaseProperties,
           imageUrl: getImageUrl(eventContent.url, room.client),
+        },
+      }
+    }
+    case MsgType.File: {
+      console.log("Esto es un archivo")
+      console.log(eventContent)
+      return {
+        kind: MessageKind.File,
+        data: {
+          ...messageBaseProperties,
+          fileUrl: eventContent.url,
+          fileName: eventContent.body,
+          fileSize: eventContent.info.size,
+          onClick: () => {},
+          contextMenuItems: [],
+          onAuthorClick: function (): void {
+            throw new Error("Function not implemented.")
+          },
         },
       }
     }

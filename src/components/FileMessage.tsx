@@ -1,5 +1,8 @@
 import {type FC} from "react"
-import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
+import MessageContainer, {
+  type MessageBaseData,
+  type MessageBaseProps,
+} from "./MessageContainer"
 import Typography, {TypographyVariant} from "./Typography"
 import ProgressBar, {ProgressBarState, ProgressBarVariant} from "./ProgressBar"
 import IconButton from "./IconButton"
@@ -26,8 +29,17 @@ export enum FileMessageVariant {
 export interface FileMessageProps extends MessageBaseProps {
   fileName: string
   fileSize: number
-  fileExtension: string
+  fileUrl: string
   onClick: () => void
+  uploadProgress?: number
+  variant?: FileMessageVariant
+  progressBarState?: ProgressBarState
+}
+
+export interface FileMessageData extends MessageBaseData {
+  fileName: string
+  fileSize: number
+  fileUrl: string
   uploadProgress?: number
   variant?: FileMessageVariant
   progressBarState?: ProgressBarState
@@ -41,7 +53,7 @@ const FileMessage: FC<FileMessageProps> = ({
   timestamp,
   fileName,
   fileSize,
-  fileExtension,
+  fileUrl,
   onClick,
   uploadProgress = 0,
   variant = FileMessageVariant.Default,
@@ -53,15 +65,15 @@ const FileMessage: FC<FileMessageProps> = ({
         <DefaultFileMessage
           fileName={fileName}
           fileSize={fileSize}
-          onClick={onClick}
-          fileExtension={fileExtension}
+          fileUrl={fileUrl}
+          fileExtension={getFileExtension(fileName)}
         />
       ) : (
         <UploadFileMessage
           fileName={fileName}
           fileSize={fileSize}
           onClick={onClick}
-          fileExtension={fileExtension}
+          fileExtension={getFileExtension(fileName)}
           progressBarState={progressBarState}
           uploadProgress={uploadProgress}
         />
@@ -85,14 +97,14 @@ export type DefaultFileMessageProps = {
   fileName: string
   fileSize: number
   fileExtension: string
-  onClick: () => void
+  fileUrl: string
 }
 
 const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
   fileName,
   fileSize,
   fileExtension: typeFile,
-  onClick,
+  fileUrl,
 }) => {
   return (
     <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2">
@@ -111,7 +123,9 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
           <IconButton
             Icon={FaDownload}
             color="lightslategrey"
-            onClick={onClick}
+            onClick={() => {
+              open(fileUrl)
+            }}
             tooltip="Click to download"
           />
         </div>
@@ -257,6 +271,17 @@ const fileSizeToString = (fileSize: number): string => {
     return `${(fileSize / KB).toFixed(2)} KB`
   } else {
     return `${(fileSize / MB).toFixed(2)} MB`
+  }
+}
+
+const getFileExtension = (fileName: string): string => {
+  let p = fileName.lastIndexOf(".")
+  if (p === 0) {
+    return ""
+  } else {
+    p = p + 1
+    // eslint-disable-next-line unicorn/prefer-string-slice
+    return fileName.substring(p, fileName.length)
   }
 }
 export default FileMessage
