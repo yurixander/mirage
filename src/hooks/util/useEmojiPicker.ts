@@ -6,6 +6,7 @@ type UseEmojiPickerReturnType = {
   isError: boolean
   categories: CategoryWithEmoji[]
   getEmojisByCategory: (categoryId?: string) => Emoji[]
+  getEmojiById: (emojiId: string) => Emoji | null
 }
 
 export type CategoryWithEmoji = {
@@ -68,11 +69,23 @@ const useEmojiPicker = (): UseEmojiPickerReturnType => {
     [emojiMartData]
   )
 
+  const getEmojiById = useCallback(
+    (emojiId: string): Emoji | null => {
+      if (emojiMartData === undefined) {
+        return null
+      }
+
+      return emojiMartData.emojis[emojiId] ?? null
+    },
+    [emojiMartData]
+  )
+
   return {
     isCategoryLoading,
     isError: error,
     categories,
     getEmojisByCategory,
+    getEmojiById,
   }
 }
 
