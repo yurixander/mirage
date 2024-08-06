@@ -1,9 +1,11 @@
-import {useEffect, useRef, type FC} from "react"
+import {useEffect, useRef, useState, type FC} from "react"
 import useChatInput from "./useChatInput"
 import ImageModalPreview from "./ImageModalPreview"
 import {IoIosHappy} from "react-icons/io"
 import {IoAddCircle, IoMic, IoSend} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
+import EmojiPicker from "@/components/EmojiPicker"
+import useElementPoints from "@/hooks/util/useElementPoints"
 
 export type ChatInputProps = {
   roomId: string
@@ -14,6 +16,8 @@ const BUTTON_SIZE_CLASS = "size-5 md:size-7"
 
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const {clearPoints, points, setPointsByEvent} = useElementPoints()
+  const [isEmojiPickerVisible, setEmojiPickerVisible] = useState(false)
 
   const {
     messageText,
@@ -35,6 +39,15 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
     <>
       {imagePreviewProps !== undefined && (
         <ImageModalPreview {...imagePreviewProps} />
+      )}
+
+      {points !== null && (
+        <EmojiPicker
+          locationPoints={points}
+          onPickEmoji={emoji => {
+            setMessageText(prevText => prevText + emoji)
+          }}
+        />
       )}
 
       <div
@@ -61,10 +74,19 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         />
 
         <IoIosHappy
-          className={twMerge("text-slate-300", BUTTON_SIZE_CLASS)}
+          className={twMerge(
+            BUTTON_SIZE_CLASS,
+            points === null ? "text-slate-300" : "text-blue-500"
+          )}
           role="button"
-          onClick={() => {
-            // TODO: Show emoji picker.
+          onClick={event => {
+            if (points !== null) {
+              clearPoints()
+
+              return
+            }
+
+            setPointsByEvent(event)
           }}
         />
 

@@ -6,9 +6,18 @@ import Typography, {TypographyVariant} from "./Typography"
 import {type Skin} from "@emoji-mart/data"
 import {createPortal} from "react-dom"
 import useElementPoints from "@/hooks/util/useElementPoints"
+import {type Points} from "./ContextMenu"
 
-const EmojiPicker: FC<{onPickEmoji: (emoji: string) => void}> = ({
+type EmojiPickerProps = {
+  locationPoints: Points
+  onPickEmoji: (emoji: string) => void
+  className?: string
+}
+
+const EmojiPicker: FC<EmojiPickerProps> = ({
+  locationPoints,
   onPickEmoji,
+  className,
 }) => {
   const {isError, categories, getEmojisByCategory, isLoading} = useEmojiPicker()
   const [categorySelected, setCategorySelected] = useState<string>()
@@ -23,7 +32,15 @@ const EmojiPicker: FC<{onPickEmoji: (emoji: string) => void}> = ({
   }, [categories, categorySelected])
 
   return (
-    <div className="flex size-full max-h-96 max-w-80 flex-col gap-1 rounded-xl bg-gray-100 p-1.5 shadow-md">
+    <div
+      className={twMerge(
+        "fixed z-50 flex size-full max-h-96 max-w-80 -translate-x-3/4 -translate-y-full flex-col gap-1 rounded-xl bg-gray-100 p-1.5 shadow-md",
+        className
+      )}
+      style={{
+        left: `${locationPoints.x}px`,
+        top: `${locationPoints.y - 45}px`,
+      }}>
       {isError ? (
         <div className="flex size-full flex-col items-center justify-center">
           <Typography variant={TypographyVariant.Heading}>
