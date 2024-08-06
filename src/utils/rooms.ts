@@ -613,7 +613,10 @@ export const handleMessage = async (
           contextMenuItems: [],
           onAuthorClick: function (): void {
             throw new Error("Function not implemented.")
-          }},
+          },
+        },
+      }
+    }
     case MsgType.Audio: {
       const audioUrl = event.getContent().url
 
