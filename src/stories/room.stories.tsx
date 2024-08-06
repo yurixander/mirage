@@ -14,7 +14,7 @@ export const Default: Story = {
   args: {
     isSelected: false,
     roomName: "Figma Utils",
-    tagEmoji: "🔍",
+    emoji: "🔍",
     onRoomClick() {},
   },
 }
@@ -23,7 +23,7 @@ export const Selected: Story = {
   args: {
     isSelected: true,
     roomName: "Figma Utils",
-    tagEmoji: "🔍",
+    emoji: "🔍",
     onRoomClick() {},
   },
 }
