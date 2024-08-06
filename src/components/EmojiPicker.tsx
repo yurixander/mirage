@@ -5,13 +5,12 @@ import LoadingEffect from "./LoadingEffect"
 import Typography, {TypographyVariant} from "./Typography"
 import {type Skin} from "@emoji-mart/data"
 import {createPortal} from "react-dom"
-import {type Points} from "./ContextMenu"
+import useElementPoints from "@/hooks/util/useElementPoints"
 
 const EmojiPicker: FC<{onPickEmoji: (emoji: string) => void}> = ({
   onPickEmoji,
 }) => {
   const {isError, categories, getEmojisByCategory, isLoading} = useEmojiPicker()
-
   const [categorySelected, setCategorySelected] = useState<string>()
 
   useEffect(() => {
@@ -80,8 +79,7 @@ type EmojiItemProps = {
 const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
   const [isVariationOpen, setIsVariationOpen] = useState(false)
   const [emojiHeaderSelected, setEmojiHeaderSelected] = useState("")
-  // TODO: Create hook for handling this points.
-  const [points, setPoints] = useState<Points | null>(null)
+  const {points, clearPoints, setPointsByEvent} = useElementPoints()
 
   useEffect(() => {
     if (skins.length === 0) {
@@ -102,7 +100,7 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
             onMouseLeave={() => {
               setIsVariationOpen(false)
 
-              setPoints(null)
+              clearPoints()
             }}>
             {skins.map((skin, index) => (
               <div
@@ -114,7 +112,7 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
                   onPickEmoji(skin.native)
 
                   setIsVariationOpen(false)
-                  setPoints(null)
+                  clearPoints()
                 }}>
                 {skin.native}
               </div>
@@ -135,12 +133,7 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
         <button
           className="absolute bottom-0 right-0"
           onClick={event => {
-            event.stopPropagation()
-
-            setPoints({
-              x: event.clientX,
-              y: event.clientY,
-            })
+            setPointsByEvent(event)
 
             setIsVariationOpen(prevVariationIsOpen => !prevVariationIsOpen)
           }}>
