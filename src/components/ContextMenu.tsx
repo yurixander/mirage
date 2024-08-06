@@ -60,6 +60,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
   className,
   actionType = ClickActions.RightClick,
 }) => {
+  // TODO: Create hook for handling this points.
   const {activeMenuId, hideMenu, points, showMenu} = useContextMenuStore()
   const {elementRef} = useClickOutside<HTMLDivElement>(hideMenu)
   const isActive = activeMenuId === id

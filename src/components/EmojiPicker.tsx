@@ -80,7 +80,7 @@ type EmojiItemProps = {
 const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
   const [isVariationOpen, setIsVariationOpen] = useState(false)
   const [emojiHeaderSelected, setEmojiHeaderSelected] = useState("")
-  // TODO: Create hook for handling this points with `ContextMenu`.
+  // TODO: Create hook for handling this points.
   const [points, setPoints] = useState<Points | null>(null)
 
   useEffect(() => {
