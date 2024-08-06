@@ -2,7 +2,7 @@ import {type Emoji, type EmojiMartData} from "@emoji-mart/data"
 import {useCallback, useEffect, useState} from "react"
 
 type UseEmojiPickerReturnType = {
-  isCategoryLoading: boolean
+  isLoading: boolean
   isError: boolean
   categories: CategoryWithEmoji[]
   getEmojisByCategory: (categoryId?: string) => Emoji[]
@@ -17,13 +17,11 @@ export type CategoryWithEmoji = {
 const useEmojiPicker = (): UseEmojiPickerReturnType => {
   const [emojiMartData, setEmojiMartData] = useState<EmojiMartData>()
   const [error, setError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [categories, setCategories] = useState<CategoryWithEmoji[]>([])
-  const [isCategoryLoading, setIsCategoryLoading] = useState(false)
 
   const fetchCategories = (data: EmojiMartData): void => {
-    setIsCategoryLoading(true)
-
     setCategories(
       data.categories.map(category => {
         return {
@@ -32,11 +30,11 @@ const useEmojiPicker = (): UseEmojiPickerReturnType => {
         }
       })
     )
-
-    setIsCategoryLoading(false)
   }
 
   useEffect(() => {
+    setIsLoading(true)
+
     void getEmojiMartData()
       .then(emojiMartData => {
         setEmojiMartData(emojiMartData)
@@ -48,6 +46,8 @@ const useEmojiPicker = (): UseEmojiPickerReturnType => {
 
         setError(true)
       })
+
+    setIsLoading(false)
   }, [])
 
   const getEmojisByCategory = useCallback(
@@ -81,7 +81,7 @@ const useEmojiPicker = (): UseEmojiPickerReturnType => {
   )
 
   return {
-    isCategoryLoading,
+    isLoading,
     isError: error,
     categories,
     getEmojisByCategory,

@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState, type FC} from "react"
+import {useEffect, useState, type FC} from "react"
 import useEmojiPicker from "@/hooks/util/useEmojiPicker"
 import {twMerge} from "tailwind-merge"
 import LoadingEffect from "./LoadingEffect"
@@ -10,8 +10,7 @@ import {type Points} from "./ContextMenu"
 const EmojiPicker: FC<{onPickEmoji: (emoji: string) => void}> = ({
   onPickEmoji,
 }) => {
-  const {isError, categories, getEmojisByCategory, isCategoryLoading} =
-    useEmojiPicker()
+  const {isError, categories, getEmojisByCategory, isLoading} = useEmojiPicker()
 
   const [categorySelected, setCategorySelected] = useState<string>()
 
@@ -25,7 +24,7 @@ const EmojiPicker: FC<{onPickEmoji: (emoji: string) => void}> = ({
   }, [categories, categorySelected])
 
   return (
-    <div className="flex h-96 w-80 flex-col gap-1 rounded-xl bg-gray-100 p-1.5 shadow-md">
+    <div className="flex size-full max-h-96 max-w-80 flex-col gap-1 rounded-xl bg-gray-100 p-1.5 shadow-md">
       {isError ? (
         <div className="flex size-full flex-col items-center justify-center">
           <Typography variant={TypographyVariant.Heading}>
@@ -36,8 +35,8 @@ const EmojiPicker: FC<{onPickEmoji: (emoji: string) => void}> = ({
         </div>
       ) : (
         <>
-          <header className="flex h-10 w-full items-center justify-center gap-1 border-b border-b-slate-300">
-            {isCategoryLoading ? (
+          <header className="flex size-full max-h-10 items-center justify-center gap-1 border-b border-b-slate-300">
+            {isLoading ? (
               <CategoriesPlaceHolder />
             ) : (
               categories.map(category => (
@@ -59,15 +58,13 @@ const EmojiPicker: FC<{onPickEmoji: (emoji: string) => void}> = ({
           </header>
 
           <div className="size-full overflow-y-scroll scrollbar-hide">
-            <div className="size-full">
-              {getEmojisByCategory(categorySelected).map(emoji => (
-                <div
-                  key={emoji.id}
-                  className="inline-block rounded-md hover:bg-gray-300">
-                  <EmojiItem skins={emoji.skins} onPickEmoji={onPickEmoji} />
-                </div>
-              ))}
-            </div>
+            {getEmojisByCategory(categorySelected).map(emoji => (
+              <div
+                key={emoji.id}
+                className="inline-block rounded-md hover:bg-gray-300">
+                <EmojiItem skins={emoji.skins} onPickEmoji={onPickEmoji} />
+              </div>
+            ))}
           </div>
         </>
       )}
@@ -83,8 +80,8 @@ type EmojiItemProps = {
 const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
   const [isVariationOpen, setIsVariationOpen] = useState(false)
   const [emojiHeaderSelected, setEmojiHeaderSelected] = useState("")
+  // TODO: Create hook for handling this points with `ContextMenu`.
   const [points, setPoints] = useState<Points | null>(null)
-  const emojiRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (skins.length === 0) {
@@ -117,6 +114,7 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
                   onPickEmoji(skin.native)
 
                   setIsVariationOpen(false)
+                  setPoints(null)
                 }}>
                 {skin.native}
               </div>
@@ -126,7 +124,6 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
         )}
 
       <div
-        ref={emojiRef}
         role="button"
         aria-hidden
         className="relative flex size-11 cursor-default items-center justify-center overflow-hidden text-2xl"
@@ -145,9 +142,15 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
               y: event.clientY,
             })
 
-            setIsVariationOpen(!isVariationOpen)
+            setIsVariationOpen(prevVariationIsOpen => !prevVariationIsOpen)
           }}>
-          <Triangle />
+          <svg
+            aria-label="More emojis"
+            className="size-3 fill-current text-gray-400"
+            viewBox="0 0 12 12"
+            xmlns="http://www.w3.org/2000/svg">
+            <polygon points="9,1 9,9 1,9" />
+          </svg>
         </button>
       </div>
     </div>
@@ -163,18 +166,6 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
         {skins[0].native}
       </div>
     )
-  )
-}
-
-const Triangle: FC<{className?: string}> = ({className}) => {
-  return (
-    <svg
-      aria-label="More emojis"
-      className={twMerge("size-3 fill-current text-gray-400", className)}
-      viewBox="0 0 12 12"
-      xmlns="http://www.w3.org/2000/svg">
-      <polygon points="9,1 9,9 1,9" />
-    </svg>
   )
 }
 
