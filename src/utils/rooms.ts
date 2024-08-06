@@ -11,6 +11,7 @@ import {
 import {
   assert,
   emojiRandom,
+  getFileUrl,
   getImageUrl,
   normalizeName,
   stringToColor,
@@ -612,7 +613,20 @@ export const handleMessage = async (
           contextMenuItems: [],
           onAuthorClick: function (): void {
             throw new Error("Function not implemented.")
-          },
+          }},
+    case MsgType.Audio: {
+      const audioUrl = event.getContent().url
+
+      // TODO: Throw `MessageError` component instead null.
+      if (typeof audioUrl !== "string") {
+        return null
+      }
+
+      return {
+        kind: MessageKind.Audio,
+        data: {
+          ...messageBaseProperties,
+          audioUrl: getFileUrl(audioUrl, room.client),
         },
       }
     }
