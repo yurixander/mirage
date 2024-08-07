@@ -10,18 +10,14 @@ const render = (args: EventMessageProps): React.JSX.Element => (
   <EventMessage {...args} />
 )
 
-export const Default: Story = {
-  render,
-  args: {
-    text: "",
-    timestamp: Date.now(),
-  },
-}
-
 export const NameChange: Story = {
   render,
   args: {
-    text: "Sapphire Pineapple changed their name to Snappy Turtle",
+    body: "Sapphire Pineapple changed their name to Snappy Turtle",
+    sender: {
+      displayName: "Sapphire Pineapple",
+      userId: "@sapphire_pineapple",
+    },
     timestamp: Date.now(),
   },
 }

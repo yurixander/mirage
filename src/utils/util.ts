@@ -114,7 +114,6 @@ export function normalizeName(displayName: string): string {
 }
 
 // #region Matrix SDK utils
-
 export function getImageUrl(
   url: string | null | undefined,
   client: MatrixClient | null,
@@ -135,6 +134,22 @@ export function getImageUrl(
       : client.mxcUrlToHttp(url, size, size, "scale")
 
   return imageUrl ?? undefined
+}
+
+export function getFileUrl(
+  url: string | null | undefined,
+  client: MatrixClient | null
+): string | undefined {
+  if (
+    url === null ||
+    url === undefined ||
+    client === null ||
+    url.length === 0
+  ) {
+    return undefined
+  }
+
+  return client.mxcUrlToHttp(url) ?? undefined
 }
 
 export type ImageUploadedInfo = {

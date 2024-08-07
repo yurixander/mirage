@@ -45,7 +45,7 @@ const UserProfile: FC<UserProfileProps> = ({
     <div className={twMerge("flex gap-2", className)}>
       <AvatarImage
         isRounded={false}
-        avatarSize={AvatarSize.Large}
+        avatarSize={AvatarSize.Normal}
         avatarType={avatarType}
         displayName={displayName}
         avatarUrl={avatarUrl}
