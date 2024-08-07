@@ -78,7 +78,11 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
               <div
                 key={emoji.id}
                 className="inline-block rounded-md hover:bg-gray-300">
-                <EmojiItem skins={emoji.skins} onPickEmoji={onPickEmoji} />
+                <EmojiItem
+                  emojiId={emoji.id}
+                  skins={emoji.skins}
+                  onPickEmoji={onPickEmoji}
+                />
               </div>
             ))}
           </div>
@@ -89,11 +93,12 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
 }
 
 type EmojiItemProps = {
+  emojiId: string
   skins: Skin[]
   onPickEmoji: (emoji: string) => void
 }
 
-const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
+const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
   const [isVariationOpen, setIsVariationOpen] = useState(false)
   const [emojiHeaderSelected, setEmojiHeaderSelected] = useState("")
   const {points, clearPoints, setPointsByEvent} = useElementPoints()
@@ -103,8 +108,11 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
       return
     }
 
-    setEmojiHeaderSelected(skins[0].native)
-  }, [skins])
+    const emojiHeaderStored = localStorage.getItem(emojiId)
+    const currentEmojiHeader = skins[0].native
+
+    setEmojiHeaderSelected(emojiHeaderStored ?? currentEmojiHeader)
+  }, [emojiId, skins])
 
   return skins.length > 1 ? (
     <div className="relative flex flex-col">
@@ -126,6 +134,9 @@ const EmojiItem: FC<EmojiItemProps> = ({skins, onPickEmoji}) => {
                 className="relative size-8 items-center justify-center rounded-md text-2xl hover:bg-gray-300"
                 onClick={() => {
                   setEmojiHeaderSelected(skin.native)
+
+                  localStorage.setItem(emojiId, skin.native)
+
                   onPickEmoji(skin.native)
 
                   setIsVariationOpen(false)
