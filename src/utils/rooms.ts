@@ -41,7 +41,6 @@ import {
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
-import {Console} from "node:console"
 
 export enum ImageSizes {
   Server = 47,
@@ -600,13 +599,18 @@ export const handleMessage = async (
       }
     }
     case MsgType.File: {
-      console.log("Esto es un archivo")
+      console.log("This is a file")
       console.log(eventContent)
+      const fileUrl = eventContent.url
+
+      if (typeof fileUrl !== "string") {
+        return null
+      }
       return {
         kind: MessageKind.File,
         data: {
           ...messageBaseProperties,
-          fileUrl: eventContent.url,
+          fileUrl: getFileUrl(fileUrl, room.client),
           fileName: eventContent.body,
           fileSize: eventContent.info.size,
           onClick: () => {},

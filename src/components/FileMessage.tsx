@@ -1,8 +1,5 @@
 import {type FC} from "react"
-import MessageContainer, {
-  type MessageBaseData,
-  type MessageBaseProps,
-} from "./MessageContainer"
+import MessageContainer from "./MessageContainer"
 import Typography, {TypographyVariant} from "./Typography"
 import ProgressBar, {ProgressBarState, ProgressBarVariant} from "./ProgressBar"
 import IconButton from "./IconButton"
@@ -18,6 +15,8 @@ import {
 } from "react-icons/fa6"
 import {IoCloseCircle} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
+import {type ContextMenuItem} from "./ContextMenu"
+import {stringToColor} from "@/utils/util"
 
 const ICON_SIZE = 20
 
@@ -26,28 +25,38 @@ export enum FileMessageVariant {
   Upload,
 }
 
-export interface FileMessageProps extends MessageBaseProps {
+export type FileMessageProps = {
   fileName: string
   fileSize: number
-  fileUrl: string
-  onClick: () => void
+  fileUrl?: string
   uploadProgress?: number
   variant?: FileMessageVariant
+  onClick: () => void
   progressBarState?: ProgressBarState
+  authorDisplayName: string
+  timestamp: number
+  messageId: string
+  contextMenuItems: ContextMenuItem[]
+  onAuthorClick: () => void
+  authorAvatarUrl?: string
 }
 
-export interface FileMessageData extends MessageBaseData {
+export type FileMessageData = {
   fileName: string
   fileSize: number
-  fileUrl: string
+  fileUrl?: string
   uploadProgress?: number
   variant?: FileMessageVariant
   progressBarState?: ProgressBarState
+  audioUrl?: string
+  authorDisplayName: string
+  timestamp: number
+  messageId: string
+  authorAvatarUrl?: string
 }
 
 const FileMessage: FC<FileMessageProps> = ({
   authorDisplayName,
-  authorDisplayNameColor,
   authorAvatarUrl,
   onAuthorClick,
   timestamp,
@@ -65,7 +74,7 @@ const FileMessage: FC<FileMessageProps> = ({
         <DefaultFileMessage
           fileName={fileName}
           fileSize={fileSize}
-          fileUrl={fileUrl}
+          fileUrl={fileUrl ?? ""}
           fileExtension={getFileExtension(fileName)}
         />
       ) : (
@@ -84,7 +93,7 @@ const FileMessage: FC<FileMessageProps> = ({
   return (
     <MessageContainer
       authorDisplayName={authorDisplayName}
-      authorDisplayNameColor={authorDisplayNameColor}
+      authorDisplayNameColor={stringToColor(authorDisplayName)}
       authorAvatarUrl={authorAvatarUrl}
       children={content}
       timestamp={timestamp}
