@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState, type FC} from "react"
+import {useEffect, useRef, type FC} from "react"
 import useChatInput from "./useChatInput"
 import ImageModalPreview from "./ImageModalPreview"
 import {IoIosHappy} from "react-icons/io"
@@ -17,7 +17,6 @@ const BUTTON_SIZE_CLASS = "size-5 md:size-7"
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const {clearPoints, points, setPointsByEvent} = useElementPoints()
-  const [isEmojiPickerVisible, setEmojiPickerVisible] = useState(false)
 
   const {
     messageText,

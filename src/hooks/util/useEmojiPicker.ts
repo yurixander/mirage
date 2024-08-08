@@ -1,9 +1,9 @@
 import {type Emoji, type EmojiMartData} from "@emoji-mart/data"
 import {useCallback, useEffect, useState} from "react"
+import emojiData from "@/../public/data/emoji-data.json" assert {type: "json"}
 
 type UseEmojiPickerReturnType = {
   isLoading: boolean
-  isError: boolean
   categories: CategoryWithEmoji[]
   getEmojisByCategory: (categoryId?: string) => Emoji[]
   getEmojiById: (emojiId: string) => Emoji | null
@@ -16,8 +16,7 @@ export type CategoryWithEmoji = {
 
 const useEmojiPicker = (): UseEmojiPickerReturnType => {
   const [emojiMartData, setEmojiMartData] = useState<EmojiMartData>()
-  const [error, setError] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const [categories, setCategories] = useState<CategoryWithEmoji[]>([])
 
@@ -33,19 +32,10 @@ const useEmojiPicker = (): UseEmojiPickerReturnType => {
   }
 
   useEffect(() => {
-    setIsLoading(true)
+    const emojis: EmojiMartData = emojiData
 
-    void getEmojiMartData()
-      .then(emojiMartData => {
-        setEmojiMartData(emojiMartData)
-
-        fetchCategories(emojiMartData)
-      })
-      .catch(error => {
-        console.error("Failed to fetch emoji data:", error)
-
-        setError(true)
-      })
+    setEmojiMartData(emojis)
+    fetchCategories(emojis)
 
     setIsLoading(false)
   }, [])
@@ -82,17 +72,10 @@ const useEmojiPicker = (): UseEmojiPickerReturnType => {
 
   return {
     isLoading,
-    isError: error,
     categories,
     getEmojisByCategory,
     getEmojiById,
   }
-}
-
-async function getEmojiMartData(): Promise<EmojiMartData> {
-  const response = await fetch("https://cdn.jsdelivr.net/npm/@emoji-mart/data")
-
-  return await response.json()
 }
 
 export default useEmojiPicker

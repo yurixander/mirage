@@ -2,7 +2,6 @@ import {useEffect, useState, type FC} from "react"
 import useEmojiPicker from "@/hooks/util/useEmojiPicker"
 import {twMerge} from "tailwind-merge"
 import LoadingEffect from "./LoadingEffect"
-import Typography, {TypographyVariant} from "./Typography"
 import {type Skin} from "@emoji-mart/data"
 import {createPortal} from "react-dom"
 import useElementPoints from "@/hooks/util/useElementPoints"
@@ -19,7 +18,7 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
   onPickEmoji,
   className,
 }) => {
-  const {isError, categories, getEmojisByCategory, isLoading} = useEmojiPicker()
+  const {categories, getEmojisByCategory, isLoading} = useEmojiPicker()
   const [categorySelected, setCategorySelected] = useState<string>()
 
   useEffect(() => {
@@ -41,53 +40,41 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
         left: `${locationPoints.x}px`,
         top: `${locationPoints.y - 45}px`,
       }}>
-      {isError ? (
-        <div className="flex size-full flex-col items-center justify-center">
-          <Typography variant={TypographyVariant.Heading}>
-            An error ocurred
-          </Typography>
+      <div className="flex size-full max-h-10 items-center justify-center gap-1 border-b border-b-slate-300">
+        {isLoading ? (
+          <CategoriesPlaceHolder />
+        ) : (
+          categories.map(category => (
+            <button
+              key={category.category}
+              className={twMerge(
+                "flex size-7 cursor-pointer items-center justify-center rounded-md active:scale-95",
+                category.category === categorySelected
+                  ? "bg-gray-300"
+                  : "hover:bg-gray-200"
+              )}
+              onClick={() => {
+                setCategorySelected(category.category)
+              }}>
+              {category.emojiHeader}
+            </button>
+          ))
+        )}
+      </div>
 
-          <Typography>Please try again later.</Typography>
-        </div>
-      ) : (
-        <>
-          <header className="flex size-full max-h-10 items-center justify-center gap-1 border-b border-b-slate-300">
-            {isLoading ? (
-              <CategoriesPlaceHolder />
-            ) : (
-              categories.map(category => (
-                <button
-                  key={category.category}
-                  className={twMerge(
-                    "flex size-7 cursor-pointer items-center justify-center rounded-md active:scale-95",
-                    category.category === categorySelected
-                      ? "bg-gray-300"
-                      : "hover:bg-gray-200"
-                  )}
-                  onClick={() => {
-                    setCategorySelected(category.category)
-                  }}>
-                  {category.emojiHeader}
-                </button>
-              ))
-            )}
-          </header>
-
-          <div className="size-full overflow-y-scroll scrollbar-hide">
-            {getEmojisByCategory(categorySelected).map(emoji => (
-              <div
-                key={emoji.id}
-                className="inline-block rounded-md hover:bg-gray-300">
-                <EmojiItem
-                  emojiId={emoji.id}
-                  skins={emoji.skins}
-                  onPickEmoji={onPickEmoji}
-                />
-              </div>
-            ))}
+      <div className="size-full overflow-y-scroll scrollbar-hide">
+        {getEmojisByCategory(categorySelected).map(emoji => (
+          <div
+            key={emoji.id}
+            className="inline-block rounded-md hover:bg-gray-300">
+            <EmojiItem
+              emojiId={emoji.id}
+              skins={emoji.skins}
+              onPickEmoji={onPickEmoji}
+            />
           </div>
-        </>
-      )}
+        ))}
+      </div>
     </div>
   )
 }
