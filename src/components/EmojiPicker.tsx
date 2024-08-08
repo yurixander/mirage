@@ -1,11 +1,50 @@
 import {useEffect, useState, type FC} from "react"
-import useEmojiPicker from "@/hooks/util/useEmojiPicker"
 import {twMerge} from "tailwind-merge"
-import LoadingEffect from "./LoadingEffect"
-import {type Skin} from "@emoji-mart/data"
+import {type Emoji, type EmojiMartData, type Skin} from "@emoji-mart/data"
 import {createPortal} from "react-dom"
 import useElementPoints from "@/hooks/util/useElementPoints"
 import {type Points} from "./ContextMenu"
+import {
+  IoIosCafe,
+  IoIosPartlySunny,
+  IoIosHappy,
+  IoIosGlobe,
+  IoIosAmericanFootball,
+  IoIosBulb,
+  IoIosNuclear,
+  IoIosFlag,
+} from "react-icons/io"
+import {type IconType} from "react-icons"
+import emojiData from "@/../public/data/emoji-data.json"
+
+const emojiMartData: EmojiMartData = emojiData
+
+export type CategoryWithIcon = {
+  category: EmojiCategories
+  icon: IconType
+}
+
+export enum EmojiCategories {
+  People = "people",
+  Nature = "nature",
+  Foods = "foods",
+  Activity = "activity",
+  Places = "places",
+  Objects = "objects",
+  Symbols = "symbols",
+  Flags = "flags",
+}
+
+const categories: CategoryWithIcon[] = [
+  {category: EmojiCategories.People, icon: IoIosHappy},
+  {category: EmojiCategories.Nature, icon: IoIosPartlySunny},
+  {category: EmojiCategories.Foods, icon: IoIosCafe},
+  {category: EmojiCategories.Activity, icon: IoIosAmericanFootball},
+  {category: EmojiCategories.Places, icon: IoIosGlobe},
+  {category: EmojiCategories.Objects, icon: IoIosBulb},
+  {category: EmojiCategories.Symbols, icon: IoIosNuclear},
+  {category: EmojiCategories.Flags, icon: IoIosFlag},
+]
 
 type EmojiPickerProps = {
   locationPoints: Points
@@ -18,17 +57,9 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
   onPickEmoji,
   className,
 }) => {
-  const {categories, getEmojisByCategory, isLoading} = useEmojiPicker()
-  const [categorySelected, setCategorySelected] = useState<string>()
-
-  useEffect(() => {
-    if (categorySelected !== undefined || categories.length === 0) {
-      return
-    }
-
-    // Select the first category by default.
-    setCategorySelected(categories[0].category)
-  }, [categories, categorySelected])
+  const [categorySelected, setCategorySelected] = useState(
+    EmojiCategories.People
+  )
 
   return (
     <div
@@ -41,25 +72,21 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
         top: `${locationPoints.y - 45}px`,
       }}>
       <div className="flex size-full max-h-10 items-center justify-center gap-1 border-b border-b-slate-300">
-        {isLoading ? (
-          <CategoriesPlaceHolder />
-        ) : (
-          categories.map(category => (
-            <button
-              key={category.category}
-              className={twMerge(
-                "flex size-7 cursor-pointer items-center justify-center rounded-md active:scale-95",
-                category.category === categorySelected
-                  ? "bg-gray-300"
-                  : "hover:bg-gray-200"
-              )}
-              onClick={() => {
-                setCategorySelected(category.category)
-              }}>
-              {category.emojiHeader}
-            </button>
-          ))
-        )}
+        {categories.map(category => (
+          <button
+            key={category.category}
+            className={twMerge(
+              "flex size-7 cursor-pointer items-center justify-center rounded-md active:scale-95",
+              category.category === categorySelected
+                ? "bg-gray-300"
+                : "hover:bg-gray-200"
+            )}
+            onClick={() => {
+              setCategorySelected(category.category)
+            }}>
+            <category.icon />
+          </button>
+        ))}
       </div>
 
       <div className="size-full overflow-y-scroll scrollbar-hide">
@@ -107,7 +134,7 @@ const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
         points !== null &&
         createPortal(
           <div
-            className="fixed z-50 flex size-max -translate-x-1/2 rounded-md bg-white p-2 shadow-sm"
+            className="fixed z-50 flex size-max -translate-x-1/2 rounded-md bg-gray-100 p-2 shadow-lg"
             style={{left: `${points.x}px`, top: `${points.y}px`}}
             onMouseLeave={() => {
               setIsVariationOpen(false)
@@ -177,12 +204,20 @@ const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
   )
 }
 
-const CategoriesPlaceHolder: FC = () => {
-  return Array.from({length: 6}).map((_, index) => (
-    <div key={index} className="size-7 overflow-hidden rounded-md bg-gray-300">
-      <LoadingEffect />
-    </div>
-  ))
+function getEmojisByCategory(categoryId?: string): Emoji[] {
+  if (categoryId === undefined) {
+    return []
+  }
+
+  const category = emojiMartData.categories.find(
+    category => category.id === categoryId
+  )
+
+  if (category === undefined) {
+    return []
+  }
+
+  return category.emojis.map(emojiId => emojiMartData.emojis[emojiId])
 }
 
 export default EmojiPicker
