@@ -45,7 +45,6 @@ const FileMessage: FC<FileMessageProps> = ({
       fileName={fileName}
       fileSize={fileSize}
       fileUrl={fileUrl}
-      fileExtension={getFileExtension(fileName).toUpperCase()}
     />
   )
 
@@ -64,21 +63,20 @@ const FileMessage: FC<FileMessageProps> = ({
 export type DefaultFileMessageProps = {
   fileName: string
   fileSize: number
-  fileExtension: string
   fileUrl?: string
 }
 
 const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
   fileName,
   fileSize,
-  fileExtension: typeFile,
   fileUrl,
 }) => {
+  const fileExtension = getFileExtension(fileName).toUpperCase()
   return (
     <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2">
       <div className="flex w-full items-center gap-2">
         <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2">
-          <IconFile typeFile={typeFile.toLowerCase()} />
+          <IconFile typeFile={fileExtension.toLowerCase()} />
 
           <Typography
             className="font-light text-black"
@@ -103,7 +101,7 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
         <Typography
           className="w-full font-semibold text-gray-400"
           variant={TypographyVariant.BodySmall}>
-          {typeFile}
+          {fileExtension}
         </Typography>
 
         <Typography
