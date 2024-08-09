@@ -40,39 +40,8 @@ const FileMessage: FC<FileMessageProps> = ({
   fileSize,
   fileUrl,
 }) => {
-  const content = (
-    <DefaultFileMessage
-      fileName={fileName}
-      fileSize={fileSize}
-      fileUrl={fileUrl}
-    />
-  )
-
-  return (
-    <MessageContainer
-      authorDisplayName={authorDisplayName}
-      authorDisplayNameColor={stringToColor(authorDisplayName)}
-      authorAvatarUrl={authorAvatarUrl}
-      children={content}
-      timestamp={timestamp}
-      onAuthorClick={onAuthorClick}
-    />
-  )
-}
-
-export type DefaultFileMessageProps = {
-  fileName: string
-  fileSize: number
-  fileUrl?: string
-}
-
-const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
-  fileName,
-  fileSize,
-  fileUrl,
-}) => {
   const fileExtension = getFileExtension(fileName).toUpperCase()
-  return (
+  const content = (
     <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2">
       <div className="flex w-full items-center gap-2">
         <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2">
@@ -111,6 +80,17 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
         </Typography>
       </div>
     </div>
+  )
+
+  return (
+    <MessageContainer
+      authorDisplayName={authorDisplayName}
+      authorDisplayNameColor={stringToColor(authorDisplayName)}
+      authorAvatarUrl={authorAvatarUrl}
+      children={content}
+      timestamp={timestamp}
+      onAuthorClick={onAuthorClick}
+    />
   )
 }
 
@@ -174,7 +154,7 @@ const fileSizeToString = (fileSize: number): string => {
 
 const getFileExtension = (fileName: string): string => {
   const match = fileName.lastIndexOf(".")
-  return match === -1 ? "FILE" : fileName.slice(match + 1, fileName.length)
+  return match === -1 ? "file" : fileName.slice(match + 1, fileName.length)
 }
 
 export default FileMessage
