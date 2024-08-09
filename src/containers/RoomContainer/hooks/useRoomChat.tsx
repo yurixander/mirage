@@ -1,6 +1,6 @@
 import {type AudioMessageData} from "@/components/AudioMessage"
 import {type EventMessageData} from "@/components/EventMessage"
-import {type FileMessageProps} from "@/components/FileMessage"
+import {type FileMessageData} from "@/components/FileMessage"
 import {type ImageMessageData} from "@/components/ImageMessage"
 import {type TextMessageData} from "@/components/TextMessage"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
@@ -38,7 +38,7 @@ export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
     : Kind extends MessageKind.Event
       ? EventMessageData
       : Kind extends MessageKind.File
-        ? FileMessageProps
+        ? FileMessageData
         : Kind extends MessageKind.Audio
           ? AudioMessageData
           : UnreadIndicatorProps

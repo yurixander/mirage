@@ -599,8 +599,6 @@ export const handleMessage = async (
       }
     }
     case MsgType.File: {
-      console.log("This is a file")
-      console.log(eventContent)
       const fileUrl = eventContent.url
 
       if (typeof fileUrl !== "string") {
@@ -613,11 +611,6 @@ export const handleMessage = async (
           fileUrl: getFileUrl(fileUrl, room.client),
           fileName: eventContent.body,
           fileSize: eventContent.info.size,
-          onClick: () => {},
-          contextMenuItems: [],
-          onAuthorClick: function (): void {
-            throw new Error("Function not implemented.")
-          },
         },
       }
     }

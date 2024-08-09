@@ -86,7 +86,14 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
             })}
           />
         ) : message.kind === MessageKind.File ? (
-          <FileMessage {...message.data} />
+          <FileMessage
+            key={message.data.messageId}
+            {...message.data}
+            contextMenuItems={[]}
+            onAuthorClick={() => {
+              // TODO: Handle `onAuthorClick` for `FileMessage`.
+            }}
+          />
         ) : message.kind === MessageKind.Event ? (
           <EventMessage
             key={message.data.eventId}

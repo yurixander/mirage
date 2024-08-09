@@ -1,7 +1,9 @@
 import {type FC} from "react"
-import MessageContainer from "./MessageContainer"
+import MessageContainer, {
+  type MessageBaseData,
+  type MessageBaseProps,
+} from "./MessageContainer"
 import Typography, {TypographyVariant} from "./Typography"
-import ProgressBar, {ProgressBarState, ProgressBarVariant} from "./ProgressBar"
 import IconButton from "./IconButton"
 import {
   FaDownload,
@@ -13,46 +15,20 @@ import {
   FaFileWord,
   FaFileZipper,
 } from "react-icons/fa6"
-import {IoCloseCircle} from "react-icons/io5"
-import {twMerge} from "tailwind-merge"
-import {type ContextMenuItem} from "./ContextMenu"
 import {stringToColor} from "@/utils/util"
 
 const ICON_SIZE = 20
 
-export enum FileMessageVariant {
-  Default,
-  Upload,
-}
-
-export type FileMessageProps = {
+export interface FileMessageProps extends MessageBaseProps {
   fileName: string
   fileSize: number
   fileUrl?: string
-  uploadProgress?: number
-  variant?: FileMessageVariant
-  onClick: () => void
-  progressBarState?: ProgressBarState
-  authorDisplayName: string
-  timestamp: number
-  messageId: string
-  contextMenuItems: ContextMenuItem[]
-  onAuthorClick: () => void
-  authorAvatarUrl?: string
 }
 
-export type FileMessageData = {
+export interface FileMessageData extends MessageBaseData {
   fileName: string
   fileSize: number
   fileUrl?: string
-  uploadProgress?: number
-  variant?: FileMessageVariant
-  progressBarState?: ProgressBarState
-  audioUrl?: string
-  authorDisplayName: string
-  timestamp: number
-  messageId: string
-  authorAvatarUrl?: string
 }
 
 const FileMessage: FC<FileMessageProps> = ({
@@ -63,31 +39,14 @@ const FileMessage: FC<FileMessageProps> = ({
   fileName,
   fileSize,
   fileUrl,
-  onClick,
-  uploadProgress = 0,
-  variant = FileMessageVariant.Default,
-  progressBarState = ProgressBarState.Progress,
 }) => {
   const content = (
-    <>
-      {variant === FileMessageVariant.Default ? (
-        <DefaultFileMessage
-          fileName={fileName}
-          fileSize={fileSize}
-          fileUrl={fileUrl ?? ""}
-          fileExtension={getFileExtension(fileName)}
-        />
-      ) : (
-        <UploadFileMessage
-          fileName={fileName}
-          fileSize={fileSize}
-          onClick={onClick}
-          fileExtension={getFileExtension(fileName)}
-          progressBarState={progressBarState}
-          uploadProgress={uploadProgress}
-        />
-      )}
-    </>
+    <DefaultFileMessage
+      fileName={fileName}
+      fileSize={fileSize}
+      fileUrl={fileUrl}
+      fileExtension={getFileExtension(fileName).toUpperCase()}
+    />
   )
 
   return (
@@ -106,7 +65,7 @@ export type DefaultFileMessageProps = {
   fileName: string
   fileSize: number
   fileExtension: string
-  fileUrl: string
+  fileUrl?: string
 }
 
 const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
@@ -133,7 +92,7 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
             Icon={FaDownload}
             color="lightslategrey"
             onClick={() => {
-              open(fileUrl)
+              if (fileUrl !== undefined) open(fileUrl)
             }}
             tooltip="Click to download"
           />
@@ -152,74 +111,6 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
           variant={TypographyVariant.BodySmall}>
           {fileSizeToString(fileSize)}
         </Typography>
-      </div>
-    </div>
-  )
-}
-
-type UploadFileMessageProps = {
-  fileName: string
-  fileSize: number
-  fileExtension: string
-  onClick: () => void
-  progressBarState: ProgressBarState
-  uploadProgress?: number
-}
-
-const UploadFileMessage: FC<UploadFileMessageProps> = ({
-  fileName,
-  fileExtension,
-  uploadProgress = 0,
-  progressBarState,
-  fileSize,
-  onClick,
-}) => {
-  return (
-    <div className="flex w-messageMaxWidth rounded border bg-slate-100 p-2">
-      <div className="flex w-full items-center gap-2">
-        <div>
-          <IconFile typeFile={fileExtension.toLowerCase()} />
-        </div>
-
-        <div className="w-full">
-          <Typography
-            className="font-light text-black"
-            variant={TypographyVariant.Body}>
-            {fileName}
-          </Typography>
-
-          <Typography
-            className="font-light text-slate-400"
-            variant={TypographyVariant.BodySmall}>
-            Uploading {fileSizeToString(fileSize * (uploadProgress / 100))} /{" "}
-            {fileSizeToString(fileSize)}
-          </Typography>
-
-          <div className="w-full">
-            <ProgressBar
-              progress={uploadProgress}
-              variant={ProgressBarVariant.Linear}
-              state={progressBarState}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="flex w-40 items-center gap-1">
-        <Typography
-          className={twMerge(
-            "w-full min-w-24 text-right",
-            uploadProgress === 100 ? "text-green-600" : "text-indigo-600"
-          )}
-          variant={TypographyVariant.BodySmall}>
-          Complete {uploadProgress}%
-        </Typography>
-
-        <IconButton
-          tooltip="Click to cancel upload"
-          Icon={IoCloseCircle}
-          onClick={onClick}
-          color="lightslategrey"
-        />
       </div>
     </div>
   )
@@ -284,13 +175,8 @@ const fileSizeToString = (fileSize: number): string => {
 }
 
 const getFileExtension = (fileName: string): string => {
-  let p = fileName.lastIndexOf(".")
-  if (p === 0) {
-    return ""
-  } else {
-    p = p + 1
-    // eslint-disable-next-line unicorn/prefer-string-slice
-    return fileName.substring(p, fileName.length)
-  }
+  const match = fileName.lastIndexOf(".")
+  return match === -1 ? "FILE" : fileName.slice(match + 1, fileName.length)
 }
+
 export default FileMessage
