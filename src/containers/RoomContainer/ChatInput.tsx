@@ -1,19 +1,34 @@
-import {useEffect, useRef, type FC} from "react"
+import {useEffect, useRef, useState, type FC} from "react"
 import useChatInput from "./useChatInput"
 import ImageModalPreview from "./ImageModalPreview"
 import {IoIosHappy} from "react-icons/io"
 import {IoAddCircle, IoMic, IoSend} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
+import EmojiPicker from "@/components/EmojiPicker"
+import useElementPoints from "@/hooks/util/useElementPoints"
 
 export type ChatInputProps = {
   roomId: string
   className?: string
 }
 
+type SelectionRange = {
+  selectionStart: number | null
+  selectionEnd: number | null
+}
+
 const BUTTON_SIZE_CLASS = "size-5 md:size-7"
 
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const {clearPoints, points, setPointsByEvent} = useElementPoints()
+  const [caretPosition, setCaretPosition] = useState<number | null>(null)
+
+  const [{selectionStart, selectionEnd}, setSelectionRange] =
+    useState<SelectionRange>({
+      selectionEnd: null,
+      selectionStart: null,
+    })
 
   const {
     messageText,
@@ -37,6 +52,52 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         <ImageModalPreview {...imagePreviewProps} />
       )}
 
+      {points !== null && (
+        <EmojiPicker
+          locationPoints={points}
+          onPickEmoji={emoji => {
+            if (
+              selectionStart !== null &&
+              selectionEnd !== null &&
+              selectionEnd !== selectionStart
+            ) {
+              try {
+                setMessageText(prevText => {
+                  if (
+                    selectionStart === 1 &&
+                    selectionEnd === prevText.length
+                  ) {
+                    return emoji
+                  }
+
+                  return prevText
+                    .slice(0, selectionStart)
+                    .concat(emoji)
+                    .concat(prevText.slice(selectionEnd, prevText.length))
+                })
+
+                return
+              } catch (error) {
+                console.error("Error updating text", error)
+              }
+            }
+
+            if (caretPosition === null || caretPosition >= messageText.length) {
+              setMessageText(prevText => prevText + emoji)
+
+              return
+            }
+
+            setMessageText(prevText =>
+              prevText
+                .slice(0, caretPosition)
+                .concat(emoji)
+                .concat(prevText.slice(caretPosition, prevText.length))
+            )
+          }}
+        />
+      )}
+
       <div
         className={twMerge(
           "mx-2 my-1 flex max-h-28 gap-2 rounded-2xl border border-slate-300 bg-gray-50 px-3 py-2",
@@ -58,13 +119,34 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           onChange={event => {
             setMessageText(event.target.value)
           }}
+          onSelect={event => {
+            if (!(event.target instanceof HTMLTextAreaElement)) {
+              return
+            }
+
+            setCaretPosition(event.target.selectionStart ?? 0)
+
+            setSelectionRange({
+              selectionEnd: event.target.selectionEnd,
+              selectionStart: event.target.selectionStart,
+            })
+          }}
         />
 
         <IoIosHappy
-          className={twMerge("text-slate-300", BUTTON_SIZE_CLASS)}
+          className={twMerge(
+            BUTTON_SIZE_CLASS,
+            points === null ? "text-slate-300" : "text-blue-500"
+          )}
           role="button"
-          onClick={() => {
-            // TODO: Show emoji picker.
+          onClick={event => {
+            if (points !== null) {
+              clearPoints()
+
+              return
+            }
+
+            setPointsByEvent(event)
           }}
         />
 
