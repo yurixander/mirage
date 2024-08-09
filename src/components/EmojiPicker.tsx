@@ -1,4 +1,4 @@
-import {useEffect, useState, type FC} from "react"
+import {useEffect, useMemo, useState, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {type Emoji, type EmojiMartData, type Skin} from "@emoji-mart/data"
 import {createPortal} from "react-dom"
@@ -16,8 +16,11 @@ import {
 } from "react-icons/io"
 import {type IconType} from "react-icons"
 import emojiData from "@/../public/data/emoji-data.json"
+import useEmojiSearch from "@/hooks/util/useEmojiSearch"
+import Input from "./Input"
 
 const emojiMartData: EmojiMartData = emojiData
+const emojis: Emoji[] = Object.values(emojiData.emojis)
 
 export type CategoryWithIcon = {
   category: EmojiCategories
@@ -61,6 +64,16 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
     EmojiCategories.People
   )
 
+  const {emojisResult, setEmojiQuery} = useEmojiSearch()
+
+  const emojiItems = useMemo(() => {
+    if (emojisResult === null) {
+      return getEmojisByCategory(categorySelected)
+    }
+
+    return emojisResult
+  }, [categorySelected, emojisResult])
+
   return (
     <div
       className={twMerge(
@@ -89,8 +102,12 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
         ))}
       </div>
 
+      <div className="h-12 w-full px-9">
+        <Input placeholder="Search any emoji" onValueChange={setEmojiQuery} />
+      </div>
+
       <div className="size-full overflow-y-scroll scrollbar-hide">
-        {getEmojisByCategory(categorySelected).map(emoji => (
+        {emojiItems.map(emoji => (
           <div
             key={emoji.id}
             className="inline-block rounded-md hover:bg-gray-300">
@@ -218,6 +235,10 @@ function getEmojisByCategory(categoryId?: string): Emoji[] {
   }
 
   return category.emojis.map(emojiId => emojiMartData.emojis[emojiId])
+}
+
+export function searchEmoji(query: string): Emoji[] {
+  return emojis.filter(emoji => emoji.keywords.includes(query.toLowerCase()))
 }
 
 export default EmojiPicker
