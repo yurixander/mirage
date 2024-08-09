@@ -180,7 +180,7 @@ const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
             setIsVariationOpen(prevVariationIsOpen => !prevVariationIsOpen)
           }}>
           <svg
-            aria-label="More emojis"
+            aria-label="More variants"
             className="size-3 fill-current text-gray-400"
             viewBox="0 0 12 12"
             xmlns="http://www.w3.org/2000/svg">
