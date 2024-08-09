@@ -17,6 +17,7 @@ export enum Modals {
 export enum ModalRenderLocation {
   RoomList = "room-list",
   RoomContainer = "room-container",
+  ChatMessages = "chat-messages",
 }
 
 type ActiveModalStore = {
