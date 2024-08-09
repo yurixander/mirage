@@ -1,4 +1,4 @@
-import {useEffect, useRef, type FC} from "react"
+import {useEffect, useRef, useState, type FC} from "react"
 import useChatInput from "./useChatInput"
 import ImageModalPreview from "./ImageModalPreview"
 import {IoIosHappy} from "react-icons/io"
@@ -12,11 +12,23 @@ export type ChatInputProps = {
   className?: string
 }
 
+type SelectionRange = {
+  selectionStart: number | null
+  selectionEnd: number | null
+}
+
 const BUTTON_SIZE_CLASS = "size-5 md:size-7"
 
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const {clearPoints, points, setPointsByEvent} = useElementPoints()
+  const [caretPosition, setCaretPosition] = useState<number | null>(null)
+
+  const [{selectionStart, selectionEnd}, setSelectionRange] =
+    useState<SelectionRange>({
+      selectionEnd: null,
+      selectionStart: null,
+    })
 
   const {
     messageText,
@@ -44,7 +56,44 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         <EmojiPicker
           locationPoints={points}
           onPickEmoji={emoji => {
-            setMessageText(prevText => prevText + emoji)
+            if (
+              selectionStart !== null &&
+              selectionEnd !== null &&
+              selectionEnd !== selectionStart
+            ) {
+              try {
+                setMessageText(prevText => {
+                  if (
+                    selectionStart === 1 &&
+                    selectionEnd === prevText.length
+                  ) {
+                    return emoji
+                  }
+
+                  return prevText
+                    .slice(0, selectionStart)
+                    .concat(emoji)
+                    .concat(prevText.slice(selectionEnd, prevText.length))
+                })
+
+                return
+              } catch (error) {
+                console.error("Error updating text", error)
+              }
+            }
+
+            if (caretPosition === null || caretPosition >= messageText.length) {
+              setMessageText(prevText => prevText + emoji)
+
+              return
+            }
+
+            setMessageText(prevText =>
+              prevText
+                .slice(0, caretPosition)
+                .concat(emoji)
+                .concat(prevText.slice(caretPosition, prevText.length))
+            )
           }}
         />
       )}
@@ -69,6 +118,18 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           rows={1}
           onChange={event => {
             setMessageText(event.target.value)
+          }}
+          onSelect={event => {
+            if (!(event.target instanceof HTMLTextAreaElement)) {
+              return
+            }
+
+            setCaretPosition(event.target.selectionStart ?? 0)
+
+            setSelectionRange({
+              selectionEnd: event.target.selectionEnd,
+              selectionStart: event.target.selectionStart,
+            })
           }}
         />
 
