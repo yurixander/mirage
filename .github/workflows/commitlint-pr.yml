@@ -16,5 +16,8 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install Dependencies
+        run: yarn
+
       - name: Lint PR Title
         run: yarn commitlint --edit "${{ github.event.pull_request.title }}"
