@@ -3,4 +3,4 @@
 
 yarn lint
 yarn prettier
-echo cat .git/COMMIT_EDITMSG || yarn commitlint
+cat .git/COMMIT_EDITMSG | yarn commitlint
