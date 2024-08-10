@@ -3,7 +3,7 @@ import {IoAlertCircle, IoPause, IoPlay} from "react-icons/io5"
 import Typography from "./Typography"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
-import {formatTime} from "@/utils/util"
+import {assert, CommonAssertion, formatTime, validateUrl} from "@/utils/util"
 import IconButton from "./IconButton"
 import {useWavesurfer} from "@wavesurfer/react"
 import useAudioPlayerStore from "@/hooks/util/useAudioPlayerStore"
@@ -35,6 +35,14 @@ const AudioMessage: FC<AudioMessageProps> = ({
   authorDisplayName,
   messageId,
 }) => {
+  if (authorAvatarUrl !== undefined) {
+    assert(validateUrl(authorAvatarUrl), CommonAssertion.AvatarUrlNotValid)
+  }
+
+  if (audioUrl !== undefined) {
+    assert(validateUrl(audioUrl), "The audio url should be valid.")
+  }
+
   const waveformRef = useRef(null)
   const [error, setError] = useState(audioUrl === undefined)
   const {audioPlayingId, setAudioPlayingId, stopPlayer} = useAudioPlayerStore()
