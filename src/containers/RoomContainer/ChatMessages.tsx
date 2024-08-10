@@ -89,7 +89,19 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <FileMessage
             key={message.data.messageId}
             {...message.data}
-            contextMenuItems={[]}
+            contextMenuItems={buildMessageMenuItems({
+              isMessageError: message.data.isDeleted === true,
+              canDeleteMessage: message.data.canDeleteMessage === true,
+              onReplyMessage() {
+                // TODO: Handle reply
+              },
+              onResendMessage() {
+                // TODO: Handle resend message here.
+              },
+              onDeleteMessage() {
+                // deleteMessage(room.client, room.roomId, eventId)
+              },
+            })}
             onAuthorClick={() => {
               // TODO: Handle `onAuthorClick` for `FileMessage`.
             }}
