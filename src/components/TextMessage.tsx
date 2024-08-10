@@ -5,7 +5,6 @@ import MessageContainer, {
 } from "./MessageContainer"
 import ContextMenu from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
-import {assert, CommonAssertion, validateUrl} from "@/utils/util"
 
 export interface TextMessageProps extends MessageBaseProps {
   text: string
@@ -26,10 +25,6 @@ const TextMessage: FC<TextMessageProps> = ({
   contextMenuItems,
   messageId,
 }) => {
-  if (authorAvatarUrl !== undefined) {
-    assert(validateUrl(authorAvatarUrl), CommonAssertion.AvatarUrlNotValid)
-  }
-
   return (
     <MessageContainer
       authorDisplayName={authorDisplayName}
