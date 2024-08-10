@@ -11,6 +11,7 @@ const SmartAction: FC<SmartActionProps> = ({Icon, text, onClick}) => {
   return (
     <button
       className="flex cursor-pointer items-center gap-1 text-xs"
+      // TODO: Remove tabIndex here `tabIndex={-1}`.
       onClick={onClick}>
       <Icon size={10} className="text-neutral-300" />
       <span>{text}</span>
