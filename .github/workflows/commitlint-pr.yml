@@ -17,4 +17,4 @@ jobs:
           node-version: '20'
 
       - name: Lint PR Title
-        run: echo ${{ github.event.pull_request.title }} | yarn commitlint
+        run: yarn commitlint --edit ${{ github.event.pull_request.title }}
