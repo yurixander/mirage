@@ -16,8 +16,5 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Commitlint
-        run: npm install @commitlint/cli @commitlint/config-conventional
-
       - name: Lint PR Title
-        run: echo "${{ github.event.pull_request.title }}" | npx commitlint
+        run: echo "${{ github.event.pull_request.title }}" | yarn commitlint
