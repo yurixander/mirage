@@ -26,7 +26,7 @@ const Room: FC<RoomProps> = ({
 }) => {
   assert(roomName.length > 0, "Room name should not be empty.")
   assert(roomId.length > 0, "Room id should not be empty.")
-  assert(emoji.length === 1, "The emoji should be a single character.")
+  assert(emoji.length > 0, "The emoji should not be empty.")
 
   return (
     <button

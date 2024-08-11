@@ -18,7 +18,7 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
     (_, num) => num * opacityMultiplier
   )
 
-  assert(count === 0, "User profile ghost count should not be zero.")
+  assert(count > 0, "User profile ghost count should not be zero.")
 
   return (
     <div className={twMerge("flex flex-col gap-2 p-1", className)}>
