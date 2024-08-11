@@ -1,7 +1,9 @@
 import {type FC} from "react"
-import MessageContainer, {type MessageBaseProps} from "./MessageContainer"
+import MessageContainer, {
+  type MessageBaseData,
+  type MessageBaseProps,
+} from "./MessageContainer"
 import Typography, {TypographyVariant} from "./Typography"
-import ProgressBar, {ProgressBarState, ProgressBarVariant} from "./ProgressBar"
 import IconButton from "./IconButton"
 import {
   FaDownload,
@@ -13,96 +15,37 @@ import {
   FaFileWord,
   FaFileZipper,
 } from "react-icons/fa6"
-import {IoCloseCircle} from "react-icons/io5"
-import {twMerge} from "tailwind-merge"
+import {stringToColor} from "@/utils/util"
 
 const ICON_SIZE = 20
-
-export enum FileMessageVariant {
-  Default,
-  Upload,
-}
 
 export interface FileMessageProps extends MessageBaseProps {
   fileName: string
   fileSize: number
-  fileExtension: string
-  onClick: () => void
-  uploadProgress?: number
-  variant?: FileMessageVariant
-  progressBarState?: ProgressBarState
+  fileUrl?: string
+}
+
+export interface FileMessageData extends MessageBaseData {
+  fileName: string
+  fileSize: number
+  fileUrl?: string
 }
 
 const FileMessage: FC<FileMessageProps> = ({
   authorDisplayName,
-  authorDisplayNameColor,
   authorAvatarUrl,
   onAuthorClick,
   timestamp,
   fileName,
   fileSize,
-  fileExtension,
-  onClick,
-  uploadProgress = 0,
-  variant = FileMessageVariant.Default,
-  progressBarState = ProgressBarState.Progress,
+  fileUrl,
 }) => {
-  // TODO: Use more assert here when already merged https://github.com/yurixander/mirage/pull/72 @lazaroysr96
-
+  const fileExtension = getFileExtension(fileName).toUpperCase()
   const content = (
-    <>
-      {variant === FileMessageVariant.Default ? (
-        <DefaultFileMessage
-          fileName={fileName}
-          fileSize={fileSize}
-          onClick={onClick}
-          fileExtension={fileExtension}
-        />
-      ) : (
-        <UploadFileMessage
-          fileName={fileName}
-          fileSize={fileSize}
-          onClick={onClick}
-          fileExtension={fileExtension}
-          progressBarState={progressBarState}
-          uploadProgress={uploadProgress}
-        />
-      )}
-    </>
-  )
-
-  return (
-    <MessageContainer
-      authorDisplayName={authorDisplayName}
-      authorDisplayNameColor={authorDisplayNameColor}
-      authorAvatarUrl={authorAvatarUrl}
-      children={content}
-      timestamp={timestamp}
-      onAuthorClick={onAuthorClick}
-    />
-  )
-}
-
-export type DefaultFileMessageProps = {
-  fileName: string
-  fileSize: number
-  fileExtension: string
-  onClick: () => void
-}
-
-const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
-  fileName,
-  fileSize,
-  fileExtension: typeFile,
-  onClick,
-}) => {
-  // TODO: Use more assert here when already merged https://github.com/yurixander/mirage/pull/72 @lazaroysr96
-
-  return (
     <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2">
       <div className="flex w-full items-center gap-2">
         <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2">
-          <IconFile typeFile={typeFile.toLowerCase()} />
+          <IconFile typeFile={fileExtension.toLowerCase()} />
 
           <Typography
             className="font-light text-black"
@@ -115,7 +58,9 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
           <IconButton
             Icon={FaDownload}
             color="lightslategrey"
-            onClick={onClick}
+            onClick={() => {
+              if (fileUrl !== undefined) open(fileUrl)
+            }}
             tooltip="Click to download"
           />
         </div>
@@ -125,7 +70,7 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
         <Typography
           className="w-full font-semibold text-gray-400"
           variant={TypographyVariant.BodySmall}>
-          {typeFile}
+          {fileExtension}
         </Typography>
 
         <Typography
@@ -136,75 +81,16 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
       </div>
     </div>
   )
-}
-
-type UploadFileMessageProps = {
-  fileName: string
-  fileSize: number
-  fileExtension: string
-  onClick: () => void
-  progressBarState: ProgressBarState
-  uploadProgress?: number
-}
-
-const UploadFileMessage: FC<UploadFileMessageProps> = ({
-  fileName,
-  fileExtension,
-  uploadProgress = 0,
-  progressBarState,
-  fileSize,
-  onClick,
-}) => {
-  // TODO: Use more assert here when already merged https://github.com/yurixander/mirage/pull/72 @lazaroysr96
 
   return (
-    <div className="flex w-messageMaxWidth rounded border bg-slate-100 p-2">
-      <div className="flex w-full items-center gap-2">
-        <div>
-          <IconFile typeFile={fileExtension.toLowerCase()} />
-        </div>
-
-        <div className="w-full">
-          <Typography
-            className="font-light text-black"
-            variant={TypographyVariant.Body}>
-            {fileName}
-          </Typography>
-
-          <Typography
-            className="font-light text-slate-400"
-            variant={TypographyVariant.BodySmall}>
-            Uploading {fileSizeToString(fileSize * (uploadProgress / 100))} /{" "}
-            {fileSizeToString(fileSize)}
-          </Typography>
-
-          <div className="w-full">
-            <ProgressBar
-              progress={uploadProgress}
-              variant={ProgressBarVariant.Linear}
-              state={progressBarState}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="flex w-40 items-center gap-1">
-        <Typography
-          className={twMerge(
-            "w-full min-w-24 text-right",
-            uploadProgress === 100 ? "text-green-600" : "text-indigo-600"
-          )}
-          variant={TypographyVariant.BodySmall}>
-          Complete {uploadProgress}%
-        </Typography>
-
-        <IconButton
-          tooltip="Click to cancel upload"
-          Icon={IoCloseCircle}
-          onClick={onClick}
-          color="lightslategrey"
-        />
-      </div>
-    </div>
+    <MessageContainer
+      authorDisplayName={authorDisplayName}
+      authorDisplayNameColor={stringToColor(authorDisplayName)}
+      authorAvatarUrl={authorAvatarUrl}
+      children={content}
+      timestamp={timestamp}
+      onAuthorClick={onAuthorClick}
+    />
   )
 }
 
@@ -265,4 +151,10 @@ const fileSizeToString = (fileSize: number): string => {
     return `${(fileSize / MB).toFixed(2)} MB`
   }
 }
+
+const getFileExtension = (fileName: string): string => {
+  const match = fileName.lastIndexOf(".")
+  return match === -1 ? "file" : fileName.slice(match + 1, fileName.length)
+}
+
 export default FileMessage
