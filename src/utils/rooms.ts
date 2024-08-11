@@ -583,6 +583,7 @@ export const handleMessage = async (
         },
       }
     }
+
     case MsgType.Image: {
       if (typeof eventContent.url !== "string") {
         console.warn("Image url should be valid,", eventContent.url)
@@ -598,6 +599,25 @@ export const handleMessage = async (
         },
       }
     }
+
+    case MsgType.File: {
+      const fileUrl = eventContent.url
+
+      if (typeof fileUrl !== "string") {
+        return null
+      }
+
+      return {
+        kind: MessageKind.File,
+        data: {
+          ...messageBaseProperties,
+          fileUrl: getFileUrl(fileUrl, room.client),
+          fileName: eventContent.body,
+          fileSize: eventContent.info.size,
+        },
+      }
+    }
+
     case MsgType.Audio: {
       const audioUrl = event.getContent().url
 
@@ -614,6 +634,7 @@ export const handleMessage = async (
         },
       }
     }
+
     case undefined: {
       const unsigned = event.getUnsigned()
 
@@ -623,6 +644,7 @@ export const handleMessage = async (
 
       return convertToMessageDeleted(room, event)
     }
+
     default: {
       return null
     }

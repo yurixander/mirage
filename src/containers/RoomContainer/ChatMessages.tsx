@@ -11,6 +11,7 @@ import {type AnyMessage, MessageKind, MessagesState} from "./hooks/useRoomChat"
 import {createPortal} from "react-dom"
 import ImageModal from "./ImageModal"
 import {buildMessageMenuItems} from "@/utils/menu"
+import FileMessage from "@/components/FileMessage"
 import AudioMessage from "@/components/AudioMessage"
 
 export type ChatMessagesProps = {
@@ -83,6 +84,27 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
                 // deleteMessage(room.client, room.roomId, eventId)
               },
             })}
+          />
+        ) : message.kind === MessageKind.File ? (
+          <FileMessage
+            key={message.data.messageId}
+            {...message.data}
+            contextMenuItems={buildMessageMenuItems({
+              isMessageError: message.data.isDeleted === true,
+              canDeleteMessage: message.data.canDeleteMessage === true,
+              onReplyMessage() {
+                // TODO: Handle reply
+              },
+              onResendMessage() {
+                // TODO: Handle resend message here.
+              },
+              onDeleteMessage() {
+                // deleteMessage(room.client, room.roomId, eventId)
+              },
+            })}
+            onAuthorClick={() => {
+              // TODO: Handle `onAuthorClick` for `FileMessage`.
+            }}
           />
         ) : message.kind === MessageKind.Event ? (
           <EventMessage
