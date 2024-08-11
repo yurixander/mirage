@@ -60,7 +60,7 @@ const EventMessage: FC<EventMessageProps> = ({
           ]}>
           <Typography
             className="font-bold"
-            style={{color: stringToColor(sender.displayName)}}>
+            style={{color: stringToColor(sender.userId)}}>
             {sender.displayName}
           </Typography>
         </ContextMenu>
