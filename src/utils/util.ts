@@ -33,6 +33,7 @@ export enum CommonAssertion {
   UserIdNotFound = "The client should be logged in.",
   EventSenderNotFount = "The event should has a send origin",
   AvatarUrlNotValid = "The avatar url should be valid.",
+  MessageIdEmpty = "The message id should not be empty.",
 }
 
 export function assert(

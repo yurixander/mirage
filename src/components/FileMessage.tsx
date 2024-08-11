@@ -47,6 +47,8 @@ const FileMessage: FC<FileMessageProps> = ({
   variant = FileMessageVariant.Default,
   progressBarState = ProgressBarState.Progress,
 }) => {
+  // TODO: Use more assert here when already merged https://github.com/yurixander/mirage/pull/72 @lazaroysr96
+
   const content = (
     <>
       {variant === FileMessageVariant.Default ? (
@@ -94,6 +96,8 @@ const DefaultFileMessage: FC<DefaultFileMessageProps> = ({
   fileExtension: typeFile,
   onClick,
 }) => {
+  // TODO: Use more assert here when already merged https://github.com/yurixander/mirage/pull/72 @lazaroysr96
+
   return (
     <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2">
       <div className="flex w-full items-center gap-2">
@@ -151,6 +155,8 @@ const UploadFileMessage: FC<UploadFileMessageProps> = ({
   fileSize,
   onClick,
 }) => {
+  // TODO: Use more assert here when already merged https://github.com/yurixander/mirage/pull/72 @lazaroysr96
+
   return (
     <div className="flex w-messageMaxWidth rounded border bg-slate-100 p-2">
       <div className="flex w-full items-center gap-2">

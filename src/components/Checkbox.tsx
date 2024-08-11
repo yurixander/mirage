@@ -1,4 +1,5 @@
 import useSelectionToggle from "@/hooks/util/useSelectionToggle"
+import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -17,6 +18,10 @@ const Checkbox: FC<CheckboxProps> = ({
 }) => {
   const {handleSelectionChanged, handleKeyDown, isSelected} =
     useSelectionToggle(isInitiallySelected, onSelectionChange)
+
+  if (label !== undefined) {
+    assert(label.length > 0, "The label should not be empty.")
+  }
 
   return (
     <div className="flex size-max items-center gap-1">

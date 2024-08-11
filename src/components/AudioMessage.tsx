@@ -43,6 +43,8 @@ const AudioMessage: FC<AudioMessageProps> = ({
     assert(validateUrl(audioUrl), "The audio url should be valid.")
   }
 
+  assert(messageId.length > 0, CommonAssertion.MessageIdEmpty)
+
   const waveformRef = useRef(null)
   const [error, setError] = useState(audioUrl === undefined)
   const {audioPlayingId, setAudioPlayingId, stopPlayer} = useAudioPlayerStore()

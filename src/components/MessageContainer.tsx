@@ -54,6 +54,11 @@ const MessageContainer: FC<MessageContainerProps> = ({
     assert(validateUrl(authorAvatarUrl), CommonAssertion.AvatarUrlNotValid)
   }
 
+  assert(
+    authorDisplayName.length > 0,
+    "The author display name should not be empty."
+  )
+
   return (
     <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">

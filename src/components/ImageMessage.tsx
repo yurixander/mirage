@@ -5,7 +5,7 @@ import MessageContainer, {
 } from "./MessageContainer"
 import {IoIosAlert} from "react-icons/io"
 import ContextMenu from "./ContextMenu"
-import {assert, validateUrl} from "@/utils/util"
+import {assert, CommonAssertion, validateUrl} from "@/utils/util"
 
 export interface ImageMessageProps extends MessageBaseProps {
   imageUrl?: string
@@ -30,6 +30,8 @@ const ImageMessage: FC<ImageMessageProps> = ({
   if (imageUrl !== undefined) {
     assert(validateUrl(imageUrl), "The image url should be valid.")
   }
+
+  assert(messageId.length > 0, CommonAssertion.MessageIdEmpty)
 
   const content = (
     <div className="flex flex-col pt-1">

@@ -1,4 +1,5 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
+import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -23,6 +24,10 @@ const Room: FC<RoomProps> = ({
   emoji,
   isSelected = false,
 }) => {
+  assert(roomName.length > 0, "Room name should not be empty.")
+  assert(roomId.length > 0, "Room id should not be empty.")
+  assert(emoji.length === 1, "The emoji should be a single character.")
+
   return (
     <button
       onClick={() => {

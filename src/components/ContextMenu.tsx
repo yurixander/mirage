@@ -6,6 +6,7 @@ import {create} from "zustand"
 import useClickOutside from "@/hooks/util/useClickOutside"
 import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
+import {assert} from "@/utils/util"
 
 export type ContextMenuItem = {
   text: string
@@ -69,6 +70,8 @@ const ContextMenu: FC<ContextMenuProps> = ({
   const onShowMenu = (event: React.MouseEvent<HTMLDivElement>): void => {
     showMenu(id, event)
   }
+
+  assert(id.length > 0, "The context menu id should not be empty.")
 
   return (
     <>
