@@ -2,53 +2,67 @@ import {type FC} from "react"
 import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
 import TextMessage from "./TextMessage"
 import Typography, {TypographyVariant} from "./Typography"
-import {type MessageBaseProps} from "./MessageContainer"
-import {cleanDisplayName} from "@/utils/util"
+import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
+import {cleanDisplayName, stringToColor} from "@/utils/util"
 
 export interface ReplyMessageProps extends MessageBaseProps {
-  fromMessage: MessageBaseProps
-  onFromMessageClick: () => void
+  onSecondaryMessageClick: () => void
+  text: string
+  secondaryText: string
+  secondaryUserDisplayName: string
+  secondaryMessageId?: string
+  secondaryAvatarUrl?: string
+}
+
+export interface ReplyMessageData extends MessageBaseData {
+  text: string
+  secondaryText: string
+  secondaryUserDisplayName: string
+  secondaryMessageId?: string
+  secondaryAvatarUrl?: string
 }
 
 const ReplyMessage: FC<ReplyMessageProps> = ({
-  fromMessage,
   authorDisplayName,
   authorDisplayNameColor,
   contextMenuItems,
-  id,
+  messageId,
   onAuthorClick,
   text,
   timestamp,
   authorAvatarUrl,
-  onFromMessageClick,
+  onSecondaryMessageClick,
+  secondaryMessageId,
+  secondaryText,
+  secondaryUserDisplayName,
+  secondaryAvatarUrl,
 }) => {
   return (
     <div className="flex flex-col">
       <div className="flex w-messageMaxWidth items-end">
         <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200" />
         <button
-          onClick={onFromMessageClick}
+          onClick={onSecondaryMessageClick}
           className="-mt-1 flex items-center gap-1 overflow-hidden rounded-lg bg-gray-50 p-2 px-3 text-left hover:bg-gray-100">
           <AvatarImage
             avatarType={AvatarType.Message}
-            displayName={fromMessage.authorDisplayName}
+            displayName={secondaryUserDisplayName}
             isRounded={false}
             avatarSize={AvatarSize.ExtraSmall}
-            avatarUrl={fromMessage.authorAvatarUrl}
+            avatarUrl={secondaryAvatarUrl}
           />
 
           <Typography
             className="w-max shrink-0 select-text font-bold"
-            style={{color: fromMessage.authorDisplayNameColor}}
-            onClick={fromMessage.onAuthorClick}
+            style={{color: stringToColor(secondaryUserDisplayName)}}
             variant={TypographyVariant.BodySmall}>
-            {cleanDisplayName(fromMessage.authorDisplayName)}
+            {cleanDisplayName(secondaryUserDisplayName)}
           </Typography>
 
           <Typography
             className="shrink-0"
             variant={TypographyVariant.BodySmall}>
-            {fromMessage.text.slice(0, 50)}
+            {secondaryText}
           </Typography>
         </button>
       </div>
@@ -57,7 +71,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
         authorDisplayName={authorDisplayName}
         authorDisplayNameColor={authorDisplayNameColor}
         contextMenuItems={contextMenuItems}
-        id={id}
+        messageId={messageId}
         onAuthorClick={onAuthorClick}
         text={text}
         timestamp={timestamp}

@@ -11,6 +11,9 @@ import {
 import {
   assert,
   emojiRandom,
+  extractReplyMessageFromBody,
+  extractSecondaryReplyMessageFromBody,
+  extractSecondaryUserFromBody,
   getFileUrl,
   getImageUrl,
   normalizeName,
@@ -575,6 +578,29 @@ export const handleMessage = async (
 
   switch (eventContent.msgtype) {
     case MsgType.Text: {
+      const relates = eventContent["m.relates_to"]
+
+      if (relates !== undefined) {
+        const reply = relates["m.in_reply_to"]
+
+        if (reply !== undefined) {
+          const body: string =
+            eventContent.body ??
+            "> <User not found> Message not found\n\nMessage not found"
+
+          return {
+            kind: MessageKind.Reply,
+            data: {
+              ...messageBaseProperties,
+              text: extractReplyMessageFromBody(body),
+              secondaryMessageId: reply.event_id,
+              secondaryText: extractSecondaryReplyMessageFromBody(body),
+              secondaryUserDisplayName: extractSecondaryUserFromBody(body),
+            },
+          }
+        }
+      }
+
       return {
         kind: MessageKind.Text,
         data: {

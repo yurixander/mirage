@@ -13,6 +13,7 @@ import ImageModal from "./ImageModal"
 import {buildMessageMenuItems} from "@/utils/menu"
 import FileMessage from "@/components/FileMessage"
 import AudioMessage from "@/components/AudioMessage"
+import ReplyMessage from "@/components/ReplyMessage"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -37,6 +38,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 
   const messageElements = useMemo(
     () =>
+      // eslint-disable-next-line sonarjs/cognitive-complexity
       messages.map((message, index) =>
         message.kind === MessageKind.Text ? (
           <TextMessage
@@ -58,6 +60,28 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
             onAuthorClick={() => {
               // TODO: Handle `onAuthorClick` for `TextMessage`.
             }}
+          />
+        ) : message.kind === MessageKind.Reply ? (
+          <ReplyMessage
+            key={message.data.messageId}
+            {...message.data}
+            contextMenuItems={buildMessageMenuItems({
+              isMessageError: message.data.isDeleted === true,
+              canDeleteMessage: message.data.canDeleteMessage === true,
+              onReplyMessage() {
+                // TODO: Handle reply
+              },
+              onResendMessage() {
+                // TODO: Handle resend message here.
+              },
+              onDeleteMessage() {
+                // deleteMessage(room.client, room.roomId, eventId)
+              },
+            })}
+            onAuthorClick={() => {
+              // TODO: Handle `onAuthorClick` for `TextMessage`.
+            }}
+            onSecondaryMessageClick={() => {}}
           />
         ) : message.kind === MessageKind.Image ? (
           <ImageMessage
