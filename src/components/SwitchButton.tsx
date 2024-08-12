@@ -1,4 +1,5 @@
 import useSelectionToggle from "@/hooks/util/useSelectionToggle"
+import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -17,6 +18,10 @@ const SwitchButton: FC<SwitchButtonProps> = ({
 }) => {
   const {isSelected, handleSelectionChanged, handleKeyDown} =
     useSelectionToggle(isInitiallySelected, onSelectionChange)
+
+  if (label !== undefined) {
+    assert(label.length > 0, "Switch button label should not be empty.")
+  }
 
   return (
     <div

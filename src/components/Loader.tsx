@@ -1,6 +1,7 @@
 import {type FC} from "react"
 import Typography from "./Typography"
 import {twMerge} from "tailwind-merge"
+import {assert} from "@/utils/util"
 
 export type LoaderProps = {
   text: string
@@ -8,6 +9,8 @@ export type LoaderProps = {
 }
 
 const Loader: FC<LoaderProps> = ({text, className}) => {
+  assert(text.length > 0, "Loader text should not be empty.")
+
   return (
     <div
       className={twMerge(

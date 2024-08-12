@@ -1,4 +1,4 @@
-import {stringToColor, formatTime} from "@/utils/util"
+import {stringToColor, formatTime, assert, validateUrl} from "@/utils/util"
 import {type FC} from "react"
 import {IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
@@ -34,6 +34,15 @@ const Notification: FC<NotificationProps> = ({
   senderAvatarUrl,
   notificationId,
 }) => {
+  assert(notificationId.length > 0, "Notification id should not be empty.")
+
+  if (senderAvatarUrl !== undefined) {
+    assert(
+      validateUrl(senderAvatarUrl),
+      "Sender avatar url should be valid if defined."
+    )
+  }
+
   return (
     <div
       className={twMerge(

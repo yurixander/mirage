@@ -16,7 +16,7 @@ const Dropdown: FC<DropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const {dropdownRef} = useClickOutside<HTMLDivElement>(() => {
+  const {elementRef: dropdownRef} = useClickOutside<HTMLDivElement>(() => {
     setIsOpen(false)
   })
 

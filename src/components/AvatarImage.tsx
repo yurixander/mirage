@@ -1,3 +1,4 @@
+import {assert, CommonAssertion, validateUrl} from "@/utils/util"
 import Avatar from "boring-avatars"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
@@ -37,6 +38,15 @@ const AvatarImage: FC<AvatarProps> = ({
 }) => {
   const isAvatarMessage = avatarType === AvatarType.Message
   const isProfile = avatarType === AvatarType.Profile
+
+  if (avatarUrl !== undefined) {
+    assert(validateUrl(avatarUrl), CommonAssertion.AvatarUrlNotValid)
+  }
+
+  assert(
+    displayName.length > 0,
+    "AvatarImage display name should not be empty."
+  )
 
   return avatarUrl === undefined ? (
     <div
