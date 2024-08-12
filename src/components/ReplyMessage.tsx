@@ -60,7 +60,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
           </Typography>
 
           <Typography
-            className="shrink-0"
+            className="line-clamp-1 max-w-40 shrink-0"
             variant={TypographyVariant.BodySmall}>
             {secondaryText}
           </Typography>
