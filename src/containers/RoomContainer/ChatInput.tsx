@@ -34,6 +34,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
     messageText,
     setMessageText,
     isDisabled,
+    isInputDisabled,
     sendTextMessage,
     openFilePicker,
     imagePreviewProps,
@@ -116,6 +117,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           placeholder="Write a message or simply say 👋🏼 hello..."
           value={messageText}
           rows={1}
+          disabled={isInputDisabled}
           onChange={event => {
             setMessageText(event.target.value)
           }}
@@ -134,13 +136,14 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         />
 
         <IoIosHappy
+          role="button"
           className={twMerge(
             BUTTON_SIZE_CLASS,
-            points === null ? "text-slate-300" : "text-blue-500"
+            points === null ? "text-slate-300" : "text-blue-500",
+            isInputDisabled && "cursor-not-allowed opacity-75"
           )}
-          role="button"
           onClick={event => {
-            if (points !== null) {
+            if (points !== null || isInputDisabled) {
               clearPoints()
 
               return
@@ -151,20 +154,28 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
         />
 
         <IoMic
-          className={twMerge("text-slate-300", BUTTON_SIZE_CLASS)}
           role="button"
+          className={twMerge(
+            "text-slate-300",
+            isInputDisabled && "cursor-not-allowed opacity-75",
+            BUTTON_SIZE_CLASS
+          )}
           onClick={() => {
+            if (isInputDisabled) {
+              // TODO: return
+            }
+
             // TODO: Handle capture audio.
           }}
         />
 
         <IoSend
+          role="button"
           className={twMerge(
             "text-blue-500",
-            BUTTON_SIZE_CLASS,
-            isDisabled && "cursor-not-allowed opacity-50"
+            isDisabled && "cursor-not-allowed opacity-50",
+            BUTTON_SIZE_CLASS
           )}
-          role="button"
           onClick={() => {
             if (isDisabled) {
               return
