@@ -8,18 +8,25 @@ import useConnection from "@/hooks/matrix/useConnection"
 
 export type UseRoomMembersReturnType = {
   sections: MemberSection[]
-  isMemberLoading: boolean
+  isMembersLoading: boolean
+  isMembersError: boolean
+}
+
+enum MembersState {
+  Idle,
+  Loading,
+  Error,
 }
 
 const useRoomMembers = (roomId: string): UseRoomMembersReturnType => {
   const {client} = useConnection()
   const isMountedReference = useIsMountedRef()
   const [sections, setSections] = useState<MemberSection[]>([])
-  const [isMemberLoading, setMemberLoading] = useState(false)
+  const [membersState, setMembersState] = useState(MembersState.Idle)
 
   const fetchRoomMembers = useCallback(
     async (activeRoom: Room) => {
-      setMemberLoading(true)
+      setMembersState(MembersState.Loading)
 
       try {
         const newMembers = await getRoomMembers(activeRoom)
@@ -49,10 +56,12 @@ const useRoomMembers = (roomId: string): UseRoomMembersReturnType => {
           setSections(groupedMembers)
         }
       } catch (error) {
+        setMembersState(MembersState.Error)
+
         console.error("Error fetching room members:", error)
       } finally {
         if (isMountedReference.current) {
-          setMemberLoading(false)
+          setMembersState(MembersState.Idle)
         }
       }
     },
@@ -75,7 +84,8 @@ const useRoomMembers = (roomId: string): UseRoomMembersReturnType => {
 
   return {
     sections,
-    isMemberLoading,
+    isMembersLoading: membersState === MembersState.Loading,
+    isMembersError: membersState === MembersState.Error,
   }
 }
 

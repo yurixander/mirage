@@ -22,7 +22,7 @@ export type RosterProps = {
 }
 
 const Roster: FC<RosterProps> = ({roomId, className}) => {
-  const {sections, isMemberLoading} = useRoomMembers(roomId)
+  const {sections, isMembersLoading, isMembersError} = useRoomMembers(roomId)
 
   return (
     <div className={className}>
@@ -47,8 +47,9 @@ const Roster: FC<RosterProps> = ({roomId, className}) => {
       </header>
 
       <MemberList
-        className="m-2 w-52"
-        isLoading={isMemberLoading}
+        className="w-52"
+        isLoading={isMembersLoading}
+        isError={isMembersError}
         sections={sections}
       />
     </div>
