@@ -26,6 +26,7 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
+    "@tippyjs/react": "^4.2.6",
     "@wavesurfer/react": "^1.0.7",
     "axios": "^1.6.7",
     "boring-avatars": "^1.10.1",
