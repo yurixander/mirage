@@ -76,6 +76,8 @@ const useRoomMembers = (roomId: string): UseRoomMembersReturnType => {
     const activeRoom = client.getRoom(roomId)
 
     if (activeRoom === null) {
+      setMembersState(MembersState.Error)
+
       return
     }
 
