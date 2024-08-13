@@ -15,7 +15,6 @@ module.exports = {
     "plugin:unicorn/recommended",
     "plugin:deprecation/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:boundaries/recommended",
     "plugin:functional/external-typescript-recommended",
     "plugin:import/typescript",
     "plugin:no-use-extend-native/recommended",
@@ -24,13 +23,7 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs", "postcss.config.js"],
   parser: "@typescript-eslint/parser",
-  plugins: [
-    "prettier",
-    "boundaries",
-    "write-good-comments",
-    "functional",
-    "promise",
-  ],
+  plugins: ["prettier", "write-good-comments", "functional", "promise"],
   rules: {
     "prettier/prettier": "error",
     "@typescript-eslint/explicit-function-return-type": "error",
@@ -75,12 +68,5 @@ module.exports = {
         extensions: [".ts", ".tsx"],
       },
     },
-    "boundaries/elements": [
-      {
-        type: "components",
-        pattern: "components/*/*",
-        capture: ["family", "elementName"],
-      },
-    ],
   },
 }
