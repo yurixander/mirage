@@ -43,7 +43,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
         <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200" />
         <button
           onClick={onSecondaryMessageClick}
-          className="-mt-1 flex items-center gap-1 overflow-hidden rounded-lg bg-gray-50 p-2 px-3 text-left hover:bg-gray-100">
+          className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100">
           <AvatarImage
             avatarType={AvatarType.Message}
             displayName={secondaryUserDisplayName}
