@@ -3,7 +3,7 @@ import tippy, {type Instance, type Props} from "tippy.js"
 
 type UseErrorTooltipReturnType<T> = {
   renderRef: React.RefObject<T>
-  showErrorTooltip: () => void
+  showErrorTooltip: (msg: string) => void
 }
 
 const TOOLTIP_ERROR_PROPS: Partial<Props> = {
@@ -16,8 +16,6 @@ const TOOLTIP_ERROR_PROPS: Partial<Props> = {
 }
 
 const useErrorTooltip = <T>(
-  errorMsg: string,
-  hasError: boolean,
   optionalProps?: Partial<Props>
 ): UseErrorTooltipReturnType<T> => {
   const renderRef = useRef<T>(null)
@@ -41,28 +39,17 @@ const useErrorTooltip = <T>(
 
       return tippy(
         render,
-        optionalProps ?? {content: errorMsg, ...TOOLTIP_ERROR_PROPS}
+        optionalProps ?? {content: "Error", ...TOOLTIP_ERROR_PROPS}
       )
     })
-  }, [errorMsg, optionalProps])
+  }, [optionalProps])
 
-  useEffect(() => {
+  const showErrorTooltip = (msg: string): void => {
     if (tippyInstance === null) {
       return
     }
 
-    if (hasError) {
-      tippyInstance.show()
-    } else if (tippyInstance.state.isShown) {
-      tippyInstance.hide()
-    }
-  }, [hasError, tippyInstance])
-
-  const showErrorTooltip = (): void => {
-    if (tippyInstance === null) {
-      return
-    }
-
+    tippyInstance.setContent(msg)
     tippyInstance.show()
   }
 
