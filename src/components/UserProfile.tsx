@@ -16,8 +16,6 @@ export type UserProfileProps = {
   className?: string
 }
 
-// TODO: Fix with new `AvatarImage`
-
 const UserProfile: FC<UserProfileProps> = ({
   displayName,
   displayNameColor,
@@ -35,6 +33,11 @@ const UserProfile: FC<UserProfileProps> = ({
     )
   }
 
+  assert(
+    displayName.length > 0,
+    "User profile display name should not be empty."
+  )
+
   const MAX_DISPLAY_NAME_LENGTH = 16
 
   const typographyVariant = isLarge
@@ -43,6 +46,7 @@ const UserProfile: FC<UserProfileProps> = ({
 
   return (
     <div className={twMerge("flex gap-2", className)}>
+      {/* TODO: Fix `AvatarImage` with new variants implemented in https://github.com/yurixander/mirage/pull/56 @lazaroysr96 */}
       <AvatarImage
         isRounded={false}
         avatarSize={AvatarSize.Normal}

@@ -1,3 +1,4 @@
+import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -7,6 +8,8 @@ type Properties = {
 }
 
 const StatusMessage: FC<Properties> = ({className, text}) => {
+  assert(text.length > 0, "Status message text should not be empty.")
+
   return (
     <div
       className={twMerge(

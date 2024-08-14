@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import {formatTime, stringToColor} from "../utils/util"
+import {assert, formatTime, stringToColor} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
 import Typography from "./Typography"
 import ContextMenu, {ClickActions} from "./ContextMenu"
@@ -34,6 +34,15 @@ const EventMessage: FC<EventMessageProps> = ({
   onShowMember,
 }) => {
   const Icon = icon ?? IoMdCreate
+
+  assert(eventId.length > 0, "Event id should not be empty.")
+  assert(sender.userId.length > 0, "Sender user id should not be empty.")
+  assert(body.length > 0, "Event message body should not be empty.")
+
+  assert(
+    sender.displayName.length > 0,
+    "Sender display name should not be empty."
+  )
 
   return (
     <div className="flex items-center gap-3">

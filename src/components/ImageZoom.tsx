@@ -1,3 +1,4 @@
+import {assert, validateUrl} from "@/utils/util"
 import React, {type FC, useState} from "react"
 
 export type ImageZoomProps = {
@@ -20,6 +21,10 @@ const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
   const [zoom, setZoom] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(DEFAULT_ZOOM_LEVEL)
   const [position, setPosition] = useState<ImagePoints>({x: 0, y: 0})
+
+  if (src !== undefined) {
+    assert(validateUrl(src), "The src url should should be valid if defined.")
+  }
 
   // When in zoom state, move the zoom to where the cursor is.
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>): void => {

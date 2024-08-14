@@ -1,5 +1,11 @@
 import {type FC} from "react"
-import {cleanDisplayName, formatTime} from "../utils/util"
+import {
+  assert,
+  cleanDisplayName,
+  CommonAssertion,
+  formatTime,
+  validateUrl,
+} from "../utils/util"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
 import Typography, {TypographyVariant} from "./Typography"
@@ -43,6 +49,15 @@ const MessageContainer: FC<MessageContainerProps> = ({
   onAuthorClick,
 }) => {
   const localeTimeString = formatTime(timestamp)
+
+  if (authorAvatarUrl !== undefined) {
+    assert(validateUrl(authorAvatarUrl), CommonAssertion.AvatarUrlNotValid)
+  }
+
+  assert(
+    authorDisplayName.length > 0,
+    "The author display name should not be empty."
+  )
 
   return (
     <div className="flex w-full items-start justify-start">

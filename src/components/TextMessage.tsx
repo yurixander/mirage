@@ -5,6 +5,7 @@ import MessageContainer, {
 } from "./MessageContainer"
 import ContextMenu from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
+import {assert, CommonAssertion} from "@/utils/util"
 
 export interface TextMessageProps extends MessageBaseProps {
   text: string
@@ -25,6 +26,9 @@ const TextMessage: FC<TextMessageProps> = ({
   contextMenuItems,
   messageId,
 }) => {
+  assert(text.length > 0, "Text message text should not be empty.")
+  assert(messageId.length > 0, CommonAssertion.MessageIdEmpty)
+
   return (
     <MessageContainer
       authorDisplayName={authorDisplayName}

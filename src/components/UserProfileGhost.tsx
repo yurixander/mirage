@@ -1,3 +1,4 @@
+import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -16,6 +17,8 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
     {length: count},
     (_, num) => num * opacityMultiplier
   )
+
+  assert(count > 0, "User profile ghost count should not be zero.")
 
   return (
     <div className={twMerge("flex flex-col gap-2 p-1", className)}>
