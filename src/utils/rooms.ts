@@ -284,68 +284,31 @@ export const handleMemberEvent = (
 
   switch (eventContent.membership) {
     case KnownMembership.Join: {
-      if (
-        previousMembership === KnownMembership.Invite ||
-        previousMembership !== KnownMembership.Join
-      ) {
-        return {
-          body: "has joined to the room",
-          icon: IoPeopleCircle,
-        }
-      } else if (
-        previousDisplayName !== undefined &&
-        displayName !== previousDisplayName
-      ) {
-        return {
-          icon: IoPeopleCircle,
-          body:
-            displayName === undefined
-              ? "has change the name"
-              : `has change the name to ${displayName}`,
-        }
-      } else if (
-        eventContent.avatar_url !== undefined &&
-        previousContent?.avatar_url === undefined
-      ) {
-        return {
-          body: "has put a profile photo",
-          icon: IoPeopleCircle,
-        }
-      } else if (
-        eventContent.avatar_url !== undefined &&
-        eventContent.avatar_url !== previousContent?.avatar_url
-      ) {
-        return {
-          body: "has change to the profile photo",
-          icon: IoPeopleCircle,
-        }
-      } else if (
-        eventContent.avatar_url === undefined &&
-        previousContent?.avatar_url !== undefined
-      ) {
-        return {
-          body: "has remove the profile photo",
-          icon: IoPeopleCircle,
-        }
-      }
-
-      break
+      return handleMemberJoin(eventContent, previousContent)
     }
-
     case KnownMembership.Invite: {
       return {
-        body: `invited ${displayName}`,
         icon: IoPeopleCircle,
+        body:
+          displayName === undefined
+            ? `invited ${stateKey}`
+            : `invited ${displayName}`,
       }
     }
-
     case KnownMembership.Ban: {
+      if (previousDisplayName === undefined) {
+        return null
+      }
+
       return {
-        body: `has banned ${previousDisplayName}: ${eventContent.reason}`,
         icon: IoPeopleCircle,
+        body:
+          typeof eventContent.reason !== "string" ||
+          eventContent.reason.length === 0
+            ? `has banned ${previousDisplayName}`
+            : `has banned ${previousDisplayName}: ${eventContent.reason}`,
       }
     }
-
     case KnownMembership.Leave: {
       const memberLeaveBody = handleMemberLeave(
         stateKey,
@@ -371,7 +334,65 @@ export const handleMemberEvent = (
   return null
 }
 
-export function handleMemberLeave(
+function handleMemberJoin(
+  eventContent: IContent,
+  previousContent: IContent
+): EventMessagePartial | null {
+  const displayName = eventContent.displayname
+  const previousMembership = previousContent.membership
+  const previousDisplayName = previousContent.displayname
+
+  if (
+    previousMembership === KnownMembership.Invite ||
+    previousMembership !== KnownMembership.Join
+  ) {
+    return {
+      body: "has joined to the room",
+      icon: IoPeopleCircle,
+    }
+  } else if (
+    previousDisplayName !== undefined &&
+    displayName !== previousDisplayName
+  ) {
+    return {
+      icon: IoPeopleCircle,
+      body:
+        displayName === undefined
+          ? "has change the name"
+          : `has change the name to ${displayName}`,
+    }
+  } else if (
+    eventContent.avatar_url !== undefined &&
+    previousContent?.avatar_url === undefined
+  ) {
+    return {
+      body: "has put a profile photo",
+      icon: IoPeopleCircle,
+    }
+  } else if (
+    eventContent.avatar_url !== undefined &&
+    eventContent.avatar_url !== previousContent?.avatar_url
+  ) {
+    return {
+      body: "has change to the profile photo",
+      icon: IoPeopleCircle,
+    }
+  } else if (
+    eventContent.avatar_url === undefined &&
+    previousContent?.avatar_url !== undefined
+  ) {
+    return {
+      body: "has remove the profile photo",
+      icon: IoPeopleCircle,
+    }
+  } else {
+    console.warn("Unknown event for membership:", eventContent)
+
+    return null
+  }
+}
+
+function handleMemberLeave(
   stateKey: string | undefined,
   eventContent: IContent,
   previousMembership?: string
@@ -529,7 +550,7 @@ export const handleRoomCanonicalAliasEvent = async (
   return {
     icon: IoAtCircle,
     body:
-      eventContent.alias === undefined
+      eventContent.alias === undefined || typeof eventContent.alias !== "string"
         ? "has remove the main address for this room"
         : `set the main address for this room as ${eventContent.alias}`,
   }
