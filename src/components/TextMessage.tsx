@@ -7,14 +7,11 @@ import ContextMenu from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
 import {assert, CommonAssertion} from "@/utils/util"
 
-export interface TextMessageProps extends MessageBaseProps {
+export interface TextMessageData extends MessageBaseData {
   text: string
 }
 
-export interface TextMessageData extends MessageBaseData {
-  text: string
-  isDeleted?: boolean
-}
+export interface TextMessageProps extends MessageBaseProps, TextMessageData {}
 
 const TextMessage: FC<TextMessageProps> = ({
   authorAvatarUrl,
@@ -25,6 +22,7 @@ const TextMessage: FC<TextMessageProps> = ({
   timestamp,
   contextMenuItems,
   messageId,
+  userId,
 }) => {
   assert(text.length > 0, "Text message text should not be empty.")
   assert(messageId.length > 0, CommonAssertion.MessageIdEmpty)
@@ -35,7 +33,8 @@ const TextMessage: FC<TextMessageProps> = ({
       authorDisplayNameColor={authorDisplayNameColor}
       authorAvatarUrl={authorAvatarUrl}
       timestamp={timestamp}
-      onAuthorClick={onAuthorClick}>
+      onAuthorClick={onAuthorClick}
+      userId={userId}>
       <ContextMenu id={`text-message-${messageId}`} elements={contextMenuItems}>
         <Typography
           className="max-w-messageMaxWidth cursor-text select-text break-words"

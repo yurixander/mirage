@@ -2,28 +2,17 @@ import {useEffect, useRef, useState, type FC} from "react"
 import {IoAlertCircle, IoPause, IoPlay} from "react-icons/io5"
 import Typography from "./Typography"
 import AvatarImage, {AvatarType} from "./AvatarImage"
-import ContextMenu, {type ContextMenuItem} from "./ContextMenu"
+import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion, formatTime, validateUrl} from "@/utils/util"
 import IconButton from "./IconButton"
 import {useWavesurfer} from "@wavesurfer/react"
 import useAudioPlayerStore from "@/hooks/util/useAudioPlayerStore"
+import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
 
-export type AudioMessageProps = {
-  audioUrl?: string
-  authorDisplayName: string
-  timestamp: number
-  messageId: string
-  contextMenuItems: ContextMenuItem[]
-  onAuthorClick: () => void
-  authorAvatarUrl?: string
-}
+export interface AudioMessageProps extends MessageBaseProps, AudioMessageData {}
 
-export type AudioMessageData = {
+export interface AudioMessageData extends MessageBaseData {
   audioUrl?: string
-  authorDisplayName: string
-  timestamp: number
-  messageId: string
-  authorAvatarUrl?: string
 }
 
 const AudioMessage: FC<AudioMessageProps> = ({
@@ -34,16 +23,13 @@ const AudioMessage: FC<AudioMessageProps> = ({
   authorAvatarUrl,
   authorDisplayName,
   messageId,
+  userId,
 }) => {
-  if (authorAvatarUrl !== undefined) {
-    assert(validateUrl(authorAvatarUrl), CommonAssertion.AvatarUrlNotValid)
-  }
+  assert(messageId.length > 0, CommonAssertion.MessageIdEmpty)
 
   if (audioUrl !== undefined) {
     assert(validateUrl(audioUrl), "The audio url should be valid.")
   }
-
-  assert(messageId.length > 0, CommonAssertion.MessageIdEmpty)
 
   const waveformRef = useRef(null)
   const [error, setError] = useState(audioUrl === undefined)
@@ -146,7 +132,12 @@ const AudioMessage: FC<AudioMessageProps> = ({
           <div className="ml-auto flex shrink-0 items-center gap-2">
             <Typography>{formatTime(timestamp)}</Typography>
 
-            <div role="button" onClick={onAuthorClick} aria-hidden>
+            <div
+              role="button"
+              onClick={() => {
+                onAuthorClick(userId)
+              }}
+              aria-hidden>
               <AvatarImage
                 isRounded
                 avatarType={AvatarType.Profile}
