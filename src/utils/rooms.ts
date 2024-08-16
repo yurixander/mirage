@@ -172,7 +172,7 @@ export const handleRoomEvents = async (
   const allMessageProperties: AnyMessage[] = []
 
   for (const event of events) {
-    const messageProperties = await handleEvent(event, roomHistory)
+    const messageProperties = await handleRoomMessageEvent(event, roomHistory)
 
     if (messageProperties === null) {
       continue
@@ -193,7 +193,7 @@ export const handleRoomEvents = async (
   return allMessageProperties
 }
 
-export const handleEvent = async (
+export const handleRoomMessageEvent = async (
   event: MatrixEvent,
   room: Room
 ): Promise<AnyMessage | null> => {
@@ -219,6 +219,7 @@ export const handleEvent = async (
       timestamp: event.localTimestamp,
       body: eventMessageData.body,
       icon: eventMessageData.icon ?? undefined,
+      type: event.getType(),
       sender: {
         displayName: event.sender.name,
         userId: event.sender.userId,
@@ -296,8 +297,11 @@ export const handleMemberEvent = (
         displayName !== previousDisplayName
       ) {
         return {
-          body: `has change the name to ${displayName}`,
           icon: IoPeopleCircle,
+          body:
+            displayName === undefined
+              ? "has change the name"
+              : `has change the name to ${displayName}`,
         }
       } else if (
         eventContent.avatar_url !== undefined &&
@@ -327,18 +331,21 @@ export const handleMemberEvent = (
 
       break
     }
+
     case KnownMembership.Invite: {
       return {
         body: `invited ${displayName}`,
         icon: IoPeopleCircle,
       }
     }
+
     case KnownMembership.Ban: {
       return {
         body: `has banned ${previousDisplayName}: ${eventContent.reason}`,
         icon: IoPeopleCircle,
       }
     }
+
     case KnownMembership.Leave: {
       const memberLeaveBody = handleMemberLeave(
         stateKey,
@@ -346,7 +353,6 @@ export const handleMemberEvent = (
         previousMembership
       )
 
-      // TODO: Handle error here instead throwing null.
       if (memberLeaveBody === null) {
         return null
       }
@@ -356,6 +362,7 @@ export const handleMemberEvent = (
         icon: IoPeopleCircle,
       }
     }
+
     default: {
       console.warn("Unknown membership type:", eventContent.membership)
     }
@@ -373,7 +380,6 @@ export function handleMemberLeave(
     case KnownMembership.Invite: {
       const userForCanceled = eventContent.displayname ?? stateKey
 
-      // TODO: Show error when not have userForCanceled.
       if (userForCanceled === undefined) {
         return null
       }
@@ -381,7 +387,6 @@ export function handleMemberLeave(
       return `has canceled the invitation to ${userForCanceled}`
     }
     case KnownMembership.Ban: {
-      // TODO: Show error when state key is undefined.
       if (stateKey === undefined) {
         return null
       }
@@ -392,6 +397,8 @@ export function handleMemberLeave(
       return `has left the room`
     }
     default: {
+      console.warn("Unknown previousMembership type:", eventContent.membership)
+
       return null
     }
   }
@@ -427,10 +434,10 @@ export const handleGuestAccessEvent = async (
     }
     default: {
       console.warn("Unknown guest access type:", eventContent.guest_access)
+
+      return null
     }
   }
-
-  return null
 }
 
 export const handleJoinRulesEvent = async (
@@ -457,10 +464,10 @@ export const handleJoinRulesEvent = async (
     }
     default: {
       console.warn("Unknown join rule:", eventContent.join_rule)
+
+      return null
     }
   }
-
-  return null
 }
 
 export const handleRoomTopicEvent = async (
@@ -471,7 +478,7 @@ export const handleRoomTopicEvent = async (
   return {
     icon: IoIosText,
     body:
-      topic === undefined
+      topic === undefined || typeof topic !== "string" || topic.length === 0
         ? `has remove the topic of the room`
         : `has change to the topic to <<${topic}>>`,
   }
@@ -505,9 +512,15 @@ export const handleHistoryVisibilityEvent = async (
         icon: IoReceipt,
       }
     }
-  }
+    default: {
+      console.warn(
+        "Unknown history visibility:",
+        eventContent.history_visibility
+      )
 
-  return null
+      return null
+    }
+  }
 }
 
 export const handleRoomCanonicalAliasEvent = async (
@@ -528,7 +541,9 @@ export const handleRoomAvatarEvent = async (
   return {
     icon: IoPersonCircle,
     body:
-      eventContent.url === undefined
+      eventContent.url === undefined ||
+      typeof eventContent.url !== "string" ||
+      eventContent.url.length === 0
         ? "has remove the avatar for this room"
         : "changed the avatar of the room",
   }
@@ -540,7 +555,9 @@ export const handleRoomNameEvent = async (
   return {
     icon: IoPencil,
     body:
-      eventContent.name === undefined
+      eventContent.name === undefined ||
+      typeof eventContent.name !== "string" ||
+      eventContent.name.length === 0
         ? "has changed the room name"
         : `has changed the room name to ${eventContent.name}`,
   }
@@ -604,6 +621,8 @@ export const handleMessage = async (
       const fileUrl = eventContent.url
 
       if (typeof fileUrl !== "string") {
+        console.warn("File url should be valid,", eventContent.url)
+
         return null
       }
 
@@ -619,9 +638,8 @@ export const handleMessage = async (
     }
 
     case MsgType.Audio: {
-      const audioUrl = event.getContent().url
+      const audioUrl = eventContent.url
 
-      // TODO: Throw `MessageError` component instead null.
       if (typeof audioUrl !== "string") {
         return null
       }
@@ -668,7 +686,7 @@ const convertToMessageDeleted = (
   const reason = event.getUnsigned().redacted_because?.content.reason
 
   const text =
-    reason === undefined
+    reason === undefined || typeof reason !== "string" || reason.length === 0
       ? `${deletedByUser} has delete this message`
       : `${deletedByUser} has delete this message because <<${reason}>>`
 

@@ -10,7 +10,7 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
-import {handleEvent, handleRoomEvents} from "@/utils/rooms"
+import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl} from "@/utils/util"
 import {type Room, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
@@ -135,7 +135,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       return
     }
 
-    void handleEvent(event, room).then(messageOrEvent => {
+    void handleRoomMessageEvent(event, room).then(messageOrEvent => {
       if (messageOrEvent === null) {
         return
       }
