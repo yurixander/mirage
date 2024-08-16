@@ -6,20 +6,19 @@ import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
 import {cleanDisplayName, stringToColor} from "@/utils/util"
 
 export interface ReplyMessageProps extends MessageBaseProps {
-  onSecondaryMessageClick: () => void
   text: string
-  secondaryText: string
-  secondaryUserDisplayName: string
-  secondaryMessageId?: string
-  secondaryAvatarUrl?: string
+  quotedText: string
+  quotedUserDisplayName: string
+  quotedMessageId?: string
+  quotedAvatarUrl?: string
 }
 
 export interface ReplyMessageData extends MessageBaseData {
   text: string
-  secondaryText: string
-  secondaryUserDisplayName: string
-  secondaryMessageId?: string
-  secondaryAvatarUrl?: string
+  quotedText: string
+  quotedUserDisplayName: string
+  quotedMessageId?: string
+  quotedAvatarUrl?: string
 }
 
 const ReplyMessage: FC<ReplyMessageProps> = ({
@@ -31,38 +30,39 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
   text,
   timestamp,
   authorAvatarUrl,
-  onSecondaryMessageClick,
-  secondaryMessageId,
-  secondaryText,
-  secondaryUserDisplayName,
-  secondaryAvatarUrl,
+  quotedMessageId,
+  quotedText,
+  quotedUserDisplayName,
+  quotedAvatarUrl,
 }) => {
   return (
     <div className="flex flex-col">
       <div className="flex w-messageMaxWidth items-end">
         <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200" />
         <button
-          onClick={onSecondaryMessageClick}
+          onClick={() => {
+            // TODO: function to skip to the message being answered
+          }}
           className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100">
           <AvatarImage
             avatarType={AvatarType.Message}
-            displayName={secondaryUserDisplayName}
+            displayName={quotedUserDisplayName}
             isRounded={false}
             avatarSize={AvatarSize.ExtraSmall}
-            avatarUrl={secondaryAvatarUrl}
+            avatarUrl={quotedAvatarUrl}
           />
 
           <Typography
             className="w-max shrink-0 select-text font-bold"
-            style={{color: stringToColor(secondaryUserDisplayName)}}
+            style={{color: stringToColor(quotedUserDisplayName)}}
             variant={TypographyVariant.BodySmall}>
-            {cleanDisplayName(secondaryUserDisplayName)}
+            {cleanDisplayName(quotedUserDisplayName)}
           </Typography>
 
           <Typography
             className="line-clamp-1 max-w-40 shrink-0"
             variant={TypographyVariant.BodySmall}>
-            {secondaryText}
+            {quotedText}
           </Typography>
         </button>
       </div>

@@ -115,26 +115,6 @@ export function normalizeName(displayName: string): string {
     .join("")
 }
 
-export function extractReplyMessageFromBody(body: string): string {
-  const index = body.indexOf("\n\n")
-  return body.slice(index + 2, body.length)
-}
-
-export function extractSecondaryReplyMessageFromBody(body: string): string {
-  let match = body.split(/\n{2}/)[0]
-  match = match.slice(match.indexOf(">", match.indexOf("<")) + 1, match.length)
-  return match
-}
-
-export function extractSecondaryUserFromBody(body: string): string {
-  let match = body.split(/\n{2}/)[0]
-  match = match.slice(
-    match.indexOf("<") + 1,
-    match.indexOf(">", match.indexOf("<"))
-  )
-  return match
-}
-
 // #region Matrix SDK utils
 export function getImageUrl(
   url: string | null | undefined,

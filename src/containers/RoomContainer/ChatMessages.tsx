@@ -81,7 +81,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
             onAuthorClick={() => {
               // TODO: Handle `onAuthorClick` for `TextMessage`.
             }}
-            onSecondaryMessageClick={() => {}}
           />
         ) : message.kind === MessageKind.Image ? (
           <ImageMessage

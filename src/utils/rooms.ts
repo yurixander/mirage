@@ -11,9 +11,6 @@ import {
 import {
   assert,
   emojiRandom,
-  extractReplyMessageFromBody,
-  extractSecondaryReplyMessageFromBody,
-  extractSecondaryUserFromBody,
   getFileUrl,
   getImageUrl,
   normalizeName,
@@ -44,6 +41,7 @@ import {
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
+import {parseReplyMessageFromBody, validateReplyMessage} from "./parseReply"
 
 export enum ImageSizes {
   Server = 47,
@@ -552,6 +550,8 @@ export const handleRoomNameEvent = async (
 export const handleMessage = async (
   event: MatrixEvent,
   room: Room
+  // TODO: Resolve this problem
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): Promise<AnyMessage | null> => {
   const sender = event.sender
   const eventContent = event.getContent()
@@ -564,7 +564,7 @@ export const handleMessage = async (
   }
 
   const messageBaseProperties: MessageBaseData = {
-    authorDisplayName: sender.name,
+    authorDisplayName: eventContent.displayname ?? sender.name,
     authorDisplayNameColor: stringToColor(sender.name),
     timestamp: event.localTimestamp,
     messageId: eventId,
@@ -587,16 +587,18 @@ export const handleMessage = async (
           const body: string =
             eventContent.body ??
             "> <User not found> Message not found\n\nMessage not found"
-
-          return {
-            kind: MessageKind.Reply,
-            data: {
-              ...messageBaseProperties,
-              text: extractReplyMessageFromBody(body),
-              secondaryMessageId: reply.event_id,
-              secondaryText: extractSecondaryReplyMessageFromBody(body),
-              secondaryUserDisplayName: extractSecondaryUserFromBody(body),
-            },
+          if (validateReplyMessage(body)) {
+            const replyData = parseReplyMessageFromBody(body)
+            return {
+              kind: MessageKind.Reply,
+              data: {
+                ...messageBaseProperties,
+                text: replyData.message,
+                quotedMessageId: reply.event_id,
+                quotedText: replyData.quotedMessage,
+                quotedUserDisplayName: replyData.quotedUser,
+              },
+            }
           }
         }
       }
