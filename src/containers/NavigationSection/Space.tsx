@@ -1,6 +1,7 @@
 import Avatar from "boring-avatars"
-import {type FC} from "react"
+import {useState, type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import {motion} from "framer-motion"
 
 export type SpaceProps = {
   isSelected: boolean
@@ -17,27 +18,40 @@ const Space: FC<SpaceProps> = ({
   avatarUrl,
   classNames,
 }) => {
+  const [isActive, setIsActive] = useState(false)
+
   return (
-    <div className="group flex items-center gap-1">
-      <div
+    <motion.div
+      className="flex items-center gap-1"
+      onTapStart={() => {
+        setIsActive(true)
+      }}
+      onTap={() => {
+        setIsActive(false)
+      }}
+      onTapCancel={() => {
+        setIsActive(false)
+      }}>
+      <motion.div
+        animate={{height: isActive ? 8 : 24}}
         className={twMerge(
-          "-ml-0.5 h-6 w-1.5 rounded-full transition-[height] group-active:h-2",
+          "-ml-0.5 w-1.5 rounded-full",
           isSelected ? "bg-purple-500" : "bg-transparent"
         )}
       />
 
-      <div
-        onClick={() => {
-          onSpaceSelected(spaceId)
-        }}
-        aria-hidden
+      <motion.button
+        animate={{scale: isActive ? 0.9 : 1}}
         className={twMerge(
-          "group box-border size-10 cursor-pointer overflow-hidden rounded-lg border-[3px] transition-colors",
+          "box-border size-10 cursor-pointer overflow-hidden rounded-lg border-[3px] transition-colors",
           isSelected ? "border-purple-500 shadow-md" : "border-transparent",
           classNames
-        )}>
+        )}
+        onClick={() => {
+          onSpaceSelected(spaceId)
+        }}>
         {avatarUrl === undefined ? (
-          <Avatar square size={70} variant="bauhaus" />
+          <Avatar square size="100%" variant="bauhaus" />
         ) : (
           <img
             className="size-full object-cover"
@@ -45,8 +59,8 @@ const Space: FC<SpaceProps> = ({
             alt={spaceId}
           />
         )}
-      </div>
-    </div>
+      </motion.button>
+    </motion.div>
   )
 }
 
