@@ -3,7 +3,7 @@ import ImageMessage from "@/components/ImageMessage"
 import TextMessage from "@/components/TextMessage"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import UnreadIndicator from "@/components/UnreadIndicator"
-import {type FC, useEffect, useMemo, useRef, useState} from "react"
+import {type FC, useCallback, useEffect, useMemo, useRef, useState} from "react"
 import MessagesPlaceholder from "./MessagesPlaceholder"
 import {assert} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
@@ -35,6 +35,10 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     )
   }
 
+  const onAuthorClick = useCallback((userId: string) => {
+    // TODO: Handle `onAuthorClick` for all `Messages`.
+  }, [])
+
   const messageElements = useMemo(
     () =>
       messages.map((message, index) =>
@@ -42,6 +46,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <TextMessage
             key={message.data.messageId}
             {...message.data}
+            onAuthorClick={onAuthorClick}
             contextMenuItems={buildMessageMenuItems({
               isMessageError: message.data.isDeleted === true,
               canDeleteMessage: message.data.canDeleteMessage === true,
@@ -55,18 +60,13 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
                 // deleteMessage(room.client, room.roomId, eventId)
               },
             })}
-            onAuthorClick={() => {
-              // TODO: Handle `onAuthorClick` for `TextMessage`.
-            }}
           />
         ) : message.kind === MessageKind.Image ? (
           <ImageMessage
             key={message.data.messageId}
             {...message.data}
             onClickImage={setImagePrevUrl}
-            onAuthorClick={() => {
-              // TODO: Handle `onAuthorClick` for `ImageMessage`.
-            }}
+            onAuthorClick={onAuthorClick}
             contextMenuItems={buildMessageMenuItems({
               canDeleteMessage: message.data.canDeleteMessage === true,
               isMessageError: false,
@@ -89,6 +89,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <FileMessage
             key={message.data.messageId}
             {...message.data}
+            onAuthorClick={onAuthorClick}
             contextMenuItems={buildMessageMenuItems({
               isMessageError: message.data.isDeleted === true,
               canDeleteMessage: message.data.canDeleteMessage === true,
@@ -102,9 +103,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
                 // deleteMessage(room.client, room.roomId, eventId)
               },
             })}
-            onAuthorClick={() => {
-              // TODO: Handle `onAuthorClick` for `FileMessage`.
-            }}
           />
         ) : message.kind === MessageKind.Event ? (
           <EventMessage
@@ -119,11 +117,9 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           />
         ) : message.kind === MessageKind.Audio ? (
           <AudioMessage
+            onAuthorClick={onAuthorClick}
             {...message.data}
             contextMenuItems={[]}
-            onAuthorClick={() => {
-              // TODO: Handle `onAuthorClick` for `AudioMessage`.
-            }}
           />
         ) : (
           index !== messages.length - 1 && (
@@ -131,7 +127,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           )
         )
       ),
-    [messages]
+    [messages, onAuthorClick]
   )
 
   useEffect(() => {
