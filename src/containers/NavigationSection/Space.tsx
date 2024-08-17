@@ -32,13 +32,17 @@ const Space: FC<SpaceProps> = ({
       onTapCancel={() => {
         setIsActive(false)
       }}>
-      <motion.div
-        animate={{height: isActive ? 8 : 24}}
-        className={twMerge(
-          "-ml-0.5 w-1.5 rounded-full",
-          isSelected ? "bg-purple-500" : "bg-transparent"
-        )}
-      />
+      {isSelected ? (
+        <motion.div
+          animate={{height: isActive ? 8 : 26}}
+          className={twMerge(
+            "-ml-0.5 w-1.5 rounded-full",
+            isSelected ? "bg-purple-500" : "bg-transparent"
+          )}
+        />
+      ) : (
+        <div className="-ml-0.5 w-1.5" />
+      )}
 
       <motion.button
         animate={{scale: isActive ? 0.9 : 1}}
