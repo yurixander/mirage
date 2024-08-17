@@ -24,6 +24,7 @@ const IconButton: FC<IconButtonProps> = ({
   color,
   isDisabled,
   isDotVisible,
+  tooltip,
   size,
   className,
   iconClassName,

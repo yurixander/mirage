@@ -48,10 +48,6 @@ const EventMessage: FC<EventMessageProps> = ({
 
   return (
     <div className="flex items-center gap-3">
-      <div className="flex w-10 items-center justify-end">
-        <Icon className="text-neutral-300" />
-      </div>
-
       <Typography className="inline-flex max-w-text select-text gap-1 whitespace-pre-line break-words italic">
         <ContextMenu
           className="shrink-0"
@@ -70,8 +66,12 @@ const EventMessage: FC<EventMessageProps> = ({
             },
           ]}>
           <Typography
-            className="font-bold"
+            className="inline-flex items-center gap-2 font-bold"
             style={{color: stringToColor(sender.userId)}}>
+            <div className="flex w-10 justify-end">
+              <Icon className="text-neutral-300" />
+            </div>
+
             {sender.displayName}
           </Typography>
         </ContextMenu>

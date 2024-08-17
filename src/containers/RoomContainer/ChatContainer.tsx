@@ -27,11 +27,11 @@ const ChatContainer: FC<ChatContainerProps> = ({
   assert(roomId.length > 0, "The roomId should not be empty.")
 
   return isChatLoading ? (
-    <main className="flex size-full items-center justify-center">
+    <div className="flex size-full items-center justify-center">
       <Loader text="Loading room" />
-    </main>
+    </div>
   ) : (
-    <main className={twMerge("flex h-full flex-col", className)}>
+    <div className={twMerge("flex h-full flex-col", className)}>
       <ChatHeader
         className="relative flex size-full max-h-12 items-center gap-2 border-b border-b-stone-200 px-3 py-1"
         isRosterExpanded={isRosterExpanded}
@@ -62,7 +62,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           </div>
         </div>
       </footer>
-    </main>
+    </div>
   )
 }
 

@@ -10,6 +10,7 @@ type UseChatInputReturnType = {
   messageText: string
   setMessageText: React.Dispatch<React.SetStateAction<string>>
   isDisabled: boolean
+  isInputDisabled: boolean
   sendTextMessage: (text: string) => Promise<void>
   openFilePicker: () => void
   imagePreviewProps: ImageModalPreviewProps | undefined
@@ -78,6 +79,7 @@ const useChatInput = (roomId: string): UseChatInputReturnType => {
     messageText,
     setMessageText,
     isDisabled: client === null || messageText.length === 0,
+    isInputDisabled: client === null,
     sendTextMessage,
     openFilePicker,
     imagePreviewProps,
