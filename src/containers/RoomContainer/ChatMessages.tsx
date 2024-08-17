@@ -3,7 +3,7 @@ import ImageMessage from "@/components/ImageMessage"
 import TextMessage from "@/components/TextMessage"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import UnreadIndicator from "@/components/UnreadIndicator"
-import {type FC, useEffect, useMemo, useRef, useState} from "react"
+import {type FC, useMemo, useState} from "react"
 import MessagesPlaceholder from "./MessagesPlaceholder"
 import {assert} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
@@ -26,7 +26,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   messagesState,
   className,
 }) => {
-  const scrollRef = useRef<HTMLDivElement>(null)
   const [imagePrevUrl, setImagePrevUrl] = useState<string>()
 
   if (messagesState === MessagesState.Loaded) {
@@ -137,17 +136,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     [messages]
   )
 
-  useEffect(() => {
-    if (!scrollRef.current) {
-      return
-    }
-
-    scrollRef.current.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    })
-  }, [messages])
-
   return (
     <>
       {imagePrevUrl !== undefined &&
@@ -163,12 +151,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           document.body
         )}
 
-      <div
-        ref={scrollRef}
-        className={twMerge(
-          "flex size-full flex-col gap-4 overflow-y-auto scroll-smooth scrollbar-hide",
-          className
-        )}>
+      <div className={twMerge("flex size-full flex-col gap-4", className)}>
         {messagesState === MessagesState.Loaded ? (
           messageElements
         ) : messagesState === MessagesState.Loading ? (

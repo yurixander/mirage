@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import {useEffect, useRef, type FC} from "react"
 import useRoomChat from "./hooks/useRoomChat"
 import ChatHeader from "./ChatHeader"
 import {ChatMessages} from "./ChatMessages"
@@ -21,10 +21,23 @@ const ChatContainer: FC<ChatContainerProps> = ({
   onRosterExpanded,
   className,
 }) => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+
   const {messagesState, roomName, isChatLoading, messages, typingUsers} =
     useRoomChat(roomId)
 
   assert(roomId.length > 0, "The roomId should not be empty.")
+
+  useEffect(() => {
+    if (!scrollRef.current) {
+      return
+    }
+
+    scrollRef.current.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    })
+  }, [messages])
 
   return isChatLoading ? (
     <div className="flex size-full items-center justify-center">
@@ -39,7 +52,9 @@ const ChatContainer: FC<ChatContainerProps> = ({
         roomName={roomName}
       />
 
-      <div className="relative z-10 order-2 shrink-0 grow basis-0 overflow-y-auto">
+      <div
+        ref={scrollRef}
+        className="relative z-10 order-2 shrink-0 grow basis-0 overflow-y-auto">
         <div className="shrink-0 grow-0 basis-auto pb-2">
           <ChatMessages
             className="relative grow p-3"
