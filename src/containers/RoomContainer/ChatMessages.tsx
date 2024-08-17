@@ -13,6 +13,7 @@ import ImageModal from "./ImageModal"
 import {buildMessageMenuItems} from "@/utils/menu"
 import FileMessage from "@/components/FileMessage"
 import AudioMessage from "@/components/AudioMessage"
+import {motion} from "framer-motion"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -37,100 +38,102 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 
   const messageElements = useMemo(
     () =>
-      messages.map((message, index) =>
-        message.kind === MessageKind.Text ? (
-          <TextMessage
-            key={message.data.messageId}
-            {...message.data}
-            contextMenuItems={buildMessageMenuItems({
-              isMessageError: message.data.isDeleted === true,
-              canDeleteMessage: message.data.canDeleteMessage === true,
-              onReplyMessage() {
-                // TODO: Handle reply
-              },
-              onResendMessage() {
-                // TODO: Handle resend message here.
-              },
-              onDeleteMessage() {
-                // deleteMessage(room.client, room.roomId, eventId)
-              },
-            })}
-            onAuthorClick={() => {
-              // TODO: Handle `onAuthorClick` for `TextMessage`.
-            }}
-          />
-        ) : message.kind === MessageKind.Image ? (
-          <ImageMessage
-            key={message.data.messageId}
-            {...message.data}
-            onClickImage={setImagePrevUrl}
-            onAuthorClick={() => {
-              // TODO: Handle `onAuthorClick` for `ImageMessage`.
-            }}
-            contextMenuItems={buildMessageMenuItems({
-              canDeleteMessage: message.data.canDeleteMessage === true,
-              isMessageError: false,
-              isSaveable: true,
-              onReplyMessage() {
-                // TODO: Handle reply
-              },
-              onResendMessage() {
-                // TODO: Handle resend message here.
-              },
-              onSaveContent() {
-                // TODO: Handle image saving here.
-              },
-              onDeleteMessage() {
-                // deleteMessage(room.client, room.roomId, eventId)
-              },
-            })}
-          />
-        ) : message.kind === MessageKind.File ? (
-          <FileMessage
-            key={message.data.messageId}
-            {...message.data}
-            contextMenuItems={buildMessageMenuItems({
-              isMessageError: message.data.isDeleted === true,
-              canDeleteMessage: message.data.canDeleteMessage === true,
-              onReplyMessage() {
-                // TODO: Handle reply
-              },
-              onResendMessage() {
-                // TODO: Handle resend message here.
-              },
-              onDeleteMessage() {
-                // deleteMessage(room.client, room.roomId, eventId)
-              },
-            })}
-            onAuthorClick={() => {
-              // TODO: Handle `onAuthorClick` for `FileMessage`.
-            }}
-          />
-        ) : message.kind === MessageKind.Event ? (
-          <EventMessage
-            key={message.data.eventId}
-            {...message.data}
-            onFindUser={() => {
-              // TODO: Handle find user here.
-            }}
-            onShowMember={() => {
-              // TODO: Handle show member here.
-            }}
-          />
-        ) : message.kind === MessageKind.Audio ? (
-          <AudioMessage
-            {...message.data}
-            contextMenuItems={[]}
-            onAuthorClick={() => {
-              // TODO: Handle `onAuthorClick` for `AudioMessage`.
-            }}
-          />
-        ) : (
-          index !== messages.length - 1 && (
-            <UnreadIndicator key="unread-indicator" {...message.data} />
-          )
-        )
-      ),
+      messages.map((message, index) => (
+        <motion.div initial={{translateX: -25}} whileInView={{translateX: 0}}>
+          {message.kind === MessageKind.Text ? (
+            <TextMessage
+              key={message.data.messageId}
+              {...message.data}
+              contextMenuItems={buildMessageMenuItems({
+                isMessageError: message.data.isDeleted === true,
+                canDeleteMessage: message.data.canDeleteMessage === true,
+                onReplyMessage() {
+                  // TODO: Handle reply
+                },
+                onResendMessage() {
+                  // TODO: Handle resend message here.
+                },
+                onDeleteMessage() {
+                  // deleteMessage(room.client, room.roomId, eventId)
+                },
+              })}
+              onAuthorClick={() => {
+                // TODO: Handle `onAuthorClick` for `TextMessage`.
+              }}
+            />
+          ) : message.kind === MessageKind.Image ? (
+            <ImageMessage
+              key={message.data.messageId}
+              {...message.data}
+              onClickImage={setImagePrevUrl}
+              onAuthorClick={() => {
+                // TODO: Handle `onAuthorClick` for `ImageMessage`.
+              }}
+              contextMenuItems={buildMessageMenuItems({
+                canDeleteMessage: message.data.canDeleteMessage === true,
+                isMessageError: false,
+                isSaveable: true,
+                onReplyMessage() {
+                  // TODO: Handle reply
+                },
+                onResendMessage() {
+                  // TODO: Handle resend message here.
+                },
+                onSaveContent() {
+                  // TODO: Handle image saving here.
+                },
+                onDeleteMessage() {
+                  // deleteMessage(room.client, room.roomId, eventId)
+                },
+              })}
+            />
+          ) : message.kind === MessageKind.File ? (
+            <FileMessage
+              key={message.data.messageId}
+              {...message.data}
+              contextMenuItems={buildMessageMenuItems({
+                isMessageError: message.data.isDeleted === true,
+                canDeleteMessage: message.data.canDeleteMessage === true,
+                onReplyMessage() {
+                  // TODO: Handle reply
+                },
+                onResendMessage() {
+                  // TODO: Handle resend message here.
+                },
+                onDeleteMessage() {
+                  // deleteMessage(room.client, room.roomId, eventId)
+                },
+              })}
+              onAuthorClick={() => {
+                // TODO: Handle `onAuthorClick` for `FileMessage`.
+              }}
+            />
+          ) : message.kind === MessageKind.Event ? (
+            <EventMessage
+              key={message.data.eventId}
+              {...message.data}
+              onFindUser={() => {
+                // TODO: Handle find user here.
+              }}
+              onShowMember={() => {
+                // TODO: Handle show member here.
+              }}
+            />
+          ) : message.kind === MessageKind.Audio ? (
+            <AudioMessage
+              {...message.data}
+              contextMenuItems={[]}
+              onAuthorClick={() => {
+                // TODO: Handle `onAuthorClick` for `AudioMessage`.
+              }}
+            />
+          ) : (
+            index !== messages.length - 1 && (
+              <UnreadIndicator key="unread-indicator" {...message.data} />
+            )
+          )}
+        </motion.div>
+      )),
     [messages]
   )
 
