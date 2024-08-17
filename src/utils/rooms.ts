@@ -42,6 +42,7 @@ import {
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
 import {parseReplyMessageFromBody, validateReplyMessage} from "./parseReply"
+import {string} from "prop-types"
 
 export enum ImageSizes {
   Server = 47,
@@ -583,22 +584,22 @@ export const handleMessage = async (
       if (relates !== undefined) {
         const reply = relates["m.in_reply_to"]
 
-        if (reply !== undefined) {
-          const body: string =
-            eventContent.body ??
-            "> <User not found> Message not found\n\nMessage not found"
-          if (validateReplyMessage(body)) {
-            const replyData = parseReplyMessageFromBody(body)
-            return {
-              kind: MessageKind.Reply,
-              data: {
-                ...messageBaseProperties,
-                text: replyData.message,
-                quotedMessageId: reply.event_id ?? "",
-                quotedText: replyData.quotedMessage,
-                quotedUserDisplayName: replyData.quotedUser,
-              },
-            }
+        if (
+          reply !== undefined &&
+          eventContent.body !== undefined &&
+          typeof eventContent.body === "string" &&
+          validateReplyMessage(eventContent.body)
+        ) {
+          const replyData = parseReplyMessageFromBody(eventContent.body)
+          return {
+            kind: MessageKind.Reply,
+            data: {
+              ...messageBaseProperties,
+              text: replyData.message,
+              quotedMessageId: reply.event_id ?? "",
+              quotedText: replyData.quotedMessage,
+              quotedUserDisplayName: replyData.quotedUser,
+            },
           }
         }
       }

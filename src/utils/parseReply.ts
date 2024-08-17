@@ -1,15 +1,15 @@
-export function getReplyMessage(body: string): string {
+function getReplyMessage(body: string): string {
   const index = body.indexOf("\n\n")
   return body.slice(index + 2, body.length)
 }
 
-export function getQuotedMessage(body: string): string {
+function getQuotedMessage(body: string): string {
   let match = body.split(/\n{2}/)[0]
   match = match.slice(match.indexOf(">", match.indexOf("<")) + 1, match.length)
   return match
 }
 
-export function getQuotedUser(body: string): string {
+function getQuotedUser(body: string): string {
   let match = body.split(/\n{2}/)[0]
   match = match.slice(
     match.indexOf("<") + 1,
