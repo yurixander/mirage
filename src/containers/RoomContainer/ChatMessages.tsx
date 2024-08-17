@@ -65,6 +65,9 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <ReplyMessage
             key={message.data.messageId}
             {...message.data}
+            onQuoteMessageClick={quoteMessageId => {
+              // TODO Handle `onQuoteMessageClick` for `ReplyMessage`
+            }}
             contextMenuItems={buildMessageMenuItems({
               isMessageError: message.data.isDeleted === true,
               canDeleteMessage: message.data.canDeleteMessage === true,

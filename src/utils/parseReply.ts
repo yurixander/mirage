@@ -15,6 +15,10 @@ export function getQuotedUser(body: string): string {
     match.indexOf("<") + 1,
     match.indexOf(">", match.indexOf("<"))
   )
+
+  if (match.indexOf("@") === 0 && match.includes(":")) {
+    return match.slice(1, match.indexOf(":"))
+  }
   return match
 }
 

@@ -594,7 +594,7 @@ export const handleMessage = async (
               data: {
                 ...messageBaseProperties,
                 text: replyData.message,
-                quotedMessageId: reply.event_id,
+                quotedMessageId: reply.event_id ?? "",
                 quotedText: replyData.quotedMessage,
                 quotedUserDisplayName: replyData.quotedUser,
               },

@@ -6,10 +6,11 @@ import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
 import {cleanDisplayName, stringToColor} from "@/utils/util"
 
 export interface ReplyMessageProps extends MessageBaseProps {
+  onQuoteMessageClick: (quoteMessageId: string) => void
   text: string
   quotedText: string
   quotedUserDisplayName: string
-  quotedMessageId?: string
+  quotedMessageId: string
   quotedAvatarUrl?: string
 }
 
@@ -17,7 +18,7 @@ export interface ReplyMessageData extends MessageBaseData {
   text: string
   quotedText: string
   quotedUserDisplayName: string
-  quotedMessageId?: string
+  quotedMessageId: string
   quotedAvatarUrl?: string
 }
 
@@ -34,6 +35,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
   quotedText,
   quotedUserDisplayName,
   quotedAvatarUrl,
+  onQuoteMessageClick,
 }) => {
   return (
     <div className="flex flex-col">
@@ -41,7 +43,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
         <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200" />
         <button
           onClick={() => {
-            // TODO: function to skip to the message being answered
+            onQuoteMessageClick(quotedMessageId)
           }}
           className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100">
           <AvatarImage
