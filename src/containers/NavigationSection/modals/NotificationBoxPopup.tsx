@@ -64,7 +64,7 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
         <div className="m-2 flex size-full max-h-[80%] max-w-sm animate-fade items-center">
           <div
             className={twMerge(
-              "flex h-max w-full flex-col gap-2 rounded-xl border border-slate-300 bg-gray-50 p-3 shadow-xl",
+              "flex max-h-96 w-full flex-col gap-2 rounded-xl border border-slate-300 bg-gray-50 p-3 shadow-xl",
               isNotificationsEmpty && "translate-y-8"
             )}
             onMouseLeave={onClose}>
