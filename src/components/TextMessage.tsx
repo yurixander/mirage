@@ -37,7 +37,7 @@ const TextMessage: FC<TextMessageProps> = ({
       userId={userId}>
       <ContextMenu id={`text-message-${messageId}`} elements={contextMenuItems}>
         <Typography
-          className="max-w-messageMaxWidth cursor-text select-text break-words"
+          className="max-w-messageMaxWidth cursor-text select-text break-words text-slate-500"
           variant={TypographyVariant.Body}>
           {text.split(/(\n)/).map(line => (line === "\n" ? <br /> : line))}
         </Typography>
