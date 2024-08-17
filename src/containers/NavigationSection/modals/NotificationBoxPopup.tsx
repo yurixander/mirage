@@ -8,6 +8,7 @@ import Loader from "@/components/Loader"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
+import {motion} from "framer-motion"
 
 export type NotificationActions = {
   name: string
@@ -62,7 +63,10 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
     createPortal(
       <div className="absolute z-50 flex size-full w-screen flex-col items-start justify-end">
         <div className="m-2 flex size-full max-h-[80%] max-w-sm animate-fade items-center">
-          <div
+          <motion.div
+            initial={{scale: 0.5}}
+            animate={{scale: 1}}
+            transition={{type: "spring", damping: 15, stiffness: 200}}
             className={twMerge(
               "flex max-h-96 w-full flex-col gap-2 rounded-xl border border-slate-300 bg-gray-50 p-3 shadow-xl",
               isNotificationsEmpty && "translate-y-8"
@@ -96,7 +100,7 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
                 )}
               </>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>,
       renderLocation
