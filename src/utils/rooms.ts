@@ -566,6 +566,7 @@ export const handleMessage = async (
     timestamp: event.localTimestamp,
     messageId: eventId,
     canDeleteMessage: isAdminOrModerator || isMessageOfMyUser,
+    userId: sender.userId,
     authorAvatarUrl: getImageUrl(
       sender.getMxcAvatarUrl(),
       room.client,
@@ -675,6 +676,7 @@ const convertToMessageDeleted = (
   return {
     kind: MessageKind.Text,
     data: {
+      userId: sender.userId,
       authorAvatarUrl: getImageUrl(sender.getMxcAvatarUrl(), room.client),
       authorDisplayName: sender.name,
       authorDisplayNameColor: stringToColor(sender.name),
