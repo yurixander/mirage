@@ -2,6 +2,7 @@ import useClickOutside from "@/hooks/util/useClickOutside"
 import React, {useState, type FC} from "react"
 import {IoCaretDownOutline, IoCaretUpOutline} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
+import {motion} from "framer-motion"
 
 export type DropdownProps = {
   initiallyContent: React.JSX.Element
@@ -39,8 +40,15 @@ const Dropdown: FC<DropdownProps> = ({
           {isOpen ? <IoCaretUpOutline /> : <IoCaretDownOutline />}
         </div>
       </div>
-
-      <div className="z-50 bg-gray-50">{isOpen && children}</div>
+      {isOpen && (
+        <motion.div
+          initial={{height: 0}}
+          animate={{height: "max-content"}}
+          transition={{duration: 0.2}}
+          className="z-50 bg-gray-50">
+          {children}
+        </motion.div>
+      )}
     </div>
   )
 }
