@@ -15,7 +15,7 @@ import {
   FaFileWord,
   FaFileZipper,
 } from "react-icons/fa6"
-import {assert, stringToColor, validateUrl} from "@/utils/util"
+import {assert, validateUrl} from "@/utils/util"
 
 const ICON_SIZE = 20
 
@@ -32,6 +32,7 @@ const FileMessage: FC<FileMessageProps> = ({
   authorAvatarUrl,
   onAuthorClick,
   contextMenuItems,
+  authorDisplayNameColor,
   timestamp,
   fileName,
   fileSize,
@@ -49,7 +50,7 @@ const FileMessage: FC<FileMessageProps> = ({
   return (
     <MessageContainer
       authorDisplayName={authorDisplayName}
-      authorDisplayNameColor={stringToColor(authorDisplayName)}
+      authorDisplayNameColor={authorDisplayNameColor}
       authorAvatarUrl={authorAvatarUrl}
       timestamp={timestamp}
       onAuthorClick={onAuthorClick}

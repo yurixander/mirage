@@ -80,21 +80,23 @@ const hexValues = [
 ]
 
 export function stringToColor(str: string): string {
-  let color = "#"
+  let colorHex = "#"
+  let totalSum = 0
 
-  assert(str.length >= 3, "The string should be at least 3 characters long.")
+  assert(str.length > 0, "The string for color should not be empty.")
 
-  for (let index = 0; index < 3; index++) {
-    const code = str.charCodeAt(index)
-
-    assert(code <= 255, "The character code should be less than 255")
-
-    const [firstRGB, secondRGB] = [Math.floor(code / 16), code % 16]
-
-    color += hexValues[firstRGB] + hexValues[secondRGB]
+  for (let i = 0; i < str.length; i++) {
+    totalSum += str.charCodeAt(i)
   }
 
-  return color
+  for (let i = 0; i < 3; i++) {
+    const code = (str.charCodeAt(i % str.length) + totalSum) % 256
+    const [first, second] = [Math.floor(code / 16), code % 16]
+
+    colorHex += `${hexValues[first]}${hexValues[second]}`
+  }
+
+  return colorHex
 }
 
 export function cleanDisplayName(displayName: string): string {

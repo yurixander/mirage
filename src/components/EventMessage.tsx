@@ -5,6 +5,7 @@ import Typography from "./Typography"
 import ContextMenu, {ClickActions} from "./ContextMenu"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
+import {type EventType} from "matrix-js-sdk"
 
 export type EventSender = {
   displayName: string
@@ -16,6 +17,7 @@ export type EventMessageData = {
   sender: EventSender
   body: string
   timestamp: number
+  type: EventType | string
   icon?: IconType
 }
 
@@ -65,7 +67,7 @@ const EventMessage: FC<EventMessageProps> = ({
           ]}>
           <Typography
             className="inline-flex items-center gap-2 font-bold"
-            style={{color: stringToColor(sender.displayName)}}>
+            style={{color: stringToColor(sender.userId)}}>
             <div className="flex w-10 justify-end">
               <Icon className="text-neutral-300" />
             </div>
