@@ -3,6 +3,7 @@ import Space from "./Space"
 import {type PartialSpace} from "./hooks/useSpaces"
 import {StaticAssetPath} from "@/utils/util"
 import LoadingEffect from "@/components/LoadingEffect"
+import {motion} from "framer-motion"
 
 type SpacesNavProps = {
   spaces: PartialSpace[]
@@ -62,13 +63,17 @@ const Spaces: FC<SpacesNavProps> = ({
 
 const SpacesPlaceHolder: FC<{length?: number}> = ({length = 1}) => {
   return Array.from({length}, (_, index) => (
-    <div className="flex items-center gap-1" key={index}>
+    <motion.div
+      initial={{scale: 0.5}}
+      whileInView={{scale: 1}}
+      className="flex items-center gap-1"
+      key={index}>
       <div className="-ml-0.5 h-0.5 w-1.5 bg-transparent" />
 
       <div className="size-10 overflow-hidden rounded-md bg-neutral-300">
         <LoadingEffect />
       </div>
-    </div>
+    </motion.div>
   ))
 }
 

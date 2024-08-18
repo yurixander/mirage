@@ -7,6 +7,7 @@ import RoomNotFoundSplash from "./RoomNotFoundSplash"
 import RoomInvitedSplash from "./RoomInvitedSplash"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
+import {motion} from "framer-motion"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
@@ -30,12 +31,12 @@ const RoomContainer: FC = () => {
             />
           )}
 
-          {isRosterExpanded && (
+          <motion.div animate={{width: isRosterExpanded ? 208 : 0}}>
             <Roster
               className="flex size-full max-w-52 flex-col border border-l-slate-300 bg-gray-50"
               roomId={activeRoomId}
             />
-          )}
+          </motion.div>
         </div>
       ) : roomState === RoomState.NotFound ? (
         <RoomNotFoundSplash />
