@@ -29,7 +29,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
   assert(roomId.length > 0, "The roomId should not be empty.")
 
   useEffect(() => {
-    if (!scrollRef.current) {
+    if (scrollRef.current === null || scrollRef.current.scrollTop !== 0) {
       return
     }
 
@@ -37,7 +37,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     })
-  }, [messages])
+  }, [messages.length])
 
   return isChatLoading ? (
     <div className="flex size-full items-center justify-center">
