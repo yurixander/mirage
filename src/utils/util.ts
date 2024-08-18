@@ -61,42 +61,39 @@ export function validateUrl(url: string): boolean {
   }
 }
 
-const hexValues = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
+const colors: string[] = [
+  "#FFC312",
+  "#C4E538",
+  "#12CBC4",
+  "#FDA7DF",
+  "#ED4C67",
+  "#F79F1F",
+  "#A3CB38",
+  "#1289A7",
+  "#D980FA",
+  "#B53471",
+  "#EE5A24",
+  "#009432",
+  "#0652DD",
+  "#9980FA",
+  "#833471",
+  "#EA2027",
+  "#006266",
+  "#1B1464",
+  "#5758BB",
+  "#6F1E51",
 ]
 
 export function stringToColor(str: string): string {
-  let colorHex = "#"
   let totalSum = 0
-
-  assert(str.length > 0, "The string for color should not be empty.")
 
   for (let i = 0; i < str.length; i++) {
     totalSum += str.charCodeAt(i)
   }
 
-  for (let i = 0; i < 3; i++) {
-    const code = (str.charCodeAt(i % str.length) + totalSum) % 256
-    const [first, second] = [Math.floor(code / 16), code % 16]
+  const colorIndex = totalSum % colors.length
 
-    colorHex += `${hexValues[first]}${hexValues[second]}`
-  }
-
-  return colorHex
+  return colors[colorIndex]
 }
 
 export function cleanDisplayName(displayName: string): string {
