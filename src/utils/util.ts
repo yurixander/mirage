@@ -1,3 +1,4 @@
+import {getEmojiByIndex} from "@/components/EmojiPicker"
 import dayjs from "dayjs"
 import {type ICreateRoomOpts, type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
@@ -97,6 +98,18 @@ export function stringToColor(str: string): string {
   }
 
   return colorHex
+}
+
+export const stringToEmoji = (str: string): string => {
+  let totalSum = 0
+
+  for (let i = 0; i < str.length; i++) {
+    totalSum += str.charCodeAt(i) + (i + 1)
+  }
+
+  const emoji = getEmojiByIndex(totalSum)
+
+  return emoji.skins[0].native
 }
 
 export function cleanDisplayName(displayName: string): string {
@@ -262,23 +275,6 @@ export async function createSpace(
       type: "m.space",
     },
   })
-}
-
-const emojiRanges: Array<[number, number]> = [
-  [0x1_f6_00, 0x1_f6_4f], // Emoticons
-  [0x1_f6_80, 0x1_f6_ff], // Transport and Map Symbols
-  [0x26_00, 0x26_ff], // Miscellaneous Symbols
-  [0x27_00, 0x27_bf], // Dingbats
-  [0x1_f9_00, 0x1_f9_ff], // Supplemental Symbols and Pictographs
-]
-
-export const emojiRandom = (): string => {
-  const [start, end] =
-    emojiRanges[Math.floor(Math.random() * emojiRanges.length)]
-
-  const codePoint = Math.floor(Math.random() * (end - start + 1)) + start
-
-  return String.fromCodePoint(codePoint)
 }
 
 export function getUsernameByUserId(userId: string): string {

@@ -10,11 +10,11 @@ import {
 } from "matrix-js-sdk"
 import {
   assert,
-  emojiRandom,
   getFileUrl,
   getImageUrl,
   normalizeName,
   stringToColor,
+  stringToEmoji,
 } from "./util"
 import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {
@@ -71,7 +71,7 @@ export async function getAllJoinedRooms(
         type: directRoomIds.includes(joinedRoomId)
           ? RoomType.Direct
           : RoomType.Group,
-        emoji: emojiRandom(),
+        emoji: stringToEmoji(joinedRoomId),
       })
     }
   } catch (error) {
