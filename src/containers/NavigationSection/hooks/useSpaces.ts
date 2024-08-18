@@ -59,12 +59,18 @@ const useSpaces = (): UseSpacesReturnType => {
 
       setIsLoading(true)
 
-      for (const room of client.getRooms()) {
-        if (!room.isSpaceRoom()) {
-          continue
-        }
+      try {
+        for (const room of client.getRooms()) {
+          if (!room.isSpaceRoom()) {
+            continue
+          }
 
-        addSpace(processSpace(room))
+          addSpace(processSpace(room))
+        }
+      } catch (error) {
+        // TODO: Show toast when error ocurred.
+
+        console.error("Error fetching spaces", error)
       }
 
       setIsLoading(false)

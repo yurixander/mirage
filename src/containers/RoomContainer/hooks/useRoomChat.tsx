@@ -11,7 +11,7 @@ import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
-import {handleEvent, handleRoomEvents} from "@/utils/rooms"
+import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl} from "@/utils/util"
 import {type Room, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
@@ -75,44 +75,38 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const {client} = useConnection()
   const isMountedReference = useIsMountedRef()
   const {clearActiveRoomId} = useActiveRoomIdStore()
+
   const [roomName, setRoomName] = useState("")
   const [isChatLoading, setChatLoading] = useState(true)
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
+
   const [messages, setMessages] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null)
 
-  const fetchRoomMessages = useCallback(
-    async (room: Room) => {
-      if (!isMountedReference.current) {
+  const fetchRoomMessages = useCallback(async (room: Room) => {
+    try {
+      setMessagesState(MessagesState.Loading)
+
+      const anyMessages = await handleRoomEvents(room)
+
+      if (anyMessages.length === 0) {
+        setMessagesState(MessagesState.NotMessages)
+
         return
       }
 
-      try {
-        setMessagesState(MessagesState.Loading)
+      setMessages(anyMessages)
+      setMessagesState(MessagesState.Loaded)
+    } catch (error) {
+      console.log("Error fetching messages", error)
 
-        const anyMessages = await handleRoomEvents(room)
-
-        if (anyMessages.length === 0) {
-          setMessagesState(MessagesState.NotMessages)
-
-          return
-        }
-
-        setMessages(anyMessages)
-        setMessagesState(MessagesState.Loaded)
-      } catch (error) {
-        // TODO: Handle error fetching messages.
-        console.log("Error fetching messages", error)
-
-        setMessagesState(MessagesState.Error)
-      }
-    },
-    [isMountedReference]
-  )
+      setMessagesState(MessagesState.Error)
+    }
+  }, [])
 
   useEffect(() => {
-    if (client === null) {
+    if (client === null || !isMountedReference.current) {
       return
     }
 
@@ -130,7 +124,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     void fetchRoomMessages(room)
 
     setCurrentRoom(room)
-  }, [clearActiveRoomId, client, fetchRoomMessages, roomId])
+  }, [clearActiveRoomId, client, fetchRoomMessages, isMountedReference, roomId])
 
   // #region Listeners
   useRoomListener(currentRoom, RoomEvent.Name, room => {
@@ -142,7 +136,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       return
     }
 
-    void handleEvent(event, room).then(messageOrEvent => {
+    void handleRoomMessageEvent(event, room).then(messageOrEvent => {
       if (messageOrEvent === null) {
         return
       }

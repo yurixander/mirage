@@ -75,7 +75,7 @@ const DirectMessageModal: FC = () => {
       const room = client.getRoom(roomId)
       const lastMessageSentDate = room?.getLastLiveEvent()?.localTimestamp
 
-      if (room === null) {
+      if (room === null || room.getJoinedMemberCount() !== 2) {
         continue
       }
 

@@ -15,15 +15,11 @@ import {
   FaFileWord,
   FaFileZipper,
 } from "react-icons/fa6"
-import {assert, stringToColor, validateUrl} from "@/utils/util"
+import {assert, validateUrl} from "@/utils/util"
 
 const ICON_SIZE = 20
 
-export interface FileMessageProps extends MessageBaseProps {
-  fileName: string
-  fileSize: number
-  fileUrl?: string
-}
+export interface FileMessageProps extends MessageBaseProps, FileMessageData {}
 
 export interface FileMessageData extends MessageBaseData {
   fileName: string
@@ -35,10 +31,13 @@ const FileMessage: FC<FileMessageProps> = ({
   authorDisplayName,
   authorAvatarUrl,
   onAuthorClick,
+  contextMenuItems,
+  authorDisplayNameColor,
   timestamp,
   fileName,
   fileSize,
   fileUrl,
+  userId,
 }) => {
   const fileExtension = getFileExtension(fileName).toUpperCase()
 
@@ -51,10 +50,12 @@ const FileMessage: FC<FileMessageProps> = ({
   return (
     <MessageContainer
       authorDisplayName={authorDisplayName}
-      authorDisplayNameColor={stringToColor(authorDisplayName)}
+      authorDisplayNameColor={authorDisplayNameColor}
       authorAvatarUrl={authorAvatarUrl}
       timestamp={timestamp}
-      onAuthorClick={onAuthorClick}>
+      onAuthorClick={onAuthorClick}
+      userId={userId}>
+      {/* TODO: Handle context menu here @lazaroysr96 */}
       <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2">
         <div className="flex w-full items-center gap-2">
           <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2">

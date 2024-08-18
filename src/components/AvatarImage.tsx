@@ -43,11 +43,6 @@ const AvatarImage: FC<AvatarProps> = ({
     assert(validateUrl(avatarUrl), CommonAssertion.AvatarUrlNotValid)
   }
 
-  assert(
-    displayName.length > 0,
-    "AvatarImage display name should not be empty."
-  )
-
   return avatarUrl === undefined ? (
     <div
       className={twMerge(
