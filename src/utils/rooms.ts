@@ -41,8 +41,7 @@ import {
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
-import {parseReplyMessageFromBody, validateReplyMessage} from "./parseReply"
-import {string} from "prop-types"
+import {parseReplyMessageFromBody, validateReplyMessage} from "./parser"
 
 export enum ImageSizes {
   Server = 47,
@@ -635,7 +634,7 @@ export const handleMessage = async (
             data: {
               ...messageBaseProperties,
               text: replyData.message,
-              quotedMessageId: reply.event_id ?? "",
+              quotedMessageId: reply.event_id,
               quotedText: replyData.quotedMessage,
               quotedUserDisplayName: replyData.quotedUser,
             },

@@ -10,7 +10,7 @@ export interface ReplyMessageProps extends MessageBaseProps {
   text: string
   quotedText: string
   quotedUserDisplayName: string
-  quotedMessageId: string
+  quotedMessageId?: string
   quotedAvatarUrl?: string
 }
 
@@ -18,7 +18,7 @@ export interface ReplyMessageData extends MessageBaseData {
   text: string
   quotedText: string
   quotedUserDisplayName: string
-  quotedMessageId: string
+  quotedMessageId?: string
   quotedAvatarUrl?: string
 }
 
@@ -44,6 +44,10 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
         <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200" />
         <button
           onClick={() => {
+            if (quotedMessageId === undefined) {
+              // TODO: toast quotedMessageId is undefined or error
+              return
+            }
             onQuoteMessageClick(quotedMessageId)
           }}
           className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100">
