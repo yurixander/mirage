@@ -18,7 +18,6 @@ import {type IconType} from "react-icons"
 import emojiData from "@/../public/data/emoji-data.json"
 import useEmojiSearch from "@/hooks/util/useEmojiSearch"
 import Input from "./Input"
-import {assert} from "@/utils/util"
 
 const emojiMartData: EmojiMartData = emojiData
 const emojis: Emoji[] = Object.values(emojiData.emojis)
@@ -134,8 +133,6 @@ const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
   const [isVariationOpen, setIsVariationOpen] = useState(false)
   const [emojiHeaderSelected, setEmojiHeaderSelected] = useState("")
   const {points, clearPoints, setPointsByEvent} = useElementPoints()
-
-  assert(emojiId.length > 0, "Emoji id should not be empty.")
 
   useEffect(() => {
     if (skins.length === 0) {

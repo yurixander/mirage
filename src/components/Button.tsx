@@ -1,5 +1,4 @@
 import useErrorTooltip from "@/hooks/util/useErrorTooltip"
-import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -37,8 +36,6 @@ const Button: FC<ButtonProps> = ({
   className,
 }) => {
   const {renderRef, showErrorTooltip} = useErrorTooltip<HTMLButtonElement>()
-
-  assert(text.length > 0, "The text should not be empty.")
 
   return (
     <button

@@ -70,8 +70,6 @@ const DropdownItem: FC<DropdownOptionProps> = ({
   isSelected,
   onClick,
 }) => {
-  assert(text.length > 0, "Dropdown item text should not be empty.")
-
   return (
     <button
       onClick={onClick}

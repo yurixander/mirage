@@ -83,8 +83,6 @@ export function stringToColor(str: string): string {
   let colorHex = "#"
   let totalSum = 0
 
-  assert(str.length > 0, "The string for color should not be empty.")
-
   for (let i = 0; i < str.length; i++) {
     totalSum += str.charCodeAt(i)
   }

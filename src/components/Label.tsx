@@ -1,4 +1,3 @@
-import {assert} from "@/utils/util"
 import {memo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -8,8 +7,6 @@ export type LabelProps = {
 }
 
 const Label: FC<LabelProps> = ({className, text}) => {
-  assert(text.length > 0, "Label text should not be empty.")
-
   return (
     <div
       className={twMerge(

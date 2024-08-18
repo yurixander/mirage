@@ -54,11 +54,6 @@ const MessageContainer: FC<MessageContainerProps> = ({
 
   assert(userId.length > 0, "The userId should not be empty.")
 
-  assert(
-    authorDisplayName.length > 0,
-    "The author display name should not be empty."
-  )
-
   return (
     <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">

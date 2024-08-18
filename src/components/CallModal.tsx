@@ -36,8 +36,6 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
     assert(validateUrl(avatarUrl), "avatar URL should be valid if defined")
   }
 
-  assert(name.length > 0, "User name should not be empty.")
-
   return (
     <div className="flex w-80 animate-enter flex-col rounded bg-white shadow-lg">
       <div className="flex items-center justify-center gap-2 p-3 px-5 shadow">

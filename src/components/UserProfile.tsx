@@ -33,11 +33,6 @@ const UserProfile: FC<UserProfileProps> = ({
     )
   }
 
-  assert(
-    displayName.length > 0,
-    "User profile display name should not be empty."
-  )
-
   const MAX_DISPLAY_NAME_LENGTH = 16
 
   const typographyVariant = isLarge
