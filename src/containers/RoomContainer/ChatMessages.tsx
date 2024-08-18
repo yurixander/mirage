@@ -67,6 +67,9 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <ReplyMessage
             key={message.data.messageId}
             {...message.data}
+            onAuthorClick={() => {
+              // TODO: Handle `onAuthorClick` for `TextMessage`.
+            }}
             onQuoteMessageClick={quoteMessageId => {
               // TODO Handle `onQuoteMessageClick` for `ReplyMessage`
             }}
@@ -83,9 +86,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
                 // deleteMessage(room.client, room.roomId, eventId)
               },
             })}
-            onAuthorClick={() => {
-              // TODO: Handle `onAuthorClick` for `TextMessage`.
-            }}
           />
         ) : message.kind === MessageKind.Image ? (
           <ImageMessage

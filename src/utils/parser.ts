@@ -22,7 +22,7 @@ export const parseReplyMessageFromBody = (
   )
 
   if (quotedUser.indexOf("@") === 0 && quotedUser.includes(":")) {
-    quotedUser = quotedUser.slice(1, match.indexOf(":"))
+    quotedUser = quotedUser.slice(1, quotedUser.indexOf(":"))
   }
 
   return {
