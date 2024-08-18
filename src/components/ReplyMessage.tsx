@@ -36,6 +36,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
   quotedUserDisplayName,
   quotedAvatarUrl,
   onQuoteMessageClick,
+  userId,
 }) => {
   return (
     <div className="flex flex-col">
@@ -78,6 +79,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
         text={text}
         timestamp={timestamp}
         authorAvatarUrl={authorAvatarUrl}
+        userId={userId}
       />
     </div>
   )
