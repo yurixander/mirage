@@ -45,8 +45,8 @@ const Space: FC<SpaceProps> = ({
       )}
 
       <motion.button
-        initial={{scale: 0.5}}
-        whileInView={{scale: 1}}
+        initial={{scale: 0.5, opacity: 0.5}}
+        whileInView={{scale: 1, opacity: 1}}
         whileTap={{scale: 0.9}}
         animate={{scale: isActive ? 0.9 : 1}}
         className={twMerge(

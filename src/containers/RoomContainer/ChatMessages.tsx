@@ -42,7 +42,9 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   const messageElements = useMemo(
     () =>
       messages.map((message, index) => (
-        <motion.div initial={{translateX: -25}} whileInView={{translateX: 0}}>
+        <motion.div
+          initial={{translateX: -25, opacity: 0.5}}
+          whileInView={{translateX: 0, opacity: 1}}>
           {message.kind === MessageKind.Text ? (
             <TextMessage
               key={message.data.messageId}

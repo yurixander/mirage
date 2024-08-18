@@ -34,8 +34,8 @@ const RosterUser: FC<RosterUserProps> = ({
 
   return (
     <motion.div
-      initial={{scale: 0.5}}
-      whileInView={{scale: 1}}
+      initial={{scale: 0.5, opacity: 0.5}}
+      whileInView={{scale: 1, opacity: 1}}
       onClick={onUserClick}
       className={twMerge(
         "w-full cursor-pointer p-1 hover:rounded-xl hover:bg-neutral-100 focus-visible:rounded-md focus-visible:border-2 focus-visible:border-blue-400 focus-visible:outline-none focus-visible:transition focus-visible:duration-150",
