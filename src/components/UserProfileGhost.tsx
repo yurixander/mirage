@@ -1,6 +1,7 @@
 import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import {motion} from "framer-motion"
 
 export type UserProfileGhostProps = {
   count: number
@@ -23,7 +24,9 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
   return (
     <div className={twMerge("flex flex-col gap-2 p-1", className)}>
       {ghosts.map((multiplier, index) => (
-        <div
+        <motion.div
+          initial={{scale: 0.5}}
+          animate={{scale: 1}}
           key={index}
           style={{opacity: 1 - multiplier}}
           className="flex gap-1">
@@ -38,7 +41,7 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
               @emerald
             </div>
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   )

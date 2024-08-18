@@ -15,6 +15,7 @@ import useActiveModalStore, {
 } from "@/hooks/util/useActiveModal"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import Button, {ButtonVariant} from "@/components/Button"
+import {motion} from "framer-motion"
 
 export type RoomListProps = {
   onSpaceSelected: (spaceId?: string) => void
@@ -148,7 +149,10 @@ const RoomListHandler: FC<RoomListHandlerProps> = ({
 
 const RoomListPlaceHolder: FC<{length?: number}> = ({length = 2}) => {
   return (
-    <div className="ml-2 flex flex-col gap-1">
+    <motion.div
+      initial={{scale: 0}}
+      animate={{scale: 1}}
+      className="ml-2 flex flex-col gap-1">
       {Array.from({length}, (_, index) => (
         <div
           key={index}
@@ -156,7 +160,7 @@ const RoomListPlaceHolder: FC<{length?: number}> = ({length = 2}) => {
           <LoadingEffect />
         </div>
       ))}
-    </div>
+    </motion.div>
   )
 }
 

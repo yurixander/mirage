@@ -4,6 +4,7 @@ import Typography, {TypographyVariant} from "./Typography"
 import {IoEllipsisHorizontal} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import {assert} from "@/utils/util"
+import {motion} from "framer-motion"
 
 export type DetailProps = {
   title: string
@@ -55,7 +56,7 @@ const Detail: FC<DetailProps> = ({
         )}
       </summary>
 
-      <div className="pt-2">{children}</div>
+      <motion.div className="pt-2">{children}</motion.div>
     </details>
   )
 }
