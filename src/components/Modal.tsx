@@ -4,7 +4,7 @@ import {IoCloseCircle} from "react-icons/io5"
 import IconButton from "./IconButton"
 import React from "react"
 import Button from "./Button"
-import {assert, StaticAssetPath} from "@/utils/util"
+import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
@@ -30,9 +30,6 @@ const Modal: FC<ModalProps> = ({
   title,
   className,
 }) => {
-  assert(title.length > 0, "Modal title should not be empty.")
-  assert(actionText.length > 0, "Modal action text should not be empty.")
-
   return (
     <motion.div
       initial={{scale: 0.5}}

@@ -1,4 +1,3 @@
-import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {type IconType} from "react-icons"
 
@@ -9,8 +8,6 @@ export type SmartActionProps = {
 }
 
 const SmartAction: FC<SmartActionProps> = ({Icon, text, onClick}) => {
-  assert(text.length > 0, "Smart action text should not be empty.")
-
   return (
     <button
       className="flex cursor-pointer items-center gap-1 text-xs"

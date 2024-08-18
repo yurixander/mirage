@@ -27,5 +27,9 @@
     "scrollback",
     "Zustand"
   ],
-  "css.customData": [".vscode/tailwind.json"]
+  "css.customData": [".vscode/tailwind.json"],
+  "tailwindCSS.classAttributes": ["class", "className", ".*Class"],
+  "editor.quickSuggestions": {
+    "strings": "on"
+  }
 }

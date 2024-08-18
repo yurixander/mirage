@@ -24,7 +24,6 @@ const Detail: FC<DetailProps> = ({
   className,
 }) => {
   assert(id.length > 0, "Detail id should not be empty.")
-  assert(title.length > 0, "Detail title should not be empty.")
 
   if (menuElements !== undefined) {
     assert(

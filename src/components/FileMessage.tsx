@@ -41,8 +41,6 @@ const FileMessage: FC<FileMessageProps> = ({
 }) => {
   const fileExtension = getFileExtension(fileName).toUpperCase()
 
-  assert(fileName.length > 0, "File name should not be empty.")
-
   if (fileUrl !== undefined) {
     assert(validateUrl(fileUrl), "File url should be valid if defined.")
   }

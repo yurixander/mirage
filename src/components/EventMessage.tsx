@@ -39,7 +39,6 @@ const EventMessage: FC<EventMessageProps> = ({
 
   assert(eventId.length > 0, "Event id should not be empty.")
   assert(sender.userId.length > 0, "Sender user id should not be empty.")
-  assert(body.length > 0, "Event message body should not be empty.")
 
   assert(
     sender.displayName.length > 0,
