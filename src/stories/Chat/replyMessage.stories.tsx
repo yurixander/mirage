@@ -22,17 +22,12 @@ export const Default: Story = {
     timestamp: Date.now(),
     onAuthorClick: () => {},
     contextMenuItems: [],
-    id: "text-message-id",
-    onFromMessageClick: () => {},
-    fromMessage: {
-      authorDisplayName: "Luis",
-      authorDisplayNameColor: "skyblue",
-      contextMenuItems: [],
-      id: "text-message-id",
-      onAuthorClick: () => {},
-      text: "Hi, how are you?",
-      timestamp: Date.now(),
-    },
+    messageId: "$TOGC8_JEyugxWfBqWtF5tKbykN8tdAcp5s3E6jjZRGM",
+    onQuoteMessageClick: () => {},
+    quotedMessageId: "$TOGC8_JEyugxWfBqWtF5tKbykN8tdAcp5s3E6jjZRGM",
+    quotedText: "How are you",
+    quotedUserDisplayName: "Luis",
+    userId: "User",
   },
 }
 
