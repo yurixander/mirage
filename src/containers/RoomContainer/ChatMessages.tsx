@@ -42,6 +42,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 
   const messageElements = useMemo(
     () =>
+      // eslint-disable-next-line sonarjs/cognitive-complexity
       messages.map((message, index) => (
         <motion.div
           initial={{translateX: -25, opacity: 0.5}}
