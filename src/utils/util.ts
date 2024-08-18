@@ -88,7 +88,7 @@ export function stringToColor(str: string): string {
   let totalSum = 0
 
   for (let i = 0; i < str.length; i++) {
-    totalSum += str.charCodeAt(i)
+    totalSum += str.charCodeAt(i) + (i + 1)
   }
 
   const colorIndex = totalSum % colors.length
