@@ -62,6 +62,16 @@ export function validateUrl(url: string): boolean {
   }
 }
 
+function stringToIndex(str: string): number {
+  let totalSum = 0
+
+  for (let i = 0; i < str.length; i++) {
+    totalSum += str.charCodeAt(i) + (i + 1)
+  }
+
+  return totalSum % colors.length
+}
+
 const colors: string[] = [
   "#FFC312",
   "#C4E538",
@@ -86,25 +96,14 @@ const colors: string[] = [
 ]
 
 export function stringToColor(str: string): string {
-  let totalSum = 0
-
-  for (let i = 0; i < str.length; i++) {
-    totalSum += str.charCodeAt(i) + (i + 1)
-  }
-
-  const colorIndex = totalSum % colors.length
+  const colorIndex = stringToIndex(str)
 
   return colors[colorIndex]
 }
 
 export const stringToEmoji = (str: string): string => {
-  let totalSum = 0
-
-  for (let i = 0; i < str.length; i++) {
-    totalSum += str.charCodeAt(i) + (i + 1)
-  }
-
-  const emoji = getEmojiByIndex(totalSum)
+  const emojiIndex = stringToIndex(str)
+  const emoji = getEmojiByIndex(emojiIndex)
 
   return emoji.skins[0].native
 }
