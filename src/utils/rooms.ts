@@ -703,6 +703,26 @@ export const handleMessage = async (
       }
     }
 
+    case MsgType.Video: {
+      if (typeof eventContent.url !== "string") {
+        return null
+      }
+
+      const videoUrl = getFileUrl(eventContent.url, room.client)
+
+      if (videoUrl === undefined) {
+        return null
+      }
+
+      return {
+        kind: MessageKind.Video,
+        data: {
+          ...messageBaseProperties,
+          url: videoUrl,
+        },
+      }
+    }
+
     case undefined: {
       const unsigned = event.getUnsigned()
 

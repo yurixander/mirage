@@ -15,6 +15,7 @@ import FileMessage from "@/components/FileMessage"
 import AudioMessage from "@/components/AudioMessage"
 import ReplyMessage from "@/components/ReplyMessage"
 import {motion} from "framer-motion"
+import VideoMessage from "@/components/VideoMessage"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -113,6 +114,14 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
                   // deleteMessage(room.client, room.roomId, eventId)
                 },
               })}
+            />
+          ) : message.kind === MessageKind.Video ? (
+            <VideoMessage
+              key={message.data.messageId}
+              {...message.data}
+              onAuthorClick={onAuthorClick}
+              url={message.data.url}
+              contextMenuItems={[]}
             />
           ) : message.kind === MessageKind.File ? (
             <FileMessage
