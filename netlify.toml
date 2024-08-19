@@ -1,0 +1,11 @@
+[context.branch-deploy]
+  command = "npm run build:dev"
+  publish = "dist"
+
+[context.deploy-preview]
+  command = "npm run build:dev"
+  publish = "dist"
+
+[context.dev]
+  command = "npm run build:dev"
+  publish="dist"

@@ -3,7 +3,6 @@ import {type IconType} from "react-icons"
 import Input, {type InputConstraint, type InputAction} from "./Input"
 import Typography, {TypographyVariant} from "./Typography"
 import {twMerge} from "tailwind-merge"
-import {assert} from "@/utils/util"
 
 export type InputSectionProps = {
   title: string
@@ -30,8 +29,6 @@ const InputSection: FC<InputSectionProps> = ({
   className,
 }) => {
   const TitleIcon = titleIcon
-
-  assert(title.length > 0, "THe section title should not be empty.")
 
   return (
     <div className={twMerge("flex flex-col gap-1", className)}>

@@ -1,5 +1,4 @@
 import IconButton from "@/components/IconButton"
-import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {IoMdLink} from "react-icons/io"
 import {
@@ -23,8 +22,6 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   onRosterExpanded,
   className,
 }) => {
-  assert(roomName.length > 0, "room name should not be empty")
-
   return (
     <header className={className}>
       <div className="m-2 flex w-full gap-1">

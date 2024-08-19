@@ -96,6 +96,8 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
         return
       }
 
+      console.log("Messages")
+
       setMessages(anyMessages)
       setMessagesState(MessagesState.Loaded)
     } catch (error) {
@@ -131,20 +133,26 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     setRoomName(room.name)
   })
 
-  useRoomListener(currentRoom, RoomEvent.Timeline, (event, room) => {
-    if (room === undefined) {
-      return
-    }
-
-    void handleRoomMessageEvent(event, room).then(messageOrEvent => {
-      if (messageOrEvent === null) {
+  useRoomListener(
+    currentRoom,
+    RoomEvent.Timeline,
+    (event, room, toStartOfTimeline) => {
+      if (room === undefined || toStartOfTimeline !== false) {
         return
       }
 
-      setMessages(messages => [...messages, messageOrEvent])
-      void room.client.sendReadReceipt(event)
-    })
-  })
+      console.log("Timeline")
+
+      void handleRoomMessageEvent(event, room).then(messageOrEvent => {
+        if (messageOrEvent === null) {
+          return
+        }
+
+        setMessages(messages => [...messages, messageOrEvent])
+        void room.client.sendReadReceipt(event)
+      })
+    }
+  )
 
   // When someone deletes a message.
   useRoomListener(currentRoom, RoomEvent.Redaction, (event, room) => {
