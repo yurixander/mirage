@@ -241,4 +241,10 @@ export function searchEmoji(query: string): Emoji[] {
   return emojis.filter(emoji => emoji.keywords.includes(query.toLowerCase()))
 }
 
+export function getEmojiByIndex(index: number): Emoji {
+  const emojiIndex = index % emojis.length
+
+  return emojis[emojiIndex]
+}
+
 export default EmojiPicker
