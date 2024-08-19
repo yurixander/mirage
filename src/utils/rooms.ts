@@ -41,6 +41,7 @@ import {
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
+import {parseReplyMessageFromBody, validateReplyMessage} from "./parser"
 
 export enum ImageSizes {
   Server = 47,
@@ -587,6 +588,8 @@ export const handleRoomNameEvent = async (
 export const handleMessage = async (
   event: MatrixEvent,
   room: Room
+  // TODO: Resolve this problem
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): Promise<AnyMessage | null> => {
   const sender = event.sender
   const eventContent = event.getContent()
@@ -614,6 +617,31 @@ export const handleMessage = async (
 
   switch (eventContent.msgtype) {
     case MsgType.Text: {
+      const relates = eventContent["m.relates_to"]
+
+      if (relates !== undefined) {
+        const reply = relates["m.in_reply_to"]
+
+        if (
+          reply !== undefined &&
+          eventContent.body !== undefined &&
+          typeof eventContent.body === "string" &&
+          validateReplyMessage(eventContent.body)
+        ) {
+          const replyData = parseReplyMessageFromBody(eventContent.body)
+          return {
+            kind: MessageKind.Reply,
+            data: {
+              ...messageBaseProperties,
+              text: replyData.message,
+              quotedMessageId: reply.event_id,
+              quotedText: replyData.quotedMessage,
+              quotedUserDisplayName: replyData.quotedUser,
+            },
+          }
+        }
+      }
+
       return {
         kind: MessageKind.Text,
         data: {

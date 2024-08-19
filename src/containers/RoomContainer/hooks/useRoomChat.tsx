@@ -2,6 +2,7 @@ import {type AudioMessageData} from "@/components/AudioMessage"
 import {type EventMessageData} from "@/components/EventMessage"
 import {type FileMessageData} from "@/components/FileMessage"
 import {type ImageMessageData} from "@/components/ImageMessage"
+import {type ReplyMessageData} from "@/components/ReplyMessage"
 import {type TextMessageData} from "@/components/TextMessage"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
@@ -21,6 +22,7 @@ export enum MessageKind {
   Audio,
   Event,
   File,
+  Reply,
   Unread,
 }
 
@@ -41,7 +43,11 @@ export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
         ? FileMessageData
         : Kind extends MessageKind.Audio
           ? AudioMessageData
-          : UnreadIndicatorProps
+          : Kind extends MessageKind.Audio
+            ? AudioMessageData
+            : Kind extends MessageKind.Reply
+              ? ReplyMessageData
+              : UnreadIndicatorProps
 
 export type Message<Kind extends MessageKind> = {
   kind: Kind
@@ -55,6 +61,7 @@ export type AnyMessage =
   | Message<MessageKind.File>
   | Message<MessageKind.Unread>
   | Message<MessageKind.Audio>
+  | Message<MessageKind.Reply>
 
 type UseRoomChatReturnType = {
   messagesState: MessagesState
@@ -92,7 +99,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       setMessages(anyMessages)
       setMessagesState(MessagesState.Loaded)
     } catch (error) {
-      console.log("Error fetching messages", error)
+      console.error("Error fetching messages", error)
 
       setMessagesState(MessagesState.Error)
     }
