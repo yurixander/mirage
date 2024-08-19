@@ -76,7 +76,7 @@ const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
       onMouseMove={handleMouseMove}
       onWheel={handleWheel}>
       <img
-        className="size-full cursor-zoom-in object-cover transition-transform duration-300"
+        className="size-full cursor-zoom-in object-contain transition-transform duration-300"
         src={src}
         alt="Img message zoom"
         style={{

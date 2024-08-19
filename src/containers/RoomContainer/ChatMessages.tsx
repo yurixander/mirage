@@ -13,6 +13,7 @@ import ImageModal from "./ImageModal"
 import {buildMessageMenuItems} from "@/utils/menu"
 import FileMessage from "@/components/FileMessage"
 import AudioMessage from "@/components/AudioMessage"
+import ReplyMessage from "@/components/ReplyMessage"
 import {motion} from "framer-motion"
 
 export type ChatMessagesProps = {
@@ -41,6 +42,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 
   const messageElements = useMemo(
     () =>
+      // eslint-disable-next-line sonarjs/cognitive-complexity
       messages.map((message, index) => (
         <motion.div
           initial={{translateX: -25, opacity: 0.5}}
@@ -50,6 +52,30 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
               key={message.data.messageId}
               {...message.data}
               onAuthorClick={onAuthorClick}
+              contextMenuItems={buildMessageMenuItems({
+                isMessageError: message.data.isDeleted === true,
+                canDeleteMessage: message.data.canDeleteMessage === true,
+                onReplyMessage() {
+                  // TODO: Handle reply
+                },
+                onResendMessage() {
+                  // TODO: Handle resend message here.
+                },
+                onDeleteMessage() {
+                  // deleteMessage(room.client, room.roomId, eventId)
+                },
+              })}
+            />
+          ) : message.kind === MessageKind.Reply ? (
+            <ReplyMessage
+              key={message.data.messageId}
+              {...message.data}
+              onAuthorClick={() => {
+                // TODO: Handle `onAuthorClick` for `TextMessage`.
+              }}
+              onQuoteMessageClick={quoteMessageId => {
+                // TODO Handle `onQuoteMessageClick` for `ReplyMessage`
+              }}
               contextMenuItems={buildMessageMenuItems({
                 isMessageError: message.data.isDeleted === true,
                 canDeleteMessage: message.data.canDeleteMessage === true,
