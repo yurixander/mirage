@@ -89,8 +89,6 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
         return
       }
 
-      console.log("Messages")
-
       setMessages(anyMessages)
       setMessagesState(MessagesState.Loaded)
     } catch (error) {
@@ -133,8 +131,6 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       if (room === undefined || toStartOfTimeline !== false) {
         return
       }
-
-      console.log("Timeline")
 
       void handleRoomMessageEvent(event, room).then(messageOrEvent => {
         if (messageOrEvent === null) {
