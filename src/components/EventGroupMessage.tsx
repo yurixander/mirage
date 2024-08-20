@@ -14,6 +14,7 @@ import {IoCube} from "react-icons/io5"
 
 export enum EventShortenerType {
   PersonalInfo = "has change his personal info.",
+  ConfigureRoom = "has created and configured this room.",
 }
 
 export type EventGroupMainBody = {
@@ -21,9 +22,12 @@ export type EventGroupMainBody = {
   shortenerType: EventShortenerType
 }
 
-export type EventGroupMessageProps = {
+export type EventGroupMessageData = {
   eventGroupMainBody: EventGroupMainBody
   eventMessages: EventMessageData[]
+}
+
+export interface EventGroupMessageProps extends EventGroupMessageData {
   onShowMember: () => void
   onFindUser: () => void
 }
@@ -67,7 +71,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
         className="mt-1 flex w-full flex-col gap-3 overflow-hidden rounded-md border-l-4 bg-gray-50 pr-24"
         animate={{height: isExpanded ? "max-content" : "0px"}}>
         {eventMessages.map(eventMessageData => (
-          <ChildEventMessage
+          <EventMessageChild
             icon={eventMessageData.icon}
             body={eventMessageData.body}
             timestamp={eventMessageData.timestamp}
@@ -78,12 +82,19 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
   )
 }
 
-const ChildEventMessage: FC<{
+export type EventMEssageChildProps = {
   icon?: IconType
   body: string
   timestamp: number
   className?: string
-}> = ({body, icon, timestamp, className}) => {
+}
+
+const EventMessageChild: FC<EventMEssageChildProps> = ({
+  body,
+  icon,
+  timestamp,
+  className,
+}) => {
   const Icon = icon ?? IoMdCreate
 
   return (

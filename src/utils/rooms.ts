@@ -42,6 +42,8 @@ import {
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
 import {parseReplyMessageFromBody, validateReplyMessage} from "./parser"
+import {type EventMessageData} from "@/components/EventMessage"
+import {EventShortenerType} from "@/components/EventGroupMessage"
 
 export enum ImageSizes {
   Server = 47,
@@ -172,24 +174,69 @@ export const handleRoomEvents = async (
   const lastReadEventId = activeRoom.getEventReadUpTo(activeRoom.myUserId)
   const allMessageProperties: AnyMessage[] = []
 
-  for (const event of events) {
-    const messageProperties = await handleRoomMessageEvent(event, roomHistory)
+  const tempEventMessageGroup: EventMessageData[] = []
+
+  for (let i = 0; i < events.length; i++) {
+    const currentEvent = events[i]
+    const nextEvent = events[i + 1]
+
+    const messageProperties = await handleRoomMessageEvent(
+      currentEvent,
+      roomHistory
+    )
 
     if (messageProperties === null) {
       continue
     }
 
+    // Group event messages
+    if (
+      messageProperties.kind === MessageKind.Event &&
+      nextEvent !== undefined &&
+      nextEvent.getType() !== EventType.RoomMessage &&
+      nextEvent.sender?.userId === currentEvent.sender?.userId
+    ) {
+      tempEventMessageGroup.push(messageProperties.data)
+
+      continue
+    } else if (tempEventMessageGroup.length >= 3) {
+      // EventMessageGroup
+      allMessageProperties.push({
+        kind: MessageKind.EventGroup,
+        data: {
+          eventMessages: tempEventMessageGroup,
+          eventGroupMainBody: {
+            sender: tempEventMessageGroup[0].sender,
+            shortenerType: EventShortenerType.ConfigureRoom,
+          },
+        },
+      })
+
+      continue
+    } else if (tempEventMessageGroup.length > 0) {
+      allMessageProperties.push(
+        ...tempEventMessageGroup.map(tempMessage => {
+          return {
+            kind: MessageKind.Event,
+            data: tempMessage,
+          } satisfies AnyMessage
+        })
+      )
+    }
+
     allMessageProperties.push(messageProperties)
 
-    if (lastReadEventId === event.event.event_id) {
+    if (lastReadEventId === currentEvent.event.event_id) {
       allMessageProperties.push({
         kind: MessageKind.Unread,
         data: {lastReadEventId},
       })
     }
 
-    void client.sendReadReceipt(event)
+    void client.sendReadReceipt(currentEvent)
   }
+
+  console.log(tempEventMessageGroup)
 
   return allMessageProperties
 }
