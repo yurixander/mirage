@@ -5,7 +5,7 @@ import EventMessage, {
 } from "./EventMessage"
 import Button, {ButtonVariant} from "./Button"
 import {motion} from "framer-motion"
-import {formatTime, strCapitalize, stringToColor} from "@/utils/util"
+import {assert, formatTime, strCapitalize, stringToColor} from "@/utils/util"
 import {type IconType} from "react-icons"
 import {IoMdCreate} from "react-icons/io"
 import {twMerge} from "tailwind-merge"
@@ -39,6 +39,8 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
   onShowMember,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
+
+  assert(eventMessages.length > 0, "Event group messages should not be empty.")
 
   return (
     <div className="flex flex-col gap-2">

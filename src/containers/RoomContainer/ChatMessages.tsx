@@ -241,7 +241,8 @@ const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
     case MessageKind.EventGroup: {
       return (
         <EventGroupMessage
-          {...anyMessage.data}
+          eventGroupMainBody={anyMessage.data.eventGroupMainBody}
+          eventMessages={anyMessage.data.eventMessages}
           onShowMember={function (): void {
             throw new Error("Show member not implemented.")
           }}

@@ -174,71 +174,81 @@ export const handleRoomEvents = async (
   const lastReadEventId = activeRoom.getEventReadUpTo(activeRoom.myUserId)
   const allMessageProperties: AnyMessage[] = []
 
-  const tempEventMessageGroup: EventMessageData[] = []
-
-  for (let i = 0; i < events.length; i++) {
-    const currentEvent = events[i]
-    const nextEvent = events[i + 1]
-
-    const messageProperties = await handleRoomMessageEvent(
-      currentEvent,
-      roomHistory
-    )
+  for (const event of events) {
+    const messageProperties = await handleRoomMessageEvent(event, roomHistory)
 
     if (messageProperties === null) {
       continue
     }
 
-    // Group event messages
-    if (
-      messageProperties.kind === MessageKind.Event &&
-      nextEvent !== undefined &&
-      nextEvent.getType() !== EventType.RoomMessage &&
-      nextEvent.sender?.userId === currentEvent.sender?.userId
-    ) {
-      tempEventMessageGroup.push(messageProperties.data)
-
-      continue
-    } else if (tempEventMessageGroup.length >= 3) {
-      // EventMessageGroup
-      allMessageProperties.push({
-        kind: MessageKind.EventGroup,
-        data: {
-          eventMessages: tempEventMessageGroup,
-          eventGroupMainBody: {
-            sender: tempEventMessageGroup[0].sender,
-            shortenerType: EventShortenerType.ConfigureRoom,
-          },
-        },
-      })
-
-      continue
-    } else if (tempEventMessageGroup.length > 0) {
-      allMessageProperties.push(
-        ...tempEventMessageGroup.map(tempMessage => {
-          return {
-            kind: MessageKind.Event,
-            data: tempMessage,
-          } satisfies AnyMessage
-        })
-      )
-    }
-
     allMessageProperties.push(messageProperties)
 
-    if (lastReadEventId === currentEvent.event.event_id) {
+    if (lastReadEventId === event.event.event_id) {
       allMessageProperties.push({
         kind: MessageKind.Unread,
         data: {lastReadEventId},
       })
     }
 
-    void client.sendReadReceipt(currentEvent)
+    void client.sendReadReceipt(event)
   }
 
-  console.log(tempEventMessageGroup)
+  return groupEventMessage(allMessageProperties)
+}
 
-  return allMessageProperties
+export const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
+  const messagesResult: AnyMessage[] = []
+  const tempMessageEvents: EventMessageData[] = []
+
+  for (let i = 0; i < anyMessages.length; i++) {
+    const currentMessage = anyMessages[i]
+    const nextMessage = anyMessages[i + 1]
+
+    if (currentMessage.kind !== MessageKind.Event) {
+      if (tempMessageEvents.length >= 2) {
+        messagesResult.push({
+          kind: MessageKind.EventGroup,
+          data: {
+            eventGroupMainBody: {
+              sender: tempMessageEvents[0].sender,
+              shortenerType: EventShortenerType.ConfigureRoom,
+            },
+            eventMessages: tempMessageEvents.slice(),
+          },
+        })
+      } else if (tempMessageEvents.length > 0) {
+        messagesResult.push(
+          ...{
+            ...tempMessageEvents.map(tempMsg => {
+              return {
+                kind: MessageKind.Event,
+                data: tempMsg,
+              } satisfies AnyMessage
+            }),
+          }
+        )
+      }
+
+      messagesResult.push(currentMessage)
+
+      tempMessageEvents.length = 0
+      continue
+    }
+
+    if (
+      nextMessage !== undefined &&
+      nextMessage.kind === MessageKind.Event &&
+      nextMessage.data.sender.userId === currentMessage.data.sender.userId
+    ) {
+      tempMessageEvents.push(currentMessage.data)
+
+      continue
+    }
+
+    messagesResult.push(currentMessage)
+  }
+
+  return messagesResult
 }
 
 export const handleRoomMessageEvent = async (
