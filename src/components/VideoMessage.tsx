@@ -34,7 +34,12 @@ const VideoMessage: FC<VideoMessageProps> = ({
       }}
       timestamp={timestamp}>
       <div className="w-80 items-center justify-center rounded border bg-slate-200">
-        <video src={url} controls className="rounded" width={320} />
+        <video
+          src={url}
+          controls
+          className="w-full rounded shadow"
+          width={320}
+        />
       </div>
     </MessageContainer>
   )
