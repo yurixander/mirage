@@ -1,10 +1,10 @@
-import useConnection from "@/hooks/matrix/useConnection"
 import useDebounced from "@/hooks/util/useDebounced"
 import {sendImageMessageFromFile} from "@/utils/util"
 import {MsgType} from "matrix-js-sdk"
 import {useEffect, useMemo, useState} from "react"
 import {useFilePicker} from "use-file-picker"
 import {type ImageModalPreviewProps} from "./ImageModalPreview"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
 type UseChatInputReturnType = {
   messageText: string
@@ -17,7 +17,7 @@ type UseChatInputReturnType = {
 }
 
 const useChatInput = (roomId: string): UseChatInputReturnType => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const [messageText, setMessageText] = useState("")
   const debouncedText = useDebounced(messageText, 500)
 

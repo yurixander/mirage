@@ -3,9 +3,9 @@ import Button, {ButtonVariant} from "@/components/Button"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {useMemo, useState, type FC} from "react"
 import RoomNotFoundSplash from "./RoomNotFoundSplash"
-import useConnection from "@/hooks/matrix/useConnection"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {getImageUrl} from "@/utils/util"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
 enum ActionTypes {
   Join,
@@ -13,7 +13,7 @@ enum ActionTypes {
 }
 
 const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const {setActiveRoomId, clearActiveRoomId} = useActiveRoomIdStore()
   const [actionLoading, setActionLoading] = useState<ActionTypes | null>(null)
   const [error, setError] = useState<string | null>(null)

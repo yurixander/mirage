@@ -6,7 +6,6 @@ import {
   stringToColor,
   formatTime,
 } from "@/utils/util"
-import useConnection from "@/hooks/matrix/useConnection"
 import useInvitationLink from "@/hooks/matrix/useInvitationLink"
 import useUsersSearch from "@/hooks/matrix/useUserSearch"
 import {getDirectRoomsIds, getPartnerUserIdFromRoomDirect} from "@/utils/rooms"
@@ -17,6 +16,7 @@ import Input from "@/components/Input"
 import useActiveModalStore from "@/hooks/util/useActiveModal"
 import {AvatarType} from "@/components/AvatarImage"
 import {motion} from "framer-motion"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
 type DirectChatRecentProps = {
   userId: string
@@ -51,7 +51,7 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
 }
 
 const DirectMessageModal: FC = () => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const {clearActiveModal} = useActiveModalStore()
   const [userId, setUserId] = useState<string | null>(null)
   const [directChats, setDirectChats] = useState<DirectChatRecentProps[]>([])

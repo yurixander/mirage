@@ -3,14 +3,14 @@ import Typography, {TypographyVariant} from "./Typography"
 import InputSection from "./InputSection"
 import {createSpace} from "@/utils/util"
 import InputArea from "./InputArea"
-import useConnection from "@/hooks/matrix/useConnection"
 import {EventType} from "matrix-js-sdk"
 import AvatarUploader from "./AvatarUploader"
 import useActiveModalStore from "@/hooks/util/useActiveModal"
 import Modal from "./Modal"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
 const CreateSpaceModal: FC = () => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const [spaceName, setSpaceName] = useState("")
   const [spaceDescription, setSpaceDescription] = useState("")
   const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
