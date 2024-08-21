@@ -20,7 +20,7 @@ type ZustandClientStore = {
   setLastSyncError: (error: Error | null) => void
 }
 
-const useClientStore = create<ZustandClientStore>(set => ({
+export const useClientStore = create<ZustandClientStore>(set => ({
   client: null,
   syncState: null,
   lastSyncError: null,

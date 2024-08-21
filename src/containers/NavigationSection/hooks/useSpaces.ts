@@ -1,10 +1,10 @@
 import {useCallback, useEffect, useState} from "react"
 import useList from "../../../hooks/util/useList"
-import useConnection from "../../../hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {getImageUrl} from "@/utils/util"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
 export type PartialSpace = {
   name: string
@@ -30,7 +30,7 @@ type UseSpacesReturnType = {
 }
 
 const useSpaces = (): UseSpacesReturnType => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const [isLoading, setIsLoading] = useState(false)
 
   const {
