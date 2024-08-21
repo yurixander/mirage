@@ -120,7 +120,7 @@ const useConnection = (): UseConnectionReturnType => {
 
         void newClient.startClient({
           lazyLoadMembers: true,
-          initialSyncLimit: 1,
+          resolveInvitesToProfiles: true,
         })
       })
     },
