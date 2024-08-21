@@ -6,10 +6,12 @@ import MessageContainer, {
 
 export interface VideoMessageData extends MessageBaseData {
   url: string
+  thumbnail?: string
 }
 
 export interface VideoMessageProps extends MessageBaseProps {
   url: string
+  thumbnail?: string
 }
 
 const VideoMessage: FC<VideoMessageProps> = ({
@@ -22,6 +24,7 @@ const VideoMessage: FC<VideoMessageProps> = ({
   timestamp,
   userId,
   url,
+  thumbnail,
 }) => {
   return (
     <MessageContainer
@@ -33,13 +36,12 @@ const VideoMessage: FC<VideoMessageProps> = ({
         onAuthorClick(userId)
       }}
       timestamp={timestamp}>
-      <div className="h-60 w-80 items-center justify-center rounded border bg-black">
+      <div className="max-h-80 max-w-80 items-center justify-center rounded border bg-black">
         <video
           src={url}
           controls
           className="size-full rounded shadow"
-          width={320}
-          height={240}
+          poster={thumbnail}
         />
       </div>
     </MessageContainer>

@@ -709,6 +709,11 @@ export const handleMessage = async (
       }
 
       const videoUrl = getFileUrl(eventContent.url, room.client)
+      let poster = eventContent.info.thumbnail_url
+
+      if (typeof poster === "string") {
+        poster = getImageUrl(poster, room.client)
+      }
 
       if (videoUrl === undefined) {
         return null
@@ -719,6 +724,7 @@ export const handleMessage = async (
         data: {
           ...messageBaseProperties,
           url: videoUrl,
+          thumbnail: poster,
         },
       }
     }
