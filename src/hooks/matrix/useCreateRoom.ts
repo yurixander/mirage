@@ -37,7 +37,9 @@ const useCreateRoom = (): UseCreateRoomReturnType => {
   const [isCreatingRoom, setIsCreatingRoom] = useState(false)
   const {clearActiveModal} = useActiveModalStore()
   const client = useMatrixClient()
-  const {results, setRoomAddress, roomAddress} = usePublicRoomsSearch(client)
+
+  const {results, setRoomAddress, roomAddress, isResultLoading} =
+    usePublicRoomsSearch(client)
 
   const onCreateRoom = (): void => {
     if (client === null) {
@@ -78,11 +80,11 @@ const useCreateRoom = (): UseCreateRoomReturnType => {
     roomVisibility,
     enableEncryption,
     clearActiveModal,
-    isValidAlias: !(results !== null && results.length > 0),
+    isValidAlias: isResultLoading || (results !== null && results.length === 0),
     isDisabled:
       client === null ||
-      roomName.length <= 0 ||
-      (roomVisibility === Visibility.Public && roomAddress.length <= 0),
+      roomName.length === 0 ||
+      (roomVisibility === Visibility.Public && roomAddress.length === 0),
   }
 }
 

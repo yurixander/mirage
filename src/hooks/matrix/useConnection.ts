@@ -6,7 +6,7 @@ import {
   SyncState,
   LocalStorageCryptoStore,
 } from "matrix-js-sdk"
-import {useCallback} from "react"
+import {useCallback, useEffect} from "react"
 import {create} from "zustand"
 
 type ZustandClientStore = {
@@ -62,6 +62,29 @@ const useConnection = (): UseConnectionReturnType => {
     lastSyncError,
     setLastSyncError,
   } = useClientStore()
+
+  useEffect(() => {
+    if (client === null) {
+      return
+    }
+
+    const handleSyncState = (
+      newSyncState: SyncState,
+      previousSyncState: SyncState | null
+    ): void => {
+      if (previousSyncState === newSyncState) {
+        return
+      }
+
+      setSyncState(newSyncState)
+    }
+
+    client.on(ClientEvent.Sync, handleSyncState)
+
+    return () => {
+      client.removeListener(ClientEvent.Sync, handleSyncState)
+    }
+  }, [client, setSyncState])
 
   const connect = useCallback(
     async (credentials: Credentials): Promise<boolean> => {
