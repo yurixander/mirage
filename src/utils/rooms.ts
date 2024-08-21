@@ -709,15 +709,16 @@ export const handleMessage = async (
       }
 
       const videoUrl = getFileUrl(eventContent.url, room.client)
-      let poster = eventContent.info.thumbnail_url
-
-      if (typeof poster === "string") {
-        poster = getImageUrl(poster, room.client)
-      }
 
       if (videoUrl === undefined) {
         return null
       }
+
+      const poster =
+        typeof eventContent.info.thumbnail_url === "string"
+          ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            getImageUrl(eventContent.info.thumbnail_url, room.client)
+          : eventContent.info.thumbnail_url
 
       return {
         kind: MessageKind.Video,
