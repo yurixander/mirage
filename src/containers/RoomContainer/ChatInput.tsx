@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState, type FC} from "react"
+import {useState, type FC} from "react"
 import useChatInput from "./useChatInput"
 import ImageModalPreview from "./ImageModalPreview"
 import {IoIosHappy} from "react-icons/io"
@@ -21,7 +21,6 @@ type SelectionRange = {
 const BUTTON_SIZE_CLASS = "size-5 md:size-7"
 
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const {clearPoints, points, setPointsByEvent} = useElementPoints()
   const [caretPosition, setCaretPosition] = useState<number | null>(null)
 
@@ -40,13 +39,6 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
     openFilePicker,
     imagePreviewProps,
   } = useChatInput(roomId)
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto"
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
-    }
-  }, [messageText])
 
   return (
     <>
@@ -182,6 +174,22 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           }}
         />
       </div>
+    </>
+  )
+}
+
+type ChooseFileButtonProps = {
+  onPickFile: () => void
+}
+
+const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
+  return (
+    <>
+      <IoAddCircle
+        className={twMerge("text-slate-400", BUTTON_SIZE_CLASS)}
+        role="button"
+        onClick={onPickFile}
+      />
     </>
   )
 }
