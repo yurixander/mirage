@@ -1,5 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import FileMessage, {type FileMessageProps} from "../components/FileMessage"
+import FileMessage, {type FileMessageProps} from "../../components/FileMessage"
 import React from "react"
 
 type Story = StoryObj<typeof FileMessage>
@@ -18,7 +18,7 @@ export const Default: Story = {
     authorDisplayNameColor: "green",
     fileName: "Presentation.ppt",
     fileSize: 2_500_000,
-    fileExtension: "PPT",
+    userId: "@userId",
   },
 }
 

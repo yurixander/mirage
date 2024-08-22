@@ -7,6 +7,7 @@ import {type ReplyMessageData} from "@/components/ReplyMessage"
 import {type TextMessageData} from "@/components/TextMessage"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
+import {type VideoMessageData} from "@/components/VideoMessage"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
@@ -25,6 +26,7 @@ export enum MessageKind {
   File,
   Reply,
   EventGroup,
+  Video,
   Unread,
 }
 
@@ -51,7 +53,9 @@ export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
               ? ReplyMessageData
               : Kind extends MessageKind.EventGroup
                 ? EventGroupMessageData
-                : UnreadIndicatorProps
+                : Kind extends MessageKind.Video
+                  ? VideoMessageData
+                  : UnreadIndicatorProps
 
 export type Message<Kind extends MessageKind> = {
   kind: Kind
@@ -63,6 +67,7 @@ export type AnyMessage =
   | Message<MessageKind.Image>
   | Message<MessageKind.Event>
   | Message<MessageKind.File>
+  | Message<MessageKind.Video>
   | Message<MessageKind.Unread>
   | Message<MessageKind.Audio>
   | Message<MessageKind.Reply>
@@ -101,12 +106,10 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
         return
       }
 
-      console.log("Messages")
-
       setMessages(anyMessages)
       setMessagesState(MessagesState.Loaded)
     } catch (error) {
-      console.log("Error fetching messages", error)
+      console.error("Error fetching messages", error)
 
       setMessagesState(MessagesState.Error)
     }
@@ -145,8 +148,6 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       if (room === undefined || toStartOfTimeline !== false) {
         return
       }
-
-      console.log("Timeline")
 
       void handleRoomMessageEvent(event, room).then(messageOrEvent => {
         if (messageOrEvent === null) {

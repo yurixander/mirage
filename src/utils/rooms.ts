@@ -10,11 +10,11 @@ import {
 } from "matrix-js-sdk"
 import {
   assert,
-  emojiRandom,
   getFileUrl,
   getImageUrl,
   normalizeName,
   stringToColor,
+  stringToEmoji,
 } from "./util"
 import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {
@@ -74,7 +74,7 @@ export async function getAllJoinedRooms(
         type: directRoomIds.includes(joinedRoomId)
           ? RoomType.Direct
           : RoomType.Group,
-        emoji: emojiRandom(),
+        emoji: stringToEmoji(joinedRoomId),
       })
     }
   } catch (error) {
@@ -756,6 +756,33 @@ export const handleMessage = async (
         data: {
           ...messageBaseProperties,
           audioUrl: getFileUrl(audioUrl, room.client),
+        },
+      }
+    }
+
+    case MsgType.Video: {
+      if (typeof eventContent.url !== "string") {
+        return null
+      }
+
+      const videoUrl = getFileUrl(eventContent.url, room.client)
+
+      if (videoUrl === undefined) {
+        return null
+      }
+
+      const poster =
+        typeof eventContent.info.thumbnail_url === "string"
+          ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            getImageUrl(eventContent.info.thumbnail_url, room.client)
+          : eventContent.info.thumbnail_url
+
+      return {
+        kind: MessageKind.Video,
+        data: {
+          ...messageBaseProperties,
+          url: videoUrl,
+          thumbnail: poster,
         },
       }
     }

@@ -16,6 +16,7 @@ import AudioMessage from "@/components/AudioMessage"
 import ReplyMessage from "@/components/ReplyMessage"
 import {motion} from "framer-motion"
 import EventGroupMessage from "@/components/EventGroupMessage"
+import VideoMessage from "@/components/VideoMessage"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -249,6 +250,17 @@ const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
           onFindUser={function (): void {
             throw new Error("Find user not implemented.")
           }}
+        />
+      )
+    }
+    case MessageKind.Video: {
+      return (
+        <VideoMessage
+          key={anyMessage.data.messageId}
+          {...anyMessage.data}
+          onAuthorClick={onAuthorClick}
+          url={anyMessage.data.url}
+          contextMenuItems={[]}
         />
       )
     }
