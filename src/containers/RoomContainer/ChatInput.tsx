@@ -6,6 +6,7 @@ import {IoAddCircle, IoMic, IoSend} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import EmojiPicker from "@/components/EmojiPicker"
 import useElementPoints from "@/hooks/util/useElementPoints"
+import TextArea from "@/components/TextArea"
 
 export type ChatInputProps = {
   roomId: string
@@ -101,7 +102,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
 
       <div
         className={twMerge(
-          "mx-2 my-1 flex max-h-28 gap-2 rounded-2xl border border-slate-300 bg-gray-50 px-3 py-2",
+          "mx-2 my-1 flex max-h-28 gap-2 rounded-2xl border border-slate-300 bg-gray-50",
           "md:max-h-36 md:gap-3 md:rounded-3xl md:px-4 md:py-3",
           className
         )}>
@@ -111,16 +112,12 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           onClick={openFilePicker}
         />
 
-        <textarea
-          className="max-h-24 w-full resize-none bg-transparent text-sm scrollbar-hide focus-visible:outline-none focus-visible:outline-0 md:max-h-32 md:text-xl"
-          ref={textareaRef}
-          placeholder="Write a message or simply say 👋🏼 hello..."
+        <TextArea
+          className="max-h-24 w-full border-none p-0 text-sm md:max-h-32 md:text-xl"
           value={messageText}
-          rows={1}
+          onValueChanged={setMessageText}
           disabled={isInputDisabled}
-          onChange={event => {
-            setMessageText(event.target.value)
-          }}
+          placeholder="Write a message or simply say 👋🏼 hello..."
           onSelect={event => {
             if (!(event.target instanceof HTMLTextAreaElement)) {
               return
