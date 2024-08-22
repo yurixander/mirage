@@ -28,8 +28,8 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
   const {refs, floatingStyles, context} = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    placement: "bottom",
-    middleware: [flip(), shift(), offset({crossAxis: 8, mainAxis: 4})],
+    placement: "top",
+    middleware: [flip(), shift(), offset({crossAxis: 40, mainAxis: 16})],
   })
 
   const click = useClick(context)
@@ -49,7 +49,7 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
         <motion.div
           animate={{opacity: 0.8}}
           whileInView={{opacity: 1}}
-          className="flex w-full max-w-40 flex-col gap-1 rounded-md border border-slate-200 bg-white px-1 py-2 shadow-md"
+          className="z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-slate-200 bg-white px-1 py-2 shadow-md"
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}>
