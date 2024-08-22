@@ -1,12 +1,12 @@
 import {useState, type FC} from "react"
 import useChatInput from "./useChatInput"
-import ImageModalPreview from "./ImageModalPreview"
 import {IoIosHappy} from "react-icons/io"
-import {IoAddCircle, IoMic, IoSend} from "react-icons/io5"
+import {IoMic, IoSend} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import EmojiPicker from "@/components/EmojiPicker"
 import useElementPoints from "@/hooks/util/useElementPoints"
 import TextArea from "@/components/TextArea"
+import ChooseFileButton from "./ChooseFileButton"
 
 export type ChatInputProps = {
   roomId: string
@@ -36,16 +36,10 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
     isDisabled,
     isInputDisabled,
     sendTextMessage,
-    openFilePicker,
-    imagePreviewProps,
   } = useChatInput(roomId)
 
   return (
     <>
-      {imagePreviewProps !== undefined && (
-        <ImageModalPreview {...imagePreviewProps} />
-      )}
-
       {points !== null && (
         <EmojiPicker
           locationPoints={points}
@@ -98,10 +92,10 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           "md:max-h-36 md:gap-3 md:rounded-3xl md:px-4 md:py-3",
           className
         )}>
-        <IoAddCircle
-          className={twMerge("text-slate-400", BUTTON_SIZE_CLASS)}
-          role="button"
-          onClick={openFilePicker}
+        <ChooseFileButton
+          onPickFile={(sourceUrl, sourceType) => {
+            throw new Error("Choose file not implemented.")
+          }}
         />
 
         <TextArea
@@ -174,22 +168,6 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           }}
         />
       </div>
-    </>
-  )
-}
-
-type ChooseFileButtonProps = {
-  onPickFile: () => void
-}
-
-const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
-  return (
-    <>
-      <IoAddCircle
-        className={twMerge("text-slate-400", BUTTON_SIZE_CLASS)}
-        role="button"
-        onClick={onPickFile}
-      />
     </>
   )
 }

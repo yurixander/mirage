@@ -7,14 +7,11 @@ export enum SourceType {
   File = "file/*",
 }
 
-type UsePickerReturnType = {
-  openFilePicker: () => void
-  sourceUrl: string | null
-}
-
-const usePicker = (sourceType: SourceType): UsePickerReturnType => {
+const usePicker = (
+  sourceType: SourceType,
+  onFileLoaded: (sourceUrl: string, sourceType: SourceType) => void
+): (() => void) => {
   const [input, setInput] = useState<HTMLInputElement | null>(null)
-  const [sourceUrl, setSourceUrl] = useState<string | null>(null)
 
   useEffect(() => {
     if (input !== null) {
@@ -40,23 +37,26 @@ const usePicker = (sourceType: SourceType): UsePickerReturnType => {
         return
       }
 
-      setSourceUrl(URL.createObjectURL(file))
+      try {
+        const url = URL.createObjectURL(file)
+
+        onFileLoaded(url, sourceType)
+      } catch {
+        // TODO: Show toast error when error ocurred.
+
+        console.error("Error loading file.")
+      }
     }
 
     newInput.addEventListener("change", handleFileChange)
-  }, [input, sourceType])
+  }, [input, onFileLoaded, sourceType])
 
-  const openFilePicker = (): void => {
+  return (): void => {
     if (input === null) {
       throw new Error("Could not open file picker.")
     }
 
     input.click()
-  }
-
-  return {
-    openFilePicker,
-    sourceUrl,
   }
 }
 
