@@ -6,7 +6,7 @@ import {
   SyncState,
   LocalStorageCryptoStore,
 } from "matrix-js-sdk"
-import {useCallback, useEffect} from "react"
+import {useCallback} from "react"
 import {create} from "zustand"
 
 type ZustandClientStore = {
@@ -63,29 +63,6 @@ const useConnection = (): UseConnectionReturnType => {
     setLastSyncError,
   } = useClientStore()
 
-  useEffect(() => {
-    if (client === null) {
-      return
-    }
-
-    const handleSyncState = (
-      newSyncState: SyncState,
-      previousSyncState: SyncState | null
-    ): void => {
-      if (previousSyncState === newSyncState) {
-        return
-      }
-
-      setSyncState(newSyncState)
-    }
-
-    client.on(ClientEvent.Sync, handleSyncState)
-
-    return () => {
-      client.removeListener(ClientEvent.Sync, handleSyncState)
-    }
-  }, [client, setSyncState])
-
   const connect = useCallback(
     async (credentials: Credentials): Promise<boolean> => {
       // The client is already (connected | connecting);
@@ -114,6 +91,8 @@ const useConnection = (): UseConnectionReturnType => {
           (syncState, _previousSyncState, data) => {
             setSyncState(syncState)
 
+            console.log(syncState)
+
             if (syncState === SyncState.Error) {
               const error = data?.error ?? new Error("Unknown sync error")
 
@@ -129,7 +108,10 @@ const useConnection = (): UseConnectionReturnType => {
 
         // REVIEW: Is this relevant? Also, the error is caught by Matrix here. Need to call `reject`. This needs more experimentation.
         newClient.once(ClientEvent.SyncUnexpectedError, () => {
-          throw new Error("Unexpected sync error.")
+          setLastSyncError(new Error("Unexpected sync error."))
+
+          setIsConnecting(false)
+          resolve(false)
         })
 
         // TODO: Add disconnect listener for when the client disconnects during operation, and if supported, reconnect listener as well.
