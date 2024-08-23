@@ -703,6 +703,33 @@ export const handleMessage = async (
       }
     }
 
+    case MsgType.Video: {
+      if (typeof eventContent.url !== "string") {
+        return null
+      }
+
+      const videoUrl = getFileUrl(eventContent.url, room.client)
+
+      if (videoUrl === undefined) {
+        return null
+      }
+
+      const poster =
+        typeof eventContent.info.thumbnail_url === "string"
+          ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            getImageUrl(eventContent.info.thumbnail_url, room.client)
+          : eventContent.info.thumbnail_url
+
+      return {
+        kind: MessageKind.Video,
+        data: {
+          ...messageBaseProperties,
+          url: videoUrl,
+          thumbnail: poster,
+        },
+      }
+    }
+
     case undefined: {
       const unsigned = event.getUnsigned()
 

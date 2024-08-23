@@ -6,6 +6,7 @@ import {type ReplyMessageData} from "@/components/ReplyMessage"
 import {type TextMessageData} from "@/components/TextMessage"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
+import {type VideoMessageData} from "@/components/VideoMessage"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
@@ -23,6 +24,7 @@ export enum MessageKind {
   Event,
   File,
   Reply,
+  Video,
   Unread,
 }
 
@@ -43,10 +45,10 @@ export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
         ? FileMessageData
         : Kind extends MessageKind.Audio
           ? AudioMessageData
-          : Kind extends MessageKind.Audio
-            ? AudioMessageData
-            : Kind extends MessageKind.Reply
-              ? ReplyMessageData
+          : Kind extends MessageKind.Reply
+            ? ReplyMessageData
+            : Kind extends MessageKind.Video
+              ? VideoMessageData
               : UnreadIndicatorProps
 
 export type Message<Kind extends MessageKind> = {
@@ -59,6 +61,7 @@ export type AnyMessage =
   | Message<MessageKind.Image>
   | Message<MessageKind.Event>
   | Message<MessageKind.File>
+  | Message<MessageKind.Video>
   | Message<MessageKind.Unread>
   | Message<MessageKind.Audio>
   | Message<MessageKind.Reply>
