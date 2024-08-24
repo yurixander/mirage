@@ -1,7 +1,4 @@
-import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {type Room, EventTimeline, EventType} from "matrix-js-sdk"
-import {getImageUrl, normalizeName} from "./util"
-import {ImageSizes} from "./rooms"
 
 // #region PowerLevels
 export enum UserPowerLevel {
@@ -84,55 +81,27 @@ export function isCurrentUserAdminOrMod(room: Room): boolean {
   return currentUserPowerLevel !== UserPowerLevel.Member
 }
 
-export async function getRoomAdminsAndModerators(
-  room: Room
-): Promise<RosterUserData[]> {
-  const allMembers = await room.client.getJoinedRoomMembers(room.roomId)
-  const userPowerLevels = getRoomUsersIdWithPowerLevels(room)
-  const adminsOrModerators: RosterUserData[] = []
-
-  for (const user of userPowerLevels) {
-    if (user.powerLevel === UserPowerLevel.Member) {
-      continue
-    }
-
-    const member = allMembers.joined[user.userId]
-
-    if (member === undefined) {
-      continue
-    }
-
-    const lastPresenceAge = await getUserLastPresence(room, user.userId)
-
-    adminsOrModerators.push({
-      displayName: normalizeName(member.display_name),
-      lastPresenceAge: lastPresenceAge ?? undefined,
-      powerLevel: user.powerLevel,
-      userId: user.userId,
-      avatarUrl: getImageUrl(
-        member.avatar_url,
-        room.client,
-        ImageSizes.MessageAndProfile
-      ),
-    })
-  }
-
-  return adminsOrModerators
-}
-
 export async function getUserLastPresence(
-  room: Room,
+  roomWithLimit: Room,
+  limit: number,
   userId: string
 ): Promise<number | null> {
-  const roomHistory = await room.client.scrollback(room, 30)
-  const events = roomHistory.getLiveTimeline().getEvents()
+  const events = roomWithLimit.getLiveTimeline().getEvents()
+
+  let counter = 0
 
   for (let index = events.length - 1; index >= 0; index--) {
+    if (counter > limit) {
+      break
+    }
+
     const event = events[index]
 
     if (event.getSender() === userId) {
       return event.localTimestamp
     }
+
+    counter++
   }
 
   return null

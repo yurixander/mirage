@@ -20,7 +20,7 @@ type ZustandClientStore = {
   setLastSyncError: (error: Error | null) => void
 }
 
-const useClientStore = create<ZustandClientStore>(set => ({
+export const useClientStore = create<ZustandClientStore>(set => ({
   client: null,
   syncState: null,
   lastSyncError: null,
@@ -91,6 +91,8 @@ const useConnection = (): UseConnectionReturnType => {
           (syncState, _previousSyncState, data) => {
             setSyncState(syncState)
 
+            console.log(syncState)
+
             if (syncState === SyncState.Error) {
               const error = data?.error ?? new Error("Unknown sync error")
 
@@ -106,7 +108,10 @@ const useConnection = (): UseConnectionReturnType => {
 
         // REVIEW: Is this relevant? Also, the error is caught by Matrix here. Need to call `reject`. This needs more experimentation.
         newClient.once(ClientEvent.SyncUnexpectedError, () => {
-          throw new Error("Unexpected sync error.")
+          setLastSyncError(new Error("Unexpected sync error."))
+
+          setIsConnecting(false)
+          resolve(false)
         })
 
         // TODO: Add disconnect listener for when the client disconnects during operation, and if supported, reconnect listener as well.
@@ -120,7 +125,7 @@ const useConnection = (): UseConnectionReturnType => {
 
         void newClient.startClient({
           lazyLoadMembers: true,
-          initialSyncLimit: 1,
+          resolveInvitesToProfiles: true,
         })
       })
     },

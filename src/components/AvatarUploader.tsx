@@ -1,10 +1,10 @@
-import useConnection from "@/hooks/matrix/useConnection"
 import {uploadImageToMatrix} from "@/utils/util"
 import {useEffect, useState, type FC} from "react"
 import {IoCamera, IoTrashBin} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import {useFilePicker} from "use-file-picker"
 import Typography, {TypographyVariant} from "./Typography"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
 type UploadAvatarProps = {
   onAvatarUploaded: (matrixSrc: string) => void
@@ -17,7 +17,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
   onAvatarUploaded,
   className,
 }) => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const [isImageUploading, setIsImageUploading] = useState(false)
   const [imagePercent, setImagePercent] = useState(0)
 

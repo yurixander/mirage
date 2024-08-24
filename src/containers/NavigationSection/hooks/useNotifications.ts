@@ -1,6 +1,6 @@
 import {type NotificationProps} from "@/components/Notification"
-import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getRoomPowerLevelByUserId, UserPowerLevel} from "@/utils/members"
 import {
   getPowerLevelsHistory,
@@ -32,7 +32,7 @@ type UseNotificationsReturnType = {
 }
 
 const useNotifications = (): UseNotificationsReturnType => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
 
   const [notificationsState, setNotificationsState] = useState(
     NotificationState.Waiting

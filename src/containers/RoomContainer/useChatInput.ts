@@ -1,7 +1,7 @@
-import useConnection from "@/hooks/matrix/useConnection"
 import useDebounced from "@/hooks/util/useDebounced"
 import {MsgType} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
 type UseChatInputReturnType = {
   messageText: string
@@ -12,7 +12,7 @@ type UseChatInputReturnType = {
 }
 
 const useChatInput = (roomId: string): UseChatInputReturnType => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const [messageText, setMessageText] = useState("")
   const debouncedText = useDebounced(messageText, 500)
 
