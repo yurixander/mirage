@@ -1,4 +1,4 @@
-import usePicker, {SourceType} from "@/hooks/util/useSinglePicker"
+import useFilePicker, {SourceType} from "@/hooks/util/useFilePicker"
 import {
   flip,
   offset,
@@ -115,7 +115,7 @@ const FileTypeButton: FC<FilePickerAction> = ({
   onFileLoaded,
   sourceType,
 }) => {
-  const openFilePicker = usePicker(sourceType, onFileLoaded)
+  const openFilePicker = useFilePicker(sourceType, onFileLoaded)
 
   return (
     <motion.button

@@ -7,7 +7,7 @@ export enum SourceType {
   File = "file/*",
 }
 
-const usePicker = (
+const useFilePicker = (
   sourceType: SourceType,
   onFileLoaded: (sourceUrl: string, sourceType: SourceType) => void
 ): (() => void) => {
@@ -60,4 +60,4 @@ const usePicker = (
   }
 }
 
-export default usePicker
+export default useFilePicker
