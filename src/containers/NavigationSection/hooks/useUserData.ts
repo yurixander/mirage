@@ -1,4 +1,4 @@
-import useConnection from "@/hooks/matrix/useConnection"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useLocalStorage, {LocalStorageKey} from "@/hooks/util/useLocalStorage"
 import {cleanDisplayName, type Credentials, getImageUrl} from "@/utils/util"
 import {useCallback, useEffect, useState} from "react"
@@ -22,7 +22,7 @@ type UseUserDataReturnType = {
 }
 
 const useUserData = (): UseUserDataReturnType => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const [userDataState, setUserDataState] = useState(UserDataState.Loading)
 
   const {value: credentials} = useLocalStorage<Credentials>(

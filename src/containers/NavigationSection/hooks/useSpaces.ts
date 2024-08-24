@@ -1,10 +1,10 @@
 import {useCallback, useEffect, useState} from "react"
 import useList from "../../../hooks/util/useList"
-import useConnection from "../../../hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {getImageUrl} from "@/utils/util"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
 export type PartialSpace = {
   name: string
@@ -30,8 +30,8 @@ type UseSpacesReturnType = {
 }
 
 const useSpaces = (): UseSpacesReturnType => {
-  const {client} = useConnection()
-  const [isLoading, setIsLoading] = useState(false)
+  const client = useMatrixClient()
+  const [isLoading, setIsLoading] = useState(true)
 
   const {
     items: spaces,
@@ -52,32 +52,28 @@ const useSpaces = (): UseSpacesReturnType => {
   )
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      if (client === null) {
-        return
-      }
+    console.log(client === null, "Is client null")
 
-      setIsLoading(true)
+    if (client === null) {
+      return
+    }
 
-      try {
-        for (const room of client.getRooms()) {
-          if (!room.isSpaceRoom()) {
-            continue
-          }
-
-          addSpace(processSpace(room))
+    try {
+      for (const room of client.getRooms()) {
+        if (!room.isSpaceRoom()) {
+          continue
         }
-      } catch (error) {
-        // TODO: Show toast when error ocurred.
 
-        console.error("Error fetching spaces", error)
+        addSpace(processSpace(room))
       }
 
       setIsLoading(false)
-    }, 1000)
+    } catch (error) {
+      // TODO: Show toast when error ocurred.
 
-    return () => {
-      clearTimeout(handler)
+      console.error("Error fetching spaces", error)
+
+      setIsLoading(false)
     }
   }, [addSpace, client])
 
@@ -116,7 +112,7 @@ const useSpaces = (): UseSpacesReturnType => {
     deleteSpaceWhen(spaceIter => spaceIter.spaceId === room.roomId)
   })
 
-  return {spaces, onSpaceExit, isLoading: isLoading || client === null}
+  return {spaces, onSpaceExit, isLoading}
 }
 
 export default useSpaces
