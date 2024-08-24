@@ -2,7 +2,7 @@ import {type MatrixClient, type Room} from "matrix-js-sdk"
 import {getDirectRoomsIds} from "./rooms"
 import {RoomType} from "@/components/Room"
 import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
-import {emojiRandom} from "./util"
+import {stringToEmoji} from "./util"
 
 export const addRoomToSpace = async (
   spaceId: Room,
@@ -54,7 +54,7 @@ export async function getRoomsFromSpace(
       roomsHierarchy.push({
         roomId: room.roomId,
         roomName: room.name,
-        emoji: emojiRandom(),
+        emoji: stringToEmoji(childRoom.room_id),
         type: directRoomIds.includes(room.roomId)
           ? RoomType.Direct
           : RoomType.Group,

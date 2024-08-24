@@ -1,10 +1,11 @@
 import {type FC} from "react"
-import {formatTime, stringToColor} from "../utils/util"
+import {assert, formatTime, stringToColor} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
 import Typography from "./Typography"
 import ContextMenu, {ClickActions} from "./ContextMenu"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
+import {type EventType} from "matrix-js-sdk"
 
 export type EventSender = {
   displayName: string
@@ -16,6 +17,7 @@ export type EventMessageData = {
   sender: EventSender
   body: string
   timestamp: number
+  type: EventType | string
   icon?: IconType
 }
 
@@ -35,12 +37,16 @@ const EventMessage: FC<EventMessageProps> = ({
 }) => {
   const Icon = icon ?? IoMdCreate
 
+  assert(eventId.length > 0, "Event id should not be empty.")
+  assert(sender.userId.length > 0, "Sender user id should not be empty.")
+
+  assert(
+    sender.displayName.length > 0,
+    "Sender display name should not be empty."
+  )
+
   return (
     <div className="flex items-center gap-3">
-      <div className="flex w-10 items-center justify-end">
-        <Icon className="text-neutral-300" />
-      </div>
-
       <Typography className="inline-flex max-w-text select-text gap-1 whitespace-pre-line break-words italic">
         <ContextMenu
           className="shrink-0"
@@ -59,8 +65,12 @@ const EventMessage: FC<EventMessageProps> = ({
             },
           ]}>
           <Typography
-            className="font-bold"
-            style={{color: stringToColor(sender.displayName)}}>
+            className="inline-flex items-center gap-2 font-bold"
+            style={{color: stringToColor(sender.userId)}}>
+            <div className="flex w-10 justify-end">
+              <Icon className="text-neutral-300" />
+            </div>
+
             {sender.displayName}
           </Typography>
         </ContextMenu>

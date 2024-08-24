@@ -1,37 +1,40 @@
 import {type FC} from "react"
-import {cleanDisplayName, formatTime} from "../utils/util"
+import {
+  assert,
+  cleanDisplayName,
+  CommonAssertion,
+  formatTime,
+  validateUrl,
+} from "../utils/util"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import {type ContextMenuItem} from "./ContextMenu"
 
-export type MessageBaseProps = {
-  authorDisplayName: string
-  authorDisplayNameColor?: string
-  authorAvatarUrl?: string
-  timestamp: number
-  messageId: string
+export interface MessageBaseProps extends MessageBaseData {
   contextMenuItems: ContextMenuItem[]
-  onAuthorClick: () => void
+  onAuthorClick: (userId: string) => void
 }
 
 export type MessageBaseData = {
+  userId: string
   authorDisplayName: string
-  authorDisplayNameColor?: string
-  authorAvatarUrl?: string
   timestamp: number
   messageId: string
+  authorDisplayNameColor?: string
+  authorAvatarUrl?: string
   isDeleted?: boolean
   canDeleteMessage?: boolean
 }
 
-export type MessageContainerProps = {
+export interface MessageContainerProps {
+  userId: string
   authorDisplayName: string
   authorDisplayNameColor?: string
   authorAvatarUrl?: string
   children: React.JSX.Element
   timestamp: number
-  onAuthorClick: () => void
+  onAuthorClick: (userId: string) => void
 }
 
 const MessageContainer: FC<MessageContainerProps> = ({
@@ -41,15 +44,24 @@ const MessageContainer: FC<MessageContainerProps> = ({
   children,
   timestamp,
   onAuthorClick,
+  userId,
 }) => {
   const localeTimeString = formatTime(timestamp)
+
+  if (authorAvatarUrl !== undefined) {
+    assert(validateUrl(authorAvatarUrl), CommonAssertion.AvatarUrlNotValid)
+  }
+
+  assert(userId.length > 0, "The userId should not be empty.")
 
   return (
     <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">
         <button
           className="size-10 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-neutral-50"
-          onClick={onAuthorClick}>
+          onClick={() => {
+            onAuthorClick(userId)
+          }}>
           <AvatarImage
             isRounded={false}
             avatarType={AvatarType.Message}
@@ -62,7 +74,9 @@ const MessageContainer: FC<MessageContainerProps> = ({
           <Typography
             className="w-max select-text font-bold"
             style={{color: authorDisplayNameColor}}
-            onClick={onAuthorClick}
+            onClick={() => {
+              onAuthorClick(userId)
+            }}
             variant={TypographyVariant.Body}>
             {cleanDisplayName(authorDisplayName)}
           </Typography>

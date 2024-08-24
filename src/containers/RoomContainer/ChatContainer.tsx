@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import {useEffect, useRef, type FC} from "react"
 import useRoomChat from "./hooks/useRoomChat"
 import ChatHeader from "./ChatHeader"
 import {ChatMessages} from "./ChatMessages"
@@ -21,17 +21,30 @@ const ChatContainer: FC<ChatContainerProps> = ({
   onRosterExpanded,
   className,
 }) => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+
   const {messagesState, roomName, isChatLoading, messages, typingUsers} =
     useRoomChat(roomId)
 
   assert(roomId.length > 0, "The roomId should not be empty.")
 
+  useEffect(() => {
+    if (scrollRef.current === null || scrollRef.current.scrollTop !== 0) {
+      return
+    }
+
+    scrollRef.current.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    })
+  }, [messages.length])
+
   return isChatLoading ? (
-    <main className="flex size-full items-center justify-center">
+    <div className="flex size-full items-center justify-center">
       <Loader text="Loading room" />
-    </main>
+    </div>
   ) : (
-    <main className={twMerge("flex h-full flex-col", className)}>
+    <div className={twMerge("flex h-full flex-col", className)}>
       <ChatHeader
         className="relative flex size-full max-h-12 items-center gap-2 border-b border-b-stone-200 px-3 py-1"
         isRosterExpanded={isRosterExpanded}
@@ -39,7 +52,9 @@ const ChatContainer: FC<ChatContainerProps> = ({
         roomName={roomName}
       />
 
-      <div className="relative z-10 order-2 shrink-0 grow basis-0 overflow-y-auto">
+      <div
+        ref={scrollRef}
+        className="relative z-10 order-2 shrink-0 grow basis-0 overflow-y-auto">
         <div className="shrink-0 grow-0 basis-auto pb-2">
           <ChatMessages
             className="relative grow p-3"
@@ -62,7 +77,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           </div>
         </div>
       </footer>
-    </main>
+    </div>
   )
 }
 

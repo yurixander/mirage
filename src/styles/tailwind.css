@@ -1,6 +1,8 @@
 @import url("tailwindcss/base");
 @import url("tailwindcss/components");
 @import url("tailwindcss/utilities");
+@import url("tippy.js/dist/tippy.css");
+@import url("tippy.js/animations/scale-subtle.css");
 
 * {
   @apply box-border leading-[100%];
@@ -71,4 +73,26 @@ summary::before {
 
 details[open] summary::before {
   content: "▼";
+}
+
+.tippy-box[data-theme~="error"] {
+  @apply bg-red-500 text-white;
+}
+
+.tippy-box[data-theme~="error"][data-placement^="top"] > .tippy-arrow::before {
+  @apply border-t-red-500;
+}
+
+.tippy-box[data-theme~="error"][data-placement^="bottom"]
+  > .tippy-arrow::before {
+  @apply border-b-red-500;
+}
+
+.tippy-box[data-theme~="error"][data-placement^="left"] > .tippy-arrow::before {
+  @apply border-l-red-500;
+}
+
+.tippy-box[data-theme~="error"][data-placement^="right"]
+  > .tippy-arrow::before {
+  @apply border-r-red-500;
 }

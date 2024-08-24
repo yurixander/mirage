@@ -16,6 +16,7 @@ import UserProfile from "@/components/UserProfile"
 import Input from "@/components/Input"
 import useActiveModalStore from "@/hooks/util/useActiveModal"
 import {AvatarType} from "@/components/AvatarImage"
+import {motion} from "framer-motion"
 
 type DirectChatRecentProps = {
   userId: string
@@ -75,7 +76,7 @@ const DirectMessageModal: FC = () => {
       const room = client.getRoom(roomId)
       const lastMessageSentDate = room?.getLastLiveEvent()?.localTimestamp
 
-      if (room === null) {
+      if (room === null || room.getJoinedMemberCount() !== 2) {
         continue
       }
 
@@ -92,7 +93,10 @@ const DirectMessageModal: FC = () => {
 
   return (
     // TODO: Should be pixels value, replace by the future design.
-    <div className="flex size-full max-h-[80%] max-w-2xl flex-col justify-between gap-2 rounded-lg bg-white p-5 shadow-2xl">
+    <motion.div
+      initial={{scale: 0.5}}
+      animate={{scale: 1}}
+      className="flex size-full max-h-[80%] max-w-2xl flex-col justify-between gap-2 rounded-lg bg-white p-5 shadow-2xl">
       <div className="flex w-full justify-between">
         <Typography variant={TypographyVariant.Heading}>
           Direct messages
@@ -178,7 +182,7 @@ const DirectMessageModal: FC = () => {
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

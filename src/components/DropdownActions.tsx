@@ -3,6 +3,7 @@ import {type IconType} from "react-icons"
 import {IoMdCheckmark} from "react-icons/io"
 import Dropdown from "./Dropdown"
 import Typography from "./Typography"
+import {assert} from "@/utils/util"
 
 export type DropdownOption = {
   text: string
@@ -21,6 +22,8 @@ const DropdownActions: FC<DropdownActionsProps> = ({
   onOptionSelected,
 }) => {
   const [optionSelected, setOptionSelected] = useState(initiallyOption)
+
+  assert(options.length > 0, "The options for dropdown should not be empty.")
 
   return (
     <Dropdown

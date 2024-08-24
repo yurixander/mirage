@@ -1,3 +1,4 @@
+import {getEmojiByIndex} from "@/components/EmojiPicker"
 import dayjs from "dayjs"
 import {type ICreateRoomOpts, type MatrixClient} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
@@ -32,6 +33,8 @@ export enum CommonAssertion {
   EventIdNotFound = "To confirm that an event happened, event id should not be undefined.",
   UserIdNotFound = "The client should be logged in.",
   EventSenderNotFount = "The event should has a send origin",
+  AvatarUrlNotValid = "The avatar url should be valid.",
+  MessageIdEmpty = "The message id should not be empty.",
 }
 
 export function assert(
@@ -59,40 +62,50 @@ export function validateUrl(url: string): boolean {
   }
 }
 
-const hexValues = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
+function stringToIndex(str: string): number {
+  let totalSum = 0
+
+  for (let i = 0; i < str.length; i++) {
+    totalSum += str.charCodeAt(i) + (i + 1)
+  }
+
+  return totalSum % colors.length
+}
+
+const colors: string[] = [
+  "#FFC312",
+  "#C4E538",
+  "#12CBC4",
+  "#FDA7DF",
+  "#ED4C67",
+  "#F79F1F",
+  "#A3CB38",
+  "#1289A7",
+  "#D980FA",
+  "#B53471",
+  "#EE5A24",
+  "#009432",
+  "#0652DD",
+  "#9980FA",
+  "#833471",
+  "#EA2027",
+  "#006266",
+  "#1B1464",
+  "#5758BB",
+  "#6F1E51",
 ]
 
 export function stringToColor(str: string): string {
-  let color = "#"
+  const colorIndex = stringToIndex(str)
 
-  assert(str.length >= 3, "The string should be at least 3 characters long.")
+  return colors[colorIndex]
+}
 
-  for (let index = 0; index < 3; index++) {
-    const code = str.charCodeAt(index)
+export const stringToEmoji = (str: string): string => {
+  const emojiIndex = stringToIndex(str)
+  const emoji = getEmojiByIndex(emojiIndex)
 
-    assert(code <= 255, "The character code should be less than 255")
-
-    const [firstRGB, secondRGB] = [Math.floor(code / 16), code % 16]
-
-    color += hexValues[firstRGB] + hexValues[secondRGB]
-  }
-
-  return color
+  return emoji.skins[0].native
 }
 
 export function cleanDisplayName(displayName: string): string {
@@ -258,23 +271,6 @@ export async function createSpace(
       type: "m.space",
     },
   })
-}
-
-const emojiRanges: Array<[number, number]> = [
-  [0x1_f6_00, 0x1_f6_4f], // Emoticons
-  [0x1_f6_80, 0x1_f6_ff], // Transport and Map Symbols
-  [0x26_00, 0x26_ff], // Miscellaneous Symbols
-  [0x27_00, 0x27_bf], // Dingbats
-  [0x1_f9_00, 0x1_f9_ff], // Supplemental Symbols and Pictographs
-]
-
-export const emojiRandom = (): string => {
-  const [start, end] =
-    emojiRanges[Math.floor(Math.random() * emojiRanges.length)]
-
-  const codePoint = Math.floor(Math.random() * (end - start + 1)) + start
-
-  return String.fromCodePoint(codePoint)
 }
 
 export function getUsernameByUserId(userId: string): string {

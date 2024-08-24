@@ -16,8 +16,6 @@ export type UserProfileProps = {
   className?: string
 }
 
-// TODO: Fix with new `AvatarImage`
-
 const UserProfile: FC<UserProfileProps> = ({
   displayName,
   displayNameColor,
@@ -43,6 +41,7 @@ const UserProfile: FC<UserProfileProps> = ({
 
   return (
     <div className={twMerge("flex gap-2", className)}>
+      {/* TODO: Fix `AvatarImage` with new variants implemented in https://github.com/yurixander/mirage/pull/56 @lazaroysr96 */}
       <AvatarImage
         isRounded={false}
         avatarSize={AvatarSize.Normal}

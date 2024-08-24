@@ -15,15 +15,11 @@ import {
   FaFileWord,
   FaFileZipper,
 } from "react-icons/fa6"
-import {stringToColor} from "@/utils/util"
+import {assert, validateUrl} from "@/utils/util"
 
 const ICON_SIZE = 20
 
-export interface FileMessageProps extends MessageBaseProps {
-  fileName: string
-  fileSize: number
-  fileUrl?: string
-}
+export interface FileMessageProps extends MessageBaseProps, FileMessageData {}
 
 export interface FileMessageData extends MessageBaseData {
   fileName: string
@@ -35,62 +31,68 @@ const FileMessage: FC<FileMessageProps> = ({
   authorDisplayName,
   authorAvatarUrl,
   onAuthorClick,
+  contextMenuItems,
+  authorDisplayNameColor,
   timestamp,
   fileName,
   fileSize,
   fileUrl,
+  userId,
 }) => {
   const fileExtension = getFileExtension(fileName).toUpperCase()
-  const content = (
-    <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2">
-      <div className="flex w-full items-center gap-2">
-        <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2">
-          <IconFile typeFile={fileExtension.toLowerCase()} />
 
-          <Typography
-            className="font-light text-black"
-            variant={TypographyVariant.Body}>
-            {fileName}
-          </Typography>
-        </div>
-
-        <div>
-          <IconButton
-            Icon={FaDownload}
-            color="lightslategrey"
-            onClick={() => {
-              if (fileUrl !== undefined) open(fileUrl)
-            }}
-            tooltip="Click to download"
-          />
-        </div>
-      </div>
-
-      <div className="flex w-full">
-        <Typography
-          className="w-full font-semibold text-gray-400"
-          variant={TypographyVariant.BodySmall}>
-          {fileExtension}
-        </Typography>
-
-        <Typography
-          className="min-w-20 text-right font-semibold text-gray-400"
-          variant={TypographyVariant.BodySmall}>
-          {fileSizeToString(fileSize)}
-        </Typography>
-      </div>
-    </div>
-  )
+  if (fileUrl !== undefined) {
+    assert(validateUrl(fileUrl), "File url should be valid if defined.")
+  }
 
   return (
     <MessageContainer
       authorDisplayName={authorDisplayName}
-      authorDisplayNameColor={stringToColor(authorDisplayName)}
+      authorDisplayNameColor={authorDisplayNameColor}
       authorAvatarUrl={authorAvatarUrl}
-      children={content}
       timestamp={timestamp}
       onAuthorClick={onAuthorClick}
-    />
+      userId={userId}>
+      {/* TODO: Handle context menu here @lazaroysr96 */}
+      <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2">
+        <div className="flex w-full items-center gap-2">
+          <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2">
+            <IconFile typeFile={fileExtension.toLowerCase()} />
+
+            <Typography
+              className="font-light text-black"
+              variant={TypographyVariant.Body}>
+              {fileName}
+            </Typography>
+          </div>
+
+          <div>
+            <IconButton
+              Icon={FaDownload}
+              color="lightslategrey"
+              onClick={() => {
+                if (fileUrl !== undefined) open(fileUrl)
+              }}
+              tooltip="Click to download"
+            />
+          </div>
+        </div>
+
+        <div className="flex w-full">
+          <Typography
+            className="w-full font-semibold text-gray-400"
+            variant={TypographyVariant.BodySmall}>
+            {fileExtension}
+          </Typography>
+
+          <Typography
+            className="min-w-20 text-right font-semibold text-gray-400"
+            variant={TypographyVariant.BodySmall}>
+            {fileSizeToString(fileSize)}
+          </Typography>
+        </div>
+      </div>
+    </MessageContainer>
   )
 }
 
@@ -154,6 +156,7 @@ const fileSizeToString = (fileSize: number): string => {
 
 const getFileExtension = (fileName: string): string => {
   const match = fileName.lastIndexOf(".")
+
   return match === -1 ? "file" : fileName.slice(match + 1, fileName.length)
 }
 

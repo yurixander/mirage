@@ -3,6 +3,8 @@ import ContextMenu, {ClickActions, type ContextMenuItem} from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
 import {IoEllipsisHorizontal} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
+import {assert} from "@/utils/util"
+import {motion} from "framer-motion"
 
 export type DetailProps = {
   title: string
@@ -21,6 +23,15 @@ const Detail: FC<DetailProps> = ({
   isInitiallyOpen = false,
   className,
 }) => {
+  assert(id.length > 0, "Detail id should not be empty.")
+
+  if (menuElements !== undefined) {
+    assert(
+      menuElements.length > 0,
+      "If menu elements is defined should not be empty."
+    )
+  }
+
   return (
     <details
       open={isInitiallyOpen}
@@ -44,7 +55,7 @@ const Detail: FC<DetailProps> = ({
         )}
       </summary>
 
-      <div className="pt-2">{children}</div>
+      <motion.div className="pt-2">{children}</motion.div>
     </details>
   )
 }

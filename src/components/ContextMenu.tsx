@@ -6,6 +6,8 @@ import {create} from "zustand"
 import useClickOutside from "@/hooks/util/useClickOutside"
 import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
+import {assert} from "@/utils/util"
+import {motion} from "framer-motion"
 
 export type ContextMenuItem = {
   text: string
@@ -70,6 +72,8 @@ const ContextMenu: FC<ContextMenuProps> = ({
     showMenu(id, event)
   }
 
+  assert(id.length > 0, "The context menu id should not be empty.")
+
   return (
     <>
       <div
@@ -85,7 +89,9 @@ const ContextMenu: FC<ContextMenuProps> = ({
         points !== null &&
         elements.length > 0 &&
         createPortal(
-          <div
+          <motion.div
+            initial={{scale: 0.5, opacity: 0.5}}
+            whileInView={{scale: 1, opacity: 1}}
             ref={elementRef}
             className="fixed z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-gray-100 bg-white p-1.5 shadow-lg"
             style={{
@@ -118,7 +124,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
                 </Typography>
               </div>
             ))}
-          </div>,
+          </motion.div>,
           document.body
         )}
     </>

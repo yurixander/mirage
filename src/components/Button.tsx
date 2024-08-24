@@ -1,3 +1,4 @@
+import useErrorTooltip from "@/hooks/util/useErrorTooltip"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
@@ -34,8 +35,11 @@ const Button: FC<ButtonProps> = ({
   variant = ButtonVariant.Secondary,
   className,
 }) => {
+  const {renderRef, showErrorTooltip} = useErrorTooltip<HTMLButtonElement>()
+
   return (
     <button
+      ref={renderRef}
       className={twMerge(
         "flex items-center justify-center border font-medium outline-none duration-75 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50",
         isLoading ? "cursor-not-allowed" : "active:translate-y-[1px]",
@@ -46,7 +50,21 @@ const Button: FC<ButtonProps> = ({
         className
       )}
       disabled={isDisabled}
-      onClick={isLoading ? undefined : onClick}>
+      onClick={() => {
+        if (isLoading) {
+          return
+        }
+
+        try {
+          onClick()
+        } catch (error) {
+          if (!(error instanceof Error)) {
+            return
+          }
+
+          showErrorTooltip(error.message)
+        }
+      }}>
       {isLoading ? (
         <div
           className={twMerge(

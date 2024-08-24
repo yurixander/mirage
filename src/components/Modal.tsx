@@ -7,6 +7,7 @@ import Button from "./Button"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
 import {twMerge} from "tailwind-merge"
+import {motion} from "framer-motion"
 
 export type ModalProps = {
   children: React.JSX.Element
@@ -30,7 +31,9 @@ const Modal: FC<ModalProps> = ({
   className,
 }) => {
   return (
-    <div
+    <motion.div
+      initial={{scale: 0.5}}
+      animate={{scale: 1}}
       className={twMerge(
         "box-border flex max-w-xl flex-col overflow-hidden rounded-md border border-slate-300",
         className
@@ -69,7 +72,7 @@ const Modal: FC<ModalProps> = ({
           onClick={onAccept}
         />
       </div>
-    </div>
+    </motion.div>
   )
 }
 

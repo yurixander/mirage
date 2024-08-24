@@ -3,6 +3,7 @@ import {twMerge} from "tailwind-merge"
 import NotificationDot from "./NotificationDot"
 import {type IconType} from "react-icons"
 import React from "react"
+import {motion} from "framer-motion"
 
 export type IconButtonProps = {
   tooltip: string
@@ -24,18 +25,20 @@ const IconButton: FC<IconButtonProps> = ({
   color,
   isDisabled,
   isDotVisible,
+  tooltip,
   size,
   className,
   iconClassName,
 }) => {
   return (
-    <button
+    <motion.button
+      whileTap={{scale: 0.85}}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       tabIndex={0}
       disabled={isDisabled}
       className={twMerge(
-        "inline-block size-max rounded-lg p-1 hover:bg-gray-50 focus-visible:duration-150 active:scale-90 active:animate-hold",
+        "inline-block size-max rounded-lg p-1 hover:bg-gray-50 focus-visible:duration-150",
         className
       )}>
       <NotificationDot isVisible={isDotVisible ?? false}>
@@ -45,7 +48,7 @@ const IconButton: FC<IconButtonProps> = ({
           className={twMerge("text-neutral-300", iconClassName)}
         />
       </NotificationDot>
-    </button>
+    </motion.button>
   )
 }
 

@@ -6,7 +6,7 @@ import {IoMdMic, IoMdMicOff} from "react-icons/io"
 import {IoPause, IoPlay, IoVolumeHigh} from "react-icons/io5"
 import {MdCall, MdCallEnd} from "react-icons/md"
 import {twMerge} from "tailwind-merge"
-import AvatarImage, {AvatarType} from "./AvatarImage"
+import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
 
 export enum VariantCall {
   CallInProgress,
@@ -41,7 +41,8 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
       <div className="flex items-center justify-center gap-2 p-3 px-5 shadow">
         <AvatarImage
           isRounded
-          isLarge
+          // TODO: Replace for size correct. @lazaroysr96
+          avatarSize={AvatarSize.Normal}
           className="shadow"
           avatarType={AvatarType.Profile}
           displayName={name}

@@ -1,6 +1,8 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
+import {assert} from "@/utils/util"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import {motion} from "framer-motion"
 
 export enum RoomType {
   Direct,
@@ -23,28 +25,39 @@ const Room: FC<RoomProps> = ({
   emoji,
   isSelected = false,
 }) => {
+  assert(roomName.length > 0, "Room name should not be empty.")
+  assert(roomId.length > 0, "Room id should not be empty.")
+
   return (
-    <button
+    <motion.button
+      whileTap={{scale: 0.95}}
       onClick={() => {
         onRoomClick(roomId)
       }}
       className={twMerge(
-        "flex w-full items-center gap-2 rounded-md p-1 px-2",
+        "relative w-full rounded-md p-1 px-2",
         isSelected ? "bg-purple-500" : "hover:bg-slate-200"
       )}>
-      <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
-        <Typography variant={TypographyVariant.BodyMedium}>{emoji}</Typography>
-      </div>
+      <motion.div
+        className="flex w-max items-center gap-2"
+        initial={{scale: 0, opacity: 0.5}}
+        whileInView={{scale: 1, opacity: 1}}>
+        <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
+          <Typography variant={TypographyVariant.BodyMedium}>
+            {emoji}
+          </Typography>
+        </div>
 
-      <Typography
-        variant={TypographyVariant.BodySmall}
-        className={twMerge(
-          "line-clamp-1 font-medium",
-          isSelected ? "text-white" : "text-slate-600"
-        )}>
-        {roomName}
-      </Typography>
-    </button>
+        <Typography
+          variant={TypographyVariant.BodySmall}
+          className={twMerge(
+            "line-clamp-1 max-w-40 font-medium",
+            isSelected ? "text-white" : "text-slate-600"
+          )}>
+          {roomName}
+        </Typography>
+      </motion.div>
+    </motion.button>
   )
 }
 

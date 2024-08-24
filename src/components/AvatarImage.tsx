@@ -1,3 +1,4 @@
+import {assert, CommonAssertion, validateUrl} from "@/utils/util"
 import Avatar from "boring-avatars"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
@@ -38,6 +39,10 @@ const AvatarImage: FC<AvatarProps> = ({
   const isAvatarMessage = avatarType === AvatarType.Message
   const isProfile = avatarType === AvatarType.Profile
 
+  if (avatarUrl !== undefined) {
+    assert(validateUrl(avatarUrl), CommonAssertion.AvatarUrlNotValid)
+  }
+
   return avatarUrl === undefined ? (
     <div
       className={twMerge(
@@ -60,7 +65,7 @@ const AvatarImage: FC<AvatarProps> = ({
         isProfile &&
           twMerge("object-contain", getAvatarSizeByTailwindClass(avatarSize)),
         // TODO: Class `rounded-full` should be parent container with `overflow-hidden`.
-        isRounded && "rounded-full",
+        isRounded ? "rounded-full" : "rounded-lg",
         className
       )}
       alt={displayName}
