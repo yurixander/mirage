@@ -19,7 +19,7 @@ import {
 } from "react-icons/io5"
 
 type ChooseFileButtonProps = {
-  onPickFile: (sourceUrl: string, sourceType: SourceType) => void
+  onPickFile: (file: File, sourceType: SourceType) => void
 }
 
 const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
@@ -57,10 +57,10 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
             label="File"
             sourceType={SourceType.File}
             Icon={IoDocument}
-            onFileLoaded={(sourceUrl, sourceType) => {
+            onFileLoaded={(file, sourceType) => {
               setIsOpen(false)
 
-              onPickFile(sourceUrl, sourceType)
+              onPickFile(file, sourceType)
             }}
           />
 
@@ -68,10 +68,10 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
             label="Image"
             sourceType={SourceType.Image}
             Icon={IoImage}
-            onFileLoaded={(sourceUrl, sourceType) => {
+            onFileLoaded={(file, sourceType) => {
               setIsOpen(false)
 
-              onPickFile(sourceUrl, sourceType)
+              onPickFile(file, sourceType)
             }}
           />
 
@@ -79,10 +79,10 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
             label="Video"
             sourceType={SourceType.Video}
             Icon={IoVideocam}
-            onFileLoaded={(sourceUrl, sourceType) => {
+            onFileLoaded={(file, sourceType) => {
               setIsOpen(false)
 
-              onPickFile(sourceUrl, sourceType)
+              onPickFile(file, sourceType)
             }}
           />
 
@@ -90,10 +90,10 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
             label="Audio"
             sourceType={SourceType.Audio}
             Icon={IoMic}
-            onFileLoaded={(sourceUrl, sourceType) => {
+            onFileLoaded={(file, sourceType) => {
               setIsOpen(false)
 
-              onPickFile(sourceUrl, sourceType)
+              onPickFile(file, sourceType)
             }}
           />
         </motion.div>
@@ -105,7 +105,7 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
 type FilePickerAction = {
   label: string
   sourceType: SourceType
-  onFileLoaded: (sourceUrl: string, sourceType: SourceType) => void
+  onFileLoaded: (file: File, sourceType: SourceType) => void
   Icon: IconType
 }
 
