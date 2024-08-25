@@ -19,7 +19,7 @@ import {
 } from "react-icons/io5"
 
 type ChooseFileButtonProps = {
-  onPickFile: (file: File, sourceType: SourceType) => void
+  onPickFile: (file: File) => void
 }
 
 const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
@@ -57,10 +57,10 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
             label="File"
             sourceType={SourceType.File}
             Icon={IoDocument}
-            onFileLoaded={(file, sourceType) => {
+            onFileLoaded={file => {
               setIsOpen(false)
 
-              onPickFile(file, sourceType)
+              onPickFile(file)
             }}
           />
 
@@ -68,10 +68,10 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
             label="Image"
             sourceType={SourceType.Image}
             Icon={IoImage}
-            onFileLoaded={(file, sourceType) => {
+            onFileLoaded={file => {
               setIsOpen(false)
 
-              onPickFile(file, sourceType)
+              onPickFile(file)
             }}
           />
 
@@ -79,10 +79,10 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
             label="Video"
             sourceType={SourceType.Video}
             Icon={IoVideocam}
-            onFileLoaded={(file, sourceType) => {
+            onFileLoaded={file => {
               setIsOpen(false)
 
-              onPickFile(file, sourceType)
+              onPickFile(file)
             }}
           />
 
@@ -90,10 +90,10 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
             label="Audio"
             sourceType={SourceType.Audio}
             Icon={IoMic}
-            onFileLoaded={(file, sourceType) => {
+            onFileLoaded={file => {
               setIsOpen(false)
 
-              onPickFile(file, sourceType)
+              onPickFile(file)
             }}
           />
         </motion.div>
@@ -105,7 +105,7 @@ const ChooseFileButton: FC<ChooseFileButtonProps> = ({onPickFile}) => {
 type FilePickerAction = {
   label: string
   sourceType: SourceType
-  onFileLoaded: (file: File, sourceType: SourceType) => void
+  onFileLoaded: (file: File) => void
   Icon: IconType
 }
 

@@ -9,7 +9,7 @@ export enum SourceType {
 
 const useFilePicker = (
   sourceType: SourceType,
-  onFileLoaded: (file: File, sourceType: SourceType) => void
+  onFileLoaded: (file: File) => void
 ): (() => void) => {
   const [input] = useState<HTMLInputElement>(() => {
     const newInput = document.createElement("input")
@@ -30,7 +30,7 @@ const useFilePicker = (
       const file = event.target.files?.[0]
 
       if (file !== undefined) {
-        onFileLoaded(file, sourceType)
+        onFileLoaded(file)
       }
     }
 
@@ -39,7 +39,7 @@ const useFilePicker = (
     return () => {
       input.removeEventListener("change", handleFileChange)
     }
-  }, [input, onFileLoaded, sourceType])
+  }, [input, onFileLoaded])
 
   return (): void => {
     input.click()

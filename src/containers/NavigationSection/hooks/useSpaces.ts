@@ -52,8 +52,6 @@ const useSpaces = (): UseSpacesReturnType => {
   )
 
   useEffect(() => {
-    console.log(client === null, "Is client null")
-
     if (client === null) {
       return
     }

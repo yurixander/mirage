@@ -91,8 +91,6 @@ const useConnection = (): UseConnectionReturnType => {
           (syncState, _previousSyncState, data) => {
             setSyncState(syncState)
 
-            console.log(syncState)
-
             if (syncState === SyncState.Error) {
               const error = data?.error ?? new Error("Unknown sync error")
 
