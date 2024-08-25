@@ -6,7 +6,7 @@ import {twMerge} from "tailwind-merge"
 import EmojiPicker from "@/components/EmojiPicker"
 import useElementPoints from "@/hooks/util/useElementPoints"
 import TextArea from "@/components/TextArea"
-import ChooseFileButton from "./ChooseFileButton"
+import AttachSource from "./AttachSource"
 
 export type ChatInputProps = {
   roomId: string
@@ -92,9 +92,9 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           "md:max-h-36 md:gap-3 md:rounded-3xl md:px-4 md:py-3",
           className
         )}>
-        <ChooseFileButton
-          onPickFile={(sourceUrl, sourceType) => {
-            throw new Error("Choose file not implemented.")
+        <AttachSource
+          onPickFile={file => {
+            throw new Error("Attach file not implemented.")
           }}
         />
 

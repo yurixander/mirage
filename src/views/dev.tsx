@@ -1,4 +1,4 @@
-import ChooseFileButton from "@/containers/RoomContainer/ChooseFileButton"
+import ChooseFileButton from "@/containers/RoomContainer/AttachSource"
 import {useState, type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
