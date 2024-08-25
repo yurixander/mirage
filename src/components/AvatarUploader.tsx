@@ -21,19 +21,23 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
   const [isImageUploading, setIsImageUploading] = useState(false)
   const [imagePercent, setImagePercent] = useState(0)
   const [avatarImageUrl, setAvatarImageUrl] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
 
-  const openFilePicker = useFilePicker(SourceType.Image, sourceUrl => {
-    setAvatarImageUrl(sourceUrl)
+  const openFilePicker = useFilePicker(SourceType.Image, file => {
+    const imageUrl = URL.createObjectURL(file)
+
+    setImageFile(file)
+    setAvatarImageUrl(imageUrl)
   })
 
   useEffect(() => {
-    if (client === null || avatarImageUrl === null) {
+    if (client === null || imageFile === null) {
       return
     }
 
     setIsImageUploading(true)
 
-    void uploadImageToMatrix(avatarImageUrl, client, setImagePercent)
+    void uploadImageToMatrix(imageFile, client, setImagePercent)
       .then(imageUploadedInfo => {
         if (imageUploadedInfo === null) {
           // TODO: Send here notification that the image has not been uploaded.
@@ -47,7 +51,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
       .catch(_error => {
         // TODO: Send here notification that the image has not been uploaded.
       })
-  }, [avatarImageUrl, client, onAvatarUploaded])
+  }, [client, imageFile, onAvatarUploaded])
 
   return avatarImageUrl === null ? (
     <div
