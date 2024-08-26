@@ -305,17 +305,8 @@ export async function delay(ms: number): Promise<void> {
   await new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export type VideoUploadedInfo = {
-  matrixUrl: string
-  filename: string
-  info: {
-    mimetype: string
-    size: number
-  }
-}
-
 export async function sendVideoMessageFromFile(
-  video: File,
+  videoFile: File,
   client: MatrixClient | null,
   destinationRoom: string | null
 ): Promise<void> {
@@ -324,17 +315,27 @@ export async function sendVideoMessageFromFile(
   }
 
   try {
-    const videoUploadedInfo = await uploadVideoToMatrix(video, client)
-    if (videoUploadedInfo !== null) {
+    const uploadResponse = await client?.uploadContent(videoFile, {
+      name: videoFile.name,
+      includeFilename: true,
+      type: videoFile.type,
+      progressHandler: progress => {
+        const uploadProgress = Math.round(
+          (progress.loaded / progress.total) * 100
+        )
+      },
+    })
+
+    if (uploadResponse.content_uri !== undefined) {
       const content = {
-        body: videoUploadedInfo.filename,
-        filename: videoUploadedInfo.filename,
+        body: videoFile.name,
+        filename: videoFile.name,
         info: {
-          mimetype: videoUploadedInfo.info.mimetype,
-          size: videoUploadedInfo.info.size,
+          mimetype: videoFile.type,
+          size: videoFile.size,
         },
         msgtype: MsgType.Video,
-        url: videoUploadedInfo.matrixUrl,
+        url: uploadResponse.content_uri,
       }
 
       void client.sendEvent(destinationRoom, EventType.RoomMessage, content)
@@ -342,33 +343,4 @@ export async function sendVideoMessageFromFile(
   } catch (error) {
     console.error(error)
   }
-}
-
-export async function uploadVideoToMatrix(
-  video: File,
-  client: MatrixClient | null
-): Promise<VideoUploadedInfo | null> {
-  const uploadResponse = await client?.uploadContent(video, {
-    name: video.name,
-    includeFilename: true,
-    type: video.type,
-    progressHandler: progress => {
-      const uploadProgress = Math.round(
-        (progress.loaded / progress.total) * 100
-      )
-    },
-  })
-
-  if (uploadResponse?.content_uri !== undefined) {
-    return {
-      filename: video.name,
-      matrixUrl: uploadResponse?.content_uri,
-      info: {
-        mimetype: video.type,
-        size: video.size,
-      },
-    }
-  }
-
-  return null
 }
