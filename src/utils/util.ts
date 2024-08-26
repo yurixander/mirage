@@ -1,6 +1,11 @@
 import {getEmojiByIndex} from "@/components/EmojiPicker"
 import dayjs from "dayjs"
-import {EventType, type ICreateRoomOpts, type MatrixClient} from "matrix-js-sdk"
+import {
+  EventType,
+  MsgType,
+  type ICreateRoomOpts,
+  type MatrixClient,
+} from "matrix-js-sdk"
 import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
@@ -328,7 +333,7 @@ export async function sendVideoMessageFromFile(
           mimetype: videoUploadedInfo.info.mimetype,
           size: videoUploadedInfo.info.size,
         },
-        msgtype: "m.video",
+        msgtype: MsgType.Video,
         url: videoUploadedInfo.matrixUrl,
       }
 
@@ -353,7 +358,7 @@ export async function uploadVideoToMatrix(
       )
     },
   })
-  console.log(uploadResponse?.content_uri)
+
   if (uploadResponse?.content_uri !== undefined) {
     return {
       filename: video.name,
