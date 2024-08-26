@@ -1,4 +1,4 @@
-import useFilePicker, {SourceType} from "@/hooks/util/useFilePicker"
+import useFilePicker, {type SourceType} from "@/hooks/util/useFilePicker"
 import {
   flip,
   offset,
@@ -8,7 +8,7 @@ import {
   useInteractions,
 } from "@floating-ui/react"
 import {motion} from "framer-motion"
-import {type FC, useState} from "react"
+import {type FC, useEffect, useState} from "react"
 import {type IconType} from "react-icons"
 import {
   IoAddCircle,
@@ -61,7 +61,7 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
           <AttachAction
             ariaLabel="Attach file"
             label="File"
-            sourceType={SourceType.File}
+            sourceType="file/*"
             Icon={IoDocument}
             onFileLoaded={file => {
               setIsOpen(false)
@@ -73,7 +73,7 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
           <AttachAction
             ariaLabel="Attach image"
             label="Image"
-            sourceType={SourceType.Image}
+            sourceType="image/*"
             Icon={IoImage}
             onFileLoaded={file => {
               setIsOpen(false)
@@ -85,7 +85,7 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
           <AttachAction
             ariaLabel="Attach video"
             label="Video"
-            sourceType={SourceType.Video}
+            sourceType="video/*"
             Icon={IoVideocam}
             onFileLoaded={file => {
               setIsOpen(false)
@@ -97,7 +97,7 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
           <AttachAction
             label="Audio"
             ariaLabel="Attach audio"
-            sourceType={SourceType.Audio}
+            sourceType="audio/*"
             Icon={IoMic}
             onFileLoaded={file => {
               setIsOpen(false)
@@ -126,7 +126,19 @@ const AttachAction: FC<AttachActionProps> = ({
   onFileLoaded,
   sourceType,
 }) => {
-  const openFilePicker = useFilePicker(sourceType, onFileLoaded)
+  const {contentPicked, onPickFile} = useFilePicker(false, sourceType)
+
+  useEffect(() => {
+    if (
+      contentPicked === null ||
+      contentPicked.isMultiple ||
+      contentPicked.pickerResult === null
+    ) {
+      return
+    }
+
+    onFileLoaded(contentPicked.pickerResult)
+  }, [contentPicked, onFileLoaded])
 
   return (
     <motion.button
@@ -134,7 +146,7 @@ const AttachAction: FC<AttachActionProps> = ({
       initial={{translateY: -10, opacity: 0.5}}
       whileInView={{translateY: 0, opacity: 1}}
       className="flex gap-2 rounded-md px-3 py-2 hover:bg-gray-100"
-      onClick={openFilePicker}>
+      onClick={onPickFile}>
       <Icon />
       {label}
     </motion.button>

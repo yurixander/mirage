@@ -1,22 +1,35 @@
 import {useEffect, useState} from "react"
 
-export enum SourceType {
-  Image = "image/*",
-  Video = "video/*",
-  Audio = "audio/*",
-  File = "file/*",
+export type SourceType = "image/*" | "video/*" | "audio/*" | "file/*" | "/*"
+
+type FilePickerResultOf<Multiple extends boolean> = Multiple extends true
+  ? File[]
+  : File | null
+
+export type PickerResult<Kind extends boolean> = {
+  isMultiple: Kind
+  pickerResult: FilePickerResultOf<Kind>
 }
 
-const useFilePicker = (
-  sourceType: SourceType,
-  onFileLoaded: (file: File) => void
-): (() => void) => {
+type AnyPickerResult = PickerResult<true> | PickerResult<false>
+
+type UsePickerReturnType = {
+  contentPicked: AnyPickerResult | null
+  clear: () => void
+  onPickFile: () => void
+}
+
+const useFilePicker = <Multiple extends boolean>(
+  isMultiple: Multiple,
+  sourceType: SourceType = "/*"
+): UsePickerReturnType => {
+  const [contentPicked, setContentPicked] = useState<AnyPickerResult>()
+
   const [input] = useState<HTMLInputElement>(() => {
     const newInput = document.createElement("input")
     newInput.type = "file"
-    newInput.accept = sourceType ?? "/*"
-    newInput.multiple = false
-    newInput.style.display = "none"
+    newInput.accept = sourceType
+    newInput.multiple = isMultiple
 
     return newInput
   })
@@ -27,10 +40,22 @@ const useFilePicker = (
         return
       }
 
-      const file = event.target.files?.[0]
+      const files = event.target.files
 
-      if (file !== undefined) {
-        onFileLoaded(file)
+      if (files === null) {
+        return
+      }
+
+      if (isMultiple) {
+        setContentPicked({
+          isMultiple: true,
+          pickerResult: Array.from(files),
+        })
+      } else {
+        setContentPicked({
+          isMultiple: false,
+          pickerResult: files[0] ?? null,
+        })
       }
     }
 
@@ -39,10 +64,16 @@ const useFilePicker = (
     return () => {
       input.removeEventListener("change", handleFileChange)
     }
-  }, [input, onFileLoaded])
+  }, [input, isMultiple])
 
-  return (): void => {
-    input.click()
+  return {
+    contentPicked: contentPicked ?? null,
+    onPickFile() {
+      input.click()
+    },
+    clear() {
+      setContentPicked(undefined)
+    },
   }
 }
 

@@ -1,22 +1,7 @@
-import ChooseFileButton from "@/containers/RoomContainer/AttachSource"
-import {useState, type FC} from "react"
+import {type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
-  const [imgUrl, setImgUrl] = useState("")
-
-  return (
-    <>
-      <div className="flex size-full items-center justify-center">
-        <ChooseFileButton
-          onPickFile={file => {
-            setImgUrl(URL.createObjectURL(file))
-          }}
-        />
-
-        <img src={imgUrl} alt="Lool" />
-      </div>
-    </>
-  )
+  return <></>
 }
 
 export default DevelopmentPreview
