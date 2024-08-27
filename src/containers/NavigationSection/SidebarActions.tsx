@@ -20,6 +20,7 @@ import {
   useInteractions,
 } from "@floating-ui/react"
 import {motion} from "framer-motion"
+import DirectChatsPopup from "./DirectChatsPopup"
 
 enum SidebarPopups {
   None,
@@ -104,16 +105,17 @@ type DirectMessagesButtonProps = {
   className?: string
 }
 
-const DirectMessagesButton: FC<DirectMessagesButtonProps> = ({
+export const DirectMessagesButton: FC<DirectMessagesButtonProps> = ({
   onPopupVisibilityChange,
   isPopupVisible,
   onClose,
+  className,
 }) => {
   const {refs, floatingStyles, context} = useFloating({
     open: isPopupVisible,
     onOpenChange: onPopupVisibilityChange,
     placement: "right",
-    middleware: [flip(), shift(), offset({mainAxis: 16, crossAxis: -4})],
+    middleware: [flip(), shift(), offset({mainAxis: 24, crossAxis: -4})],
   })
 
   const hover = useHover(context, {handleClose: safePolygon()})
@@ -123,6 +125,7 @@ const DirectMessagesButton: FC<DirectMessagesButtonProps> = ({
   return (
     <>
       <motion.button
+        className={twMerge("w-max", className)}
         aria-label="Direct chats"
         ref={refs.setReference}
         {...getReferenceProps()}>
@@ -131,10 +134,12 @@ const DirectMessagesButton: FC<DirectMessagesButtonProps> = ({
 
       {isPopupVisible && (
         <div
-          className="z-50 h-96 w-64 bg-slate-800"
+          className="z-50"
           {...getFloatingProps()}
           ref={refs.setFloating}
-          style={floatingStyles}></div>
+          style={floatingStyles}>
+          <DirectChatsPopup />
+        </div>
       )}
     </>
   )
