@@ -310,7 +310,8 @@ export async function delay(ms: number): Promise<void> {
 export async function sendVideoMessageFromFile(
   videoFile: File,
   client: MatrixClient | null,
-  destinationRoom: string | null
+  destinationRoom: string | null,
+  onProgressHandler: (progress: number) => void
 ): Promise<void> {
   if (client === null || destinationRoom === null) {
     return
@@ -322,9 +323,7 @@ export async function sendVideoMessageFromFile(
       includeFilename: true,
       type: videoFile.type,
       progressHandler: progress => {
-        const uploadProgress = Math.round(
-          (progress.loaded / progress.total) * 100
-        )
+        onProgressHandler(Math.round((progress.loaded / progress.total) * 100))
       },
     })
 
