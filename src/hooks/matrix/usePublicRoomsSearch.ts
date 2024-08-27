@@ -3,6 +3,7 @@ import useDebounced from "../util/useDebounced"
 import {type IPublicRoomsChunkRoom, type MatrixClient} from "matrix-js-sdk"
 
 type UsePublicRoomsSearch = {
+  isResultLoading: boolean
   roomAddress: string
   results: IPublicRoomsChunkRoom[] | null
   setRoomAddress: React.Dispatch<React.SetStateAction<string>>
@@ -15,6 +16,7 @@ const usePublicRoomsSearch = (
   const [roomAddress, setRoomAddress] = useState("")
   const debouncedAddress = useDebounced(roomAddress, searchDelay)
   const [results, setResult] = useState<IPublicRoomsChunkRoom[] | null>(null)
+  const [isResultLoading, setResultIsLoading] = useState(false)
 
   useEffect(() => {
     const search = async (): Promise<void> => {
@@ -25,6 +27,8 @@ const usePublicRoomsSearch = (
       }
 
       try {
+        setResultIsLoading(true)
+
         const response = await client.publicRooms({
           filter: {
             generic_search_term: debouncedAddress,
@@ -39,12 +43,14 @@ const usePublicRoomsSearch = (
 
         setResult(null)
       }
+
+      setResultIsLoading(false)
     }
 
     void search()
   }, [client, debouncedAddress])
 
-  return {results, setRoomAddress, roomAddress}
+  return {results, setRoomAddress, roomAddress, isResultLoading}
 }
 
 export default usePublicRoomsSearch

@@ -1,5 +1,5 @@
 import SmartAction from "@/components/SmartAction"
-import useConnection from "@/hooks/matrix/useConnection"
+import {useClientStore} from "@/hooks/matrix/useConnection"
 import {SyncState} from "matrix-js-sdk"
 import {type FC} from "react"
 import {IoMdMedical} from "react-icons/io"
@@ -15,7 +15,7 @@ const syncStateText: {[key in SyncState]: string} = {
 }
 
 const SmartActionBar: FC<{className?: string}> = ({className}) => {
-  const {syncState} = useConnection()
+  const {syncState} = useClientStore()
 
   return (
     <div className={className}>

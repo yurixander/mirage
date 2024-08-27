@@ -1,11 +1,11 @@
 import {type MatrixClient} from "matrix-js-sdk"
-import useConnection from "./useConnection"
 import {useCallback} from "react"
+import useMatrixClient from "./useMatrixClient"
 
 function useMatrixAction<T>(
   action: (client: MatrixClient) => Promise<T> | T
 ): (() => Promise<T | null>) | null {
-  const {client} = useConnection()
+  const client = useMatrixClient()
 
   const perform = useCallback(async () => {
     if (client === null) {

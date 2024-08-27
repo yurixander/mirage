@@ -1,10 +1,10 @@
-import useConnection from "@/hooks/matrix/useConnection"
 import {uploadImageToMatrix} from "@/utils/util"
-import {useEffect, useState, type FC} from "react"
+import {useEffect, useMemo, useState, type FC} from "react"
 import {IoCamera, IoTrashBin} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import {useFilePicker} from "use-file-picker"
 import Typography, {TypographyVariant} from "./Typography"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import useFilePicker from "@/hooks/util/useFilePicker"
 
 type UploadAvatarProps = {
   onAvatarUploaded: (matrixSrc: string) => void
@@ -17,24 +17,40 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
   onAvatarUploaded,
   className,
 }) => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const [isImageUploading, setIsImageUploading] = useState(false)
   const [imagePercent, setImagePercent] = useState(0)
+  const {contentPicked, onPickFile, clear} = useFilePicker(false, "image/*")
 
-  const {openFilePicker, filesContent, clear} = useFilePicker({
-    accept: "image/*",
-    multiple: false,
-    readAs: "DataURL",
-  })
+  const avatarImageUrl: string | null = useMemo(() => {
+    if (
+      contentPicked === null ||
+      contentPicked.isMultiple ||
+      contentPicked.pickerResult === null
+    ) {
+      return null
+    }
+
+    return URL.createObjectURL(contentPicked.pickerResult)
+  }, [contentPicked])
 
   useEffect(() => {
-    if (client === null || filesContent.length <= 0) {
+    if (
+      client === null ||
+      contentPicked === null ||
+      contentPicked.isMultiple ||
+      contentPicked.pickerResult === null
+    ) {
       return
     }
 
     setIsImageUploading(true)
 
-    void uploadImageToMatrix(filesContent[0], client, setImagePercent)
+    void uploadImageToMatrix(
+      contentPicked.pickerResult,
+      client,
+      setImagePercent
+    )
       .then(imageUploadedInfo => {
         if (imageUploadedInfo === null) {
           // TODO: Send here notification that the image has not been uploaded.
@@ -48,9 +64,21 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
       .catch(_error => {
         // TODO: Send here notification that the image has not been uploaded.
       })
-  }, [client, filesContent, onAvatarUploaded])
+  }, [client, contentPicked, onAvatarUploaded])
 
-  return filesContent.length > 0 ? (
+  return avatarImageUrl === null ? (
+    <div
+      onClick={onPickFile}
+      aria-hidden="true"
+      role="button"
+      className={twMerge(
+        "flex shrink-0 items-center justify-center rounded-md bg-gray-100",
+        AVATAR_UPLOADER_SIZE,
+        className
+      )}>
+      <IoCamera className="text-slate-400" />
+    </div>
+  ) : (
     <div
       className={twMerge("relative shrink-0", AVATAR_UPLOADER_SIZE, className)}>
       {!isImageUploading && (
@@ -73,7 +101,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
           <>
             <div className="absolute size-full bg-modalOverlay" />
 
-            <img src={filesContent[0].content} alt={filesContent[0].name} />
+            <img src={avatarImageUrl} alt="User profile avatar" />
 
             <Typography
               variant={TypographyVariant.BodySmall}
@@ -82,21 +110,9 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
             </Typography>
           </>
         ) : (
-          <img src={filesContent[0].content} alt={filesContent[0].name} />
+          <img src={avatarImageUrl} alt="User avatar" />
         )}
       </div>
-    </div>
-  ) : (
-    <div
-      onClick={openFilePicker}
-      aria-hidden="true"
-      role="button"
-      className={twMerge(
-        "flex shrink-0 items-center justify-center rounded-md bg-gray-100",
-        AVATAR_UPLOADER_SIZE,
-        className
-      )}>
-      <IoCamera className="text-slate-400" />
     </div>
   )
 }

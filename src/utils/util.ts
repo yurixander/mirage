@@ -6,7 +6,6 @@ import {
   type ICreateRoomOpts,
   type MatrixClient,
 } from "matrix-js-sdk"
-import {type FileContent} from "use-file-picker/dist/interfaces"
 
 export enum ViewPath {
   App = "/",
@@ -182,7 +181,7 @@ export type ImageUploadedInfo = {
 }
 
 export async function sendImageMessageFromFile(
-  image: FileContent<string>,
+  image: File,
   client: MatrixClient | null,
   destinationRoom: string | null
 ): Promise<void> {
@@ -209,31 +208,34 @@ export async function sendImageMessageFromFile(
 }
 
 export async function uploadImageToMatrix(
-  file: FileContent<string>,
+  file: File,
   client: MatrixClient,
   progressCallback: (percent: number) => void
 ): Promise<ImageUploadedInfo | null> {
-  const content = file.content
-  const response = await fetch(content)
-  const blob = await response.blob()
-  const image = await getImage(content)
-
   try {
-    const uploadResponse = await client.uploadContent(blob, {
-      type: blob.type,
+    const uploadResponse = await client.uploadContent(file, {
+      type: file.type,
       progressHandler: progress => {
         progressCallback(Math.round((progress.loaded / progress.total) * 100))
       },
     })
 
+    const imageUrl = URL.createObjectURL(file)
+    const image = await getImage(imageUrl)
+
+    const height = image.height
+    const width = image.width
+
+    URL.revokeObjectURL(imageUrl)
+
     return {
       matrixUrl: uploadResponse.content_uri,
       filename: file.name,
       info: {
-        w: image.width,
-        h: image.height,
-        mimetype: blob.type,
-        size: blob.size,
+        w: width,
+        h: height,
+        mimetype: file.type,
+        size: file.size,
       },
     }
   } catch (error) {

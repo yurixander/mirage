@@ -4,7 +4,7 @@ import {getRoomMembers} from "@/utils/rooms"
 import {type MemberSection} from "@/containers/Roster/MemberList"
 import {type Room} from "matrix-js-sdk"
 import {UserPowerLevel} from "@/utils/members"
-import useConnection from "@/hooks/matrix/useConnection"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
 export type UseRoomMembersReturnType = {
   sections: MemberSection[]
@@ -19,7 +19,7 @@ enum MembersState {
 }
 
 const useRoomMembers = (roomId: string): UseRoomMembersReturnType => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const isMountedReference = useIsMountedRef()
   const [sections, setSections] = useState<MemberSection[]>([])
   const [membersState, setMembersState] = useState(MembersState.Idle)
