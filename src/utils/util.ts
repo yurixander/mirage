@@ -318,7 +318,7 @@ export async function sendVideoMessageFromFile(
   }
 
   try {
-    const uploadResponse = await client?.uploadContent(videoFile, {
+    const uploadResponse = await client.uploadContent(videoFile, {
       name: videoFile.name,
       includeFilename: true,
       type: videoFile.type,
