@@ -96,7 +96,7 @@ const FileMessage: FC<FileMessageProps> = ({
   )
 }
 
-const IconFile: FC<{typeFile: string}> = ({typeFile}) => {
+export const IconFile: FC<{typeFile: string}> = ({typeFile}) => {
   switch (typeFile) {
     case "zip":
     case "rar":
@@ -141,7 +141,7 @@ const IconFile: FC<{typeFile: string}> = ({typeFile}) => {
   }
 }
 
-const fileSizeToString = (fileSize: number): string => {
+export const fileSizeToString = (fileSize: number): string => {
   const KB = 1024
   const MB = KB * 1024
 
@@ -154,7 +154,7 @@ const fileSizeToString = (fileSize: number): string => {
   }
 }
 
-const getFileExtension = (fileName: string): string => {
+export const getFileExtension = (fileName: string): string => {
   const match = fileName.lastIndexOf(".")
 
   return match === -1 ? "file" : fileName.slice(match + 1, fileName.length)

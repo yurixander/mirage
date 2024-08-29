@@ -345,3 +345,42 @@ export async function sendVideoMessageFromFile(
     console.error(error)
   }
 }
+
+export async function senFileMessageFromFile(
+  file: File,
+  client: MatrixClient | null,
+  destinationRoom: string | null,
+  onProgressHandler: (progressUpload: number) => void
+): Promise<void> {
+  if (client === null || destinationRoom === null) {
+    return
+  }
+
+  try {
+    const uploadResponse = await client.uploadContent(file, {
+      name: file.name,
+      includeFilename: true,
+      type: file.type,
+      progressHandler(progress) {
+        onProgressHandler(Math.round(progress.loaded / progress.total) * 100)
+      },
+    })
+
+    if (uploadResponse.content_uri !== undefined) {
+      const content = {
+        body: file.name,
+        filename: file.name,
+        info: {
+          mimetype: file.type,
+          size: file.size,
+        },
+        msgtype: MsgType.File,
+        url: uploadResponse.content_uri,
+      }
+
+      void client.sendEvent(destinationRoom, EventType.RoomMessage, content)
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
