@@ -1,4 +1,3 @@
-import useConnection from "@/hooks/matrix/useConnection"
 import {
   type EmittedEvents,
   type MatrixEvent,
@@ -8,6 +7,7 @@ import {
   type EventEmitterEvents,
 } from "matrix-js-sdk"
 import {useEffect} from "react"
+import useMatrixClient from "./useMatrixClient"
 
 export type MatrixEventCallback<Return = void> = (
   event: MatrixEvent,
@@ -20,7 +20,7 @@ function useEventListener<Event extends EmittedEvents | EventEmitterEvents>(
   listener: Listener<EmittedEvents, ClientEventHandlerMap, Event>,
   isContinuous = true
 ): void {
-  const {client} = useConnection()
+  const client = useMatrixClient()
 
   useEffect(() => {
     if (client === null) {

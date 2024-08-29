@@ -155,6 +155,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
             />
           ) : message.kind === MessageKind.Audio ? (
             <AudioMessage
+              key={message.data.messageId}
               onAuthorClick={onAuthorClick}
               {...message.data}
               contextMenuItems={[]}
