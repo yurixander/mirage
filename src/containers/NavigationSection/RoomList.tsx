@@ -72,9 +72,7 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
             id="direct-chats-detail"
             menuElements={buildDirectRoomsMenuItems({
               isHome: spaceId === undefined,
-              onCreateDirectRoom() {
-                setActiveModal(Modals.DirectMessages)
-              },
+              onCreateDirectRoom() {},
               addRoomToSpace() {},
             })}>
             <RoomListHandler

@@ -1,4 +1,3 @@
-import DirectMessageModal from "@/containers/NavigationSection/modals/DirectMessageModal"
 import React from "react"
 import {type FC} from "react"
 import {createPortal} from "react-dom"
@@ -12,7 +11,6 @@ import useActiveModalStore, {
 import {assert} from "@/utils/util"
 
 const modalComponents: {[key in Modals]: React.JSX.Element} = {
-  [Modals.DirectMessages]: <DirectMessageModal />,
   [Modals.CreateRoom]: <CreateRoomModal />,
   [Modals.CreateSpace]: <CreateSpaceModal />,
 }

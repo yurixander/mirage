@@ -9,7 +9,6 @@ export enum ModalPosition {
 }
 
 export enum Modals {
-  DirectMessages,
   CreateRoom,
   CreateSpace,
 }

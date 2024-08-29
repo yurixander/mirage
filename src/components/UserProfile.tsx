@@ -13,6 +13,7 @@ export type UserProfileProps = {
   isNameShorted?: boolean
   avatarUrl?: string
   isLarge?: boolean
+  isSquare?: boolean
   className?: string
 }
 
@@ -23,6 +24,7 @@ const UserProfile: FC<UserProfileProps> = ({
   children,
   isLarge = false,
   isNameShorted = true,
+  isSquare = true,
   avatarType = AvatarType.Profile,
   className,
 }) => {
@@ -48,9 +50,10 @@ const UserProfile: FC<UserProfileProps> = ({
         avatarType={avatarType}
         displayName={displayName}
         avatarUrl={avatarUrl}
+        isSquare={isSquare}
       />
 
-      <div className="mr-auto inline-flex flex-col gap-0.5">
+      <div className="flex flex-col items-start gap-0.5">
         <Typography
           variant={typographyVariant}
           style={{color: displayNameColor}}
