@@ -22,6 +22,7 @@ const VideoPreview: FC<VideoPreviewProps> = ({
         <Typography className="w-full" variant={TypographyVariant.Heading}>
           Upload Video
         </Typography>
+
         <IoCloseCircle size={20} role="button" onClick={onClose} />
       </div>
 
@@ -34,6 +35,7 @@ const VideoPreview: FC<VideoPreviewProps> = ({
           />
         </div>
       </div>
+
       <div className="flex justify-end gap-3 rounded-b border-t-2 border-t-slate-200 bg-slate-100 p-3">
         <Button
           className="w-20"
