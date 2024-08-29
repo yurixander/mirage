@@ -1,6 +1,7 @@
 import useErrorTooltip from "@/hooks/util/useErrorTooltip"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import Typography, {TypographyVariant} from "./Typography"
 
 export enum ButtonVariant {
   Primary,
@@ -43,9 +44,7 @@ const Button: FC<ButtonProps> = ({
       className={twMerge(
         "flex items-center justify-center border font-medium outline-none duration-75 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50",
         isLoading ? "cursor-not-allowed" : "active:translate-y-[1px]",
-        isSmall
-          ? "max-h-6 rounded-md px-2 py-1 text-xs"
-          : "rounded-md p-1 px-2 text-sm",
+        isSmall ? "max-h-6 rounded px-2 py-1" : "rounded p-1 px-3",
         variantClass[variant],
         className
       )}
@@ -75,7 +74,12 @@ const Button: FC<ButtonProps> = ({
           )}
         />
       ) : (
-        text
+        <Typography
+          variant={
+            isSmall ? TypographyVariant.BodySmall : TypographyVariant.Body
+          }>
+          {text}
+        </Typography>
       )}
     </button>
   )

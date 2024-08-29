@@ -80,6 +80,7 @@ const LoginView: FC = () => {
 
             <div className="flex flex-col gap-1">
               <Button
+                variant={ButtonVariant.Primary}
                 label={isConnecting ? "Connecting..." : "Sign in →"}
                 isLoading={isConnecting}
                 onClick={() => {
