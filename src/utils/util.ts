@@ -307,6 +307,45 @@ export async function delay(ms: number): Promise<void> {
   await new Promise(resolve => setTimeout(resolve, ms))
 }
 
+export async function sendVideoMessageFromFile(
+  videoFile: File,
+  client: MatrixClient | null,
+  destinationRoom: string | null,
+  onProgressHandler: (progress: number) => void
+): Promise<void> {
+  if (client === null || destinationRoom === null) {
+    return
+  }
+
+  try {
+    const uploadResponse = await client.uploadContent(videoFile, {
+      name: videoFile.name,
+      includeFilename: true,
+      type: videoFile.type,
+      progressHandler: progress => {
+        onProgressHandler(Math.round((progress.loaded / progress.total) * 100))
+      },
+    })
+
+    if (uploadResponse.content_uri !== undefined) {
+      const content = {
+        body: videoFile.name,
+        filename: videoFile.name,
+        info: {
+          mimetype: videoFile.type,
+          size: videoFile.size,
+        },
+        msgtype: MsgType.Video,
+        url: uploadResponse.content_uri,
+      }
+
+      void client.sendEvent(destinationRoom, EventType.RoomMessage, content)
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export async function senFileMessageFromFile(
   file: File,
   client: MatrixClient | null,
