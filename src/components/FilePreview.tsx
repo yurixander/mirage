@@ -29,20 +29,20 @@ const FilePreview: FC<FilePreviewProps> = ({
           className="w-full">
           Upload File
         </Typography>
+
         <IoCloseCircle size={20} color="gray" role="button" onClick={onClose} />
       </div>
+
       <div className="flex size-full flex-col gap-3 p-4">
         <div className="flex w-full flex-col items-center gap-2 rounded border bg-white p-2">
-          <div className="flex w-full items-center gap-2">
-            <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2">
-              <IconFile typeFile={fileExtension.toLowerCase()} />
+          <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2">
+            <IconFile typeFile={fileExtension.toLowerCase()} />
 
-              <Typography
-                className="font-light text-black"
-                variant={TypographyVariant.Body}>
-                {fileName}
-              </Typography>
-            </div>
+            <Typography
+              className="font-light text-black"
+              variant={TypographyVariant.Body}>
+              {fileName}
+            </Typography>
           </div>
 
           <div className="flex w-full">
@@ -59,6 +59,7 @@ const FilePreview: FC<FilePreviewProps> = ({
             </Typography>
           </div>
         </div>
+
         <div className="flex gap-1 overflow-hidden">
           <ReactSVG src={StaticAssetPath.DotGrid} />
 
@@ -67,6 +68,7 @@ const FilePreview: FC<FilePreviewProps> = ({
       </div>
       <div className="flex h-16 w-full items-center justify-end gap-2 border-t bg-slate-100 px-5">
         <Button className="w-20" label="Cancel" onClick={onClose} />
+
         <Button
           className="w-20"
           variant={ButtonVariant.Primary}
