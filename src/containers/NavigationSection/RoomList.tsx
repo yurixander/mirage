@@ -42,7 +42,7 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
     <div
       id={ModalRenderLocation.RoomList}
       className={twMerge(
-        "flex flex-col overflow-y-scroll scrollbar-hide",
+        "scrollbar-hide flex flex-col overflow-y-scroll",
         className
       )}>
       {roomsState === RoomsState.Error ? (

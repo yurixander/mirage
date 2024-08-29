@@ -122,8 +122,8 @@ const CircularProgressBar: FC<CircularProgressBarProps> = ({
       className={twMerge(
         "flex size-14 items-center justify-center rounded-full border-4",
         isCompleted && "border-green-500",
-        isError && "border-red-500 shadow-circleProgressError",
-        !(isCompleted || isError) && "border-purple-500 shadow-circleProgress",
+        isError && "shadow-circleProgressError border-red-500",
+        !(isCompleted || isError) && "shadow-circleProgress border-purple-500",
         className
       )}>
       <Typography

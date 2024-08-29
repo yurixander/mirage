@@ -25,7 +25,7 @@ const ImageModal: FC<ImageModalProps> = ({
   onClose,
 }) => {
   return (
-    <div className="flex size-full flex-col bg-modalOverlay">
+    <div className="bg-modalOverlay flex size-full flex-col">
       <div className="relative flex size-full items-center justify-center">
         {imageUrl === undefined ? (
           <div className="flex flex-col items-center gap-2 rounded-lg bg-white p-2">
@@ -39,7 +39,7 @@ const ImageModal: FC<ImageModalProps> = ({
       </div>
 
       <div className="absolute flex size-full items-end justify-center pb-6">
-        <div className="flex size-max gap-1 rounded-xl bg-modalOverlay p-1">
+        <div className="bg-modalOverlay flex size-max gap-1 rounded-xl p-1">
           {onDeleteImage !== undefined && (
             <IconButton
               size={ICON_BUTTON_MODAL_SIZE}

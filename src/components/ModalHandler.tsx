@@ -40,7 +40,7 @@ const ModalHandler: FC = () => {
     createPortal(
       <div
         className={twMerge(
-          "fixed inset-0 z-50 flex size-full w-screen flex-col bg-modalOverlay",
+          "bg-modalOverlay fixed inset-0 z-50 flex size-full w-screen flex-col",
           popupPositionClass[position]
         )}>
         {modalComponents[modalActive]}

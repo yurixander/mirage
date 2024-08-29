@@ -25,7 +25,7 @@ const TextArea: FC<TextAreaProps> = ({
   return (
     <textarea
       className={twMerge(
-        "h-max resize-none rounded-md border border-slate-300 bg-transparent p-2 outline-0 scrollbar-hide focus:outline-0 focus-visible:outline-0 active:outline-0",
+        "scrollbar-hide h-max resize-none rounded-md border border-slate-300 bg-transparent p-2 outline-0 focus:outline-0 focus-visible:outline-0 active:outline-0",
         className
       )}
       disabled={disabled}

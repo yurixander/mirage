@@ -47,7 +47,7 @@ const EventMessage: FC<EventMessageProps> = ({
 
   return (
     <div className="flex items-center gap-3">
-      <Typography className="inline-flex max-w-text select-text gap-1 whitespace-pre-line break-words italic">
+      <Typography className="max-w-text inline-flex select-text gap-1 whitespace-pre-line break-words italic">
         <ContextMenu
           className="shrink-0"
           id={`context-menu-event-${eventId}`}
