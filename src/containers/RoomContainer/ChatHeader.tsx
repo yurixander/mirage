@@ -1,11 +1,12 @@
 import IconButton from "@/components/IconButton"
 import {type FC} from "react"
-import {IoMdLink} from "react-icons/io"
 import {
   IoInformationCircle,
-  IoEllipsisVertical,
   IoChevronForward,
   IoChevronBack,
+  IoCall,
+  IoVideocam,
+  IoSearch,
 } from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
 
@@ -14,6 +15,7 @@ export type ChatHeaderProps = {
   isRosterExpanded: boolean
   onRosterExpanded: (isExpanded: boolean) => void
   className?: string
+  roomDescription?: string
 }
 
 const ChatHeader: FC<ChatHeaderProps> = ({
@@ -21,16 +23,43 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   isRosterExpanded,
   onRosterExpanded,
   className,
+  roomDescription,
 }) => {
   return (
     <header className={className}>
       <div className="m-2 flex w-full gap-1">
-        <LiaSlackHash className="text-purple-500" />
+        <LiaSlackHash className="text-blue-700" />
 
-        <span className="text-purple-500">{roomName}</span>
+        <span className="text-blue-700">{roomName}</span>
 
-        {/* <span className="text-stone-600">{text}</span> */}
+        <span className="line-clamp-1 text-slate-500">
+          {roomDescription === undefined ? "" : "- " + roomDescription}
+        </span>
       </div>
+
+      <IconButton
+        onClick={() => {
+          /* TODO: Handle `more` button click. */
+        }}
+        tooltip="Call"
+        Icon={IoCall}
+      />
+
+      <IconButton
+        onClick={() => {
+          /* TODO: Handle `more` button click. */
+        }}
+        tooltip="Video Call"
+        Icon={IoVideocam}
+      />
+
+      <IconButton
+        onClick={() => {
+          /* TODO: Handle `search` button click. */
+        }}
+        tooltip="search"
+        Icon={IoSearch}
+      />
 
       <IconButton
         onClick={() => {
@@ -38,22 +67,6 @@ const ChatHeader: FC<ChatHeaderProps> = ({
         }}
         tooltip="Room details"
         Icon={IoInformationCircle}
-      />
-
-      <IconButton
-        onClick={() => {
-          /* TODO: Handle `link` button click. */
-        }}
-        tooltip="Copy link"
-        Icon={IoMdLink}
-      />
-
-      <IconButton
-        onClick={() => {
-          /* TODO: Handle `more` button click. */
-        }}
-        tooltip="More actions"
-        Icon={IoEllipsisVertical}
       />
 
       <IconButton
