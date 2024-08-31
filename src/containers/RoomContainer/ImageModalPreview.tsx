@@ -1,6 +1,5 @@
 import {type FC} from "react"
 import {createPortal} from "react-dom"
-import Button, {ButtonVariant} from "@/components/Button"
 import ImagePreview from "@/components/ImagePreview"
 
 export type ImageModalPreviewProps = {
