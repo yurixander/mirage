@@ -28,9 +28,9 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   return (
     <header className={className}>
       <div className="m-2 flex w-full gap-1">
-        <LiaSlackHash className="text-blue-700" />
+        <LiaSlackHash className="text-blue-800" />
 
-        <span className="text-blue-700">{roomName}</span>
+        <span className="text-blue-800">{roomName}</span>
 
         <span className="line-clamp-1 text-slate-500">
           {roomDescription === undefined ? "" : "- " + roomDescription}
@@ -57,7 +57,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
         onClick={() => {
           /* TODO: Handle `search` button click. */
         }}
-        tooltip="search"
+        tooltip="Search"
         Icon={IoSearch}
       />
 
@@ -73,7 +73,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
         onClick={() => {
           onRosterExpanded(!isRosterExpanded)
         }}
-        tooltip="More actions"
+        tooltip="Roster Expand"
         Icon={isRosterExpanded ? IoChevronForward : IoChevronBack}
       />
     </header>
