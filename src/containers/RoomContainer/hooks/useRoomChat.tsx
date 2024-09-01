@@ -127,9 +127,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
 
     // eslint-disable-next-line deprecation/deprecation
     const topicEvent = room.currentState.getStateEvents("m.room.topic", "")
-    const roomDescription = topicEvent
-      ? topicEvent.getContent().topic
-      : "This room has no description"
+    const roomDescription = topicEvent ? topicEvent.getContent().topic : ""
 
     if (typeof roomDescription === "string") {
       setRoomTopic(roomDescription)

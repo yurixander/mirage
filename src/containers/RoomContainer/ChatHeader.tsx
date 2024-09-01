@@ -28,13 +28,25 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   return (
     <header className={className}>
       <div className="m-2 flex w-full gap-1">
-        <LiaSlackHash className="text-blue-800" />
+        <div>
+          <LiaSlackHash className="text-blue-800" />
+        </div>
 
-        <span className="line-clamp-1 max-w-80 text-blue-800">{roomName}</span>
+        <div>
+          <span className="line-clamp-1 max-w-md text-blue-800">
+            {roomName}
+          </span>
+        </div>
 
-        <span className="line-clamp-1 text-slate-500">
-          {roomDescription === undefined ? "" : "- " + roomDescription}
-        </span>
+        {roomDescription !== undefined && roomDescription !== "" ? (
+          <div>
+            <span className="line-clamp-1 max-w-md text-slate-500">
+              {"- " + roomDescription}
+            </span>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <IconButton
