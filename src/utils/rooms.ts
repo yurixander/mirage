@@ -201,20 +201,16 @@ const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
   for (const message of anyMessages) {
     const lastMessage = result.at(-1)
 
-    if (
-      lastMessage === undefined ||
-      (lastMessage.kind !== MessageKind.Event &&
-        lastMessage.kind !== MessageKind.EventGroup)
-    ) {
+    if (lastMessage === undefined) {
       result.push(message)
 
       continue
     }
 
-    if (
-      lastMessage.kind === MessageKind.Event &&
-      message.kind === MessageKind.Event
-    ) {
+    const isLastMessageEvent = lastMessage.kind === MessageKind.Event
+    const isMessageEvent = message.kind === MessageKind.Event
+
+    if (isLastMessageEvent && isMessageEvent) {
       if (lastMessage.data.sender.userId !== message.data.sender.userId) {
         result.push(message)
 
@@ -231,10 +227,7 @@ const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
           },
         },
       }
-    } else if (
-      lastMessage.kind === MessageKind.EventGroup &&
-      message.kind === MessageKind.Event
-    ) {
+    } else if (lastMessage.kind === MessageKind.EventGroup && isMessageEvent) {
       if (
         lastMessage.data.eventGroupMainBody.sender.userId !==
         message.data.sender.userId
