@@ -227,7 +227,7 @@ const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
           eventMessages: [lastMessage.data, message.data],
           eventGroupMainBody: {
             sender: lastMessage.data.sender,
-            shortenerType: EventShortenerType.PersonalInfo,
+            shortenerType: EventShortenerType.EqualInfo,
           },
         },
       }

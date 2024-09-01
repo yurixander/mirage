@@ -13,6 +13,7 @@ import Typography from "./Typography"
 import {IoCube} from "react-icons/io5"
 
 export enum EventShortenerType {
+  EqualInfo = "has done several events.",
   PersonalInfo = "has change his personal info.",
   ConfigureRoom = "has created and configured this room.",
 }
