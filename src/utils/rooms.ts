@@ -42,7 +42,6 @@ import {
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
 import {parseReplyMessageFromBody, validateReplyMessage} from "./parser"
-import {type EventMessageData} from "@/components/EventMessage"
 import {EventShortenerType} from "@/components/EventGroupMessage"
 
 export enum ImageSizes {
@@ -196,59 +195,68 @@ export const handleRoomEvents = async (
   return groupEventMessage(allMessageProperties)
 }
 
-export const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
-  const messagesResult: AnyMessage[] = []
-  const tempMessageEvents: EventMessageData[] = []
+const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
+  const result: AnyMessage[] = []
 
-  for (let i = 0; i < anyMessages.length; i++) {
-    const currentMessage = anyMessages[i]
-    const nextMessage = anyMessages[i + 1]
+  for (const message of anyMessages) {
+    const lastMessage = result.at(-1)
 
-    if (currentMessage.kind !== MessageKind.Event) {
-      if (tempMessageEvents.length >= 2) {
-        messagesResult.push({
-          kind: MessageKind.EventGroup,
-          data: {
-            eventGroupMainBody: {
-              sender: tempMessageEvents[0].sender,
-              shortenerType: EventShortenerType.ConfigureRoom,
-            },
-            eventMessages: tempMessageEvents.slice(),
-          },
-        })
-      } else if (tempMessageEvents.length > 0) {
-        messagesResult.push(
-          ...{
-            ...tempMessageEvents.map(tempMsg => {
-              return {
-                kind: MessageKind.Event,
-                data: tempMsg,
-              } satisfies AnyMessage
-            }),
-          }
-        )
-      }
+    if (
+      lastMessage === undefined ||
+      (lastMessage.kind !== MessageKind.Event &&
+        lastMessage.kind !== MessageKind.EventGroup)
+    ) {
+      result.push(message)
 
-      messagesResult.push(currentMessage)
-
-      tempMessageEvents.length = 0
       continue
     }
 
     if (
-      nextMessage !== undefined &&
-      nextMessage.kind === MessageKind.Event &&
-      nextMessage.data.sender.userId === currentMessage.data.sender.userId
+      lastMessage.kind === MessageKind.Event &&
+      message.kind === MessageKind.Event
     ) {
-      tempMessageEvents.push(currentMessage.data)
+      if (lastMessage.data.sender.userId !== message.data.sender.userId) {
+        result.push(message)
 
-      continue
+        continue
+      }
+
+      result[result.length - 1] = {
+        kind: MessageKind.EventGroup,
+        data: {
+          eventMessages: [lastMessage.data, message.data],
+          eventGroupMainBody: {
+            sender: lastMessage.data.sender,
+            shortenerType: EventShortenerType.PersonalInfo,
+          },
+        },
+      }
+    } else if (
+      lastMessage.kind === MessageKind.EventGroup &&
+      message.kind === MessageKind.Event
+    ) {
+      if (
+        lastMessage.data.eventGroupMainBody.sender.userId !==
+        message.data.sender.userId
+      ) {
+        result.push(message)
+
+        continue
+      }
+
+      result[result.length - 1] = {
+        kind: MessageKind.EventGroup,
+        data: {
+          eventMessages: [...lastMessage.data.eventMessages, message.data],
+          eventGroupMainBody: lastMessage.data.eventGroupMainBody,
+        },
+      }
+    } else {
+      result.push(message)
     }
-
-    messagesResult.push(currentMessage)
   }
 
-  return messagesResult
+  return result
 }
 
 export const handleRoomMessageEvent = async (
