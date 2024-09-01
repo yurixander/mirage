@@ -23,8 +23,14 @@ const ChatContainer: FC<ChatContainerProps> = ({
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  const {messagesState, roomName, isChatLoading, messages, typingUsers} =
-    useRoomChat(roomId)
+  const {
+    messagesState,
+    roomName,
+    roomTopic,
+    isChatLoading,
+    messages,
+    typingUsers,
+  } = useRoomChat(roomId)
 
   assert(roomId.length > 0, "The roomId should not be empty.")
 
@@ -50,6 +56,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
         isRosterExpanded={isRosterExpanded}
         onRosterExpanded={onRosterExpanded}
         roomName={roomName}
+        roomDescription={roomTopic}
       />
 
       <div

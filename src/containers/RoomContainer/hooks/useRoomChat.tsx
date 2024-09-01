@@ -70,6 +70,7 @@ type UseRoomChatReturnType = {
   messagesState: MessagesState
   isChatLoading: boolean
   roomName: string
+  roomTopic: string
   messages: AnyMessage[]
   typingUsers: TypingIndicatorUser[]
 }
@@ -80,6 +81,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const {clearActiveRoomId} = useActiveRoomIdStore()
 
   const [roomName, setRoomName] = useState("")
+  const [roomTopic, setRoomTopic] = useState("")
   const [isChatLoading, setChatLoading] = useState(true)
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
@@ -122,6 +124,17 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     }
 
     setRoomName(room.name)
+
+    // eslint-disable-next-line deprecation/deprecation
+    const topicEvent = room.currentState.getStateEvents("m.room.topic", "")
+    const roomDescription = topicEvent
+      ? topicEvent.getContent().topic
+      : "This room has no description"
+
+    if (typeof roomDescription === "string") {
+      setRoomTopic(roomDescription)
+    }
+
     setChatLoading(false)
 
     void fetchRoomMessages(room)
@@ -196,7 +209,14 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     )
   })
 
-  return {messagesState, isChatLoading, roomName, messages, typingUsers}
+  return {
+    messagesState,
+    isChatLoading,
+    roomName,
+    roomTopic,
+    messages,
+    typingUsers,
+  }
 }
 
 export default useRoomChat

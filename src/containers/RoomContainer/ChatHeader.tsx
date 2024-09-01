@@ -73,7 +73,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
         onClick={() => {
           onRosterExpanded(!isRosterExpanded)
         }}
-        tooltip="Roster Expand"
+        tooltip="Expand Roster"
         Icon={isRosterExpanded ? IoChevronForward : IoChevronBack}
       />
     </header>
