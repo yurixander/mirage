@@ -59,7 +59,7 @@ const IconButton: FC<IconButtonProps> = ({
         <Icon
           style={{color}}
           size={size ?? 20}
-          className={twMerge("text-neutral-300", iconClassName)}
+          className={twMerge("text-slate-500", iconClassName)}
         />
       </NotificationDot>
     </motion.button>
