@@ -30,7 +30,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
       <div className="m-2 flex w-full gap-1">
         <LiaSlackHash className="text-blue-800" />
 
-        <span className="text-blue-800">{roomName}</span>
+        <span className="line-clamp-1 max-w-80 text-blue-800">{roomName}</span>
 
         <span className="line-clamp-1 text-slate-500">
           {roomDescription === undefined ? "" : "- " + roomDescription}
