@@ -9,8 +9,8 @@ import {type TypingIndicatorUser} from "@/components/TypingIndicator"
 import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {type VideoMessageData} from "@/components/VideoMessage"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import useConnection from "@/hooks/matrix/useConnection"
 import useEventListener from "@/hooks/matrix/useEventListener"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
@@ -82,7 +82,7 @@ type UseRoomChatReturnType = {
 }
 
 const useRoomChat = (roomId: string): UseRoomChatReturnType => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const isMountedReference = useIsMountedRef()
   const {clearActiveRoomId} = useActiveRoomIdStore()
 

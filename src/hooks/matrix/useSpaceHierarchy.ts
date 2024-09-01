@@ -1,10 +1,10 @@
 import {type RoomType} from "@/components/Room"
 import {useCallback, useEffect, useState} from "react"
-import useConnection from "./useConnection"
 import {getAllJoinedRooms} from "@/utils/rooms"
 import {getRoomsFromSpace} from "@/utils/spaces"
 import {type Room, RoomEvent, type MatrixClient, EventType} from "matrix-js-sdk"
 import useRoomListener from "./useRoomListener"
+import useMatrixClient from "./useMatrixClient"
 
 export enum RoomsState {
   Loaded,
@@ -29,7 +29,7 @@ type UseSpaceHierarchyReturnType = {
 const useSpaceHierarchy = (
   spaceId: string | undefined
 ): UseSpaceHierarchyReturnType => {
-  const {client} = useConnection()
+  const client = useMatrixClient()
   const [roomsState, setRoomsState] = useState(RoomsState.Loading)
   const [rooms, setRooms] = useState<PartialRoom[]>([])
   const [activeSpace, setActiveSpace] = useState<Room | null>(null)

@@ -1,7 +1,11 @@
 import {getEmojiByIndex} from "@/components/EmojiPicker"
 import dayjs from "dayjs"
-import {type ICreateRoomOpts, type MatrixClient} from "matrix-js-sdk"
-import {type FileContent} from "use-file-picker/dist/interfaces"
+import {
+  EventType,
+  MsgType,
+  type ICreateRoomOpts,
+  type MatrixClient,
+} from "matrix-js-sdk"
 
 export enum ViewPath {
   App = "/",
@@ -181,7 +185,7 @@ export type ImageUploadedInfo = {
 }
 
 export async function sendImageMessageFromFile(
-  image: FileContent<string>,
+  image: File,
   client: MatrixClient | null,
   destinationRoom: string | null
 ): Promise<void> {
@@ -208,31 +212,34 @@ export async function sendImageMessageFromFile(
 }
 
 export async function uploadImageToMatrix(
-  file: FileContent<string>,
+  file: File,
   client: MatrixClient,
   progressCallback: (percent: number) => void
 ): Promise<ImageUploadedInfo | null> {
-  const content = file.content
-  const response = await fetch(content)
-  const blob = await response.blob()
-  const image = await getImage(content)
-
   try {
-    const uploadResponse = await client.uploadContent(blob, {
-      type: blob.type,
+    const uploadResponse = await client.uploadContent(file, {
+      type: file.type,
       progressHandler: progress => {
         progressCallback(Math.round((progress.loaded / progress.total) * 100))
       },
     })
 
+    const imageUrl = URL.createObjectURL(file)
+    const image = await getImage(imageUrl)
+
+    const height = image.height
+    const width = image.width
+
+    URL.revokeObjectURL(imageUrl)
+
     return {
       matrixUrl: uploadResponse.content_uri,
       filename: file.name,
       info: {
-        w: image.width,
-        h: image.height,
-        mimetype: blob.type,
-        size: blob.size,
+        w: width,
+        h: height,
+        mimetype: file.type,
+        size: file.size,
       },
     }
   } catch (error) {
@@ -302,4 +309,82 @@ export function generateRandomId(length: number = 10): string {
 
 export async function delay(ms: number): Promise<void> {
   await new Promise(resolve => setTimeout(resolve, ms))
+}
+
+export async function sendVideoMessageFromFile(
+  videoFile: File,
+  client: MatrixClient | null,
+  destinationRoom: string | null,
+  onProgressHandler: (progress: number) => void
+): Promise<void> {
+  if (client === null || destinationRoom === null) {
+    return
+  }
+
+  try {
+    const uploadResponse = await client.uploadContent(videoFile, {
+      name: videoFile.name,
+      includeFilename: true,
+      type: videoFile.type,
+      progressHandler: progress => {
+        onProgressHandler(Math.round((progress.loaded / progress.total) * 100))
+      },
+    })
+
+    if (uploadResponse.content_uri !== undefined) {
+      const content = {
+        body: videoFile.name,
+        filename: videoFile.name,
+        info: {
+          mimetype: videoFile.type,
+          size: videoFile.size,
+        },
+        msgtype: MsgType.Video,
+        url: uploadResponse.content_uri,
+      }
+
+      void client.sendEvent(destinationRoom, EventType.RoomMessage, content)
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function senFileMessageFromFile(
+  file: File,
+  client: MatrixClient | null,
+  destinationRoom: string | null,
+  onProgressHandler: (progressUpload: number) => void
+): Promise<void> {
+  if (client === null || destinationRoom === null) {
+    return
+  }
+
+  try {
+    const uploadResponse = await client.uploadContent(file, {
+      name: file.name,
+      includeFilename: true,
+      type: file.type,
+      progressHandler(progress) {
+        onProgressHandler(Math.round(progress.loaded / progress.total) * 100)
+      },
+    })
+
+    if (uploadResponse.content_uri !== undefined) {
+      const content = {
+        body: file.name,
+        filename: file.name,
+        info: {
+          mimetype: file.type,
+          size: file.size,
+        },
+        msgtype: MsgType.File,
+        url: uploadResponse.content_uri,
+      }
+
+      void client.sendEvent(destinationRoom, EventType.RoomMessage, content)
+    }
+  } catch (error) {
+    console.error(error)
+  }
 }

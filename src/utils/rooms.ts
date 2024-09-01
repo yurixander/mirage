@@ -18,7 +18,7 @@ import {
 } from "./util"
 import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {
-  getRoomAdminsAndModerators,
+  getRoomUsersIdWithPowerLevels,
   getUserLastPresence,
   isCurrentUserAdminOrMod,
   UserPowerLevel,
@@ -87,35 +87,76 @@ export async function getAllJoinedRooms(
   return currentJoinedRooms
 }
 
+const FETCH_MEMBERS_LIMIT = 30
+const PRESENCE_MAX = 30
+
 export async function getRoomMembers(room: Room): Promise<RosterUserData[]> {
-  const members = await room.client.getJoinedRoomMembers(room.roomId)
-  const adminsOrModerators = await getRoomAdminsAndModerators(room)
-  const joinedMembers = members.joined
-  const membersProperty: RosterUserData[] = adminsOrModerators
+  const membersProperty: RosterUserData[] = []
+  const membersResponse = await room.client.getJoinedRoomMembers(room.roomId)
+  const roomScrollBack = await room.client.scrollback(room, PRESENCE_MAX)
 
-  let memberCount = 0
+  const roomOwnersWithLevels = getRoomUsersIdWithPowerLevels(room).filter(
+    user => user.powerLevel !== UserPowerLevel.Member
+  )
 
-  for (const joinedMemberId in joinedMembers) {
-    if (memberCount >= 30) {
-      break
-    }
+  for (const roomOwner of roomOwnersWithLevels) {
+    const roomOwnerMember = membersResponse.joined[roomOwner.userId]
 
-    const member = joinedMembers[joinedMemberId]
-
-    const isAdminOrModerator = adminsOrModerators.some(
-      adminOrModerator => adminOrModerator.userId === joinedMemberId
-    )
-
-    if (member === undefined || isAdminOrModerator) {
+    if (roomOwnerMember === undefined) {
       continue
     }
 
+    const name = roomOwnerMember.display_name ?? roomOwner.userId
+
+    const lastPresence = await getUserLastPresence(
+      roomScrollBack,
+      PRESENCE_MAX,
+      roomOwner.userId
+    )
+
     membersProperty.push({
-      displayName: normalizeName(member.display_name),
+      displayName: normalizeName(name),
+      powerLevel: roomOwner.powerLevel,
+      userId: roomOwner.userId,
+      lastPresenceAge: lastPresence ?? undefined,
+      avatarUrl: getImageUrl(
+        roomOwnerMember.avatar_url,
+        room.client,
+        ImageSizes.MessageAndProfile
+      ),
+    })
+  }
+
+  let memberCount = 0
+
+  for (const joinedMemberId in membersResponse.joined) {
+    if (memberCount >= FETCH_MEMBERS_LIMIT) {
+      break
+    }
+
+    const member = membersResponse.joined[joinedMemberId]
+
+    const isRoomOwner = roomOwnersWithLevels.some(
+      memberWithLevels => memberWithLevels.userId === joinedMemberId
+    )
+
+    if (member === undefined || isRoomOwner) {
+      continue
+    }
+
+    const name = member.display_name ?? joinedMemberId
+
+    const lastPresence = await getUserLastPresence(
+      roomScrollBack,
+      PRESENCE_MAX,
+      joinedMemberId
+    )
+
+    membersProperty.push({
+      displayName: normalizeName(name),
       powerLevel: UserPowerLevel.Member,
       userId: joinedMemberId,
-      lastPresenceAge:
-        (await getUserLastPresence(room, joinedMemberId)) ?? undefined,
+      lastPresenceAge: lastPresence ?? undefined,
       avatarUrl: getImageUrl(
         member.avatar_url,
         room.client,

@@ -8105,13 +8105,6 @@ file-saver@^2.0.5:
   resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
   integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
 
-file-selector@0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.2.4.tgz#7b98286f9dbb9925f420130ea5ed0a69238d4d80"
-  integrity sha512-ZDsQNbrv6qRi1YTDOEWzf5J2KjZ9KMI1Q2SGeTkCJmNNW25Jg4TW4UMcmoqcg4WrAyKRcpBXdbWRxkfrOzVRbA==
-  dependencies:
-    tslib "^2.0.3"
-
 filelist@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/filelist/-/filelist-1.0.4.tgz#f78978a1e944775ff9e62e744424f215e58352b5"
@@ -14500,13 +14493,6 @@ url@^0.11.3:
   dependencies:
     punycode "^1.4.1"
     qs "^6.11.2"
-
-use-file-picker@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/use-file-picker/-/use-file-picker-2.1.1.tgz#2286910c6052a6d88bffecda300d5bd6f3c0ee94"
-  integrity sha512-IhKUL7pVL5m0D/1zM5vgAyamkpiMfSQYg16+P7OpYEp1zTkhdX6jSsWr3kbbrfvPjSxkyaPy3lbCSyOslz9PNg==
-  dependencies:
-    file-selector "0.2.4"
 
 use-sync-external-store@1.2.0:
   version "1.2.0"
