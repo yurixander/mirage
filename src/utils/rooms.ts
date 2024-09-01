@@ -202,10 +202,14 @@ export const handleRoomEvents = async (
 const configRoomPattern = new Set<string>([
   EventType.RoomMember,
   EventType.RoomTopic,
-  EventType.RoomPowerLevels,
   EventType.RoomAvatar,
   EventType.RoomName,
   EventType.RoomEncryption,
+  EventType.RoomCanonicalAlias,
+  EventType.RoomGuestAccess,
+  EventType.RoomJoinRules,
+  EventType.RoomHistoryVisibility,
+  EventType.RoomCreate,
 ])
 
 const processPatterns = (
