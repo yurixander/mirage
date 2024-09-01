@@ -8,7 +8,7 @@ import {StaticAssetPath} from "@/utils/util"
 import {useWavesurfer} from "@wavesurfer/react"
 import IconButton from "./IconButton"
 
-export type AudioPreviewProps = {
+export type AudioFilePreviewProps = {
   fileName: string
   fileSize: number
   audioUrl: string
@@ -16,7 +16,7 @@ export type AudioPreviewProps = {
   onSend: () => void
 }
 
-const AudioPreview: FC<AudioPreviewProps> = ({
+const AudioFilePreview: FC<AudioFilePreviewProps> = ({
   fileName,
   fileSize,
   audioUrl,
@@ -28,7 +28,7 @@ const AudioPreview: FC<AudioPreviewProps> = ({
   const {wavesurfer: waverer, isReady} = useWavesurfer({
     container: waveformRef,
     waveColor: "#ddd",
-    progressColor: "#c0c",
+    progressColor: "#4a90e2",
     cursorColor: "#4a90e2",
     barWidth: 2,
     barGap: 2,
@@ -137,4 +137,4 @@ export const getAudioDuration = (
 
   media.addEventListener("loadeddata", obtainDuration)
 }
-export default AudioPreview
+export default AudioFilePreview
