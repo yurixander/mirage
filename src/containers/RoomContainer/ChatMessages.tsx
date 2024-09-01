@@ -3,7 +3,7 @@ import ImageMessage from "@/components/ImageMessage"
 import TextMessage from "@/components/TextMessage"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import UnreadIndicator from "@/components/UnreadIndicator"
-import {type FC, useCallback, useMemo, useState} from "react"
+import {type FC, useMemo, useState} from "react"
 import MessagesPlaceholder from "./MessagesPlaceholder"
 import {assert} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
@@ -15,6 +15,7 @@ import FileMessage from "@/components/FileMessage"
 import AudioMessage from "@/components/AudioMessage"
 import ReplyMessage from "@/components/ReplyMessage"
 import {motion} from "framer-motion"
+import EventGroupMessage from "@/components/EventGroupMessage"
 import VideoMessage from "@/components/VideoMessage"
 
 export type ChatMessagesProps = {
@@ -37,137 +38,34 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     )
   }
 
-  const onAuthorClick = useCallback((userId: string) => {
-    // TODO: Handle `onAuthorClick` for all `Messages`.
-  }, [])
-
   const messageElements = useMemo(
     () =>
-      // eslint-disable-next-line sonarjs/cognitive-complexity
       messages.map((message, index) => (
         <motion.div
           initial={{translateX: -25, opacity: 0.5}}
           whileInView={{translateX: 0, opacity: 1}}>
-          {message.kind === MessageKind.Text ? (
-            <TextMessage
-              key={message.data.messageId}
-              {...message.data}
-              onAuthorClick={onAuthorClick}
-              contextMenuItems={buildMessageMenuItems({
-                isMessageError: message.data.isDeleted === true,
-                canDeleteMessage: message.data.canDeleteMessage === true,
-                onReplyMessage() {
-                  // TODO: Handle reply
-                },
-                onResendMessage() {
-                  // TODO: Handle resend message here.
-                },
-                onDeleteMessage() {
-                  // deleteMessage(room.client, room.roomId, eventId)
-                },
-              })}
-            />
-          ) : message.kind === MessageKind.Reply ? (
-            <ReplyMessage
-              key={message.data.messageId}
-              {...message.data}
-              onAuthorClick={() => {
-                // TODO: Handle `onAuthorClick` for `TextMessage`.
-              }}
-              onQuoteMessageClick={quoteMessageId => {
-                // TODO Handle `onQuoteMessageClick` for `ReplyMessage`
-              }}
-              contextMenuItems={buildMessageMenuItems({
-                isMessageError: message.data.isDeleted === true,
-                canDeleteMessage: message.data.canDeleteMessage === true,
-                onReplyMessage() {
-                  // TODO: Handle reply
-                },
-                onResendMessage() {
-                  // TODO: Handle resend message here.
-                },
-                onDeleteMessage() {
-                  // deleteMessage(room.client, room.roomId, eventId)
-                },
-              })}
-            />
-          ) : message.kind === MessageKind.Image ? (
-            <ImageMessage
-              key={message.data.messageId}
-              {...message.data}
-              onClickImage={setImagePrevUrl}
-              onAuthorClick={onAuthorClick}
-              contextMenuItems={buildMessageMenuItems({
-                canDeleteMessage: message.data.canDeleteMessage === true,
-                isMessageError: false,
-                isSaveable: true,
-                onReplyMessage() {
-                  // TODO: Handle reply
-                },
-                onResendMessage() {
-                  // TODO: Handle resend message here.
-                },
-                onSaveContent() {
-                  // TODO: Handle image saving here.
-                },
-                onDeleteMessage() {
-                  // deleteMessage(room.client, room.roomId, eventId)
-                },
-              })}
-            />
-          ) : message.kind === MessageKind.Video ? (
-            <VideoMessage
-              key={message.data.messageId}
-              {...message.data}
-              onAuthorClick={onAuthorClick}
-              url={message.data.url}
-              contextMenuItems={[]}
-            />
-          ) : message.kind === MessageKind.File ? (
-            <FileMessage
-              key={message.data.messageId}
-              {...message.data}
-              onAuthorClick={onAuthorClick}
-              contextMenuItems={buildMessageMenuItems({
-                isMessageError: message.data.isDeleted === true,
-                canDeleteMessage: message.data.canDeleteMessage === true,
-                onReplyMessage() {
-                  // TODO: Handle reply
-                },
-                onResendMessage() {
-                  // TODO: Handle resend message here.
-                },
-                onDeleteMessage() {
-                  // deleteMessage(room.client, room.roomId, eventId)
-                },
-              })}
-            />
-          ) : message.kind === MessageKind.Event ? (
-            <EventMessage
-              key={message.data.eventId}
-              {...message.data}
-              onFindUser={() => {
-                // TODO: Handle find user here.
-              }}
-              onShowMember={() => {
-                // TODO: Handle show member here.
-              }}
-            />
-          ) : message.kind === MessageKind.Audio ? (
-            <AudioMessage
-              key={message.data.messageId}
-              onAuthorClick={onAuthorClick}
-              {...message.data}
-              contextMenuItems={[]}
-            />
-          ) : (
-            index !== messages.length - 1 && (
-              <UnreadIndicator key="unread-indicator" {...message.data} />
-            )
-          )}
+          <AnyMessageHandler
+            isAtTheEnd={index !== messages.length - 1}
+            anyMessage={message}
+            onAuthorClick={(userId: string) => {
+              throw new Error("Author click function not implemented.")
+            }}
+            onClickImage={(imgUrl: string) => {
+              throw new Error("Click image function not implemented.")
+            }}
+            onResendMessage={() => {
+              throw new Error("Resend message function not implemented.")
+            }}
+            onReplyMessage={() => {
+              throw new Error("Reply message function not implemented.")
+            }}
+            onDeleteMessage={() => {
+              throw new Error("Delete message function not implemented.")
+            }}
+          />
         </motion.div>
       )),
-    [messages, onAuthorClick]
+    [messages]
   )
 
   return (
@@ -217,4 +115,154 @@ const ChatMessageTemplate: FC<{title: string; subtitle: string}> = ({
       <Typography>{subtitle}</Typography>
     </div>
   )
+}
+
+type AnyMessageHandlerProps = {
+  isAtTheEnd: boolean
+  anyMessage: AnyMessage
+  onAuthorClick: (userId: string) => void
+  onClickImage: (imgUrl: string) => void
+  onResendMessage: () => void
+  onReplyMessage: () => void
+  onDeleteMessage: () => void
+}
+
+const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
+  isAtTheEnd,
+  anyMessage,
+  onAuthorClick,
+  onResendMessage,
+  onDeleteMessage,
+  onReplyMessage,
+  onClickImage,
+}) => {
+  switch (anyMessage.kind) {
+    case MessageKind.Text: {
+      return (
+        <TextMessage
+          key={anyMessage.data.messageId}
+          {...anyMessage.data}
+          onAuthorClick={onAuthorClick}
+          contextMenuItems={buildMessageMenuItems({
+            isMessageError: anyMessage.data.isDeleted === true,
+            canDeleteMessage: anyMessage.data.canDeleteMessage === true,
+            onReplyMessage,
+            onResendMessage,
+            onDeleteMessage,
+          })}
+        />
+      )
+    }
+    case MessageKind.Image: {
+      return (
+        <ImageMessage
+          key={anyMessage.data.messageId}
+          {...anyMessage.data}
+          onClickImage={onClickImage}
+          onAuthorClick={onAuthorClick}
+          contextMenuItems={buildMessageMenuItems({
+            canDeleteMessage: anyMessage.data.canDeleteMessage === true,
+            isMessageError: false,
+            isSaveable: true,
+            onReplyMessage,
+            onResendMessage,
+            onSaveContent() {
+              open(anyMessage.data.imageUrl)
+            },
+            onDeleteMessage,
+          })}
+        />
+      )
+    }
+    case MessageKind.Audio: {
+      return (
+        <AudioMessage
+          onAuthorClick={onAuthorClick}
+          {...anyMessage.data}
+          contextMenuItems={[]}
+        />
+      )
+    }
+    case MessageKind.Event: {
+      return (
+        <EventMessage
+          key={anyMessage.data.eventId}
+          {...anyMessage.data}
+          onFindUser={() => {
+            // TODO: Handle find user here.
+          }}
+          onShowMember={() => {
+            // TODO: Handle show member here.
+          }}
+        />
+      )
+    }
+    case MessageKind.File: {
+      return (
+        <FileMessage
+          key={anyMessage.data.messageId}
+          {...anyMessage.data}
+          onAuthorClick={onAuthorClick}
+          contextMenuItems={buildMessageMenuItems({
+            isMessageError: anyMessage.data.isDeleted === true,
+            canDeleteMessage: anyMessage.data.canDeleteMessage === true,
+            onReplyMessage,
+            onResendMessage,
+            onDeleteMessage,
+          })}
+        />
+      )
+    }
+    case MessageKind.Reply: {
+      return (
+        <ReplyMessage
+          key={anyMessage.data.messageId}
+          {...anyMessage.data}
+          onAuthorClick={onAuthorClick}
+          onQuoteMessageClick={quoteMessageId => {
+            // TODO Handle `onQuoteMessageClick` for `ReplyMessage`
+          }}
+          contextMenuItems={buildMessageMenuItems({
+            isMessageError: anyMessage.data.isDeleted === true,
+            canDeleteMessage: anyMessage.data.canDeleteMessage === true,
+            onReplyMessage,
+            onResendMessage,
+            onDeleteMessage,
+          })}
+        />
+      )
+    }
+    case MessageKind.Unread: {
+      return (
+        isAtTheEnd && (
+          <UnreadIndicator key="unread-indicator" {...anyMessage.data} />
+        )
+      )
+    }
+    case MessageKind.EventGroup: {
+      return (
+        <EventGroupMessage
+          eventGroupMainBody={anyMessage.data.eventGroupMainBody}
+          eventMessages={anyMessage.data.eventMessages}
+          onShowMember={function (): void {
+            throw new Error("Show member not implemented.")
+          }}
+          onFindUser={function (): void {
+            throw new Error("Find user not implemented.")
+          }}
+        />
+      )
+    }
+    case MessageKind.Video: {
+      return (
+        <VideoMessage
+          key={anyMessage.data.messageId}
+          {...anyMessage.data}
+          onAuthorClick={onAuthorClick}
+          url={anyMessage.data.url}
+          contextMenuItems={[]}
+        />
+      )
+    }
+  }
 }

@@ -42,6 +42,11 @@ import {
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
 import {parseReplyMessageFromBody, validateReplyMessage} from "./parser"
+import {
+  type EventGroupMessageData,
+  EventShortenerType,
+} from "@/components/EventGroupMessage"
+import {type EventMessageData} from "@/components/EventMessage"
 
 export enum ImageSizes {
   Server = 47,
@@ -232,7 +237,130 @@ export const handleRoomEvents = async (
     void client.sendReadReceipt(event)
   }
 
-  return allMessageProperties
+  return groupEventMessage(allMessageProperties)
+}
+
+const configRoomPattern = new Set<string>([
+  EventType.RoomMember,
+  EventType.RoomTopic,
+  EventType.RoomAvatar,
+  EventType.RoomName,
+  EventType.RoomEncryption,
+  EventType.RoomCanonicalAlias,
+  EventType.RoomGuestAccess,
+  EventType.RoomJoinRules,
+  EventType.RoomHistoryVisibility,
+  EventType.RoomCreate,
+])
+
+const processPatterns = (
+  lastMessage: EventMessageData,
+  currentMessage: EventMessageData
+): AnyMessage | null => {
+  if (lastMessage.sender.userId !== currentMessage.sender.userId) {
+    return null
+  }
+
+  if (
+    configRoomPattern.has(lastMessage.type) &&
+    configRoomPattern.has(currentMessage.type)
+  ) {
+    return {
+      kind: MessageKind.EventGroup,
+      data: {
+        eventMessages: [lastMessage, currentMessage],
+        eventGroupMainBody: {
+          sender: lastMessage.sender,
+          shortenerType: EventShortenerType.ConfigureRoom,
+        },
+      },
+    }
+  }
+
+  return {
+    kind: MessageKind.EventGroup,
+    data: {
+      eventMessages: [lastMessage, currentMessage],
+      eventGroupMainBody: {
+        sender: lastMessage.sender,
+        shortenerType: EventShortenerType.EqualInfo,
+      },
+    },
+  }
+}
+
+const updateEventGroup = (
+  eventGroup: EventGroupMessageData,
+  newEvent: EventMessageData
+): AnyMessage | null => {
+  if (eventGroup.eventGroupMainBody.sender.userId !== newEvent.sender.userId) {
+    return null
+  }
+
+  if (
+    eventGroup.eventGroupMainBody.shortenerType ===
+      EventShortenerType.ConfigureRoom &&
+    !configRoomPattern.has(newEvent.type)
+  ) {
+    return null
+  }
+
+  return {
+    kind: MessageKind.EventGroup,
+    data: {
+      eventMessages: [...eventGroup.eventMessages, newEvent],
+      eventGroupMainBody: eventGroup.eventGroupMainBody,
+    },
+  }
+}
+
+const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
+  const result: AnyMessage[] = []
+
+  for (const message of anyMessages) {
+    const lastMessage = result.at(-1)
+
+    if (lastMessage === undefined) {
+      result.push(message)
+
+      continue
+    }
+
+    const isLastMessageEvent = lastMessage.kind === MessageKind.Event
+    const isMessageEvent = message.kind === MessageKind.Event
+
+    if (isLastMessageEvent && isMessageEvent) {
+      const newEventGroup = processPatterns(lastMessage.data, message.data)
+
+      if (newEventGroup === null) {
+        result.push(message)
+
+        continue
+      }
+
+      result[result.length - 1] = newEventGroup
+    } else if (lastMessage.kind === MessageKind.EventGroup && isMessageEvent) {
+      const eventGroupUpdated = updateEventGroup(lastMessage.data, message.data)
+
+      if (eventGroupUpdated === null) {
+        result.push(message)
+
+        continue
+      }
+
+      result[result.length - 1] = {
+        kind: MessageKind.EventGroup,
+        data: {
+          eventMessages: [...lastMessage.data.eventMessages, message.data],
+          eventGroupMainBody: lastMessage.data.eventGroupMainBody,
+        },
+      }
+    } else {
+      result.push(message)
+    }
+  }
+
+  return result
 }
 
 export const handleRoomMessageEvent = async (

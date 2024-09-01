@@ -130,6 +130,10 @@ export function normalizeName(displayName: string): string {
     .join("")
 }
 
+export function strCapitalize(str: string): string {
+  return str.charAt(0).toUpperCase().concat(str.slice(1))
+}
+
 // #region Matrix SDK utils
 export function getImageUrl(
   url: string | null | undefined,
