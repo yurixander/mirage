@@ -346,7 +346,7 @@ export async function sendVideoMessageFromFile(
   }
 }
 
-export async function senFileMessageFromFile(
+export async function sendFileMessageFromFile(
   file: File,
   client: MatrixClient | null,
   destinationRoom: string | null,
@@ -375,6 +375,46 @@ export async function senFileMessageFromFile(
           size: file.size,
         },
         msgtype: MsgType.File,
+        url: uploadResponse.content_uri,
+      }
+
+      void client.sendEvent(destinationRoom, EventType.RoomMessage, content)
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function sendAudioMessageFromFile(
+  file: File,
+  client: MatrixClient | null,
+  destinationRoom: string | null,
+  duration: number,
+  onProgressHandler: (progressUpload: number) => void
+): Promise<void> {
+  if (client === null || destinationRoom === null) {
+    return
+  }
+
+  try {
+    const uploadResponse = await client.uploadContent(file, {
+      name: file.name,
+      includeFilename: false,
+      type: file.type,
+      progressHandler(progress) {
+        onProgressHandler(Math.round(progress.loaded / progress.total) * 100)
+      },
+    })
+
+    if (uploadResponse.content_uri !== undefined) {
+      const content = {
+        body: file.name,
+        info: {
+          duration,
+          mimetype: file.type,
+          size: file.size,
+        },
+        msgtype: MsgType.Audio,
         url: uploadResponse.content_uri,
       }
 
