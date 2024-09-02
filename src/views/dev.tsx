@@ -1,41 +1,35 @@
 import {Button} from "@/components/ui/button"
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import DirectChatsPopup from "@/containers/NavigationSection/DirectChatsPopup"
+
 import {type FC} from "react"
+import {IoNotifications} from "react-icons/io5"
 
 const DevelopmentPreview: FC = () => {
   return (
     <>
-      <AlertDialog>
-        <AlertDialogTrigger>
-          <Button>Button</Button>
-        </AlertDialogTrigger>
+      <div className="flex size-full items-end justify-center">
+        <HoverCard openDelay={0} closeDelay={0}>
+          <HoverCardTrigger>
+            <Button
+              className="text-slate-400 hover:text-slate-800"
+              variant="ghost"
+              size="icon">
+              <IoNotifications size={20} />
+            </Button>
+          </HoverCardTrigger>
 
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Continue</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+          <HoverCardContent asChild side="right">
+            <div className="w-max">
+              <DirectChatsPopup />
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      </div>
     </>
   )
 }
