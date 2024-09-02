@@ -106,7 +106,7 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
         <Input placeholder="Search any emoji" onValueChange={setEmojiQuery} />
       </div>
 
-      <div className="scrollbar-hide size-full overflow-y-scroll">
+      <div className="size-full overflow-y-scroll scrollbar-hide">
         {emojiItems.map(emoji => (
           <div
             key={emoji.id}

@@ -26,7 +26,7 @@ const UserCard: FC<UserCardProps> = ({
 }) => {
   return (
     <div className="z-50 flex size-full justify-end px-1">
-      <div className="shadow-userCard absolute flex min-h-80 w-64 flex-col overflow-hidden rounded-xl border border-neutral-300 bg-neutral-50">
+      <div className="absolute flex min-h-80 w-64 flex-col overflow-hidden rounded-xl border border-neutral-300 bg-neutral-50 shadow-userCard">
         <div className="rounded-xl border-b border-solid border-b-neutral-300 bg-white p-4">
           <UserProfile {...userProfileProps} />
         </div>
@@ -57,7 +57,7 @@ const UserCard: FC<UserCardProps> = ({
           </div>
         </div>
 
-        <div className="bg-cardActionsBg flex flex-row justify-end gap-1 border-t border-solid border-neutral-300 p-3">
+        <div className="flex flex-row justify-end gap-1 border-t border-solid border-neutral-300 bg-cardActionsBg p-3">
           <Button
             label="Cancel"
             variant={ButtonVariant.TextLink}

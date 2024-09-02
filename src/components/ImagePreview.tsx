@@ -17,7 +17,7 @@ const ImagePreview: FC<ImagePreviewProps> = ({
   onSendImage,
 }) => {
   return (
-    <div className="size-messageMaxWidth flex flex-col rounded border bg-slate-50 shadow-xl">
+    <div className="flex size-messageMaxWidth flex-col rounded border bg-slate-50 shadow-xl">
       <div className="flex h-20 items-center border-b bg-slate-100 p-2">
         <Typography variant={TypographyVariant.Heading} className="w-full">
           Upload Image

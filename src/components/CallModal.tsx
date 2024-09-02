@@ -37,7 +37,7 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
   }
 
   return (
-    <div className="animate-enter flex w-80 flex-col rounded bg-white shadow-lg">
+    <div className="flex w-80 animate-enter flex-col rounded bg-white shadow-lg">
       <div className="flex items-center justify-center gap-2 p-3 px-5 shadow">
         <AvatarImage
           isRounded

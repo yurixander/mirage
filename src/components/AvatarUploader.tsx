@@ -99,7 +99,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
         )}>
         {isImageUploading ? (
           <>
-            <div className="bg-modalOverlay absolute size-full" />
+            <div className="absolute size-full bg-modalOverlay" />
 
             <img src={avatarImageUrl} alt="User profile avatar" />
 

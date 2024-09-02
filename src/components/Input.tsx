@@ -168,7 +168,7 @@ const Input: FC<InputProps> = ({
               "text-constraintSize flex",
               constraint.pattern.test(value) ? "text-green-500" : "text-red-500"
             )}>
-            <div className="before:shadow-constraint before:mr-[1ch] before:inline-block before:size-[1.2ch] before:rounded-[50%] before:bg-current before:shadow-current" />
+            <div className="before:mr-[1ch] before:inline-block before:size-[1.2ch] before:rounded-[50%] before:bg-current before:shadow-constraint before:shadow-current" />
             {constraint.message}
           </span>
         ))}

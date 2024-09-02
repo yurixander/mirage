@@ -40,7 +40,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <div className="w-messageMaxWidth flex items-end">
+      <div className="flex w-messageMaxWidth items-end">
         <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200" />
         <button
           onClick={() => {

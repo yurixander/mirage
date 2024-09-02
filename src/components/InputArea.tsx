@@ -47,7 +47,7 @@ const InputArea: FC<InputAreaProps> = ({
         className
       )}>
       <textarea
-        className="scrollbar-hide flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 focus-visible:outline-none focus-visible:outline-0"
+        className="flex max-h-24 w-full resize-none overflow-y-auto border-none bg-transparent p-3 scrollbar-hide focus-visible:outline-none focus-visible:outline-0"
         onKeyDown={handleKeyDown}
         rows={initiallyRows}
         ref={textareaReference}

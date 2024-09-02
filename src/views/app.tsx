@@ -43,7 +43,7 @@ const AppView: FC = () => {
   return (
     <>
       {connectionError && (
-        <div className="bg-modalOverlay fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center">
+        <div className="fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay">
           <motion.div initial={{scale: 0.5}} animate={{scale: 1}}>
             <Modal
               title="Connection Error"
