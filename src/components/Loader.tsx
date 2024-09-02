@@ -14,7 +14,7 @@ const Loader: FC<LoaderProps> = ({text, className}) => {
         "flex size-full flex-col items-center justify-center gap-2",
         className
       )}>
-      <div className="size-8 animate-rotation rounded-full border-4 border-white border-t-slate-500" />
+      <div className="animate-rotation size-8 rounded-full border-4 border-white border-t-slate-500" />
 
       <Typography>{text}</Typography>
     </div>

@@ -122,7 +122,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
                   }}
                 />
               ) : (
-                <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
+                <div className="animate-rotation size-6 rounded-full border-2 border-white border-t-gray-300" />
               )}
 
               <div ref={waveformRef} className="max-h-12 w-full" />

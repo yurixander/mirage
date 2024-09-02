@@ -21,7 +21,7 @@ const Spaces: FC<SpacesNavProps> = ({
   spaceSelected,
 }) => {
   return (
-    <div className="flex flex-col gap-3 overflow-hidden overflow-y-scroll scrollbar-hide">
+    <div className="scrollbar-hide flex flex-col gap-3 overflow-hidden overflow-y-scroll">
       <Space
         isSelected={spaceSelected === undefined}
         spaceId="home"

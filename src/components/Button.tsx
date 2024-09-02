@@ -67,10 +67,10 @@ const Button: FC<ButtonProps> = ({
       {isLoading ? (
         <div
           className={twMerge(
-            "size-4 animate-rotation rounded-full border-2",
+            "animate-rotation size-4 rounded-full border-2",
             variant === ButtonVariant.Secondary
               ? "border-slate-500 border-t-gray-300"
-              : "border-white border-t-borderLoading"
+              : "border-t-borderLoading border-white"
           )}
         />
       ) : (

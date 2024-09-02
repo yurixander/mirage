@@ -62,7 +62,7 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
     isVisible &&
     createPortal(
       <div className="absolute z-50 flex size-full w-screen flex-col items-start justify-end">
-        <div className="m-2 flex size-full max-h-[80%] max-w-sm animate-fade items-center">
+        <div className="animate-fade m-2 flex size-full max-h-[80%] max-w-sm items-center">
           <motion.div
             initial={{scale: 0.5, opacity: 0.5}}
             animate={{scale: 1, opacity: 1}}
@@ -94,7 +94,7 @@ const NotificationBoxPopup: FC<NotificationBoxPopupProps> = ({
                 {isLoading ? (
                   <Loader text="Loading notifications" />
                 ) : (
-                  <div className="flex flex-col gap-1 overflow-y-scroll scrollbar-hide">
+                  <div className="scrollbar-hide flex flex-col gap-1 overflow-y-scroll">
                     {notificationsComponents}
                   </div>
                 )}

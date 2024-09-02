@@ -33,11 +33,11 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
           <div className="relative size-9 overflow-hidden rounded-lg bg-neutral-300" />
 
           <div className="mr-auto inline-flex flex-col">
-            <div className="overflow-hidden rounded-xl bg-neutral-300 text-profileGhost">
+            <div className="text-profileGhost overflow-hidden rounded-xl bg-neutral-300">
               Emerald branch
             </div>
 
-            <div className="mt-1 max-h-3 w-min overflow-hidden rounded-xl bg-neutral-300 text-xs text-profileGhost">
+            <div className="text-profileGhost mt-1 max-h-3 w-min overflow-hidden rounded-xl bg-neutral-300 text-xs">
               @emerald
             </div>
           </div>

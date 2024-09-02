@@ -13,7 +13,7 @@ const StatusMessage: FC<Properties> = ({className, text}) => {
   return (
     <div
       className={twMerge(
-        "rounded-xl border border-statusMessageColor bg-statusMessageBg p-2 text-center text-red-500",
+        "border-statusMessageColor bg-statusMessageBg rounded-xl border p-2 text-center text-red-500",
         className
       )}>
       {text}

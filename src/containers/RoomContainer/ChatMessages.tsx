@@ -72,7 +72,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     <>
       {imagePrevUrl !== undefined &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-modalOverlay">
+          <div className="bg-modalOverlay fixed inset-0 z-50 flex flex-col items-center justify-center">
             <ImageModal
               imageUrl={imagePrevUrl}
               onClose={() => {

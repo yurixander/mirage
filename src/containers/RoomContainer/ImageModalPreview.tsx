@@ -18,7 +18,7 @@ const ImageModalPreview: FC<ImageModalPreviewProps> = ({
   return (
     <>
       {createPortal(
-        <div className="fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay">
+        <div className="bg-modalOverlay fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center">
           <ImagePreview
             imageName={imageName}
             imageUrl={imageUrl}
