@@ -1,4 +1,4 @@
-import useErrorTooltip from "@/hooks/util/useErrorTooltip"
+import useTooltip from "@/hooks/util/useTooltip"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "./Typography"
@@ -36,7 +36,7 @@ const Button: FC<ButtonProps> = ({
   variant = ButtonVariant.Secondary,
   className,
 }) => {
-  const {renderRef, showErrorTooltip} = useErrorTooltip<HTMLButtonElement>()
+  const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
 
   return (
     <button
@@ -61,7 +61,7 @@ const Button: FC<ButtonProps> = ({
             return
           }
 
-          showErrorTooltip(error.message)
+          showTooltip(error.message, true)
         }
       }}>
       {isLoading ? (

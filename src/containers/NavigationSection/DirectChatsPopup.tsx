@@ -6,7 +6,7 @@ import UserProfile from "@/components/UserProfile"
 import useInvitationLink from "@/hooks/matrix/useInvitationLink"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useUsersSearch from "@/hooks/matrix/useUserSearch"
-import useErrorTooltip from "@/hooks/util/useErrorTooltip"
+import useTooltip from "@/hooks/util/useTooltip"
 import {getDirectRoomsIds, getPartnerUserIdFromRoomDirect} from "@/utils/rooms"
 import {stringToColor, getUsernameByUserId, normalizeName} from "@/utils/util"
 import {type FC, useEffect, useState} from "react"
@@ -179,7 +179,7 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
   onClick,
   className,
 }) => {
-  const {showErrorTooltip, renderRef} = useErrorTooltip<HTMLButtonElement>()
+  const {showTooltip, renderRef} = useTooltip<HTMLButtonElement>()
 
   return (
     <button
@@ -193,8 +193,9 @@ const DirectChatRecent: FC<DirectChatRecentProps> = ({
             return
           }
 
-          showErrorTooltip(
-            `Failed to open chat room by reason:  ${error.message}`
+          showTooltip(
+            `Failed to open chat room by reason:  ${error.message}`,
+            true
           )
         }
       }}

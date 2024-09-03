@@ -8,11 +8,15 @@ import {
 import {IoCopy, IoNotifications, IoSearch} from "react-icons/io5"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import Input from "@/components/Input"
-import useErrorTooltip from "@/hooks/util/useErrorTooltip"
 import {twMerge} from "tailwind-merge"
 import UserProfile from "@/components/UserProfile"
-import {stringToColor, getUsernameByUserId} from "@/utils/util"
+import {
+  stringToColor,
+  getUsernameByUserId,
+  validateMatrixUser,
+} from "@/utils/util"
 import Loader from "@/components/Loader"
+import useTooltip from "@/hooks/util/useTooltip"
 
 export type DMUser = {
   displayName: string
@@ -43,6 +47,10 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
   dmRoomClick,
   searchResult,
 }) => {
+  const invitationLink = validateMatrixUser(userId)
+    ? `https://matrix.to/#/${userId}`
+    : null
+
   return (
     <HoverCard openDelay={50} closeDelay={50}>
       <HoverCardTrigger>
@@ -134,26 +142,53 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                   link below.
                 </Typography>
 
-                <div className="flex h-10 items-center justify-between rounded border border-neutral-300 bg-neutral-50 px-2">
-                  <Typography
-                    variant={TypographyVariant.BodyMedium}
-                    className="text-blue-600">
-                    https://matrix.to/#/{userId}
-                  </Typography>
-
-                  <Button
-                    className="text-slate-300 hover:bg-transparent hover:text-slate-600"
-                    variant="ghost"
-                    size="icon">
-                    <IoCopy />
-                  </Button>
-                </div>
+                <InvitationLinkBar invitationLink={invitationLink} />
               </div>
             </>
           )}
         </div>
       </HoverCardContent>
     </HoverCard>
+  )
+}
+
+const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
+  invitationLink,
+}) => {
+  const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
+
+  return (
+    <div className="flex h-10 items-center justify-between rounded border border-neutral-300 bg-neutral-50 px-2">
+      <Typography
+        variant={TypographyVariant.BodyMedium}
+        className="text-blue-600">
+        {invitationLink}
+      </Typography>
+
+      <Button
+        ref={renderRef}
+        className="text-slate-300 hover:bg-transparent hover:text-slate-600"
+        variant="ghost"
+        size="icon"
+        onClick={() => {
+          if (invitationLink === null) {
+            showTooltip("The invitation link is not correct.", true)
+
+            return
+          }
+
+          void navigator.clipboard
+            .writeText(invitationLink)
+            .then(() => {
+              showTooltip("Link copied successfully")
+            })
+            .catch(error => {
+              showTooltip(`Could not copy link by reason: ${error}`, true)
+            })
+        }}>
+        <IoCopy />
+      </Button>
+    </div>
   )
 }
 
@@ -172,7 +207,7 @@ const DMDisplay: FC<DMDisplayProps> = ({
   onClick,
   className,
 }) => {
-  const {showErrorTooltip, renderRef} = useErrorTooltip<HTMLButtonElement>()
+  const {showTooltip, renderRef} = useTooltip<HTMLButtonElement>()
 
   return (
     <button
@@ -186,8 +221,9 @@ const DMDisplay: FC<DMDisplayProps> = ({
             return
           }
 
-          showErrorTooltip(
-            `Failed to open chat room by reason:  ${error.message}`
+          showTooltip(
+            `Failed to open chat room by reason:  ${error.message}`,
+            true
           )
         }
       }}

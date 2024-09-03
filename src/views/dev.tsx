@@ -15,7 +15,7 @@ const searchResult: DMUser[] = [
 const DevelopmentPreview: FC = () => {
   return (
     <>
-      <div className="flex size-full items-end justify-center">
+      <div className="flex size-full items-center justify-center">
         <DMTrayPopup
           isLoading={false}
           dmRooms={[
@@ -32,7 +32,7 @@ const DevelopmentPreview: FC = () => {
           onResultUserClick={function (userId: string): void {
             throw new Error("Function not implemented.")
           }}
-          userId={"crissxxl"}
+          userId={"@thecriss:matrix.org"}
         />
       </div>
     </>
