@@ -1,26 +1,9 @@
 import IconButton from "@/components/IconButton"
 import {useState, type FC} from "react"
-import {
-  IoCall,
-  IoExit,
-  IoNotifications,
-  IoPaperPlane,
-  IoSearch,
-} from "react-icons/io5"
+import {IoCall, IoExit, IoNotifications, IoSearch} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import NotificationBoxPopup from "./modals/NotificationBoxPopup"
 import useNotifications from "./hooks/useNotifications"
-import {
-  flip,
-  offset,
-  safePolygon,
-  shift,
-  useFloating,
-  useHover,
-  useInteractions,
-} from "@floating-ui/react"
-import {motion} from "framer-motion"
-import DirectChatsPopup from "./DirectChatsPopup"
 import DMTrayPopup from "./DMTrayPopup"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useDmTray from "./hooks/useDmTray"
@@ -65,10 +48,10 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
           setQuery={setQuery}
           clearResult={clearResults}
           dmRoomClick={function (roomId: string): void {
-            throw new Error("Function not implemented.")
+            throw new Error("DMRoomClick function not implemented.")
           }}
           onResultUserClick={function (userId: string): void {
-            throw new Error("Function not implemented.")
+            throw new Error("onResultUserClick function not implemented.")
           }}
         />
 
@@ -104,53 +87,6 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
           onClick={() => {}}
         />
       </div>
-    </>
-  )
-}
-
-type DirectMessagesButtonProps = {
-  isPopupVisible: boolean
-  onPopupVisibilityChange: (isPopupVisible: boolean) => void
-  onClose: () => void
-  className?: string
-}
-
-export const DirectMessagesButton: FC<DirectMessagesButtonProps> = ({
-  onPopupVisibilityChange,
-  isPopupVisible,
-  onClose,
-  className,
-}) => {
-  const {refs, floatingStyles, context} = useFloating({
-    open: isPopupVisible,
-    onOpenChange: onPopupVisibilityChange,
-    placement: "right",
-    middleware: [flip(), shift(), offset({mainAxis: 24, crossAxis: -4})],
-  })
-
-  const hover = useHover(context, {handleClose: safePolygon()})
-
-  const {getReferenceProps, getFloatingProps} = useInteractions([hover])
-
-  return (
-    <>
-      <motion.button
-        className={twMerge("w-max", className)}
-        aria-label="Direct chats"
-        ref={refs.setReference}
-        {...getReferenceProps()}>
-        <IoPaperPlane className="text-slate-400" size={20} />
-      </motion.button>
-
-      {isPopupVisible && (
-        <div
-          className="z-50"
-          {...getFloatingProps()}
-          ref={refs.setFloating}
-          style={floatingStyles}>
-          <DirectChatsPopup />
-        </div>
-      )}
     </>
   )
 }
