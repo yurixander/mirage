@@ -3,10 +3,9 @@ import {type FC} from "react"
 import {IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./AvatarImage"
-import Button from "./Button"
-import IconButton from "./IconButton"
 import Typography, {TypographyVariant} from "./Typography"
 import {notificationsBody, type NotificationType} from "@/utils/notifications"
+import {Button} from "./ui/button"
 
 export type NotificationProps = {
   type: NotificationType
@@ -44,7 +43,7 @@ const Notification: FC<NotificationProps> = ({
   }
 
   return (
-    <div className={twMerge("flex gap-2 p-2", !isRead && "bg-slate-100")}>
+    <div className={twMerge("flex gap-2 p-3", !isRead && "bg-slate-50")}>
       <AvatarImage
         isRounded
         displayName={sender}
@@ -66,28 +65,29 @@ const Notification: FC<NotificationProps> = ({
             {formatTime(notificationTime)}
           </Typography>
 
-          <div className="ml-auto flex">
+          <div className="ml-auto flex items-center gap-1">
             {!isRead && (
-              <IconButton
-                className="size-min"
-                size={14}
-                tooltip="Remove notification"
-                Icon={IoCheckbox}
+              <Button
+                className="size-max text-neutral-300 hover:bg-transparent"
+                aria-label="Remove notification"
+                variant="ghost"
+                size="icon"
                 onClick={() => {
                   markAsRead(notificationId)
-                }}
-              />
+                }}>
+                <IoCheckbox size={14} />
+              </Button>
             )}
 
-            <IconButton
-              className="size-min"
-              size={14}
-              tooltip="Remove notification"
-              Icon={IoTrash}
+            <Button
+              className="size-max text-neutral-300 hover:bg-transparent"
+              variant="ghost"
+              size="icon"
               onClick={() => {
                 onDelete(notificationId)
-              }}
-            />
+              }}>
+              <IoTrash size={14} />
+            </Button>
           </div>
         </div>
 
@@ -98,11 +98,12 @@ const Notification: FC<NotificationProps> = ({
 
         {action !== undefined && (
           <Button
-            isSmall
-            onClick={action}
-            label="Go to ⟶"
-            className="mt-1 max-w-max"
-          />
+            variant="outline"
+            className="mt-2 w-max"
+            size="sm"
+            onClick={action}>
+            Go to ⟶
+          </Button>
         )}
       </div>
     </div>

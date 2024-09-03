@@ -1,22 +1,15 @@
 import IconButton from "@/components/IconButton"
-import {useState, type FC} from "react"
-import {IoCall, IoExit, IoNotifications, IoSearch} from "react-icons/io5"
+import {type FC} from "react"
+import {IoCall, IoExit, IoSearch} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import NotificationBoxPopup from "./modals/NotificationBoxPopup"
 import useNotifications from "./hooks/useNotifications"
 import DMTrayPopup from "./DMTrayPopup"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useDmTray from "./hooks/useDmTray"
-
-enum SidebarPopups {
-  None,
-  Notifications,
-  DirectMessages,
-}
+import NotificationsTray from "./NotificationsTray"
 
 const SidebarActions: FC<{className?: string}> = ({className}) => {
   const client = useMatrixClient()
-  const [activePopup, setActivePopup] = useState(SidebarPopups.None)
 
   const {dmRooms, results, setQuery, userId, isDMLoading, clearResults} =
     useDmTray(client)
@@ -26,15 +19,6 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
 
   return (
     <>
-      <NotificationBoxPopup
-        isVisible={activePopup === SidebarPopups.Notifications}
-        isLoading={isLoading}
-        notifications={notifications}
-        onClose={() => {
-          setActivePopup(SidebarPopups.None)
-        }}
-      />
-
       <div
         className={twMerge(
           "flex flex-col items-center gap-2.5 pb-2",
@@ -55,15 +39,10 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
           }}
         />
 
-        <IconButton
-          tooltip="Notifications"
-          iconClassName="text-slate-400"
-          Icon={IoNotifications}
-          isDotVisible={containsUnreadNotifications}
-          onClick={() => {}}
-          onMouseEnter={() => {
-            setActivePopup(SidebarPopups.Notifications)
-          }}
+        <NotificationsTray
+          isLoading={isLoading}
+          containsUnreadNotifications={containsUnreadNotifications}
+          notifications={notifications}
         />
 
         <IconButton

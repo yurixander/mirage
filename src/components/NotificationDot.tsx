@@ -12,7 +12,7 @@ const NotificationDot: FC<NotificationDotProps> = ({children, isVisible}) => {
       <div>{children}</div>
 
       {isVisible && (
-        <div className="absolute right-0 top-0 size-[6px] rounded-lg border border-neutral-50 bg-red-400" />
+        <div className="absolute right-0 top-0 size-2.5 rounded-lg border border-neutral-50 bg-red-400" />
       )}
     </div>
   )

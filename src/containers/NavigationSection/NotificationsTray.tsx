@@ -1,5 +1,6 @@
 import Loader from "@/components/Loader"
 import Notification, {type NotificationProps} from "@/components/Notification"
+import NotificationDot from "@/components/NotificationDot"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {Button} from "@/components/ui/button"
 import {
@@ -23,12 +24,14 @@ const sortNotificationsByReadState = (
 
 export type NotificationsTrayProps = {
   isLoading: boolean
+  containsUnreadNotifications: boolean
   notifications: NotificationProps[]
 }
 
 const NotificationsTray: FC<NotificationsTrayProps> = ({
   isLoading,
   notifications,
+  containsUnreadNotifications,
 }) => {
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
@@ -50,12 +53,14 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
           className="text-slate-400 hover:text-slate-800"
           variant="ghost"
           size="icon">
-          <IoNotifications size={20} />
+          <NotificationDot isVisible={containsUnreadNotifications}>
+            <IoNotifications size={20} />
+          </NotificationDot>
         </Button>
       </HoverCardTrigger>
 
       <HoverCardContent asChild side="right">
-        <div className="max-h-96 w-full max-w-md overflow-auto">
+        <div className="m-2 max-h-96 w-[448px] max-w-md overflow-auto">
           {isLoading ? (
             <Loader className="p-4" text="Loading Notifications" />
           ) : notifications.length === 0 ? (
