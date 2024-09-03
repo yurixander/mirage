@@ -30,7 +30,7 @@ export type DMRoomData = {
   roomId: string
 }
 
-type DMTrayPopupProps = {
+export type DMTrayPopupProps = {
   isLoading: boolean
   userId: string
   dmRooms: DMRoomData[]

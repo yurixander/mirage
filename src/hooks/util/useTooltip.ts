@@ -5,6 +5,7 @@ import tippy, {type Instance, type Props} from "tippy.js"
 type UseTooltipReturnType<T> = {
   renderRef: React.RefObject<T>
   showTooltip: (msg: string, isError?: boolean) => void
+  closeTooltip: () => void
 }
 
 const TOOLTIP_ERROR_PROPS: Partial<Props> = {
@@ -23,6 +24,16 @@ const useTooltip = <T>(
   const [tippyInstance, setTippyInstance] = useState<Instance<Props> | null>(
     null
   )
+
+  useEffect(() => {
+    return () => {
+      if (tippyInstance === null) {
+        return
+      }
+
+      tippyInstance.hide()
+    }
+  }, [tippyInstance])
 
   useEffect(() => {
     const render = renderRef.current
@@ -53,12 +64,20 @@ const useTooltip = <T>(
     tippyInstance.setContent(msg)
     tippyInstance.show()
 
-    void delay(isError ? 6000 : 3000).then(() => {
+    void delay(3000).then(() => {
       tippyInstance.hide()
     })
   }
 
-  return {renderRef, showTooltip}
+  const closeTooltip = (): void => {
+    if (tippyInstance === null) {
+      return
+    }
+
+    tippyInstance.hide()
+  }
+
+  return {renderRef, showTooltip, closeTooltip}
 }
 
 export default useTooltip
