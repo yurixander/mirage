@@ -41,6 +41,8 @@ export const Default: Story = {
     userId: currentUserId,
     searchResult: null,
     isLoading: false,
+    setQuery(query) {},
+    clearResult() {},
     onResultUserClick(userId) {
       throw new Error(resultUserClickErrorMsg)
     },
@@ -57,6 +59,8 @@ export const LoadingState: Story = {
     userId: currentUserId,
     searchResult: null,
     isLoading: true,
+    setQuery(query) {},
+    clearResult() {},
     onResultUserClick(userId) {
       throw new Error(resultUserClickErrorMsg)
     },
@@ -73,6 +77,8 @@ export const ResultsState: Story = {
     searchResult,
     userId: currentUserId,
     isLoading: false,
+    setQuery(query) {},
+    clearResult() {},
     onResultUserClick(userId) {
       throw new Error(resultUserClickErrorMsg)
     },

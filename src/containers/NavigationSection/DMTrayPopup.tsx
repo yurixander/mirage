@@ -5,7 +5,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import {IoCopy, IoNotifications, IoSearch} from "react-icons/io5"
+import {IoCopy, IoPaperPlane, IoSearch} from "react-icons/io5"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import Input from "@/components/Input"
 import {twMerge} from "tailwind-merge"
@@ -32,11 +32,13 @@ export type DMRoomData = {
 
 export type DMTrayPopupProps = {
   isLoading: boolean
-  userId: string
+  userId?: string
   dmRooms: DMRoomData[]
   searchResult: DMUser[] | null
   dmRoomClick: (roomId: string) => void
   onResultUserClick: (userId: string) => void
+  setQuery: (query: string) => void
+  clearResult: () => void
 }
 
 const DMTrayPopup: FC<DMTrayPopupProps> = ({
@@ -46,19 +48,29 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
   onResultUserClick,
   dmRoomClick,
   searchResult,
+  setQuery,
+  clearResult,
 }) => {
-  const invitationLink = validateMatrixUser(userId)
-    ? `https://matrix.to/#/${userId}`
-    : null
+  const invitationLink =
+    userId !== undefined && validateMatrixUser(userId)
+      ? `https://matrix.to/#/${userId}`
+      : null
 
   return (
-    <HoverCard openDelay={50} closeDelay={50}>
+    <HoverCard
+      openDelay={50}
+      closeDelay={50}
+      onOpenChange={isOpen => {
+        if (!isOpen) {
+          clearResult()
+        }
+      }}>
       <HoverCardTrigger>
         <Button
           className="text-slate-400 hover:text-slate-800"
           variant="ghost"
           size="icon">
-          <IoNotifications size={24} />
+          <IoPaperPlane size={20} />
         </Button>
       </HoverCardTrigger>
 
@@ -79,7 +91,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                 </Typography>
 
                 <Input
-                  onValueChange={() => {}}
+                  onValueChange={setQuery}
                   Icon={IoSearch}
                   placeholder="Enter name or username"
                 />
@@ -161,12 +173,13 @@ const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
     <div className="flex h-10 items-center justify-between rounded border border-neutral-300 bg-neutral-50 px-2">
       <Typography
         variant={TypographyVariant.BodyMedium}
-        className="text-blue-600">
-        {invitationLink}
+        className="select-text text-blue-600">
+        {invitationLink ?? "User invalid"}
       </Typography>
 
       <Button
         ref={renderRef}
+        aria-label="Copy invitation link"
         className="text-slate-300 hover:bg-transparent hover:text-slate-600"
         variant="ghost"
         size="icon"

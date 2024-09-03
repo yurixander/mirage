@@ -21,6 +21,9 @@ import {
 } from "@floating-ui/react"
 import {motion} from "framer-motion"
 import DirectChatsPopup from "./DirectChatsPopup"
+import DMTrayPopup from "./DMTrayPopup"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import useDmTray from "./hooks/useDmTray"
 
 enum SidebarPopups {
   None,
@@ -29,10 +32,14 @@ enum SidebarPopups {
 }
 
 const SidebarActions: FC<{className?: string}> = ({className}) => {
+  const client = useMatrixClient()
   const [activePopup, setActivePopup] = useState(SidebarPopups.None)
 
+  const {dmRooms, results, setQuery, userId, isDMLoading, clearResults} =
+    useDmTray(client)
+
   const {isLoading, notifications, containsUnreadNotifications} =
-    useNotifications()
+    useNotifications(client)
 
   return (
     <>
@@ -50,15 +57,18 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
           "flex flex-col items-center gap-2.5 pb-2",
           className
         )}>
-        <DirectMessagesButton
-          isPopupVisible={activePopup === SidebarPopups.DirectMessages}
-          onPopupVisibilityChange={isPopupVisible => {
-            setActivePopup(
-              isPopupVisible ? SidebarPopups.DirectMessages : SidebarPopups.None
-            )
+        <DMTrayPopup
+          isLoading={isDMLoading}
+          userId={userId}
+          dmRooms={dmRooms}
+          searchResult={results}
+          setQuery={setQuery}
+          clearResult={clearResults}
+          dmRoomClick={function (roomId: string): void {
+            throw new Error("Function not implemented.")
           }}
-          onClose={() => {
-            setActivePopup(SidebarPopups.None)
+          onResultUserClick={function (userId: string): void {
+            throw new Error("Function not implemented.")
           }}
         />
 
