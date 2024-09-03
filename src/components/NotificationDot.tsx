@@ -1,5 +1,6 @@
 import {type FC} from "react"
 import React from "react"
+import {twMerge} from "tailwind-merge"
 
 export type NotificationDotProps = {
   children: React.JSX.Element
@@ -8,7 +9,7 @@ export type NotificationDotProps = {
 
 const NotificationDot: FC<NotificationDotProps> = ({children, isVisible}) => {
   return (
-    <div className="relative inline">
+    <div className={twMerge("relative inline")}>
       <div>{children}</div>
 
       {isVisible && (

@@ -1,15 +1,12 @@
 import Loader from "@/components/Loader"
 import Notification, {type NotificationProps} from "@/components/Notification"
-import NotificationDot from "@/components/NotificationDot"
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {Button} from "@/components/ui/button"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import {useMemo, type FC} from "react"
-import {IoNotifications} from "react-icons/io5"
 
 const sortNotificationsByReadState = (
   a: NotificationProps,
@@ -24,14 +21,14 @@ const sortNotificationsByReadState = (
 
 export type NotificationsTrayProps = {
   isLoading: boolean
-  containsUnreadNotifications: boolean
   notifications: NotificationProps[]
+  children: React.JSX.Element
 }
 
 const NotificationsTray: FC<NotificationsTrayProps> = ({
   isLoading,
   notifications,
-  containsUnreadNotifications,
+  children,
 }) => {
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
@@ -48,16 +45,7 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
 
   return (
     <HoverCard openDelay={50} closeDelay={50}>
-      <HoverCardTrigger>
-        <Button
-          className="text-slate-400 hover:text-slate-800"
-          variant="ghost"
-          size="icon">
-          <NotificationDot isVisible={containsUnreadNotifications}>
-            <IoNotifications size={20} />
-          </NotificationDot>
-        </Button>
-      </HoverCardTrigger>
+      <HoverCardTrigger>{children}</HoverCardTrigger>
 
       <HoverCardContent asChild side="right">
         <div className="m-2 max-h-96 w-[448px] max-w-md overflow-auto">

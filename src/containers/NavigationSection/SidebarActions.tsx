@@ -1,12 +1,17 @@
-import IconButton from "@/components/IconButton"
 import {type FC} from "react"
-import {IoCall, IoExit, IoSearch} from "react-icons/io5"
+import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import useNotifications from "./hooks/useNotifications"
 import DMTrayPopup from "./DMTrayPopup"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useDmTray from "./hooks/useDmTray"
 import NotificationsTray from "./NotificationsTray"
+import NotificationDot from "@/components/NotificationDot"
+import {Button} from "@/components/ui/button"
+import {IoIosSearch} from "react-icons/io"
+
+const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-slate-400 hover:bg-transparent"
+const SIDEBAR_BUTTON_SIZE = 20
 
 const SidebarActions: FC<{className?: string}> = ({className}) => {
   const client = useMatrixClient()
@@ -36,35 +41,52 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
           }}
           onResultUserClick={function (userId: string): void {
             throw new Error("onResultUserClick function not implemented.")
-          }}
-        />
+          }}>
+          <div className="p-1">
+            <IoPaperPlane
+              className="cursor-pointer text-slate-400 hover:text-slate-800"
+              size={SIDEBAR_BUTTON_SIZE}
+            />
+          </div>
+        </DMTrayPopup>
 
-        <NotificationsTray
-          isLoading={isLoading}
-          containsUnreadNotifications={containsUnreadNotifications}
-          notifications={notifications}
-        />
+        <NotificationsTray isLoading={isLoading} notifications={notifications}>
+          <div className="p-1">
+            <NotificationDot isVisible={containsUnreadNotifications}>
+              <IoNotifications
+                className="cursor-pointer text-slate-400 hover:text-slate-800"
+                size={SIDEBAR_BUTTON_SIZE}
+              />
+            </NotificationDot>
+          </div>
+        </NotificationsTray>
 
-        <IconButton
-          tooltip="Search"
-          iconClassName="text-slate-400"
-          Icon={IoSearch}
-          onClick={() => {}}
-        />
+        <Button
+          aria-label="Search anything"
+          size="icon"
+          variant="ghost"
+          className={SIDEBAR_BUTTON_CLASS}
+          onClick={() => {}}>
+          <IoIosSearch size={SIDEBAR_BUTTON_SIZE} />
+        </Button>
 
-        <IconButton
-          tooltip="Calls"
-          iconClassName="text-slate-400"
-          Icon={IoCall}
-          onClick={() => {}}
-        />
+        <Button
+          aria-label="Calls"
+          size="icon"
+          variant="ghost"
+          className={SIDEBAR_BUTTON_CLASS}
+          onClick={() => {}}>
+          <IoCall size={SIDEBAR_BUTTON_SIZE} />
+        </Button>
 
-        <IconButton
-          tooltip="Exit"
-          iconClassName="text-slate-400"
-          Icon={IoExit}
-          onClick={() => {}}
-        />
+        <Button
+          aria-label="Exit app"
+          size="icon"
+          variant="ghost"
+          className={SIDEBAR_BUTTON_CLASS}
+          onClick={() => {}}>
+          <IoExit size={SIDEBAR_BUTTON_SIZE} />
+        </Button>
       </div>
     </>
   )

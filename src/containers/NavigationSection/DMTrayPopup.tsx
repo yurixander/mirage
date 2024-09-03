@@ -5,7 +5,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import {IoCopy, IoPaperPlane, IoSearch} from "react-icons/io5"
+import {IoCopy} from "react-icons/io5"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import Input from "@/components/Input"
 import {twMerge} from "tailwind-merge"
@@ -17,6 +17,7 @@ import {
 } from "@/utils/util"
 import Loader from "@/components/Loader"
 import useTooltip from "@/hooks/util/useTooltip"
+import {IoIosSearch} from "react-icons/io"
 
 export type DMUser = {
   displayName: string
@@ -35,6 +36,7 @@ export type DMTrayPopupProps = {
   userId?: string
   dmRooms: DMRoomData[]
   searchResult: DMUser[] | null
+  children: React.JSX.Element
   dmRoomClick: (roomId: string) => void
   onResultUserClick: (userId: string) => void
   setQuery: (query: string) => void
@@ -50,6 +52,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
   searchResult,
   setQuery,
   clearResult,
+  children,
 }) => {
   const invitationLink =
     userId !== undefined && validateMatrixUser(userId)
@@ -65,14 +68,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
           clearResult()
         }
       }}>
-      <HoverCardTrigger>
-        <Button
-          className="text-slate-400 hover:text-slate-800"
-          variant="ghost"
-          size="icon">
-          <IoPaperPlane size={20} />
-        </Button>
-      </HoverCardTrigger>
+      <HoverCardTrigger>{children}</HoverCardTrigger>
 
       <HoverCardContent asChild side="right">
         <div className="z-50 m-2 flex h-[520px] w-[480px] flex-col gap-3 overflow-hidden rounded-md border border-slate-300 md:h-[620px]">
@@ -92,7 +88,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
 
                 <Input
                   onValueChange={setQuery}
-                  Icon={IoSearch}
+                  Icon={IoIosSearch}
                   placeholder="Enter name or username"
                 />
 
