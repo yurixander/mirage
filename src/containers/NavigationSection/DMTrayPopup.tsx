@@ -12,7 +12,7 @@ import useErrorTooltip from "@/hooks/util/useErrorTooltip"
 import {twMerge} from "tailwind-merge"
 import UserProfile from "@/components/UserProfile"
 import {stringToColor, getUsernameByUserId} from "@/utils/util"
-import {AvatarType} from "@/components/AvatarImage"
+import Loader from "@/components/Loader"
 
 export type DMUser = {
   displayName: string
@@ -20,8 +20,15 @@ export type DMUser = {
   avatarUrl?: string
 }
 
+export type DMRoomData = {
+  partnerName: string
+  partnerId: string
+  roomId: string
+}
+
 type DMTrayPopupProps = {
   isLoading: boolean
+  userId: string
   dmRooms: DMRoomData[]
   searchResult: DMUser[] | null
   dmRoomClick: (roomId: string) => void
@@ -30,6 +37,7 @@ type DMTrayPopupProps = {
 
 const DMTrayPopup: FC<DMTrayPopupProps> = ({
   dmRooms,
+  userId,
   isLoading,
   onResultUserClick,
   dmRoomClick,
@@ -48,131 +56,120 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
 
       <HoverCardContent asChild side="right">
         <div className="z-50 m-1 flex h-[520px] w-[480px] flex-col gap-3 overflow-hidden rounded-md border border-slate-300 md:h-[620px]">
-          <Typography variant={TypographyVariant.Heading}>
-            Direct Rooms
-          </Typography>
-
-          <div className="flex flex-col gap-2">
-            <Typography className="text-black">
-              Start a conversation with someone using their name or username
-              (@username:mirage.org).
-            </Typography>
-
-            <Input
-              onValueChange={() => {}}
-              Icon={IoSearch}
-              placeholder="Enter name or username"
-            />
-
-            <div className="flex max-h-72 flex-col gap-1 overflow-y-auto">
-              {searchResult === null ? (
-                dmRooms.length === 0 ? (
-                  <div className="flex h-72 flex-col items-center justify-center">
-                    <Typography variant={TypographyVariant.Heading}>
-                      Ops you don't have rooms
-                    </Typography>
-
-                    <Typography>
-                      You can search for users and start a chat
-                    </Typography>
-                  </div>
-                ) : (
-                  <>
-                    <Typography className="p-2 text-black">
-                      RECENT CONVERSATIONS
-                    </Typography>
-
-                    <div className="grow overflow-y-auto">
-                      <div className="flex flex-col gap-1">
-                        {dmRooms.map((dmRoom, index) => {
-                          return (
-                            <DMRoom
-                              key={index}
-                              dmRoomClick={dmRoomClick}
-                              partnerName={dmRoom.partnerName}
-                              partnerId={dmRoom.partnerId}
-                              roomId={dmRoom.roomId}
-                            />
-                          )
-                        })}
-                      </div>
-                    </div>
-                  </>
-                )
-              ) : (
-                searchResult.map((dmUser, index) => (
-                  <button
-                    key={index}
-                    className="w-full cursor-pointer rounded-lg p-2 hover:bg-gray-100"
-                    onClick={() => {
-                      try {
-                        onResultUserClick(dmUser.userId)
-                      } catch {
-                        // if (!(error instanceof Error)) {
-                        //   return
-                        // }
-                        // TODO: Handle error tooltip here.
-                      }
-                    }}>
-                    <UserProfile
-                      avatarType={AvatarType.Profile}
-                      displayName={dmUser.displayName}
-                      displayNameColor={stringToColor(dmUser.userId)}
-                      avatarUrl={dmUser.avatarUrl}>
-                      <Typography variant={TypographyVariant.BodySmall}>
-                        {dmUser.userId}
-                      </Typography>
-                    </UserProfile>
-                  </button>
-                ))
-              )}
-            </div>
-          </div>
-
-          <div className="mt-auto flex flex-col gap-2">
-            <Typography className="text-black">
-              Some suggestions may not be shown for privacy reasons. If you
-              don´t find who you´re looking for, send them your invitation link
-              below.
-            </Typography>
-
-            <div className="flex h-10 items-center justify-between rounded border border-neutral-300 bg-neutral-50 px-2">
-              <Typography
-                variant={TypographyVariant.BodyMedium}
-                className="text-blue-600">
-                https://matrix.to/#/crissxxl
+          {isLoading ? (
+            <Loader text="Loading DMs" />
+          ) : (
+            <>
+              <Typography variant={TypographyVariant.Heading}>
+                Direct Rooms
               </Typography>
 
-              <Button
-                className="text-slate-300 hover:bg-transparent hover:text-slate-600"
-                variant="ghost"
-                size="icon">
-                <IoCopy />
-              </Button>
-            </div>
-          </div>
+              <div className="flex flex-col gap-2">
+                <Typography className="text-black">
+                  Start a conversation with someone using their name or username
+                  (@username:mirage.org).
+                </Typography>
+
+                <Input
+                  onValueChange={() => {}}
+                  Icon={IoSearch}
+                  placeholder="Enter name or username"
+                />
+
+                <div className="flex max-h-72 flex-col gap-1 overflow-y-auto">
+                  {searchResult === null ? (
+                    dmRooms.length === 0 ? (
+                      <div className="flex h-72 flex-col items-center justify-center">
+                        <Typography variant={TypographyVariant.Heading}>
+                          Ops you don't have rooms
+                        </Typography>
+
+                        <Typography>
+                          You can search for users and start a chat
+                        </Typography>
+                      </div>
+                    ) : (
+                      <>
+                        <Typography className="p-2 text-black">
+                          RECENT CONVERSATIONS
+                        </Typography>
+
+                        <div className="grow overflow-y-auto">
+                          <div className="flex flex-col gap-1">
+                            {dmRooms.map((dmRoom, index) => {
+                              return (
+                                <DMDisplay
+                                  key={index}
+                                  id={dmRoom.partnerId}
+                                  displayName={dmRoom.partnerName}
+                                  onClick={() => {
+                                    dmRoomClick(dmRoom.roomId)
+                                  }}
+                                />
+                              )
+                            })}
+                          </div>
+                        </div>
+                      </>
+                    )
+                  ) : (
+                    searchResult.map((dmUser, index) => (
+                      <DMDisplay
+                        key={index}
+                        id={dmUser.userId}
+                        displayName={dmUser.displayName}
+                        onClick={() => {
+                          onResultUserClick(dmUser.userId)
+                        }}
+                      />
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-auto flex flex-col gap-2">
+                <Typography className="text-black">
+                  Some suggestions may not be shown for privacy reasons. If you
+                  don´t find who you´re looking for, send them your invitation
+                  link below.
+                </Typography>
+
+                <div className="flex h-10 items-center justify-between rounded border border-neutral-300 bg-neutral-50 px-2">
+                  <Typography
+                    variant={TypographyVariant.BodyMedium}
+                    className="text-blue-600">
+                    https://matrix.to/#/{userId}
+                  </Typography>
+
+                  <Button
+                    className="text-slate-300 hover:bg-transparent hover:text-slate-600"
+                    variant="ghost"
+                    size="icon">
+                    <IoCopy />
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </HoverCardContent>
     </HoverCard>
   )
 }
 
-export type DMRoomData = {
-  partnerName: string
-  partnerId: string
-  roomId: string
-}
-
-interface DMRoomProps extends DMRoomData {
-  dmRoomClick: (roomId: string) => void
+type DMDisplayProps = {
+  id: string
+  displayName: string
+  onClick: () => void
+  avatarUrl?: string
   className?: string
 }
 
-const DMRoom: FC<DMRoomProps> = ({
-  partnerName,
-  dmRoomClick,
-  partnerId,
-  roomId,
+const DMDisplay: FC<DMDisplayProps> = ({
+  id,
+  displayName,
+  avatarUrl,
+  onClick,
   className,
 }) => {
   const {showErrorTooltip, renderRef} = useErrorTooltip<HTMLButtonElement>()
@@ -180,10 +177,10 @@ const DMRoom: FC<DMRoomProps> = ({
   return (
     <button
       ref={renderRef}
-      aria-label={`DMChat with ${partnerName}`}
+      aria-label={`DMChat with ${displayName}`}
       onClick={() => {
         try {
-          dmRoomClick(roomId)
+          onClick()
         } catch (error) {
           if (!(error instanceof Error)) {
             return
@@ -201,10 +198,11 @@ const DMRoom: FC<DMRoomProps> = ({
       <UserProfile
         isSquare={false}
         isNameShorted={false}
-        displayName={partnerName}
-        displayNameColor={stringToColor(partnerId)}>
+        avatarUrl={avatarUrl}
+        displayName={displayName}
+        displayNameColor={stringToColor(id)}>
         <Typography variant={TypographyVariant.BodySmall}>
-          {getUsernameByUserId(partnerId)}
+          {getUsernameByUserId(id)}
         </Typography>
       </UserProfile>
     </button>

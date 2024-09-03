@@ -15,7 +15,6 @@ import {twMerge} from "tailwind-merge"
 
 export const DirectChatsPopup: FC = () => {
   const client = useMatrixClient()
-  // TODO: Make matrix user validator.
   const [userId, setUserId] = useState<string>()
   const [directChats, setDirectChats] = useState<DirectChatRecentData[]>([])
   const {setQuery, results} = useUsersSearch(client)

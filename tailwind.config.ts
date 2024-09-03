@@ -213,23 +213,23 @@ const config = {
           transform: "translateY(0)",
         },
       },
-    },
-    fade: {
-      from: {
-        opacity: "0",
-        transform: "translateY(+20px)",
+      "rotation": {
+        from: {
+          transform: "rotate(0deg)",
+        },
+        to: {
+          transform: "rotate(360deg)",
+        },
       },
-      to: {
-        opacity: "1",
-        transform: "translateY(0)",
-      },
-    },
-    rotation: {
-      from: {
-        transform: "rotate(0deg)",
-      },
-      to: {
-        transform: "rotate(360deg)",
+      "fade": {
+        from: {
+          opacity: "0",
+          transform: "translateY(+20px)",
+        },
+        to: {
+          opacity: "1",
+          transform: "translateY(0)",
+        },
       },
     },
   },

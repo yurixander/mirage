@@ -32,6 +32,7 @@ const DevelopmentPreview: FC = () => {
           onResultUserClick={function (userId: string): void {
             throw new Error("Function not implemented.")
           }}
+          userId={"crissxxl"}
         />
       </div>
     </>
