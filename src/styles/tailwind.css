@@ -113,7 +113,7 @@ textarea:disabled {
 }
 
 ::-webkit-scrollbar {
-  @apply h-4 w-2;
+  @apply h-2 w-2;
 }
 
 ::-webkit-scrollbar-track {

@@ -44,11 +44,7 @@ const Notification: FC<NotificationProps> = ({
   }
 
   return (
-    <div
-      className={twMerge(
-        "flex gap-2 p-2",
-        !isRead && "rounded-lg bg-slate-100"
-      )}>
+    <div className={twMerge("flex gap-2 p-2", !isRead && "bg-slate-100")}>
       <AvatarImage
         isRounded
         displayName={sender}
