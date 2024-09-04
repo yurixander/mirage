@@ -5,6 +5,8 @@ import DMTrayPopup, {
   type DMRoomData,
 } from "@/containers/NavigationSection/DMTrayPopup"
 import React from "react"
+import {Button} from "@/components/ui/button"
+import {IoPaperPlane} from "react-icons/io5"
 
 type Story = StoryObj<typeof DMTrayPopup>
 
@@ -12,7 +14,11 @@ const meta: Meta<typeof DMTrayPopup> = {
   component: DMTrayPopup,
 }
 const render = (args: DMTrayPopupProps): React.JSX.Element => (
-  <DMTrayPopup {...args} />
+  <DMTrayPopup {...args}>
+    <Button aria-label="View Direct chats" size="icon" variant="ghost">
+      <IoPaperPlane size={20} />
+    </Button>
+  </DMTrayPopup>
 )
 
 const searchResult: DMUser[] = [

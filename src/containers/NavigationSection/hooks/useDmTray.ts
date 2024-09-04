@@ -49,8 +49,6 @@ const useDmTray = (client: MatrixClient | null): UseDMTrayReturnType => {
 
     setDMRooms(directChatsProps)
     setIsDMLoading(false)
-
-    // TODO: Clear results when component not in viewport.
   }, [client])
 
   return {
