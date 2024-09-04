@@ -42,23 +42,25 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
           onResultUserClick={function (userId: string): void {
             throw new Error("onResultUserClick function not implemented.")
           }}>
-          <div className="p-1">
-            <IoPaperPlane
-              className="cursor-pointer text-slate-400 hover:text-slate-800"
-              size={SIDEBAR_BUTTON_SIZE}
-            />
-          </div>
+          <Button
+            aria-label="View Direct chats"
+            size="icon"
+            variant="ghost"
+            className={SIDEBAR_BUTTON_CLASS}>
+            <IoPaperPlane size={SIDEBAR_BUTTON_SIZE} />
+          </Button>
         </DMTrayPopup>
 
         <NotificationsTray isLoading={isLoading} notifications={notifications}>
-          <div className="p-1">
+          <Button
+            aria-label="View notifications"
+            size="icon"
+            variant="ghost"
+            className={SIDEBAR_BUTTON_CLASS}>
             <NotificationDot isVisible={containsUnreadNotifications}>
-              <IoNotifications
-                className="cursor-pointer text-slate-400 hover:text-slate-800"
-                size={SIDEBAR_BUTTON_SIZE}
-              />
+              <IoNotifications size={SIDEBAR_BUTTON_SIZE} />
             </NotificationDot>
-          </div>
+          </Button>
         </NotificationsTray>
 
         <Button
