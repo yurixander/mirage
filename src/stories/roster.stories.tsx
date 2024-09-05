@@ -37,14 +37,35 @@ const members: RosterUserData[] = [
   {...commonUserData, powerLevel: UserPowerLevel.Member},
 ]
 
+const errorMsg = "Function not implemented."
+
 export const Default: Story = {
   render,
   args: {
     members,
     isLoading: false,
+    onReloadMembers() {},
     onUserClick(userId) {
-      throw new Error("Function not implemented.")
+      throw new Error(errorMsg)
     },
+  },
+}
+
+export const WithGhosts: Story = {
+  render,
+  args: {
+    members: [
+      {...commonUserData, powerLevel: UserPowerLevel.Member},
+      {...commonUserData, powerLevel: UserPowerLevel.Member},
+      {...commonUserData, powerLevel: UserPowerLevel.Member},
+      {...commonUserData, powerLevel: UserPowerLevel.Member},
+      {...commonUserData, powerLevel: UserPowerLevel.Member},
+      {...commonUserData, powerLevel: UserPowerLevel.Member},
+    ],
+    isLoading: false,
+    isError: false,
+    onReloadMembers() {},
+    onUserClick(userId) {},
   },
 }
 
@@ -53,9 +74,19 @@ export const Loading: Story = {
   args: {
     members: [],
     isLoading: true,
-    onUserClick(userId) {
-      throw new Error("Function not implemented.")
-    },
+    onReloadMembers() {},
+    onUserClick(userId) {},
+  },
+}
+
+export const Error: Story = {
+  render,
+  args: {
+    members: [],
+    isLoading: false,
+    isError: true,
+    onReloadMembers() {},
+    onUserClick(userId) {},
   },
 }
 

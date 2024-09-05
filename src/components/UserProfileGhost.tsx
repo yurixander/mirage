@@ -30,7 +30,7 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
           key={index}
           style={{opacity: 1 - multiplier}}
           className="flex gap-1">
-          <div className="relative size-9 overflow-hidden rounded-lg bg-neutral-300" />
+          <div className="relative size-10 overflow-hidden rounded-lg bg-neutral-300" />
 
           <div className="mr-auto inline-flex flex-col">
             <div className="overflow-hidden rounded-xl bg-neutral-300 text-profileGhost">

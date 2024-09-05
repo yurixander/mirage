@@ -1,12 +1,14 @@
 import React, {useMemo, type FC} from "react"
 import IconButton from "../../components/IconButton"
-import {IoFilterCircle, IoPeople} from "react-icons/io5"
-import Typography from "@/components/Typography"
+import {IoFilterCircle, IoPeople, IoReloadOutline} from "react-icons/io5"
+import Typography, {TypographyVariant} from "@/components/Typography"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import RosterUser, {type RosterUserData} from "./RosterUser"
 import {UserPowerLevel} from "@/utils/members"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
+import {Button} from "@/components/ui/button"
+import UserProfileGhost from "@/components/UserProfileGhost"
 
 export enum RosterUserCategory {
   Admin,
@@ -16,18 +18,22 @@ export enum RosterUserCategory {
 export type RosterProps = {
   members: RosterUserData[]
   isLoading: boolean
+  isError?: boolean
   onUserClick: (userId: string) => void
+  onReloadMembers: () => void
   className?: string
 }
+
+const MAX_MEMBER_LENGTH = 10
 
 const Roster: FC<RosterProps> = ({
   members,
   onUserClick,
   isLoading,
+  isError,
+  onReloadMembers,
   className,
 }) => {
-  // const {sections, isMembersLoading, isMembersError} = useRoomMembers(roomId)
-
   const adminsComponents = useMemo(
     () =>
       members
@@ -96,18 +102,52 @@ const Roster: FC<RosterProps> = ({
         </div>
       </header>
 
-      <ScrollArea className="px-1 pt-3" type="scroll">
-        <div className="flex flex-col gap-4">
-          <RosterSection title="Admins --- 1" components={adminsComponents} />
+      {isError === true ? (
+        <div className="flex size-full flex-col items-center justify-center gap-1 p-1">
+          <Typography variant={TypographyVariant.Heading}>
+            Members Error
+          </Typography>
 
-          <RosterSection
-            title="Moderators --- 1"
-            components={moderatorsComponents}
-          />
-
-          <RosterSection title="Members --- 1" components={membersComponents} />
+          <Button
+            aria-label="Reload members"
+            className="mt-1"
+            size="sm"
+            variant="outline"
+            onClick={onReloadMembers}>
+            Reload Members <IoReloadOutline className="ml-1" />
+          </Button>
         </div>
-      </ScrollArea>
+      ) : isLoading ? (
+        <div className="flex flex-col gap-6 pt-3">
+          <RosterSectionSkeleton />
+
+          <RosterSectionSkeleton />
+        </div>
+      ) : (
+        <ScrollArea className="px-1 pt-3" type="scroll">
+          <div className="flex flex-col gap-4">
+            <RosterSection title="Admins --- 1" components={adminsComponents} />
+
+            <RosterSection
+              title="Moderators --- 1"
+              components={moderatorsComponents}
+            />
+
+            <RosterSection
+              title="Members --- 1"
+              components={membersComponents}
+            />
+          </div>
+
+          {members.length <= MAX_MEMBER_LENGTH && (
+            <UserProfileGhost
+              className="p-2"
+              count={4}
+              opacityMultiplier={0.2}
+            />
+          )}
+        </ScrollArea>
+      )}
     </div>
   )
 }
@@ -129,6 +169,44 @@ const RosterSection: FC<{
       </motion.div>
 
       <div className="flex flex-col gap-1.5">{components}</div>
+    </div>
+  )
+}
+
+const RosterSectionSkeleton: FC = () => {
+  return (
+    <div className="m-1 flex flex-col gap-2.5">
+      <motion.div
+        initial={{width: 0}}
+        whileInView={{width: "96px", transition: {velocity: -100}}}
+        className="ml-2 h-5 animate-pulse rounded-sm bg-gray-400"
+      />
+
+      <div className="flex flex-col gap-1.5">
+        {Array.from({length: 3}).map((_, index) => (
+          <div key={index} className="flex animate-pulse gap-2 px-2 py-1">
+            <motion.div
+              initial={{opacity: 0}}
+              whileInView={{scale: 1, opacity: 1}}
+              className="size-10 rounded-lg bg-gray-400"
+            />
+
+            <div className="flex flex-col gap-1.5">
+              <motion.div
+                initial={{width: 0}}
+                whileInView={{width: "96px"}}
+                className="h-4 rounded-lg bg-gray-400"
+              />
+
+              <motion.div
+                initial={{width: 0}}
+                whileInView={{width: "64px"}}
+                className="h-3 rounded-lg bg-gray-400"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
