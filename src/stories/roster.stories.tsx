@@ -41,6 +41,18 @@ export const Default: Story = {
   render,
   args: {
     members,
+    isLoading: false,
+    onUserClick(userId) {
+      throw new Error("Function not implemented.")
+    },
+  },
+}
+
+export const Loading: Story = {
+  render,
+  args: {
+    members: [],
+    isLoading: true,
     onUserClick(userId) {
       throw new Error("Function not implemented.")
     },

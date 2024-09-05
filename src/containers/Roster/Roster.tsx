@@ -6,6 +6,7 @@ import {ScrollArea} from "@/components/ui/scroll-area"
 import RosterUser, {type RosterUserData} from "./RosterUser"
 import {UserPowerLevel} from "@/utils/members"
 import {twMerge} from "tailwind-merge"
+import {motion} from "framer-motion"
 
 export enum RosterUserCategory {
   Admin,
@@ -14,18 +15,30 @@ export enum RosterUserCategory {
 
 export type RosterProps = {
   members: RosterUserData[]
+  isLoading: boolean
   onUserClick: (userId: string) => void
   className?: string
 }
 
-const Roster: FC<RosterProps> = ({members, onUserClick, className}) => {
+const Roster: FC<RosterProps> = ({
+  members,
+  onUserClick,
+  isLoading,
+  className,
+}) => {
   // const {sections, isMembersLoading, isMembersError} = useRoomMembers(roomId)
 
   const adminsComponents = useMemo(
     () =>
       members
         .filter(member => member.powerLevel === UserPowerLevel.Admin)
-        .map(member => <RosterUser {...member} onUserClick={onUserClick} />),
+        .map(member => (
+          <RosterUser
+            key={member.userId}
+            {...member}
+            onUserClick={onUserClick}
+          />
+        )),
     [members, onUserClick]
   )
 
@@ -33,7 +46,13 @@ const Roster: FC<RosterProps> = ({members, onUserClick, className}) => {
     () =>
       members
         .filter(member => member.powerLevel === UserPowerLevel.Moderator)
-        .map(member => <RosterUser {...member} onUserClick={onUserClick} />),
+        .map(member => (
+          <RosterUser
+            key={member.userId}
+            {...member}
+            onUserClick={onUserClick}
+          />
+        )),
     [members, onUserClick]
   )
 
@@ -41,14 +60,20 @@ const Roster: FC<RosterProps> = ({members, onUserClick, className}) => {
     () =>
       members
         .filter(member => member.powerLevel === UserPowerLevel.Member)
-        .map(member => <RosterUser {...member} onUserClick={onUserClick} />),
+        .map(member => (
+          <RosterUser
+            key={member.userId}
+            {...member}
+            onUserClick={onUserClick}
+          />
+        )),
     [members, onUserClick]
   )
 
   return (
     <div
       className={twMerge(
-        "flex size-full max-w-52 flex-col border border-l-slate-300 bg-gray-50",
+        "flex size-full max-w-60 flex-col border border-l-slate-300 bg-gray-50",
         className
       )}>
       <header className="flex size-full max-h-12 border-b border-b-slate-300">
@@ -97,7 +122,11 @@ const RosterSection: FC<{
 
   return (
     <div className="flex flex-col gap-2.5">
-      <Typography className="ml-2">{title}</Typography>
+      <motion.div
+        initial={{scale: 0, opacity: 0}}
+        whileInView={{scale: 1, opacity: 1}}>
+        <Typography className="ml-2">{title}</Typography>
+      </motion.div>
 
       <div className="flex flex-col gap-1.5">{components}</div>
     </div>
