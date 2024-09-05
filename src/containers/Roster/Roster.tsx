@@ -1,31 +1,56 @@
-import {type FC} from "react"
+import React, {useMemo, type FC} from "react"
 import IconButton from "../../components/IconButton"
-import {type UserProfileProps as UserProfileProperties} from "../../components/UserProfile"
-import useRoomMembers from "@/containers/Roster/hooks/useRoomMembers"
 import {IoFilterCircle, IoPeople} from "react-icons/io5"
-import MemberList from "./MemberList"
 import Typography from "@/components/Typography"
+import {ScrollArea} from "@/components/ui/scroll-area"
+import RosterUser, {type RosterUserData} from "./RosterUser"
+import {UserPowerLevel} from "@/utils/members"
+import {twMerge} from "tailwind-merge"
 
 export enum RosterUserCategory {
   Admin,
   Member,
 }
 
-export type RosterUserData = {
-  category: RosterUserCategory
-  userProfileProps: UserProfileProperties
-}
-
 export type RosterProps = {
-  roomId: string
+  members: RosterUserData[]
+  onUserClick: (userId: string) => void
   className?: string
 }
 
-const Roster: FC<RosterProps> = ({roomId, className}) => {
-  const {sections, isMembersLoading, isMembersError} = useRoomMembers(roomId)
+const Roster: FC<RosterProps> = ({members, onUserClick, className}) => {
+  // const {sections, isMembersLoading, isMembersError} = useRoomMembers(roomId)
+
+  const adminsComponents = useMemo(
+    () =>
+      members
+        .filter(member => member.powerLevel === UserPowerLevel.Admin)
+        .map(member => <RosterUser {...member} onUserClick={onUserClick} />),
+    [members, onUserClick]
+  )
+
+  const moderatorsComponents = useMemo(
+    () =>
+      members
+        .filter(member => member.powerLevel === UserPowerLevel.Moderator)
+        .map(member => <RosterUser {...member} onUserClick={onUserClick} />),
+    [members, onUserClick]
+  )
+
+  const membersComponents = useMemo(
+    () =>
+      members
+        .filter(member => member.powerLevel === UserPowerLevel.Member)
+        .map(member => <RosterUser {...member} onUserClick={onUserClick} />),
+    [members, onUserClick]
+  )
 
   return (
-    <div className={className}>
+    <div
+      className={twMerge(
+        "flex size-full max-w-52 flex-col border border-l-slate-300 bg-gray-50",
+        className
+      )}>
       <header className="flex size-full max-h-12 border-b border-b-slate-300">
         <div className="m-0.5 mx-3 flex w-full items-center justify-center">
           <IoPeople size={25} className="text-neutral-500" />
@@ -46,12 +71,35 @@ const Roster: FC<RosterProps> = ({roomId, className}) => {
         </div>
       </header>
 
-      <MemberList
-        className="w-56"
-        isLoading={isMembersLoading}
-        isError={isMembersError}
-        sections={sections}
-      />
+      <ScrollArea className="px-1 pt-3" type="scroll">
+        <div className="flex flex-col gap-4">
+          <RosterSection title="Admins --- 1" components={adminsComponents} />
+
+          <RosterSection
+            title="Moderators --- 1"
+            components={moderatorsComponents}
+          />
+
+          <RosterSection title="Members --- 1" components={membersComponents} />
+        </div>
+      </ScrollArea>
+    </div>
+  )
+}
+
+const RosterSection: FC<{
+  title: string
+  components: React.JSX.Element[]
+}> = ({components, title}) => {
+  if (components.length === 0) {
+    return <></>
+  }
+
+  return (
+    <div className="flex flex-col gap-2.5">
+      <Typography className="ml-2">{title}</Typography>
+
+      <div className="flex flex-col gap-1.5">{components}</div>
     </div>
   )
 }

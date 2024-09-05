@@ -23,7 +23,7 @@ export type RosterUserData = {
 
 export interface RosterUserProps extends RosterUserData {
   className?: string
-  onUserClick: () => void
+  onUserClick: (userId: string) => void
 }
 
 const NAME_MAX_LENGTH = 15
@@ -51,12 +51,12 @@ const RosterUser: FC<RosterUserProps> = ({
       whileInView={{opacity: 1, scale: 1}}
       ref={renderRef}
       className={twMerge(
-        "flex w-full gap-2 rounded-lg px-2 py-1 hover:bg-gray-50",
+        "flex w-full gap-2 rounded-lg px-2 py-1 hover:bg-gray-100",
         className
       )}
       onClick={() => {
         try {
-          onUserClick()
+          onUserClick(userId)
         } catch (error) {
           if (!(error instanceof Error)) {
             return

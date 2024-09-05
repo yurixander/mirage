@@ -68,7 +68,7 @@ const AvatarImage: FC<AvatarProps> = ({
       className={twMerge(
         isAvatarMessage && "size-full",
         isProfile &&
-          twMerge("object-contain", getAvatarSizeByTailwindClass(avatarSize)),
+          twMerge("object-cover", getAvatarSizeByTailwindClass(avatarSize)),
         // TODO: Class `rounded-full` should be parent container with `overflow-hidden`.
         isRounded ? "rounded-full" : "rounded-lg",
         className
