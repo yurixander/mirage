@@ -47,7 +47,7 @@ const Roster: FC<RosterProps> = ({roomId, className}) => {
       </header>
 
       <MemberList
-        className="w-52"
+        className="w-56"
         isLoading={isMembersLoading}
         isError={isMembersError}
         sections={sections}
