@@ -66,6 +66,12 @@ export function validateUrl(url: string): boolean {
   }
 }
 
+const matrixUserRegex = new RegExp(/^@[\w+.-]+:matrix\.org$/)
+
+export function validateMatrixUser(input: string): boolean {
+  return matrixUserRegex.test(input)
+}
+
 function stringToIndex(str: string): number {
   let totalSum = 0
 

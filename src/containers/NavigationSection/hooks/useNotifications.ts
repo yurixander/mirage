@@ -1,6 +1,5 @@
 import {type NotificationProps} from "@/components/Notification"
 import useEventListener from "@/hooks/matrix/useEventListener"
-import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getRoomPowerLevelByUserId, UserPowerLevel} from "@/utils/members"
 import {
   getPowerLevelsHistory,
@@ -13,7 +12,7 @@ import {
   NotificationType,
 } from "@/utils/notifications"
 import {generateRandomId, getImageUrl} from "@/utils/util"
-import {RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
+import {type MatrixClient, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {useCallback, useEffect, useMemo, useState} from "react"
 
@@ -31,9 +30,9 @@ type UseNotificationsReturnType = {
   containsUnreadNotifications: boolean
 }
 
-const useNotifications = (): UseNotificationsReturnType => {
-  const client = useMatrixClient()
-
+const useNotifications = (
+  client: MatrixClient | null
+): UseNotificationsReturnType => {
   const [notificationsState, setNotificationsState] = useState(
     NotificationState.Waiting
   )

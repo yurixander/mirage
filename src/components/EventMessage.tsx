@@ -6,7 +6,6 @@ import ContextMenu, {ClickActions} from "./ContextMenu"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
 import {type EventType} from "matrix-js-sdk"
-import {twMerge} from "tailwind-merge"
 
 export type EventSender = {
   displayName: string
@@ -49,7 +48,7 @@ const EventMessage: FC<EventMessageProps> = ({
   )
 
   return (
-    <div className={twMerge("flex items-center gap-3", className)}>
+    <div className="flex items-center gap-3">
       <Typography className="inline-flex max-w-text select-text gap-1 whitespace-pre-line break-words italic">
         <ContextMenu
           className="shrink-0"
