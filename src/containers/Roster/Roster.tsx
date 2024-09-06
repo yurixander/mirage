@@ -15,9 +15,8 @@ export enum RosterUserCategory {
 }
 
 export type RosterProps = {
-  groupedMembers: GroupedMembers
+  groupedMembers: GroupedMembers | Error
   isLoading: boolean
-  isError?: boolean
   onUserClick: (userId: string) => void
   onReloadMembers: () => void
   className?: string
@@ -25,15 +24,24 @@ export type RosterProps = {
 
 const MAX_MEMBERS_LENGTH_FOR_GHOST = 10
 
+const EMPTY_GROUPED_MEMBERS: GroupedMembers = {
+  admins: [],
+  moderators: [],
+  members: [],
+}
+
 const Roster: FC<RosterProps> = ({
   groupedMembers,
   onUserClick,
   isLoading,
-  isError,
   onReloadMembers,
   className,
 }) => {
-  const {admins, moderators, members} = groupedMembers
+  const hasError = groupedMembers instanceof Error
+
+  const {admins, moderators, members} = hasError
+    ? EMPTY_GROUPED_MEMBERS
+    : groupedMembers
 
   return (
     <div
@@ -59,7 +67,7 @@ const Roster: FC<RosterProps> = ({
         </div>
       </header>
 
-      {isError === true ? (
+      {hasError ? (
         <div className="flex size-full flex-col items-center justify-center gap-1 p-1">
           <Typography variant={TypographyVariant.Heading}>
             Members Error

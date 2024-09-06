@@ -12,18 +12,16 @@ export type GroupedMembers = {
 }
 
 export type UseRoomMembersReturnType = {
-  groupedMembers: GroupedMembers
+  groupedMembers: GroupedMembers | Error
   isMembersLoading: boolean
-  isMembersError: boolean
 }
 
 const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
   const client = useMatrixClient()
   const isMountedReference = useIsMountedRef()
   const [isLoading, setIsLoading] = useState(true)
-  const [isError, setIsError] = useState(false)
 
-  const [groupedMembers, setGroupedMembers] = useState<GroupedMembers>({
+  const [groupedMembers, setGroupedMembers] = useState<GroupedMembers | Error>({
     admins: [],
     members: [],
     moderators: [],
@@ -42,8 +40,12 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
           setIsLoading(false)
         }
       } catch (error) {
-        setIsError(true)
+        if (!(error instanceof Error)) {
+          return
+        }
+
         setIsLoading(false)
+        setGroupedMembers(error)
 
         console.error("Error fetching room members:", error)
       }
@@ -59,7 +61,7 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
     const activeRoom = client.getRoom(roomId)
 
     if (activeRoom === null) {
-      setIsError(true)
+      setGroupedMembers(new Error("Active room is null."))
       setIsLoading(false)
 
       return
@@ -71,7 +73,6 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
   return {
     groupedMembers,
     isMembersLoading: isLoading,
-    isMembersError: isError,
   }
 }
 
