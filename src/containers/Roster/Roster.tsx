@@ -119,21 +119,29 @@ const Roster: FC<RosterProps> = ({
         </div>
       ) : isLoading ? (
         <div className="flex flex-col gap-6 pt-3">
-          <RosterSectionSkeleton />
+          <RosterSectionSkeleton elementsCount={2} />
 
-          <RosterSectionSkeleton />
+          <RosterSectionSkeleton elementsCount={1} />
+
+          <RosterSectionSkeleton elementsCount={5} />
         </div>
       ) : (
         <ScrollArea className="px-1 pt-3" type="scroll">
           <div className="flex flex-col gap-4">
-            <RosterSection title="Admins — 1" components={adminsComponents} />
+            <RosterSection
+              title={`ADMINS — ${adminsComponents.length}`}
+              components={adminsComponents}
+            />
 
             <RosterSection
-              title="Moderators — 1"
+              title={`MODERATORS — ${moderatorsComponents.length}`}
               components={moderatorsComponents}
             />
 
-            <RosterSection title="Members — 1" components={membersComponents} />
+            <RosterSection
+              title={`MEMBERS — ${membersComponents.length}`}
+              components={membersComponents}
+            />
           </div>
 
           {members.length <= MAX_MEMBERS_LENGTH_FOR_GHOST && (
@@ -162,7 +170,11 @@ const RosterSection: FC<{
       <motion.div
         initial={{scale: 0, opacity: 0}}
         whileInView={{scale: 1, opacity: 1}}>
-        <Typography className="ml-2">{title}</Typography>
+        <Typography
+          variant={TypographyVariant.BodyMedium}
+          className="ml-2 font-medium text-slate-400">
+          {title}
+        </Typography>
       </motion.div>
 
       <div className="flex flex-col gap-1.5">{components}</div>
@@ -170,7 +182,9 @@ const RosterSection: FC<{
   )
 }
 
-const RosterSectionSkeleton: FC = () => {
+const RosterSectionSkeleton: FC<{elementsCount?: number}> = ({
+  elementsCount = 3,
+}) => {
   return (
     <div className="m-1 flex flex-col gap-2.5">
       <motion.div
@@ -180,7 +194,7 @@ const RosterSectionSkeleton: FC = () => {
       />
 
       <div className="flex flex-col gap-1.5">
-        {Array.from({length: 3}).map((_, index) => (
+        {Array.from({length: elementsCount}).map((_, index) => (
           <div key={index} className="flex animate-pulse gap-2 px-2 py-1">
             <motion.div
               initial={{opacity: 0}}

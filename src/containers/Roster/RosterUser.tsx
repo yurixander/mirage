@@ -68,14 +68,14 @@ const RosterUser: FC<RosterUserProps> = ({
       <AvatarImage
         avatarUrl={avatarUrl}
         avatarType={AvatarType.Profile}
-        displayName="Emerald Branch"
+        displayName={displayName}
         isRounded={false}
       />
 
       <div className="flex flex-col items-start">
         <RosterUserTypography
           style={{color: stringToColor(userId)}}
-          text={displayName}
+          text={displayName.length === 0 ? userId : displayName}
           maxLength={NAME_MAX_LENGTH}
         />
 
@@ -97,15 +97,11 @@ const RosterUserTypography: FC<{
 }> = ({maxLength, text, style, variant = TypographyVariant.Body}) => {
   const exceedsLimit = text.length > maxLength
 
-  if (text.at(0) === "G") {
-    console.log(text)
-  }
-
   return exceedsLimit ? (
     <TooltipProvider delayDuration={2000}>
       <Tooltip>
         <TooltipTrigger aria-label={trim(text, maxLength)}>
-          <Typography className="shrink-0" style={style} variant={variant}>
+          <Typography className="w-max" style={style} variant={variant}>
             {cleanDisplayName(trim(text, maxLength))}
           </Typography>
         </TooltipTrigger>
