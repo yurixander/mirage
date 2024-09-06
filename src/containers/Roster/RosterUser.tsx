@@ -72,7 +72,7 @@ const RosterUser: FC<RosterUserProps> = ({
         isRounded={false}
       />
 
-      <div className="flex flex-col items-start">
+      <div className="flex w-full flex-col items-start">
         <RosterUserTypography
           style={{color: stringToColor(userId)}}
           text={displayName.length === 0 ? userId : displayName}
@@ -115,26 +115,5 @@ const RosterUserTypography: FC<{
     </Typography>
   )
 }
-
-// return (
-//   <motion.div
-//     onClick={onUserClick}
-//     className={twMerge(
-//       "w-full cursor-pointer p-1 hover:rounded-xl hover:bg-neutral-100 focus-visible:rounded-md focus-visible:border-2 focus-visible:border-blue-400 focus-visible:outline-none focus-visible:transition focus-visible:duration-150",
-//       className
-//     )}>
-//     <UserProfile
-//       avatarUrl={avatarUrl}
-//       displayName={displayName}
-//       displayNameColor={stringToColor(userId)}
-//       isNameShorted>
-//       <Typography
-//         className="line-clamp-1"
-//         variant={TypographyVariant.BodySmall}>
-//         {text}
-//       </Typography>
-//     </UserProfile>
-//   </motion.div>
-// )
 
 export default RosterUser

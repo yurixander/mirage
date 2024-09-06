@@ -79,7 +79,7 @@ const Roster: FC<RosterProps> = ({
   return (
     <div
       className={twMerge(
-        "flex size-full flex-col border border-l-slate-300 bg-gray-50",
+        "flex h-full w-60 flex-col border border-l-slate-300 bg-gray-50",
         className
       )}>
       <header className="flex size-full max-h-12 border-b border-b-slate-300">
@@ -126,7 +126,7 @@ const Roster: FC<RosterProps> = ({
           <RosterSectionSkeleton elementsCount={5} />
         </div>
       ) : (
-        <ScrollArea className="px-1 pt-3" type="scroll">
+        <ScrollArea className="max-w-56 px-1 pt-3" type="scroll">
           <div className="flex flex-col gap-4">
             <RosterSection
               title={`ADMINS — ${adminsComponents.length}`}
@@ -166,7 +166,7 @@ const RosterSection: FC<{
   }
 
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex w-full flex-col gap-2.5">
       <motion.div
         initial={{scale: 0, opacity: 0}}
         whileInView={{scale: 1, opacity: 1}}>
@@ -177,7 +177,7 @@ const RosterSection: FC<{
         </Typography>
       </motion.div>
 
-      <div className="flex flex-col gap-1.5">{components}</div>
+      <div className="flex w-full flex-col gap-1.5">{components}</div>
     </div>
   )
 }
