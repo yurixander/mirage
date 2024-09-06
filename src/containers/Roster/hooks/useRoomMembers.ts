@@ -20,6 +20,8 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
 
   const fetchRoomMembers = useCallback(
     async (activeRoom: Room) => {
+      setIsLoading(true)
+
       try {
         const newMembers = await getRoomMembers(activeRoom)
 

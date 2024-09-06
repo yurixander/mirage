@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import {stringToColor, formatTime, trim} from "@/utils/util"
+import {stringToColor, formatTime, trim, cleanDisplayName} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {type UserPowerLevel} from "@/utils/members"
@@ -97,14 +97,16 @@ const RosterUserTypography: FC<{
 }> = ({maxLength, text, style, variant = TypographyVariant.Body}) => {
   const exceedsLimit = text.length > maxLength
 
+  if (text.at(0) === "G") {
+    console.log(text)
+  }
+
   return exceedsLimit ? (
     <TooltipProvider delayDuration={2000}>
       <Tooltip>
-        <TooltipTrigger
-          aria-label={trim(text, maxLength)}
-          className="cursor-default">
-          <Typography style={style} variant={variant}>
-            {trim(text, maxLength)}
+        <TooltipTrigger aria-label={trim(text, maxLength)}>
+          <Typography className="shrink-0" style={style} variant={variant}>
+            {cleanDisplayName(trim(text, maxLength))}
           </Typography>
         </TooltipTrigger>
 

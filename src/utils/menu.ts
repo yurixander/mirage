@@ -188,7 +188,7 @@ export function buildDirectRoomsMenuItems({
   const menuItems: ContextMenuItem[] = [
     {
       icon: IoAddCircle,
-      text: "Create direct rooms",
+      text: "Create DM",
       onClick: onCreateDirectRoom,
     },
   ]
