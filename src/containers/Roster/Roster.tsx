@@ -1,14 +1,13 @@
-import React, {useMemo, type FC} from "react"
-import IconButton from "../../components/IconButton"
+import {type FC} from "react"
 import {IoFilterCircle, IoPeople, IoReloadOutline} from "react-icons/io5"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import RosterUser, {type RosterUserData} from "./RosterUser"
-import {UserPowerLevel} from "@/utils/members"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
 import {Button} from "@/components/ui/button"
 import UserProfileGhost from "@/components/UserProfileGhost"
+import {type GroupedMembers} from "./hooks/useRoomMembers"
 
 export enum RosterUserCategory {
   Admin,
@@ -16,7 +15,7 @@ export enum RosterUserCategory {
 }
 
 export type RosterProps = {
-  members: RosterUserData[]
+  groupedMembers: GroupedMembers
   isLoading: boolean
   isError?: boolean
   onUserClick: (userId: string) => void
@@ -27,54 +26,14 @@ export type RosterProps = {
 const MAX_MEMBERS_LENGTH_FOR_GHOST = 10
 
 const Roster: FC<RosterProps> = ({
-  members,
+  groupedMembers,
   onUserClick,
   isLoading,
   isError,
   onReloadMembers,
   className,
 }) => {
-  const adminsComponents = useMemo(
-    () =>
-      members
-        .filter(member => member.powerLevel === UserPowerLevel.Admin)
-        .map(member => (
-          <RosterUser
-            key={member.userId}
-            {...member}
-            onUserClick={onUserClick}
-          />
-        )),
-    [members, onUserClick]
-  )
-
-  const moderatorsComponents = useMemo(
-    () =>
-      members
-        .filter(member => member.powerLevel === UserPowerLevel.Moderator)
-        .map(member => (
-          <RosterUser
-            key={member.userId}
-            {...member}
-            onUserClick={onUserClick}
-          />
-        )),
-    [members, onUserClick]
-  )
-
-  const membersComponents = useMemo(
-    () =>
-      members
-        .filter(member => member.powerLevel === UserPowerLevel.Member)
-        .map(member => (
-          <RosterUser
-            key={member.userId}
-            {...member}
-            onUserClick={onUserClick}
-          />
-        )),
-    [members, onUserClick]
-  )
+  const {admins, moderators, members} = groupedMembers
 
   return (
     <div
@@ -90,15 +49,13 @@ const Roster: FC<RosterProps> = ({
             People
           </Typography>
 
-          <IconButton
-            tooltip="Sort members"
-            Icon={IoFilterCircle}
-            size={20}
-            iconClassName="text-neutral-500"
-            onClick={() => {
-              // TODO: Handle `sort` button click.
-            }}
-          />
+          <Button
+            aria-label="Sort members"
+            variant="ghost"
+            size="icon"
+            className="size-6 text-neutral-500">
+            <IoFilterCircle size={20} />
+          </Button>
         </div>
       </header>
 
@@ -129,22 +86,26 @@ const Roster: FC<RosterProps> = ({
         <ScrollArea className="max-w-56 px-1 pt-3" type="scroll">
           <div className="flex flex-col gap-4">
             <RosterSection
-              title={`ADMINS — ${adminsComponents.length}`}
-              components={adminsComponents}
+              title={`ADMINS — ${admins.length}`}
+              members={admins}
+              onUserClick={onUserClick}
             />
 
             <RosterSection
-              title={`MODERATORS — ${moderatorsComponents.length}`}
-              components={moderatorsComponents}
+              title={`MODERATORS — ${moderators.length}`}
+              members={moderators}
+              onUserClick={onUserClick}
             />
 
             <RosterSection
-              title={`MEMBERS — ${membersComponents.length}`}
-              components={membersComponents}
+              title={`MEMBERS — ${members.length}`}
+              members={members}
+              onUserClick={onUserClick}
             />
           </div>
 
-          {members.length <= MAX_MEMBERS_LENGTH_FOR_GHOST && (
+          {admins.length + moderators.length + members.length <=
+            MAX_MEMBERS_LENGTH_FOR_GHOST && (
             <UserProfileGhost
               className="p-2"
               count={4}
@@ -159,9 +120,10 @@ const Roster: FC<RosterProps> = ({
 
 const RosterSection: FC<{
   title: string
-  components: React.JSX.Element[]
-}> = ({components, title}) => {
-  if (components.length === 0) {
+  members: RosterUserData[]
+  onUserClick: (userId: string) => void
+}> = ({members, title, onUserClick}) => {
+  if (members.length === 0) {
     return <></>
   }
 
@@ -177,7 +139,15 @@ const RosterSection: FC<{
         </Typography>
       </motion.div>
 
-      <div className="flex w-full flex-col gap-1.5">{components}</div>
+      <div className="flex w-full flex-col gap-1.5">
+        {members.map(member => (
+          <RosterUser
+            key={member.userId}
+            {...member}
+            onUserClick={onUserClick}
+          />
+        ))}
+      </div>
     </div>
   )
 }

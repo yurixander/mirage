@@ -5,8 +5,14 @@ import {type Room} from "matrix-js-sdk"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {type RosterUserData} from "../RosterUser"
 
-export type UseRoomMembersReturnType = {
+export type GroupedMembers = {
+  admins: RosterUserData[]
+  moderators: RosterUserData[]
   members: RosterUserData[]
+}
+
+export type UseRoomMembersReturnType = {
+  groupedMembers: GroupedMembers
   isMembersLoading: boolean
   isMembersError: boolean
 }
@@ -14,19 +20,24 @@ export type UseRoomMembersReturnType = {
 const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
   const client = useMatrixClient()
   const isMountedReference = useIsMountedRef()
-  const [members, setMembers] = useState<RosterUserData[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
+
+  const [groupedMembers, setGroupedMembers] = useState<GroupedMembers>({
+    admins: [],
+    members: [],
+    moderators: [],
+  })
 
   const fetchRoomMembers = useCallback(
     async (activeRoom: Room) => {
       setIsLoading(true)
 
       try {
-        const newMembers = await getRoomMembers(activeRoom)
+        const newGroupedMembers = await getRoomMembers(activeRoom)
 
         if (isMountedReference.current) {
-          setMembers(newMembers)
+          setGroupedMembers(newGroupedMembers)
 
           setIsLoading(false)
         }
@@ -58,7 +69,7 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
   }, [client, fetchRoomMembers, isMountedReference, roomId])
 
   return {
-    members,
+    groupedMembers,
     isMembersLoading: isLoading,
     isMembersError: isError,
   }

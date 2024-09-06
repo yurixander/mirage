@@ -14,7 +14,7 @@ const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
 
-  const {members, isMembersLoading, isMembersError} =
+  const {groupedMembers, isMembersLoading, isMembersError} =
     useRoomMembers(activeRoomId)
 
   return (
@@ -38,7 +38,7 @@ const RoomContainer: FC = () => {
           <motion.div animate={{width: isRosterExpanded ? 250 : 0}}>
             <Roster
               className="max-w-60"
-              members={members}
+              groupedMembers={groupedMembers}
               isLoading={isMembersLoading}
               isError={isMembersError}
               onUserClick={function (userId: string): void {

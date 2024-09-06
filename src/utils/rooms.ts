@@ -47,6 +47,7 @@ import {
   EventShortenerType,
 } from "@/components/EventGroupMessage"
 import {type EventMessageData} from "@/components/EventMessage"
+import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 
 export enum ImageSizes {
   Server = 47,
@@ -90,10 +91,13 @@ export async function getAllJoinedRooms(
 const FETCH_MEMBERS_LIMIT = 30
 const PRESENCE_MAX = 30
 
-export async function getRoomMembers(room: Room): Promise<RosterUserData[]> {
-  const membersProperty: RosterUserData[] = []
+export async function getRoomMembers(room: Room): Promise<GroupedMembers> {
   const membersResponse = await room.client.getJoinedRoomMembers(room.roomId)
   const roomScrollBack = await room.client.scrollback(room, PRESENCE_MAX)
+
+  const members: RosterUserData[] = []
+  const moderators: RosterUserData[] = []
+  const admins: RosterUserData[] = []
 
   const roomOwnersWithLevels = getRoomUsersIdWithPowerLevels(room).filter(
     user => user.powerLevel !== UserPowerLevel.Member
@@ -114,17 +118,23 @@ export async function getRoomMembers(room: Room): Promise<RosterUserData[]> {
       roomOwner.userId
     )
 
-    membersProperty.push({
+    const roomOwnerProps: RosterUserData = {
       displayName: normalizeName(name),
-      powerLevel: roomOwner.powerLevel,
       userId: roomOwner.userId,
       lastPresenceAge: lastPresence ?? undefined,
+      powerLevel: roomOwner.powerLevel,
       avatarUrl: getImageUrl(
         roomOwnerMember.avatar_url,
         room.client,
         ImageSizes.MessageAndProfile
       ),
-    })
+    }
+
+    if (roomOwner.powerLevel === UserPowerLevel.Admin) {
+      admins.push(roomOwnerProps)
+    } else if (roomOwner.powerLevel === UserPowerLevel.Moderator) {
+      moderators.push(roomOwnerProps)
+    }
   }
 
   let memberCount = 0
@@ -152,7 +162,7 @@ export async function getRoomMembers(room: Room): Promise<RosterUserData[]> {
       joinedMemberId
     )
 
-    membersProperty.push({
+    members.push({
       displayName: normalizeName(name),
       powerLevel: UserPowerLevel.Member,
       userId: joinedMemberId,
@@ -167,7 +177,11 @@ export async function getRoomMembers(room: Room): Promise<RosterUserData[]> {
     memberCount += 1
   }
 
-  return membersProperty
+  return {
+    admins,
+    moderators,
+    members,
+  }
 }
 
 // #region Direct rooms
