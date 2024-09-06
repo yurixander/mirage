@@ -14,6 +14,7 @@ export type GroupedMembers = {
 export type UseRoomMembersReturnType = {
   groupedMembers: GroupedMembers | Error
   isMembersLoading: boolean
+  onReloadMembers: () => void
 }
 
 const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
@@ -53,7 +54,7 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
     [isMountedReference]
   )
 
-  useEffect(() => {
+  const loadMembers = useCallback(() => {
     if (!isMountedReference.current || client === null || roomId === null) {
       return
     }
@@ -70,9 +71,14 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
     void fetchRoomMembers(activeRoom)
   }, [client, fetchRoomMembers, isMountedReference, roomId])
 
+  useEffect(() => {
+    loadMembers()
+  }, [loadMembers])
+
   return {
     groupedMembers,
     isMembersLoading: isLoading,
+    onReloadMembers: loadMembers,
   }
 }
 

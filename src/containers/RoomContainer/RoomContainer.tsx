@@ -12,8 +12,10 @@ import useRoomMembers from "../Roster/hooks/useRoomMembers"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
-  const {groupedMembers, isMembersLoading} = useRoomMembers(activeRoomId)
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
+
+  const {groupedMembers, isMembersLoading, onReloadMembers} =
+    useRoomMembers(activeRoomId)
 
   return (
     <div
@@ -38,11 +40,9 @@ const RoomContainer: FC = () => {
               className="max-w-60"
               groupedMembers={groupedMembers}
               isLoading={isMembersLoading}
+              onReloadMembers={onReloadMembers}
               onUserClick={function (userId: string): void {
                 throw new Error("`onUserClick` function not implemented.")
-              }}
-              onReloadMembers={function (): void {
-                throw new Error("`onReloadMembers` function not implemented.")
               }}
             />
           </motion.div>

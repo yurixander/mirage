@@ -66,6 +66,7 @@ const RosterUser: FC<RosterUserProps> = ({
         }
       }}>
       <AvatarImage
+        className="shrink-0"
         avatarUrl={avatarUrl}
         avatarType={AvatarType.Profile}
         displayName={displayName}
