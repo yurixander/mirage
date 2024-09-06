@@ -24,7 +24,7 @@ export type RosterProps = {
   className?: string
 }
 
-const MAX_MEMBER_LENGTH = 10
+const MAX_MEMBERS_LENGTH_FOR_GHOST = 10
 
 const Roster: FC<RosterProps> = ({
   members,
@@ -79,7 +79,7 @@ const Roster: FC<RosterProps> = ({
   return (
     <div
       className={twMerge(
-        "flex size-full max-w-60 flex-col border border-l-slate-300 bg-gray-50",
+        "flex size-full flex-col border border-l-slate-300 bg-gray-50",
         className
       )}>
       <header className="flex size-full max-h-12 border-b border-b-slate-300">
@@ -126,20 +126,17 @@ const Roster: FC<RosterProps> = ({
       ) : (
         <ScrollArea className="px-1 pt-3" type="scroll">
           <div className="flex flex-col gap-4">
-            <RosterSection title="Admins --- 1" components={adminsComponents} />
+            <RosterSection title="Admins — 1" components={adminsComponents} />
 
             <RosterSection
-              title="Moderators --- 1"
+              title="Moderators — 1"
               components={moderatorsComponents}
             />
 
-            <RosterSection
-              title="Members --- 1"
-              components={membersComponents}
-            />
+            <RosterSection title="Members — 1" components={membersComponents} />
           </div>
 
-          {members.length <= MAX_MEMBER_LENGTH && (
+          {members.length <= MAX_MEMBERS_LENGTH_FOR_GHOST && (
             <UserProfileGhost
               className="p-2"
               count={4}

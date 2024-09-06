@@ -1,82 +1,53 @@
 import {useEffect, useState, useCallback} from "react"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {getRoomMembers} from "@/utils/rooms"
-import {type MemberSection} from "@/containers/Roster/MemberList"
 import {type Room} from "matrix-js-sdk"
-import {UserPowerLevel} from "@/utils/members"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import {type RosterUserData} from "../RosterUser"
 
 export type UseRoomMembersReturnType = {
-  sections: MemberSection[]
+  members: RosterUserData[]
   isMembersLoading: boolean
   isMembersError: boolean
 }
 
-enum MembersState {
-  Idle,
-  Loading,
-  Error,
-}
-
-const useRoomMembers = (roomId: string): UseRoomMembersReturnType => {
+const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
   const client = useMatrixClient()
   const isMountedReference = useIsMountedRef()
-  const [sections, setSections] = useState<MemberSection[]>([])
-  const [membersState, setMembersState] = useState(MembersState.Idle)
+  const [members, setMembers] = useState<RosterUserData[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isError, setIsError] = useState(false)
 
   const fetchRoomMembers = useCallback(
     async (activeRoom: Room) => {
-      setMembersState(MembersState.Loading)
-
       try {
         const newMembers = await getRoomMembers(activeRoom)
 
-        const groupedMembers: MemberSection[] = [
-          {
-            title: "Admin",
-            users: newMembers.filter(
-              user => user.powerLevel === UserPowerLevel.Admin
-            ),
-          },
-          {
-            title: "Moderator",
-            users: newMembers.filter(
-              user => user.powerLevel === UserPowerLevel.Moderator
-            ),
-          },
-          {
-            title: "Member",
-            users: newMembers.filter(
-              user => user.powerLevel === UserPowerLevel.Member
-            ),
-          },
-        ]
-
         if (isMountedReference.current) {
-          setSections(groupedMembers)
+          setMembers(newMembers)
+
+          setIsLoading(false)
         }
       } catch (error) {
-        setMembersState(MembersState.Error)
+        setIsError(true)
+        setIsLoading(false)
 
         console.error("Error fetching room members:", error)
-      } finally {
-        if (isMountedReference.current) {
-          setMembersState(MembersState.Idle)
-        }
       }
     },
     [isMountedReference]
   )
 
   useEffect(() => {
-    if (!isMountedReference.current || client === null) {
+    if (!isMountedReference.current || client === null || roomId === null) {
       return
     }
 
     const activeRoom = client.getRoom(roomId)
 
     if (activeRoom === null) {
-      setMembersState(MembersState.Error)
+      setIsError(true)
+      setIsLoading(false)
 
       return
     }
@@ -85,9 +56,9 @@ const useRoomMembers = (roomId: string): UseRoomMembersReturnType => {
   }, [client, fetchRoomMembers, isMountedReference, roomId])
 
   return {
-    sections,
-    isMembersLoading: membersState === MembersState.Loading,
-    isMembersError: membersState === MembersState.Error,
+    members,
+    isMembersLoading: isLoading,
+    isMembersError: isError,
   }
 }
 

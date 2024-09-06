@@ -8,10 +8,14 @@ import RoomInvitedSplash from "./RoomInvitedSplash"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 import {motion} from "framer-motion"
+import useRoomMembers from "../Roster/hooks/useRoomMembers"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
+
+  const {members, isMembersLoading, isMembersError} =
+    useRoomMembers(activeRoomId)
 
   return (
     <div
@@ -31,10 +35,18 @@ const RoomContainer: FC = () => {
             />
           )}
 
-          <motion.div animate={{width: isRosterExpanded ? 208 : 0}}>
+          <motion.div animate={{width: isRosterExpanded ? 240 : 0}}>
             <Roster
-              className="flex size-full max-w-52 flex-col border border-l-slate-300 bg-gray-50"
-              roomId={activeRoomId}
+              className="max-w-60"
+              members={members}
+              isLoading={isMembersLoading}
+              isError={isMembersError}
+              onUserClick={function (userId: string): void {
+                throw new Error("`onUserClick` function not implemented.")
+              }}
+              onReloadMembers={function (): void {
+                throw new Error("`onReloadMembers` function not implemented.")
+              }}
             />
           </motion.div>
         </div>
