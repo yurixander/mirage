@@ -3,7 +3,6 @@ import {twMerge} from "tailwind-merge"
 import {type Emoji, type EmojiMartData, type Skin} from "@emoji-mart/data"
 import {createPortal} from "react-dom"
 import useElementPoints from "@/hooks/util/useElementPoints"
-import {type Points} from "./ContextMenu"
 import {
   IoIosCafe,
   IoIosPartlySunny,
@@ -50,16 +49,11 @@ const categories: CategoryWithIcon[] = [
 ]
 
 type EmojiPickerProps = {
-  locationPoints: Points
   onPickEmoji: (emoji: string) => void
   className?: string
 }
 
-const EmojiPicker: FC<EmojiPickerProps> = ({
-  locationPoints,
-  onPickEmoji,
-  className,
-}) => {
+const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
   const [categorySelected, setCategorySelected] = useState(
     EmojiCategories.People
   )
@@ -77,14 +71,10 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
   return (
     <div
       className={twMerge(
-        "fixed z-50 flex size-full max-h-96 max-w-80 -translate-x-3/4 -translate-y-full flex-col gap-1 rounded-xl bg-gray-100 p-1.5 shadow-md",
+        "flex size-full max-h-96 max-w-80 flex-col gap-2",
         className
-      )}
-      style={{
-        left: `${locationPoints.x}px`,
-        top: `${locationPoints.y - 45}px`,
-      }}>
-      <div className="flex size-full max-h-10 items-center justify-center gap-1 border-b border-b-slate-300">
+      )}>
+      <div className="flex size-full max-h-10 items-center justify-center gap-1 border-b border-b-slate-300 p-1">
         {categories.map(category => (
           <button
             key={category.category}
@@ -102,7 +92,7 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
         ))}
       </div>
 
-      <div className="h-12 w-full px-9">
+      <div className="h-12 w-full">
         <Input placeholder="Search any emoji" onValueChange={setEmojiQuery} />
       </div>
 

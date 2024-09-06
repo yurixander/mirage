@@ -31,7 +31,7 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
     open: isOpen,
     onOpenChange: setIsOpen,
     placement: "top",
-    middleware: [flip(), shift(), offset({crossAxis: 40, mainAxis: 16})],
+    middleware: [flip(), shift(), offset({crossAxis: 20, mainAxis: 16})],
   })
 
   const click = useClick(context)
@@ -143,8 +143,6 @@ const AttachAction: FC<AttachActionProps> = ({
   return (
     <motion.button
       aria-label={ariaLabel}
-      initial={{translateY: -10, opacity: 0.5}}
-      whileInView={{translateY: 0, opacity: 1}}
       className="flex gap-2 rounded-md px-3 py-2 hover:bg-gray-100"
       onClick={onPickFile}>
       <Icon />
