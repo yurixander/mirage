@@ -125,14 +125,16 @@ const ChatInput: FC<ChatInputProps> = ({
           />
 
           <InputChatAction
+            ariaLabel="Record Audio"
             isDisabled={isInputDisabled}
             onClick={() => {
               // TODO: Handle capture audio.
             }}>
-            <IoMic className={INPUT_ACTION_CLASS} />
+            <IoMic aria-label="Record Audio" className={INPUT_ACTION_CLASS} />
           </InputChatAction>
 
           <InputChatAction
+            ariaLabel="Send text message"
             isDisabled={messageText.length === 0 || isInputDisabled}
             onClick={() => {
               textAreaRef.current?.focus()
@@ -151,16 +153,19 @@ const ChatInput: FC<ChatInputProps> = ({
 const InputChatAction: FC<{
   onClick: () => void
   children: React.JSX.Element
+  ariaLabel: string
   isDisabled?: boolean
-}> = ({isDisabled, children, onClick}) => {
+}> = ({isDisabled, children, onClick, ariaLabel}) => {
   const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
 
   return (
     <Button
+      aria-label={ariaLabel}
       ref={renderRef}
       variant="ghost"
       size="icon"
       className="size-max hover:bg-transparent"
+      disabled={isDisabled}
       onClick={() => {
         try {
           onClick()
@@ -171,8 +176,7 @@ const InputChatAction: FC<{
 
           showTooltip(error.message, true)
         }
-      }}
-      disabled={isDisabled}>
+      }}>
       {children}
     </Button>
   )
@@ -205,18 +209,13 @@ const EmojiPickerPopover: FC<{
       <PopoverTrigger asChild>
         <Button
           disabled={isDisabled}
-          className={twMerge(
-            isEmojiPickerVisible && "bg-accent text-accent-foreground",
-            "size-max hover:bg-transparent"
-          )}
           aria-label="Emoji picker"
           variant="ghost"
           size="icon"
-          onKeyDown={event => {
-            if (event.ctrlKey && event.key === "q") {
-              setIsEmojiPickerVisible(true)
-            }
-          }}>
+          className={twMerge(
+            isEmojiPickerVisible && "bg-accent text-accent-foreground",
+            "size-max hover:bg-transparent"
+          )}>
           <IoIosHappy
             aria-label="Smile icon"
             className={twMerge(
