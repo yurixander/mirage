@@ -28,7 +28,6 @@ export type SelectionRange = {
 }
 
 const INPUT_ACTION_CLASS = "size-5 md:size-6 text-slate-300"
-
 const ChatInput: FC<ChatInputProps> = ({
   roomId,
   onSendMessageText,

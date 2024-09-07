@@ -47,6 +47,7 @@ const AttachSource: FC<ChooseFileButtonProps> = ({
     <>
       <motion.button
         disabled={isDisabled}
+        className="disabled:opacity-80"
         aria-label="Attach source"
         animate={{rotate: isOpen ? "45deg" : undefined}}
         ref={refs.setReference}
