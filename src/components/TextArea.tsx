@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type TextAreaProps = {
@@ -26,6 +26,12 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ) => {
     const [rows, setRows] = useState(1)
 
+    useEffect(() => {
+      const lineCount = value.split("\n").length
+
+      setRows(Math.min(lineCount, maxRows))
+    }, [maxRows, value])
+
     return (
       <textarea
         ref={ref}
@@ -39,12 +45,7 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
         value={value}
         onSelect={onSelect}
         onChange={e => {
-          const currentValue = e.target.value
-
-          const lineCount = currentValue.split("\n").length
-
-          setRows(Math.min(lineCount, maxRows))
-          onValueChanged(currentValue)
+          onValueChanged(e.target.value)
         }}
       />
     )

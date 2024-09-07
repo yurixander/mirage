@@ -17,6 +17,7 @@ import {type IconType} from "react-icons"
 import emojiData from "@/../public/data/emoji-data.json"
 import useEmojiSearch from "@/hooks/util/useEmojiSearch"
 import Input from "./Input"
+import {type SelectionRange} from "@/containers/RoomContainer/ChatInput"
 
 const emojiMartData: EmojiMartData = emojiData
 const emojis: Emoji[] = Object.values(emojiData.emojis)
@@ -235,6 +236,43 @@ export function getEmojiByIndex(index: number): Emoji {
   const emojiIndex = index % emojis.length
 
   return emojis[emojiIndex]
+}
+
+export function putEmojiInPosition(
+  emoji: string,
+  caretPosition: number | null,
+  {selectionEnd, selectionStart}: SelectionRange,
+  setText: (updater: (prevText: string) => string) => void
+): void {
+  setText(prevText => {
+    if (
+      selectionStart !== null &&
+      selectionEnd !== null &&
+      selectionEnd !== selectionStart
+    ) {
+      try {
+        if (selectionStart === 1 && selectionEnd === prevText.length) {
+          return emoji
+        }
+
+        return prevText
+          .slice(0, selectionStart)
+          .concat(emoji)
+          .concat(prevText.slice(selectionEnd, prevText.length))
+      } catch (error) {
+        console.error("Error updating text", error)
+      }
+    }
+
+    if (caretPosition === null || caretPosition >= prevText.length) {
+      return prevText + emoji
+    }
+
+    return prevText
+      .slice(0, caretPosition)
+      .concat(emoji)
+      .concat(prevText.slice(caretPosition, prevText.length))
+  })
 }
 
 export default EmojiPicker
