@@ -15,8 +15,9 @@ import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl} from "@/utils/util"
-import {type Room, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
+import {MsgType, type Room, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
+import {type MessageSendRequest} from "../ChatInput"
 
 export enum MessageKind {
   Text,
@@ -79,6 +80,9 @@ type UseRoomChatReturnType = {
   roomName: string
   messages: AnyMessage[]
   typingUsers: TypingIndicatorUser[]
+  isInputDisabled: boolean
+  sendTypingEvent: (roomId: string) => void
+  sendMessageText: (messageSendRequest: MessageSendRequest) => void
 }
 
 const useRoomChat = (roomId: string): UseRoomChatReturnType => {
@@ -203,7 +207,31 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     )
   })
 
-  return {messagesState, isChatLoading, roomName, messages, typingUsers}
+  return {
+    messagesState,
+    isChatLoading,
+    roomName,
+    messages,
+    typingUsers,
+    isInputDisabled: client === null,
+    sendMessageText({messageText, roomId}) {
+      if (client === null || messageText.length === 0) {
+        return
+      }
+
+      void client.sendMessage(roomId, {
+        body: messageText,
+        msgtype: MsgType.Text,
+      })
+    },
+    sendTypingEvent(roomId) {
+      if (client === null) {
+        return
+      }
+
+      void client.sendTyping(roomId, true, 2000)
+    },
+  }
 }
 
 export default useRoomChat

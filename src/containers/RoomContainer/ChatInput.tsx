@@ -8,8 +8,9 @@ import AttachSource from "./AttachSource"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {Button} from "@/components/ui/button"
 import useTooltip from "@/hooks/util/useTooltip"
+import useDebounced from "@/hooks/util/useDebounced"
 
-type MessageSendRequest = {
+export type MessageSendRequest = {
   roomId: string
   messageText: string
 }
@@ -19,6 +20,7 @@ export type ChatInputProps = {
   isInputDisabled: boolean
   onSendMessageText: (messageSendRequest: MessageSendRequest) => void
   onPickFile: (file: File) => void
+  onSendTypingEvent: (roomId: string) => void
   className?: string
 }
 
@@ -28,21 +30,32 @@ export type SelectionRange = {
 }
 
 const INPUT_ACTION_CLASS = "size-5 md:size-6 text-slate-300"
+
 const ChatInput: FC<ChatInputProps> = ({
   roomId,
   onSendMessageText,
   onPickFile,
+  onSendTypingEvent,
   isInputDisabled,
   className,
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
   const [caretPosition, setCaretPosition] = useState<number | null>(null)
   const [messageText, setMessageText] = useState("")
+  const debouncedText = useDebounced(messageText, 500)
 
   const [selectionRange, setSelectionRange] = useState<SelectionRange>({
     selectionEnd: null,
     selectionStart: null,
   })
+
+  useEffect(() => {
+    if (debouncedText.length === 0 || isInputDisabled) {
+      return
+    }
+
+    onSendTypingEvent(roomId)
+  }, [debouncedText.length, isInputDisabled, onSendTypingEvent, roomId])
 
   useEffect(() => {
     if (textAreaRef.current === null) {
@@ -70,7 +83,7 @@ const ChatInput: FC<ChatInputProps> = ({
   return (
     <div
       className={twMerge(
-        "bg-red mx-2 my-1 flex max-h-28 items-start gap-2 rounded-2xl border border-slate-300 bg-gray-50",
+        "flex max-h-28 items-start gap-2 rounded-2xl border border-slate-300 bg-gray-50",
         "w-full md:max-h-36 md:gap-2.5 md:rounded-3xl md:px-3 md:py-2",
         className
       )}>
@@ -98,7 +111,7 @@ const ChatInput: FC<ChatInputProps> = ({
           }}
         />
 
-        <div className="ml-auto flex h-7 items-center gap-1.5">
+        <div className="ml-auto flex h-7 items-center gap-2">
           <EmojiPickerPopover
             isDisabled={isInputDisabled}
             onPickEmoji={emoji => {
@@ -214,7 +227,11 @@ const EmojiPickerPopover: FC<{
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent sideOffset={16} side="top" className="p-1.5">
+      <PopoverContent
+        align="end"
+        alignOffset={-70}
+        sideOffset={16}
+        className="p-1.5">
         <EmojiPicker onPickEmoji={onPickEmoji} />
       </PopoverContent>
     </Popover>

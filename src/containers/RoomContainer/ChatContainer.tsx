@@ -23,8 +23,16 @@ const ChatContainer: FC<ChatContainerProps> = ({
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  const {messagesState, roomName, isChatLoading, messages, typingUsers} =
-    useRoomChat(roomId)
+  const {
+    messagesState,
+    roomName,
+    isChatLoading,
+    messages,
+    typingUsers,
+    sendTypingEvent,
+    isInputDisabled,
+    sendMessageText,
+  } = useRoomChat(roomId)
 
   assert(roomId.length > 0, "The roomId should not be empty.")
 
@@ -64,8 +72,16 @@ const ChatContainer: FC<ChatContainerProps> = ({
         </div>
       </div>
 
-      <footer className="relative order-3 flex flex-col">
-        <ChatInput roomId={roomId} />
+      <footer className="order-3 flex flex-col px-1">
+        <ChatInput
+          onSendTypingEvent={sendTypingEvent}
+          isInputDisabled={isInputDisabled}
+          roomId={roomId}
+          onSendMessageText={sendMessageText}
+          onPickFile={file => {
+            // TODO: Handle files preview here.
+          }}
+        />
 
         <div className="flex size-full max-h-9 flex-col">
           <div className="flex gap-2">
