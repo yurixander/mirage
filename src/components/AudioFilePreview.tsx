@@ -24,7 +24,9 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
   onSend,
 }) => {
   const fileExtension = getFileExtension(fileName).toUpperCase()
+
   const waveformRef = useRef(null)
+
   const {wavesurfer: waverer, isReady} = useWavesurfer({
     container: waveformRef,
     waveColor: "#ddd",
@@ -59,6 +61,7 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
               {fileName}
             </Typography>
           </div>
+
           <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2 shadow">
             <div>
               {isReady ? (
@@ -67,12 +70,14 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
                   Icon={waverer?.isPlaying() ? IoPause : IoPlay}
                   className="flex size-10 items-center justify-center rounded-full bg-white p-2 shadow"
                   onClick={() => {
-                    if (waverer !== null) {
-                      if (waverer.isPlaying()) {
-                        waverer.pause()
-                      } else {
-                        void waverer?.play()
-                      }
+                    if (waverer === null) {
+                      return
+                    }
+
+                    if (waverer.isPlaying()) {
+                      waverer.pause()
+                    } else {
+                      void waverer.play()
                     }
                   }}
                 />
@@ -80,6 +85,7 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
                 <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
               )}
             </div>
+
             <div ref={waveformRef} className="max-h-12 w-full" />
           </div>
 
@@ -97,12 +103,14 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
             </Typography>
           </div>
         </div>
+
         <div className="flex gap-1 overflow-hidden">
           <ReactSVG src={StaticAssetPath.DotGrid} />
 
           <ReactSVG src={StaticAssetPath.DotGrid} />
         </div>
       </div>
+
       <div className="flex h-16 w-full items-center justify-end gap-2 border-t bg-slate-100 px-5">
         <Button className="w-20" label="Cancel" onClick={onClose} />
 
@@ -118,11 +126,11 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
 }
 
 export const getAudioDuration = (
-  url: string,
+  file: File,
   onObtainDuration: (duration: number) => void
 ): void => {
   const media = document.createElement("audio")
-  media.src = url
+  media.src = URL.createObjectURL(file)
 
   const obtainDuration = (event: Event): void => {
     if (event.target instanceof HTMLAudioElement) {
