@@ -21,17 +21,22 @@ import {twMerge} from "tailwind-merge"
 
 type ChooseFileButtonProps = {
   onPickFile: (file: File) => void
+  isDisabled?: boolean
   className?: string
 }
 
-const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
+const AttachSource: FC<ChooseFileButtonProps> = ({
+  onPickFile,
+  isDisabled,
+  className,
+}) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const {refs, floatingStyles, context} = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
     placement: "top",
-    middleware: [flip(), shift(), offset({crossAxis: 40, mainAxis: 16})],
+    middleware: [flip(), shift(), offset({crossAxis: 20, mainAxis: 16})],
   })
 
   const click = useClick(context)
@@ -41,6 +46,8 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
   return (
     <>
       <motion.button
+        disabled={isDisabled}
+        className="disabled:opacity-80"
         aria-label="Attach source"
         animate={{rotate: isOpen ? "45deg" : undefined}}
         ref={refs.setReference}
@@ -143,8 +150,6 @@ const AttachAction: FC<AttachActionProps> = ({
   return (
     <motion.button
       aria-label={ariaLabel}
-      initial={{translateY: -10, opacity: 0.5}}
-      whileInView={{translateY: 0, opacity: 1}}
       className="flex gap-2 rounded-md px-3 py-2 hover:bg-gray-100"
       onClick={onPickFile}>
       <Icon />
