@@ -3,6 +3,17 @@ import {MsgType} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 
+type MsgRequestContentOf<IsText extends boolean> = IsText extends true
+  ? string
+  : File
+
+export type MsgRequestOf<IsText extends boolean> = {
+  isText: IsText
+  content: MsgRequestContentOf<IsText>
+}
+
+export type AnyMsgRequestContent = MsgRequestOf<true> | MsgRequestOf<false>
+
 type UseChatInputReturnType = {
   messageText: string
   setMessageText: React.Dispatch<React.SetStateAction<string>>
