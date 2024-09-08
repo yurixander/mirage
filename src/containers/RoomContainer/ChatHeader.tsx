@@ -1,7 +1,6 @@
 import IconButton from "@/components/IconButton"
 import {type FC} from "react"
 import {
-  IoInformationCircle,
   IoChevronForward,
   IoChevronBack,
   IoCall,

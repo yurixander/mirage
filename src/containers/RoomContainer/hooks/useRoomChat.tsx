@@ -15,7 +15,13 @@ import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl} from "@/utils/util"
-import {type Room, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
+import {
+  EventTimeline,
+  EventType,
+  type Room,
+  RoomEvent,
+  RoomMemberEvent,
+} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 
 export enum MessageKind {
@@ -132,12 +138,18 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
 
     setRoomName(room.name)
 
-    // eslint-disable-next-line deprecation/deprecation
-    const topicEvent = room.currentState.getStateEvents("m.room.topic", "")
-    const roomDescription = topicEvent ? topicEvent.getContent().topic : ""
+    const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
 
-    if (typeof roomDescription === "string") {
-      setRoomTopic(roomDescription)
+    if (roomState) {
+      const roomDescription = roomState
+        .getStateEvents(EventType.RoomTopic, "")
+        ?.getContent().topic
+
+      if (typeof roomDescription === "string") {
+        setRoomTopic(roomDescription)
+      } else {
+        setRoomTopic("")
+      }
     }
 
     setChatLoading(false)
