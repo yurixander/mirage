@@ -1,12 +1,6 @@
 import IconButton from "@/components/IconButton"
 import {useState, type FC} from "react"
-import {
-  IoCall,
-  IoExit,
-  IoNotifications,
-  IoPaperPlane,
-  IoSearch,
-} from "react-icons/io5"
+import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import NotificationBoxPopup from "./modals/NotificationBoxPopup"
 import useNotifications from "./hooks/useNotifications"
@@ -21,6 +15,7 @@ import {
 } from "@floating-ui/react"
 import {motion} from "framer-motion"
 import DirectChatsPopup from "./DirectChatsPopup"
+import {FaSearch} from "react-icons/fa"
 
 enum SidebarPopups {
   None,
@@ -76,7 +71,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
         <IconButton
           tooltip="Search"
           iconClassName="text-slate-400"
-          Icon={IoSearch}
+          Icon={FaSearch}
           onClick={() => {}}
         />
 

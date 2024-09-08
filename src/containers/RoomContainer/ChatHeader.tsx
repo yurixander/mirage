@@ -7,6 +7,8 @@ import {
   IoCall,
   IoVideocam,
   IoSearch,
+  IoInformation,
+  IoLink,
 } from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
 
@@ -67,9 +69,17 @@ const ChatHeader: FC<ChatHeaderProps> = ({
 
       <IconButton
         onClick={() => {
+          /* TODO: Handle `info` button click. */
+        }}
+        tooltip="Copy link"
+        Icon={IoLink}
+      />
+
+      <IconButton
+        onClick={() => {
           /* TODO: Handle `search` button click. */
         }}
-        tooltip="Search"
+        tooltip="Search in room"
         Icon={IoSearch}
       />
 
@@ -78,7 +88,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
           /* TODO: Handle `info` button click. */
         }}
         tooltip="Room details"
-        Icon={IoInformationCircle}
+        Icon={IoInformation}
       />
 
       <IconButton
