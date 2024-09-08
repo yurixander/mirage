@@ -1,4 +1,5 @@
 import {type AudioMessageData} from "@/components/AudioMessage"
+import {type EventGroupMessageData} from "@/components/EventGroupMessage"
 import {type EventMessageData} from "@/components/EventMessage"
 import {type FileMessageData} from "@/components/FileMessage"
 import {type ImageMessageData} from "@/components/ImageMessage"
@@ -24,6 +25,7 @@ export enum MessageKind {
   Event,
   File,
   Reply,
+  EventGroup,
   Video,
   Unread,
 }
@@ -45,11 +47,15 @@ export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
         ? FileMessageData
         : Kind extends MessageKind.Audio
           ? AudioMessageData
-          : Kind extends MessageKind.Reply
-            ? ReplyMessageData
-            : Kind extends MessageKind.Video
-              ? VideoMessageData
-              : UnreadIndicatorProps
+          : Kind extends MessageKind.Audio
+            ? AudioMessageData
+            : Kind extends MessageKind.Reply
+              ? ReplyMessageData
+              : Kind extends MessageKind.EventGroup
+                ? EventGroupMessageData
+                : Kind extends MessageKind.Video
+                  ? VideoMessageData
+                  : UnreadIndicatorProps
 
 export type Message<Kind extends MessageKind> = {
   kind: Kind
@@ -65,6 +71,7 @@ export type AnyMessage =
   | Message<MessageKind.Unread>
   | Message<MessageKind.Audio>
   | Message<MessageKind.Reply>
+  | Message<MessageKind.EventGroup>
 
 type UseRoomChatReturnType = {
   messagesState: MessagesState

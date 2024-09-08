@@ -24,6 +24,7 @@ export type EventMessageData = {
 export interface EventMessageProps extends EventMessageData {
   onShowMember: () => void
   onFindUser: () => void
+  className?: string
 }
 
 const EventMessage: FC<EventMessageProps> = ({
@@ -34,6 +35,7 @@ const EventMessage: FC<EventMessageProps> = ({
   icon,
   onFindUser,
   onShowMember,
+  className,
 }) => {
   const Icon = icon ?? IoMdCreate
 

@@ -66,6 +66,12 @@ export function validateUrl(url: string): boolean {
   }
 }
 
+const matrixUserRegex = new RegExp(/^@[\w+.-]+:matrix\.org$/)
+
+export function validateMatrixUser(input: string): boolean {
+  return matrixUserRegex.test(input)
+}
+
 function stringToIndex(str: string): number {
   let totalSum = 0
 
@@ -128,6 +134,10 @@ export function normalizeName(displayName: string): string {
     .split("")
     .filter(char => char.charCodeAt(0) <= ASCII_LIMIT)
     .join("")
+}
+
+export function strCapitalize(str: string): string {
+  return str.charAt(0).toUpperCase().concat(str.slice(1))
 }
 
 // #region Matrix SDK utils
@@ -346,7 +356,7 @@ export async function sendVideoMessageFromFile(
   }
 }
 
-export async function senFileMessageFromFile(
+export async function sendFileMessageFromFile(
   file: File,
   client: MatrixClient | null,
   destinationRoom: string | null,
@@ -375,6 +385,46 @@ export async function senFileMessageFromFile(
           size: file.size,
         },
         msgtype: MsgType.File,
+        url: uploadResponse.content_uri,
+      }
+
+      void client.sendEvent(destinationRoom, EventType.RoomMessage, content)
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function sendAudioMessageFromFile(
+  file: File,
+  client: MatrixClient | null,
+  destinationRoom: string | null,
+  duration: number,
+  onProgressHandler: (progressUpload: number) => void
+): Promise<void> {
+  if (client === null || destinationRoom === null) {
+    return
+  }
+
+  try {
+    const uploadResponse = await client.uploadContent(file, {
+      name: file.name,
+      includeFilename: false,
+      type: file.type,
+      progressHandler(progress) {
+        onProgressHandler(Math.round(progress.loaded / progress.total) * 100)
+      },
+    })
+
+    if (uploadResponse.content_uri !== undefined) {
+      const content = {
+        body: file.name,
+        info: {
+          duration,
+          mimetype: file.type,
+          size: file.size,
+        },
+        msgtype: MsgType.Audio,
         url: uploadResponse.content_uri,
       }
 

@@ -4,7 +4,7 @@ import NotificationDot from "./NotificationDot"
 import {type IconType} from "react-icons"
 import React from "react"
 import {motion} from "framer-motion"
-import useErrorTooltip from "@/hooks/util/useErrorTooltip"
+import useTooltip from "@/hooks/util/useTooltip"
 
 export type IconButtonProps = {
   tooltip: string
@@ -31,7 +31,7 @@ const IconButton: FC<IconButtonProps> = ({
   className,
   iconClassName,
 }) => {
-  const {renderRef, showErrorTooltip} = useErrorTooltip<HTMLButtonElement>()
+  const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
 
   return (
     <motion.button
@@ -45,7 +45,7 @@ const IconButton: FC<IconButtonProps> = ({
             return
           }
 
-          showErrorTooltip(error.message)
+          showTooltip(error.message, true)
         }
       }}
       onMouseEnter={onMouseEnter}

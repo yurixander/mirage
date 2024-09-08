@@ -1,141 +1,95 @@
-import IconButton from "@/components/IconButton"
-import {useState, type FC} from "react"
+import {type FC} from "react"
 import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import NotificationBoxPopup from "./modals/NotificationBoxPopup"
 import useNotifications from "./hooks/useNotifications"
-import {
-  flip,
-  offset,
-  safePolygon,
-  shift,
-  useFloating,
-  useHover,
-  useInteractions,
-} from "@floating-ui/react"
-import {motion} from "framer-motion"
-import DirectChatsPopup from "./DirectChatsPopup"
-import {FaSearch} from "react-icons/fa"
+import DMTrayPopup from "./DMTrayPopup"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import useDmTray from "./hooks/useDmTray"
+import NotificationsTray from "./NotificationsTray"
+import NotificationDot from "@/components/NotificationDot"
+import {Button} from "@/components/ui/button"
+import {IoIosSearch} from "react-icons/io"
 
-enum SidebarPopups {
-  None,
-  Notifications,
-  DirectMessages,
-}
+const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-slate-400 hover:bg-transparent"
+const SIDEBAR_BUTTON_SIZE = 20
 
 const SidebarActions: FC<{className?: string}> = ({className}) => {
-  const [activePopup, setActivePopup] = useState(SidebarPopups.None)
+  const client = useMatrixClient()
+
+  const {dmRooms, results, setQuery, userId, isDMLoading, clearResults} =
+    useDmTray(client)
 
   const {isLoading, notifications, containsUnreadNotifications} =
-    useNotifications()
+    useNotifications(client)
 
   return (
     <>
-      <NotificationBoxPopup
-        isVisible={activePopup === SidebarPopups.Notifications}
-        isLoading={isLoading}
-        notifications={notifications}
-        onClose={() => {
-          setActivePopup(SidebarPopups.None)
-        }}
-      />
-
       <div
         className={twMerge(
           "flex flex-col items-center gap-2.5 pb-2",
           className
         )}>
-        <DirectMessagesButton
-          isPopupVisible={activePopup === SidebarPopups.DirectMessages}
-          onPopupVisibilityChange={isPopupVisible => {
-            setActivePopup(
-              isPopupVisible ? SidebarPopups.DirectMessages : SidebarPopups.None
-            )
+        <DMTrayPopup
+          isLoading={isDMLoading}
+          userId={userId}
+          dmRooms={dmRooms}
+          searchResult={results}
+          setQuery={setQuery}
+          clearResult={clearResults}
+          dmRoomClick={function (roomId: string): void {
+            throw new Error("DMRoomClick function not implemented.")
           }}
-          onClose={() => {
-            setActivePopup(SidebarPopups.None)
-          }}
-        />
+          onResultUserClick={function (userId: string): void {
+            throw new Error("onResultUserClick function not implemented.")
+          }}>
+          <Button
+            aria-label="View Direct chats"
+            size="icon"
+            variant="ghost"
+            className={SIDEBAR_BUTTON_CLASS}>
+            <IoPaperPlane size={SIDEBAR_BUTTON_SIZE} />
+          </Button>
+        </DMTrayPopup>
 
-        <IconButton
-          tooltip="Notifications"
-          iconClassName="text-slate-400"
-          Icon={IoNotifications}
-          isDotVisible={containsUnreadNotifications}
-          onClick={() => {}}
-          onMouseEnter={() => {
-            setActivePopup(SidebarPopups.Notifications)
-          }}
-        />
+        <NotificationsTray isLoading={isLoading} notifications={notifications}>
+          <Button
+            aria-label="View notifications"
+            size="icon"
+            variant="ghost"
+            className={SIDEBAR_BUTTON_CLASS}>
+            <NotificationDot isVisible={containsUnreadNotifications}>
+              <IoNotifications size={SIDEBAR_BUTTON_SIZE} />
+            </NotificationDot>
+          </Button>
+        </NotificationsTray>
 
-        <IconButton
-          tooltip="Search"
-          iconClassName="text-slate-400"
-          Icon={FaSearch}
-          onClick={() => {}}
-        />
+        <Button
+          aria-label="Search anything"
+          size="icon"
+          variant="ghost"
+          className={SIDEBAR_BUTTON_CLASS}
+          onClick={() => {}}>
+          <IoIosSearch size={SIDEBAR_BUTTON_SIZE} />
+        </Button>
 
-        <IconButton
-          tooltip="Calls"
-          iconClassName="text-slate-400"
-          Icon={IoCall}
-          onClick={() => {}}
-        />
+        <Button
+          aria-label="Calls"
+          size="icon"
+          variant="ghost"
+          className={SIDEBAR_BUTTON_CLASS}
+          onClick={() => {}}>
+          <IoCall size={SIDEBAR_BUTTON_SIZE} />
+        </Button>
 
-        <IconButton
-          tooltip="Exit"
-          iconClassName="text-slate-400"
-          Icon={IoExit}
-          onClick={() => {}}
-        />
+        <Button
+          aria-label="Exit app"
+          size="icon"
+          variant="ghost"
+          className={SIDEBAR_BUTTON_CLASS}
+          onClick={() => {}}>
+          <IoExit size={SIDEBAR_BUTTON_SIZE} />
+        </Button>
       </div>
-    </>
-  )
-}
-
-type DirectMessagesButtonProps = {
-  isPopupVisible: boolean
-  onPopupVisibilityChange: (isPopupVisible: boolean) => void
-  onClose: () => void
-  className?: string
-}
-
-export const DirectMessagesButton: FC<DirectMessagesButtonProps> = ({
-  onPopupVisibilityChange,
-  isPopupVisible,
-  onClose,
-  className,
-}) => {
-  const {refs, floatingStyles, context} = useFloating({
-    open: isPopupVisible,
-    onOpenChange: onPopupVisibilityChange,
-    placement: "right",
-    middleware: [flip(), shift(), offset({mainAxis: 24, crossAxis: -4})],
-  })
-
-  const hover = useHover(context, {handleClose: safePolygon()})
-
-  const {getReferenceProps, getFloatingProps} = useInteractions([hover])
-
-  return (
-    <>
-      <motion.button
-        className={twMerge("w-max", className)}
-        aria-label="Direct chats"
-        ref={refs.setReference}
-        {...getReferenceProps()}>
-        <IoPaperPlane className="text-slate-400" size={20} />
-      </motion.button>
-
-      {isPopupVisible && (
-        <div
-          className="z-50"
-          {...getFloatingProps()}
-          ref={refs.setFloating}
-          style={floatingStyles}>
-          <DirectChatsPopup />
-        </div>
-      )}
     </>
   )
 }

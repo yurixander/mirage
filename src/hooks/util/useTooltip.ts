@@ -1,9 +1,11 @@
+import {delay} from "@/utils/util"
 import {useEffect, useRef, useState} from "react"
 import tippy, {type Instance, type Props} from "tippy.js"
 
-type UseErrorTooltipReturnType<T> = {
+type UseTooltipReturnType<T> = {
   renderRef: React.RefObject<T>
-  showErrorTooltip: (msg: string) => void
+  showTooltip: (msg: string, isError?: boolean) => void
+  closeTooltip: () => void
 }
 
 const TOOLTIP_ERROR_PROPS: Partial<Props> = {
@@ -12,17 +14,26 @@ const TOOLTIP_ERROR_PROPS: Partial<Props> = {
   duration: 100,
   animation: "scale-subtle",
   trigger: "none",
-  theme: "error",
 }
 
-const useErrorTooltip = <T>(
+const useTooltip = <T>(
   optionalProps?: Partial<Props>
-): UseErrorTooltipReturnType<T> => {
+): UseTooltipReturnType<T> => {
   const renderRef = useRef<T>(null)
 
   const [tippyInstance, setTippyInstance] = useState<Instance<Props> | null>(
     null
   )
+
+  useEffect(() => {
+    return () => {
+      if (tippyInstance === null) {
+        return
+      }
+
+      tippyInstance.hide()
+    }
+  }, [tippyInstance])
 
   useEffect(() => {
     const render = renderRef.current
@@ -44,16 +55,29 @@ const useErrorTooltip = <T>(
     })
   }, [optionalProps])
 
-  const showErrorTooltip = (msg: string): void => {
+  const showTooltip = (msg: string, isError?: boolean): void => {
     if (tippyInstance === null) {
       return
     }
 
+    tippyInstance.setProps({theme: isError ? "error" : "default"})
     tippyInstance.setContent(msg)
     tippyInstance.show()
+
+    void delay(3000).then(() => {
+      tippyInstance.hide()
+    })
   }
 
-  return {renderRef, showErrorTooltip}
+  const closeTooltip = (): void => {
+    if (tippyInstance === null) {
+      return
+    }
+
+    tippyInstance.hide()
+  }
+
+  return {renderRef, showTooltip, closeTooltip}
 }
 
-export default useErrorTooltip
+export default useTooltip
