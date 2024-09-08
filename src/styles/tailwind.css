@@ -109,11 +109,11 @@ textarea:disabled {
 }
 
 :focus-visible:not(input) {
-  @apply outline-2 outline-offset-2 outline-blue-500 transition-all;
+  @apply outline-2 outline-blue-500 transition-all;
 }
 
 ::-webkit-scrollbar {
-  @apply h-2 w-2;
+  @apply h-1 w-1;
 }
 
 ::-webkit-scrollbar-track {
@@ -121,7 +121,7 @@ textarea:disabled {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply m-1 rounded-xl bg-gray-300;
+  @apply rounded-xl bg-gray-300;
 }
 
 input[type="range"]::-webkit-slider-thumb {
