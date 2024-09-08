@@ -140,6 +140,8 @@ export const getAudioDuration = (
   }
 
   const clear = (): void => {
+    URL.revokeObjectURL(media.src)
+
     media.removeEventListener("loadeddata", obtainDuration)
   }
 
