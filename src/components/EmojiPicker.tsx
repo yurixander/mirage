@@ -3,7 +3,6 @@ import {twMerge} from "tailwind-merge"
 import {type Emoji, type EmojiMartData, type Skin} from "@emoji-mart/data"
 import {createPortal} from "react-dom"
 import useElementPoints from "@/hooks/util/useElementPoints"
-import {type Points} from "./ContextMenu"
 import {
   IoIosCafe,
   IoIosPartlySunny,
@@ -18,6 +17,7 @@ import {type IconType} from "react-icons"
 import emojiData from "@/../public/data/emoji-data.json"
 import useEmojiSearch from "@/hooks/util/useEmojiSearch"
 import Input from "./Input"
+import {type SelectionRange} from "@/containers/RoomContainer/ChatInput"
 
 const emojiMartData: EmojiMartData = emojiData
 const emojis: Emoji[] = Object.values(emojiData.emojis)
@@ -50,16 +50,11 @@ const categories: CategoryWithIcon[] = [
 ]
 
 type EmojiPickerProps = {
-  locationPoints: Points
   onPickEmoji: (emoji: string) => void
   className?: string
 }
 
-const EmojiPicker: FC<EmojiPickerProps> = ({
-  locationPoints,
-  onPickEmoji,
-  className,
-}) => {
+const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
   const [categorySelected, setCategorySelected] = useState(
     EmojiCategories.People
   )
@@ -77,14 +72,10 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
   return (
     <div
       className={twMerge(
-        "fixed z-50 flex size-full max-h-96 max-w-80 -translate-x-3/4 -translate-y-full flex-col gap-1 rounded-xl bg-gray-100 p-1.5 shadow-md",
+        "flex size-full max-h-96 max-w-80 flex-col gap-2",
         className
-      )}
-      style={{
-        left: `${locationPoints.x}px`,
-        top: `${locationPoints.y - 45}px`,
-      }}>
-      <div className="flex size-full max-h-10 items-center justify-center gap-1 border-b border-b-slate-300">
+      )}>
+      <div className="flex size-full max-h-10 items-center justify-center gap-1 border-b border-b-slate-300 p-1">
         {categories.map(category => (
           <button
             key={category.category}
@@ -102,7 +93,7 @@ const EmojiPicker: FC<EmojiPickerProps> = ({
         ))}
       </div>
 
-      <div className="h-12 w-full px-9">
+      <div className="h-12 w-full">
         <Input placeholder="Search any emoji" onValueChange={setEmojiQuery} />
       </div>
 
@@ -245,6 +236,43 @@ export function getEmojiByIndex(index: number): Emoji {
   const emojiIndex = index % emojis.length
 
   return emojis[emojiIndex]
+}
+
+export function putEmojiInPosition(
+  emoji: string,
+  caretPosition: number | null,
+  {selectionEnd, selectionStart}: SelectionRange,
+  setText: (updater: (prevText: string) => string) => void
+): void {
+  setText(prevText => {
+    if (
+      selectionStart !== null &&
+      selectionEnd !== null &&
+      selectionEnd !== selectionStart
+    ) {
+      try {
+        if (selectionStart === 1 && selectionEnd === prevText.length) {
+          return emoji
+        }
+
+        return prevText
+          .slice(0, selectionStart)
+          .concat(emoji)
+          .concat(prevText.slice(selectionEnd, prevText.length))
+      } catch (error) {
+        console.error("Error updating text", error)
+      }
+    }
+
+    if (caretPosition === null || caretPosition >= prevText.length) {
+      return prevText + emoji
+    }
+
+    return prevText
+      .slice(0, caretPosition)
+      .concat(emoji)
+      .concat(prevText.slice(caretPosition, prevText.length))
+  })
 }
 
 export default EmojiPicker

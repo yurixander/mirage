@@ -1,11 +1,13 @@
 import IconButton from "@/components/IconButton"
 import {type FC} from "react"
-import {IoMdLink} from "react-icons/io"
 import {
-  IoInformationCircle,
-  IoEllipsisVertical,
   IoChevronForward,
   IoChevronBack,
+  IoCall,
+  IoVideocam,
+  IoSearch,
+  IoInformation,
+  IoLink,
 } from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
 
@@ -14,6 +16,7 @@ export type ChatHeaderProps = {
   isRosterExpanded: boolean
   onRosterExpanded: (isExpanded: boolean) => void
   className?: string
+  roomDescription?: string
 }
 
 const ChatHeader: FC<ChatHeaderProps> = ({
@@ -21,46 +24,77 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   isRosterExpanded,
   onRosterExpanded,
   className,
+  roomDescription,
 }) => {
   return (
     <header className={className}>
       <div className="m-2 flex w-full gap-1">
-        <LiaSlackHash className="text-purple-500" />
+        <div>
+          <LiaSlackHash className="text-blue-800" />
+        </div>
 
-        <span className="text-purple-500">{roomName}</span>
+        <div>
+          <span className="line-clamp-1 max-w-md text-blue-800">
+            {roomName}
+          </span>
+        </div>
 
-        {/* <span className="text-stone-600">{text}</span> */}
+        {roomDescription !== undefined && roomDescription !== "" ? (
+          <div>
+            <span className="line-clamp-1 max-w-md text-slate-500">
+              {"- " + roomDescription}
+            </span>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <IconButton
         onClick={() => {
-          /* TODO: Handle `info` button click. */
+          /* TODO: Handle `more` button click. */
         }}
-        tooltip="Room details"
-        Icon={IoInformationCircle}
-      />
-
-      <IconButton
-        onClick={() => {
-          /* TODO: Handle `link` button click. */
-        }}
-        tooltip="Copy link"
-        Icon={IoMdLink}
+        tooltip="Call"
+        Icon={IoCall}
       />
 
       <IconButton
         onClick={() => {
           /* TODO: Handle `more` button click. */
         }}
-        tooltip="More actions"
-        Icon={IoEllipsisVertical}
+        tooltip="Video Call"
+        Icon={IoVideocam}
+      />
+
+      <IconButton
+        onClick={() => {
+          /* TODO: Handle `info` button click. */
+        }}
+        tooltip="Copy link"
+        Icon={IoLink}
+      />
+
+      <IconButton
+        onClick={() => {
+          /* TODO: Handle `search` button click. */
+        }}
+        tooltip="Search in room"
+        Icon={IoSearch}
+      />
+
+      <IconButton
+        onClick={() => {
+          /* TODO: Handle `info` button click. */
+        }}
+        tooltip="Room details"
+        Icon={IoInformation}
       />
 
       <IconButton
         onClick={() => {
           onRosterExpanded(!isRosterExpanded)
         }}
-        tooltip="More actions"
+        tooltip="Expand Roster"
         Icon={isRosterExpanded ? IoChevronForward : IoChevronBack}
       />
     </header>

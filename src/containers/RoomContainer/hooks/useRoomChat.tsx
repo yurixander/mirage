@@ -15,8 +15,16 @@ import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl} from "@/utils/util"
-import {type Room, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
+import {
+  MsgType,
+  EventTimeline,
+  EventType,
+  type Room,
+  RoomEvent,
+  RoomMemberEvent,
+} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
+import {type MessageSendRequest} from "../ChatInput"
 
 export enum MessageKind {
   Text,
@@ -77,8 +85,12 @@ type UseRoomChatReturnType = {
   messagesState: MessagesState
   isChatLoading: boolean
   roomName: string
+  roomTopic: string
   messages: AnyMessage[]
   typingUsers: TypingIndicatorUser[]
+  isInputDisabled: boolean
+  sendTypingEvent: (roomId: string) => void
+  sendMessageText: (messageSendRequest: MessageSendRequest) => void
 }
 
 const useRoomChat = (roomId: string): UseRoomChatReturnType => {
@@ -87,6 +99,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const {clearActiveRoomId} = useActiveRoomIdStore()
 
   const [roomName, setRoomName] = useState("")
+  const [roomTopic, setRoomTopic] = useState("")
   const [isChatLoading, setChatLoading] = useState(true)
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
@@ -129,6 +142,21 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     }
 
     setRoomName(room.name)
+
+    const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
+
+    if (roomState) {
+      const roomDescription = roomState
+        .getStateEvents(EventType.RoomTopic, "")
+        ?.getContent().topic
+
+      if (typeof roomDescription === "string") {
+        setRoomTopic(roomDescription)
+      } else {
+        setRoomTopic("")
+      }
+    }
+
     setChatLoading(false)
 
     void fetchRoomMessages(room)
@@ -203,7 +231,32 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     )
   })
 
-  return {messagesState, isChatLoading, roomName, messages, typingUsers}
+  return {
+    messagesState,
+    isChatLoading,
+    roomName,
+    roomTopic,
+    messages,
+    typingUsers,
+    isInputDisabled: client === null,
+    sendMessageText({messageText, roomId}) {
+      if (client === null || messageText.length === 0) {
+        return
+      }
+
+      void client.sendMessage(roomId, {
+        body: messageText,
+        msgtype: MsgType.Text,
+      })
+    },
+    sendTypingEvent(roomId) {
+      if (client === null) {
+        return
+      }
+
+      void client.sendTyping(roomId, true, 2000)
+    },
+  }
 }
 
 export default useRoomChat
