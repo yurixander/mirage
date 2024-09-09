@@ -36,6 +36,7 @@ const AvatarImage: FC<AvatarProps> = ({
   avatarSize = AvatarSize.Normal,
   className,
 }) => {
+  const accessibilityText = `Avatar for ${displayName}`
   const isAvatarMessage = avatarType === AvatarType.Message
   const isProfile = avatarType === AvatarType.Profile
 
@@ -45,6 +46,8 @@ const AvatarImage: FC<AvatarProps> = ({
 
   return avatarUrl === undefined ? (
     <div
+      role="img"
+      aria-label={accessibilityText}
       className={twMerge(
         "shrink-0 overflow-hidden rounded-lg",
         isRounded && "rounded-full",
@@ -60,15 +63,16 @@ const AvatarImage: FC<AvatarProps> = ({
   ) : (
     <img
       src={avatarUrl}
+      alt={accessibilityText}
+      aria-label={accessibilityText}
       className={twMerge(
         isAvatarMessage && "size-full",
         isProfile &&
-          twMerge("object-contain", getAvatarSizeByTailwindClass(avatarSize)),
+          twMerge("object-cover", getAvatarSizeByTailwindClass(avatarSize)),
         // TODO: Class `rounded-full` should be parent container with `overflow-hidden`.
         isRounded ? "rounded-full" : "rounded-lg",
         className
       )}
-      alt={displayName}
     />
   )
 }
