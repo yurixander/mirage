@@ -9,6 +9,7 @@ import {
 } from "@floating-ui/react"
 import {motion} from "framer-motion"
 import {type FC, useEffect, useState} from "react"
+import {useTranslation} from "react-i18next"
 import {type IconType} from "react-icons"
 import {
   IoAddCircle,
@@ -26,6 +27,7 @@ type ChooseFileButtonProps = {
 
 const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
   const [isOpen, setIsOpen] = useState(false)
+  const {t} = useTranslation()
 
   const {refs, floatingStyles, context} = useFloating({
     open: isOpen,
@@ -41,7 +43,7 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
   return (
     <>
       <motion.button
-        aria-label="Attach source"
+        aria-label={t("Attach source")}
         animate={{rotate: isOpen ? "45deg" : undefined}}
         ref={refs.setReference}
         {...getReferenceProps()}>
@@ -59,8 +61,8 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
           style={floatingStyles}
           {...getFloatingProps()}>
           <AttachAction
-            ariaLabel="Attach file"
-            label="File"
+            ariaLabel={t("Attach file")}
+            label={t("File")}
             sourceType="file/*"
             Icon={IoDocument}
             onFileLoaded={file => {
@@ -71,8 +73,8 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
           />
 
           <AttachAction
-            ariaLabel="Attach image"
-            label="Image"
+            ariaLabel={t("Attach image")}
+            label={t("Image")}
             sourceType="image/*"
             Icon={IoImage}
             onFileLoaded={file => {
@@ -83,8 +85,8 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
           />
 
           <AttachAction
-            ariaLabel="Attach video"
-            label="Video"
+            ariaLabel={t("Attach video")}
+            label={t("Video")}
             sourceType="video/*"
             Icon={IoVideocam}
             onFileLoaded={file => {
@@ -95,8 +97,8 @@ const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, className}) => {
           />
 
           <AttachAction
-            label="Audio"
-            ariaLabel="Attach audio"
+            label={t("Audio")}
+            ariaLabel={t("Attach audio")}
             sourceType="audio/*"
             Icon={IoMic}
             onFileLoaded={file => {

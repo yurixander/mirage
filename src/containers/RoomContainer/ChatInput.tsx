@@ -1,5 +1,5 @@
 import {useState, type FC} from "react"
-import useChatInput from "./useChatInput"
+import useChatInput from "./hooks/useChatInput"
 import {IoIosHappy} from "react-icons/io"
 import {IoMic, IoSend} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
@@ -7,6 +7,7 @@ import EmojiPicker from "@/components/EmojiPicker"
 import useElementPoints from "@/hooks/util/useElementPoints"
 import TextArea from "@/components/TextArea"
 import AttachSource from "./AttachSource"
+import {useTranslation} from "react-i18next"
 
 export type ChatInputProps = {
   roomId: string
@@ -21,6 +22,7 @@ type SelectionRange = {
 const BUTTON_SIZE_CLASS = "size-5 md:size-7"
 
 const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
+  const {t} = useTranslation()
   const {clearPoints, points, setPointsByEvent} = useElementPoints()
   const [caretPosition, setCaretPosition] = useState<number | null>(null)
 
@@ -103,7 +105,7 @@ const ChatInput: FC<ChatInputProps> = ({roomId, className}) => {
           value={messageText}
           onValueChanged={setMessageText}
           disabled={isInputDisabled}
-          placeholder="Write a message or simply say 👋🏼 hello..."
+          placeholder={t("Chat input placeholder")}
           onSelect={event => {
             if (!(event.target instanceof HTMLTextAreaElement)) {
               return

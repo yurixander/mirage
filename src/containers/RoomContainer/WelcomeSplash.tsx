@@ -3,8 +3,11 @@ import Typography, {TypographyVariant} from "../../components/Typography"
 import {type IconType} from "react-icons"
 import {FaCompass, FaGithub, FaHand} from "react-icons/fa6"
 import AppLogo from "@/components/AppLogo"
+import {useTranslation} from "react-i18next"
 
 const WelcomeSplash: FC = () => {
+  const {t} = useTranslation()
+
   return (
     <div className="flex size-full flex-col items-center justify-center gap-3 border-r border-stone-200">
       <div className="mb-6 flex flex-col items-center gap-3">
@@ -14,21 +17,19 @@ const WelcomeSplash: FC = () => {
           <Typography
             variant={TypographyVariant.Heading}
             className="text-black">
-            Welcome to Mirage
+            {t("Welcome to Mirage")}
           </Typography>
 
           <Typography className="mt-2 max-w-text text-center text-black">
-            Invite your friends to chat! Select a Room or a Direct Messages to
-            start a conversation. You can also select an action below to get
-            started quickly.
+            {t("Welcome to mirage assistance text")}
           </Typography>
         </div>
       </div>
 
       <div className="flex gap-4">
         <GetStartedCard
-          title="Explore Servers"
-          subtitle="join a relevant community"
+          title={t("Explore Servers")}
+          subtitle={t("join a relevant community")}
           Icon={FaCompass}
           onClick={() => {
             // TODO: Handle here explore servers card click.
@@ -36,8 +37,8 @@ const WelcomeSplash: FC = () => {
         />
 
         <GetStartedCard
-          title="Send a message"
-          subtitle="to a colleague or friend"
+          title={t("Send a message")}
+          subtitle={t("Send a message subtitle")}
           Icon={FaHand}
           onClick={() => {
             // TODO: Handle here send message card click.
@@ -45,8 +46,8 @@ const WelcomeSplash: FC = () => {
         />
 
         <GetStartedCard
-          title="Checkout GitHub"
-          subtitle="to view latest updates"
+          title={t("Checkout GitHub")}
+          subtitle={t("Checkout GitHub subtitle")}
           Icon={FaGithub}
           onClick={() => {
             // TODO: Handle here checkout github card click.

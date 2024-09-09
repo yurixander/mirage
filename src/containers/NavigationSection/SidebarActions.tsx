@@ -9,12 +9,14 @@ import NotificationsTray from "./NotificationsTray"
 import NotificationDot from "@/components/NotificationDot"
 import {Button} from "@/components/ui/button"
 import {IoIosSearch} from "react-icons/io"
+import {useTranslation} from "react-i18next"
 
 const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-slate-400 hover:bg-transparent"
 const SIDEBAR_BUTTON_SIZE = 20
 
 const SidebarActions: FC<{className?: string}> = ({className}) => {
   const client = useMatrixClient()
+  const {t} = useTranslation()
 
   const {dmRooms, results, setQuery, userId, isDMLoading, clearResults} =
     useDmTray(client)
@@ -43,7 +45,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
             throw new Error("onResultUserClick function not implemented.")
           }}>
           <Button
-            aria-label="View Direct chats"
+            aria-label={t("View Direct chats")}
             size="icon"
             variant="ghost"
             className={SIDEBAR_BUTTON_CLASS}>
@@ -53,7 +55,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
 
         <NotificationsTray isLoading={isLoading} notifications={notifications}>
           <Button
-            aria-label="View notifications"
+            aria-label={t("View notifications")}
             size="icon"
             variant="ghost"
             className={SIDEBAR_BUTTON_CLASS}>
@@ -64,7 +66,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
         </NotificationsTray>
 
         <Button
-          aria-label="Search anything"
+          aria-label={t("Search anything")}
           size="icon"
           variant="ghost"
           className={SIDEBAR_BUTTON_CLASS}
@@ -73,7 +75,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
         </Button>
 
         <Button
-          aria-label="Calls"
+          aria-label={t("Calls")}
           size="icon"
           variant="ghost"
           className={SIDEBAR_BUTTON_CLASS}
@@ -82,7 +84,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
         </Button>
 
         <Button
-          aria-label="Exit app"
+          aria-label={t("Exit app")}
           size="icon"
           variant="ghost"
           className={SIDEBAR_BUTTON_CLASS}

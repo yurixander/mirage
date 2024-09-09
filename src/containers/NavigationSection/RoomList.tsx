@@ -16,6 +16,7 @@ import useActiveModalStore, {
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import Button, {ButtonVariant} from "@/components/Button"
 import {motion} from "framer-motion"
+import {useTranslation} from "react-i18next"
 
 export type RoomListProps = {
   onSpaceSelected: (spaceId?: string) => void
@@ -27,6 +28,7 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
   const {rooms, roomsState, onRefreshRooms, client} = useSpaceHierarchy(spaceId)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const {setActiveModal} = useActiveModalStore()
+  const {t} = useTranslation()
 
   const directRooms = useMemo(
     () => rooms.filter(room => room.type === RoomType.Direct),
@@ -47,11 +49,11 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
       )}>
       {roomsState === RoomsState.Error ? (
         <div className="flex size-full flex-col items-center justify-center gap-2">
-          <Typography>Rooms loading error</Typography>
+          <Typography>{t("Rooms loading error")}</Typography>
 
           <div className="flex gap-1">
             <Button
-              label="Go to home"
+              label={t("Go to home")}
               onClick={() => {
                 onSpaceSelected()
               }}
@@ -61,14 +63,14 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
               isDisabled={client === null}
               variant={ButtonVariant.Primary}
               onClick={onRefreshRooms}
-              label="Refresh"
+              label={t("Refresh")}
             />
           </div>
         </div>
       ) : (
         <div className="flex flex-col gap-4 p-3">
           <Detail
-            title="Direct chats"
+            title={t("Direct chats")}
             id="direct-chats-detail"
             menuElements={buildDirectRoomsMenuItems({
               isHome: spaceId === undefined,
@@ -84,7 +86,7 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
           </Detail>
 
           <Detail
-            title="Rooms"
+            title={t("Rooms")}
             id="rooms-detail"
             isInitiallyOpen
             menuElements={buildRoomsMenuItems({
