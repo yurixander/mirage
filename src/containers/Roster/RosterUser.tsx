@@ -12,6 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import useTooltip from "@/hooks/util/useTooltip"
+import {useTranslation} from "react-i18next"
 
 export type RosterUserData = {
   displayName: string
@@ -37,12 +38,13 @@ const RosterUser: FC<RosterUserProps> = ({
   avatarUrl,
   className,
 }) => {
+  const {t} = useTranslation()
   const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
 
   const lastPresence =
     lastPresenceAge === undefined
-      ? "Seen long ago"
-      : `Seen ${formatTime(lastPresenceAge)} ago`
+      ? t("Seen long ago")
+      : `${t("Seen")} ${formatTime(lastPresenceAge)} ${t("ago")}`
 
   return (
     <motion.button

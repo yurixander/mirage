@@ -113,5 +113,18 @@
   "Send a message": "Send a message",
   "Send a message subtitle": "to a colleague or friend",
   "Checkout GitHub": "Checkout GitHub",
-  "Checkout GitHub subtitle": "to view latest updates"
+  "Checkout GitHub subtitle": "to view latest updates",
+  "Seen long ago": "Seen long ago",
+  "Seen": "Seen",
+  "ago": "ago",
+  "People": "People",
+  "Sort members": "Sort members",
+  "Members Error": "Members Error",
+  "Reload members": "Reload members",
+  "ADMINS": "ADMINS",
+  "MODERATORS": "MODERATORS",
+  "MEMBERS": "MEMBERS",
+  "Connection Error": "Connection Error",
+  "Go to login": "Go to login",
+  "Connection Error Subtitle": " Ops we have lost connection with the server, please reload the page or login again."
 }
