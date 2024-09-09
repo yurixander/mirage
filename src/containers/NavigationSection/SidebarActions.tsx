@@ -8,7 +8,7 @@ import useDmTray from "./hooks/useDmTray"
 import NotificationsTray from "./NotificationsTray"
 import NotificationDot from "@/components/NotificationDot"
 import {Button} from "@/components/ui/button"
-import {IoIosSearch} from "react-icons/io"
+import {FaSearch} from "react-icons/fa"
 
 const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-slate-400 hover:bg-transparent"
 const SIDEBAR_BUTTON_SIZE = 20
@@ -69,7 +69,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
           variant="ghost"
           className={SIDEBAR_BUTTON_CLASS}
           onClick={() => {}}>
-          <IoIosSearch size={SIDEBAR_BUTTON_SIZE} />
+          <FaSearch size={SIDEBAR_BUTTON_SIZE} />
         </Button>
 
         <Button

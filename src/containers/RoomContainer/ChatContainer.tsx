@@ -26,6 +26,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
   const {
     messagesState,
     roomName,
+    roomTopic,
     isChatLoading,
     messages,
     typingUsers,
@@ -58,6 +59,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
         isRosterExpanded={isRosterExpanded}
         onRosterExpanded={onRosterExpanded}
         roomName={roomName}
+        roomDescription={roomTopic}
       />
 
       <div
