@@ -2,6 +2,7 @@ import {IoCloseCircle} from "react-icons/io5"
 import Button, {ButtonVariant} from "./Button"
 import Typography, {TypographyVariant} from "./Typography"
 import {type FC} from "react"
+import {useTranslation} from "react-i18next"
 
 export type VideoPreviewProps = {
   videoSrc: string
@@ -16,11 +17,13 @@ const VideoPreview: FC<VideoPreviewProps> = ({
   onClose,
   onSend,
 }) => {
+  const {t} = useTranslation()
+
   return (
     <div className="flex size-messageMaxWidth flex-col rounded border bg-slate-50 shadow-xl">
       <div className="flex w-full items-start rounded-t border-b-2 border-b-slate-200 bg-slate-100 p-5">
         <Typography className="w-full" variant={TypographyVariant.Heading}>
-          Upload Video
+          {t("Upload Video")}
         </Typography>
 
         <IoCloseCircle size={20} role="button" onClick={onClose} />
@@ -39,14 +42,14 @@ const VideoPreview: FC<VideoPreviewProps> = ({
       <div className="flex justify-end gap-3 rounded-b border-t-2 border-t-slate-200 bg-slate-100 p-3">
         <Button
           className="w-20"
-          label="Cancel"
+          label={t("Cancel")}
           variant={ButtonVariant.Secondary}
           onClick={onCancel}
         />
 
         <Button
           className="w-20"
-          label="Send"
+          label={t("Send")}
           variant={ButtonVariant.Primary}
           onClick={onSend}
         />

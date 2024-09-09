@@ -7,6 +7,7 @@ import {IoPause, IoPlay, IoVolumeHigh} from "react-icons/io5"
 import {MdCall, MdCallEnd} from "react-icons/md"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
+import {t} from "i18next"
 
 export enum VariantCall {
   CallInProgress,
@@ -21,9 +22,9 @@ export type CallModalProps = {
 }
 
 const callAction: {[key in VariantCall]: string} = {
-  [VariantCall.CallInProgress]: "Call in Progress...",
-  [VariantCall.IncomingCall]: "Incoming Call...",
-  [VariantCall.Calling]: "Connecting...",
+  [VariantCall.CallInProgress]: t("Call in Progress..."),
+  [VariantCall.IncomingCall]: t("Incoming Call"),
+  [VariantCall.Calling]: t("Connecting"),
 }
 
 const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {

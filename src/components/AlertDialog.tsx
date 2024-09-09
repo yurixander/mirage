@@ -2,6 +2,7 @@ import {type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import Button, {ButtonVariant} from "./Button"
 import {IoCloseCircle} from "react-icons/io5"
+import {useTranslation} from "react-i18next"
 
 export type AlertDialogProps = {
   title: string
@@ -16,6 +17,8 @@ const AlertDialog: FC<AlertDialogProps> = ({
   onClose,
   onAccept,
 }) => {
+  const {t} = useTranslation()
+
   return (
     <div className="flex h-60 w-96 flex-col rounded-lg border bg-white shadow-lg">
       <div className="flex w-full items-center justify-center rounded-t-lg border-b bg-slate-100 p-3">
@@ -34,7 +37,7 @@ const AlertDialog: FC<AlertDialogProps> = ({
 
       <div className="flex w-full justify-end rounded-b-lg border-t bg-slate-100 p-3">
         <Button
-          label="Accept"
+          label={t("Accept")}
           variant={ButtonVariant.Primary}
           onClick={onAccept}
         />

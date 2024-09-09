@@ -5,6 +5,7 @@ import Button, {ButtonVariant} from "./Button"
 import {fileSizeToString, getFileExtension, IconFile} from "./FileMessage"
 import {ReactSVG} from "react-svg"
 import {StaticAssetPath} from "@/utils/util"
+import {useTranslation} from "react-i18next"
 
 export type FilePreviewProps = {
   fileName: string
@@ -20,6 +21,7 @@ const FilePreview: FC<FilePreviewProps> = ({
   onSend,
 }) => {
   const fileExtension = getFileExtension(fileName).toUpperCase()
+  const {t} = useTranslation()
 
   return (
     <div className="flex w-messageMaxWidth flex-col rounded border bg-slate-50 shadow-lg">
@@ -27,7 +29,7 @@ const FilePreview: FC<FilePreviewProps> = ({
         <Typography
           variant={TypographyVariant.HeadingMedium}
           className="w-full">
-          Upload File
+          {t(" Upload File")}
         </Typography>
 
         <IoCloseCircle size={20} color="gray" role="button" onClick={onClose} />
@@ -67,12 +69,12 @@ const FilePreview: FC<FilePreviewProps> = ({
         </div>
       </div>
       <div className="flex h-16 w-full items-center justify-end gap-2 border-t bg-slate-100 px-5">
-        <Button className="w-20" label="Cancel" onClick={onClose} />
+        <Button className="w-20" label={t("Cancel")} onClick={onClose} />
 
         <Button
           className="w-20"
           variant={ButtonVariant.Primary}
-          label="Send"
+          label={t("Send")}
           onClick={onSend}
         />
       </div>

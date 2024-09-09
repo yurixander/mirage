@@ -14,5 +14,16 @@
   "Space Name": "Nombre del espacio",
   "Space description placeholder": "Escribe una breve descripción sobre el propósito de este espacio",
   "Public Room": "Sala pública",
-  "Private Room": "Sala privada"
+  "Private Room": "Sala privada",
+  "Accept": "Aceptar",
+  "Cancel": "Cancelar",
+  "Upload Audio": "Subir audio",
+  "Send": "Enviar",
+  "Load error": "Error de carga",
+  "User avatar": "Avatar de usuario",
+  "Call in Progress": "Llamada en progreso",
+  "Incoming Call": "Llamada en espera",
+  "Connecting": "Connecting",
+  "Expand all": "Expandir todo",
+   "Upload File": "Subir archivo"
 }

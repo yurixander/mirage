@@ -6,6 +6,7 @@ import UserProfile, {
   type UserProfileProps as UserProfileProperties,
 } from "./UserProfile"
 import Typography, {TypographyVariant} from "./Typography"
+import {useTranslation} from "react-i18next"
 
 export type UserCardProps = {
   userProfileProps: UserProfileProperties
@@ -24,6 +25,8 @@ const UserCard: FC<UserCardProps> = ({
   userProfileProps,
   onCancel,
 }) => {
+  const {t} = useTranslation()
+
   return (
     <div className="z-50 flex size-full justify-end px-1">
       <div className="absolute flex min-h-80 w-64 flex-col overflow-hidden rounded-xl border border-neutral-300 bg-neutral-50 shadow-userCard">
@@ -33,7 +36,7 @@ const UserCard: FC<UserCardProps> = ({
 
         <div className="flex grow flex-col gap-4 bg-neutral-50 p-4">
           <div>
-            <Label text="About me" />
+            <Label text={t("About me")} />
 
             <Typography variant={TypographyVariant.BodySmall}>
               {aboutMe}
@@ -41,31 +44,31 @@ const UserCard: FC<UserCardProps> = ({
           </div>
 
           <div className="flex flex-col gap-1">
-            <Label text="Account" />
+            <Label text={t("Account")} />
 
             <Typography variant={TypographyVariant.BodySmall}>
-              Created <b>{formatTime(accountCreationTime)}</b>
+              {t("Created")} <b>{formatTime(accountCreationTime)}</b>
             </Typography>
 
             <Typography variant={TypographyVariant.BodySmall}>
-              Joined server <b>{formatTime(serverJoinTime)}</b>
+              {t("Joined server")} <b>{formatTime(serverJoinTime)}</b>
             </Typography>
 
             <Typography variant={TypographyVariant.BodySmall}>
-              Last message sent was <b>{formatTime(lastMessageTime)}</b>
+              {t("Last message sent was")} <b>{formatTime(lastMessageTime)}</b>
             </Typography>
           </div>
         </div>
 
         <div className="flex flex-row justify-end gap-1 border-t border-solid border-neutral-300 bg-cardActionsBg p-3">
           <Button
-            label="Cancel"
+            label={t("Cancel")}
             variant={ButtonVariant.TextLink}
             onClick={onCancel}
           />
 
           <Button
-            label="View messages ⟶"
+            label={t("View messages ⟶")}
             variant={ButtonVariant.Primary}
             onClick={() => {
               // TODO: Handle click on View messages button.

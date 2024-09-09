@@ -5,6 +5,7 @@ import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "./Typography"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useFilePicker from "@/hooks/util/useFilePicker"
+import {useTranslation} from "react-i18next"
 
 type UploadAvatarProps = {
   onAvatarUploaded: (matrixSrc: string) => void
@@ -21,6 +22,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
   const [isImageUploading, setIsImageUploading] = useState(false)
   const [imagePercent, setImagePercent] = useState(0)
   const {contentPicked, onPickFile, clear} = useFilePicker(false, "image/*")
+  const {t} = useTranslation()
 
   const avatarImageUrl: string | null = useMemo(() => {
     if (
@@ -110,7 +112,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
             </Typography>
           </>
         ) : (
-          <img src={avatarImageUrl} alt="User avatar" />
+          <img src={avatarImageUrl} alt={t("User avatar")} />
         )}
       </div>
     </div>

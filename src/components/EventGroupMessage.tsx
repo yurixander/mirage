@@ -11,6 +11,7 @@ import {IoMdCreate} from "react-icons/io"
 import {twMerge} from "tailwind-merge"
 import Typography from "./Typography"
 import {IoCube} from "react-icons/io5"
+import {useTranslation} from "react-i18next"
 
 export enum EventShortenerType {
   EqualInfo = "has done several events.",
@@ -40,6 +41,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
   onShowMember,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const {t} = useTranslation()
 
   assert(eventMessages.length > 0, "Event group messages should not be empty.")
 
@@ -60,7 +62,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
 
         <Button
           variant={ButtonVariant.TextLink}
-          label="Expand all"
+          label={t("Expand all")}
           onClick={() => {
             setIsExpanded(prevExpanded => !prevExpanded)
           }}

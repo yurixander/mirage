@@ -4,6 +4,7 @@ import IconButton from "./IconButton"
 import Label from "./Label"
 import {twMerge} from "tailwind-merge"
 import {type IconType} from "react-icons"
+import {t} from "i18next"
 
 export type InputConstraint = {
   message: string
@@ -60,22 +61,22 @@ const integerPattern = new RegExp(
 )
 
 export const urlConstraint: InputConstraint = {
-  message: "Must be a valid URL.",
+  message: t("Must be a valid URL."),
   pattern: urlPattern,
 }
 
 export const nonEmptyConstraint: InputConstraint = {
-  message: "Must not be empty.",
+  message: t("Must not be empty."),
   pattern: /.+/,
 }
 
 export const userIdConstraint: InputConstraint = {
-  message: "Must be a valid user ID.",
+  message: t("Must be a valid user ID."),
   pattern: userIdPattern,
 }
 
 export const integerConstraint: InputConstraint = {
-  message: "Must be an integer.",
+  message: t("Must be an integer."),
   pattern: integerPattern,
 }
 

@@ -8,6 +8,7 @@ import IconButton from "./IconButton"
 import {useWavesurfer} from "@wavesurfer/react"
 import useAudioPlayerStore from "@/hooks/util/useAudioPlayerStore"
 import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
+import {useTranslation} from "react-i18next"
 
 export interface AudioMessageProps extends MessageBaseProps, AudioMessageData {}
 
@@ -34,6 +35,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
   const waveformRef = useRef(null)
   const [error, setError] = useState(audioUrl === undefined)
   const {audioPlayingId, setAudioPlayingId, stopPlayer} = useAudioPlayerStore()
+  const {t} = useTranslation()
 
   const {wavesurfer, isReady} = useWavesurfer({
     container: waveformRef,
@@ -101,7 +103,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
         <div className="flex size-full max-h-14 max-w-72 items-center gap-1 rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm">
           {error ? (
             <Typography className="inline-flex items-center gap-1">
-              <IoAlertCircle className="text-red-500" /> Load error
+              <IoAlertCircle className="text-red-500" /> {t("Load error")}
             </Typography>
           ) : (
             <>

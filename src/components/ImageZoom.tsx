@@ -1,5 +1,6 @@
 import {assert, validateUrl} from "@/utils/util"
 import React, {type FC, useState} from "react"
+import {useTranslation} from "react-i18next"
 
 export type ImageZoomProps = {
   className?: string
@@ -21,6 +22,7 @@ const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
   const [zoom, setZoom] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(DEFAULT_ZOOM_LEVEL)
   const [position, setPosition] = useState<ImagePoints>({x: 0, y: 0})
+  const {t} = useTranslation()
 
   if (src !== undefined) {
     assert(validateUrl(src), "The src url should should be valid if defined.")
@@ -78,7 +80,7 @@ const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
       <img
         className="size-full cursor-zoom-in object-contain transition-transform duration-300"
         src={src}
-        alt="Img message zoom"
+        alt={t("Img message zoom")}
         style={{
           transform: `scale(${zoomLevel / 100})`,
           transformOrigin: `${position.x}% ${position.y}%`,
