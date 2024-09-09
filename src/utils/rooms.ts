@@ -48,6 +48,7 @@ import {
 } from "@/components/EventGroupMessage"
 import {type EventMessageData} from "@/components/EventMessage"
 import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
+import {t} from "i18next"
 
 export enum ImageSizes {
   Server = 47,
@@ -475,8 +476,8 @@ export const handleMemberEvent = (
         icon: IoPeopleCircle,
         body:
           displayName === undefined
-            ? `invited ${stateKey}`
-            : `invited ${displayName}`,
+            ? `${t("invited")} ${stateKey}`
+            : `${t("invited")} ${displayName}`,
       }
     }
     case KnownMembership.Ban: {
@@ -489,8 +490,8 @@ export const handleMemberEvent = (
         body:
           typeof eventContent.reason !== "string" ||
           eventContent.reason.length === 0
-            ? `has banned ${previousDisplayName}`
-            : `has banned ${previousDisplayName}: ${eventContent.reason}`,
+            ? `${t("has banned")} ${previousDisplayName}`
+            : `${t("has banned")} ${previousDisplayName}: ${eventContent.reason}`,
       }
     }
     case KnownMembership.Leave: {
@@ -531,7 +532,7 @@ function handleMemberJoin(
     previousMembership !== KnownMembership.Join
   ) {
     return {
-      body: "has joined to the room",
+      body: t("has joined to the room"),
       icon: IoPeopleCircle,
     }
   } else if (
@@ -542,15 +543,15 @@ function handleMemberJoin(
       icon: IoPeopleCircle,
       body:
         displayName === undefined
-          ? "has change the name"
-          : `has change the name to ${displayName}`,
+          ? t("has change the name")
+          : `${t("has change the name to")} ${displayName}`,
     }
   } else if (
     eventContent.avatar_url !== undefined &&
     previousContent?.avatar_url === undefined
   ) {
     return {
-      body: "has put a profile photo",
+      body: t("has put a profile photo"),
       icon: IoPeopleCircle,
     }
   } else if (
@@ -558,7 +559,7 @@ function handleMemberJoin(
     eventContent.avatar_url !== previousContent?.avatar_url
   ) {
     return {
-      body: "has change to the profile photo",
+      body: t("has change to the profile photo"),
       icon: IoPeopleCircle,
     }
   } else if (
@@ -566,7 +567,7 @@ function handleMemberJoin(
     previousContent?.avatar_url !== undefined
   ) {
     return {
-      body: "has remove the profile photo",
+      body: t("has remove the profile photo"),
       icon: IoPeopleCircle,
     }
   } else {
@@ -589,17 +590,17 @@ function handleMemberLeave(
         return null
       }
 
-      return `has canceled the invitation to ${userForCanceled}`
+      return `${t("has canceled the invitation to")} ${userForCanceled}`
     }
     case KnownMembership.Ban: {
       if (stateKey === undefined) {
         return null
       }
 
-      return `has removed the ban from ${stateKey}`
+      return `${t("has removed the ban from")} ${stateKey}`
     }
     case KnownMembership.Join: {
-      return `has left the room`
+      return t("has left the room")
     }
     default: {
       console.warn("Unknown previousMembership type:", eventContent.membership)
@@ -615,25 +616,29 @@ export const handleGuestAccessEvent = async (
   switch (eventContent.guest_access) {
     case "can_join": {
       return {
-        body: "authorized anyone to join the room",
+        body: t("authorized anyone to join the room"),
         icon: IoLockClosed,
       }
     }
     case "forbidden": {
       return {
-        body: "has prohibited guests from joining the room",
+        body: t("has prohibited guests from joining the room"),
         icon: IoLockClosed,
       }
     }
     case "restricted": {
       return {
-        body: "restricted guest access to the room. Only guests with valid tokens can join.",
+        body: t(
+          "restricted guest access to the room. Only guests with valid tokens can join."
+        ),
         icon: IoLockClosed,
       }
     }
     case "knock": {
       return {
-        body: "enabled `knocking` for guests. Guests must request access to join.",
+        body: t(
+          "enabled `knocking` for guests. Guests must request access to join."
+        ),
         icon: IoLockClosed,
       }
     }
@@ -651,19 +656,19 @@ export const handleJoinRulesEvent = async (
   switch (eventContent.join_rule) {
     case JoinRule.Invite: {
       return {
-        body: "restricted the room to guests",
+        body: t("restricted the room to guests"),
         icon: IoIosPaper,
       }
     }
     case JoinRule.Public: {
       return {
-        body: "made the room public to anyone who knows the link",
+        body: t("made the room public to anyone who knows the link"),
         icon: IoIosPaper,
       }
     }
     case JoinRule.Restricted: {
       return {
-        body: "made the room private. Only admins can invite now",
+        body: t("made the room private. Only admins can invite now"),
         icon: IoIosPaper,
       }
     }
@@ -684,8 +689,8 @@ export const handleRoomTopicEvent = async (
     icon: IoIosText,
     body:
       topic === undefined || typeof topic !== "string" || topic.length === 0
-        ? `has remove the topic of the room`
-        : `has change to the topic to <<${topic}>>`,
+        ? t("has remove the topic of the room")
+        : `${t("has change to the topic to")} <<${topic}>>`,
   }
 }
 
@@ -695,26 +700,34 @@ export const handleHistoryVisibilityEvent = async (
   switch (eventContent.history_visibility) {
     case HistoryVisibility.Shared: {
       return {
-        body: "made the future history of the room visible to all members of the room.",
         icon: IoReceipt,
+        body: t(
+          "made the future history of the room visible to all members of the room."
+        ),
       }
     }
     case HistoryVisibility.Invited: {
       return {
-        body: "made the room future history visible to all room members, from the moment they are invited.",
         icon: IoReceipt,
+        body: t(
+          "made the room future history visible to all room members, from the moment they are invited."
+        ),
       }
     }
     case HistoryVisibility.Joined: {
       return {
-        body: "made the room future history visible to all room members, from the moment they are joined.",
         icon: IoReceipt,
+        body: t(
+          "made the room future history visible to all room members, from the moment they are joined."
+        ),
       }
     }
     case HistoryVisibility.WorldReadable: {
       return {
-        body: "made the future history of the room visible to anyone people.",
         icon: IoReceipt,
+        body: t(
+          "made the future history of the room visible to anyone people."
+        ),
       }
     }
     default: {
@@ -735,8 +748,8 @@ export const handleRoomCanonicalAliasEvent = async (
     icon: IoAtCircle,
     body:
       eventContent.alias === undefined || typeof eventContent.alias !== "string"
-        ? "has remove the main address for this room"
-        : `set the main address for this room as ${eventContent.alias}`,
+        ? t("has remove the main address for this room")
+        : `${t("set the main address for this room as")} ${eventContent.alias}`,
   }
 }
 
@@ -749,8 +762,8 @@ export const handleRoomAvatarEvent = async (
       eventContent.url === undefined ||
       typeof eventContent.url !== "string" ||
       eventContent.url.length === 0
-        ? "has remove the avatar for this room"
-        : "changed the avatar of the room",
+        ? t("has remove the avatar for this room")
+        : t("changed the avatar of the room"),
   }
 }
 
@@ -763,8 +776,8 @@ export const handleRoomNameEvent = async (
       eventContent.name === undefined ||
       typeof eventContent.name !== "string" ||
       eventContent.name.length === 0
-        ? "has changed the room name"
-        : `has changed the room name to ${eventContent.name}`,
+        ? t("has changed the room name")
+        : `${t("has changed the room name to")} ${eventContent.name}`,
   }
 }
 
@@ -947,8 +960,8 @@ const convertToMessageDeleted = (
 
   const text =
     reason === undefined || typeof reason !== "string" || reason.length === 0
-      ? `${deletedByUser} has delete this message`
-      : `${deletedByUser} has delete this message because <<${reason}>>`
+      ? `${deletedByUser} ${t("has delete this message")}`
+      : `${deletedByUser} ${t("has delete this message because")} <<${reason}>>`
 
   return {
     kind: MessageKind.Text,
