@@ -1,0 +1,18 @@
+{
+  "Create Room": "Crear Sala",
+  "Name": "Nombre",
+  "Description (optional)": "Descripción (opcional)",
+  "Room description placeholder": "Escribe una breve descripción sobre el propósito de esta sala",
+  "Room Privacy": "Privacidad de la Sala",
+  "Room Address": "Dirección de la Sala",
+  "Create Room invited text assistance": "Solo se pueden unir los que han sido invitados. Puedes cambiar esto desde la configuración de la sala.",
+  "Create Room encryption enable text assistance": "No podrás apagarlo mas tarde. Los puentes de acceso y la mayoría de bots seguirán sin funcionar.",
+  "Turn on end-to-end encryption": "Activar el cifrado de extremo a extremo",
+  "New Space": "Nuevo Espacio",
+  "Create Space": "Crear Espacio",
+  "Create Space spec info": "Los espacios son una nueva forma de agrupar habitaciones y personas. Puedes cambiar el tipo de espacio que quieras crear.",
+  "Space Name": "Nombre del espacio",
+  "Space description placeholder": "Escribe una breve descripción sobre el propósito de este espacio",
+  "Public Room": "Sala pública",
+  "Private Room": "Sala privada"
+}

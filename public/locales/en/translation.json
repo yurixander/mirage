@@ -1,0 +1,18 @@
+{
+  "Create Room": "Create Room",
+  "Name": "Name",
+  "Description (optional)": "Description (optional)",
+  "Room description placeholder": "A brief description about the purpose of this room",
+  "Room Privacy": "Room Privacy",
+  "Room Address": "Room Address",
+  "Create Room invited text assistance": "Only those who are invited will be able to find and join this room. You can change this at any time from the room settings",
+  "Create Room encryption enable text assistance": "You won't be able to turn it off later. Bridges and most of robots still won't work.",
+  "Turn on end-to-end encryption": "Turn on end-to-end encryption",
+  "New Space": "New Space",
+  "Create Space": "Create Space",
+  "Create Space spec info": "Spaces are a new way of grouping rooms and people. What kind of space you want to create you can change",
+  "Space Name": "Space Name",
+  "Space description placeholder": "Write a brief description of what your space will be about.",
+  "Public Room": "Public Room",
+  "Private Room": "Private Room"
+}

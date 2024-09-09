@@ -9,18 +9,11 @@ import {IoGlobe} from "react-icons/io5"
 import useCreateRoom from "@/hooks/matrix/useCreateRoom"
 import {FaHashtag} from "react-icons/fa6"
 import Modal from "./Modal"
-
-const PRIVATE_DROPDOWN_OPTION: DropdownOption = {
-  Icon: IoIosLock,
-  text: "Private Room",
-}
-
-const PUBLIC_DROPDOWN_OPTION: DropdownOption = {
-  Icon: IoMdGlobe,
-  text: "Public Room",
-}
+import {useTranslation} from "react-i18next"
 
 const CreateRoomModal: FC = () => {
+  const {t} = useTranslation()
+
   const {
     isCreatingRoom,
     onCreateRoom,
@@ -36,10 +29,20 @@ const CreateRoomModal: FC = () => {
     isValidAlias,
   } = useCreateRoom()
 
+  const PRIVATE_DROPDOWN_OPTION: DropdownOption = {
+    Icon: IoIosLock,
+    text: t("Private Room"),
+  }
+
+  const PUBLIC_DROPDOWN_OPTION: DropdownOption = {
+    Icon: IoMdGlobe,
+    text: t("Public Room"),
+  }
+
   return (
     <Modal
-      title="Create Room"
-      actionText="Create Room"
+      title={t("Create Room")}
+      actionText={t("Create Room")}
       isDisabled={isDisabled || isValidAlias}
       isLoading={isCreatingRoom}
       onAccept={onCreateRoom}
@@ -47,20 +50,20 @@ const CreateRoomModal: FC = () => {
       <div className="flex flex-col gap-4 bg-white">
         <div className="flex flex-col gap-2">
           <InputSection
-            title="* Name"
+            title={`* ${t("Name")}`}
             placeholder="Ej: Gaming Lovers"
             onValueChange={setRoomName}
           />
 
           <InputSection
-            title="Description (optional)"
-            placeholder="A brief description about the purpose of this room"
+            title={t("Description (optional)")}
             onValueChange={setRoomDescription}
+            placeholder={t("Room description placeholder")}
           />
 
           <div className="flex flex-col gap-1">
             <Typography variant={TypographyVariant.BodyMedium}>
-              Room Privacy
+              {t("Room Privacy")}
             </Typography>
 
             <Dropdown
@@ -82,8 +85,7 @@ const CreateRoomModal: FC = () => {
         {roomVisibility === Visibility.Private ? (
           <div className="flex flex-col gap-2">
             <Typography className="text-black" variant={TypographyVariant.Body}>
-              Only those who are invited will be able to find and join this
-              room. You can change this at any time from the room settings
+              {t("Create Room invited text assistance")}
             </Typography>
 
             <div className="flex justify-between">
@@ -91,12 +93,11 @@ const CreateRoomModal: FC = () => {
                 <Typography
                   className="font-medium text-black"
                   variant={TypographyVariant.Body}>
-                  Turn on end-to-end encryption
+                  {t("Turn on end-to-end encryption")}
                 </Typography>
 
                 <Typography variant={TypographyVariant.BodySmall}>
-                  You won't be able to turn it off later. Bridges and most of
-                  robots still won't work.
+                  {t("Create Room encryption enable text assistance")}
                 </Typography>
               </div>
 
@@ -107,10 +108,9 @@ const CreateRoomModal: FC = () => {
             </div>
           </div>
         ) : (
-          // TODO: Put new constraint for invalid alias.
           <InputSection
             className="max-w-48"
-            title="* Room Address"
+            title={`* ${t("Room Address")}`}
             titleIcon={IoGlobe}
             icon={FaHashtag}
             placeholder="p.j  my-room"
