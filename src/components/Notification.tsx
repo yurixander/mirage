@@ -34,7 +34,7 @@ const Notification: FC<NotificationProps> = ({
   senderAvatarUrl,
   notificationId,
 }) => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("notifications")
 
   assert(notificationId.length > 0, "Notification id should not be empty.")
 

@@ -1,0 +1,12 @@
+{
+  "Notifications": "Notifications",
+  "Loading Notifications": "Loading Notifications",
+  "NotificationsEmpty": "You not have notifications",
+  "Go to ⟶": "Go to ⟶",
+  "Remove notification": "Remove notification",
+  "NotificationType Invited": "Has invited you to",
+  "NotificationType InvitationRemoved":  "The invitation to join has been withdrawn to",
+  "NotificationType DowngradeToMember": "You have been demoted to member in",
+  "NotificationType UpgradeToAdmin": "You have been promoted to admin in",
+  "NotificationType UpgradeToModerator": "You have been promoted to moderator in"
+}

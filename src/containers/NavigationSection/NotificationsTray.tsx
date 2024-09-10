@@ -31,7 +31,7 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
   notifications,
   children,
 }) => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("notifications")
 
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
@@ -55,9 +55,7 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
           {isLoading ? (
             <Loader className="p-4" text={t("Loading Notifications")} />
           ) : notifications.length === 0 ? (
-            <Typography className="p-3">
-              {t("You not have notifications")}
-            </Typography>
+            <Typography className="p-3">{t("NotificationsEmpty")}</Typography>
           ) : (
             <div className="flex flex-col gap-4">
               <Typography variant={TypographyVariant.Heading}>
