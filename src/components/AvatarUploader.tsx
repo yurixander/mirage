@@ -37,6 +37,16 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
   }, [contentPicked])
 
   useEffect(() => {
+    return () => {
+      if (avatarImageUrl === null) {
+        return
+      }
+
+      URL.revokeObjectURL(avatarImageUrl)
+    }
+  }, [avatarImageUrl])
+
+  useEffect(() => {
     if (
       client === null ||
       contentPicked === null ||
