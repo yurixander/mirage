@@ -71,5 +71,10 @@
   "Search spaces": "Buscar espacios",
   "Add to space": "Añadir al espacio",
   "Create DM": "Crear DM",
-  "Refresh": "Actualizar"
+  "Refresh": "Actualizar",
+  "View member": "Ver miembro",
+  "Find user": "Buscar usuario",
+  "EqualInfo": "ha realizado varios eventos",
+  "PersonalInfo": "ha cambiado su información personal",
+  "ConfigureRoom": "ha configurado la sala"
 }

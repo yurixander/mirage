@@ -14,9 +14,9 @@ import {IoCube} from "react-icons/io5"
 import {useTranslation} from "react-i18next"
 
 export enum EventShortenerType {
-  EqualInfo = "has done several events.",
-  PersonalInfo = "has change his personal info.",
-  ConfigureRoom = "has created and configured this room.",
+  EqualInfo = "EqualInfo",
+  PersonalInfo = "PersonalInfo",
+  ConfigureRoom = "ConfigureRoom",
 }
 
 export type EventGroupMainBody = {
@@ -52,7 +52,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
           className="grow"
           onShowMember={onShowMember}
           onFindUser={onFindUser}
-          body={eventGroupMainBody.shortenerType}
+          body={t(eventGroupMainBody.shortenerType)}
           eventId={eventMessages[0].eventId}
           sender={eventGroupMainBody.sender}
           timestamp={eventMessages[0].timestamp}
@@ -77,6 +77,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
         animate={{height: isExpanded ? "max-content" : "0px"}}>
         {eventMessages.map(eventMessageData => (
           <EventMessageChild
+            key={eventMessageData.eventId}
             icon={eventMessageData.icon}
             body={eventMessageData.body}
             timestamp={eventMessageData.timestamp}

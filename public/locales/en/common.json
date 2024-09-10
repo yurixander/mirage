@@ -71,5 +71,10 @@
   "Search spaces": "Search spaces",
   "Add to space": "Add to space",
   "Create DM": "Create DM",
-  "Refresh": "Refresh"
+  "Refresh": "Refresh",
+  "View member": "View member",
+  "Find user": "Find user",
+  "EqualInfo": "has done several events",
+  "PersonalInfo": "has change his personal info.",
+  "ConfigureRoom": "has created and configured this room."
 }

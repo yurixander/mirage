@@ -6,6 +6,7 @@ import ContextMenu, {ClickActions} from "./ContextMenu"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
 import {type EventType} from "matrix-js-sdk"
+import {useTranslation} from "react-i18next"
 
 export type EventSender = {
   displayName: string
@@ -38,6 +39,7 @@ const EventMessage: FC<EventMessageProps> = ({
   className,
 }) => {
   const Icon = icon ?? IoMdCreate
+  const {t} = useTranslation()
 
   assert(eventId.length > 0, "Event id should not be empty.")
   assert(sender.userId.length > 0, "Sender user id should not be empty.")
@@ -58,12 +60,12 @@ const EventMessage: FC<EventMessageProps> = ({
             {
               icon: IoPeopleCircle,
               onClick: onShowMember,
-              text: "View member",
+              text: t("View member"),
             },
             {
               icon: IoSearchCircle,
               onClick: onFindUser,
-              text: "Find user",
+              text: t("Find user"),
             },
           ]}>
           <Typography
