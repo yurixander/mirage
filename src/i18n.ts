@@ -9,10 +9,10 @@ void i18n
   .use(LanguageDetector)
   .init({
     backend: {
-      loadPath: "/locales/{{lng}}/translation.json",
+      loadPath: "/locales/{{lng}}/{{ns}}.json",
     },
-    lng: "es",
-    fallbackLng: "es",
+    ns: ["common", "welcomeSplash"],
+    defaultNS: "common",
     interpolation: {
       escapeValue: false,
     },

@@ -6,7 +6,7 @@ import AppLogo from "@/components/AppLogo"
 import {useTranslation} from "react-i18next"
 
 const WelcomeSplash: FC = () => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("welcomeSplash")
 
   return (
     <div className="flex size-full flex-col items-center justify-center gap-3 border-r border-stone-200">
@@ -17,11 +17,11 @@ const WelcomeSplash: FC = () => {
           <Typography
             variant={TypographyVariant.Heading}
             className="text-black">
-            {t("Welcome to Mirage")}
+            {t("WelcomeSplashTitle")}
           </Typography>
 
           <Typography className="mt-2 max-w-text text-center text-black">
-            {t("Welcome to mirage assistance text")}
+            {t("WelcomeSplashSubtitle")}
           </Typography>
         </div>
       </div>
@@ -29,7 +29,7 @@ const WelcomeSplash: FC = () => {
       <div className="flex gap-4">
         <GetStartedCard
           title={t("Explore Servers")}
-          subtitle={t("join a relevant community")}
+          subtitle={t("Explore Servers subtitle")}
           Icon={FaCompass}
           onClick={() => {
             // TODO: Handle here explore servers card click.

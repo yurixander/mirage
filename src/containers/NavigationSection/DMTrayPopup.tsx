@@ -55,7 +55,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
   clearResult,
   children,
 }) => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("navigation")
 
   const invitationLink =
     userId !== undefined && validateMatrixUser(userId)
@@ -85,7 +85,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
 
               <div className="flex flex-col gap-2">
                 <Typography className="text-black">
-                  {t("DMTray find user assistance text")}
+                  {t("DMTray find user description")}
                 </Typography>
 
                 <Input
@@ -147,7 +147,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
 
               <div className="mt-auto flex flex-col gap-2">
                 <Typography className="text-black">
-                  {t("DMTray founded user assistance text")}
+                  {t("DMTray founded description")}
                 </Typography>
 
                 <InvitationLinkBar invitationLink={invitationLink} />
@@ -182,7 +182,7 @@ const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
         size="icon"
         onClick={() => {
           if (invitationLink === null) {
-            showTooltip(t("The invitation link is not correct."), true)
+            showTooltip(t("Invitation link incorrect"), true)
 
             return
           }
@@ -193,10 +193,7 @@ const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
               showTooltip(t("Link copied successfully"))
             })
             .catch(error => {
-              showTooltip(
-                `${t("Could not copy link by reason")}: ${error}`,
-                true
-              )
+              showTooltip(`${t("Copy link error")}: ${error}`, true)
             })
         }}>
         <IoCopy />
@@ -235,10 +232,7 @@ const DMDisplay: FC<DMDisplayProps> = ({
             return
           }
 
-          showTooltip(
-            `${t("Failed to open chat room by reason")}:  ${error.message}`,
-            true
-          )
+          showTooltip(`${t("Open chat error")}:  ${error.message}`, true)
         }
       }}
       className={twMerge(

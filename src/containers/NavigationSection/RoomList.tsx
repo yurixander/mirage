@@ -28,7 +28,7 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
   const {rooms, roomsState, onRefreshRooms, client} = useSpaceHierarchy(spaceId)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const {setActiveModal} = useActiveModalStore()
-  const {t} = useTranslation()
+  const {t} = useTranslation("navigation")
 
   const directRooms = useMemo(
     () => rooms.filter(room => room.type === RoomType.Direct),
@@ -63,7 +63,7 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
               isDisabled={client === null}
               variant={ButtonVariant.Primary}
               onClick={onRefreshRooms}
-              label={t("Refresh")}
+              label={t("common:Refresh")}
             />
           </div>
         </div>

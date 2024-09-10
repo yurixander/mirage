@@ -16,7 +16,7 @@ const SIDEBAR_BUTTON_SIZE = 20
 
 const SidebarActions: FC<{className?: string}> = ({className}) => {
   const client = useMatrixClient()
-  const {t} = useTranslation()
+  const {t} = useTranslation("navigation")
 
   const {dmRooms, results, setQuery, userId, isDMLoading, clearResults} =
     useDmTray(client)
