@@ -22,7 +22,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
   onRosterExpanded,
   className,
 }) => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("roomContainer")
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const {

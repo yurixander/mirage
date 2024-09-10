@@ -44,7 +44,7 @@ const ChatInput: FC<ChatInputProps> = ({
   const [caretPosition, setCaretPosition] = useState<number | null>(null)
   const [messageText, setMessageText] = useState("")
   const debouncedText = useDebounced(messageText, 500)
-  const {t} = useTranslation()
+  const {t} = useTranslation("roomContainer")
 
   const [selectionRange, setSelectionRange] = useState<SelectionRange>({
     selectionEnd: null,
@@ -127,16 +127,19 @@ const ChatInput: FC<ChatInputProps> = ({
           />
 
           <InputChatAction
-            ariaLabel="Record Audio"
+            ariaLabel={t("Record Audio")}
             isDisabled={isInputDisabled}
             onClick={() => {
               // TODO: Handle capture audio.
             }}>
-            <IoMic aria-label="Record Audio" className={INPUT_ACTION_CLASS} />
+            <IoMic
+              aria-label={t("Record Audio")}
+              className={INPUT_ACTION_CLASS}
+            />
           </InputChatAction>
 
           <InputChatAction
-            ariaLabel="Send text message"
+            ariaLabel={t("Send text message")}
             isDisabled={messageText.length === 0 || isInputDisabled}
             onClick={() => {
               textAreaRef.current?.focus()
@@ -189,6 +192,7 @@ const EmojiPickerPopover: FC<{
   isDisabled?: boolean
 }> = ({onPickEmoji, isDisabled = false}) => {
   const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false)
+  const {t} = useTranslation("roomContainer")
 
   useEffect(() => {
     const handleOpenEmojiPicker = (event: KeyboardEvent): void => {
@@ -211,7 +215,7 @@ const EmojiPickerPopover: FC<{
       <PopoverTrigger asChild>
         <Button
           disabled={isDisabled}
-          aria-label="Emoji picker"
+          aria-label={t("Emoji picker")}
           variant="ghost"
           size="icon"
           className={twMerge(
@@ -219,7 +223,7 @@ const EmojiPickerPopover: FC<{
             "size-max hover:bg-transparent"
           )}>
           <IoIosHappy
-            aria-label="Smile icon"
+            aria-label={t("Emoji icon")}
             className={twMerge(
               INPUT_ACTION_CLASS,
               isEmojiPickerVisible && "text-slate-500"

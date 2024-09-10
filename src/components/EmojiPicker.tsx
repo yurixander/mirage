@@ -18,6 +18,7 @@ import emojiData from "@/../public/data/emoji-data.json"
 import useEmojiSearch from "@/hooks/util/useEmojiSearch"
 import Input from "./Input"
 import {type SelectionRange} from "@/containers/RoomContainer/ChatInput"
+import {useTranslation} from "react-i18next"
 
 const emojiMartData: EmojiMartData = emojiData
 const emojis: Emoji[] = Object.values(emojiData.emojis)
@@ -55,6 +56,8 @@ type EmojiPickerProps = {
 }
 
 const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
+  const {t} = useTranslation("roomContainer")
+
   const [categorySelected, setCategorySelected] = useState(
     EmojiCategories.People
   )
@@ -94,7 +97,10 @@ const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
       </div>
 
       <div className="h-12 w-full">
-        <Input placeholder="Search any emoji" onValueChange={setEmojiQuery} />
+        <Input
+          placeholder={t("Search any emoji")}
+          onValueChange={setEmojiQuery}
+        />
       </div>
 
       <div className="size-full overflow-y-scroll scrollbar-hide">
@@ -124,6 +130,7 @@ const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
   const [isVariationOpen, setIsVariationOpen] = useState(false)
   const [emojiHeaderSelected, setEmojiHeaderSelected] = useState("")
   const {points, clearPoints, setPointsByEvent} = useElementPoints()
+  const {t} = useTranslation("roomContainer")
 
   useEffect(() => {
     if (skins.length === 0) {
@@ -188,7 +195,7 @@ const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
             setIsVariationOpen(prevVariationIsOpen => !prevVariationIsOpen)
           }}>
           <svg
-            aria-label="More variants"
+            aria-label={t("More variants")}
             className="size-3 fill-current text-gray-400"
             viewBox="0 0 12 12"
             xmlns="http://www.w3.org/2000/svg">

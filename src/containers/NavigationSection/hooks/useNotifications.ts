@@ -12,10 +12,10 @@ import {
   NotificationType,
 } from "@/utils/notifications"
 import {generateRandomId, getImageUrl} from "@/utils/util"
-import {t} from "i18next"
 import {type MatrixClient, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {useCallback, useEffect, useMemo, useState} from "react"
+import {useTranslation} from "react-i18next"
 
 enum NotificationState {
   Waiting,
@@ -34,6 +34,8 @@ type UseNotificationsReturnType = {
 const useNotifications = (
   client: MatrixClient | null
 ): UseNotificationsReturnType => {
+  const {t} = useTranslation("notifications")
+
   const [notificationsState, setNotificationsState] = useState(
     NotificationState.Waiting
   )
@@ -157,7 +159,7 @@ const useNotifications = (
         senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),
       })
     }
-  }, [client, saveNotification])
+  }, [client, saveNotification, t])
 
   const fetchNotifications = useCallback(async () => {
     if (client === null || notificationsState !== NotificationState.Waiting) {

@@ -15,7 +15,7 @@ enum ActionTypes {
 
 const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
   const client = useMatrixClient()
-  const {t} = useTranslation()
+  const {t} = useTranslation("roomContainer")
   const {setActiveRoomId, clearActiveRoomId} = useActiveRoomIdStore()
   const [actionLoading, setActionLoading] = useState<ActionTypes | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -63,7 +63,7 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
         <div className="mt-1 flex w-full gap-1">
           <Button
             className="w-full"
-            label={t("Reject")}
+            label={t("common:Reject")}
             isDisabled={client === null || actionLoading === ActionTypes.Join}
             isLoading={actionLoading === ActionTypes.Leave}
             onClick={() => {
@@ -83,12 +83,7 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
                 .catch(_error => {
                   // TODO: Show toast when error happens.
 
-                  setError(
-                    t(
-                      "An error occurred while trying to reject the invitation."
-                    )
-                  )
-
+                  setError(t("Reject invitation error"))
                   setActionLoading(null)
                 })
             }}
@@ -99,7 +94,7 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
             isDisabled={client === null || actionLoading === ActionTypes.Leave}
             isLoading={actionLoading === ActionTypes.Join}
             variant={ButtonVariant.Primary}
-            label={t("Accept")}
+            label={t("common:Accept")}
             onClick={() => {
               if (client === null) {
                 return
@@ -119,9 +114,7 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
                 .catch(_error => {
                   // TODO: Show toast when error happens.
 
-                  setError(
-                    t("An error occurred while trying to join the Room.")
-                  )
+                  setError(t("Joining room error"))
                   setActionLoading(null)
                 })
             }}

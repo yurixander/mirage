@@ -20,5 +20,6 @@
   "Open chat error": "No se pudo abrir el chat por",
   "DMChat with": "Conversación con",
   "DMTray founded description": "Es posible que algunas sugerencias no se muestren por cuestiones de privacidad. Si no encuentras a la persona que buscas, envíale tu enlace de invitación a continuación.",
-  "DMTray find user description": "Inicie una conversación con alguien usando su nombre o nombre de usuario (@usuario:mirage.org)."
+  "DMTray find user description": "Inicie una conversación con alguien usando su nombre o nombre de usuario (@usuario:mirage.org).",
+  "Room owners": "Administradores de la Sala"
 }

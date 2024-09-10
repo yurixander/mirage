@@ -25,7 +25,7 @@ const ImageModal: FC<ImageModalProps> = ({
   onDeleteImage,
   onClose,
 }) => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("roomContainer")
 
   return (
     <div className="flex size-full flex-col bg-modalOverlay">
@@ -34,9 +34,7 @@ const ImageModal: FC<ImageModalProps> = ({
           <div className="flex flex-col items-center gap-2 rounded-lg bg-white p-2">
             <IoInformationCircle size={28} color="red" />
 
-            <Typography>
-              {t("An error occurred while loading the image")}
-            </Typography>
+            <Typography>{t("Loading Image Error")}</Typography>
           </div>
         ) : (
           <ImageZoom className="size-full px-8 py-4" src={imageUrl} />

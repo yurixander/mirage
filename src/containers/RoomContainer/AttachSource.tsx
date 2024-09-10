@@ -32,7 +32,7 @@ const AttachSource: FC<ChooseFileButtonProps> = ({
   className,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const {t} = useTranslation()
+  const {t} = useTranslation("roomContainer")
 
   const {refs, floatingStyles, context} = useFloating({
     open: isOpen,

@@ -30,7 +30,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   messagesState,
   className,
 }) => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("roomContainer")
   const [imagePrevUrl, setImagePrevUrl] = useState<string>()
 
   if (messagesState === MessagesState.Loaded) {
