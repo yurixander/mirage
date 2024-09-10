@@ -80,7 +80,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
           ) : (
             <>
               <Typography variant={TypographyVariant.Heading}>
-                {t("Direct Rooms")}
+                {t("Direct chats")}
               </Typography>
 
               <div className="flex flex-col gap-2">
@@ -99,12 +99,10 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                     dmRooms.length === 0 ? (
                       <div className="flex h-72 flex-col items-center justify-center">
                         <Typography variant={TypographyVariant.Heading}>
-                          {t("Ops you don't have rooms")}
+                          {t("RoomsEmptyTitle")}
                         </Typography>
 
-                        <Typography>
-                          {t("You can search for users and start a chat")}
-                        </Typography>
+                        <Typography>{t("RoomsEmptySubtitle")}</Typography>
                       </div>
                     ) : (
                       <>
