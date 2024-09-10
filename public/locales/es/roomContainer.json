@@ -25,5 +25,10 @@
   "Reject invitation error": "Ocurrió un error mientras se intentaba rechazar la invitación.",
   "Joining room error": "Ocurrió un error mientras se intentaba unirse a la sala.",
   "Room Not Found": "Sala no encontrada",
-  "Room Not Found description": "No tienes acceso a esta sala o esta sala no existe."
+  "Room Not Found description": "No tienes acceso a esta sala o esta sala no existe.",
+  "Several people": "Varias personas",
+  "and": " y ",
+  "typing...": "escribiendo...",
+  "are": "están",
+  "is": "está"
 }

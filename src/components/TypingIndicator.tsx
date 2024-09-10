@@ -17,10 +17,10 @@ export type TypingIndicatorProps = {
 const MAX_VISIBLE_TYPING_USERS = 3
 
 const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("roomContainer")
 
   const usersLength = users.length
-  const verbForm = length > 1 ? "are" : "is"
+  const verbForm = length > 1 ? t("are") : t("is")
 
   const who: React.ReactNode = useMemo(() => {
     if (usersLength > MAX_VISIBLE_TYPING_USERS) {
@@ -38,7 +38,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
         {index < usersLength - 2
           ? ", "
           : index === usersLength - 2
-            ? " and "
+            ? t("and")
             : ""}
       </span>
     ))

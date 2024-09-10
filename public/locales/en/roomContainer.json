@@ -25,5 +25,10 @@
   "Reject invitation error": "An error occurred while trying to reject the invitation.",
   "Joining room error": "An error occurred while trying to join the Room.",
   "Room Not Found": "Room Not Found",
-  "Room Not Found description": "You not have access to this room or this room not found."
+  "Room Not Found description": "You not have access to this room or this room not found.",
+  "Several people": "Several people",
+  "and": " and ",
+  "typing...": "typing...",
+  "are": "are",
+  "is": "is"
 }
