@@ -1,9 +1,9 @@
-name: Lint
+name: Lint and Formatting
 
 on: [pull_request]
 
 jobs:
-  eslint:
+  eslint_and_prettier:
     runs-on: ubuntu-latest
 
     steps:
