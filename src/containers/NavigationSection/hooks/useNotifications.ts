@@ -12,6 +12,7 @@ import {
   NotificationType,
 } from "@/utils/notifications"
 import {generateRandomId, getImageUrl} from "@/utils/util"
+import {t} from "i18next"
 import {type MatrixClient, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {useCallback, useEffect, useMemo, useState} from "react"
@@ -150,7 +151,7 @@ const useNotifications = (
         roomId: room.roomId,
         notificationTime: Date.now(),
         roomName: room.name,
-        sender: NOTIFICATION_SENDER_NAME,
+        sender: t(NOTIFICATION_SENDER_NAME),
         type: NotificationType.Invited,
         containsAction: true,
         senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),

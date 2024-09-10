@@ -95,7 +95,7 @@ const Notification: FC<NotificationProps> = ({
         </div>
 
         <Typography variant={TypographyVariant.BodyMedium}>
-          {notificationsBody[type]}{" "}
+          {t(notificationsBody[type])}{" "}
           <b style={{color: stringToColor(roomName)}}>{roomName}</b>
         </Typography>
 

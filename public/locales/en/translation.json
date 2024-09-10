@@ -140,11 +140,11 @@
   "Search spaces": "Search spaces",
   "Add to space": "Add to space",
   "Create DM": "Create DM",
-  "Invited": "Has invited you to",
-  "InvitationRemoved":  "The invitation to join has been withdrawn to",
-  "DowngradeToMember": "You have been demoted to member in",
-  "UpgradeToAdmin": "You have been promoted to admin in",
-  "UpgradeToModerator": "You have been promoted to moderator in",
+  "NotificationType Invited": "Has invited you to",
+  "NotificationType InvitationRemoved":  "The invitation to join has been withdrawn to",
+  "NotificationType DowngradeToMember": "You have been demoted to member in",
+  "NotificationType UpgradeToAdmin": "You have been promoted to admin in",
+  "NotificationType UpgradeToModerator": "You have been promoted to moderator in",
   "invited": "invited",
   "has banned": "has banned",
   "has joined to the room": "has joined to the room",
@@ -176,5 +176,6 @@
    "has changed the room name": "has changed the room name",
    "has changed the room name to": "has changed the room name to",
    "has delete this message": "has delete this message",
-   "has delete this message because": "has delete this message because"
+   "has delete this message because": "has delete this message because",
+   "Room owners": "Room owners"
 }

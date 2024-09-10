@@ -1,5 +1,4 @@
 import {UserPowerLevel} from "./members"
-import {t} from "i18next"
 
 const POWER_LEVELS_LOCAL_STORAGE_KEY = "local_power_levels_notifications"
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = "local_notifications_history"
@@ -13,11 +12,11 @@ export enum NotificationType {
 }
 
 export const notificationsBody: {[key in NotificationType]: string} = {
-  [NotificationType.Invited]: t("Invited"),
-  [NotificationType.InvitationRemoved]: t("InvitationRemoved"),
-  [NotificationType.DowngradeToMember]: t("DowngradeToMember"),
-  [NotificationType.UpgradeToAdmin]: t("UpgradeToAdmin"),
-  [NotificationType.UpgradeToModerator]: t("UpgradeToModerator"),
+  [NotificationType.Invited]: "NotificationType Invited",
+  [NotificationType.InvitationRemoved]: "NotificationType InvitationRemoved",
+  [NotificationType.DowngradeToMember]: "NotificationType DowngradeToMember",
+  [NotificationType.UpgradeToAdmin]: "NotificationType UpgradeToAdmin",
+  [NotificationType.UpgradeToModerator]: "NotificationType UpgradeToModerator",
 }
 
 // #region Set and Get

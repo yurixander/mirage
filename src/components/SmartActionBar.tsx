@@ -1,6 +1,5 @@
 import SmartAction from "@/components/SmartAction"
 import {useClientStore} from "@/hooks/matrix/useConnection"
-import {t} from "i18next"
 import {SyncState} from "matrix-js-sdk"
 import {type FC} from "react"
 import {useTranslation} from "react-i18next"
@@ -8,12 +7,12 @@ import {IoMdMedical} from "react-icons/io"
 import {IoAccessibility, IoContrast, IoGlobe} from "react-icons/io5"
 
 const syncStateText: {[key in SyncState]: string} = {
-  [SyncState.Error]: t("Sync error"),
-  [SyncState.Prepared]: t("Ready"),
-  [SyncState.Stopped]: t("Disconnected"),
-  [SyncState.Syncing]: t("Syncing"),
-  [SyncState.Catchup]: t("Catching up"),
-  [SyncState.Reconnecting]: t("Reconnecting"),
+  [SyncState.Error]: "Sync error",
+  [SyncState.Prepared]: "Ready",
+  [SyncState.Stopped]: "Disconnected",
+  [SyncState.Syncing]: "Syncing",
+  [SyncState.Catchup]: "Catching up",
+  [SyncState.Reconnecting]: "Reconnecting",
 }
 
 const SmartActionBar: FC<{className?: string}> = ({className}) => {
@@ -48,7 +47,7 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
 
       <SmartAction
         Icon={IoGlobe}
-        text={syncState === null ? t("Waiting") : syncStateText[syncState]}
+        text={syncState === null ? t("Waiting") : t(syncStateText[syncState])}
         onClick={() => {}}
       />
     </div>

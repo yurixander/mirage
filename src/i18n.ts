@@ -11,8 +11,8 @@ void i18n
     backend: {
       loadPath: "/locales/{{lng}}/translation.json",
     },
-    lng: "en",
-    fallbackLng: "en",
+    lng: "es",
+    fallbackLng: "es",
     interpolation: {
       escapeValue: false,
     },
