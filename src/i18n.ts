@@ -11,7 +11,7 @@ void i18n
     backend: {
       loadPath: "/locales/{{lng}}/{{ns}}.json",
     },
-    ns: ["common", "welcomeSplash", "notifications", "roomContainer"],
+    ns: ["common", "welcomeSplash", "notifications", "roomContainer", "roster"],
     defaultNS: "common",
     interpolation: {
       escapeValue: false,

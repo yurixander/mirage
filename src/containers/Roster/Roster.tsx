@@ -38,7 +38,7 @@ const Roster: FC<RosterProps> = ({
   onReloadMembers,
   className,
 }) => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("roster")
   const hasError = groupedMembers instanceof Error
 
   const {admins, moderators, members} = hasError
@@ -96,19 +96,19 @@ const Roster: FC<RosterProps> = ({
         <ScrollArea className="max-w-56 px-1 pt-3" type="scroll">
           <div className="flex flex-col gap-4">
             <RosterSection
-              title={`${t("ADMINS")} — ${admins.length}`}
+              title={t("ADMINS", {length: admins.length})}
               members={admins}
               onUserClick={onUserClick}
             />
 
             <RosterSection
-              title={`${t("MODERATORS")} — ${moderators.length}`}
+              title={t("MODERATORS", {length: moderators.length})}
               members={moderators}
               onUserClick={onUserClick}
             />
 
             <RosterSection
-              title={`${t("MEMBERS")} — ${members.length}`}
+              title={t("MEMBERS", {length: members.length})}
               members={members}
               onUserClick={onUserClick}
             />

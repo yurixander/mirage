@@ -38,13 +38,13 @@ const RosterUser: FC<RosterUserProps> = ({
   avatarUrl,
   className,
 }) => {
-  const {t} = useTranslation()
+  const {t} = useTranslation("roster")
   const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
 
   const lastPresence =
     lastPresenceAge === undefined
       ? t("Seen long ago")
-      : `${t("Seen")} ${formatTime(lastPresenceAge)} ${t("ago")}`
+      : t("Last seen date", {date: formatTime(lastPresenceAge)})
 
   return (
     <motion.button
@@ -64,7 +64,7 @@ const RosterUser: FC<RosterUserProps> = ({
             return
           }
 
-          showTooltip(`Failed to open user by: ${error.message}`, true)
+          showTooltip(t("Open user error", {message: error.message}), true)
         }
       }}>
       <AvatarImage

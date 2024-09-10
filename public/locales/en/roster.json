@@ -1,0 +1,12 @@
+{
+  "People": "People",
+  "Sort members": "Sort members",
+  "Members Error": "Members Error",
+  "Reload members": "Reload members",
+  "ADMINS": "ADMINS — {{length}}",
+  "MODERATORS": "MODERATORS — {{length}}",
+  "MEMBERS": "MEMBERS — {{length}}",
+  "Open user error": "Failed to open user by: {{message}}",
+  "Seen long ago": "Seen long ago",
+  "Last seen date": "Seen {{date}} ago"
+}

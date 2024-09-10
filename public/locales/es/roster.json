@@ -1,0 +1,12 @@
+{
+  "People": "Personas",
+  "Sort members": "Agrupar miembros",
+  "Members Error": "Error de miembros",
+  "Reload members": "Recargar miembros",
+  "ADMINS": "ADMINISTRADORES — {{length}}",
+  "MODERATORS": "MODERADORES — {{length}}",
+  "MEMBERS": "MIEMBROS — {{length}}",
+  "Open user error": "No se pudo abrir el usuario por: {{message}}",
+  "Seen long ago": "Visto hace mucho tiempo",
+  "Last seen date": "Visto a las {{date}}"
+}
