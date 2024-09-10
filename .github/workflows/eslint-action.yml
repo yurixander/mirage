@@ -17,5 +17,8 @@ jobs:
     - name: Install Dependencies
       run: yarn install
 
+    - name: Check Code Format
+      run: npx prettier --check .
+
     - name: Run ESLint
       run: npx eslint . --ext .js,.jsx,.ts,.tsx
