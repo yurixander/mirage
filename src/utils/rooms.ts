@@ -476,8 +476,8 @@ export const handleMemberEvent = (
         icon: IoPeopleCircle,
         body:
           displayName === undefined
-            ? `${t("invited")} ${stateKey}`
-            : `${t("invited")} ${displayName}`,
+            ? t("events:Invited", {user: stateKey})
+            : t("events:Invited", {user: displayName}),
       }
     }
     case KnownMembership.Ban: {
@@ -490,8 +490,11 @@ export const handleMemberEvent = (
         body:
           typeof eventContent.reason !== "string" ||
           eventContent.reason.length === 0
-            ? `${t("has banned")} ${previousDisplayName}`
-            : `${t("has banned")} ${previousDisplayName}: ${eventContent.reason}`,
+            ? t("events:Banned", {user: previousDisplayName})
+            : t("events:BannedByReason", {
+                user: previousDisplayName,
+                reason: eventContent.reason,
+              }),
       }
     }
     case KnownMembership.Leave: {
@@ -532,7 +535,7 @@ function handleMemberJoin(
     previousMembership !== KnownMembership.Join
   ) {
     return {
-      body: t("has joined to the room"),
+      body: t("events:JoinedToTheRoom"),
       icon: IoPeopleCircle,
     }
   } else if (
@@ -543,15 +546,15 @@ function handleMemberJoin(
       icon: IoPeopleCircle,
       body:
         displayName === undefined
-          ? t("has change the name")
-          : `${t("has change the name to")} ${displayName}`,
+          ? t("events:ChangeName")
+          : t("events:ChangeNameTo", {user: displayName}),
     }
   } else if (
     eventContent.avatar_url !== undefined &&
     previousContent?.avatar_url === undefined
   ) {
     return {
-      body: t("has put a profile photo"),
+      body: t("events:PutProfilePhoto"),
       icon: IoPeopleCircle,
     }
   } else if (
@@ -559,7 +562,7 @@ function handleMemberJoin(
     eventContent.avatar_url !== previousContent?.avatar_url
   ) {
     return {
-      body: t("has change to the profile photo"),
+      body: t("events:ChangeProfilePhoto"),
       icon: IoPeopleCircle,
     }
   } else if (
@@ -567,7 +570,7 @@ function handleMemberJoin(
     previousContent?.avatar_url !== undefined
   ) {
     return {
-      body: t("has remove the profile photo"),
+      body: t("events:RemoveProfilePhoto"),
       icon: IoPeopleCircle,
     }
   } else {
@@ -590,17 +593,17 @@ function handleMemberLeave(
         return null
       }
 
-      return `${t("has canceled the invitation to")} ${userForCanceled}`
+      return t("events:CanceledInvitation", {user: userForCanceled})
     }
     case KnownMembership.Ban: {
       if (stateKey === undefined) {
         return null
       }
 
-      return `${t("has removed the ban from")} ${stateKey}`
+      return t("events:MembershipBanFrom", {user: stateKey})
     }
     case KnownMembership.Join: {
-      return t("has left the room")
+      return t("events:MembershipJoin")
     }
     default: {
       console.warn("Unknown previousMembership type:", eventContent.membership)
@@ -616,29 +619,25 @@ export const handleGuestAccessEvent = async (
   switch (eventContent.guest_access) {
     case "can_join": {
       return {
-        body: t("authorized anyone to join the room"),
+        body: t("events:GuessAccessCanJoin"),
         icon: IoLockClosed,
       }
     }
     case "forbidden": {
       return {
-        body: t("has prohibited guests from joining the room"),
+        body: t("events:GuessAccessForbidden"),
         icon: IoLockClosed,
       }
     }
     case "restricted": {
       return {
-        body: t(
-          "restricted guest access to the room. Only guests with valid tokens can join."
-        ),
+        body: t("events:GuessAccessRestricted"),
         icon: IoLockClosed,
       }
     }
     case "knock": {
       return {
-        body: t(
-          "enabled `knocking` for guests. Guests must request access to join."
-        ),
+        body: t("events:GuessAccessKnock"),
         icon: IoLockClosed,
       }
     }
@@ -656,19 +655,19 @@ export const handleJoinRulesEvent = async (
   switch (eventContent.join_rule) {
     case JoinRule.Invite: {
       return {
-        body: t("restricted the room to guests"),
+        body: t("events:JoinRuleInvite"),
         icon: IoIosPaper,
       }
     }
     case JoinRule.Public: {
       return {
-        body: t("made the room public to anyone who knows the link"),
+        body: t("events:JoinRulePublic"),
         icon: IoIosPaper,
       }
     }
     case JoinRule.Restricted: {
       return {
-        body: t("made the room private. Only admins can invite now"),
+        body: t("events:JoinRuleRestricted"),
         icon: IoIosPaper,
       }
     }
@@ -689,8 +688,8 @@ export const handleRoomTopicEvent = async (
     icon: IoIosText,
     body:
       topic === undefined || typeof topic !== "string" || topic.length === 0
-        ? t("has remove the topic of the room")
-        : `${t("has change to the topic to")} <<${topic}>>`,
+        ? t("events:RemoveTopic")
+        : t("events:ChangeTopicTo", {topic}),
   }
 }
 
@@ -701,33 +700,25 @@ export const handleHistoryVisibilityEvent = async (
     case HistoryVisibility.Shared: {
       return {
         icon: IoReceipt,
-        body: t(
-          "made the future history of the room visible to all members of the room."
-        ),
+        body: t("events:HistoryVisibilityShared"),
       }
     }
     case HistoryVisibility.Invited: {
       return {
         icon: IoReceipt,
-        body: t(
-          "made the room future history visible to all room members, from the moment they are invited."
-        ),
+        body: t("events:HistoryVisibilityInvited"),
       }
     }
     case HistoryVisibility.Joined: {
       return {
         icon: IoReceipt,
-        body: t(
-          "made the room future history visible to all room members, from the moment they are joined."
-        ),
+        body: t("events:HistoryVisibilityJoined"),
       }
     }
     case HistoryVisibility.WorldReadable: {
       return {
         icon: IoReceipt,
-        body: t(
-          "made the future history of the room visible to anyone people."
-        ),
+        body: t("events:HistoryVisibilityWorldReadable"),
       }
     }
     default: {
@@ -748,8 +739,8 @@ export const handleRoomCanonicalAliasEvent = async (
     icon: IoAtCircle,
     body:
       eventContent.alias === undefined || typeof eventContent.alias !== "string"
-        ? t("has remove the main address for this room")
-        : `${t("set the main address for this room as")} ${eventContent.alias}`,
+        ? t("events:RemoveMainAddress")
+        : t("events:SetMainAddressAs", {alias: eventContent.alias}),
   }
 }
 
@@ -762,8 +753,8 @@ export const handleRoomAvatarEvent = async (
       eventContent.url === undefined ||
       typeof eventContent.url !== "string" ||
       eventContent.url.length === 0
-        ? t("has remove the avatar for this room")
-        : t("changed the avatar of the room"),
+        ? t("events:Remove avatar")
+        : t("events:Change avatar"),
   }
 }
 
@@ -776,8 +767,8 @@ export const handleRoomNameEvent = async (
       eventContent.name === undefined ||
       typeof eventContent.name !== "string" ||
       eventContent.name.length === 0
-        ? t("has changed the room name")
-        : `${t("has changed the room name to")} ${eventContent.name}`,
+        ? t("events:roomNameChange")
+        : t("events:roomNameChangeTo", {roomName: eventContent.name}),
   }
 }
 
@@ -960,8 +951,8 @@ const convertToMessageDeleted = (
 
   const text =
     reason === undefined || typeof reason !== "string" || reason.length === 0
-      ? `${deletedByUser} ${t("has delete this message")}`
-      : `${deletedByUser} ${t("has delete this message because")} <<${reason}>>`
+      ? t("events:deletedMessage", {user: deletedByUser})
+      : t("events:deletedMessageBecause", {user: deletedByUser, reason})
 
   return {
     kind: MessageKind.Text,
