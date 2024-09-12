@@ -1,9 +1,9 @@
-name: Lint
+name: Lint and Formatting
 
 on: [pull_request]
 
 jobs:
-  eslint:
+  eslint_and_prettier:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,6 +16,9 @@ jobs:
 
     - name: Install Dependencies
       run: yarn install
+
+    - name: Check Code Format
+      run: npx prettier --check .
 
     - name: Run ESLint
       run: npx eslint . --ext .js,.jsx,.ts,.tsx
