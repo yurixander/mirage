@@ -14164,10 +14164,10 @@ tailwindcss-animate@^1.0.7:
   resolved "https://registry.yarnpkg.com/tailwindcss-animate/-/tailwindcss-animate-1.0.7.tgz#318b692c4c42676cc9e67b19b78775742388bef4"
   integrity sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==
 
-tailwindcss-animation-delay@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/tailwindcss-animation-delay/-/tailwindcss-animation-delay-1.2.0.tgz#960db938cbf63fddf138907eb78d8c4b19fbedbe"
-  integrity sha512-fyDXWrBKZoTb6phV+bgtGFpxwWlvtlM+387gdpVc/mNgKJinayD1859vQ1aPmzDZ1DWbDZ/lpexukXRmc95Z6g==
+tailwindcss-animation-delay@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/tailwindcss-animation-delay/-/tailwindcss-animation-delay-2.0.1.tgz#361501a1507f47c7fb6cd64b9ebc307f5cd2eac3"
+  integrity sha512-ruJNsjkoS9V73ce4DVBy6adj4/l6URP4uoG0nrch57xvPlE774kR5tgkzaBGtlEIaE9SctZ1BrMV8HCSN1K6cw==
 
 tailwindcss@^3.0.2:
   version "3.4.1"
