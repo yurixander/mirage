@@ -18,7 +18,7 @@ import emojiData from "@/../public/data/emoji-data.json"
 import useEmojiSearch from "@/hooks/util/useEmojiSearch"
 import Input from "./Input"
 import {type SelectionRange} from "@/containers/RoomContainer/ChatInput"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
 
 const emojiMartData: EmojiMartData = emojiData
 const emojis: Emoji[] = Object.values(emojiData.emojis)
@@ -56,7 +56,7 @@ type EmojiPickerProps = {
 }
 
 const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
-  const {t} = useTranslation("roomContainer")
+  const {t} = useTranslation()
 
   const [categorySelected, setCategorySelected] = useState(
     EmojiCategories.People

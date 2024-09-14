@@ -18,7 +18,8 @@ import {
 import Loader from "@/components/Loader"
 import useTooltip from "@/hooks/util/useTooltip"
 import {IoIosSearch} from "react-icons/io"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export type DMUser = {
   displayName: string
@@ -55,7 +56,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
   clearResult,
   children,
 }) => {
-  const {t} = useTranslation("navigation")
+  const {t} = useTranslation()
 
   const invitationLink =
     userId !== undefined && validateMatrixUser(userId)
@@ -76,22 +77,22 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
       <HoverCardContent asChild side="right">
         <div className="z-50 m-2 flex h-[520px] w-[480px] flex-col gap-3 overflow-hidden rounded-md border border-slate-300 md:h-[620px]">
           {isLoading ? (
-            <Loader text={t("Loading DMs")} />
+            <Loader text={t(LangKey.LoadingDMs)} />
           ) : (
             <>
               <Typography variant={TypographyVariant.Heading}>
-                {t("Direct chats")}
+                {t(LangKey.DirectChats)}
               </Typography>
 
               <div className="flex flex-col gap-2">
                 <Typography className="text-black">
-                  {t("DMTray find user description")}
+                  {t(LangKey.DMTrayFindUserDescription)}
                 </Typography>
 
                 <Input
                   onValueChange={setQuery}
                   Icon={IoIosSearch}
-                  placeholder={t("Enter name or username")}
+                  placeholder={t(LangKey.EnterNameOrUsername)}
                 />
 
                 <div className="flex max-h-72 flex-col gap-1 overflow-y-auto">
@@ -99,15 +100,15 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                     dmRooms.length === 0 ? (
                       <div className="flex h-72 flex-col items-center justify-center">
                         <Typography variant={TypographyVariant.Heading}>
-                          {t("RoomsEmptyTitle")}
+                          {t(LangKey.RoomsEmptyTitle)}
                         </Typography>
 
-                        <Typography>{t("RoomsEmptySubtitle")}</Typography>
+                        <Typography>{t(LangKey.RoomsEmptySubtitle)}</Typography>
                       </div>
                     ) : (
                       <>
                         <Typography className="p-2 text-black">
-                          {t("RECENT CONVERSATIONS")}
+                          {t(LangKey.RecentConversations)}
                         </Typography>
 
                         <div className="grow overflow-y-auto">
@@ -145,7 +146,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
 
               <div className="mt-auto flex flex-col gap-2">
                 <Typography className="text-black">
-                  {t("DMTray founded description")}
+                  {t(LangKey.DMTrayFoundedDescription)}
                 </Typography>
 
                 <InvitationLinkBar invitationLink={invitationLink} />
@@ -169,7 +170,7 @@ const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
       <Typography
         variant={TypographyVariant.BodyMedium}
         className="select-text text-blue-600">
-        {invitationLink ?? t("User invalid")}
+        {invitationLink ?? t(LangKey.UserInvalid)}
       </Typography>
 
       <Button
@@ -180,7 +181,7 @@ const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
         size="icon"
         onClick={() => {
           if (invitationLink === null) {
-            showTooltip(t("Invitation link incorrect"), true)
+            showTooltip(t(LangKey.InvitationLinkIncorrect), true)
 
             return
           }
@@ -188,10 +189,10 @@ const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
           void navigator.clipboard
             .writeText(invitationLink)
             .then(() => {
-              showTooltip(t("Link copied successfully"))
+              showTooltip(t(LangKey.LinkCopiedSuccessfully))
             })
             .catch(error => {
-              showTooltip(`${t("Copy link error")}: ${error}`, true)
+              showTooltip(`${t(LangKey.CopyLinkError)}: ${error}`, true)
             })
         }}>
         <IoCopy />
@@ -221,7 +222,7 @@ const DMDisplay: FC<DMDisplayProps> = ({
   return (
     <button
       ref={renderRef}
-      aria-label={`${t("DMChat with")} ${displayName}`}
+      aria-label={`${t(LangKey.DMChatWith)} ${displayName}`}
       onClick={() => {
         try {
           onClick()
@@ -230,7 +231,7 @@ const DMDisplay: FC<DMDisplayProps> = ({
             return
           }
 
-          showTooltip(`${t("Open chat error")}:  ${error.message}`, true)
+          showTooltip(`${t(LangKey.OpenChatError)}:  ${error.message}`, true)
         }
       }}
       className={twMerge(

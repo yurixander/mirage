@@ -9,7 +9,6 @@ import DevPreview from "./views/dev"
 // Special imports.
 import "./polyfills"
 import "./styles/tailwind.css"
-import "./i18n"
 
 const $root = document.querySelector("#root")
 

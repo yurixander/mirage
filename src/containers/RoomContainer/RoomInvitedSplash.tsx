@@ -6,7 +6,8 @@ import RoomNotFoundSplash from "./RoomNotFoundSplash"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 enum ActionTypes {
   Join,
@@ -15,7 +16,7 @@ enum ActionTypes {
 
 const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
   const client = useMatrixClient()
-  const {t} = useTranslation("roomContainer")
+  const {t} = useTranslation()
   const {setActiveRoomId, clearActiveRoomId} = useActiveRoomIdStore()
   const [actionLoading, setActionLoading] = useState<ActionTypes | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -57,13 +58,13 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
         </Typography>
 
         <Typography variant={TypographyVariant.Body}>
-          {t("You have been invited to this room")}
+          {t(LangKey.YouHaveBeenInvitedToThisRoom)}
         </Typography>
 
         <div className="mt-1 flex w-full gap-1">
           <Button
             className="w-full"
-            label={t("common:Reject")}
+            label={t(LangKey.Reject)}
             isDisabled={client === null || actionLoading === ActionTypes.Join}
             isLoading={actionLoading === ActionTypes.Leave}
             onClick={() => {
@@ -83,7 +84,7 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
                 .catch(_error => {
                   // TODO: Show toast when error happens.
 
-                  setError(t("Reject invitation error"))
+                  setError(t(LangKey.RejectInvitationError))
                   setActionLoading(null)
                 })
             }}
@@ -94,7 +95,7 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
             isDisabled={client === null || actionLoading === ActionTypes.Leave}
             isLoading={actionLoading === ActionTypes.Join}
             variant={ButtonVariant.Primary}
-            label={t("common:Accept")}
+            label={t(LangKey.Accept)}
             onClick={() => {
               if (client === null) {
                 return
@@ -114,7 +115,7 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
                 .catch(_error => {
                   // TODO: Show toast when error happens.
 
-                  setError(t("Joining room error"))
+                  setError(t(LangKey.JoiningRoomError))
                   setActionLoading(null)
                 })
             }}
