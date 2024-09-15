@@ -74,7 +74,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
         </div>
       </div>
 
-      <footer className="order-3 flex flex-col px-1">
+      <footer className="order-3 flex flex-col px-3.5">
         <ChatInput
           onSendTypingEvent={sendTypingEvent}
           isInputDisabled={isInputDisabled}
