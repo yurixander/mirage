@@ -1,4 +1,4 @@
-import {type LangKey, type Lang, t} from "@/utils/lang"
+import {type LangKey, type Lang, t, setDefaultLang} from "@/utils/lang"
 import {create} from "zustand/react"
 
 type TranslationStore = {
@@ -10,10 +10,12 @@ type TranslationStore = {
 const useTranslation = create<TranslationStore>(set => ({
   lang: "en",
   setActiveLang(lang) {
+    setDefaultLang(lang)
+
     set(_state => ({lang}))
   },
   t(key, ...args) {
-    return t(key, this.lang, ...args)
+    return t(key, ...args)
   },
 }))
 

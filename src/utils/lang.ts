@@ -1,3 +1,4 @@
+import {LocalStorageKey} from "@/hooks/util/useLocalStorage"
 import {english} from "@/lang/english"
 import {spanish} from "@/lang/spanish"
 
@@ -12,7 +13,22 @@ export const translations: Record<Lang, LangDefinition> = {
   es: spanish,
 }
 
-export function t(key: LangKey, lang: Lang = "en", ...args: string[]): string {
+export function getDefaultLang(): Lang {
+  const lang = localStorage.getItem(LocalStorageKey.Lang)
+
+  try {
+    return lang === null ? "en" : JSON.parse(lang)
+  } catch {
+    return "en"
+  }
+}
+
+export function setDefaultLang(lang: Lang): void {
+  localStorage.setItem(LocalStorageKey.Lang, lang)
+}
+
+export function t(key: LangKey, ...args: string[]): string {
+  const lang = getDefaultLang()
   const translation = translations[lang][key]
 
   if (typeof translation === "function") {

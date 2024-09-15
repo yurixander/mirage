@@ -478,8 +478,8 @@ export const handleMemberEvent = (
           displayName === undefined
             ? stateKey === undefined
               ? t(LangKey.Invited)
-              : t(LangKey.Invited, undefined, stateKey)
-            : t(LangKey.Invited, undefined, displayName),
+              : t(LangKey.Invited, stateKey)
+            : t(LangKey.Invited, displayName),
       }
     }
     case KnownMembership.Ban: {
@@ -492,10 +492,9 @@ export const handleMemberEvent = (
         body:
           typeof eventContent.reason !== "string" ||
           eventContent.reason.length === 0
-            ? t(LangKey.Banned, undefined, previousDisplayName)
+            ? t(LangKey.Banned, previousDisplayName)
             : t(
                 LangKey.BannedByReason,
-                undefined,
                 previousDisplayName,
                 eventContent.reason
               ),
@@ -551,7 +550,7 @@ function handleMemberJoin(
       body:
         displayName === undefined
           ? t(LangKey.ChangeName)
-          : t(LangKey.ChangeNameTo, undefined, displayName),
+          : t(LangKey.ChangeNameTo, displayName),
     }
   } else if (
     eventContent.avatar_url !== undefined &&
@@ -597,14 +596,14 @@ function handleMemberLeave(
         return null
       }
 
-      return t(LangKey.CanceledInvitation, undefined, userForCanceled)
+      return t(LangKey.CanceledInvitation, userForCanceled)
     }
     case KnownMembership.Ban: {
       if (stateKey === undefined) {
         return null
       }
 
-      return t(LangKey.MembershipBanFrom, undefined, stateKey)
+      return t(LangKey.MembershipBanFrom, stateKey)
     }
     case KnownMembership.Join: {
       return t(LangKey.MembershipJoin)
@@ -693,7 +692,7 @@ export const handleRoomTopicEvent = async (
     body:
       topic === undefined || typeof topic !== "string" || topic.length === 0
         ? t(LangKey.RemoveTopic)
-        : t(LangKey.ChangeTopicTo, undefined, topic),
+        : t(LangKey.ChangeTopicTo, topic),
   }
 }
 
@@ -744,7 +743,7 @@ export const handleRoomCanonicalAliasEvent = async (
     body:
       eventContent.alias === undefined || typeof eventContent.alias !== "string"
         ? t(LangKey.RemoveMainAddress)
-        : t(LangKey.SetMainAddressAs, undefined, eventContent.alias),
+        : t(LangKey.SetMainAddressAs, eventContent.alias),
   }
 }
 
@@ -772,7 +771,7 @@ export const handleRoomNameEvent = async (
       typeof eventContent.name !== "string" ||
       eventContent.name.length === 0
         ? t(LangKey.RoomNameChange)
-        : t(LangKey.RoomNameChangeTo, undefined, eventContent.name),
+        : t(LangKey.RoomNameChangeTo, eventContent.name),
   }
 }
 
@@ -955,8 +954,8 @@ const convertToMessageDeleted = (
 
   const text =
     reason === undefined || typeof reason !== "string" || reason.length === 0
-      ? t(LangKey.DeletedMessage, undefined, deletedByUser)
-      : t(LangKey.DeletedMessageBecause, undefined, deletedByUser, reason)
+      ? t(LangKey.DeletedMessage, deletedByUser)
+      : t(LangKey.DeletedMessageBecause, deletedByUser, reason)
 
   return {
     kind: MessageKind.Text,
