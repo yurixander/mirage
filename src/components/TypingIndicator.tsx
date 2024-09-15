@@ -3,7 +3,7 @@ import {twMerge} from "tailwind-merge"
 import {stringToColor} from "@/utils/util"
 import Avatar from "boring-avatars"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type TypingIndicatorUser = {
   displayName: string

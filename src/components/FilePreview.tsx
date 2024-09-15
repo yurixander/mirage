@@ -6,7 +6,7 @@ import {fileSizeToString, getFileExtension, IconFile} from "./FileMessage"
 import {ReactSVG} from "react-svg"
 import {StaticAssetPath} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type FilePreviewProps = {
   fileName: string

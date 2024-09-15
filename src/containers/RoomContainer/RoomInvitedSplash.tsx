@@ -7,7 +7,7 @@ import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 enum ActionTypes {
   Join,

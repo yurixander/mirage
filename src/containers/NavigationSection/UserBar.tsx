@@ -14,7 +14,7 @@ import {
 import LoadingEffect from "@/components/LoadingEffect"
 import {UserDataState} from "./hooks/useUserData"
 import {IoAlertCircle, IoRefreshCircle} from "react-icons/io5"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 
 const MAX_USER_ID_LENGTH = 18

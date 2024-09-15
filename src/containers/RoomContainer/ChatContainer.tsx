@@ -8,7 +8,7 @@ import Loader from "@/components/Loader"
 import {twMerge} from "tailwind-merge"
 import {assert} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 type ChatContainerProps = {
   roomId: string

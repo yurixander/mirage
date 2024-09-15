@@ -4,7 +4,7 @@ import {type IconType} from "react-icons"
 import {FaCompass, FaGithub, FaHand} from "react-icons/fa6"
 import AppLogo from "@/components/AppLogo"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 const WelcomeSplash: FC = () => {
   const {t} = useTranslation()

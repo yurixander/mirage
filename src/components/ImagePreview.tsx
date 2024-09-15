@@ -3,7 +3,7 @@ import Typography, {TypographyVariant} from "./Typography"
 import {IoAdd, IoCloseCircle} from "react-icons/io5"
 import Button, {ButtonVariant} from "./Button"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type ImagePreviewProps = {
   imageUrl: string

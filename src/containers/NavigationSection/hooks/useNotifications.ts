@@ -1,7 +1,7 @@
 import {type NotificationProps} from "@/components/Notification"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 import {getRoomPowerLevelByUserId, UserPowerLevel} from "@/utils/members"
 import {
   getPowerLevelsHistory,

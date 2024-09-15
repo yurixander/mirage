@@ -7,7 +7,7 @@ import {IoPause, IoPlay, IoVolumeHigh} from "react-icons/io5"
 import {MdCall, MdCallEnd} from "react-icons/md"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 
 export enum VariantCall {

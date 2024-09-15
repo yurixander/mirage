@@ -1,7 +1,7 @@
 import SmartAction from "@/components/SmartAction"
 import {useClientStore} from "@/hooks/matrix/useConnection"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 import {SyncState} from "matrix-js-sdk"
 import {type FC} from "react"
 import {IoMdMedical} from "react-icons/io"

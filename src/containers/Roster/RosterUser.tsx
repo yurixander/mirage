@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/tooltip"
 import useTooltip from "@/hooks/util/useTooltip"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type RosterUserData = {
   displayName: string

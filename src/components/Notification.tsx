@@ -7,7 +7,7 @@ import Typography, {TypographyVariant} from "./Typography"
 import {notificationsBody, type NotificationType} from "@/utils/notifications"
 import {Button} from "./ui/button"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type NotificationProps = {
   type: NotificationType

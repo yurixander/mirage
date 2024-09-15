@@ -19,7 +19,7 @@ import useEmojiSearch from "@/hooks/util/useEmojiSearch"
 import Input from "./Input"
 import {type SelectionRange} from "@/containers/RoomContainer/ChatInput"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 const emojiMartData: EmojiMartData = emojiData
 const emojis: Emoji[] = Object.values(emojiData.emojis)

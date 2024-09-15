@@ -10,7 +10,7 @@ import Modal from "@/components/Modal"
 import Typography from "@/components/Typography"
 import {motion} from "framer-motion"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 const AppView: FC = () => {
   const {t} = useTranslation()

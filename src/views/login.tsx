@@ -15,7 +15,7 @@ import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
 import useLogin from "@/hooks/util/useLogin"
 import {type IconType} from "react-icons"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 const LoginView: FC = () => {
   const {t} = useTranslation()

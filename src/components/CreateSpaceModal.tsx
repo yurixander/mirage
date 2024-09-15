@@ -9,7 +9,7 @@ import useActiveModalStore from "@/hooks/util/useActiveModal"
 import Modal from "./Modal"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 const CreateSpaceModal: FC = () => {
   const client = useMatrixClient()

@@ -1,6 +1,6 @@
 import useFilePicker, {type SourceType} from "@/hooks/util/useFilePicker"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 import {
   flip,
   offset,

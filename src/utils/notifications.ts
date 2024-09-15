@@ -1,4 +1,4 @@
-import {LangKey} from "./lang"
+import {LangKey} from "@/lang/allKeys"
 import {UserPowerLevel} from "./members"
 
 const POWER_LEVELS_LOCAL_STORAGE_KEY = "local_power_levels_notifications"

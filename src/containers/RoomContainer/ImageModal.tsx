@@ -11,7 +11,7 @@ import {
 import ImageZoom from "@/components/ImageZoom"
 import Typography from "@/components/Typography"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 const ICON_BUTTON_MODAL_SIZE = 26
 

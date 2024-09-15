@@ -1,4 +1,5 @@
-import {LangKey, type LangDefinition} from "@/utils/lang"
+import {type LangDefinition} from "@/utils/lang"
+import {LangKey} from "./allKeys"
 
 export const spanish: LangDefinition = {
   [LangKey.CreateRoom]: "Crear Sala",

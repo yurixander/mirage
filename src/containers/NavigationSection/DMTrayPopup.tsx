@@ -19,7 +19,7 @@ import Loader from "@/components/Loader"
 import useTooltip from "@/hooks/util/useTooltip"
 import {IoIosSearch} from "react-icons/io"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type DMUser = {
   displayName: string

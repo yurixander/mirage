@@ -1,5 +1,5 @@
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 import {assert, validateUrl} from "@/utils/util"
 import React, {type FC, useState} from "react"
 

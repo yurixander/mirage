@@ -10,7 +10,7 @@ import useCreateRoom from "@/hooks/matrix/useCreateRoom"
 import {FaHashtag} from "react-icons/fa6"
 import Modal from "./Modal"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 const CreateRoomModal: FC = () => {
   const {t} = useTranslation()

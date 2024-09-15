@@ -4,7 +4,8 @@ import IconButton from "./IconButton"
 import Label from "./Label"
 import {twMerge} from "tailwind-merge"
 import {type IconType} from "react-icons"
-import {LangKey, t} from "@/utils/lang"
+import {t} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type InputConstraint = {
   message: string

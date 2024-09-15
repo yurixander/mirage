@@ -5,7 +5,7 @@ import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "./Typography"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useFilePicker from "@/hooks/util/useFilePicker"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 
 type UploadAvatarProps = {

@@ -7,7 +7,7 @@ import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
 import {type EventType} from "matrix-js-sdk"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type EventSender = {
   displayName: string

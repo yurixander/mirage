@@ -18,7 +18,7 @@ import {motion} from "framer-motion"
 import EventGroupMessage from "@/components/EventGroupMessage"
 import VideoMessage from "@/components/VideoMessage"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]

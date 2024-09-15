@@ -8,7 +8,7 @@ import {StaticAssetPath} from "@/utils/util"
 import {useWavesurfer} from "@wavesurfer/react"
 import IconButton from "./IconButton"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export type AudioFilePreviewProps = {
   fileName: string

@@ -16,7 +16,7 @@ import useActiveModalStore, {
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import Button, {ButtonVariant} from "@/components/Button"
 import {motion} from "framer-motion"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 
 export type RoomListProps = {

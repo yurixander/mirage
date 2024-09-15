@@ -9,7 +9,7 @@ import {useWavesurfer} from "@wavesurfer/react"
 import useAudioPlayerStore from "@/hooks/util/useAudioPlayerStore"
 import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export interface AudioMessageProps extends MessageBaseProps, AudioMessageData {}
 

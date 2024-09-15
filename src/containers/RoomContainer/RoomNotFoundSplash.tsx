@@ -1,7 +1,7 @@
 import {type FC} from "react"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 const RoomNotFoundSplash: FC = () => {
   const {t} = useTranslation()

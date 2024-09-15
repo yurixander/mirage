@@ -9,7 +9,7 @@ import {Button} from "@/components/ui/button"
 import UserProfileGhost from "@/components/UserProfileGhost"
 import {type GroupedMembers} from "./hooks/useRoomMembers"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export enum RosterUserCategory {
   Admin,

@@ -7,7 +7,7 @@ import {IoIosAlert} from "react-icons/io"
 import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion, validateUrl} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export interface ImageMessageProps extends MessageBaseProps, ImageMessageData {
   onClickImage: (imgUrl: string) => void

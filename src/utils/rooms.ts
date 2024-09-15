@@ -48,7 +48,8 @@ import {
 } from "@/components/EventGroupMessage"
 import {type EventMessageData} from "@/components/EventMessage"
 import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
-import {LangKey, t} from "./lang"
+import {t} from "./lang"
+import {LangKey} from "@/lang/allKeys"
 
 export enum ImageSizes {
   Server = 47,

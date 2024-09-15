@@ -9,7 +9,8 @@ import {
 } from "react-icons/io5"
 import {assert} from "./util"
 import {MdPlaylistAddCircle} from "react-icons/md"
-import {LangKey, t} from "./lang"
+import {t} from "./lang"
+import {LangKey} from "@/lang/allKeys"
 
 export const CONTEXT_MENU_REPLY = {
   text: t(LangKey.Reply),

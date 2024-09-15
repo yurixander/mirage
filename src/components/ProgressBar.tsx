@@ -3,7 +3,7 @@ import {twMerge} from "tailwind-merge"
 import {IoIosAlert, IoIosCheckmarkCircle} from "react-icons/io"
 import Typography from "./Typography"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 export enum ProgressBarState {
   Progress,

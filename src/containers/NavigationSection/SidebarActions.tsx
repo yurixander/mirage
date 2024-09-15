@@ -10,7 +10,7 @@ import NotificationDot from "@/components/NotificationDot"
 import {Button} from "@/components/ui/button"
 import {FaSearch} from "react-icons/fa"
 import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/utils/lang"
+import {LangKey} from "@/lang/allKeys"
 
 const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-slate-400 hover:bg-transparent"
 const SIDEBAR_BUTTON_SIZE = 20
