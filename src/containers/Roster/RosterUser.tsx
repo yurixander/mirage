@@ -49,6 +49,9 @@ const RosterUser: FC<RosterUserProps> = ({
       aria-label={`Member: ${displayName}`}
       initial={{opacity: 0, scale: 0.5}}
       whileInView={{opacity: 1, scale: 1}}
+      transition={{
+        duration: 0.2,
+      }}
       ref={renderRef}
       className={twMerge(
         "flex w-full gap-2 rounded-lg px-2 py-1 hover:bg-gray-100",

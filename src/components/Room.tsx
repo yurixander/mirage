@@ -40,8 +40,11 @@ const Room: FC<RoomProps> = ({
       )}>
       <motion.div
         className="flex w-max items-center gap-2"
-        initial={{scale: 0, opacity: 0.5}}
-        whileInView={{scale: 1, opacity: 1}}>
+        initial={{translateX: -25, opacity: 0.5}}
+        whileInView={{translateX: 0, opacity: 1}}
+        transition={{
+          duration: 0.2,
+        }}>
         <div className="flex size-full max-h-3 max-w-3 items-center justify-center">
           <Typography variant={TypographyVariant.BodyMedium}>
             {emoji}
