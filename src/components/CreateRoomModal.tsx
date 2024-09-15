@@ -9,7 +9,8 @@ import {IoGlobe} from "react-icons/io5"
 import useCreateRoom from "@/hooks/matrix/useCreateRoom"
 import {FaHashtag} from "react-icons/fa6"
 import Modal from "./Modal"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 const CreateRoomModal: FC = () => {
   const {t} = useTranslation()
@@ -31,18 +32,18 @@ const CreateRoomModal: FC = () => {
 
   const PRIVATE_DROPDOWN_OPTION: DropdownOption = {
     Icon: IoIosLock,
-    text: t("Private Room"),
+    text: t(LangKey.PrivateRoom),
   }
 
   const PUBLIC_DROPDOWN_OPTION: DropdownOption = {
     Icon: IoMdGlobe,
-    text: t("Public Room"),
+    text: t(LangKey.PublicRoom),
   }
 
   return (
     <Modal
-      title={t("Create Room")}
-      actionText={t("Create Room")}
+      title={t(LangKey.CreateRoom)}
+      actionText={t(LangKey.CreateRoom)}
       isDisabled={isDisabled || isValidAlias}
       isLoading={isCreatingRoom}
       onAccept={onCreateRoom}
@@ -50,20 +51,20 @@ const CreateRoomModal: FC = () => {
       <div className="flex flex-col gap-4 bg-white">
         <div className="flex flex-col gap-2">
           <InputSection
-            title={`* ${t("Name")}`}
+            title={`* ${t(LangKey.Name)}`}
             placeholder="Ej: Gaming Lovers"
             onValueChange={setRoomName}
           />
 
           <InputSection
-            title={t("Description (optional)")}
+            title={t(LangKey.DescriptionOptional)}
             onValueChange={setRoomDescription}
-            placeholder={t("Room description placeholder")}
+            placeholder={t(LangKey.RoomDescriptionPlaceholder)}
           />
 
           <div className="flex flex-col gap-1">
             <Typography variant={TypographyVariant.BodyMedium}>
-              {t("Room Privacy")}
+              {t(LangKey.RoomPrivacy)}
             </Typography>
 
             <Dropdown
@@ -85,7 +86,7 @@ const CreateRoomModal: FC = () => {
         {roomVisibility === Visibility.Private ? (
           <div className="flex flex-col gap-2">
             <Typography className="text-black" variant={TypographyVariant.Body}>
-              {t("Create Room invited text assistance")}
+              {t(LangKey.CreateRoomInvitedTextAssistance)}
             </Typography>
 
             <div className="flex justify-between">
@@ -93,11 +94,11 @@ const CreateRoomModal: FC = () => {
                 <Typography
                   className="font-medium text-black"
                   variant={TypographyVariant.Body}>
-                  {t("Turn on end-to-end encryption")}
+                  {t(LangKey.TurnOnEndToEndEncryption)}
                 </Typography>
 
                 <Typography variant={TypographyVariant.BodySmall}>
-                  {t("Create Room encryption enable text assistance")}
+                  {t(LangKey.CreateRoomEncryptionEnableTextAssistance)}
                 </Typography>
               </div>
 
@@ -110,7 +111,7 @@ const CreateRoomModal: FC = () => {
         ) : (
           <InputSection
             className="max-w-48"
-            title={`* ${t("Room Address")}`}
+            title={`* ${t(LangKey.RoomAddress)}`}
             titleIcon={IoGlobe}
             icon={FaHashtag}
             placeholder="p.j  my-room"

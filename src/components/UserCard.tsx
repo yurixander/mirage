@@ -6,7 +6,8 @@ import UserProfile, {
   type UserProfileProps as UserProfileProperties,
 } from "./UserProfile"
 import Typography, {TypographyVariant} from "./Typography"
-import {useTranslation} from "react-i18next"
+import {LangKey} from "@/utils/lang"
+import useTranslation from "@/hooks/util/useTranslation"
 
 export type UserCardProps = {
   userProfileProps: UserProfileProperties
@@ -36,7 +37,7 @@ const UserCard: FC<UserCardProps> = ({
 
         <div className="flex grow flex-col gap-4 bg-neutral-50 p-4">
           <div>
-            <Label text={t("About me")} />
+            <Label text={t(LangKey.AboutMe)} />
 
             <Typography variant={TypographyVariant.BodySmall}>
               {aboutMe}
@@ -44,31 +45,32 @@ const UserCard: FC<UserCardProps> = ({
           </div>
 
           <div className="flex flex-col gap-1">
-            <Label text={t("Account")} />
+            <Label text={t(LangKey.Account)} />
 
             <Typography variant={TypographyVariant.BodySmall}>
-              {t("Created")} <b>{formatTime(accountCreationTime)}</b>
+              {t(LangKey.Created)} <b>{formatTime(accountCreationTime)}</b>
             </Typography>
 
             <Typography variant={TypographyVariant.BodySmall}>
-              {t("Joined server")} <b>{formatTime(serverJoinTime)}</b>
+              {t(LangKey.JoinedServer)} <b>{formatTime(serverJoinTime)}</b>
             </Typography>
 
             <Typography variant={TypographyVariant.BodySmall}>
-              {t("Last message sent was")} <b>{formatTime(lastMessageTime)}</b>
+              {t(LangKey.LastMessageSentWas)}{" "}
+              <b>{formatTime(lastMessageTime)}</b>
             </Typography>
           </div>
         </div>
 
         <div className="flex flex-row justify-end gap-1 border-t border-solid border-neutral-300 bg-cardActionsBg p-3">
           <Button
-            label={t("Cancel")}
+            label={t(LangKey.Cancel)}
             variant={ButtonVariant.TextLink}
             onClick={onCancel}
           />
 
           <Button
-            label={t("View messages ⟶")}
+            label={t(LangKey.ViewMessages)}
             variant={ButtonVariant.Primary}
             onClick={() => {
               // TODO: Handle click on View messages button.

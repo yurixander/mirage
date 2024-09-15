@@ -1,5 +1,7 @@
 import {type NotificationProps} from "@/components/Notification"
 import useEventListener from "@/hooks/matrix/useEventListener"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 import {getRoomPowerLevelByUserId, UserPowerLevel} from "@/utils/members"
 import {
   getPowerLevelsHistory,
@@ -15,15 +17,12 @@ import {generateRandomId, getImageUrl} from "@/utils/util"
 import {type MatrixClient, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {useCallback, useEffect, useMemo, useState} from "react"
-import {useTranslation} from "react-i18next"
 
 enum NotificationState {
   Waiting,
   Loading,
   Prepared,
 }
-
-const NOTIFICATION_SENDER_NAME = "Room owners"
 
 type UseNotificationsReturnType = {
   isLoading: boolean
@@ -34,7 +33,7 @@ type UseNotificationsReturnType = {
 const useNotifications = (
   client: MatrixClient | null
 ): UseNotificationsReturnType => {
-  const {t} = useTranslation("notifications")
+  const {t} = useTranslation()
 
   const [notificationsState, setNotificationsState] = useState(
     NotificationState.Waiting
@@ -153,7 +152,7 @@ const useNotifications = (
         roomId: room.roomId,
         notificationTime: Date.now(),
         roomName: room.name,
-        sender: t(NOTIFICATION_SENDER_NAME),
+        sender: t(LangKey.RoomOwners),
         type: NotificationType.Invited,
         containsAction: true,
         senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),
@@ -201,7 +200,7 @@ const useNotifications = (
         roomId: room.roomId,
         notificationTime: Date.now(),
         roomName: room.name,
-        sender: NOTIFICATION_SENDER_NAME,
+        sender: t(LangKey.RoomOwners),
         type: notificationType,
         senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),
         containsAction: false,
@@ -209,7 +208,7 @@ const useNotifications = (
     }
 
     setNotificationsState(NotificationState.Prepared)
-  }, [client, notificationsState, saveCachedLevels, saveNotification])
+  }, [client, notificationsState, saveCachedLevels, saveNotification, t])
 
   // #region useEffect
   useEffect(() => {
@@ -255,7 +254,7 @@ const useNotifications = (
           roomId: room.roomId,
           notificationTime: Date.now(),
           roomName: room.name,
-          sender: NOTIFICATION_SENDER_NAME,
+          sender: t(LangKey.RoomOwners),
           type: NotificationType.InvitationRemoved,
           containsAction: false,
           senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),
@@ -274,7 +273,7 @@ const useNotifications = (
         roomId: room.roomId,
         notificationTime: Date.now(),
         roomName: room.name,
-        sender: NOTIFICATION_SENDER_NAME,
+        sender: t(LangKey.RoomOwners),
         type: NotificationType.Invited,
         containsAction: true,
         senderAvatarUrl: getImageUrl(room.getMxcAvatarUrl(), client),

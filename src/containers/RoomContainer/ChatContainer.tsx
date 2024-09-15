@@ -7,7 +7,8 @@ import TypingIndicator from "@/components/TypingIndicator"
 import Loader from "@/components/Loader"
 import {twMerge} from "tailwind-merge"
 import {assert} from "@/utils/util"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 type ChatContainerProps = {
   roomId: string
@@ -22,7 +23,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
   onRosterExpanded,
   className,
 }) => {
-  const {t} = useTranslation("roomContainer")
+  const {t} = useTranslation()
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const {
@@ -52,7 +53,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
 
   return isChatLoading ? (
     <div className="flex size-full items-center justify-center">
-      <Loader text={t("Loading room")} />
+      <Loader text={t(LangKey.LoadingRoom)} />
     </div>
   ) : (
     <div className={twMerge("flex h-full flex-col", className)}>

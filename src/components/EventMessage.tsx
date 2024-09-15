@@ -6,7 +6,8 @@ import ContextMenu, {ClickActions} from "./ContextMenu"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
 import {type EventType} from "matrix-js-sdk"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export type EventSender = {
   displayName: string
@@ -60,12 +61,12 @@ const EventMessage: FC<EventMessageProps> = ({
             {
               icon: IoPeopleCircle,
               onClick: onShowMember,
-              text: t("View member"),
+              text: t(LangKey.ViewMember),
             },
             {
               icon: IoSearchCircle,
               onClick: onFindUser,
-              text: t("Find user"),
+              text: t(LangKey.FindUser),
             },
           ]}>
           <Typography

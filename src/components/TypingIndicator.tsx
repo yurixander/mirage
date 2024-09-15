@@ -2,7 +2,8 @@ import React, {useMemo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {stringToColor} from "@/utils/util"
 import Avatar from "boring-avatars"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export type TypingIndicatorUser = {
   displayName: string
@@ -17,14 +18,14 @@ export type TypingIndicatorProps = {
 const MAX_VISIBLE_TYPING_USERS = 3
 
 const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
-  const {t} = useTranslation("roomContainer")
+  const {t} = useTranslation()
 
   const usersLength = users.length
-  const verbForm = length > 1 ? t("are") : t("is")
+  const verbForm = length > 1 ? t(LangKey.Are) : t(LangKey.Is)
 
   const who: React.ReactNode = useMemo(() => {
     if (usersLength > MAX_VISIBLE_TYPING_USERS) {
-      return t("Several people")
+      return t(LangKey.SeveralPeople)
     }
 
     return users.map((user, index) => (
@@ -38,7 +39,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
         {index < usersLength - 2
           ? ", "
           : index === usersLength - 2
-            ? t("and")
+            ? t(LangKey.And)
             : ""}
       </span>
     ))
@@ -88,7 +89,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
       <div className="flex">{typingUserElements}</div>
 
       <div>
-        {who} {verbForm} {t("typing...")}
+        {who} {verbForm} {t(LangKey.Typing)}
       </div>
     </div>
   )

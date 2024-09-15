@@ -1,6 +1,7 @@
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 import {assert, validateUrl} from "@/utils/util"
 import React, {type FC, useState} from "react"
-import {useTranslation} from "react-i18next"
 
 export type ImageZoomProps = {
   className?: string
@@ -80,7 +81,7 @@ const ImageZoom: FC<ImageZoomProps> = ({className, src}) => {
       <img
         className="size-full cursor-zoom-in object-contain transition-transform duration-300"
         src={src}
-        alt={t("Img message zoom")}
+        alt={t(LangKey.ImgMessageZoom)}
         style={{
           transform: `scale(${zoomLevel / 100})`,
           transformOrigin: `${position.x}% ${position.y}%`,

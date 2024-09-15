@@ -2,7 +2,8 @@ import {type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import Button, {ButtonVariant} from "./Button"
 import {IoCloseCircle} from "react-icons/io5"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export type AlertDialogProps = {
   title: string
@@ -37,7 +38,7 @@ const AlertDialog: FC<AlertDialogProps> = ({
 
       <div className="flex w-full justify-end rounded-b-lg border-t bg-slate-100 p-3">
         <Button
-          label={t("Accept")}
+          label={t(LangKey.Accept)}
           variant={ButtonVariant.Primary}
           onClick={onAccept}
         />

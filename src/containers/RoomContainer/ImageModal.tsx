@@ -10,7 +10,8 @@ import {
 } from "react-icons/io5"
 import ImageZoom from "@/components/ImageZoom"
 import Typography from "@/components/Typography"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 const ICON_BUTTON_MODAL_SIZE = 26
 
@@ -25,7 +26,7 @@ const ImageModal: FC<ImageModalProps> = ({
   onDeleteImage,
   onClose,
 }) => {
-  const {t} = useTranslation("roomContainer")
+  const {t} = useTranslation()
 
   return (
     <div className="flex size-full flex-col bg-modalOverlay">
@@ -34,7 +35,7 @@ const ImageModal: FC<ImageModalProps> = ({
           <div className="flex flex-col items-center gap-2 rounded-lg bg-white p-2">
             <IoInformationCircle size={28} color="red" />
 
-            <Typography>{t("Loading Image Error")}</Typography>
+            <Typography>{t(LangKey.LoadingImageError)}</Typography>
           </div>
         ) : (
           <ImageZoom className="size-full px-8 py-4" src={imageUrl} />

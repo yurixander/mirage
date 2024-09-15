@@ -7,7 +7,8 @@ import {IoPause, IoPlay, IoVolumeHigh} from "react-icons/io5"
 import {MdCall, MdCallEnd} from "react-icons/md"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
-import {t} from "i18next"
+import {LangKey} from "@/utils/lang"
+import useTranslation from "@/hooks/util/useTranslation"
 
 export enum VariantCall {
   CallInProgress,
@@ -21,10 +22,10 @@ export type CallModalProps = {
   avatarUrl?: string
 }
 
-const callAction: {[key in VariantCall]: string} = {
-  [VariantCall.CallInProgress]: t("Call in Progress..."),
-  [VariantCall.IncomingCall]: t("Incoming Call"),
-  [VariantCall.Calling]: t("Connecting"),
+const callAction: {[key in VariantCall]: LangKey} = {
+  [VariantCall.CallInProgress]: LangKey.CallInProgress,
+  [VariantCall.IncomingCall]: LangKey.IncomingCall,
+  [VariantCall.Calling]: LangKey.Connecting,
 }
 
 const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
@@ -32,6 +33,7 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
   const [isMicEnabled, setIsMicEnabled] = useState(true)
   const [isSpeakerMode, setIsSpeakerMode] = useState(false)
   const [isCallPaused, setIsCallPaused] = useState(false)
+  const {t} = useTranslation()
 
   if (avatarUrl !== undefined) {
     assert(validateUrl(avatarUrl), "avatar URL should be valid if defined")
@@ -60,7 +62,7 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
           <Typography
             className="text-black"
             variant={TypographyVariant.BodySmall}>
-            {callAction[action]}
+            {t(callAction[action])}
           </Typography>
         </div>
       </div>

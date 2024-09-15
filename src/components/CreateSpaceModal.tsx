@@ -8,7 +8,8 @@ import AvatarUploader from "./AvatarUploader"
 import useActiveModalStore from "@/hooks/util/useActiveModal"
 import Modal from "./Modal"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 const CreateSpaceModal: FC = () => {
   const client = useMatrixClient()
@@ -53,8 +54,8 @@ const CreateSpaceModal: FC = () => {
 
   return (
     <Modal
-      title={t("New Space")}
-      actionText={t("Create Space")}
+      title={t(LangKey.NewSpace)}
+      actionText={t(LangKey.CreateSpace)}
       isLoading={isCreatingSpace}
       isDisabled={client === null || spaceName.length <= 0}
       onAccept={onCreateSpace}
@@ -67,18 +68,18 @@ const CreateSpaceModal: FC = () => {
             <Typography
               className="font-bold text-black"
               variant={TypographyVariant.Heading}>
-              {t("Create Space")}
+              {t(LangKey.CreateSpace)}
             </Typography>
 
             <Typography variant={TypographyVariant.BodySmall}>
-              {t("Create Space spec info")}
+              {t(LangKey.CreateSpaceSpecInfo)}
             </Typography>
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
           <InputSection
-            title={`* ${t("Space Name")}`}
+            title={`* ${t(LangKey.SpaceName)}`}
             placeholder="Ej. Figma Community"
             onValueChange={setSpaceName}
           />
@@ -86,14 +87,14 @@ const CreateSpaceModal: FC = () => {
           {/* TODO: This input description prefer use `text-area` */}
           <div className="flex flex-col gap-1">
             <Typography variant={TypographyVariant.BodySmall}>
-              {t("Description (optional)")}
+              {t(LangKey.DescriptionOptional)}
             </Typography>
 
             <InputArea
               className="w-full"
               onValueChange={setSpaceDescription}
               initialValue={spaceDescription}
-              placeholder={t("Space description placeholder")}
+              placeholder={t(LangKey.SpaceDescriptionPlaceholder)}
             />
           </div>
         </div>

@@ -6,7 +6,8 @@ import AvatarImage, {AvatarType} from "./AvatarImage"
 import Typography, {TypographyVariant} from "./Typography"
 import {notificationsBody, type NotificationType} from "@/utils/notifications"
 import {Button} from "./ui/button"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export type NotificationProps = {
   type: NotificationType
@@ -34,7 +35,7 @@ const Notification: FC<NotificationProps> = ({
   senderAvatarUrl,
   notificationId,
 }) => {
-  const {t} = useTranslation("notifications")
+  const {t} = useTranslation()
 
   assert(notificationId.length > 0, "Notification id should not be empty.")
 
@@ -72,7 +73,7 @@ const Notification: FC<NotificationProps> = ({
             {!isRead && (
               <Button
                 className="size-max text-neutral-300 hover:bg-transparent"
-                aria-label={t("Remove notification")}
+                aria-label={t(LangKey.RemoveNotification)}
                 variant="ghost"
                 size="icon"
                 onClick={() => {
@@ -105,7 +106,7 @@ const Notification: FC<NotificationProps> = ({
             className="mt-2 w-max"
             size="sm"
             onClick={action}>
-            {t("Go to ⟶")}
+            {t(LangKey.GoTo)}
           </Button>
         )}
       </div>

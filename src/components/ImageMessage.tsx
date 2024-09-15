@@ -6,7 +6,8 @@ import MessageContainer, {
 import {IoIosAlert} from "react-icons/io"
 import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion, validateUrl} from "@/utils/util"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export interface ImageMessageProps extends MessageBaseProps, ImageMessageData {
   onClickImage: (imgUrl: string) => void
@@ -49,7 +50,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
           <div className="flex flex-row items-center gap-1">
             <IoIosAlert className="text-red-500" />
 
-            <div className="leading-160">{t("Image uploaded error")}</div>
+            <div className="leading-160">{t(LangKey.ImageUploadedError)}</div>
           </div>
         ) : (
           <ContextMenu
@@ -63,7 +64,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
               <img
                 className="cursor-pointer object-contain"
                 src={imageUrl}
-                alt={`${t("Message by")} ${authorDisplayName}`}
+                alt={`${t(LangKey.MessageBy)} ${authorDisplayName}`}
               />
             </button>
           </ContextMenu>

@@ -9,46 +9,46 @@ import {
 } from "react-icons/io5"
 import {assert} from "./util"
 import {MdPlaylistAddCircle} from "react-icons/md"
-import {t} from "i18next"
+import {LangKey, t} from "./lang"
 
 export const CONTEXT_MENU_REPLY = {
-  text: t("Reply"),
+  text: t(LangKey.Reply),
   icon: IoArrowUndo,
 }
 
 export const CONTEXT_MENU_RESEND = {
-  text: t("Resend"),
+  text: t(LangKey.Resend),
   icon: IoArrowRedo,
 }
 
 export const CONTEXT_MENU_SAVE = {
-  text: t("Save"),
+  text: t(LangKey.Save),
   icon: IoMdDownload,
 }
 
 export const CONTEXT_MENU_DELETE = {
-  text: t("Delete"),
+  text: t(LangKey.Delete),
   icon: IoMdTrash,
   color: "red",
 }
 
 export const CONTEXT_MENU_SETTINGS = {
-  text: t("Settings"),
+  text: t(LangKey.Settings),
   icon: IoIosSettings,
 }
 
 export const CONTEXT_MENU_RELOAD = {
-  text: t("Reload"),
+  text: t(LangKey.Reload),
   icon: IoReloadCircle,
 }
 
 export const CONTEXT_MENU_ADD = {
-  text: t("Add"),
+  text: t(LangKey.Add),
   icon: IoAddCircle,
 }
 
 export const CONTEXT_MENU_SEARCH = {
-  text: t("Search"),
+  text: t(LangKey.Search),
   icon: IoSearchCircle,
 }
 
@@ -85,7 +85,7 @@ export function buildMessageMenuItems({
     )
 
     menuItems.push({
-      text: t("Save"),
+      text: t(LangKey.Save),
       icon: IoMdDownload,
       onClick: onSaveContent,
     })
@@ -98,12 +98,12 @@ export function buildMessageMenuItems({
 
   menuItems.push(
     {
-      text: t("Resend"),
+      text: t(LangKey.Resend),
       icon: IoArrowRedo,
       onClick: onResendMessage,
     },
     {
-      text: t("Reply"),
+      text: t(LangKey.Reply),
       icon: IoArrowUndo,
       onClick: onReplyMessage,
     }
@@ -116,7 +116,7 @@ export function buildMessageMenuItems({
     )
 
     menuItems.push({
-      text: t("Delete"),
+      text: t(LangKey.Delete),
       icon: IoMdTrash,
       color: "red",
       onClick: onDeleteMessage,
@@ -144,17 +144,17 @@ export function buildRoomsMenuItems({
   const menuItems: ContextMenuItem[] = [
     {
       icon: IoAddCircle,
-      text: t("Create room"),
+      text: t(LangKey.CreateRoom),
       onClick: onCreateRoom,
     },
     {
       icon: IoSearchCircle,
-      text: t("Search rooms"),
+      text: t(LangKey.SearchRooms),
       onClick: searchPublicRooms,
     },
     {
       icon: IoSearchCircle,
-      text: t("Search spaces"),
+      text: t(LangKey.SearchSpaces),
       onClick: searchPublicSpaces,
     },
   ]
@@ -167,7 +167,7 @@ export function buildRoomsMenuItems({
 
     menuItems.unshift({
       icon: MdPlaylistAddCircle,
-      text: t("Add to space"),
+      text: t(LangKey.AddToSpace),
       onClick: addRoomToSpace,
     })
   }
@@ -189,7 +189,7 @@ export function buildDirectRoomsMenuItems({
   const menuItems: ContextMenuItem[] = [
     {
       icon: IoAddCircle,
-      text: t("Create DM"),
+      text: t(LangKey.CreateDM),
       onClick: onCreateDirectRoom,
     },
   ]
@@ -202,7 +202,7 @@ export function buildDirectRoomsMenuItems({
 
     menuItems.unshift({
       icon: MdPlaylistAddCircle,
-      text: t("Add to space"),
+      text: t(LangKey.AddToSpace),
       onClick: addRoomToSpace,
     })
   }

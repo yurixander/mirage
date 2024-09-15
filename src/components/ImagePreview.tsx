@@ -2,7 +2,8 @@ import {type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import {IoAdd, IoCloseCircle} from "react-icons/io5"
 import Button, {ButtonVariant} from "./Button"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export type ImagePreviewProps = {
   imageUrl: string
@@ -23,7 +24,7 @@ const ImagePreview: FC<ImagePreviewProps> = ({
     <div className="flex size-messageMaxWidth flex-col rounded border bg-slate-50 shadow-xl">
       <div className="flex h-20 items-center border-b bg-slate-100 p-2">
         <Typography variant={TypographyVariant.Heading} className="w-full">
-          {t("Upload Image")}
+          {t(LangKey.UploadImage)}
         </Typography>
 
         <IoCloseCircle size={20} role="button" onClick={onClear} />
@@ -32,7 +33,7 @@ const ImagePreview: FC<ImagePreviewProps> = ({
       <div className="flex size-full items-center justify-center rounded p-1">
         <img
           src={imageUrl}
-          alt={t("Preview")}
+          alt={t(LangKey.Preview)}
           className="h-72 w-full object-contain"
         />
       </div>
@@ -40,7 +41,7 @@ const ImagePreview: FC<ImagePreviewProps> = ({
       <div className="flex h-20 w-full items-center justify-center gap-2 p-1">
         <img
           src={imageUrl}
-          alt={t("Preview")}
+          alt={t(LangKey.UploadImage)}
           className="size-14 rounded border bg-white object-contain shadow"
         />
         <IoAdd
@@ -52,14 +53,14 @@ const ImagePreview: FC<ImagePreviewProps> = ({
 
       <div className="flex h-20 justify-end gap-2 border-t bg-slate-100 p-2">
         <Button
-          label={t("Cancel")}
+          label={t(LangKey.Cancel)}
           onClick={onClear}
           className="w-20"
           variant={ButtonVariant.Secondary}
         />
 
         <Button
-          label={t("Send")}
+          label={t(LangKey.Send)}
           onClick={() => {
             onSendImage()
             onClear()

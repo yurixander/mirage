@@ -8,7 +8,8 @@ import {motion} from "framer-motion"
 import {Button} from "@/components/ui/button"
 import UserProfileGhost from "@/components/UserProfileGhost"
 import {type GroupedMembers} from "./hooks/useRoomMembers"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export enum RosterUserCategory {
   Admin,
@@ -38,7 +39,7 @@ const Roster: FC<RosterProps> = ({
   onReloadMembers,
   className,
 }) => {
-  const {t} = useTranslation("roster")
+  const {t} = useTranslation()
   const hasError = groupedMembers instanceof Error
 
   const {admins, moderators, members} = hasError
@@ -56,11 +57,11 @@ const Roster: FC<RosterProps> = ({
           <IoPeople size={25} className="text-neutral-500" />
 
           <Typography className="ml-1 w-full text-lg text-neutral-600">
-            {t("People")}
+            {t(LangKey.People)}
           </Typography>
 
           <Button
-            aria-label={t("Sort members")}
+            aria-label={t(LangKey.SortMembers)}
             variant="ghost"
             size="icon"
             className="size-6 text-neutral-500">
@@ -72,16 +73,16 @@ const Roster: FC<RosterProps> = ({
       {hasError ? (
         <div className="flex size-full flex-col items-center justify-center gap-1 p-1">
           <Typography variant={TypographyVariant.Heading}>
-            {t("Members Error")}
+            {t(LangKey.MembersError)}
           </Typography>
 
           <Button
-            aria-label={t("Reload members")}
+            aria-label={t(LangKey.ReloadMembers)}
             className="mt-1"
             size="sm"
             variant="outline"
             onClick={onReloadMembers}>
-            {t("Reload Members")} <IoReloadOutline className="ml-1" />
+            {t(LangKey.ReloadMembers)} <IoReloadOutline className="ml-1" />
           </Button>
         </div>
       ) : isLoading ? (
@@ -96,19 +97,19 @@ const Roster: FC<RosterProps> = ({
         <ScrollArea className="max-w-56 px-1 pt-3" type="scroll">
           <div className="flex flex-col gap-4">
             <RosterSection
-              title={t("ADMINS", {length: admins.length})}
+              title={t(LangKey.Admins, admins.length.toString())}
               members={admins}
               onUserClick={onUserClick}
             />
 
             <RosterSection
-              title={t("MODERATORS", {length: moderators.length})}
+              title={t(LangKey.Moderators, moderators.length.toString())}
               members={moderators}
               onUserClick={onUserClick}
             />
 
             <RosterSection
-              title={t("MEMBERS", {length: members.length})}
+              title={t(LangKey.Members, members.length.toString())}
               members={members}
               onUserClick={onUserClick}
             />

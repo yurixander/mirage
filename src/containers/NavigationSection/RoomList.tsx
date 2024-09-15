@@ -16,7 +16,8 @@ import useActiveModalStore, {
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import Button, {ButtonVariant} from "@/components/Button"
 import {motion} from "framer-motion"
-import {useTranslation} from "react-i18next"
+import {LangKey} from "@/utils/lang"
+import useTranslation from "@/hooks/util/useTranslation"
 
 export type RoomListProps = {
   onSpaceSelected: (spaceId?: string) => void
@@ -28,7 +29,7 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
   const {rooms, roomsState, onRefreshRooms, client} = useSpaceHierarchy(spaceId)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const {setActiveModal} = useActiveModalStore()
-  const {t} = useTranslation("navigation")
+  const {t} = useTranslation()
 
   const directRooms = useMemo(
     () => rooms.filter(room => room.type === RoomType.Direct),
@@ -49,11 +50,11 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
       )}>
       {roomsState === RoomsState.Error ? (
         <div className="flex size-full flex-col items-center justify-center gap-2">
-          <Typography>{t("Rooms loading error")}</Typography>
+          <Typography>{t(LangKey.RoomsLoadingError)}</Typography>
 
           <div className="flex gap-1">
             <Button
-              label={t("Go to home")}
+              label={t(LangKey.GoToHome)}
               onClick={() => {
                 onSpaceSelected()
               }}
@@ -63,14 +64,14 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
               isDisabled={client === null}
               variant={ButtonVariant.Primary}
               onClick={onRefreshRooms}
-              label={t("common:Refresh")}
+              label={t(LangKey.Refresh)}
             />
           </div>
         </div>
       ) : (
         <div className="flex flex-col gap-4 p-3">
           <Detail
-            title={t("Direct chats")}
+            title={t(LangKey.DirectChats)}
             id="direct-chats-detail"
             menuElements={buildDirectRoomsMenuItems({
               isHome: spaceId === undefined,
@@ -86,7 +87,7 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
           </Detail>
 
           <Detail
-            title={t("Rooms")}
+            title={t(LangKey.Rooms)}
             id="rooms-detail"
             isInitiallyOpen
             menuElements={buildRoomsMenuItems({

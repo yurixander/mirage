@@ -6,8 +6,9 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 import {useMemo, type FC} from "react"
-import {useTranslation} from "react-i18next"
 
 const sortNotificationsByReadState = (
   a: NotificationProps,
@@ -31,7 +32,7 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
   notifications,
   children,
 }) => {
-  const {t} = useTranslation("notifications")
+  const {t} = useTranslation()
 
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>
@@ -53,13 +54,15 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
       <HoverCardContent asChild side="right">
         <div className="m-2 max-h-96 w-[448px] max-w-md overflow-auto">
           {isLoading ? (
-            <Loader className="p-4" text={t("Loading Notifications")} />
+            <Loader className="p-4" text={t(LangKey.LoadingNotifications)} />
           ) : notifications.length === 0 ? (
-            <Typography className="p-3">{t("NotificationsEmpty")}</Typography>
+            <Typography className="p-3">
+              {t(LangKey.NotificationsEmpty)}
+            </Typography>
           ) : (
             <div className="flex flex-col gap-4">
               <Typography variant={TypographyVariant.Heading}>
-                {t("Notifications")}
+                {t(LangKey.Notifications)}
               </Typography>
 
               <div className="flex h-72 flex-col overflow-y-scroll scrollbar-hide">

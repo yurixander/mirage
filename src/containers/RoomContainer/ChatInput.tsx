@@ -5,11 +5,12 @@ import {twMerge} from "tailwind-merge"
 import EmojiPicker, {putEmojiInPosition} from "@/components/EmojiPicker"
 import TextArea from "@/components/TextArea"
 import AttachSource from "./AttachSource"
-import {useTranslation} from "react-i18next"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {Button} from "@/components/ui/button"
 import useTooltip from "@/hooks/util/useTooltip"
 import useDebounced from "@/hooks/util/useDebounced"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export type MessageSendRequest = {
   roomId: string
@@ -44,7 +45,7 @@ const ChatInput: FC<ChatInputProps> = ({
   const [caretPosition, setCaretPosition] = useState<number | null>(null)
   const [messageText, setMessageText] = useState("")
   const debouncedText = useDebounced(messageText, 500)
-  const {t} = useTranslation("roomContainer")
+  const {t} = useTranslation()
 
   const [selectionRange, setSelectionRange] = useState<SelectionRange>({
     selectionEnd: null,
@@ -98,7 +99,7 @@ const ChatInput: FC<ChatInputProps> = ({
           value={messageText}
           onValueChanged={setMessageText}
           disabled={isInputDisabled}
-          placeholder={t("Chat input placeholder")}
+          placeholder={t(LangKey.ChatInputPlaceholder)}
           onSelect={event => {
             if (!(event.target instanceof HTMLTextAreaElement)) {
               return
@@ -127,19 +128,19 @@ const ChatInput: FC<ChatInputProps> = ({
           />
 
           <InputChatAction
-            ariaLabel={t("Record Audio")}
+            ariaLabel={t(LangKey.RecordAudio)}
             isDisabled={isInputDisabled}
             onClick={() => {
               // TODO: Handle capture audio.
             }}>
             <IoMic
-              aria-label={t("Record Audio")}
+              aria-label={t(LangKey.RecordAudio)}
               className={INPUT_ACTION_CLASS}
             />
           </InputChatAction>
 
           <InputChatAction
-            ariaLabel={t("Send text message")}
+            ariaLabel={t(LangKey.SendTextMessage)}
             isDisabled={messageText.length === 0 || isInputDisabled}
             onClick={() => {
               textAreaRef.current?.focus()
@@ -192,7 +193,7 @@ const EmojiPickerPopover: FC<{
   isDisabled?: boolean
 }> = ({onPickEmoji, isDisabled = false}) => {
   const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false)
-  const {t} = useTranslation("roomContainer")
+  const {t} = useTranslation()
 
   useEffect(() => {
     const handleOpenEmojiPicker = (event: KeyboardEvent): void => {
@@ -215,7 +216,7 @@ const EmojiPickerPopover: FC<{
       <PopoverTrigger asChild>
         <Button
           disabled={isDisabled}
-          aria-label={t("Emoji picker")}
+          aria-label={t(LangKey.EmojiPicker)}
           variant="ghost"
           size="icon"
           className={twMerge(
@@ -223,7 +224,7 @@ const EmojiPickerPopover: FC<{
             "size-max hover:bg-transparent"
           )}>
           <IoIosHappy
-            aria-label={t("Emoji icon")}
+            aria-label={t(LangKey.EmojiIcon)}
             className={twMerge(
               INPUT_ACTION_CLASS,
               isEmojiPickerVisible && "text-slate-500"

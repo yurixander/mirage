@@ -19,6 +19,7 @@ import useEmojiSearch from "@/hooks/util/useEmojiSearch"
 import Input from "./Input"
 import {type SelectionRange} from "@/containers/RoomContainer/ChatInput"
 import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 const emojiMartData: EmojiMartData = emojiData
 const emojis: Emoji[] = Object.values(emojiData.emojis)
@@ -98,7 +99,7 @@ const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
 
       <div className="h-12 w-full">
         <Input
-          placeholder={t("Search any emoji")}
+          placeholder={t(LangKey.SearchAnyEmoji)}
           onValueChange={setEmojiQuery}
         />
       </div>
@@ -130,7 +131,7 @@ const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
   const [isVariationOpen, setIsVariationOpen] = useState(false)
   const [emojiHeaderSelected, setEmojiHeaderSelected] = useState("")
   const {points, clearPoints, setPointsByEvent} = useElementPoints()
-  const {t} = useTranslation("roomContainer")
+  const {t} = useTranslation()
 
   useEffect(() => {
     if (skins.length === 0) {
@@ -195,7 +196,7 @@ const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
             setIsVariationOpen(prevVariationIsOpen => !prevVariationIsOpen)
           }}>
           <svg
-            aria-label={t("More variants")}
+            aria-label={t(LangKey.MoreVariants)}
             className="size-3 fill-current text-gray-400"
             viewBox="0 0 12 12"
             xmlns="http://www.w3.org/2000/svg">

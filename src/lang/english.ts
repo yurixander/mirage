@@ -86,6 +86,7 @@ export const english: LangDefinition = {
   [LangKey.EqualInfo]: "has done several events",
   [LangKey.PersonalInfo]: "has changed his personal info.",
   [LangKey.ConfigureRoom]: "has created and configured this room.",
+  [LangKey.UploadImage]: "Upload Image",
 
   // #region Roster
   [LangKey.People]: "People",

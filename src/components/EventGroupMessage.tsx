@@ -11,12 +11,19 @@ import {IoMdCreate} from "react-icons/io"
 import {twMerge} from "tailwind-merge"
 import Typography from "./Typography"
 import {IoCube} from "react-icons/io5"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export enum EventShortenerType {
   EqualInfo = "EqualInfo",
   PersonalInfo = "PersonalInfo",
-  ConfigureRoom = "ConfigureRoom",
+  ConfigureRoom = "Configure Room",
+}
+
+const eventShortenerBody: Record<EventShortenerType, LangKey> = {
+  [EventShortenerType.EqualInfo]: LangKey.EqualInfo,
+  [EventShortenerType.PersonalInfo]: LangKey.PersonalInfo,
+  [EventShortenerType.ConfigureRoom]: LangKey.ConfigureRoom,
 }
 
 export type EventGroupMainBody = {
@@ -40,6 +47,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
   onFindUser,
   onShowMember,
 }) => {
+  const {sender, shortenerType} = eventGroupMainBody
   const [isExpanded, setIsExpanded] = useState(false)
   const {t} = useTranslation()
 
@@ -52,17 +60,17 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
           className="grow"
           onShowMember={onShowMember}
           onFindUser={onFindUser}
-          body={t(eventGroupMainBody.shortenerType)}
+          body={t(eventShortenerBody[shortenerType])}
           eventId={eventMessages[0].eventId}
-          sender={eventGroupMainBody.sender}
+          sender={sender}
           timestamp={eventMessages[0].timestamp}
           icon={IoCube}
-          type={eventGroupMainBody.shortenerType}
+          type={shortenerType}
         />
 
         <Button
           variant={ButtonVariant.TextLink}
-          label={t("Expand all")}
+          label={t(LangKey.ExpandAll)}
           onClick={() => {
             setIsExpanded(prevExpanded => !prevExpanded)
           }}
@@ -71,7 +79,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
 
       <motion.div
         style={{
-          borderLeftColor: stringToColor(eventGroupMainBody.sender.userId),
+          borderLeftColor: stringToColor(sender.userId),
         }}
         className="mt-1 flex w-full flex-col gap-3 overflow-hidden rounded-md border-l-4 bg-gray-50 pr-24"
         animate={{height: isExpanded ? "max-content" : "0px"}}>

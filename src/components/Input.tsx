@@ -4,7 +4,7 @@ import IconButton from "./IconButton"
 import Label from "./Label"
 import {twMerge} from "tailwind-merge"
 import {type IconType} from "react-icons"
-import {t} from "i18next"
+import {LangKey, t} from "@/utils/lang"
 
 export type InputConstraint = {
   message: string
@@ -61,22 +61,22 @@ const integerPattern = new RegExp(
 )
 
 export const urlConstraint: InputConstraint = {
-  message: t("Must be a valid URL."),
+  message: t(LangKey.MustBeAValidURL),
   pattern: urlPattern,
 }
 
 export const nonEmptyConstraint: InputConstraint = {
-  message: t("Must not be empty."),
+  message: t(LangKey.MustNotBeEmpty),
   pattern: /.+/,
 }
 
 export const userIdConstraint: InputConstraint = {
-  message: t("Must be a valid user ID."),
+  message: t(LangKey.MustBeAValidUserID),
   pattern: userIdPattern,
 }
 
 export const integerConstraint: InputConstraint = {
-  message: t("Must be an integer."),
+  message: t(LangKey.MustBeAnInteger),
   pattern: integerPattern,
 }
 

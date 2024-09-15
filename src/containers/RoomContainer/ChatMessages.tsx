@@ -17,7 +17,8 @@ import ReplyMessage from "@/components/ReplyMessage"
 import {motion} from "framer-motion"
 import EventGroupMessage from "@/components/EventGroupMessage"
 import VideoMessage from "@/components/VideoMessage"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -30,7 +31,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   messagesState,
   className,
 }) => {
-  const {t} = useTranslation("roomContainer")
+  const {t} = useTranslation()
   const [imagePrevUrl, setImagePrevUrl] = useState<string>()
 
   if (messagesState === MessagesState.Loaded) {
@@ -92,13 +93,13 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <MessagesPlaceholder />
         ) : messagesState === MessagesState.Error ? (
           <ChatMessageTemplate
-            title={t("Messages Error")}
-            subtitle={t("Messages error subtitle")}
+            title={t(LangKey.MessagesError)}
+            subtitle={t(LangKey.MessagesErrorSubtitle)}
           />
         ) : (
           <ChatMessageTemplate
-            title={t("No Messages")}
-            subtitle={t("No Messages subtitle")}
+            title={t(LangKey.NoMessages)}
+            subtitle={t(LangKey.NoMessagesSubtitle)}
           />
         )}
       </div>

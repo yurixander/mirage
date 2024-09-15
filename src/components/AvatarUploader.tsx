@@ -5,7 +5,8 @@ import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "./Typography"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useFilePicker from "@/hooks/util/useFilePicker"
-import {useTranslation} from "react-i18next"
+import {LangKey} from "@/utils/lang"
+import useTranslation from "@/hooks/util/useTranslation"
 
 type UploadAvatarProps = {
   onAvatarUploaded: (matrixSrc: string) => void
@@ -122,7 +123,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
             </Typography>
           </>
         ) : (
-          <img src={avatarImageUrl} alt={t("User avatar")} />
+          <img src={avatarImageUrl} alt={t(LangKey.UserAvatar)} />
         )}
       </div>
     </div>

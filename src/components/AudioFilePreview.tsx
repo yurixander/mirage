@@ -7,7 +7,8 @@ import {ReactSVG} from "react-svg"
 import {StaticAssetPath} from "@/utils/util"
 import {useWavesurfer} from "@wavesurfer/react"
 import IconButton from "./IconButton"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export type AudioFilePreviewProps = {
   fileName: string
@@ -49,7 +50,7 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
         <Typography
           variant={TypographyVariant.HeadingMedium}
           className="w-full">
-          {t("Upload Audio")}
+          {t(LangKey.UploadAudio)}
         </Typography>
 
         <IoCloseCircle size={20} color="gray" role="button" onClick={onClose} />
@@ -115,12 +116,12 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
       </div>
 
       <div className="flex h-16 w-full items-center justify-end gap-2 border-t bg-slate-100 px-5">
-        <Button className="w-20" label={t("Cancel")} onClick={onClose} />
+        <Button className="w-20" label={t(LangKey.Cancel)} onClick={onClose} />
 
         <Button
           className="w-20"
           variant={ButtonVariant.Primary}
-          label={t("Send")}
+          label={t(LangKey.Send)}
           onClick={onSend}
         />
       </div>

@@ -2,7 +2,8 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {IoIosAlert, IoIosCheckmarkCircle} from "react-icons/io"
 import Typography from "./Typography"
-import {useTranslation} from "react-i18next"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/utils/lang"
 
 export enum ProgressBarState {
   Progress,
@@ -134,7 +135,7 @@ const CircularProgressBar: FC<CircularProgressBarProps> = ({
           "font-semibold",
           isError ? "text-red-500" : "text-black"
         )}>
-        {isError ? t("Error") : `${progress}%`}
+        {isError ? t(LangKey.Error) : `${progress}%`}
       </Typography>
     </div>
   )

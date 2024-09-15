@@ -48,7 +48,7 @@ import {
 } from "@/components/EventGroupMessage"
 import {type EventMessageData} from "@/components/EventMessage"
 import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
-import {t} from "i18next"
+import {LangKey, t} from "./lang"
 
 export enum ImageSizes {
   Server = 47,
@@ -476,8 +476,10 @@ export const handleMemberEvent = (
         icon: IoPeopleCircle,
         body:
           displayName === undefined
-            ? t("events:Invited", {user: stateKey})
-            : t("events:Invited", {user: displayName}),
+            ? stateKey === undefined
+              ? t(LangKey.Invited)
+              : t(LangKey.Invited, undefined, stateKey)
+            : t(LangKey.Invited, undefined, displayName),
       }
     }
     case KnownMembership.Ban: {
@@ -490,11 +492,13 @@ export const handleMemberEvent = (
         body:
           typeof eventContent.reason !== "string" ||
           eventContent.reason.length === 0
-            ? t("events:Banned", {user: previousDisplayName})
-            : t("events:BannedByReason", {
-                user: previousDisplayName,
-                reason: eventContent.reason,
-              }),
+            ? t(LangKey.Banned, undefined, previousDisplayName)
+            : t(
+                LangKey.BannedByReason,
+                undefined,
+                previousDisplayName,
+                eventContent.reason
+              ),
       }
     }
     case KnownMembership.Leave: {
@@ -535,7 +539,7 @@ function handleMemberJoin(
     previousMembership !== KnownMembership.Join
   ) {
     return {
-      body: t("events:JoinedToTheRoom"),
+      body: t(LangKey.JoinedToTheRoom),
       icon: IoPeopleCircle,
     }
   } else if (
@@ -546,15 +550,15 @@ function handleMemberJoin(
       icon: IoPeopleCircle,
       body:
         displayName === undefined
-          ? t("events:ChangeName")
-          : t("events:ChangeNameTo", {user: displayName}),
+          ? t(LangKey.ChangeName)
+          : t(LangKey.ChangeNameTo, undefined, displayName),
     }
   } else if (
     eventContent.avatar_url !== undefined &&
     previousContent?.avatar_url === undefined
   ) {
     return {
-      body: t("events:PutProfilePhoto"),
+      body: t(LangKey.PutProfilePhoto),
       icon: IoPeopleCircle,
     }
   } else if (
@@ -562,7 +566,7 @@ function handleMemberJoin(
     eventContent.avatar_url !== previousContent?.avatar_url
   ) {
     return {
-      body: t("events:ChangeProfilePhoto"),
+      body: t(LangKey.ChangeProfilePhoto),
       icon: IoPeopleCircle,
     }
   } else if (
@@ -570,7 +574,7 @@ function handleMemberJoin(
     previousContent?.avatar_url !== undefined
   ) {
     return {
-      body: t("events:RemoveProfilePhoto"),
+      body: t(LangKey.RemoveProfilePhoto),
       icon: IoPeopleCircle,
     }
   } else {
@@ -593,17 +597,17 @@ function handleMemberLeave(
         return null
       }
 
-      return t("events:CanceledInvitation", {user: userForCanceled})
+      return t(LangKey.CanceledInvitation, undefined, userForCanceled)
     }
     case KnownMembership.Ban: {
       if (stateKey === undefined) {
         return null
       }
 
-      return t("events:MembershipBanFrom", {user: stateKey})
+      return t(LangKey.MembershipBanFrom, undefined, stateKey)
     }
     case KnownMembership.Join: {
-      return t("events:MembershipJoin")
+      return t(LangKey.MembershipJoin)
     }
     default: {
       console.warn("Unknown previousMembership type:", eventContent.membership)
@@ -619,25 +623,25 @@ export const handleGuestAccessEvent = async (
   switch (eventContent.guest_access) {
     case "can_join": {
       return {
-        body: t("events:GuessAccessCanJoin"),
+        body: t(LangKey.GuessAccessCanJoin),
         icon: IoLockClosed,
       }
     }
     case "forbidden": {
       return {
-        body: t("events:GuessAccessForbidden"),
+        body: t(LangKey.GuessAccessForbidden),
         icon: IoLockClosed,
       }
     }
     case "restricted": {
       return {
-        body: t("events:GuessAccessRestricted"),
+        body: t(LangKey.GuessAccessRestricted),
         icon: IoLockClosed,
       }
     }
     case "knock": {
       return {
-        body: t("events:GuessAccessKnock"),
+        body: t(LangKey.GuessAccessKnock),
         icon: IoLockClosed,
       }
     }
@@ -655,19 +659,19 @@ export const handleJoinRulesEvent = async (
   switch (eventContent.join_rule) {
     case JoinRule.Invite: {
       return {
-        body: t("events:JoinRuleInvite"),
+        body: t(LangKey.JoinRuleInvite),
         icon: IoIosPaper,
       }
     }
     case JoinRule.Public: {
       return {
-        body: t("events:JoinRulePublic"),
+        body: t(LangKey.JoinRulePublic),
         icon: IoIosPaper,
       }
     }
     case JoinRule.Restricted: {
       return {
-        body: t("events:JoinRuleRestricted"),
+        body: t(LangKey.JoinRuleRestricted),
         icon: IoIosPaper,
       }
     }
@@ -688,8 +692,8 @@ export const handleRoomTopicEvent = async (
     icon: IoIosText,
     body:
       topic === undefined || typeof topic !== "string" || topic.length === 0
-        ? t("events:RemoveTopic")
-        : t("events:ChangeTopicTo", {topic}),
+        ? t(LangKey.RemoveTopic)
+        : t(LangKey.ChangeTopicTo, undefined, topic),
   }
 }
 
@@ -700,25 +704,25 @@ export const handleHistoryVisibilityEvent = async (
     case HistoryVisibility.Shared: {
       return {
         icon: IoReceipt,
-        body: t("events:HistoryVisibilityShared"),
+        body: t(LangKey.HistoryVisibilityShared),
       }
     }
     case HistoryVisibility.Invited: {
       return {
         icon: IoReceipt,
-        body: t("events:HistoryVisibilityInvited"),
+        body: t(LangKey.HistoryVisibilityInvited),
       }
     }
     case HistoryVisibility.Joined: {
       return {
         icon: IoReceipt,
-        body: t("events:HistoryVisibilityJoined"),
+        body: t(LangKey.HistoryVisibilityJoined),
       }
     }
     case HistoryVisibility.WorldReadable: {
       return {
         icon: IoReceipt,
-        body: t("events:HistoryVisibilityWorldReadable"),
+        body: t(LangKey.HistoryVisibilityWorldReadable),
       }
     }
     default: {
@@ -739,8 +743,8 @@ export const handleRoomCanonicalAliasEvent = async (
     icon: IoAtCircle,
     body:
       eventContent.alias === undefined || typeof eventContent.alias !== "string"
-        ? t("events:RemoveMainAddress")
-        : t("events:SetMainAddressAs", {alias: eventContent.alias}),
+        ? t(LangKey.RemoveMainAddress)
+        : t(LangKey.SetMainAddressAs, undefined, eventContent.alias),
   }
 }
 
@@ -753,8 +757,8 @@ export const handleRoomAvatarEvent = async (
       eventContent.url === undefined ||
       typeof eventContent.url !== "string" ||
       eventContent.url.length === 0
-        ? t("events:Remove avatar")
-        : t("events:Change avatar"),
+        ? t(LangKey.RemoveAvatar)
+        : t(LangKey.ChangeAvatar),
   }
 }
 
@@ -767,8 +771,8 @@ export const handleRoomNameEvent = async (
       eventContent.name === undefined ||
       typeof eventContent.name !== "string" ||
       eventContent.name.length === 0
-        ? t("events:roomNameChange")
-        : t("events:roomNameChangeTo", {roomName: eventContent.name}),
+        ? t(LangKey.RoomNameChange)
+        : t(LangKey.RoomNameChangeTo, undefined, eventContent.name),
   }
 }
 
@@ -951,8 +955,8 @@ const convertToMessageDeleted = (
 
   const text =
     reason === undefined || typeof reason !== "string" || reason.length === 0
-      ? t("events:deletedMessage", {user: deletedByUser})
-      : t("events:deletedMessageBecause", {user: deletedByUser, reason})
+      ? t(LangKey.DeletedMessage, undefined, deletedByUser)
+      : t(LangKey.DeletedMessageBecause, undefined, deletedByUser, reason)
 
   return {
     kind: MessageKind.Text,

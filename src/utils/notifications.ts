@@ -1,3 +1,4 @@
+import {LangKey} from "./lang"
 import {UserPowerLevel} from "./members"
 
 const POWER_LEVELS_LOCAL_STORAGE_KEY = "local_power_levels_notifications"
@@ -11,12 +12,15 @@ export enum NotificationType {
   DowngradeToMember,
 }
 
-export const notificationsBody: {[key in NotificationType]: string} = {
-  [NotificationType.Invited]: "NotificationType Invited",
-  [NotificationType.InvitationRemoved]: "NotificationType InvitationRemoved",
-  [NotificationType.DowngradeToMember]: "NotificationType DowngradeToMember",
-  [NotificationType.UpgradeToAdmin]: "NotificationType UpgradeToAdmin",
-  [NotificationType.UpgradeToModerator]: "NotificationType UpgradeToModerator",
+export const notificationsBody: {[key in NotificationType]: LangKey} = {
+  [NotificationType.Invited]: LangKey.NotificationTypeInvited,
+  [NotificationType.InvitationRemoved]:
+    LangKey.NotificationTypeInvitationRemoved,
+  [NotificationType.DowngradeToMember]:
+    LangKey.NotificationTypeDowngradeToMember,
+  [NotificationType.UpgradeToAdmin]: LangKey.NotificationTypeUpgradeToAdmin,
+  [NotificationType.UpgradeToModerator]:
+    LangKey.NotificationTypeUpgradeToModerator,
 }
 
 // #region Set and Get

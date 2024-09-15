@@ -101,6 +101,7 @@ export enum LangKey {
   EqualInfo,
   PersonalInfo,
   ConfigureRoom,
+  UploadImage,
   // #region Roster
   People,
   SortMembers,
