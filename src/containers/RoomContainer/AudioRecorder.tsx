@@ -5,6 +5,7 @@ import useTooltip from "@/hooks/util/useTooltip"
 import useWaveRecorder from "@/hooks/util/useWaveRecorder"
 import {Button} from "@/components/ui/button"
 import {useEffect, type FC} from "react"
+import {motion} from "framer-motion"
 
 const BUTTON_SIZE_CLASS = "sm:size-5"
 
@@ -18,12 +19,14 @@ type AudioRecorderProps = {
   recorderState: AudioRecorderState.Recording | AudioRecorderState.Finished
   onSendAudioMessage: (content: Blob) => void
   onStateChange: (newState: AudioRecorderState) => void
+  className?: string
 }
 
 const AudioRecorder: FC<AudioRecorderProps> = ({
   recorderState,
   onStateChange,
   onSendAudioMessage,
+  className,
 }) => {
   const isRecording = recorderState === AudioRecorderState.Recording
 
@@ -31,7 +34,7 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
     useWaveRecorder()
 
   return (
-    <div className="flex items-center gap-2">
+    <motion.div className={twMerge("flex items-center gap-2", className)}>
       <Button
         aria-label={errorMsg === null ? "Remove audio" : "Close"}
         className="size-7 sm:size-9"
@@ -49,7 +52,7 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
       </Button>
 
       {errorMsg === null ? (
-        <div className="flex items-center gap-2 rounded-xl bg-gray-50 p-2">
+        <div className="flex items-center gap-2 rounded-xl border border-slate-300 bg-gray-50 p-2">
           <time
             className={twMerge(
               "text-xs text-black sm:text-lg",
@@ -68,7 +71,7 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
           />
         </div>
       ) : (
-        <div className="flex items-center gap-1.5 rounded-xl bg-gray-50 p-2">
+        <div className="flex items-center gap-1.5 rounded-xl border border-slate-300 bg-gray-50 p-2">
           <TruncatedTextWithTooltip text={errorMsg} maxLength={30} />
         </div>
       )}
@@ -90,7 +93,7 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
           }}
         />
       )}
-    </div>
+    </motion.div>
   )
 }
 
