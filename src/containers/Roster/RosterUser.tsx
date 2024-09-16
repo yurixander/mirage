@@ -12,6 +12,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import useTooltip from "@/hooks/util/useTooltip"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 export type RosterUserData = {
   displayName: string
@@ -37,12 +39,13 @@ const RosterUser: FC<RosterUserProps> = ({
   avatarUrl,
   className,
 }) => {
+  const {t} = useTranslation()
   const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
 
   const lastPresence =
     lastPresenceAge === undefined
-      ? "Seen long ago"
-      : `Seen ${formatTime(lastPresenceAge)} ago`
+      ? t(LangKey.SeenLongAgo)
+      : t(LangKey.LastSeenDate, formatTime(lastPresenceAge))
 
   return (
     <motion.button
@@ -62,7 +65,7 @@ const RosterUser: FC<RosterUserProps> = ({
             return
           }
 
-          showTooltip(`Failed to open user by: ${error.message}`, true)
+          showTooltip(t(LangKey.OpenUserError, error.message), true)
         }
       }}>
       <AvatarImage

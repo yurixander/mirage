@@ -14,6 +14,8 @@ import {
 import LoadingEffect from "@/components/LoadingEffect"
 import {UserDataState} from "./hooks/useUserData"
 import {IoAlertCircle, IoRefreshCircle} from "react-icons/io5"
+import {LangKey} from "@/lang/allKeys"
+import useTranslation from "@/hooks/util/useTranslation"
 
 const MAX_USER_ID_LENGTH = 18
 
@@ -122,6 +124,8 @@ const UserBarPlaceHolder: FC = () => {
 }
 
 const UserBarError: FC = () => {
+  const {t} = useTranslation()
+
   return (
     <div className="flex items-center gap-1.5">
       <div className="flex size-9 items-center justify-center rounded-full bg-red-100">
@@ -132,11 +136,11 @@ const UserBarError: FC = () => {
         <Typography
           className="font-bold text-red-500"
           variant={TypographyVariant.BodyMedium}>
-          Client error
+          {t(LangKey.ClientError)}
         </Typography>
 
         <Typography variant={TypographyVariant.BodySmall}>
-          Please refresh
+          {t(LangKey.PleaseRefresh)}
         </Typography>
       </div>
     </div>

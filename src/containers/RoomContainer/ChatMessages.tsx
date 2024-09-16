@@ -17,6 +17,8 @@ import ReplyMessage from "@/components/ReplyMessage"
 import {motion} from "framer-motion"
 import EventGroupMessage from "@/components/EventGroupMessage"
 import VideoMessage from "@/components/VideoMessage"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -29,6 +31,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   messagesState,
   className,
 }) => {
+  const {t} = useTranslation()
   const [imagePrevUrl, setImagePrevUrl] = useState<string>()
 
   if (messagesState === MessagesState.Loaded) {
@@ -90,13 +93,13 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <MessagesPlaceholder />
         ) : messagesState === MessagesState.Error ? (
           <ChatMessageTemplate
-            title="Messages Error"
-            subtitle="An error occurred when obtaining messages from this room."
+            title={t(LangKey.MessagesError)}
+            subtitle={t(LangKey.MessagesErrorSubtitle)}
           />
         ) : (
           <ChatMessageTemplate
-            title="No Messages"
-            subtitle="Is this room new or has no messages."
+            title={t(LangKey.NoMessages)}
+            subtitle={t(LangKey.NoMessagesSubtitle)}
           />
         )}
       </div>

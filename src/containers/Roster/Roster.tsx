@@ -8,6 +8,8 @@ import {motion} from "framer-motion"
 import {Button} from "@/components/ui/button"
 import UserProfileGhost from "@/components/UserProfileGhost"
 import {type GroupedMembers} from "./hooks/useRoomMembers"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 export enum RosterUserCategory {
   Admin,
@@ -37,6 +39,7 @@ const Roster: FC<RosterProps> = ({
   onReloadMembers,
   className,
 }) => {
+  const {t} = useTranslation()
   const hasError = groupedMembers instanceof Error
 
   const {admins, moderators, members} = hasError
@@ -54,11 +57,11 @@ const Roster: FC<RosterProps> = ({
           <IoPeople size={25} className="text-neutral-500" />
 
           <Typography className="ml-1 w-full text-lg text-neutral-600">
-            People
+            {t(LangKey.People)}
           </Typography>
 
           <Button
-            aria-label="Sort members"
+            aria-label={t(LangKey.SortMembers)}
             variant="ghost"
             size="icon"
             className="size-6 text-neutral-500">
@@ -70,16 +73,16 @@ const Roster: FC<RosterProps> = ({
       {hasError ? (
         <div className="flex size-full flex-col items-center justify-center gap-1 p-1">
           <Typography variant={TypographyVariant.Heading}>
-            Members Error
+            {t(LangKey.MembersError)}
           </Typography>
 
           <Button
-            aria-label="Reload members"
+            aria-label={t(LangKey.ReloadMembers)}
             className="mt-1"
             size="sm"
             variant="outline"
             onClick={onReloadMembers}>
-            Reload Members <IoReloadOutline className="ml-1" />
+            {t(LangKey.ReloadMembers)} <IoReloadOutline className="ml-1" />
           </Button>
         </div>
       ) : isLoading ? (
@@ -94,19 +97,19 @@ const Roster: FC<RosterProps> = ({
         <ScrollArea className="max-w-56 px-1 pt-3" type="scroll">
           <div className="flex flex-col gap-4">
             <RosterSection
-              title={`ADMINS — ${admins.length}`}
+              title={t(LangKey.Admins, admins.length.toString())}
               members={admins}
               onUserClick={onUserClick}
             />
 
             <RosterSection
-              title={`MODERATORS — ${moderators.length}`}
+              title={t(LangKey.Moderators, moderators.length.toString())}
               members={moderators}
               onUserClick={onUserClick}
             />
 
             <RosterSection
-              title={`MEMBERS — ${members.length}`}
+              title={t(LangKey.Members, members.length.toString())}
               members={members}
               onUserClick={onUserClick}
             />

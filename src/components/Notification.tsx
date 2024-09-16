@@ -6,6 +6,8 @@ import AvatarImage, {AvatarType} from "./AvatarImage"
 import Typography, {TypographyVariant} from "./Typography"
 import {notificationsBody, type NotificationType} from "@/utils/notifications"
 import {Button} from "./ui/button"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 export type NotificationProps = {
   type: NotificationType
@@ -33,6 +35,8 @@ const Notification: FC<NotificationProps> = ({
   senderAvatarUrl,
   notificationId,
 }) => {
+  const {t} = useTranslation()
+
   assert(notificationId.length > 0, "Notification id should not be empty.")
 
   if (senderAvatarUrl !== undefined) {
@@ -69,7 +73,7 @@ const Notification: FC<NotificationProps> = ({
             {!isRead && (
               <Button
                 className="size-max text-neutral-300 hover:bg-transparent"
-                aria-label="Remove notification"
+                aria-label={t(LangKey.RemoveNotification)}
                 variant="ghost"
                 size="icon"
                 onClick={() => {
@@ -92,7 +96,7 @@ const Notification: FC<NotificationProps> = ({
         </div>
 
         <Typography variant={TypographyVariant.BodyMedium}>
-          {notificationsBody[type]}{" "}
+          {t(notificationsBody[type])}{" "}
           <b style={{color: stringToColor(roomName)}}>{roomName}</b>
         </Typography>
 
@@ -102,7 +106,7 @@ const Notification: FC<NotificationProps> = ({
             className="mt-2 w-max"
             size="sm"
             onClick={action}>
-            Go to ⟶
+            {t(LangKey.GoTo)}
           </Button>
         )}
       </div>

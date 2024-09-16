@@ -9,12 +9,15 @@ import NotificationsTray from "./NotificationsTray"
 import NotificationDot from "@/components/NotificationDot"
 import {Button} from "@/components/ui/button"
 import {FaSearch} from "react-icons/fa"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-slate-400 hover:bg-transparent"
 const SIDEBAR_BUTTON_SIZE = 20
 
 const SidebarActions: FC<{className?: string}> = ({className}) => {
   const client = useMatrixClient()
+  const {t} = useTranslation()
 
   const {dmRooms, results, setQuery, userId, isDMLoading, clearResults} =
     useDmTray(client)
@@ -43,7 +46,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
             throw new Error("onResultUserClick function not implemented.")
           }}>
           <Button
-            aria-label="View Direct chats"
+            aria-label={t(LangKey.ViewDirectChats)}
             size="icon"
             variant="ghost"
             className={SIDEBAR_BUTTON_CLASS}>
@@ -53,7 +56,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
 
         <NotificationsTray isLoading={isLoading} notifications={notifications}>
           <Button
-            aria-label="View notifications"
+            aria-label={t(LangKey.ViewNotifications)}
             size="icon"
             variant="ghost"
             className={SIDEBAR_BUTTON_CLASS}>
@@ -64,7 +67,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
         </NotificationsTray>
 
         <Button
-          aria-label="Search anything"
+          aria-label={t(LangKey.SearchAnything)}
           size="icon"
           variant="ghost"
           className={SIDEBAR_BUTTON_CLASS}
@@ -73,7 +76,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
         </Button>
 
         <Button
-          aria-label="Calls"
+          aria-label={t(LangKey.Calls)}
           size="icon"
           variant="ghost"
           className={SIDEBAR_BUTTON_CLASS}
@@ -82,7 +85,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
         </Button>
 
         <Button
-          aria-label="Exit app"
+          aria-label={t(LangKey.ExitApp)}
           size="icon"
           variant="ghost"
           className={SIDEBAR_BUTTON_CLASS}

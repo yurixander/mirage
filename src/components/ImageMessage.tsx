@@ -6,6 +6,8 @@ import MessageContainer, {
 import {IoIosAlert} from "react-icons/io"
 import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion, validateUrl} from "@/utils/util"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 export interface ImageMessageProps extends MessageBaseProps, ImageMessageData {
   onClickImage: (imgUrl: string) => void
@@ -27,6 +29,8 @@ const ImageMessage: FC<ImageMessageProps> = ({
   messageId,
   userId,
 }) => {
+  const {t} = useTranslation()
+
   if (imageUrl !== undefined) {
     assert(validateUrl(imageUrl), "The image url should be valid.")
   }
@@ -46,9 +50,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
           <div className="flex flex-row items-center gap-1">
             <IoIosAlert className="text-red-500" />
 
-            <div className="leading-160">
-              The image uploaded by the user is currently unavailable.
-            </div>
+            <div className="leading-160">{t(LangKey.ImageUploadedError)}</div>
           </div>
         ) : (
           <ContextMenu
@@ -62,7 +64,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
               <img
                 className="cursor-pointer object-contain"
                 src={imageUrl}
-                alt={`Message by ${authorDisplayName}`}
+                alt={`${t(LangKey.MessageBy)} ${authorDisplayName}`}
               />
             </button>
           </ContextMenu>
