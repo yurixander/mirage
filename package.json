@@ -65,7 +65,7 @@
     "tippy.js": "^6.3.7",
     "url": "^0.11.4",
     "wavesurfer.js": "^7.8.2",
-    "web-vitals": "^3.5.2",
+    "web-vitals": "^4.2.3",
     "zod": "^3.23.8",
     "zustand": "^4.5.5"
   },
