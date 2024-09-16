@@ -68,7 +68,13 @@ const ChatInput: FC<ChatInputProps> = ({
     const cachedTextAreaRef = textAreaRef.current
 
     const handleSendMessage = (event: KeyboardEvent): void => {
-      if (event.ctrlKey && event.key === "Enter" && messageText.length > 0) {
+      if (event.ctrlKey && event.key === "Enter") {
+        event.preventDefault()
+
+        setMessageText(prevText => prevText + "\n")
+      }
+
+      if (event.key === "Enter" && messageText.length > 0) {
         event.preventDefault()
 
         onSendMessageText({roomId, messageText})
@@ -95,7 +101,7 @@ const ChatInput: FC<ChatInputProps> = ({
 
         <TextArea
           ref={textAreaRef}
-          className="max-h-24 w-full border-none p-0 text-sm disabled:cursor-default md:max-h-32 md:text-xl"
+          className="max-h-24 w-full border-none p-0 text-sm disabled:cursor-default md:max-h-32 md:text-lg"
           value={messageText}
           onValueChanged={setMessageText}
           disabled={isInputDisabled}

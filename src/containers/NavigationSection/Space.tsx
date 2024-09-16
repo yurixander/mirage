@@ -49,6 +49,9 @@ const Space: FC<SpaceProps> = ({
         whileInView={{scale: 1, opacity: 1}}
         whileTap={{scale: 0.9}}
         animate={{scale: isActive ? 0.9 : 1}}
+        transition={{
+          duration: 0.2,
+        }}
         className={twMerge(
           "box-border size-10 cursor-pointer overflow-hidden rounded-lg border-[3px] transition-colors",
           isSelected ? "border-purple-500 shadow-md" : "border-transparent",

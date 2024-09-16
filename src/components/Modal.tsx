@@ -34,6 +34,9 @@ const Modal: FC<ModalProps> = ({
     <motion.div
       initial={{scale: 0.5}}
       animate={{scale: 1}}
+      transition={{
+        duration: 0.2,
+      }}
       className={twMerge(
         "box-border flex max-w-xl flex-col overflow-hidden rounded-md border border-slate-300",
         className
