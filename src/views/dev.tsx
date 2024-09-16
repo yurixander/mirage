@@ -1,54 +1,32 @@
 import {Button} from "@/components/ui/button"
-import {useWavesurfer} from "@wavesurfer/react"
-import {useEffect, useRef, useState, type FC} from "react"
-import RecordPlugin from "wavesurfer.js/dist/plugins/record"
+import AudioRecorder, {
+  AudioRecorderState,
+} from "@/containers/RoomContainer/AudioRecorder"
+import {useState, type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
-  const waveformRef = useRef(null)
-  const buttonRecord = useRef<HTMLButtonElement>(null)
-  const [isRecording, setIsRecording] = useState(false)
-
-  const {wavesurfer, isReady} = useWavesurfer({
-    container: waveformRef,
-    waveColor: "#ddd",
-    progressColor: "#4a90e2",
-    cursorColor: "#4a90e2",
-    barWidth: 3,
-    barGap: 4,
-    barRadius: 20,
-    cursorWidth: 0,
-    height: 40,
-  })
-
-  useEffect(() => {
-    if (wavesurfer === null || buttonRecord.current === null) {
-      return
-    }
-
-    const recordPlugin = wavesurfer.registerPlugin(RecordPlugin.create())
-
-    buttonRecord.current.addEventListener("click", () => {
-      if (recordPlugin.isRecording()) {
-        recordPlugin.stopRecording()
-        setIsRecording(false)
-      } else {
-        void RecordPlugin.getAvailableAudioDevices().then(devices => {
-          void recordPlugin.startRecording(devices[1])
-        })
-
-        setIsRecording(true)
-      }
-    })
-  }, [wavesurfer])
+  const [state, setState] = useState(AudioRecorderState.Idle)
 
   return (
     <>
-      <div className="flex flex-col">
-        <div ref={waveformRef} className="max-h-12 w-full" />
-
-        <Button ref={buttonRecord} className="w-max">
-          {isRecording ? "Stop" : "Record"}
-        </Button>
+      <div className="m-3 flex flex-col">
+        {state === AudioRecorderState.Idle ? (
+          <Button
+            className="w-max"
+            onClick={() => {
+              setState(AudioRecorderState.Recording)
+            }}>
+            Record Audio
+          </Button>
+        ) : (
+          <AudioRecorder
+            recorderState={state}
+            onStateChange={setState}
+            onSendAudioMessage={function (content: Blob): void {
+              throw new Error("Function not implemented.")
+            }}
+          />
+        )}
       </div>
     </>
   )
