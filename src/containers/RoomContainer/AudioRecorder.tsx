@@ -6,6 +6,7 @@ import useWaveRecorder, {AudioSendError} from "@/hooks/util/useWaveRecorder"
 import {Button} from "@/components/ui/button"
 import {useEffect, useState, type FC} from "react"
 import {motion} from "framer-motion"
+import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 
 const BUTTON_SIZE_CLASS = "sm:size-5"
 
@@ -33,6 +34,18 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
 
   const {waveformRef, audioBlob, stopRecording, time, errorMsg} =
     useWaveRecorder()
+
+  useGlobalHotkey({key: "Escape"}, () => {
+    if (!isRecording) {
+      stopRecording()
+      onStateChange(AudioRecorderState.Idle)
+
+      return
+    }
+
+    stopRecording()
+    onStateChange(AudioRecorderState.Finished)
+  })
 
   return (
     <motion.div className={twMerge("flex items-center gap-2", className)}>
