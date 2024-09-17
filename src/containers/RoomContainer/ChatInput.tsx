@@ -142,7 +142,7 @@ const ChatInput: FC<ChatInputProps> = ({
               ariaLabel={t(LangKey.RecordAudio)}
               isDisabled={isInputDisabled}
               onClick={() => {
-                // TODO: Handle capture audio.
+                setRecorderState(AudioRecorderState.Recording)
               }}>
               <IoMic
                 aria-label={t(LangKey.RecordAudio)}
