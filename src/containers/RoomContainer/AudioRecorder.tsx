@@ -53,10 +53,10 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
       </Button>
 
       {errorMsg === null ? (
-        <div className="flex items-center gap-2 rounded-xl border border-slate-300 bg-gray-50 p-2">
+        <div className="flex items-center gap-2 rounded-xl border border-slate-300 bg-gray-50 p-2 dark:border-transparent dark:bg-neutral-800">
           <time
             className={twMerge(
-              "text-xs text-black sm:text-lg",
+              "text-xs text-black dark:text-gray-300 sm:text-lg",
               isRecording && "animate-pulse"
             )}>
             {time}
@@ -72,7 +72,7 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
           />
         </div>
       ) : (
-        <div className="flex items-center gap-1.5 rounded-xl border border-slate-300 bg-gray-50 p-2">
+        <div className="flex items-center gap-1.5 rounded-xl border border-slate-300 bg-gray-50 p-2 dark:border-transparent dark:bg-neutral-800 dark:text-gray-300">
           <TruncatedTextWithTooltip text={errorMsg} maxLength={30} />
         </div>
       )}
@@ -152,7 +152,7 @@ const SendAndStopButton: FC<SendAndStopButtonProps> = ({
       className={twMerge(
         className,
         !isRecording &&
-          "flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600"
+          "flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 dark:text-white"
       )}
       variant={isRecording ? "ghost" : "default"}
       onClick={() => {
