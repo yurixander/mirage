@@ -18,6 +18,8 @@ export const Default: Story = {
     roomId: "room_id_test",
     isInputDisabled: false,
     onPickFile(file) {},
+    onSendTypingEvent(roomId) {},
+    onSendAudio: async () => {},
     onSendMessageText(messageSendRequest) {},
   },
 }
@@ -28,6 +30,8 @@ export const IsDisabled: Story = {
     roomId: "room_id_test",
     isInputDisabled: true,
     onPickFile(file) {},
+    onSendTypingEvent(roomId) {},
+    onSendAudio: async () => {},
     onSendMessageText(messageSendRequest) {},
   },
 }
