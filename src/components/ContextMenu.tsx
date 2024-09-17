@@ -92,6 +92,9 @@ const ContextMenu: FC<ContextMenuProps> = ({
           <motion.div
             initial={{scale: 0.5, opacity: 0.5}}
             whileInView={{scale: 1, opacity: 1}}
+            transition={{
+              duration: 0.1,
+            }}
             ref={elementRef}
             className="fixed z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-gray-100 bg-white p-1.5 shadow-lg"
             style={{

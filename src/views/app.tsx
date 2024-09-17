@@ -9,8 +9,11 @@ import NavigationSection from "@/containers/NavigationSection/NavigationSection"
 import Modal from "@/components/Modal"
 import Typography from "@/components/Typography"
 import {motion} from "framer-motion"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 const AppView: FC = () => {
+  const {t} = useTranslation()
   const navigate = useNavigate()
   const {connect} = useConnection()
   const [connectionError, setConnectionError] = useState(false)
@@ -47,18 +50,15 @@ const AppView: FC = () => {
         <div className="fixed inset-0 z-50 flex size-full w-screen flex-col items-center justify-center bg-modalOverlay">
           <motion.div initial={{scale: 0.5}} animate={{scale: 1}}>
             <Modal
-              title="Connection Error"
-              actionText="Go to login"
+              title={t(LangKey.ConnectionError)}
+              actionText={t(LangKey.GoToLogin)}
               onAccept={() => {
                 navigate(ViewPath.Login)
               }}
               onClose={() => {
                 setConnectionError(false)
               }}>
-              <Typography>
-                Ops we have lost connection with the server, please reload the
-                page or login again.
-              </Typography>
+              <Typography>{t(LangKey.ConnectionErrorSubtitle)}</Typography>
             </Modal>
           </motion.div>
         </div>

@@ -14,8 +14,11 @@ import {IoIosContact} from "react-icons/io"
 import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
 import useLogin from "@/hooks/util/useLogin"
 import {type IconType} from "react-icons"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 const LoginView: FC = () => {
+  const {t} = useTranslation()
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const {lastSyncError, login, setPassword, setUserId, isConnecting} =
@@ -28,7 +31,7 @@ const LoginView: FC = () => {
         <img
           className="max-h-full max-w-full object-contain"
           src={StaticAssetPath.LoginPhoto}
-          alt="Abstract background for login page"
+          alt={t(LangKey.DecorativeBackgroundAlt)}
         />
       </div>
 
@@ -42,19 +45,18 @@ const LoginView: FC = () => {
             <Typography
               variant={TypographyVariant.HeadingLarge}
               className="text-center">
-              Welcome Back
+              {t(LangKey.WelcomeBack)}
             </Typography>
 
             <Typography className="mt-4 text-center">
-              Glad to see you here! Already have an account? Please enter your
-              email and password to sign in.
+              {t(LangKey.LoginSubtitleInfo)}
             </Typography>
           </div>
 
           {/* Controls */}
           <div className="flex flex-col justify-center gap-2">
             <InputSection
-              title="User ID"
+              title={t(LangKey.UserID)}
               onValueChange={setUserId}
               icon={IoIosContact}
               placeholder="@userId:matrix.org"
@@ -62,14 +64,16 @@ const LoginView: FC = () => {
             />
 
             <InputSection
-              title="Password"
+              title={t(LangKey.Password)}
               onValueChange={setPassword}
               icon={IoKey}
-              placeholder="Password"
+              placeholder={t(LangKey.Password)}
               isPassword={!isPasswordVisible}
               actions={[
                 {
-                  tooltip: isPasswordVisible ? "Hide token" : "Show token",
+                  tooltip: isPasswordVisible
+                    ? t(LangKey.HideToken)
+                    : t(LangKey.ShowToken),
                   icon: isPasswordVisible ? IoEyeOff : IoEye,
                   onClick: () => {
                     setIsPasswordVisible(!isPasswordVisible)
@@ -81,7 +85,7 @@ const LoginView: FC = () => {
             <div className="flex flex-col gap-1">
               <Button
                 variant={ButtonVariant.Primary}
-                label={isConnecting ? "Connecting..." : "Sign in →"}
+                label={isConnecting ? t(LangKey.Connecting) : t(LangKey.SignIn)}
                 isLoading={isConnecting}
                 onClick={() => {
                   void login()
@@ -93,7 +97,7 @@ const LoginView: FC = () => {
 
               <Button
                 onClick={() => {}}
-                label="Forgot password?"
+                label={t(LangKey.ForgotPassword)}
                 variant={ButtonVariant.TextLink}
               />
             </div>
@@ -102,11 +106,11 @@ const LoginView: FC = () => {
 
         {/* Bottom sign up link */}
         <div className="flex w-full items-center justify-center gap-1">
-          <Typography>Don&apos;t have an account?</Typography>
+          <Typography>{t(LangKey.NoAccountText)}</Typography>
 
           {/* TODO: Provide link. */}
           <Link to="">
-            <Typography className="font-bold">Sign up</Typography>
+            <Typography className="font-bold">{t(LangKey.SignUp)}</Typography>
           </Link>
         </div>
       </div>

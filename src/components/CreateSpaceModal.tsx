@@ -8,6 +8,8 @@ import AvatarUploader from "./AvatarUploader"
 import useActiveModalStore from "@/hooks/util/useActiveModal"
 import Modal from "./Modal"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 const CreateSpaceModal: FC = () => {
   const client = useMatrixClient()
@@ -16,6 +18,7 @@ const CreateSpaceModal: FC = () => {
   const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
   const [isCreatingSpace, setIsCreatingSpace] = useState(false)
   const {clearActiveModal} = useActiveModalStore()
+  const {t} = useTranslation()
 
   const onCreateSpace = (): void => {
     if (client === null) {
@@ -51,8 +54,8 @@ const CreateSpaceModal: FC = () => {
 
   return (
     <Modal
-      title="New Space"
-      actionText="Create Space"
+      title={t(LangKey.NewSpace)}
+      actionText={t(LangKey.CreateSpace)}
       isLoading={isCreatingSpace}
       isDisabled={client === null || spaceName.length <= 0}
       onAccept={onCreateSpace}
@@ -65,19 +68,18 @@ const CreateSpaceModal: FC = () => {
             <Typography
               className="font-bold text-black"
               variant={TypographyVariant.Heading}>
-              Create Space
+              {t(LangKey.CreateSpace)}
             </Typography>
 
             <Typography variant={TypographyVariant.BodySmall}>
-              Spaces are a new way of grouping rooms and people. What kind of
-              space you want to create you can change
+              {t(LangKey.CreateSpaceSpecInfo)}
             </Typography>
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
           <InputSection
-            title="* Space Name"
+            title={`* ${t(LangKey.SpaceName)}`}
             placeholder="Ej. Figma Community"
             onValueChange={setSpaceName}
           />
@@ -85,14 +87,14 @@ const CreateSpaceModal: FC = () => {
           {/* TODO: This input description prefer use `text-area` */}
           <div className="flex flex-col gap-1">
             <Typography variant={TypographyVariant.BodySmall}>
-              Description (optional)
+              {t(LangKey.DescriptionOptional)}
             </Typography>
 
             <InputArea
               className="w-full"
               onValueChange={setSpaceDescription}
               initialValue={spaceDescription}
-              placeholder="Write a brief description of what your space will be about."
+              placeholder={t(LangKey.SpaceDescriptionPlaceholder)}
             />
           </div>
         </div>

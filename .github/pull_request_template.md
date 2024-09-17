@@ -7,3 +7,4 @@
  - [ ] Verificar responsividad del componente usando dev tools.
  - [ ] Crear historia de storybook
  - [ ] Agregar hotkeys, tab index y event listeners de Enter para comprobar el componente en el teclado.
+ - [ ] Agregar variante dark/oscuro para los componentes nuevos creados.

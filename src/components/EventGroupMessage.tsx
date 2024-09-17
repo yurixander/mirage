@@ -11,11 +11,19 @@ import {IoMdCreate} from "react-icons/io"
 import {twMerge} from "tailwind-merge"
 import Typography from "./Typography"
 import {IoCube} from "react-icons/io5"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 export enum EventShortenerType {
-  EqualInfo = "has done several events.",
-  PersonalInfo = "has change his personal info.",
-  ConfigureRoom = "has created and configured this room.",
+  EqualInfo = "EqualInfo",
+  PersonalInfo = "PersonalInfo",
+  ConfigureRoom = "Configure Room",
+}
+
+const eventShortenerBody: Record<EventShortenerType, LangKey> = {
+  [EventShortenerType.EqualInfo]: LangKey.EqualInfo,
+  [EventShortenerType.PersonalInfo]: LangKey.PersonalInfo,
+  [EventShortenerType.ConfigureRoom]: LangKey.ConfigureRoom,
 }
 
 export type EventGroupMainBody = {
@@ -39,7 +47,9 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
   onFindUser,
   onShowMember,
 }) => {
+  const {sender, shortenerType} = eventGroupMainBody
   const [isExpanded, setIsExpanded] = useState(false)
+  const {t} = useTranslation()
 
   assert(eventMessages.length > 0, "Event group messages should not be empty.")
 
@@ -50,17 +60,17 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
           className="grow"
           onShowMember={onShowMember}
           onFindUser={onFindUser}
-          body={eventGroupMainBody.shortenerType}
+          body={t(eventShortenerBody[shortenerType])}
           eventId={eventMessages[0].eventId}
-          sender={eventGroupMainBody.sender}
+          sender={sender}
           timestamp={eventMessages[0].timestamp}
           icon={IoCube}
-          type={eventGroupMainBody.shortenerType}
+          type={shortenerType}
         />
 
         <Button
           variant={ButtonVariant.TextLink}
-          label="Expand all"
+          label={t(LangKey.ExpandAll)}
           onClick={() => {
             setIsExpanded(prevExpanded => !prevExpanded)
           }}
@@ -69,12 +79,13 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
 
       <motion.div
         style={{
-          borderLeftColor: stringToColor(eventGroupMainBody.sender.userId),
+          borderLeftColor: stringToColor(sender.userId),
         }}
         className="mt-1 flex w-full flex-col gap-3 overflow-hidden rounded-md border-l-4 bg-gray-50 pr-24"
         animate={{height: isExpanded ? "max-content" : "0px"}}>
         {eventMessages.map(eventMessageData => (
           <EventMessageChild
+            key={eventMessageData.eventId}
             icon={eventMessageData.icon}
             body={eventMessageData.body}
             timestamp={eventMessageData.timestamp}

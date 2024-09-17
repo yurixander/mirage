@@ -10,6 +10,8 @@ import {Button} from "@/components/ui/button"
 import useTooltip from "@/hooks/util/useTooltip"
 import useDebounced from "@/hooks/util/useDebounced"
 import AudioRecorder, {AudioRecorderState} from "./AudioRecorder"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 export type MessageSendRequest = {
   roomId: string
@@ -47,6 +49,7 @@ const ChatInput: FC<ChatInputProps> = ({
   const [messageText, setMessageText] = useState("")
   const debouncedText = useDebounced(messageText, 500)
   const [recorderState, setRecorderState] = useState(AudioRecorderState.Idle)
+  const {t} = useTranslation()
 
   const [selectionRange, setSelectionRange] = useState<SelectionRange>({
     selectionEnd: null,
@@ -69,7 +72,13 @@ const ChatInput: FC<ChatInputProps> = ({
     const cachedTextAreaRef = textAreaRef.current
 
     const handleSendMessage = (event: KeyboardEvent): void => {
-      if (event.ctrlKey && event.key === "Enter" && messageText.length > 0) {
+      if (event.ctrlKey && event.key === "Enter") {
+        event.preventDefault()
+
+        setMessageText(prevText => prevText + "\n")
+      }
+
+      if (event.key === "Enter" && messageText.length > 0) {
         event.preventDefault()
 
         onSendMessageText({roomId, messageText})
@@ -97,11 +106,11 @@ const ChatInput: FC<ChatInputProps> = ({
 
           <TextArea
             ref={textAreaRef}
-            className="max-h-24 w-full border-none p-0 text-sm disabled:cursor-default md:max-h-32 md:text-xl"
+            className="max-h-24 w-full border-none p-0 text-sm disabled:cursor-default md:max-h-32 md:text-lg"
             value={messageText}
             onValueChanged={setMessageText}
             disabled={isInputDisabled}
-            placeholder="Write a message or simply say 👋🏼 hello..."
+            placeholder={t(LangKey.ChatInputPlaceholder)}
             onSelect={event => {
               if (!(event.target instanceof HTMLTextAreaElement)) {
                 return
@@ -130,16 +139,19 @@ const ChatInput: FC<ChatInputProps> = ({
             />
 
             <InputChatAction
-              ariaLabel="Record Audio"
+              ariaLabel={t(LangKey.RecordAudio)}
               isDisabled={isInputDisabled}
               onClick={() => {
-                setRecorderState(AudioRecorderState.Recording)
+                // TODO: Handle capture audio.
               }}>
-              <IoMic aria-label="Record Audio" className={INPUT_ACTION_CLASS} />
+              <IoMic
+                aria-label={t(LangKey.RecordAudio)}
+                className={INPUT_ACTION_CLASS}
+              />
             </InputChatAction>
 
             <InputChatAction
-              ariaLabel="Send text message"
+              ariaLabel={t(LangKey.SendTextMessage)}
               isDisabled={messageText.length === 0 || isInputDisabled}
               onClick={() => {
                 textAreaRef.current?.focus()
@@ -200,6 +212,7 @@ const EmojiPickerPopover: FC<{
   isDisabled?: boolean
 }> = ({onPickEmoji, isDisabled = false}) => {
   const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false)
+  const {t} = useTranslation()
 
   useEffect(() => {
     const handleOpenEmojiPicker = (event: KeyboardEvent): void => {
@@ -222,7 +235,7 @@ const EmojiPickerPopover: FC<{
       <PopoverTrigger asChild>
         <Button
           disabled={isDisabled}
-          aria-label="Emoji picker"
+          aria-label={t(LangKey.EmojiPicker)}
           variant="ghost"
           size="icon"
           className={twMerge(
@@ -230,7 +243,7 @@ const EmojiPickerPopover: FC<{
             "size-max hover:bg-transparent"
           )}>
           <IoIosHappy
-            aria-label="Smile icon"
+            aria-label={t(LangKey.EmojiIcon)}
             className={twMerge(
               INPUT_ACTION_CLASS,
               isEmojiPickerVisible && "text-slate-500"
