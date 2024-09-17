@@ -23,6 +23,7 @@ const AppView: FC = () => {
   // are found in local storage.
   useEffect(() => {
     // No credentials found, redirect to login page.
+
     if (credentials === null) {
       navigate(ViewPath.Login)
 

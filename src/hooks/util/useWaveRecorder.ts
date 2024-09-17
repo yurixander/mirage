@@ -8,6 +8,11 @@ class RecordUnavailableError extends Error {
   message: string = "The recorder is not available"
 }
 
+export class AudioSendError extends Error {
+  name: string = "Audio Send Error"
+  message: string = "Failed to send audio"
+}
+
 type UseWaveRecorderReturnType = {
   errorMsg: string | null
   time: string

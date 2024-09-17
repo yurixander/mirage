@@ -2,9 +2,9 @@ import {IoClose, IoSend, IoStop, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import TruncatedTextWithTooltip from "@/components/TruncatedTextWithTooltip"
 import useTooltip from "@/hooks/util/useTooltip"
-import useWaveRecorder from "@/hooks/util/useWaveRecorder"
+import useWaveRecorder, {AudioSendError} from "@/hooks/util/useWaveRecorder"
 import {Button} from "@/components/ui/button"
-import {useEffect, type FC} from "react"
+import {useEffect, useState, type FC} from "react"
 import {motion} from "framer-motion"
 
 const BUTTON_SIZE_CLASS = "sm:size-5"
@@ -17,7 +17,7 @@ export enum AudioRecorderState {
 
 type AudioRecorderProps = {
   recorderState: AudioRecorderState.Recording | AudioRecorderState.Finished
-  onSendAudioMessage: (content: Blob) => void
+  onSendAudioMessage: (content: Blob) => Promise<void>
   onStateChange: (newState: AudioRecorderState) => void
   className?: string
 }
@@ -29,6 +29,7 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
   className,
 }) => {
   const isRecording = recorderState === AudioRecorderState.Recording
+  const [isSendingAudio, setIsSendingAudio] = useState(false)
 
   const {waveformRef, audioBlob, stopRecording, time, errorMsg} =
     useWaveRecorder()
@@ -78,17 +79,26 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
 
       {errorMsg === null && (
         <SendAndStopButton
+          isSendingAudio={isSendingAudio}
           isRecording={isRecording}
           onStop={() => {
             stopRecording()
             onStateChange(AudioRecorderState.Finished)
           }}
-          onSend={() => {
+          onSend={async () => {
             if (audioBlob === null) {
-              throw new Error("Failed to send audio.")
+              throw new AudioSendError()
             }
 
-            onSendAudioMessage(audioBlob)
+            setIsSendingAudio(true)
+
+            try {
+              await onSendAudioMessage(audioBlob)
+            } catch (error) {
+              throw error instanceof Error ? error : new AudioSendError()
+            }
+
+            setIsSendingAudio(false)
             onStateChange(AudioRecorderState.Idle)
           }}
         />
@@ -98,13 +108,15 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
 }
 
 type SendAndStopButtonProps = {
+  isSendingAudio: boolean
   isRecording: boolean
   onStop: () => void
-  onSend: () => void
+  onSend: () => Promise<void>
   className?: string
 }
 
 const SendAndStopButton: FC<SendAndStopButtonProps> = ({
+  isSendingAudio,
   isRecording,
   onSend,
   onStop,
@@ -118,7 +130,9 @@ const SendAndStopButton: FC<SendAndStopButtonProps> = ({
       if (event.key === "Enter") {
         event.preventDefault()
 
-        onSend()
+        void onSend().catch((error: Error) => {
+          showTooltip(error.message, true)
+        })
       }
     }
 
@@ -127,11 +141,12 @@ const SendAndStopButton: FC<SendAndStopButtonProps> = ({
     return () => {
       document.removeEventListener("keydown", handleSendAudio)
     }
-  }, [onSend])
+  }, [onSend, showTooltip])
 
   return (
     <Button
       ref={renderRef}
+      disabled={isSendingAudio}
       aria-label={isRecording ? "Stop record" : "Send audio recorded"}
       size="icon"
       className={twMerge(
@@ -145,7 +160,9 @@ const SendAndStopButton: FC<SendAndStopButtonProps> = ({
           if (isRecording) {
             onStop()
           } else {
-            onSend()
+            void onSend().catch((error: Error) => {
+              showTooltip(error.message, true)
+            })
           }
         } catch (error) {
           if (!(error instanceof Error)) {

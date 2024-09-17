@@ -20,6 +20,7 @@ export type ChatInputProps = {
   roomId: string
   isInputDisabled: boolean
   onSendMessageText: (messageSendRequest: MessageSendRequest) => void
+  onSendAudio: (audioBlob: Blob) => Promise<void>
   onPickFile: (file: File) => void
   onSendTypingEvent: (roomId: string) => void
   className?: string
@@ -35,6 +36,7 @@ const INPUT_ACTION_CLASS = "size-5 md:size-6 text-slate-300"
 const ChatInput: FC<ChatInputProps> = ({
   roomId,
   onSendMessageText,
+  onSendAudio,
   onPickFile,
   onSendTypingEvent,
   isInputDisabled,
@@ -154,9 +156,7 @@ const ChatInput: FC<ChatInputProps> = ({
           className="w-full justify-end"
           recorderState={recorderState}
           onStateChange={setRecorderState}
-          onSendAudioMessage={function (content: Blob): void {
-            throw new Error("Function not implemented.")
-          }}
+          onSendAudioMessage={onSendAudio}
         />
       )}
     </div>
