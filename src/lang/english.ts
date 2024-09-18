@@ -88,6 +88,7 @@ export const english: LangDefinition = {
   [LangKey.PersonalInfo]: "has changed his personal info.",
   [LangKey.ConfigureRoom]: "has created and configured this room.",
   [LangKey.UploadImage]: "Upload Image",
+  [LangKey.Close]: "Close",
 
   // #region Roster
   [LangKey.People]: "People",
@@ -258,4 +259,16 @@ export const english: LangDefinition = {
   [LangKey.SendAMessageSubtitle]: "to a colleague or friend",
   [LangKey.CheckoutGitHub]: "Checkout GitHub",
   [LangKey.CheckoutGitHubSubtitle]: "to view latest updates",
+
+  // Audio Recorder
+  [LangKey.RemoveAudio]: "Remove audio",
+  [LangKey.StopRecord]: "Stop record",
+  [LangKey.SendAudioRecorded]: "Send audio recorded",
+  [LangKey.RecordUnavailableError]: "Record Unavailable",
+  [LangKey.RecordUnavailableErrorDescription]: "The recorder is not available",
+  [LangKey.AudioSendError]: "Audio Send Error",
+  [LangKey.AudioSendErrorDescription]: "Failed to send audio",
+  [LangKey.PauseRecordError]: "Could not pause recording",
+  [LangKey.RecordActiveError]: "Recording is active",
+  [LangKey.NoDevicesAvailableError]: "You don't have audio devices",
 }

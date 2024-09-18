@@ -1,16 +1,18 @@
+import {LangKey} from "@/lang/allKeys"
+import {t} from "@/utils/lang"
 import {useWavesurfer} from "@wavesurfer/react"
 import {useEffect, useRef, useState} from "react"
 import type WaveSurfer from "wavesurfer.js"
 import RecordPlugin from "wavesurfer.js/dist/plugins/record"
 
 class RecordUnavailableError extends Error {
-  name: string = "Record Unavailable"
-  message: string = "The recorder is not available"
+  name: string = t(LangKey.RecordUnavailableError)
+  message: string = t(LangKey.RecordUnavailableErrorDescription)
 }
 
 export class AudioSendError extends Error {
-  name: string = "Audio Send Error"
-  message: string = "Failed to send audio"
+  name: string = t(LangKey.AudioSendError)
+  message: string = t(LangKey.AudioSendErrorDescription)
 }
 
 type UseWaveRecorderReturnType = {
@@ -116,7 +118,7 @@ const useWaveRecorder = (): UseWaveRecorderReturnType => {
     try {
       record.pauseRecording()
     } catch {
-      throw new Error("Could not pause recording")
+      throw new Error(t(LangKey.PauseRecordError))
     }
   }
 
@@ -139,13 +141,13 @@ const startRecording = async (
   }
 
   if (record.isRecording()) {
-    throw new Error("Recording is active")
+    throw new Error(t(LangKey.RecordActiveError))
   }
 
   const availableDevices = await RecordPlugin.getAvailableAudioDevices()
 
   if (availableDevices.length === 0) {
-    throw new Error("You don't have audio devices")
+    throw new Error(t(LangKey.NoDevicesAvailableError))
   }
 
   await record.startRecording(availableDevices[0])

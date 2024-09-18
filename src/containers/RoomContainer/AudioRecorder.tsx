@@ -7,6 +7,8 @@ import {Button} from "@/components/ui/button"
 import {useEffect, useState, type FC} from "react"
 import {motion} from "framer-motion"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 const BUTTON_SIZE_CLASS = "sm:size-5"
 
@@ -31,6 +33,7 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
 }) => {
   const isRecording = recorderState === AudioRecorderState.Recording
   const [isSendingAudio, setIsSendingAudio] = useState(false)
+  const {t} = useTranslation()
 
   const {waveformRef, audioBlob, stopRecording, time, errorMsg} =
     useWaveRecorder()
@@ -50,10 +53,12 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
   return (
     <motion.div className={twMerge("flex items-center gap-2", className)}>
       <Button
-        aria-label={errorMsg === null ? "Remove audio" : "Close"}
         className="size-7 sm:size-9"
         size="icon"
         variant="ghost"
+        aria-label={
+          errorMsg === null ? t(LangKey.RemoveAudio) : t(LangKey.Close)
+        }
         onClick={() => {
           stopRecording()
           onStateChange(AudioRecorderState.Idle)
@@ -137,6 +142,7 @@ const SendAndStopButton: FC<SendAndStopButtonProps> = ({
 }) => {
   const Icon = isRecording ? IoStop : IoSend
   const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
+  const {t} = useTranslation()
 
   useEffect(() => {
     const handleSendAudio = (event: KeyboardEvent): void => {
@@ -160,8 +166,10 @@ const SendAndStopButton: FC<SendAndStopButtonProps> = ({
     <Button
       ref={renderRef}
       disabled={isSendingAudio}
-      aria-label={isRecording ? "Stop record" : "Send audio recorded"}
       size="icon"
+      aria-label={
+        isRecording ? t(LangKey.StopRecord) : t(LangKey.SendAudioRecorded)
+      }
       className={twMerge(
         className,
         !isRecording &&

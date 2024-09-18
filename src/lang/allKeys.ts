@@ -78,6 +78,8 @@ export enum LangKey {
   PersonalInfo,
   ConfigureRoom,
   UploadImage,
+  Close,
+
   // #region Roster
   People,
   SortMembers,
@@ -219,4 +221,16 @@ export enum LangKey {
   SendAMessageSubtitle,
   CheckoutGitHub,
   CheckoutGitHubSubtitle,
+
+  // Audio Recorder
+  RemoveAudio,
+  StopRecord,
+  SendAudioRecorded,
+  RecordUnavailableError,
+  RecordUnavailableErrorDescription,
+  AudioSendError,
+  AudioSendErrorDescription,
+  PauseRecordError,
+  RecordActiveError,
+  NoDevicesAvailableError,
 }
