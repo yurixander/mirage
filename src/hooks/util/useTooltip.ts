@@ -1,4 +1,5 @@
 import {delay} from "@/utils/util"
+import type React from "react"
 import {useEffect, useRef, useState} from "react"
 import tippy, {type Instance, type Props} from "tippy.js"
 
