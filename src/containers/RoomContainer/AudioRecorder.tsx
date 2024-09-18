@@ -101,6 +101,7 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
           isRecording={isRecording}
           onStop={() => {
             stopRecording()
+
             onStateChange(AudioRecorderState.Finished)
           }}
           onSend={async () => {
