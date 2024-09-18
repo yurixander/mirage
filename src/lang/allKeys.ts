@@ -78,6 +78,8 @@ export enum LangKey {
   PersonalInfo,
   ConfigureRoom,
   UploadImage,
+  CloseModal,
+
   // #region Roster
   People,
   SortMembers,

@@ -88,6 +88,7 @@ export const spanish: LangDefinition = {
   [LangKey.PersonalInfo]: "ha cambiado su información personal",
   [LangKey.ConfigureRoom]: "ha configurado la sala",
   [LangKey.UploadImage]: "Subir Imagen",
+  [LangKey.CloseModal]: "Cerrar el modal",
 
   // #region Roster
   [LangKey.People]: "Personas",
