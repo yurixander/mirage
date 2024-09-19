@@ -119,6 +119,8 @@ export const spanish: LangDefinition = {
   [LangKey.RemoveProfilePhoto]: "ha eliminado la foto de perfil",
   [LangKey.Invited]: (user: string) => `ha invitado a ${user}`,
   [LangKey.Banned]: (user: string) => `ha prohibido a ${user}`,
+  [LangKey.ExpandEvents]: "Expandir eventos",
+  [LangKey.CollapseEvents]: "Contraer eventos",
 
   [LangKey.DeletedMessage]: (user: string) =>
     `${user} ha eliminado este mensaje`,

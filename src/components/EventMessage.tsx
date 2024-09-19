@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import {assert, formatTime, stringToColor} from "../utils/util"
+import {assert, formatTime, stringToColor, trim} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
 import Typography from "./Typography"
 import ContextMenu, {ClickActions} from "./ContextMenu"
@@ -8,6 +8,7 @@ import {type IconType} from "react-icons"
 import {type EventType} from "matrix-js-sdk"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {twMerge} from "tailwind-merge"
 
 export type EventSender = {
   displayName: string
@@ -51,7 +52,7 @@ const EventMessage: FC<EventMessageProps> = ({
   )
 
   return (
-    <div className="flex items-center gap-3">
+    <div className={twMerge("flex items-center gap-3", className)}>
       <Typography className="inline-flex max-w-text select-text gap-1 whitespace-pre-line break-words italic">
         <ContextMenu
           className="shrink-0"
@@ -76,10 +77,10 @@ const EventMessage: FC<EventMessageProps> = ({
               <Icon className="text-neutral-300" />
             </div>
 
-            {sender.displayName}
+            {trim(sender.displayName, 32)}
           </Typography>
         </ContextMenu>
-        {body}
+        {trim(body, 64)}
       </Typography>
 
       <time className="ml-auto text-gray-300">{formatTime(timestamp)}</time>

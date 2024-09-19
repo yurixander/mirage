@@ -151,6 +151,8 @@ export const english: LangDefinition = {
   [LangKey.Banned]: (user: string) => `has banned ${user}`,
   [LangKey.BannedByReason]: (user: string, reason: string) =>
     `has banned ${user} for: ${reason}`,
+  [LangKey.ExpandEvents]: "Expand events",
+  [LangKey.CollapseEvents]: "Collapse events",
 
   // #region Login
   [LangKey.DecorativeBackgroundAlt]: "Abstract background for login page",
