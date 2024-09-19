@@ -89,6 +89,14 @@ export const english: LangDefinition = {
   [LangKey.ConfigureRoom]: "has created and configured this room.",
   [LangKey.UploadImage]: "Upload Image",
   [LangKey.CloseModal]: "Close modal",
+  [LangKey.TogglePlayPause]: "Toggle play pause",
+  [LangKey.Pause]: "Pause",
+  [LangKey.Play]: "Play",
+  [LangKey.AcceptCall]: "Accept call",
+  [LangKey.ToggleSpeaker]: "Toggle speaker",
+  [LangKey.ToggleMicrophone]: "Toggle microphone",
+  [LangKey.CallOf]: "Call off",
+  [LangKey.ClickToDownload]: "Click to download",
 
   // #region Roster
   [LangKey.People]: "People",

@@ -7,6 +7,7 @@ import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useFilePicker from "@/hooks/util/useFilePicker"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
+import {IconButton} from "./ui/button"
 
 type UploadAvatarProps = {
   onAvatarUploaded: (matrixSrc: string) => void
@@ -80,29 +81,25 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
   }, [client, contentPicked, onAvatarUploaded])
 
   return avatarImageUrl === null ? (
-    <div
+    <IconButton
       onClick={onPickFile}
-      aria-hidden="true"
-      role="button"
       className={twMerge(
-        "flex shrink-0 items-center justify-center rounded-md bg-gray-100",
+        "flex shrink-0 items-center justify-center rounded-md bg-gray-100 hover:bg-gray-100",
         AVATAR_UPLOADER_SIZE,
         className
       )}>
       <IoCamera className="text-slate-400" />
-    </div>
+    </IconButton>
   ) : (
     <div
       className={twMerge("relative shrink-0", AVATAR_UPLOADER_SIZE, className)}>
       {!isImageUploading && (
-        <IoTrashBin
-          size={20}
-          color="white"
-          aria-hidden="true"
-          role="button"
-          className="absolute -bottom-1 -right-1 z-10 cursor-pointer rounded-full bg-red-500 p-1 transition-transform hover:scale-125"
-          onClick={clear}
-        />
+        <IconButton
+          className="absolute -bottom-1 -right-1 z-10 size-6 rounded-full transition-transform hover:scale-125"
+          variant="destructive"
+          onClick={clear}>
+          <IoTrashBin className="size-4 text-white" />
+        </IconButton>
       )}
 
       <div

@@ -79,6 +79,14 @@ export enum LangKey {
   ConfigureRoom,
   UploadImage,
   CloseModal,
+  TogglePlayPause,
+  Pause,
+  Play,
+  AcceptCall,
+  ToggleSpeaker,
+  ToggleMicrophone,
+  CallOf,
+  ClickToDownload,
 
   // #region Roster
   People,

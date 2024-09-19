@@ -52,7 +52,7 @@ const Modal: FC<ModalProps> = ({
           {title}
         </Typography>
 
-        <IconButton tooltip={t(LangKey.CloseModal)}>
+        <IconButton onClick={onClose} tooltip={t(LangKey.CloseModal)}>
           <IoCloseCircle className="size-5" />
         </IconButton>
       </div>

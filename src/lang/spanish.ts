@@ -89,6 +89,14 @@ export const spanish: LangDefinition = {
   [LangKey.ConfigureRoom]: "ha configurado la sala",
   [LangKey.UploadImage]: "Subir Imagen",
   [LangKey.CloseModal]: "Cerrar el modal",
+  [LangKey.TogglePlayPause]: "Pausar o Reanudar",
+  [LangKey.Pause]: "Pausar",
+  [LangKey.Play]: "Iniciar",
+  [LangKey.AcceptCall]: "Aceptar llamada",
+  [LangKey.ToggleSpeaker]: "Activar o desactivar el altavoz",
+  [LangKey.ToggleMicrophone]: "Activar o desactivar el micrófono",
+  [LangKey.CallOf]: "Colgar llamada",
+  [LangKey.ClickToDownload]: "Presiona para descargar",
 
   // #region Roster
   [LangKey.People]: "Personas",

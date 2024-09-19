@@ -4,7 +4,6 @@ import MessageContainer, {
   type MessageBaseProps,
 } from "./MessageContainer"
 import Typography, {TypographyVariant} from "./Typography"
-import IconButton from "./IconButton"
 import {
   FaDownload,
   FaFile,
@@ -16,6 +15,9 @@ import {
   FaFileZipper,
 } from "react-icons/fa6"
 import {assert, validateUrl} from "@/utils/util"
+import {IconButton} from "./ui/button"
+import {LangKey} from "@/lang/allKeys"
+import useTranslation from "@/hooks/util/useTranslation"
 
 const ICON_SIZE = 20
 
@@ -39,6 +41,7 @@ const FileMessage: FC<FileMessageProps> = ({
   fileUrl,
   userId,
 }) => {
+  const {t} = useTranslation()
   const fileExtension = getFileExtension(fileName).toUpperCase()
 
   if (fileUrl !== undefined) {
@@ -68,13 +71,13 @@ const FileMessage: FC<FileMessageProps> = ({
 
           <div>
             <IconButton
-              Icon={FaDownload}
               color="lightslategrey"
+              tooltip={t(LangKey.ClickToDownload)}
               onClick={() => {
                 if (fileUrl !== undefined) open(fileUrl)
-              }}
-              tooltip="Click to download"
-            />
+              }}>
+              <FaDownload />
+            </IconButton>
           </div>
         </div>
 
