@@ -55,23 +55,23 @@ const ChatHeader: FC<ChatHeaderProps> = ({
       </div>
 
       <IconButton tooltip={t(LangKey.Call)}>
-        <IoCall />
+        <IoCall className="size-5" />
       </IconButton>
 
       <IconButton tooltip={t(LangKey.VideoCall)}>
-        <IoVideocam />
+        <IoVideocam className="size-5" />
       </IconButton>
 
       <IconButton tooltip={t(LangKey.CopyLink)}>
-        <IoLink />
+        <IoLink className="size-5" />
       </IconButton>
 
       <IconButton tooltip={t(LangKey.SearchInRoom)}>
-        <IoSearch />
+        <IoSearch className="size-5" />
       </IconButton>
 
       <IconButton tooltip={t(LangKey.RoomDetails)}>
-        <IoInformation />
+        <IoInformation className="size-5" />
       </IconButton>
 
       <IconButton
@@ -79,7 +79,11 @@ const ChatHeader: FC<ChatHeaderProps> = ({
         onClick={() => {
           onRosterExpanded(!isRosterExpanded)
         }}>
-        {isRosterExpanded ? <IoChevronForward /> : <IoChevronBack />}
+        {isRosterExpanded ? (
+          <IoChevronForward className="size-5" />
+        ) : (
+          <IoChevronBack className="size-5" />
+        )}
       </IconButton>
     </header>
   )

@@ -93,6 +93,7 @@ export enum LangKey {
   SearchInRoom,
   RoomDetails,
   ExpandRoster,
+  DownloadImage,
 
   // #region Roster
   People,

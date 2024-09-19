@@ -22,6 +22,7 @@ export const Default: Story = {
     onAuthorClick: () => {},
     contextMenuItems: [],
     messageId: "text-message-id",
+    userId: "user-1",
   },
 }
 

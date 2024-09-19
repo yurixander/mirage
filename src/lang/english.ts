@@ -103,6 +103,7 @@ export const english: LangDefinition = {
   [LangKey.SearchInRoom]: "Search in room",
   [LangKey.RoomDetails]: "Room details",
   [LangKey.ExpandRoster]: "Expand roster",
+  [LangKey.DownloadImage]: "Download image",
 
   // #region Roster
   [LangKey.People]: "People",

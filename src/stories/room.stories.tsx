@@ -16,6 +16,7 @@ export const Default: Story = {
     roomName: "Figma Utils",
     emoji: "🔍",
     onRoomClick() {},
+    roomId: "room-id",
   },
 }
 export const Selected: Story = {
@@ -25,6 +26,7 @@ export const Selected: Story = {
     roomName: "Figma Utils",
     emoji: "🔍",
     onRoomClick() {},
+    roomId: "room-id-1",
   },
 }
 
