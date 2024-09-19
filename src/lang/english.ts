@@ -97,6 +97,12 @@ export const english: LangDefinition = {
   [LangKey.ToggleMicrophone]: "Toggle microphone",
   [LangKey.CallOf]: "Call off",
   [LangKey.ClickToDownload]: "Click to download",
+  [LangKey.Call]: "Call",
+  [LangKey.VideoCall]: "Video call",
+  [LangKey.CopyLink]: "Copy link",
+  [LangKey.SearchInRoom]: "Search in room",
+  [LangKey.RoomDetails]: "Room details",
+  [LangKey.ExpandRoster]: "Expand roster",
 
   // #region Roster
   [LangKey.People]: "People",

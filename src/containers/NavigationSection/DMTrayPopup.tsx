@@ -163,7 +163,6 @@ const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
   invitationLink,
 }) => {
   const {t} = useTranslation()
-  const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
 
   return (
     <div className="flex h-10 items-center justify-between rounded border border-neutral-300 bg-neutral-50 px-2">
@@ -174,26 +173,18 @@ const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
       </Typography>
 
       <Button
-        ref={renderRef}
         aria-label="Copy invitation link"
         className="text-slate-300 hover:bg-transparent hover:text-slate-600"
         variant="ghost"
         size="icon"
         onClick={() => {
           if (invitationLink === null) {
-            showTooltip(t(LangKey.InvitationLinkIncorrect), true)
-
-            return
+            throw new Error(t(LangKey.InvitationLinkIncorrect))
           }
 
-          void navigator.clipboard
-            .writeText(invitationLink)
-            .then(() => {
-              showTooltip(t(LangKey.LinkCopiedSuccessfully))
-            })
-            .catch(error => {
-              showTooltip(`${t(LangKey.CopyLinkError)}: ${error}`, true)
-            })
+          void navigator.clipboard.writeText(invitationLink).catch(error => {
+            throw new Error(`${t(LangKey.CopyLinkError)}: ${error}`)
+          })
         }}>
         <IoCopy />
       </Button>

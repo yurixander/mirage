@@ -97,6 +97,12 @@ export const spanish: LangDefinition = {
   [LangKey.ToggleMicrophone]: "Activar o desactivar el micrófono",
   [LangKey.CallOf]: "Colgar llamada",
   [LangKey.ClickToDownload]: "Presiona para descargar",
+  [LangKey.Call]: "Llamar",
+  [LangKey.VideoCall]: "Video llamada",
+  [LangKey.CopyLink]: "Copiar link",
+  [LangKey.SearchInRoom]: "Buscar en la room",
+  [LangKey.RoomDetails]: "Información de la room",
+  [LangKey.ExpandRoster]: "Expandir el listado de miembros",
 
   // #region Roster
   [LangKey.People]: "Personas",

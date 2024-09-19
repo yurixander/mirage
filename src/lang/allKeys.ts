@@ -87,6 +87,12 @@ export enum LangKey {
   ToggleMicrophone,
   CallOf,
   ClickToDownload,
+  Call,
+  VideoCall,
+  CopyLink,
+  SearchInRoom,
+  RoomDetails,
+  ExpandRoster,
 
   // #region Roster
   People,

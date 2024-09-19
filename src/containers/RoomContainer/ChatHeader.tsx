@@ -1,4 +1,6 @@
-import IconButton from "@/components/IconButton"
+import {IconButton} from "@/components/ui/button"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 import {type FC} from "react"
 import {
   IoChevronForward,
@@ -26,6 +28,8 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   className,
   roomDescription,
 }) => {
+  const {t} = useTranslation()
+
   return (
     <header className={className}>
       <div className="m-2 flex w-full gap-1">
@@ -50,53 +54,33 @@ const ChatHeader: FC<ChatHeaderProps> = ({
         )}
       </div>
 
-      <IconButton
-        onClick={() => {
-          /* TODO: Handle `more` button click. */
-        }}
-        tooltip="Call"
-        Icon={IoCall}
-      />
+      <IconButton tooltip={t(LangKey.Call)}>
+        <IoCall />
+      </IconButton>
+
+      <IconButton tooltip={t(LangKey.VideoCall)}>
+        <IoVideocam />
+      </IconButton>
+
+      <IconButton tooltip={t(LangKey.CopyLink)}>
+        <IoLink />
+      </IconButton>
+
+      <IconButton tooltip={t(LangKey.SearchInRoom)}>
+        <IoSearch />
+      </IconButton>
+
+      <IconButton tooltip={t(LangKey.RoomDetails)}>
+        <IoInformation />
+      </IconButton>
 
       <IconButton
-        onClick={() => {
-          /* TODO: Handle `more` button click. */
-        }}
-        tooltip="Video Call"
-        Icon={IoVideocam}
-      />
-
-      <IconButton
-        onClick={() => {
-          /* TODO: Handle `info` button click. */
-        }}
-        tooltip="Copy link"
-        Icon={IoLink}
-      />
-
-      <IconButton
-        onClick={() => {
-          /* TODO: Handle `search` button click. */
-        }}
-        tooltip="Search in room"
-        Icon={IoSearch}
-      />
-
-      <IconButton
-        onClick={() => {
-          /* TODO: Handle `info` button click. */
-        }}
-        tooltip="Room details"
-        Icon={IoInformation}
-      />
-
-      <IconButton
+        tooltip={t(LangKey.ExpandRoster)}
         onClick={() => {
           onRosterExpanded(!isRosterExpanded)
-        }}
-        tooltip="Expand Roster"
-        Icon={isRosterExpanded ? IoChevronForward : IoChevronBack}
-      />
+        }}>
+        {isRosterExpanded ? <IoChevronForward /> : <IoChevronBack />}
+      </IconButton>
     </header>
   )
 }
