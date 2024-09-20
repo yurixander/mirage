@@ -153,6 +153,8 @@ export const english: LangDefinition = {
     `has banned ${user} for: ${reason}`,
   [LangKey.ExpandEvents]: "Expand events",
   [LangKey.CollapseEvents]: "Collapse events",
+  [LangKey.EventBodyWithTime]: (body: string, time: string) =>
+    `${body} at ${time}`,
 
   // #region Login
   [LangKey.DecorativeBackgroundAlt]: "Abstract background for login page",

@@ -126,6 +126,7 @@ export enum LangKey {
   BannedByReason,
   ExpandEvents,
   CollapseEvents,
+  EventBodyWithTime,
 
   // #region Login
   DecorativeBackgroundAlt,

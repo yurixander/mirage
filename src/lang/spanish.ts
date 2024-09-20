@@ -121,6 +121,8 @@ export const spanish: LangDefinition = {
   [LangKey.Banned]: (user: string) => `ha prohibido a ${user}`,
   [LangKey.ExpandEvents]: "Expandir eventos",
   [LangKey.CollapseEvents]: "Contraer eventos",
+  [LangKey.EventBodyWithTime]: (body: string, time: string) =>
+    `${body} a las ${time}`,
 
   [LangKey.DeletedMessage]: (user: string) =>
     `${user} ha eliminado este mensaje`,

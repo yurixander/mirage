@@ -2,6 +2,8 @@ import {useState, type FC} from "react"
 import EventMessage, {
   type EventSender,
   type EventMessageData,
+  MAX_EVENT_BODY_LENGTH,
+  MAX_EVENT_SENDER_NAME_LENGTH,
 } from "./EventMessage"
 import {motion} from "framer-motion"
 import {formatTime, strCapitalize, stringToColor, trim} from "@/utils/util"
@@ -71,6 +73,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
         />
 
         <Button
+          className="size-7"
           aria-label={accessibilityText}
           variant="ghost"
           size="icon"
@@ -104,6 +107,11 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
               icon={eventMessageData.icon}
               body={eventMessageData.body}
               timestamp={eventMessageData.timestamp}
+              accessibilityText={t(
+                LangKey.EventBodyWithTime,
+                eventMessageData.body,
+                formatTime(eventMessageData.timestamp)
+              )}
             />
           ))}
         </div>
@@ -116,24 +124,36 @@ export type EventMessageChildProps = {
   icon?: IconType
   body: string
   timestamp: number
+  accessibilityText: string
   className?: string
 }
+
+const MAX_CHILD_EVENT_BODY_LENGTH =
+  MAX_EVENT_BODY_LENGTH + MAX_EVENT_SENDER_NAME_LENGTH
 
 const EventMessageChild: FC<EventMessageChildProps> = ({
   body,
   icon,
   timestamp,
+  accessibilityText,
   className,
 }) => {
   const Icon = icon ?? IoMdCreate
 
   return (
-    <div className={twMerge("inline-flex items-start gap-1.5 px-1", className)}>
-      <Icon className="mt-1 text-gray-500" />
+    <div
+      role="article"
+      aria-label={accessibilityText}
+      className={twMerge("flex items-center px-1", className)}>
+      <div className="inline-flex gap-1">
+        <Icon aria-hidden className="mt-1 text-gray-500" />
 
-      <Typography className="max-w-text break-words italic text-gray-500">
-        {trim(strCapitalize(body), 64)}
-      </Typography>
+        <Typography
+          ariaHidden
+          className="whitespace-pre-line break-words italic text-gray-500">
+          {trim(strCapitalize(body), MAX_CHILD_EVENT_BODY_LENGTH)}
+        </Typography>
+      </div>
 
       <time className="ml-auto text-gray-400">{formatTime(timestamp)}</time>
     </div>
