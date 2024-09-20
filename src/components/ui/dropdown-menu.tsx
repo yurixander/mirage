@@ -108,7 +108,13 @@ const DropdownMenuItemGenerator: FC<{
   items: MenuItemProps[]
 }> = ({items}) => {
   return items.map(({icon: Icon, isDestructive = false, ...props}, index) => (
-    <DropdownMenuItem key={index} onClick={props.onClick}>
+    <DropdownMenuItem
+      key={index}
+      onClick={event => {
+        event.stopPropagation()
+
+        props.onClick()
+      }}>
       <div className="flex items-center gap-1">
         <Icon
           aria-hidden
