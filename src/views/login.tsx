@@ -6,7 +6,6 @@ import Input, {
 } from "@/components/Input"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {useState, type FC} from "react"
-import Button, {ButtonVariant} from "@/components/Button"
 import {StaticAssetPath} from "@/utils/util"
 import {Link} from "react-router-dom"
 import {ReactSVG} from "react-svg"
@@ -16,6 +15,7 @@ import useLogin from "@/hooks/util/useLogin"
 import {type IconType} from "react-icons"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Button} from "@/components/ui/button"
 
 const LoginView: FC = () => {
   const {t} = useTranslation()
@@ -84,22 +84,27 @@ const LoginView: FC = () => {
 
             <div className="flex flex-col gap-1">
               <Button
-                variant={ButtonVariant.Primary}
-                label={isConnecting ? t(LangKey.Connecting) : t(LangKey.SignIn)}
-                isLoading={isConnecting}
+                disabled={isConnecting}
+                aria-label={t(LangKey.SignIn)}
                 onClick={() => {
-                  void login()
-                }}
-              />
+                  void login().catch((error: Error) => {
+                    throw error
+                  })
+                }}>
+                {isConnecting ? t(LangKey.Connecting) : t(LangKey.SignIn)}
+              </Button>
 
               {/* FIXME: This is temporary. Remove later on. */}
               {lastSyncError !== null && <div>{lastSyncError.message}</div>}
 
               <Button
-                onClick={() => {}}
-                label={t(LangKey.ForgotPassword)}
-                variant={ButtonVariant.TextLink}
-              />
+                variant="link"
+                aria-label={t(LangKey.ForgotPassword)}
+                onClick={() => {
+                  throw new Error("Forgot password link not implemented")
+                }}>
+                {t(LangKey.ForgotPassword)}
+              </Button>
             </div>
           </div>
         </div>

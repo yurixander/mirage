@@ -21,6 +21,7 @@ export const Default: Story = {
     authorDisplayNameColor: "rgb(100, 200, 100)",
     timestamp: Date.now(),
     onAuthorClick: () => {},
+    userId: "user-id",
   },
 }
 

@@ -14,10 +14,10 @@ import useActiveModalStore, {
   Modals,
 } from "@/hooks/util/useActiveModal"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import Button, {ButtonVariant} from "@/components/Button"
 import {motion} from "framer-motion"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
+import {Button} from "@/components/ui/button"
 
 export type RoomListProps = {
   onSpaceSelected: (spaceId?: string) => void
@@ -54,18 +54,15 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
 
           <div className="flex gap-1">
             <Button
-              label={t(LangKey.GoToHome)}
               onClick={() => {
                 onSpaceSelected()
-              }}
-            />
+              }}>
+              {t(LangKey.GoToHome)}
+            </Button>
 
-            <Button
-              isDisabled={client === null}
-              variant={ButtonVariant.Primary}
-              onClick={onRefreshRooms}
-              label={t(LangKey.Refresh)}
-            />
+            <Button onClick={onRefreshRooms} disabled={client === null}>
+              {t(LangKey.Refresh)}
+            </Button>
           </div>
         </div>
       ) : (

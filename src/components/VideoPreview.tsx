@@ -1,9 +1,9 @@
 import {IoCloseCircle} from "react-icons/io5"
-import Button, {ButtonVariant} from "./Button"
 import Typography, {TypographyVariant} from "./Typography"
 import {type FC} from "react"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Button} from "./ui/button"
 
 export type VideoPreviewProps = {
   videoSrc: string
@@ -41,19 +41,13 @@ const VideoPreview: FC<VideoPreviewProps> = ({
       </div>
 
       <div className="flex justify-end gap-3 rounded-b border-t-2 border-t-slate-200 bg-slate-100 p-3">
-        <Button
-          className="w-20"
-          label={t(LangKey.Cancel)}
-          variant={ButtonVariant.Secondary}
-          onClick={onCancel}
-        />
+        <Button className="w-20 hover:bg-slate-200" onClick={onCancel}>
+          {t(LangKey.Cancel)}
+        </Button>
 
-        <Button
-          className="w-20"
-          label={t(LangKey.Send)}
-          variant={ButtonVariant.Primary}
-          onClick={onSend}
-        />
+        <Button className="w-20" onClick={onSend}>
+          {t(LangKey.Send)}
+        </Button>
       </div>
     </div>
   )

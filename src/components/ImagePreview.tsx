@@ -1,9 +1,9 @@
 import {type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import {IoAdd, IoCloseCircle} from "react-icons/io5"
-import Button, {ButtonVariant} from "./Button"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Button, IconButton} from "./ui/button"
 
 export type ImagePreviewProps = {
   imageUrl: string
@@ -44,30 +44,28 @@ const ImagePreview: FC<ImagePreviewProps> = ({
           alt={t(LangKey.UploadImage)}
           className="size-14 rounded border bg-white object-contain shadow"
         />
-        <IoAdd
-          role="button"
-          onClick={() => {}}
-          className="size-14 rounded border bg-white text-slate-500 shadow"
-        />
+
+        <IconButton>
+          <IoAdd className="size-14 rounded border bg-white text-slate-500" />
+        </IconButton>
       </div>
 
       <div className="flex h-20 justify-end gap-2 border-t bg-slate-100 p-2">
         <Button
-          label={t(LangKey.Cancel)}
+          variant="ghost"
           onClick={onClear}
-          className="w-20"
-          variant={ButtonVariant.Secondary}
-        />
+          className="w-20 hover:bg-slate-200">
+          {t(LangKey.Cancel)}
+        </Button>
 
         <Button
-          label={t(LangKey.Send)}
+          className="w-20"
           onClick={() => {
             onSendImage()
             onClear()
-          }}
-          className="w-20"
-          variant={ButtonVariant.Primary}
-        />
+          }}>
+          {t(LangKey.Send)}
+        </Button>
       </div>
     </div>
   )

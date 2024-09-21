@@ -8,8 +8,8 @@ import {
   CONTEXT_MENU_DELETE,
   CONTEXT_MENU_RELOAD,
 } from "@/utils/menu"
-import Button from "@/components/Button"
 import React from "react"
+import {Button} from "@/components/ui/button"
 
 type Story = StoryObj<typeof ContextMenu>
 
@@ -25,7 +25,8 @@ export const RightClick: Story = {
   render,
   args: {
     actionType: ClickActions.RightClick,
-    children: <Button onClick={() => {}} label="Click me" />,
+    children: <Button>Click me</Button>,
+    id: "id-4",
     elements: [
       {...CONTEXT_MENU_ADD, onClick() {}},
       {...CONTEXT_MENU_RELOAD, onClick() {}},
@@ -38,7 +39,8 @@ export const LeftClick: Story = {
   render,
   args: {
     actionType: ClickActions.LeftClick,
-    children: <Button onClick={() => {}} label="Click me" />,
+    children: <Button>Click me</Button>,
+    id: "id-2",
     elements: [
       {...CONTEXT_MENU_ADD, onClick() {}},
       {...CONTEXT_MENU_RELOAD, onClick() {}},

@@ -1,4 +1,3 @@
-import IconButton from "@/components/IconButton"
 import {type FC} from "react"
 import {saveAs} from "file-saver"
 import {IoMdDownload, IoMdTrash} from "react-icons/io"
@@ -12,6 +11,7 @@ import ImageZoom from "@/components/ImageZoom"
 import Typography from "@/components/Typography"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {IconButton} from "@/components/ui/button"
 
 const ICON_BUTTON_MODAL_SIZE = 26
 
@@ -46,53 +46,46 @@ const ImageModal: FC<ImageModalProps> = ({
         <div className="flex size-max gap-1 rounded-xl bg-modalOverlay p-1">
           {onDeleteImage !== undefined && (
             <IconButton
-              size={ICON_BUTTON_MODAL_SIZE}
-              tooltip="Delete image message"
-              Icon={IoMdTrash}
+              tooltip={t(LangKey.Delete)}
               onClick={() => {
                 onDeleteImage()
                 onClose()
-              }}
-            />
+              }}>
+              <IoMdTrash size={ICON_BUTTON_MODAL_SIZE} />
+            </IconButton>
           )}
 
           {imageUrl !== undefined && (
             <div>
               <IconButton
-                size={ICON_BUTTON_MODAL_SIZE}
-                tooltip="Resend image message"
-                Icon={IoArrowRedo}
-                onClick={function (): void {
+                tooltip={t(LangKey.Resend)}
+                onClick={() => {
                   throw new Error("Resend image message not implemented.")
-                }}
-              />
+                }}>
+                <IoArrowRedo size={ICON_BUTTON_MODAL_SIZE} />
+              </IconButton>
 
               <IconButton
-                size={ICON_BUTTON_MODAL_SIZE}
-                tooltip="Reply image message"
-                Icon={IoArrowUndo}
-                onClick={function (): void {
+                tooltip={t(LangKey.Reply)}
+                onClick={() => {
                   throw new Error("Reply message not implemented.")
-                }}
-              />
+                }}>
+                <IoArrowUndo size={ICON_BUTTON_MODAL_SIZE} />
+              </IconButton>
 
               <IconButton
-                size={ICON_BUTTON_MODAL_SIZE}
-                tooltip="Download Image"
-                Icon={IoMdDownload}
+                tooltip={t(LangKey.DownloadImage)}
                 onClick={() => {
                   saveAs(imageUrl)
-                }}
-              />
+                }}>
+                <IoMdDownload size={ICON_BUTTON_MODAL_SIZE} />
+              </IconButton>
             </div>
           )}
 
-          <IconButton
-            size={ICON_BUTTON_MODAL_SIZE}
-            tooltip="Close image"
-            Icon={IoCloseCircle}
-            onClick={onClose}
-          />
+          <IconButton tooltip={t(LangKey.CloseModal)} onClick={onClose}>
+            <IoCloseCircle size={ICON_BUTTON_MODAL_SIZE} />
+          </IconButton>
         </div>
       </div>
     </div>

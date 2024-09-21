@@ -1,14 +1,13 @@
 import {useRef, type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import {IoCloseCircle, IoPause, IoPlay} from "react-icons/io5"
-import Button, {ButtonVariant} from "./Button"
 import {fileSizeToString, getFileExtension} from "./FileMessage"
 import {ReactSVG} from "react-svg"
 import {StaticAssetPath} from "@/utils/util"
 import {useWavesurfer} from "@wavesurfer/react"
-import IconButton from "./IconButton"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Button, IconButton} from "./ui/button"
 
 export type AudioFilePreviewProps = {
   fileName: string
@@ -70,9 +69,7 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
             <div>
               {isReady ? (
                 <IconButton
-                  tooltip="Toggle Play Pause"
-                  Icon={waverer?.isPlaying() ? IoPause : IoPlay}
-                  className="flex size-10 items-center justify-center rounded-full bg-white p-2 shadow"
+                  tooltip={t(LangKey.TogglePlayPause)}
                   onClick={() => {
                     if (waverer === null) {
                       return
@@ -83,8 +80,9 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
                     } else {
                       void waverer.play()
                     }
-                  }}
-                />
+                  }}>
+                  {waverer?.isPlaying() ? <IoPause /> : <IoPlay />}
+                </IconButton>
               ) : (
                 <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
               )}
@@ -116,14 +114,16 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
       </div>
 
       <div className="flex h-16 w-full items-center justify-end gap-2 border-t bg-slate-100 px-5">
-        <Button className="w-20" label={t(LangKey.Cancel)} onClick={onClose} />
-
         <Button
-          className="w-20"
-          variant={ButtonVariant.Primary}
-          label={t(LangKey.Send)}
-          onClick={onSend}
-        />
+          variant="ghost"
+          className="w-20 hover:bg-slate-200"
+          onClick={onClose}>
+          {t(LangKey.Cancel)}
+        </Button>
+
+        <Button className="w-20" onClick={onSend}>
+          {t(LangKey.Send)}
+        </Button>
       </div>
     </div>
   )
