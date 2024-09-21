@@ -60,11 +60,11 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
         <RoomList
           onSpaceSelected={setSpaceSelected}
           spaceId={spaceSelected}
-          className="size-full max-h-max border-b border-b-slate-300"
+          className="size-full border-b border-b-slate-300"
         />
 
         <UserBar
-          className="w-full shrink-0"
+          className="mt-auto h-16 w-full"
           userDataState={userDataState}
           userId={userData.userId}
           displayName={userData.displayName}
