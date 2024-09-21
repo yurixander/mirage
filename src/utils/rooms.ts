@@ -380,13 +380,7 @@ const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
         continue
       }
 
-      result[result.length - 1] = {
-        kind: MessageKind.EventGroup,
-        data: {
-          eventMessages: [...lastMessage.data.eventMessages, message.data],
-          eventGroupMainBody: lastMessage.data.eventGroupMainBody,
-        },
-      }
+      result[result.length - 1] = eventGroupUpdated
     } else {
       result.push(message)
     }
