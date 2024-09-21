@@ -256,6 +256,10 @@ export async function uploadImageToMatrix(
 }
 
 export async function getImage(data: string): Promise<HTMLImageElement> {
+  if (!isValidObjectURL(data)) {
+    throw new Error("Invalid object URL")
+  }
+
   return await new Promise(resolve => {
     const img = new Image()
 
@@ -265,6 +269,15 @@ export async function getImage(data: string): Promise<HTMLImageElement> {
 
     img.src = data
   })
+}
+
+function isValidObjectURL(url: string): boolean {
+  try {
+    const objUrl = new URL(url)
+    return objUrl.protocol === "blob:"
+  } catch {
+    return false
+  }
 }
 
 export function deleteMessage(
