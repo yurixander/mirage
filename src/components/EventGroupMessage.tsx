@@ -19,7 +19,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import {Button} from "./ui/button"
 
 export enum EventShortenerType {
   EqualInfo = "EqualInfo",
