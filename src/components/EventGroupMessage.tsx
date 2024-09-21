@@ -132,7 +132,9 @@ export const EventMessageChild: FC<EventMessageChildProps> = ({
         </Typography>
       </div>
 
-      <time className="ml-auto text-gray-400">{formatTime(timestamp)}</time>
+      <time className="ml-auto text-base text-gray-400">
+        {formatTime(timestamp)}
+      </time>
     </div>
   )
 }
