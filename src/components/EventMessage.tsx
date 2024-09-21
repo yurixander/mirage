@@ -98,7 +98,7 @@ const EventMessage: FC<EventMessageProps> = ({
 
         <Typography
           ariaHidden
-          className="inline-flex gap-1 whitespace-pre-line break-words italic">
+          className="inline-flex gap-1 whitespace-pre-line break-words font-normal italic">
           {trim(body, MAX_EVENT_BODY_LENGTH)}
         </Typography>
       </div>

@@ -59,7 +59,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
   return (
     <div className="flex flex-col gap-2">
       <Accordion type="single" collapsible>
-        <AccordionItem value="item-2">
+        <AccordionItem className="border-none" value={eventMessages[0].eventId}>
           <AccordionTrigger className="h-10 hover:no-underline focus-visible:ring-1 focus-visible:ring-ring">
             <EventMessage
               className="w-full pr-2"
