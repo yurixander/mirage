@@ -84,9 +84,9 @@ export const english: LangDefinition = {
   [LangKey.Refresh]: "Refresh",
   [LangKey.ViewMember]: "View member",
   [LangKey.FindUser]: "Find user",
-  [LangKey.EqualInfo]: "has done several events",
-  [LangKey.PersonalInfo]: "has changed his personal info.",
-  [LangKey.ConfigureRoom]: "has created and configured this room.",
+  [LangKey.EqualInfo]: "carried out several events",
+  [LangKey.PersonalInfo]: "changed his personal info.",
+  [LangKey.ConfigureRoom]: "created and configured this room.",
   [LangKey.UploadImage]: "Upload Image",
   [LangKey.CloseModal]: "Close modal",
   [LangKey.TogglePlayPause]: "Toggle play pause",
@@ -121,7 +121,7 @@ export const english: LangDefinition = {
   // #region Events
   [LangKey.DeletedMessage]: (user: string) => `${user} deleted this message`,
   [LangKey.DeletedMessageBecause]: (user: string, reason: string) =>
-    `${user} deleted this message because "${reason}"`,
+    `${user} deleted this message because of "${reason}"`,
   [LangKey.RoomNameChange]: "set the name of the room",
   [LangKey.RoomNameChangeTo]: (roomName: string) =>
     `set the name of the room to ${roomName}`,
@@ -138,8 +138,8 @@ export const english: LangDefinition = {
     "made the room future history visible to all room members, from the moment they are joined.",
   [LangKey.HistoryVisibilityWorldReadable]:
     "made the future history of the room visible to anyone.",
-  [LangKey.RemoveTopic]: "has removed the topic of the room",
-  [LangKey.ChangeTopicTo]: (topic: string) => `changed the topic to ${topic}`,
+  [LangKey.RemoveTopic]: "removed the topic of the room",
+  [LangKey.ChangeTopicTo]: (topic: string) => `set the topic to ${topic}`,
   [LangKey.JoinRuleInvite]: "restricted the room to guests",
   [LangKey.JoinRulePublic]: "made the room public to anyone who knows the link",
   [LangKey.JoinRuleRestricted]:
@@ -156,9 +156,9 @@ export const english: LangDefinition = {
   [LangKey.MembershipJoin]: "left the room",
   [LangKey.JoinedToTheRoom]: "joined the room",
   [LangKey.ChangeName]: "changed the name",
-  [LangKey.ChangeNameTo]: (user: string) => `changed the name to ${user}`,
+  [LangKey.ChangeNameTo]: (user: string) => `set the name to ${user}`,
   [LangKey.PutProfilePhoto]: "set profile photo",
-  [LangKey.ChangeProfilePhoto]: "changed the profile photo",
+  [LangKey.ChangeProfilePhoto]: "set profile photo",
   [LangKey.RemoveProfilePhoto]: "removed the profile photo",
   [LangKey.Invited]: (user: string) => `invited ${user}`,
   [LangKey.Banned]: (user: string) => `banned ${user}`,

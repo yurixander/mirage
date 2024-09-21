@@ -257,7 +257,6 @@ export const handleRoomEvents = async (
 }
 
 const configRoomPattern = new Set<string>([
-  EventType.RoomMember,
   EventType.RoomTopic,
   EventType.RoomAvatar,
   EventType.RoomName,
@@ -267,6 +266,7 @@ const configRoomPattern = new Set<string>([
   EventType.RoomJoinRules,
   EventType.RoomHistoryVisibility,
   EventType.RoomCreate,
+  EventType.RoomJoinRules,
 ])
 
 const processPatterns = (
@@ -291,6 +291,8 @@ const processPatterns = (
         },
       },
     }
+  } else if (configRoomPattern.has(currentMessage.type)) {
+    return null
   }
 
   return {
@@ -313,20 +315,34 @@ const updateEventGroup = (
     return null
   }
 
-  if (
-    eventGroup.eventGroupMainBody.shortenerType ===
-      EventShortenerType.ConfigureRoom &&
-    !configRoomPattern.has(newEvent.type)
-  ) {
-    return null
-  }
-
-  return {
+  const partialMessage: AnyMessage = {
     kind: MessageKind.EventGroup,
     data: {
       eventMessages: [...eventGroup.eventMessages, newEvent],
       eventGroupMainBody: eventGroup.eventGroupMainBody,
     },
+  }
+
+  switch (eventGroup.eventGroupMainBody.shortenerType) {
+    case EventShortenerType.EqualInfo: {
+      if (configRoomPattern.has(newEvent.type)) {
+        return null
+      }
+
+      return partialMessage
+    }
+    case EventShortenerType.PersonalInfo: {
+      throw new Error(
+        "Not implemented yet: EventShortenerType.PersonalInfo case"
+      )
+    }
+    case EventShortenerType.ConfigureRoom: {
+      if (!configRoomPattern.has(newEvent.type)) {
+        return null
+      }
+
+      return partialMessage
+    }
   }
 }
 
