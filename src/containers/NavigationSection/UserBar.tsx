@@ -1,5 +1,4 @@
 import {type FC} from "react"
-import IconButton from "../../components/IconButton"
 import {twMerge} from "tailwind-merge"
 import {IoMdSettings} from "react-icons/io"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
@@ -16,6 +15,7 @@ import {UserDataState} from "./hooks/useUserData"
 import {IoAlertCircle, IoRefreshCircle} from "react-icons/io5"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
+import {IconButton} from "@/components/ui/button"
 
 const MAX_USER_ID_LENGTH = 18
 
@@ -38,6 +38,8 @@ const UserBar: FC<UserBarProps> = ({
   onOpenSettings,
   className,
 }) => {
+  const {t} = useTranslation()
+
   if (userDataState === UserDataState.Prepared) {
     assert(displayName.length > 0, "Display name should not be empty")
     assert(userId.length > 0, "User id should not be empty")
@@ -86,17 +88,13 @@ const UserBar: FC<UserBarProps> = ({
 
         {/* TODO: Handle click on settings button. */}
         {userDataState === UserDataState.Error ? (
-          <IconButton
-            onClick={onRefreshData}
-            Icon={IoRefreshCircle}
-            tooltip="Refresh"
-          />
+          <IconButton tooltip={t(LangKey.Refresh)} onClick={onRefreshData}>
+            <IoRefreshCircle />
+          </IconButton>
         ) : (
-          <IconButton
-            onClick={onOpenSettings}
-            Icon={IoMdSettings}
-            tooltip="Settings"
-          />
+          <IconButton tooltip={t(LangKey.Settings)} onClick={onOpenSettings}>
+            <IoMdSettings />
+          </IconButton>
         )}
       </div>
     </div>

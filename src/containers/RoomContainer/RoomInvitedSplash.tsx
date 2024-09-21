@@ -1,5 +1,4 @@
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
-import Button, {ButtonVariant} from "@/components/Button"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {useMemo, useState, type FC} from "react"
 import RoomNotFoundSplash from "./RoomNotFoundSplash"
@@ -8,6 +7,7 @@ import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Button} from "@/components/ui/button"
 
 enum ActionTypes {
   Join,
@@ -63,10 +63,11 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
 
         <div className="mt-1 flex w-full gap-1">
           <Button
-            className="w-full"
-            label={t(LangKey.Reject)}
-            isDisabled={client === null || actionLoading === ActionTypes.Join}
-            isLoading={actionLoading === ActionTypes.Leave}
+            disabled={
+              client === null ||
+              actionLoading === ActionTypes.Join ||
+              actionLoading === ActionTypes.Leave
+            }
             onClick={() => {
               if (client === null) {
                 return
@@ -87,15 +88,16 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
                   setError(t(LangKey.RejectInvitationError))
                   setActionLoading(null)
                 })
-            }}
-          />
+            }}>
+            {t(LangKey.Reject)}
+          </Button>
 
           <Button
-            className="w-full"
-            isDisabled={client === null || actionLoading === ActionTypes.Leave}
-            isLoading={actionLoading === ActionTypes.Join}
-            variant={ButtonVariant.Primary}
-            label={t(LangKey.Accept)}
+            disabled={
+              client === null ||
+              actionLoading === ActionTypes.Leave ||
+              actionLoading === ActionTypes.Join
+            }
             onClick={() => {
               if (client === null) {
                 return
@@ -118,8 +120,9 @@ const RoomInvitedSplash: FC<{roomId: string | null}> = ({roomId}) => {
                   setError(t(LangKey.JoiningRoomError))
                   setActionLoading(null)
                 })
-            }}
-          />
+            }}>
+            {t(LangKey.Accept)}
+          </Button>
         </div>
       </div>
 

@@ -4,12 +4,12 @@ import Typography from "./Typography"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion, formatTime, validateUrl} from "@/utils/util"
-import IconButton from "./IconButton"
 import {useWavesurfer} from "@wavesurfer/react"
 import useAudioPlayerStore from "@/hooks/util/useAudioPlayerStore"
 import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {IconButton} from "./ui/button"
 
 export interface AudioMessageProps extends MessageBaseProps, AudioMessageData {}
 
@@ -37,6 +37,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
   const [error, setError] = useState(audioUrl === undefined)
   const {audioPlayingId, setAudioPlayingId, stopPlayer} = useAudioPlayerStore()
   const {t} = useTranslation()
+  const isAudioPlaying = audioPlayingId === messageId
 
   const {wavesurfer, isReady} = useWavesurfer({
     container: waveformRef,
@@ -110,8 +111,8 @@ const AudioMessage: FC<AudioMessageProps> = ({
             <>
               {isReady ? (
                 <IconButton
-                  tooltip="Playback"
-                  Icon={audioPlayingId === messageId ? IoPause : IoPlay}
+                  aria-label={t(LangKey.TogglePlayPause)}
+                  tooltip={isAudioPlaying ? t(LangKey.Pause) : t(LangKey.Play)}
                   onClick={() => {
                     if (audioPlayingId === messageId) {
                       wavesurfer?.pause()
@@ -122,8 +123,9 @@ const AudioMessage: FC<AudioMessageProps> = ({
 
                       setAudioPlayingId(messageId)
                     }
-                  }}
-                />
+                  }}>
+                  {isAudioPlaying ? <IoPause /> : <IoPlay />}
+                </IconButton>
               ) : (
                 <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
               )}

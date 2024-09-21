@@ -3,7 +3,6 @@ import EventMessage, {
   type EventSender,
   type EventMessageData,
 } from "./EventMessage"
-import Button, {ButtonVariant} from "./Button"
 import {motion} from "framer-motion"
 import {assert, formatTime, strCapitalize, stringToColor} from "@/utils/util"
 import {type IconType} from "react-icons"
@@ -13,6 +12,7 @@ import Typography from "./Typography"
 import {IoCube} from "react-icons/io5"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Button} from "./ui/button"
 
 export enum EventShortenerType {
   EqualInfo = "EqualInfo",
@@ -69,12 +69,12 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
         />
 
         <Button
-          variant={ButtonVariant.TextLink}
-          label={t(LangKey.ExpandAll)}
+          variant="link"
           onClick={() => {
             setIsExpanded(prevExpanded => !prevExpanded)
-          }}
-        />
+          }}>
+          {t(LangKey.ExpandAll)}
+        </Button>
       </div>
 
       <motion.div

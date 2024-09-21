@@ -1,6 +1,5 @@
 import {useState, type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
-import IconButton from "./IconButton"
 import {assert, validateUrl} from "@/utils/util"
 import {IoMdMic, IoMdMicOff} from "react-icons/io"
 import {IoPause, IoPlay, IoVolumeHigh} from "react-icons/io5"
@@ -9,6 +8,7 @@ import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
+import {IconButton} from "./ui/button"
 
 export enum VariantCall {
   CallInProgress,
@@ -71,15 +71,16 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
         {action === VariantCall.IncomingCall ? (
           <>
             <IconButton
-              className="rounded-full bg-green-400 p-3 shadow hover:bg-green-300"
-              color="black"
-              tooltip="Accept"
-              Icon={MdCall}
+              aria-label={t(LangKey.AcceptCall)}
+              className="rounded-full bg-green-400 hover:bg-green-300"
+              tooltip={t(LangKey.AcceptCall)}
               onClick={() => {
                 setAction(VariantCall.CallInProgress)
+
                 // TODO: Handle here incoming calls acceptance.
-              }}
-            />
+              }}>
+              <MdCall />
+            </IconButton>
 
             <CallDeclineButton
               onCallEnd={() => {
@@ -91,44 +92,43 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
           <>
             <IconButton
               className={twMerge(
-                "rounded-full p-3 shadow",
+                "rounded-full",
                 isSpeakerMode
-                  ? "bg-purple-500 hover:bg-purple-300"
+                  ? "bg-purple-500 text-white hover:bg-purple-400"
                   : "bg-slate-100"
               )}
-              color="black"
-              tooltip="Toggle speaker"
-              Icon={IoVolumeHigh}
+              tooltip={t(LangKey.ToggleSpeaker)}
               onClick={() => {
                 setIsSpeakerMode(!isSpeakerMode)
 
-                throw new Error("Speaker mode not handled.")
-              }}
-            />
+                // TODO: Speaker mode not handled.
+              }}>
+              <IoVolumeHigh />
+            </IconButton>
 
             <IconButton
-              className="rounded-full bg-slate-100 p-3 shadow"
-              color="black"
-              tooltip="Toggle microphone"
-              Icon={isMicEnabled ? IoMdMic : IoMdMicOff}
+              className="rounded-full bg-slate-100"
+              aria-label={t(LangKey.ToggleMicrophone)}
+              tooltip={t(LangKey.ToggleMicrophone)}
               onClick={() => {
                 setIsMicEnabled(!isMicEnabled)
 
-                throw new Error("Mic enabled/disabled not handled.")
-              }}
-            />
+                // TODO: Mic enabled/disabled not handled.
+              }}>
+              {isMicEnabled ? <IoMdMic /> : <IoMdMicOff />}
+            </IconButton>
 
             <IconButton
-              className="rounded-full bg-slate-100 p-3 shadow"
-              color="black"
-              tooltip={isCallPaused ? "Play" : "Pause"}
-              Icon={isCallPaused ? IoPlay : IoPause}
+              aria-label={t(LangKey.TogglePlayPause)}
+              className="rounded-full bg-slate-100"
+              tooltip={isCallPaused ? t(LangKey.Play) : t(LangKey.Pause)}
               onClick={() => {
                 setIsCallPaused(!isCallPaused)
 
-                throw new Error("Call paused not handled.")
-              }}
-            />
+                // TODO: Call paused not handled.
+              }}>
+              {isCallPaused ? <IoPlay /> : <IoPause />}
+            </IconButton>
 
             <CallDeclineButton
               onCallEnd={() => {
@@ -143,14 +143,17 @@ const CallModal: FC<CallModalProps> = ({name, avatarUrl, variant}) => {
 }
 
 const CallDeclineButton: FC<{onCallEnd: () => void}> = ({onCallEnd}) => {
+  const {t} = useTranslation()
+
   return (
     <IconButton
-      className="rounded-full bg-red-400 p-3 shadow hover:bg-red-300 active:shadow-none"
-      color="black"
-      tooltip="Call off"
-      onClick={onCallEnd}
-      Icon={MdCallEnd}
-    />
+      aria-label={t(LangKey.CallOf)}
+      className="rounded-full hover:bg-red-400"
+      variant="destructive"
+      tooltip={t(LangKey.CallOf)}
+      onClick={onCallEnd}>
+      <MdCallEnd />
+    </IconButton>
   )
 }
 

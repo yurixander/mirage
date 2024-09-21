@@ -1,6 +1,5 @@
 import {type FC} from "react"
 import {formatTime} from "../utils/util"
-import Button, {ButtonVariant} from "./Button"
 import Label from "./Label"
 import UserProfile, {
   type UserProfileProps as UserProfileProperties,
@@ -8,6 +7,7 @@ import UserProfile, {
 import Typography, {TypographyVariant} from "./Typography"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
+import {Button} from "./ui/button"
 
 export type UserCardProps = {
   userProfileProps: UserProfileProperties
@@ -63,19 +63,17 @@ const UserCard: FC<UserCardProps> = ({
         </div>
 
         <div className="flex flex-row justify-end gap-1 border-t border-solid border-neutral-300 bg-cardActionsBg p-3">
-          <Button
-            label={t(LangKey.Cancel)}
-            variant={ButtonVariant.TextLink}
-            onClick={onCancel}
-          />
+          <Button size="sm" variant="link" onClick={onCancel}>
+            {t(LangKey.Cancel)}
+          </Button>
 
           <Button
-            label={t(LangKey.ViewMessages)}
-            variant={ButtonVariant.Primary}
+            size="sm"
             onClick={() => {
               // TODO: Handle click on View messages button.
-            }}
-          />
+            }}>
+            {t(LangKey.ViewMessages)}
+          </Button>
         </div>
       </div>
     </div>

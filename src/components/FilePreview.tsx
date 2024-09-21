@@ -1,12 +1,12 @@
 import {type FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import {IoCloseCircle} from "react-icons/io5"
-import Button, {ButtonVariant} from "./Button"
 import {fileSizeToString, getFileExtension, IconFile} from "./FileMessage"
 import {ReactSVG} from "react-svg"
 import {StaticAssetPath} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Button, IconButton} from "./ui/button"
 
 export type FilePreviewProps = {
   fileName: string
@@ -33,7 +33,9 @@ const FilePreview: FC<FilePreviewProps> = ({
           {t(LangKey.UploadFile)}
         </Typography>
 
-        <IoCloseCircle size={20} color="gray" role="button" onClick={onClose} />
+        <IconButton onClick={onClose}>
+          <IoCloseCircle className="size-5 text-gray-500" />
+        </IconButton>
       </div>
 
       <div className="flex size-full flex-col gap-3 p-4">
@@ -70,14 +72,16 @@ const FilePreview: FC<FilePreviewProps> = ({
         </div>
       </div>
       <div className="flex h-16 w-full items-center justify-end gap-2 border-t bg-slate-100 px-5">
-        <Button className="w-20" label={t(LangKey.Cancel)} onClick={onClose} />
-
         <Button
-          className="w-20"
-          variant={ButtonVariant.Primary}
-          label={t(LangKey.Send)}
-          onClick={onSend}
-        />
+          variant="ghost"
+          className="w-20 hover:bg-slate-200"
+          onClick={onClose}>
+          {t(LangKey.Cancel)}
+        </Button>
+
+        <Button className="w-20" onClick={onSend}>
+          {t(LangKey.Send)}
+        </Button>
       </div>
     </div>
   )

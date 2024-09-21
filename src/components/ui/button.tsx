@@ -2,6 +2,13 @@ import * as React from "react"
 import {Slot} from "@radix-ui/react-slot"
 import {cva, type VariantProps} from "class-variance-authority"
 import {cn} from "@/utils/utils"
+import useTooltip from "@/hooks/util/useTooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
@@ -37,16 +44,52 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  asBoundary?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({className, variant, size, asChild = false, ...props}, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      asBoundary = true,
+      onClick,
+      ...props
+    },
+    ref
+  ) => {
+    const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
     const Comp = asChild ? Slot : "button"
+    const isBoundaryActive = asBoundary && !asChild
+
+    const onClickBoundary = (
+      event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ): void => {
+      try {
+        if (onClick === undefined) {
+          showTooltip("Click not handled", true)
+
+          return
+        }
+
+        onClick(event)
+      } catch (error) {
+        if (!(error instanceof Error)) {
+          return
+        }
+
+        showTooltip(error.message, true)
+      }
+    }
+
     return (
       <Comp
         className={cn(buttonVariants({variant, size, className}))}
-        ref={ref}
+        ref={isBoundaryActive ? renderRef : ref}
         {...props}
+        onClick={isBoundaryActive ? onClickBoundary : onClick}
       />
     )
   }
@@ -54,4 +97,28 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = "Button"
 
-export {Button, buttonVariants}
+interface IconButtonProps extends ButtonProps {
+  tooltip?: string
+}
+
+const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
+  ({tooltip, size = "icon", variant = "ghost", ...props}, ref) => {
+    const button = <Button size={size} variant={variant} {...props} ref={ref} />
+
+    return tooltip === undefined ? (
+      button
+    ) : (
+      <TooltipProvider delayDuration={1500}>
+        <Tooltip>
+          <TooltipTrigger>{button}</TooltipTrigger>
+
+          <TooltipContent aria-hidden>{tooltip}</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    )
+  }
+)
+
+IconButton.displayName = "IconButton"
+
+export {Button, IconButton, buttonVariants}

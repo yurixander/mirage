@@ -1,11 +1,11 @@
 import React from "react"
 import {useState, type FC} from "react"
-import IconButton from "./IconButton"
 import Label from "./Label"
 import {twMerge} from "tailwind-merge"
 import {type IconType} from "react-icons"
 import {t} from "@/utils/lang"
 import {LangKey} from "@/lang/allKeys"
+import {IconButton} from "./ui/button"
 
 export type InputConstraint = {
   message: string
@@ -149,14 +149,14 @@ const Input: FC<InputProps> = ({
 
         {actions && (
           <div className="mr-1 flex fill-neutral-200">
-            {actions?.map(action => (
+            {actions.map(action => (
               <IconButton
                 key={action.tooltip}
                 onClick={action.onClick}
                 tooltip={action.tooltip}
-                Icon={action.icon}
-                isDisabled={violatedConstraints.length > 0}
-              />
+                disabled={violatedConstraints.length > 0}>
+                <action.icon />
+              </IconButton>
             ))}
           </div>
         )}
