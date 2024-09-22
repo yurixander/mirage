@@ -64,7 +64,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
         />
 
         <UserBar
-          className="h-24 w-full shrink-0"
+          className="mt-auto h-16 w-full"
           userDataState={userDataState}
           userId={userData.userId}
           displayName={userData.displayName}

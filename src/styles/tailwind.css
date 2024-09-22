@@ -108,8 +108,12 @@ textarea:disabled {
   @apply bg-purple-500 text-white;
 }
 
-:focus-visible:not(input) {
+/* :focus-visible:not(input):not([role="menuitem"]):not([role="menu"]) {
   @apply outline-2 outline-blue-500 transition-all;
+} */
+
+:focus-visible {
+  @apply outline-none;
 }
 
 ::-webkit-scrollbar {

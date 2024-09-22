@@ -1,5 +1,5 @@
+import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 import Roster, {type RosterProps} from "@/containers/Roster/Roster"
-import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {UserPowerLevel} from "@/utils/members"
 import {type Meta, type StoryObj} from "@storybook/react"
 
@@ -16,54 +16,47 @@ const commonUserData = {
   userId: "@emerald_branch",
 }
 
-const members: RosterUserData[] = [
-  {
-    ...commonUserData,
-    powerLevel: UserPowerLevel.Admin,
-  },
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-  {...commonUserData, powerLevel: UserPowerLevel.Member},
-]
-
-const errorMsg = "Function not implemented."
+const groupedMembers: GroupedMembers = {
+  admins: [
+    {
+      ...commonUserData,
+      powerLevel: UserPowerLevel.Admin,
+    },
+  ],
+  members: [
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+    {...commonUserData, powerLevel: UserPowerLevel.Member},
+  ],
+  moderators: [],
+}
 
 export const Default: Story = {
   render,
   args: {
-    members,
+    groupedMembers,
     isLoading: false,
     onReloadMembers() {},
-    onUserClick(userId) {
-      throw new Error(errorMsg)
-    },
+    onUserClick(userId) {},
   },
 }
 
 export const WithGhosts: Story = {
   render,
   args: {
-    members: [
-      {...commonUserData, powerLevel: UserPowerLevel.Member},
-      {...commonUserData, powerLevel: UserPowerLevel.Member},
-      {...commonUserData, powerLevel: UserPowerLevel.Member},
-      {...commonUserData, powerLevel: UserPowerLevel.Member},
-      {...commonUserData, powerLevel: UserPowerLevel.Member},
-      {...commonUserData, powerLevel: UserPowerLevel.Member},
-    ],
+    groupedMembers,
     isLoading: false,
-    isError: false,
     onReloadMembers() {},
     onUserClick(userId) {},
   },
@@ -72,7 +65,7 @@ export const WithGhosts: Story = {
 export const Loading: Story = {
   render,
   args: {
-    members: [],
+    groupedMembers,
     isLoading: true,
     onReloadMembers() {},
     onUserClick(userId) {},
@@ -82,9 +75,8 @@ export const Loading: Story = {
 export const Error: Story = {
   render,
   args: {
-    members: [],
+    groupedMembers,
     isLoading: false,
-    isError: true,
     onReloadMembers() {},
     onUserClick(userId) {},
   },

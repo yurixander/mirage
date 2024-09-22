@@ -79,6 +79,22 @@ export enum LangKey {
   ConfigureRoom,
   UploadImage,
   Close,
+  CloseModal,
+  TogglePlayPause,
+  Pause,
+  Play,
+  AcceptCall,
+  ToggleSpeaker,
+  ToggleMicrophone,
+  CallOf,
+  ClickToDownload,
+  Call,
+  VideoCall,
+  CopyLink,
+  SearchInRoom,
+  RoomDetails,
+  ExpandRoster,
+  DownloadImage,
 
   // #region Roster
   People,
@@ -126,6 +142,9 @@ export enum LangKey {
   Invited,
   Banned,
   BannedByReason,
+  ExpandEvents,
+  CollapseEvents,
+  EventBodyWithTime,
 
   // #region Login
   DecorativeBackgroundAlt,

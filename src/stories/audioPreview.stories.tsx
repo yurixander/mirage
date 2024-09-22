@@ -17,7 +17,7 @@ export const Default: Story = {
   args: {
     fileName: "Music.mp3",
     fileSize: 1_000_000,
-    audioUrl: "",
+    audioUrl: "http://webaudioapi.com/samples/audio-tag/chrono.mp3",
   },
 }
 

@@ -18,6 +18,7 @@ export const NameChange: Story = {
       displayName: "Sapphire Pineapple",
       userId: "@sapphire_pineapple",
     },
+    eventId: "id-1",
     timestamp: Date.now(),
   },
 }
