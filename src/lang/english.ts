@@ -263,6 +263,7 @@ export const english: LangDefinition = {
   [LangKey.Typing]: "typing...",
   [LangKey.Are]: "are",
   [LangKey.Is]: "is",
+  [LangKey.RoomEncrypted]: "This room is encrypted using End-to-end encryption",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Welcome to Mirage",

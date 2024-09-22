@@ -226,6 +226,7 @@ export enum LangKey {
   Typing,
   Are,
   Is,
+  RoomEncrypted,
 
   // #region WelcomeSplash
   WelcomeSplashTitle,

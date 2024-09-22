@@ -282,6 +282,8 @@ export const spanish: LangDefinition = {
   [LangKey.Typing]: "escribiendo...",
   [LangKey.Are]: "están",
   [LangKey.Is]: "está",
+  [LangKey.RoomEncrypted]:
+    "Esta sala está encriptada usando cifrado de extremo a extremo",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Bienvenido a Mirage",
