@@ -8,7 +8,7 @@ const RoomEncryptedIndicator: FC = () => {
   const {t} = useTranslation()
 
   return (
-    <div className="flex w-full items-center justify-center gap-1 bg-slate-50 p-2">
+    <div className="flex w-full items-center justify-center gap-1 p-2">
       <div>
         <IoLockClosed className="text-slate-500" />
       </div>
