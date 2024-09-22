@@ -93,7 +93,7 @@ const UserBar: FC<UserBarProps> = ({
           </IconButton>
         ) : (
           <IconButton tooltip={t(LangKey.Settings)} onClick={onOpenSettings}>
-            <IoMdSettings />
+            <IoMdSettings className="size-5" />
           </IconButton>
         )}
       </div>

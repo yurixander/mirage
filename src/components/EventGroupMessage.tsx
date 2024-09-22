@@ -1,10 +1,11 @@
-import {useState, type FC} from "react"
+import {type FC} from "react"
 import EventMessage, {
   type EventSender,
   type EventMessageData,
+  MAX_EVENT_BODY_LENGTH,
+  MAX_EVENT_SENDER_NAME_LENGTH,
 } from "./EventMessage"
-import {motion} from "framer-motion"
-import {assert, formatTime, strCapitalize, stringToColor} from "@/utils/util"
+import {formatTime, strCapitalize, trim} from "@/utils/util"
 import {type IconType} from "react-icons"
 import {IoMdCreate} from "react-icons/io"
 import {twMerge} from "tailwind-merge"
@@ -12,7 +13,12 @@ import Typography from "./Typography"
 import {IoCube} from "react-icons/io5"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
-import {Button} from "./ui/button"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 export enum EventShortenerType {
   EqualInfo = "EqualInfo",
@@ -48,82 +54,87 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
   onShowMember,
 }) => {
   const {sender, shortenerType} = eventGroupMainBody
-  const [isExpanded, setIsExpanded] = useState(false)
   const {t} = useTranslation()
-
-  assert(eventMessages.length > 0, "Event group messages should not be empty.")
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-4">
-        <EventMessage
-          className="grow"
-          onShowMember={onShowMember}
-          onFindUser={onFindUser}
-          body={t(eventShortenerBody[shortenerType])}
-          eventId={eventMessages[0].eventId}
-          sender={sender}
-          timestamp={eventMessages[0].timestamp}
-          icon={IoCube}
-          type={shortenerType}
-        />
+      <Accordion type="single" collapsible>
+        <AccordionItem className="border-none" value={eventMessages[0].eventId}>
+          <AccordionTrigger className="h-10 hover:no-underline focus-visible:ring-1 focus-visible:ring-ring">
+            <EventMessage
+              className="w-full pr-2"
+              onShowMember={onShowMember}
+              onFindUser={onFindUser}
+              body={t(eventShortenerBody[shortenerType])}
+              eventId={eventMessages[0].eventId}
+              sender={sender}
+              timestamp={eventMessages[0].timestamp}
+              icon={IoCube}
+              type={shortenerType}
+            />
+          </AccordionTrigger>
 
-        <Button
-          variant="link"
-          onClick={() => {
-            setIsExpanded(prevExpanded => !prevExpanded)
-          }}>
-          {t(LangKey.ExpandAll)}
-        </Button>
-      </div>
-
-      <motion.div
-        style={{
-          borderLeftColor: stringToColor(sender.userId),
-        }}
-        className="mt-1 flex w-full flex-col gap-3 overflow-hidden rounded-md border-l-4 bg-gray-50 pr-24"
-        animate={{height: isExpanded ? "max-content" : "0px"}}>
-        {eventMessages.map(eventMessageData => (
-          <EventMessageChild
-            key={eventMessageData.eventId}
-            icon={eventMessageData.icon}
-            body={eventMessageData.body}
-            timestamp={eventMessageData.timestamp}
-          />
-        ))}
-      </motion.div>
+          <AccordionContent className="overflow-hidden px-3.5">
+            <div className="flex w-full flex-col gap-3 p-2">
+              {eventMessages.map(eventMessageData => (
+                <EventMessageChild
+                  key={eventMessageData.eventId}
+                  icon={eventMessageData.icon}
+                  body={eventMessageData.body}
+                  timestamp={eventMessageData.timestamp}
+                  accessibilityText={t(
+                    LangKey.EventBodyWithTime,
+                    eventMessageData.body,
+                    formatTime(eventMessageData.timestamp)
+                  )}
+                />
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   )
 }
 
-export type EventMEssageChildProps = {
+export type EventMessageChildProps = {
   icon?: IconType
   body: string
   timestamp: number
+  accessibilityText: string
   className?: string
 }
 
-const EventMessageChild: FC<EventMEssageChildProps> = ({
+const MAX_CHILD_EVENT_BODY_LENGTH =
+  MAX_EVENT_BODY_LENGTH + MAX_EVENT_SENDER_NAME_LENGTH
+
+export const EventMessageChild: FC<EventMessageChildProps> = ({
   body,
   icon,
   timestamp,
+  accessibilityText,
   className,
 }) => {
   const Icon = icon ?? IoMdCreate
 
   return (
     <div
-      className={twMerge(
-        "inline-flex items-center gap-4 py-1 pl-10",
-        className
-      )}>
-      <Icon className="text-neutral-300" />
+      role="article"
+      aria-label={accessibilityText}
+      className={twMerge("flex items-center px-1", className)}>
+      <div className="inline-flex gap-2">
+        <Icon aria-hidden className="mt-1 text-gray-500" />
 
-      <Typography className="max-w-text select-text gap-1 whitespace-pre-line break-words italic">
-        {strCapitalize(body)}
-      </Typography>
+        <Typography
+          ariaHidden
+          className="whitespace-pre-line break-words italic text-gray-500">
+          {trim(strCapitalize(body), MAX_CHILD_EVENT_BODY_LENGTH)}
+        </Typography>
+      </div>
 
-      <time className="ml-auto text-gray-300">{formatTime(timestamp)}</time>
+      <time className="ml-auto text-base text-gray-400">
+        {formatTime(timestamp)}
+      </time>
     </div>
   )
 }

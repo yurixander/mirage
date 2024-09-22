@@ -84,9 +84,9 @@ export const spanish: LangDefinition = {
   [LangKey.Refresh]: "Actualizar",
   [LangKey.ViewMember]: "Ver miembro",
   [LangKey.FindUser]: "Buscar usuario",
-  [LangKey.EqualInfo]: "ha realizado varios eventos",
-  [LangKey.PersonalInfo]: "ha cambiado su información personal",
-  [LangKey.ConfigureRoom]: "ha configurado la sala",
+  [LangKey.EqualInfo]: "realizó varios eventos",
+  [LangKey.PersonalInfo]: "cambió su información personal",
+  [LangKey.ConfigureRoom]: "configuró la sala",
   [LangKey.UploadImage]: "Subir Imagen",
   [LangKey.CloseModal]: "Cerrar el modal",
   [LangKey.TogglePlayPause]: "Pausar o Reanudar",
@@ -119,73 +119,73 @@ export const spanish: LangDefinition = {
     `No se pudo abrir el usuario por: ${message}`,
 
   // #region Events
-  [LangKey.RoomNameChange]: "ha cambiado el nombre de la sala",
-  [LangKey.RemoveAvatar]: "ha eliminado el avatar de esta sala",
-  [LangKey.ChangeAvatar]: "ha cambiado el avatar de la sala",
-  [LangKey.RemoveTopic]: "ha eliminado el tema de la sala",
-  [LangKey.ChangeTopicTo]: (topic: string) => `ha cambiado el tema a ${topic}`,
-  [LangKey.JoinRuleInvite]: "ha restringido la sala a invitados",
-  [LangKey.GuessAccessCanJoin]: "ha autorizado a cualquiera a unirse a la sala",
-  [LangKey.MembershipJoin]: "ha salido de la sala",
-  [LangKey.JoinedToTheRoom]: "ha ingresado a la sala",
-  [LangKey.ChangeName]: "ha cambiado el nombre",
-  [LangKey.ChangeNameTo]: (user: string) => `ha cambiado el nombre a ${user}`,
-  [LangKey.PutProfilePhoto]: "ha puesto una foto de perfil",
-  [LangKey.ChangeProfilePhoto]: "ha cambiado la foto de perfil",
-  [LangKey.RemoveProfilePhoto]: "ha eliminado la foto de perfil",
-  [LangKey.Invited]: (user: string) => `ha invitado a ${user}`,
-  [LangKey.Banned]: (user: string) => `ha prohibido a ${user}`,
+  [LangKey.RoomNameChange]: "cambió el nombre de la sala",
+  [LangKey.RemoveAvatar]: "eliminó el avatar de esta sala",
+  [LangKey.ChangeAvatar]: "cambió el avatar de la sala",
+  [LangKey.RemoveTopic]: "eliminó el tema de la sala",
+  [LangKey.ChangeTopicTo]: (topic: string) => `cambió el tema a ${topic}`,
+  [LangKey.JoinRuleInvite]: "restringió la sala a invitados",
+  [LangKey.GuessAccessCanJoin]: "autorizó a cualquiera a unirse a la sala",
+  [LangKey.MembershipJoin]: "salió de la sala",
+  [LangKey.JoinedToTheRoom]: "entró a la sala",
+  [LangKey.ChangeName]: "se cambió el nombre",
+  [LangKey.ChangeNameTo]: (user: string) => `se cambió el nombre a ${user}`,
+  [LangKey.PutProfilePhoto]: "se puso foto de perfil",
+  [LangKey.ChangeProfilePhoto]: "cambió su foto de perfil",
+  [LangKey.RemoveProfilePhoto]: "eliminó su foto de perfil",
+  [LangKey.Invited]: (user: string) => `invitó a ${user}`,
+  [LangKey.Banned]: (user: string) => `baneó a ${user}`,
+  [LangKey.ExpandEvents]: "Expandir eventos",
+  [LangKey.CollapseEvents]: "Contraer eventos",
+  [LangKey.EventBodyWithTime]: (body: string, time: string) =>
+    `${body} a las ${time}`,
 
-  [LangKey.DeletedMessage]: (user: string) =>
-    `${user} ha eliminado este mensaje`,
+  [LangKey.DeletedMessage]: (user: string) => `${user} eliminó este mensaje`,
 
   [LangKey.DeletedMessageBecause]: (user: string, reason: string) =>
-    `${user} ha eliminado este mensaje porque <<${reason}>>`,
+    `${user} eliminó este mensaje por "${reason}"`,
 
   [LangKey.RoomNameChangeTo]: (roomName: string) =>
-    `ha cambiado el nombre de la sala a ${roomName}`,
+    `cambió el nombre de la sala a ${roomName}`,
 
-  [LangKey.RemoveMainAddress]:
-    "ha eliminado la dirección principal de esta sala",
+  [LangKey.RemoveMainAddress]: "eliminó la dirección principal de esta sala",
 
   [LangKey.SetMainAddressAs]: (alias: string) =>
-    `ha establecido la dirección principal de esta sala como ${alias}`,
+    `estableció la dirección principal de esta sala como ${alias}`,
 
   [LangKey.HistoryVisibilityShared]:
-    "ha hecho la historia futura de la sala visible para todos los miembros de la sala.",
+    "hizo público el historial futuro de la sala para todos los miembros.",
 
   [LangKey.HistoryVisibilityInvited]:
-    "ha hecho la historia futura de la sala visible para todos los miembros de la sala, desde el momento en que son invitados.",
+    "hizo público el historial futuro de la sala para todos los miembros desde el momento en que son invitados.",
 
   [LangKey.HistoryVisibilityJoined]:
-    "ha hecho la historia futura de la sala visible para todos los miembros de la sala, desde el momento en que se unieron.",
+    "hizo público el historial futuro de la sala para todos los miembros desde el momento en que se unieron.",
 
   [LangKey.HistoryVisibilityWorldReadable]:
-    "ha hecho la historia futura de la sala visible para cualquier persona.",
+    "hizo público el historial futuro de la sala para cualquier persona.",
 
   [LangKey.JoinRulePublic]:
-    "ha hecho la sala pública para cualquiera que conozca el enlace",
+    "hizo la sala pública para cualquiera que tenga el enlace",
 
   [LangKey.JoinRuleRestricted]:
-    "ha hecho la sala privada. Solo los administradores pueden invitar ahora",
+    "hizo la sala privada. Solo los administradores pueden invitar ahora",
 
-  [LangKey.GuessAccessForbidden]:
-    "ha prohibido a los invitados unirse a la sala",
+  [LangKey.GuessAccessForbidden]: "prohibió a los invitados unirse a la sala",
 
   [LangKey.GuessAccessRestricted]:
-    "ha restringido el acceso de los invitados a la sala. Solo los invitados con tokens válidos pueden unirse.",
+    "quitó el acceso de los invitados a la sala. Solo los invitados con tokens válidos pueden unirse.",
 
   [LangKey.GuessAccessKnock]:
-    "ha habilitado el `knocking` para los invitados. Los invitados deben solicitar acceso para unirse.",
+    "habilitó el `knocking` para los invitados. Los invitados deben solicitar acceso para unirse.",
 
   [LangKey.CanceledInvitation]: (user: string) =>
-    `ha cancelado la invitación a ${user}`,
+    `canceló la invitación de ${user}`,
 
-  [LangKey.MembershipBanFrom]: (user: string) =>
-    `ha levantado la prohibición de ${user}`,
+  [LangKey.MembershipBanFrom]: (user: string) => `quitó el ban de ${user}`,
 
   [LangKey.BannedByReason]: (user: string, reason: string) =>
-    `ha prohibido a ${user} por: ${reason}`,
+    `baneó a ${user} por: ${reason}`,
 
   // #region Login
   [LangKey.DecorativeBackgroundAlt]: "Fondo abstracto para el login",

@@ -16,7 +16,7 @@ const meta: Meta<typeof EventGroupMessage> = {
 const displayName = "Sapphire Pineapple"
 const userId = "@sapphire_pineapple"
 
-const events: EventMessageData[] = [
+export const DummyEvents: EventMessageData[] = [
   {
     body: "has change the name to Snappy Turtle",
     sender: {
@@ -63,7 +63,7 @@ export const Default: Story = {
         userId,
       },
     },
-    eventMessages: events,
+    eventMessages: DummyEvents,
     onFindUser() {},
     onShowMember() {},
   },
