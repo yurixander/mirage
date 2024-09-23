@@ -44,7 +44,7 @@
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.13",
     "eslint-plugin-prettier": "^5.1.3",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.5.4",
