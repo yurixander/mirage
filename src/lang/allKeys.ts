@@ -78,6 +78,7 @@ export enum LangKey {
   PersonalInfo,
   ConfigureRoom,
   UploadImage,
+  Close,
   CloseModal,
   TogglePlayPause,
   Pause,
@@ -239,4 +240,16 @@ export enum LangKey {
   SendAMessageSubtitle,
   CheckoutGitHub,
   CheckoutGitHubSubtitle,
+
+  // Audio Recorder
+  RemoveAudio,
+  StopRecord,
+  SendAudioRecorded,
+  RecordUnavailableError,
+  RecordUnavailableErrorDescription,
+  AudioSendError,
+  AudioSendErrorDescription,
+  PauseRecordError,
+  RecordActiveError,
+  NoDevicesAvailableError,
 }

@@ -6,6 +6,7 @@ import {
   type ICreateRoomOpts,
   type MatrixClient,
 } from "matrix-js-sdk"
+import {type RoomMessageEventContent} from "matrix-js-sdk/lib/types"
 
 export enum ViewPath {
   App = "/",
@@ -173,7 +174,7 @@ export function getFileUrl(
     client === null ||
     url.length === 0
   ) {
-    return undefined
+    return
   }
 
   return client.mxcUrlToHttp(url) ?? undefined
@@ -269,6 +270,30 @@ export async function getImage(data: string): Promise<HTMLImageElement> {
   })
 }
 
+export async function sendAudioMessage(
+  audioBlob: Blob,
+  client: MatrixClient | null,
+  destinationRoom: string | null
+): Promise<void> {
+  if (client === null || destinationRoom === null) {
+    return
+  }
+
+  const uploadResponse = await client.uploadContent(audioBlob, {
+    type: audioBlob.type,
+  })
+
+  await client.sendMessage(destinationRoom, {
+    msgtype: MsgType.Audio,
+    body: "Audio message",
+    url: uploadResponse.content_uri,
+    info: {
+      mimetype: "audio/ogg",
+      size: audioBlob.size,
+    },
+  })
+}
+
 function isValidObjectURL(url: string): boolean {
   try {
     const objUrl = new URL(url)
@@ -350,9 +375,8 @@ export async function sendVideoMessageFromFile(
     })
 
     if (uploadResponse.content_uri !== undefined) {
-      const content = {
+      const content: RoomMessageEventContent = {
         body: videoFile.name,
-        filename: videoFile.name,
         info: {
           mimetype: videoFile.type,
           size: videoFile.size,
@@ -389,7 +413,7 @@ export async function sendFileMessageFromFile(
     })
 
     if (uploadResponse.content_uri !== undefined) {
-      const content = {
+      const content: RoomMessageEventContent = {
         body: file.name,
         filename: file.name,
         info: {
@@ -429,7 +453,7 @@ export async function sendAudioMessageFromFile(
     })
 
     if (uploadResponse.content_uri !== undefined) {
-      const content = {
+      const content: RoomMessageEventContent = {
         body: file.name,
         info: {
           duration,

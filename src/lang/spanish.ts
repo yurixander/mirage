@@ -88,6 +88,7 @@ export const spanish: LangDefinition = {
   [LangKey.PersonalInfo]: "cambió su información personal",
   [LangKey.ConfigureRoom]: "configuró la sala",
   [LangKey.UploadImage]: "Subir Imagen",
+  [LangKey.Close]: "Cerrar",
   [LangKey.CloseModal]: "Cerrar el modal",
   [LangKey.TogglePlayPause]: "Pausar o Reanudar",
   [LangKey.Pause]: "Pausar",
@@ -293,4 +294,17 @@ export const spanish: LangDefinition = {
   [LangKey.SendAMessageSubtitle]: "a un colega o amigo",
   [LangKey.CheckoutGitHub]: "Consulta GitHub",
   [LangKey.CheckoutGitHubSubtitle]: "para ver las últimas actualizaciones",
+
+  // Audio Recorder
+  [LangKey.RemoveAudio]: "Borrar audio",
+  [LangKey.StopRecord]: "Finalizar grabación",
+  [LangKey.SendAudioRecorded]: "Enviar audio grabado",
+  [LangKey.RecordUnavailableError]: "Grabadora no disponible",
+  [LangKey.RecordUnavailableErrorDescription]:
+    "El grabador de audio no esta disponible",
+  [LangKey.AudioSendError]: "Error de envío de audio",
+  [LangKey.AudioSendErrorDescription]: "No se pudo mandar el audio",
+  [LangKey.PauseRecordError]: "No se pudo finalizar la grabación",
+  [LangKey.RecordActiveError]: "La grabación está en curso",
+  [LangKey.NoDevicesAvailableError]: "No tienes dispositivos de audio",
 }

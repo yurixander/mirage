@@ -36,6 +36,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
     sendTypingEvent,
     isInputDisabled,
     sendMessageText,
+    onSendAudioMessage,
   } = useRoomChat(roomId)
 
   assert(roomId.length > 0, "The roomId should not be empty.")
@@ -85,6 +86,9 @@ const ChatContainer: FC<ChatContainerProps> = ({
           onSendMessageText={sendMessageText}
           onPickFile={file => {
             // TODO: Handle files preview here.
+          }}
+          onSendAudio={async audioBlob => {
+            await onSendAudioMessage(audioBlob, roomId)
           }}
         />
 
