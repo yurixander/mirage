@@ -14,7 +14,7 @@ import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
-import {getImageUrl} from "@/utils/util"
+import {getImageUrl, sendAudioMessage} from "@/utils/util"
 import {
   MsgType,
   EventTimeline,
@@ -91,6 +91,7 @@ type UseRoomChatReturnType = {
   isInputDisabled: boolean
   sendTypingEvent: (roomId: string) => void
   sendMessageText: (messageSendRequest: MessageSendRequest) => void
+  onSendAudioMessage: (audioBlob: Blob, roomId: string) => Promise<void>
 }
 
 const useRoomChat = (roomId: string): UseRoomChatReturnType => {
@@ -231,6 +232,17 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     )
   })
 
+  const onSendAudioMessage = async (
+    audioBlob: Blob,
+    roomId: string
+  ): Promise<void> => {
+    if (client === null) {
+      return
+    }
+
+    await sendAudioMessage(audioBlob, client, roomId)
+  }
+
   return {
     messagesState,
     isChatLoading,
@@ -239,6 +251,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     messages,
     typingUsers,
     isInputDisabled: client === null,
+    onSendAudioMessage,
     sendMessageText({messageText, roomId}) {
       if (client === null || messageText.length === 0) {
         return

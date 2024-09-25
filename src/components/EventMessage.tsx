@@ -1,13 +1,19 @@
 import {type FC} from "react"
-import {assert, formatTime, stringToColor} from "../utils/util"
+import {assert, formatTime, stringToColor, trim} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
 import Typography from "./Typography"
-import ContextMenu, {ClickActions} from "./ContextMenu"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
 import {type EventType} from "matrix-js-sdk"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {twMerge} from "tailwind-merge"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItemGenerator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
 
 export type EventSender = {
   displayName: string
@@ -22,6 +28,9 @@ export type EventMessageData = {
   type: EventType | string
   icon?: IconType
 }
+
+export const MAX_EVENT_BODY_LENGTH = 70
+export const MAX_EVENT_SENDER_NAME_LENGTH = 32
 
 export interface EventMessageProps extends EventMessageData {
   onShowMember: () => void
@@ -41,48 +50,62 @@ const EventMessage: FC<EventMessageProps> = ({
 }) => {
   const Icon = icon ?? IoMdCreate
   const {t} = useTranslation()
+  const accentColor = stringToColor(sender.userId)
 
   assert(eventId.length > 0, "Event id should not be empty.")
-  assert(sender.userId.length > 0, "Sender user id should not be empty.")
-
-  assert(
-    sender.displayName.length > 0,
-    "Sender display name should not be empty."
-  )
 
   return (
-    <div className="flex items-center gap-3">
-      <Typography className="inline-flex max-w-text select-text gap-1 whitespace-pre-line break-words italic">
-        <ContextMenu
-          className="shrink-0"
-          id={`context-menu-event-${eventId}`}
-          actionType={ClickActions.LeftClick}
-          elements={[
-            {
-              icon: IoPeopleCircle,
-              onClick: onShowMember,
-              text: t(LangKey.ViewMember),
-            },
-            {
-              icon: IoSearchCircle,
-              onClick: onFindUser,
-              text: t(LangKey.FindUser),
-            },
-          ]}>
-          <Typography
-            className="inline-flex items-center gap-2 font-bold"
-            style={{color: stringToColor(sender.userId)}}>
-            <div className="flex w-10 justify-end">
-              <Icon className="text-neutral-300" />
-            </div>
+    <div className={twMerge("flex items-center gap-3", className)}>
+      <div
+        role="article"
+        aria-label={`${sender.displayName} ${body}`}
+        className="flex items-start gap-1">
+        <div className="inline-flex gap-2">
+          <div className="flex w-10 items-center justify-end">
+            <Icon aria-hidden className="text-neutral-500" />
+          </div>
 
-            {sender.displayName}
-          </Typography>
-        </ContextMenu>
-        {body}
-      </Typography>
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              style={{borderBottomColor: accentColor}}
+              className="box-border shrink-0 focus-visible:border-b-2">
+              <Typography className="font-bold" style={{color: accentColor}}>
+                {trim(sender.displayName, MAX_EVENT_SENDER_NAME_LENGTH)}
+              </Typography>
+            </DropdownMenuTrigger>
 
-      <time className="ml-auto text-gray-300">{formatTime(timestamp)}</time>
+            <DropdownMenuContent
+              onCloseAutoFocus={event => {
+                event.preventDefault()
+              }}>
+              <DropdownMenuItemGenerator
+                items={[
+                  {
+                    label: t(LangKey.ViewMember),
+                    icon: IoPeopleCircle,
+                    onClick: onShowMember,
+                  },
+                  {
+                    label: t(LangKey.FindUser),
+                    icon: IoSearchCircle,
+                    onClick: onFindUser,
+                  },
+                ]}
+              />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <Typography
+          ariaHidden
+          className="inline-flex gap-1 whitespace-pre-line break-words font-normal italic">
+          {trim(body, MAX_EVENT_BODY_LENGTH)}
+        </Typography>
+      </div>
+
+      <time className="ml-auto text-base font-normal text-gray-300">
+        {formatTime(timestamp)}
+      </time>
     </div>
   )
 }

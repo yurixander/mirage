@@ -9,6 +9,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {Button} from "@/components/ui/button"
 import useTooltip from "@/hooks/util/useTooltip"
 import useDebounced from "@/hooks/util/useDebounced"
+import AudioRecorder, {AudioRecorderState} from "./AudioRecorder"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 
@@ -21,6 +22,7 @@ export type ChatInputProps = {
   roomId: string
   isInputDisabled: boolean
   onSendMessageText: (messageSendRequest: MessageSendRequest) => void
+  onSendAudio: (audioBlob: Blob) => Promise<void>
   onPickFile: (file: File) => void
   onSendTypingEvent: (roomId: string) => void
   className?: string
@@ -36,6 +38,7 @@ const INPUT_ACTION_CLASS = "size-5 md:size-6 text-slate-300"
 const ChatInput: FC<ChatInputProps> = ({
   roomId,
   onSendMessageText,
+  onSendAudio,
   onPickFile,
   onSendTypingEvent,
   isInputDisabled,
@@ -45,6 +48,7 @@ const ChatInput: FC<ChatInputProps> = ({
   const [caretPosition, setCaretPosition] = useState<number | null>(null)
   const [messageText, setMessageText] = useState("")
   const debouncedText = useDebounced(messageText, 500)
+  const [recorderState, setRecorderState] = useState(AudioRecorderState.Idle)
   const {t} = useTranslation()
 
   const [selectionRange, setSelectionRange] = useState<SelectionRange>({
@@ -96,68 +100,77 @@ const ChatInput: FC<ChatInputProps> = ({
         "w-full md:max-h-36 md:gap-2.5 md:rounded-3xl md:px-3 md:py-2",
         className
       )}>
-      <div className="flex h-max w-full items-start gap-1">
-        <AttachSource isDisabled={isInputDisabled} onPickFile={onPickFile} />
+      {recorderState === AudioRecorderState.Idle ? (
+        <div className="flex h-max w-full items-start gap-1">
+          <AttachSource isDisabled={isInputDisabled} onPickFile={onPickFile} />
 
-        <TextArea
-          ref={textAreaRef}
-          className="max-h-24 w-full border-none p-0 text-sm disabled:cursor-default md:max-h-32 md:text-lg"
-          value={messageText}
-          onValueChanged={setMessageText}
-          disabled={isInputDisabled}
-          placeholder={t(LangKey.ChatInputPlaceholder)}
-          onSelect={event => {
-            if (!(event.target instanceof HTMLTextAreaElement)) {
-              return
-            }
+          <TextArea
+            ref={textAreaRef}
+            className="max-h-24 w-full border-none p-0 text-sm disabled:cursor-default md:max-h-32 md:text-lg"
+            value={messageText}
+            onValueChanged={setMessageText}
+            disabled={isInputDisabled}
+            placeholder={t(LangKey.ChatInputPlaceholder)}
+            onSelect={event => {
+              if (!(event.target instanceof HTMLTextAreaElement)) {
+                return
+              }
 
-            setCaretPosition(event.target.selectionStart ?? 0)
+              setCaretPosition(event.target.selectionStart ?? 0)
 
-            setSelectionRange({
-              selectionEnd: event.target.selectionEnd,
-              selectionStart: event.target.selectionStart,
-            })
-          }}
-        />
-
-        <div className="ml-auto flex h-7 items-center gap-2">
-          <EmojiPickerPopover
-            isDisabled={isInputDisabled}
-            onPickEmoji={emoji => {
-              putEmojiInPosition(
-                emoji,
-                caretPosition,
-                selectionRange,
-                setMessageText
-              )
+              setSelectionRange({
+                selectionEnd: event.target.selectionEnd,
+                selectionStart: event.target.selectionStart,
+              })
             }}
           />
 
-          <InputChatAction
-            ariaLabel={t(LangKey.RecordAudio)}
-            isDisabled={isInputDisabled}
-            onClick={() => {
-              // TODO: Handle capture audio.
-            }}>
-            <IoMic
-              aria-label={t(LangKey.RecordAudio)}
-              className={INPUT_ACTION_CLASS}
+          <div className="ml-auto flex h-7 items-center gap-2">
+            <EmojiPickerPopover
+              isDisabled={isInputDisabled}
+              onPickEmoji={emoji => {
+                putEmojiInPosition(
+                  emoji,
+                  caretPosition,
+                  selectionRange,
+                  setMessageText
+                )
+              }}
             />
-          </InputChatAction>
 
-          <InputChatAction
-            ariaLabel={t(LangKey.SendTextMessage)}
-            isDisabled={messageText.length === 0 || isInputDisabled}
-            onClick={() => {
-              textAreaRef.current?.focus()
+            <InputChatAction
+              ariaLabel={t(LangKey.RecordAudio)}
+              isDisabled={isInputDisabled}
+              onClick={() => {
+                setRecorderState(AudioRecorderState.Recording)
+              }}>
+              <IoMic
+                aria-label={t(LangKey.RecordAudio)}
+                className={INPUT_ACTION_CLASS}
+              />
+            </InputChatAction>
 
-              onSendMessageText({roomId, messageText})
-              setMessageText("")
-            }}>
-            <IoSend className="size-5 text-blue-500 md:size-[22px]" />
-          </InputChatAction>
+            <InputChatAction
+              ariaLabel={t(LangKey.SendTextMessage)}
+              isDisabled={messageText.length === 0 || isInputDisabled}
+              onClick={() => {
+                textAreaRef.current?.focus()
+
+                onSendMessageText({roomId, messageText})
+                setMessageText("")
+              }}>
+              <IoSend className="size-5 text-blue-500 md:size-[22px]" />
+            </InputChatAction>
+          </div>
         </div>
-      </div>
+      ) : (
+        <AudioRecorder
+          className="w-full justify-end"
+          recorderState={recorderState}
+          onStateChange={setRecorderState}
+          onSendAudioMessage={onSendAudio}
+        />
+      )}
     </div>
   )
 }

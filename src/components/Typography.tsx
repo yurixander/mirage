@@ -14,6 +14,7 @@ export enum TypographyVariant {
 export type TypographyProps = {
   className?: string
   style?: React.CSSProperties
+  ariaHidden?: boolean
   variant?: TypographyVariant
   as?: keyof React.JSX.IntrinsicElements
   children?: React.ReactNode
@@ -49,11 +50,13 @@ const Typography: FC<TypographyProps> = ({
   className,
   children,
   style,
+  ariaHidden,
 }) => {
   const Component = as ?? tagFromVariant[variant]
 
   return (
     <Component
+      aria-hidden={ariaHidden}
       onClick={onClick}
       style={style}
       className={twMerge("leading-160", className, variantClass[variant])}>
