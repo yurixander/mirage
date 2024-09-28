@@ -130,6 +130,22 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   }, [])
 
   useEffect(() => {
+    const handler = setTimeout(() => {
+      if (messages.length === 0) {
+        return
+      }
+
+      setMessages(prevMessages =>
+        prevMessages.filter(message => message.kind !== MessageKind.Unread)
+      )
+    }, 10_000)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [messages.length, roomId])
+
+  useEffect(() => {
     if (client === null || !isMountedReference.current) {
       return
     }
@@ -178,8 +194,19 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
         return
       }
 
+      const senderId = event.sender?.userId ?? event.getSender()
+
       void handleRoomMessageEvent(event, room).then(messageOrEvent => {
         if (messageOrEvent === null) {
+          return
+        }
+
+        if (room.myUserId === senderId) {
+          setMessages(messages => [
+            ...messages.filter(message => message.kind !== MessageKind.Unread),
+            messageOrEvent,
+          ])
+
           return
         }
 
