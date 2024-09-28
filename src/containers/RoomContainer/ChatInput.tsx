@@ -233,7 +233,7 @@ const EmojiPickerPopover: FC<{
 
   return (
     <Popover open={isEmojiPickerVisible} onOpenChange={setIsEmojiPickerVisible}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger>
         <Button
           disabled={isDisabled}
           aria-label={t(LangKey.EmojiPicker)}
@@ -242,7 +242,8 @@ const EmojiPickerPopover: FC<{
           className={twMerge(
             isEmojiPickerVisible && "bg-accent text-accent-foreground",
             "size-max hover:bg-transparent"
-          )}>
+          )}
+          onClick={() => {}}>
           <IoIosHappy
             aria-label={t(LangKey.EmojiIcon)}
             className={twMerge(
@@ -257,7 +258,7 @@ const EmojiPickerPopover: FC<{
         align="end"
         alignOffset={-70}
         sideOffset={16}
-        className="p-1.5">
+        className="w-80 p-0">
         <EmojiPicker onPickEmoji={onPickEmoji} />
       </PopoverContent>
     </Popover>

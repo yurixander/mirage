@@ -54,16 +54,17 @@ const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
   return (
     <div
       className={twMerge(
-        "flex size-full max-h-96 max-w-72 flex-col gap-2",
+        "flex w-full flex-col items-center gap-2 px-2 pt-2",
         className
       )}>
       <Input
+        className="w-full"
         placeholder="Search..."
         Icon={IoSearch}
         onValueChange={setEmojiQuery}
       />
 
-      <ScrollArea className="h-72 w-full" type="scroll">
+      <ScrollArea className="h-72 w-full items-center" type="scroll">
         {emojiItems.map(emoji => {
           return (
             <EmojiItemHandler
@@ -79,7 +80,7 @@ const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
         })}
       </ScrollArea>
 
-      <div className="flex w-full items-center justify-center gap-1 p-1">
+      <div className="flex w-full items-center justify-center gap-1 p-2">
         <CategoryNav
           categorySelected={categoryActive}
           onSelectCategory={setCategoryActive}
@@ -100,7 +101,6 @@ const CategoryNav: FC<CategoryNavProps> = ({
 }) => {
   return (
     <ToggleGroup
-      className="border-t border-t-slate-300 py-2"
       onValueChange={value => {
         if (value.length === 0) {
           return
