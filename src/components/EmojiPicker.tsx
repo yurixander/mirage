@@ -20,6 +20,8 @@ import useEmojiPicker, {
   getCachedEmojiSkin,
 } from "@/hooks/util/useEmojiPicker"
 import {SearchInput} from "./ui/input"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 
 type CategoryWithIcon = {
   category: string
@@ -43,6 +45,8 @@ type EmojiPickerProps = {
 }
 
 const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
+  const {t} = useTranslation()
+
   const {
     pushEmojiRecent,
     emojiItems,
@@ -57,7 +61,10 @@ const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
         "flex w-full flex-col items-center gap-2 px-2 pt-2",
         className
       )}>
-      <SearchInput onQueryDebounceChange={setEmojiQuery} />
+      <SearchInput
+        ariaLabel={t(LangKey.SearchAnyEmoji)}
+        onQueryDebounceChange={setEmojiQuery}
+      />
 
       <ScrollArea className="h-72 w-full items-center" type="scroll">
         {emojiItems.map(emoji => {
@@ -107,6 +114,7 @@ const CategoryNav: FC<CategoryNavProps> = ({
       type="single">
       {categories.map((category, index) => (
         <ToggleGroupItem
+          aria-label={category.category}
           className="h-7 p-1"
           size="sm"
           key={index}
@@ -169,6 +177,7 @@ const PickEmojiWithVariants: FC<PickEmojiWithVariantsProps> = ({
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const [isOpen, setIsOpen] = useState(false)
   const [isIntersecting, setIsIntersecting] = useState(true)
+  const {t} = useTranslation()
 
   const onSelectEmoji = (emojiPicked: string): void => {
     onPickEmoji(emojiPicked)
@@ -196,6 +205,7 @@ const PickEmojiWithVariants: FC<PickEmojiWithVariantsProps> = ({
 
   return (
     <IconButton
+      aria-label={emoji.name}
       className={twMerge("relative text-2xl", className)}
       onClick={() => {
         onSelectEmoji(currentSkin)
@@ -205,7 +215,7 @@ const PickEmojiWithVariants: FC<PickEmojiWithVariantsProps> = ({
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger ref={triggerRef} tabIndex={-1}>
           <button
-            aria-label="More variants"
+            aria-label={t(LangKey.MoreVariants)}
             className="absolute bottom-0 right-0 focus-visible:scale-125 focus-visible:transition-transform focus-visible:active:scale-110"
             onClick={e => {
               e.stopPropagation()
@@ -266,7 +276,8 @@ const PickEmojiButton: FC<PickEmojiButtonProps> = ({
   return (
     <IconButton
       role={role}
-      aria-label={emojiName}
+      aria-hidden={!hasTooltip}
+      aria-label={hasTooltip ? emojiName : undefined}
       tooltip={hasTooltip ? emojiName : undefined}
       className={twMerge("text-2xl", className)}
       onClick={event => {

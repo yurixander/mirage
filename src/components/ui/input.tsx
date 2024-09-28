@@ -68,6 +68,7 @@ export type SearchInputProps = {
   searchDelay?: number
   className?: string
   placeholder?: string
+  ariaLabel?: string
   onQueryDebounceChange: (query: string) => void
 }
 
@@ -80,6 +81,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
       onQueryDebounceChange,
       className,
       initialValue,
+      ariaLabel,
     },
     ref
   ) => {
@@ -93,6 +95,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     const InputElement = (
       <Input
         type="search"
+        aria-label={ariaLabel}
         ref={ref}
         className={cn("pl-7 sm:pl-9", className)}
         placeholder={placeholder}
@@ -104,9 +107,9 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     )
 
     return hasIcon ? (
-      <InputRoot className="w-full">
+      <InputRoot className="w-full" aria-hidden>
         <InputIcon>
-          <IoSearch className="size-4 sm:size-5" />
+          <IoSearch aria-hidden className="size-4 sm:size-5" />
         </InputIcon>
 
         {InputElement}
