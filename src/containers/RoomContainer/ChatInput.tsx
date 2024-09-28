@@ -2,7 +2,7 @@ import {useEffect, useRef, useState, type FC} from "react"
 import {IoIosHappy} from "react-icons/io"
 import {IoMic, IoSend} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import EmojiPicker, {putEmojiInPosition} from "@/components/EmojiPicker"
+import EmojiPicker from "@/components/EmojiPicker"
 import TextArea from "@/components/TextArea"
 import AttachSource from "./AttachSource"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
@@ -12,6 +12,7 @@ import useDebounced from "@/hooks/util/useDebounced"
 import AudioRecorder, {AudioRecorderState} from "./AudioRecorder"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {putEmojiInPosition} from "@/hooks/util/useEmojiPicker"
 
 export type MessageSendRequest = {
   roomId: string

@@ -1,54 +1,40 @@
-import {useEffect, useMemo, useState, type FC} from "react"
+import {useEffect, useRef, useState, type FC} from "react"
 import {twMerge} from "tailwind-merge"
-import {type Emoji, type EmojiMartData, type Skin} from "@emoji-mart/data"
-import {createPortal} from "react-dom"
-import useElementPoints from "@/hooks/util/useElementPoints"
+import {type Emoji} from "@emoji-mart/data"
 import {
   IoIosCafe,
   IoIosPartlySunny,
-  IoIosHappy,
   IoIosGlobe,
   IoIosAmericanFootball,
   IoIosBulb,
   IoIosNuclear,
-  IoIosFlag,
 } from "react-icons/io"
 import {type IconType} from "react-icons"
-import emojiData from "@/../public/data/emoji-data.json"
-import useEmojiSearch from "@/hooks/util/useEmojiSearch"
+import {IconButton} from "@/components/ui/button"
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
+import {ScrollArea} from "@/components/ui/scroll-area"
+import {IoHappy, IoSearch, IoTime} from "react-icons/io5"
+import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 import Input from "./Input"
-import {type SelectionRange} from "@/containers/RoomContainer/ChatInput"
-import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/lang/allKeys"
+import useEmojiPicker, {
+  Category,
+  getCachedEmojiSkin,
+} from "@/hooks/util/useEmojiPicker"
 
-const emojiMartData: EmojiMartData = emojiData
-const emojis: Emoji[] = Object.values(emojiData.emojis)
-
-export type CategoryWithIcon = {
-  category: EmojiCategories
+type CategoryWithIcon = {
+  category: string
   icon: IconType
 }
 
-export enum EmojiCategories {
-  People = "people",
-  Nature = "nature",
-  Foods = "foods",
-  Activity = "activity",
-  Places = "places",
-  Objects = "objects",
-  Symbols = "symbols",
-  Flags = "flags",
-}
-
 const categories: CategoryWithIcon[] = [
-  {category: EmojiCategories.People, icon: IoIosHappy},
-  {category: EmojiCategories.Nature, icon: IoIosPartlySunny},
-  {category: EmojiCategories.Foods, icon: IoIosCafe},
-  {category: EmojiCategories.Activity, icon: IoIosAmericanFootball},
-  {category: EmojiCategories.Places, icon: IoIosGlobe},
-  {category: EmojiCategories.Objects, icon: IoIosBulb},
-  {category: EmojiCategories.Symbols, icon: IoIosNuclear},
-  {category: EmojiCategories.Flags, icon: IoIosFlag},
+  {category: Category.Recent, icon: IoTime},
+  {category: Category.People, icon: IoHappy},
+  {category: Category.Nature, icon: IoIosPartlySunny},
+  {category: Category.Foods, icon: IoIosCafe},
+  {category: Category.Activity, icon: IoIosAmericanFootball},
+  {category: Category.Places, icon: IoIosGlobe},
+  {category: Category.Objects, icon: IoIosBulb},
+  {category: Category.Symbols, icon: IoIosNuclear},
 ]
 
 type EmojiPickerProps = {
@@ -57,230 +43,245 @@ type EmojiPickerProps = {
 }
 
 const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
-  const {t} = useTranslation()
-
-  const [categorySelected, setCategorySelected] = useState(
-    EmojiCategories.People
-  )
-
-  const {emojisResult, setEmojiQuery} = useEmojiSearch()
-
-  const emojiItems = useMemo(() => {
-    if (emojisResult === null) {
-      return getEmojisByCategory(categorySelected)
-    }
-
-    return emojisResult
-  }, [categorySelected, emojisResult])
+  const {
+    pushEmojiRecent,
+    emojiItems,
+    categoryActive,
+    setCategoryActive,
+    setEmojiQuery,
+  } = useEmojiPicker()
 
   return (
     <div
       className={twMerge(
-        "flex size-full max-h-96 max-w-80 flex-col gap-2",
+        "flex size-full max-h-96 max-w-72 flex-col gap-2",
         className
       )}>
-      <div className="flex size-full max-h-10 items-center justify-center gap-1 border-b border-b-slate-300 p-1">
-        {categories.map(category => (
-          <button
-            key={category.category}
-            className={twMerge(
-              "flex size-7 cursor-pointer items-center justify-center rounded-md active:scale-95",
-              category.category === categorySelected
-                ? "bg-gray-300"
-                : "hover:bg-gray-200"
-            )}
-            onClick={() => {
-              setCategorySelected(category.category)
-            }}>
-            <category.icon />
-          </button>
-        ))}
-      </div>
+      <Input
+        placeholder="Search..."
+        Icon={IoSearch}
+        onValueChange={setEmojiQuery}
+      />
 
-      <div className="h-12 w-full">
-        <Input
-          placeholder={t(LangKey.SearchAnyEmoji)}
-          onValueChange={setEmojiQuery}
-        />
-      </div>
+      <ScrollArea className="h-72 w-full" type="scroll">
+        {emojiItems.map(emoji => {
+          return (
+            <EmojiItemHandler
+              key={`${emoji.id} ${emoji.name}`}
+              emoji={emoji}
+              onPickEmoji={emojiPicked => {
+                onPickEmoji(emojiPicked)
 
-      <div className="size-full overflow-y-scroll scrollbar-hide">
-        {emojiItems.map(emoji => (
-          <div
-            key={emoji.id}
-            className="inline-block rounded-md hover:bg-gray-300">
-            <EmojiItem
-              emojiId={emoji.id}
-              skins={emoji.skins}
-              onPickEmoji={onPickEmoji}
+                pushEmojiRecent(emoji.id)
+              }}
             />
-          </div>
-        ))}
+          )
+        })}
+      </ScrollArea>
+
+      <div className="flex w-full items-center justify-center gap-1 p-1">
+        <CategoryNav
+          categorySelected={categoryActive}
+          onSelectCategory={setCategoryActive}
+        />
       </div>
     </div>
   )
 }
 
-type EmojiItemProps = {
-  emojiId: string
-  skins: Skin[]
-  onPickEmoji: (emoji: string) => void
+type CategoryNavProps = {
+  categorySelected: string
+  onSelectCategory: (category: string) => void
 }
 
-const EmojiItem: FC<EmojiItemProps> = ({emojiId, skins, onPickEmoji}) => {
-  const [isVariationOpen, setIsVariationOpen] = useState(false)
-  const [emojiHeaderSelected, setEmojiHeaderSelected] = useState("")
-  const {points, clearPoints, setPointsByEvent} = useElementPoints()
-  const {t} = useTranslation()
+const CategoryNav: FC<CategoryNavProps> = ({
+  categorySelected,
+  onSelectCategory,
+}) => {
+  return (
+    <ToggleGroup
+      className="border-t border-t-slate-300 py-2"
+      onValueChange={value => {
+        if (value.length === 0) {
+          return
+        }
+
+        onSelectCategory(value)
+      }}
+      defaultValue={categorySelected}
+      type="single">
+      {categories.map((category, index) => (
+        <ToggleGroupItem
+          className="h-7 p-1"
+          size="sm"
+          key={index}
+          value={category.category}>
+          <category.icon className="size-6 text-gray-300" />
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
+  )
+}
+
+const EmojiItemHandler: FC<{
+  emoji: Emoji
+  onPickEmoji: (emoji: string) => void
+  className?: string
+}> = ({emoji, onPickEmoji, className}) => {
+  const [currentSkin, setCurrentSkin] = useState(getCachedEmojiSkin(emoji))
+
+  if (currentSkin === null) {
+    return <></>
+  }
+
+  const onSelectEmoji = (emojiPicked: string): void => {
+    localStorage.setItem(emoji.id, emojiPicked)
+
+    onPickEmoji(emojiPicked)
+    setCurrentSkin(emojiPicked)
+  }
+
+  return emoji.skins.length > 1 ? (
+    <PickEmojiWithVariants
+      className={className}
+      currentSkin={currentSkin}
+      emoji={emoji}
+      onPickEmoji={onSelectEmoji}
+    />
+  ) : (
+    <PickEmojiButton
+      className={className}
+      currentSkin={currentSkin}
+      emojiName={emoji.name}
+      onPickEmoji={onSelectEmoji}
+    />
+  )
+}
+
+type PickEmojiWithVariantsProps = {
+  currentSkin: string
+  emoji: Emoji
+  onPickEmoji: (emoji: string) => void
+  className?: string
+}
+
+const PickEmojiWithVariants: FC<PickEmojiWithVariantsProps> = ({
+  currentSkin,
+  emoji,
+  onPickEmoji,
+  className,
+}) => {
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
+  const [isOpen, setIsOpen] = useState(false)
+  const [isIntersecting, setIsIntersecting] = useState(true)
+
+  const onSelectEmoji = (emojiPicked: string): void => {
+    onPickEmoji(emojiPicked)
+
+    setIsOpen(false)
+  }
 
   useEffect(() => {
-    if (skins.length === 0) {
+    const ref = triggerRef.current
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsIntersecting(entry.isIntersecting)
+    })
+
+    if (ref === null) {
       return
     }
 
-    const emojiHeaderStored = localStorage.getItem(emojiId)
-    const currentEmojiHeader = skins[0].native
+    observer.observe(ref)
 
-    setEmojiHeaderSelected(emojiHeaderStored ?? currentEmojiHeader)
-  }, [emojiId, skins])
+    return () => {
+      observer.unobserve(ref)
+    }
+  }, [])
 
-  return skins.length > 1 ? (
-    <div className="relative flex flex-col">
-      {isVariationOpen &&
-        points !== null &&
-        createPortal(
-          <div
-            className="fixed z-50 flex size-max -translate-x-1/2 rounded-md bg-gray-100 p-2 shadow-lg"
-            style={{left: `${points.x}px`, top: `${points.y}px`}}
-            onMouseLeave={() => {
-              setIsVariationOpen(false)
+  return (
+    <IconButton
+      className={twMerge("relative text-2xl", className)}
+      onClick={() => {
+        onSelectEmoji(currentSkin)
+      }}>
+      {currentSkin}
 
-              clearPoints()
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger ref={triggerRef} tabIndex={-1}>
+          <button
+            aria-label="More variants"
+            className="absolute bottom-0 right-0 focus-visible:scale-125 focus-visible:transition-transform focus-visible:active:scale-110"
+            onClick={e => {
+              e.stopPropagation()
+
+              setIsOpen(true)
             }}>
-            {skins.map((skin, index) => (
-              <div
-                key={index}
-                aria-hidden
-                className="relative size-8 items-center justify-center rounded-md text-2xl hover:bg-gray-300"
-                onClick={() => {
-                  setEmojiHeaderSelected(skin.native)
+            <svg
+              aria-hidden
+              className="size-3 fill-current text-gray-400"
+              viewBox="0 0 12 12"
+              xmlns="http://www.w3.org/2000/svg">
+              <polygon points="9,1 9,9 1,9" />
+            </svg>
+          </button>
+        </PopoverTrigger>
 
-                  localStorage.setItem(emojiId, skin.native)
-
-                  onPickEmoji(skin.native)
-
-                  setIsVariationOpen(false)
-                  clearPoints()
-                }}>
-                {skin.native}
-              </div>
-            ))}
-          </div>,
-          document.body
-        )}
-
-      <div
-        role="button"
-        aria-hidden
-        className="relative flex size-11 cursor-default items-center justify-center overflow-hidden text-2xl"
-        onClick={() => {
-          onPickEmoji(emojiHeaderSelected)
-        }}>
-        {emojiHeaderSelected}
-
-        <button
-          className="absolute bottom-0 right-0"
-          onClick={event => {
-            setPointsByEvent(event)
-
-            setIsVariationOpen(prevVariationIsOpen => !prevVariationIsOpen)
-          }}>
-          <svg
-            aria-label={t(LangKey.MoreVariants)}
-            className="size-3 fill-current text-gray-400"
-            viewBox="0 0 12 12"
-            xmlns="http://www.w3.org/2000/svg">
-            <polygon points="9,1 9,9 1,9" />
-          </svg>
-        </button>
-      </div>
-    </div>
-  ) : (
-    skins.length === 1 && (
-      <div
-        role="button"
-        aria-hidden
-        className="flex size-11 items-center justify-center text-2xl"
-        onClick={() => {
-          onPickEmoji(skins[0].native)
-        }}>
-        {skins[0].native}
-      </div>
-    )
+        <PopoverContent
+          sideOffset={20}
+          side="top"
+          role="menubar"
+          className={twMerge(
+            "flex w-max gap-1 p-1",
+            !isIntersecting && "invisible"
+          )}>
+          {emoji.skins.map(skin => (
+            <PickEmojiButton
+              key={skin.unified}
+              role="menuitem"
+              hasTooltip={false}
+              currentSkin={skin.native}
+              emojiName={emoji.name}
+              onPickEmoji={onSelectEmoji}
+            />
+          ))}
+        </PopoverContent>
+      </Popover>
+    </IconButton>
   )
 }
 
-function getEmojisByCategory(categoryId?: string): Emoji[] {
-  if (categoryId === undefined) {
-    return []
-  }
+type PickEmojiButtonProps = {
+  currentSkin: string
+  emojiName: string
+  onPickEmoji: (emoji: string) => void
+  hasTooltip?: boolean
+  className?: string
+  role?: React.AriaRole
+}
 
-  const category = emojiMartData.categories.find(
-    category => category.id === categoryId
+const PickEmojiButton: FC<PickEmojiButtonProps> = ({
+  currentSkin,
+  emojiName,
+  onPickEmoji,
+  hasTooltip = true,
+  role,
+  className,
+}) => {
+  return (
+    <IconButton
+      role={role}
+      aria-label={emojiName}
+      tooltip={hasTooltip ? emojiName : undefined}
+      className={twMerge("text-2xl", className)}
+      onClick={event => {
+        event.stopPropagation()
+
+        onPickEmoji(currentSkin)
+      }}>
+      {currentSkin}
+    </IconButton>
   )
-
-  if (category === undefined) {
-    return []
-  }
-
-  return category.emojis.map(emojiId => emojiMartData.emojis[emojiId])
-}
-
-export function searchEmoji(query: string): Emoji[] {
-  return emojis.filter(emoji => emoji.keywords.includes(query.toLowerCase()))
-}
-
-export function getEmojiByIndex(index: number): Emoji {
-  const emojiIndex = index % emojis.length
-
-  return emojis[emojiIndex]
-}
-
-export function putEmojiInPosition(
-  emoji: string,
-  caretPosition: number | null,
-  {selectionEnd, selectionStart}: SelectionRange,
-  setText: (updater: (prevText: string) => string) => void
-): void {
-  setText(prevText => {
-    if (
-      selectionStart !== null &&
-      selectionEnd !== null &&
-      selectionEnd !== selectionStart
-    ) {
-      try {
-        if (selectionStart === 1 && selectionEnd === prevText.length) {
-          return emoji
-        }
-
-        return prevText
-          .slice(0, selectionStart)
-          .concat(emoji)
-          .concat(prevText.slice(selectionEnd, prevText.length))
-      } catch (error) {
-        console.error("Error updating text", error)
-      }
-    }
-
-    if (caretPosition === null || caretPosition >= prevText.length) {
-      return prevText + emoji
-    }
-
-    return prevText
-      .slice(0, caretPosition)
-      .concat(emoji)
-      .concat(prevText.slice(caretPosition, prevText.length))
-  })
 }
 
 export default EmojiPicker

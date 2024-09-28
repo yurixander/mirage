@@ -1,4 +1,4 @@
-import {getEmojiByIndex} from "@/components/EmojiPicker"
+import {getEmojiByIndex} from "@/hooks/util/useEmojiPicker"
 import dayjs from "dayjs"
 import {
   EventType,

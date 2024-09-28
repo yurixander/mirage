@@ -120,9 +120,12 @@ const Input: FC<InputProps> = ({
   }
 
   return (
-    <div className={className?.trim()}>
+    <div>
       <div
-        className="flex items-center rounded border border-neutral-300 bg-neutral-50"
+        className={twMerge(
+          "flex items-center rounded border border-neutral-300 bg-neutral-50",
+          className
+        )}
         tabIndex={isDisabled ? undefined : 0}>
         {label !== undefined && <Label text={label} />}
 

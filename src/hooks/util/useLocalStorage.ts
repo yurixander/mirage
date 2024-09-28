@@ -3,6 +3,7 @@ import {useCallback, useState} from "react"
 export enum LocalStorageKey {
   Credentials = "credentials",
   Lang = "language",
+  RecentEmojis = "recent_emojis",
 }
 
 const getLocalStorageValue = <T>(key: LocalStorageKey): T | null => {

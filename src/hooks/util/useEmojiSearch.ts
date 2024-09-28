@@ -1,7 +1,7 @@
 import {type Emoji} from "@emoji-mart/data"
 import {useEffect, useState} from "react"
 import useDebounced from "./useDebounced"
-import {searchEmoji} from "@/components/EmojiPicker"
+import {searchEmoji} from "./useEmojiPicker"
 
 type UseEmojiSearchReturnType = {
   emojisResult: Emoji[] | null
