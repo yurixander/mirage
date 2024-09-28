@@ -104,7 +104,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     )
 
     return hasIcon ? (
-      <InputRoot>
+      <InputRoot className="w-full">
         <InputIcon>
           <IoSearch className="size-4 sm:size-5" />
         </InputIcon>

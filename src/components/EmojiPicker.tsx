@@ -13,13 +13,13 @@ import {type IconType} from "react-icons"
 import {IconButton} from "@/components/ui/button"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {ScrollArea} from "@/components/ui/scroll-area"
-import {IoHappy, IoSearch, IoTime} from "react-icons/io5"
+import {IoHappy, IoTime} from "react-icons/io5"
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
-import Input from "./Input"
 import useEmojiPicker, {
   Category,
   getCachedEmojiSkin,
 } from "@/hooks/util/useEmojiPicker"
+import {SearchInput} from "./ui/input"
 
 type CategoryWithIcon = {
   category: string
@@ -57,12 +57,7 @@ const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
         "flex w-full flex-col items-center gap-2 px-2 pt-2",
         className
       )}>
-      <Input
-        className="w-full"
-        placeholder="Search..."
-        Icon={IoSearch}
-        onValueChange={setEmojiQuery}
-      />
+      <SearchInput onQueryDebounceChange={setEmojiQuery} />
 
       <ScrollArea className="h-72 w-full items-center" type="scroll">
         {emojiItems.map(emoji => {
