@@ -46,6 +46,7 @@ type EmojiPickerProps = {
 
 const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
   const {t} = useTranslation()
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
 
   const {
     pushEmojiRecent,
@@ -62,6 +63,7 @@ const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
         className
       )}>
       <SearchInput
+        ref={searchInputRef}
         ariaLabel={t(LangKey.SearchAnyEmoji)}
         onQueryDebounceChange={setEmojiQuery}
       />
