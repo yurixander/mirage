@@ -62,11 +62,14 @@ const EmojiPicker: FC<EmojiPickerProps> = ({onPickEmoji, className}) => {
         "flex w-full flex-col items-center gap-2 px-2 pt-2",
         className
       )}>
-      <SearchInput
-        ref={searchInputRef}
-        ariaLabel={t(LangKey.SearchAnyEmoji)}
-        onQueryDebounceChange={setEmojiQuery}
-      />
+      <div className="w-full p-1">
+        <SearchInput
+          className="rounded-xl"
+          ref={searchInputRef}
+          ariaLabel={t(LangKey.SearchAnyEmoji)}
+          onQueryDebounceChange={setEmojiQuery}
+        />
+      </div>
 
       <ScrollArea className="h-72 w-full items-center" type="scroll">
         {emojiItems.map(emoji => {
