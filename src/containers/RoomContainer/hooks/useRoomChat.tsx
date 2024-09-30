@@ -86,6 +86,7 @@ type UseRoomChatReturnType = {
   isChatLoading: boolean
   roomName: string
   roomTopic: string
+  isRoomEncrypted: boolean
   messages: AnyMessage[]
   typingUsers: TypingIndicatorUser[]
   isInputDisabled: boolean
@@ -101,6 +102,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
 
   const [roomName, setRoomName] = useState("")
   const [roomTopic, setRoomTopic] = useState("")
+  const [isRoomEncrypted, setIsRoomEncrypted] = useState(false)
   const [isChatLoading, setChatLoading] = useState(true)
   const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
@@ -171,6 +173,12 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
         setRoomTopic(roomDescription)
       } else {
         setRoomTopic("")
+      }
+
+      const isEncrypted = roomState.getStateEvents(EventType.RoomEncryption, "")
+
+      if (isEncrypted) {
+        setIsRoomEncrypted(true)
       }
     }
 
@@ -275,6 +283,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     isChatLoading,
     roomName,
     roomTopic,
+    isRoomEncrypted,
     messages,
     typingUsers,
     isInputDisabled: client === null,
