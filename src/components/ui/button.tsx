@@ -110,7 +110,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     ) : (
       <TooltipProvider delayDuration={1500}>
         <Tooltip>
-          <TooltipTrigger>{button}</TooltipTrigger>
+          <TooltipTrigger tabIndex={-1}>{button}</TooltipTrigger>
 
           <TooltipContent aria-hidden>{tooltip}</TooltipContent>
         </Tooltip>

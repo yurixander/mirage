@@ -128,6 +128,11 @@ textarea:disabled {
   @apply rounded-xl bg-gray-300;
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+  @apply size-5 bg-[url('/public/icons/clear-search-icon.svg')] bg-contain bg-no-repeat dark:bg-[url('/public/icons/clear-search-icon-dark.svg')];
+  -webkit-appearance: none;
+}
+
 input[type="range"]::-webkit-slider-thumb {
   @apply size-4 appearance-none rounded-full border border-fuchsia-600 bg-slate-50 shadow;
   border: 1px solid rgb(192, 38, 211);

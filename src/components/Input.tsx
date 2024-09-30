@@ -120,7 +120,7 @@ const Input: FC<InputProps> = ({
   }
 
   return (
-    <div className={className?.trim()}>
+    <div className={className}>
       <div
         className="flex items-center rounded border border-neutral-300 bg-neutral-50"
         tabIndex={isDisabled ? undefined : 0}>

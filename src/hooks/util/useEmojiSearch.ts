@@ -1,7 +1,6 @@
 import {type Emoji} from "@emoji-mart/data"
 import {useEffect, useState} from "react"
-import useDebounced from "./useDebounced"
-import {searchEmoji} from "@/components/EmojiPicker"
+import {searchEmoji} from "./useEmojiPicker"
 
 type UseEmojiSearchReturnType = {
   emojisResult: Emoji[] | null
@@ -11,18 +10,17 @@ type UseEmojiSearchReturnType = {
 const useEmojiSearch = (searchDelay = 500): UseEmojiSearchReturnType => {
   const [emojiQuery, setEmojiQuery] = useState("")
   const [results, setResult] = useState<Emoji[] | null>(null)
-  const debouncedText = useDebounced(emojiQuery, searchDelay)
 
   useEffect(() => {
     const search = async (): Promise<void> => {
-      if (debouncedText.length <= 0) {
+      if (emojiQuery.length <= 0) {
         setResult(null)
 
         return
       }
 
       try {
-        const response = searchEmoji(debouncedText)
+        const response = searchEmoji(emojiQuery)
 
         setResult(response)
       } catch (error) {
@@ -33,7 +31,7 @@ const useEmojiSearch = (searchDelay = 500): UseEmojiSearchReturnType => {
     }
 
     void search()
-  }, [debouncedText])
+  }, [emojiQuery])
 
   return {emojisResult: results, setEmojiQuery}
 }
