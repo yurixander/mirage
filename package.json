@@ -120,7 +120,7 @@
     "eslint-plugin-write-good-comments": "^0.2.0",
     "husky": "^8.0.0",
     "husky-init": "8.0.0",
-    "prettier": "3.3.2",
+    "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "prop-types": "^15.8.1",
     "storybook": "^8.3.2",
