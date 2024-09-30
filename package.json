@@ -121,7 +121,7 @@
     "husky": "^8.0.0",
     "husky-init": "8.0.0",
     "prettier": "3.3.3",
-    "prettier-plugin-tailwindcss": "^0.6.6",
+    "prettier-plugin-tailwindcss": "^0.6.8",
     "prop-types": "^15.8.1",
     "storybook": "^8.3.2",
     "ts-loader": "^9.5.1",
