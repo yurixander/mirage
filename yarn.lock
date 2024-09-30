@@ -4534,10 +4534,10 @@ eslint-module-utils@^2.9.0:
   dependencies:
     debug "^3.2.7"
 
-eslint-plugin-array-func@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-array-func/-/eslint-plugin-array-func-5.0.1.tgz#ba8b9d26b92a53d72766bc33a334ab4eae4a6a67"
-  integrity sha512-bRydL/TorX9B6HMMGzggkTzoaY0dM1iCIdA/SGM8VB2P8+38TH+dqYmDdfLCR5LOdDUHq0XBFgkvVnb7DB61cw==
+eslint-plugin-array-func@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-array-func/-/eslint-plugin-array-func-5.0.2.tgz#24e555a206f48d3ed244dde826b6fed8a34a0714"
+  integrity sha512-iyLex2+pTcxHZ6OLL80oMy+CtffpJ9j6A/57VQi1VN5bK1IS/0o+mWvezDHeAlwXjn6ksRO9L5SGU329BBuY8A==
 
 eslint-plugin-deprecation@^3.0.0:
   version "3.0.0"
