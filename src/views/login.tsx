@@ -16,6 +16,7 @@ import {type IconType} from "react-icons"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Button} from "@/components/ui/button"
+import AppLogo from "@/components/AppLogo"
 
 const LoginView: FC = () => {
   const {t} = useTranslation()
@@ -27,7 +28,7 @@ const LoginView: FC = () => {
   return (
     <div className="flex size-full max-h-screen items-center justify-center p-6">
       {/* Decorative background */}
-      <div className="flex h-full items-center justify-center">
+      <div className="hidden h-full items-center justify-center md:flex">
         <img
           className="max-h-full max-w-full object-contain"
           src={StaticAssetPath.LoginPhoto}
@@ -38,7 +39,9 @@ const LoginView: FC = () => {
       {/* Login form */}
       <div className="h-full max-w-[500px] p-6">
         <div className="flex h-full grow flex-col justify-center gap-6 p-3">
-          <Logo />
+          <div className="flex w-full items-center justify-center">
+            <AppLogo />
+          </div>
 
           {/* Welcome message */}
           <div className="flex flex-col items-center">
