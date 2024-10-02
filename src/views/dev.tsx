@@ -3,15 +3,13 @@ import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
-  AlertDialogFooter,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import {StaticAssetPath} from "@/utils/util"
-import {ReactSVG} from "react-svg"
 import {Button} from "@/components/ui/button"
 import {
   ModalContent,
   ModalDescription,
+  ModalFooter,
   ModalHeader,
   ModalTitle,
 } from "@/components/ui/modal"
@@ -33,17 +31,11 @@ const DevelopmentPreview: FC = () => {
               <ModalDescription>Modal subtitle goes here</ModalDescription>
             </ModalHeader>
 
-            <div className="flex gap-1 overflow-hidden">
-              <ReactSVG src={StaticAssetPath.DotGrid} />
-
-              <ReactSVG src={StaticAssetPath.DotGrid} />
-            </div>
-
-            <AlertDialogFooter>
+            <ModalFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
 
               <AlertDialogAction>Continue</AlertDialogAction>
-            </AlertDialogFooter>
+            </ModalFooter>
           </ModalContent>
         </AlertDialog>
       </div>
