@@ -2,17 +2,21 @@ import React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 import {AlertDialogContent} from "./alert-dialog"
 import {cn} from "@/utils/utils"
-import {buttonVariants} from "./button"
+import {Button, type ButtonProps, buttonVariants} from "./button"
 import {IoClose} from "react-icons/io5"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
+
+const Modal = AlertDialogPrimitive.Root
+
+const ModalTrigger = AlertDialogPrimitive.Trigger
 
 const ModalContent = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
 >(({className, ...props}, ref) => (
   <AlertDialogContent
-    className={cn("max-w-lg gap-8", className)}
+    className={cn("max-w-md gap-8", className)}
     ref={ref}
     {...props}
   />
@@ -81,7 +85,7 @@ const ModalFooter = ({
 
     <div
       className={cn(
-        "flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-2",
+        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
         className
       )}
       {...props}
@@ -89,4 +93,51 @@ const ModalFooter = ({
   </div>
 )
 
-export {ModalContent, ModalHeader, ModalTitle, ModalDescription, ModalFooter}
+const ModalAction = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Action>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
+>(({className, ...props}, ref) => (
+  <AlertDialogPrimitive.Action
+    ref={ref}
+    className={cn(buttonVariants(), className)}
+    {...props}
+  />
+))
+
+const ModalCancel = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
+>(({className, ...props}, ref) => (
+  <AlertDialogPrimitive.Cancel
+    ref={ref}
+    className={cn(buttonVariants({variant: "outline"}), className)}
+    {...props}
+  />
+))
+
+const ModalMoreInfo = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({className, variant = "link", ...props}, ref) => (
+    <Button
+      variant={variant}
+      ref={ref}
+      className={cn(
+        "mr-auto w-full px-0 py-0 font-sans font-bold sm:w-max",
+        className
+      )}
+      {...props}
+    />
+  )
+)
+
+export {
+  Modal,
+  ModalTrigger,
+  ModalContent,
+  ModalHeader,
+  ModalTitle,
+  ModalDescription,
+  ModalFooter,
+  ModalAction,
+  ModalCancel,
+  ModalMoreInfo,
+}
