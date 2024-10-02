@@ -16,7 +16,10 @@ const ModalContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
 >(({className, ...props}, ref) => (
   <AlertDialogContent
-    className={cn("max-w-md gap-8", className)}
+    className={cn(
+      "w-full max-w-sm gap-8 sm:max-w-md md:max-w-lg lg:max-w-xl",
+      className
+    )}
     ref={ref}
     {...props}
   />
@@ -49,7 +52,10 @@ const ModalTitle = React.forwardRef<
 >(({className, ...props}, ref) => (
   <AlertDialogPrimitive.Title
     ref={ref}
-    className={cn("font-sans text-lg font-extrabold text-black", className)}
+    className={cn(
+      "font-sans text-lg font-extrabold text-foreground",
+      className
+    )}
     {...props}
   />
 ))
