@@ -1,6 +1,6 @@
-import TruncatedTextWithTooltip from "@/components/TruncatedTextWithTooltip"
-import {Text, Heading} from "@/components/ui/typography"
+import {Text, Heading, TruncatedText} from "@/components/ui/typography"
 import {type FC} from "react"
+import {IoAccessibility} from "react-icons/io5"
 
 const DevelopmentPreview: FC = () => {
   return (
@@ -19,9 +19,11 @@ const DevelopmentPreview: FC = () => {
         <Heading level="h3">SOme</Heading>
         <Heading level="h4">SOme</Heading>
         <Heading level="h5">SOme</Heading>
-        <Heading level="h6">SOme</Heading>
+        <Heading level="h6">
+          SOme <IoAccessibility />
+        </Heading>
 
-        <TruncatedTextWithTooltip text="Some thing else" maxLength={10} />
+        <TruncatedText text="Some thing else" maxLength={10} />
       </div>
     </>
   )

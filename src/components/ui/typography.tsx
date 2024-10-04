@@ -1,6 +1,19 @@
-import React from "react"
+import React, {type FC} from "react"
 import {cva} from "class-variance-authority"
 import {cn} from "@/utils/utils"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {trim} from "@/utils/util"
+
+type TruncatedProps = {
+  text: string
+  maxLength: number
+  delayDuration?: number
+}
 
 type TypographyWeight = "light" | "regular" | "medium" | "semibold" | "bold"
 type TypographyAlign = "left" | "center" | "right"
@@ -55,7 +68,7 @@ const typographyClass: TypographyVariants = {
   },
 }
 
-const typographyVariants = cva("w-full", {
+const typographyVariants = cva("inline-flex w-full ", {
   variants: typographyClass,
   defaultVariants: {
     weight: "regular",
@@ -92,13 +105,12 @@ const textVariants = cva("leading-[110%]", {
   },
 })
 
-interface TextProps<T extends TypographyAs>
-  extends Omit<TypographyBaseProps<HTMLElement>, "size"> {
-  as?: T
+interface TextProps extends Omit<TypographyBaseProps<HTMLElement>, "size"> {
+  as?: TypographyAs
   size?: TextSize
 }
 
-function Text<T extends TypographyAs = "span">({
+function Text({
   as,
   size,
   color,
@@ -106,7 +118,7 @@ function Text<T extends TypographyAs = "span">({
   align,
   className,
   ...props
-}: TextProps<T>): React.JSX.Element {
+}: TextProps): React.JSX.Element {
   const Component = as ?? "span"
 
   return (
@@ -172,4 +184,34 @@ function Heading({
   )
 }
 
-export {Text, Heading}
+export interface TruncatedTextProps
+  extends Omit<TextProps, keyof TruncatedProps | "children">,
+    TruncatedProps {}
+
+const TruncatedText: FC<TruncatedTextProps> = ({
+  maxLength,
+  text,
+  delayDuration,
+  className,
+  ...props
+}) => {
+  const exceedsLimit = text.length > maxLength
+
+  return exceedsLimit ? (
+    <TooltipProvider delayDuration={delayDuration}>
+      <Tooltip>
+        <TooltipTrigger className="cursor-default" aria-label={text}>
+          <Text {...props} className={cn("w-max", className)}>
+            {trim(text, maxLength)}
+          </Text>
+        </TooltipTrigger>
+
+        <TooltipContent aria-hidden>{text}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  ) : (
+    <Text>{text}</Text>
+  )
+}
+
+export {Text, Heading, TruncatedText}
