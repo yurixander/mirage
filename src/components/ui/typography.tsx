@@ -25,7 +25,7 @@ type TypographyVariants = {
   color: Record<TypographyColor, string>
 }
 
-const variants: TypographyVariants = {
+const variantsClass = {
   size: {
     "1": "text-xs",
     "2": "text-sm",
@@ -60,10 +60,10 @@ const variants: TypographyVariants = {
     card: "text-card-foreground",
     popover: "text-popover-foreground",
   },
-} as const
+} satisfies TypographyVariants
 
 const textVariants = cva("w-full leading-[110%]", {
-  variants,
+  variants: variantsClass,
   defaultVariants: {
     size: "3",
     weight: "regular",
@@ -72,34 +72,20 @@ const textVariants = cva("w-full leading-[110%]", {
   },
 })
 
-const Text = (): React.JSX.Element => {
-  return (
-    <>
-      <Typography variantSize="3">Algo</Typography>
-      <Typography variantSize="4">Algo</Typography>
-      <Typography variantSize="5">Algo</Typography>
-      <Typography variantSize="6">Algo</Typography>
-      <Typography variantSize="7">Algo</Typography>
-      <Typography variantSize="8">Algo</Typography>
-      <Typography variantSize="9">Algo</Typography>
-    </>
-  )
-}
-
 interface TypographyProps<T extends TypographyAs>
-  extends React.AllHTMLAttributes<T> {
+  extends Omit<React.AllHTMLAttributes<T>, "size"> {
   children: React.ReactNode
   as?: T
-  variantSize: TypographySize
+  size?: TypographySize
   color?: TypographyColor
   weight?: TypographyWeight
   align?: TypographyAlign
 }
 
-function Typography<T extends TypographyAs>({
+function Text<T extends TypographyAs = "span">({
   children,
   as,
-  variantSize,
+  size,
   color,
   weight,
   align,
@@ -107,8 +93,7 @@ function Typography<T extends TypographyAs>({
   const Component = as ?? "span"
 
   return (
-    <Component
-      className={textVariants({size: variantSize, color, weight, align})}>
+    <Component className={textVariants({size, color, weight, align})}>
       {children}
     </Component>
   )

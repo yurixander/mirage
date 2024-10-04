@@ -28,7 +28,7 @@
     "Zustand"
   ],
   "css.customData": [".vscode/tailwind.json"],
-  "tailwindCSS.classAttributes": ["class", "className", ".*Class"],
+  "tailwindCSS.classAttributes": ["className", ".*Class.*", ".*Classes.*"],
   "editor.quickSuggestions": {
     "strings": "on"
   }
