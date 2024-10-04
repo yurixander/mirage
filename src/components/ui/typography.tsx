@@ -15,6 +15,9 @@ type TruncatedProps = {
   delayDuration?: number
 }
 
+export type TruncatedPropsWith<T> = Omit<T, keyof TruncatedProps | "children"> &
+  TruncatedProps
+
 type TypographyWeight = "light" | "regular" | "medium" | "semibold" | "bold"
 type TypographyAlign = "left" | "center" | "right"
 
@@ -78,7 +81,6 @@ const typographyVariants = cva("inline-flex w-full ", {
 })
 
 // #region Text
-
 type TextSize = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 type TextAs = "span" | "p" | "div" | "label"
 
@@ -112,7 +114,7 @@ interface TextProps extends Omit<TypographyBaseProps<HTMLElement>, "size"> {
   size?: TextSize
 }
 
-function Text({
+const Text: FC<TextProps> = ({
   as,
   size,
   color,
@@ -120,7 +122,7 @@ function Text({
   align,
   className,
   ...props
-}: TextProps): React.JSX.Element {
+}) => {
   const Component = as ?? "span"
 
   return (
@@ -187,7 +189,6 @@ function Heading({
 }
 
 // #region Truncated
-
 interface TruncatedPrimitiveProps extends TruncatedProps {
   children: (text: string) => React.ReactNode
 }
@@ -217,11 +218,7 @@ const TruncatedPrimitive: FC<TruncatedPrimitiveProps> = ({
   )
 }
 
-export interface TruncatedTextProps
-  extends Omit<TextProps, keyof TruncatedProps | "children">,
-    TruncatedProps {}
-
-const TruncatedText: FC<TruncatedTextProps> = ({
+const TruncatedText: FC<TruncatedPropsWith<TextProps>> = ({
   maxLength,
   text,
   delayDuration,
@@ -242,11 +239,7 @@ const TruncatedText: FC<TruncatedTextProps> = ({
   )
 }
 
-export interface TruncatedHeadingProps
-  extends Omit<HeadingProps, keyof TruncatedProps | "children">,
-    TruncatedProps {}
-
-const TruncatedHeading: FC<TruncatedHeadingProps> = ({
+const TruncatedHeading: FC<TruncatedPropsWith<HeadingProps>> = ({
   maxLength,
   text,
   delayDuration,
