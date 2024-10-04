@@ -214,4 +214,34 @@ const TruncatedText: FC<TruncatedTextProps> = ({
   )
 }
 
-export {Text, Heading, TruncatedText}
+export interface TruncatedHeadingProps
+  extends Omit<HeadingProps, keyof TruncatedProps | "children">,
+    TruncatedProps {}
+
+const TruncatedHeading: FC<TruncatedHeadingProps> = ({
+  maxLength,
+  text,
+  delayDuration,
+  className,
+  ...props
+}) => {
+  const exceedsLimit = text.length > maxLength
+
+  return exceedsLimit ? (
+    <TooltipProvider delayDuration={delayDuration}>
+      <Tooltip>
+        <TooltipTrigger className="cursor-default" aria-label={text}>
+          <Heading {...props} className={cn("w-max", className)}>
+            {trim(text, maxLength)}
+          </Heading>
+        </TooltipTrigger>
+
+        <TooltipContent aria-hidden>{text}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  ) : (
+    <Text>{text}</Text>
+  )
+}
+
+export {Text, Heading, TruncatedText, TruncatedHeading}

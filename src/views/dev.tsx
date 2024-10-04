@@ -1,4 +1,9 @@
-import {Text, Heading, TruncatedText} from "@/components/ui/typography"
+import {
+  Text,
+  Heading,
+  TruncatedText,
+  TruncatedHeading,
+} from "@/components/ui/typography"
 import {type FC} from "react"
 import {IoAccessibility} from "react-icons/io5"
 
@@ -24,6 +29,8 @@ const DevelopmentPreview: FC = () => {
         </Heading>
 
         <TruncatedText text="Some thing else" maxLength={10} />
+
+        <TruncatedHeading text="Some thing else heading" maxLength={3} />
       </div>
     </>
   )
