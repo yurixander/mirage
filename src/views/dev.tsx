@@ -1,4 +1,4 @@
-import {Text} from "@/components/ui/typography"
+import {Text, Heading} from "@/components/ui/typography"
 import {type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
@@ -12,6 +12,13 @@ const DevelopmentPreview: FC = () => {
         <Text size="7">Algo</Text>
         <Text size="8">Algo</Text>
         <Text size="9">Algo</Text>
+
+        <Heading level="h1">SOme</Heading>
+        <Heading level="h2">SOme</Heading>
+        <Heading level="h3">SOme</Heading>
+        <Heading level="h4">SOme</Heading>
+        <Heading level="h5">SOme</Heading>
+        <Heading level="h6">SOme</Heading>
       </div>
     </>
   )
