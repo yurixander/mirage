@@ -77,8 +77,10 @@ const typographyVariants = cva("inline-flex w-full ", {
   },
 })
 
+// #region Text
+
 type TextSize = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-type TypographyAs = "span" | "p" | "div" | "label"
+type TextAs = "span" | "p" | "div" | "label"
 
 type TextVariants = {
   size: Record<TextSize, string>
@@ -106,7 +108,7 @@ const textVariants = cva("leading-[110%]", {
 })
 
 interface TextProps extends Omit<TypographyBaseProps<HTMLElement>, "size"> {
-  as?: TypographyAs
+  as?: TextAs
   size?: TextSize
 }
 
@@ -184,6 +186,37 @@ function Heading({
   )
 }
 
+// #region Truncated
+
+interface TruncatedPrimitiveProps extends TruncatedProps {
+  children: (text: string) => React.ReactNode
+}
+
+const TruncatedPrimitive: FC<TruncatedPrimitiveProps> = ({
+  text,
+  maxLength,
+  delayDuration,
+  children,
+}) => {
+  const exceedsLimit = text.length > maxLength
+
+  if (!exceedsLimit) {
+    return children(text)
+  }
+
+  return (
+    <TooltipProvider delayDuration={delayDuration}>
+      <Tooltip>
+        <TooltipTrigger className="cursor-default" aria-label={text}>
+          {children(trim(text, maxLength))}
+        </TooltipTrigger>
+
+        <TooltipContent aria-hidden>{text}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}
+
 export interface TruncatedTextProps
   extends Omit<TextProps, keyof TruncatedProps | "children">,
     TruncatedProps {}
@@ -195,22 +228,17 @@ const TruncatedText: FC<TruncatedTextProps> = ({
   className,
   ...props
 }) => {
-  const exceedsLimit = text.length > maxLength
-
-  return exceedsLimit ? (
-    <TooltipProvider delayDuration={delayDuration}>
-      <Tooltip>
-        <TooltipTrigger className="cursor-default" aria-label={text}>
-          <Text {...props} className={cn("w-max", className)}>
-            {trim(text, maxLength)}
-          </Text>
-        </TooltipTrigger>
-
-        <TooltipContent aria-hidden>{text}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  ) : (
-    <Text>{text}</Text>
+  return (
+    <TruncatedPrimitive
+      text={text}
+      maxLength={maxLength}
+      delayDuration={delayDuration}>
+      {truncatedText => (
+        <Text {...props} className={cn("w-max", className)}>
+          {truncatedText}
+        </Text>
+      )}
+    </TruncatedPrimitive>
   )
 }
 
@@ -225,22 +253,17 @@ const TruncatedHeading: FC<TruncatedHeadingProps> = ({
   className,
   ...props
 }) => {
-  const exceedsLimit = text.length > maxLength
-
-  return exceedsLimit ? (
-    <TooltipProvider delayDuration={delayDuration}>
-      <Tooltip>
-        <TooltipTrigger className="cursor-default" aria-label={text}>
-          <Heading {...props} className={cn("w-max", className)}>
-            {trim(text, maxLength)}
-          </Heading>
-        </TooltipTrigger>
-
-        <TooltipContent aria-hidden>{text}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  ) : (
-    <Text>{text}</Text>
+  return (
+    <TruncatedPrimitive
+      text={text}
+      maxLength={maxLength}
+      delayDuration={delayDuration}>
+      {truncatedText => (
+        <Heading {...props} className={cn("w-max", className)}>
+          {truncatedText}
+        </Heading>
+      )}
+    </TruncatedPrimitive>
   )
 }
 
