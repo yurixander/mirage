@@ -2,7 +2,6 @@ import React from "react"
 import {cva} from "class-variance-authority"
 import {cn} from "@/utils/utils"
 
-type TypographyAs = "span" | "p" | "div" | "label"
 type TypographyWeight = "light" | "regular" | "medium" | "semibold" | "bold"
 type TypographyAlign = "left" | "center" | "right"
 
@@ -16,6 +15,13 @@ type TypographyColor =
   | "background"
   | "card"
   | "popover"
+
+interface TypographyBaseProps<T>
+  extends Omit<React.AllHTMLAttributes<T>, "color" | "weight" | "align"> {
+  color?: TypographyColor
+  weight?: TypographyWeight
+  align?: TypographyAlign
+}
 
 type TypographyVariants = {
   weight: Record<TypographyWeight, string>
@@ -59,6 +65,7 @@ const typographyVariants = cva("w-full", {
 })
 
 type TextSize = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+type TypographyAs = "span" | "p" | "div" | "label"
 
 type TextVariants = {
   size: Record<TextSize, string>
@@ -86,12 +93,9 @@ const textVariants = cva("leading-[110%]", {
 })
 
 interface TextProps<T extends TypographyAs>
-  extends Omit<React.AllHTMLAttributes<HTMLElement>, "size"> {
+  extends Omit<TypographyBaseProps<HTMLElement>, "size"> {
   as?: T
   size?: TextSize
-  color?: TypographyColor
-  weight?: TypographyWeight
-  align?: TypographyAlign
 }
 
 function Text<T extends TypographyAs = "span">({
@@ -142,11 +146,8 @@ const headingVariants = cva("font-bold leading-[160%]", {
   },
 })
 
-interface HeadingProps extends React.AllHTMLAttributes<HTMLHeadingElement> {
+interface HeadingProps extends TypographyBaseProps<HTMLHeadingElement> {
   level?: HeadingLevel
-  color?: TypographyColor
-  weight?: TypographyWeight
-  align?: TypographyAlign
 }
 
 function Heading({

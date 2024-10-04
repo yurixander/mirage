@@ -1,3 +1,4 @@
+import TruncatedTextWithTooltip from "@/components/TruncatedTextWithTooltip"
 import {Text, Heading} from "@/components/ui/typography"
 import {type FC} from "react"
 
@@ -13,12 +14,14 @@ const DevelopmentPreview: FC = () => {
         <Text size="8">Algo</Text>
         <Text size="9">Algo</Text>
 
-        <Heading level="h1">SOme</Heading>
+        <Heading level="h1">Some</Heading>
         <Heading level="h2">SOme</Heading>
         <Heading level="h3">SOme</Heading>
         <Heading level="h4">SOme</Heading>
         <Heading level="h5">SOme</Heading>
         <Heading level="h6">SOme</Heading>
+
+        <TruncatedTextWithTooltip text="Some thing else" maxLength={10} />
       </div>
     </>
   )

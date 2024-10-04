@@ -30,7 +30,7 @@ const TruncatedTextWithTooltip: FC<TruncatedTextWithTooltipProps> = ({
   return exceedsLimit ? (
     <TooltipProvider delayDuration={delayDuration}>
       <Tooltip>
-        <TooltipTrigger aria-label={text}>
+        <TooltipTrigger className="cursor-default" aria-label={text}>
           <Typography as={as} className="w-max" style={style} variant={variant}>
             {trim(text, maxLength)}
           </Typography>
