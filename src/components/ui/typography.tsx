@@ -71,7 +71,7 @@ const typographyClass: TypographyVariants = {
   },
 }
 
-const typographyVariants = cva("inline-flex w-full ", {
+const typographyVariants = cva("w-full", {
   variants: typographyClass,
   defaultVariants: {
     weight: "regular",
@@ -109,7 +109,8 @@ const textVariants = cva("leading-[110%]", {
   },
 })
 
-interface TextProps extends Omit<TypographyBaseProps<HTMLElement>, "size"> {
+export interface TextProps
+  extends Omit<TypographyBaseProps<HTMLElement>, "size"> {
   as?: TextAs
   size?: TextSize
 }
@@ -162,7 +163,7 @@ const headingVariants = cva("font-bold leading-[160%]", {
   },
 })
 
-interface HeadingProps extends TypographyBaseProps<HTMLHeadingElement> {
+export interface HeadingProps extends TypographyBaseProps<HTMLHeadingElement> {
   level?: HeadingLevel
 }
 
