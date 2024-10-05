@@ -1,5 +1,9 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import {Heading, type HeadingProps} from "@/components/ui/typography"
+import {
+  Heading,
+  TruncatedHeading,
+  type HeadingProps,
+} from "@/components/ui/typography"
 
 type Story = StoryObj<typeof Heading>
 
@@ -39,6 +43,12 @@ const render = (
   </div>
 )
 
+const truncatedRender = (
+  args: Omit<HeadingProps, "children" | "size">
+): React.JSX.Element => (
+  <TruncatedHeading text="Truncated heading" maxLength={10} {...args} />
+)
+
 export const Default: Story = {
   render,
   args: {},
@@ -56,6 +66,11 @@ export const Center: Story = {
   args: {
     align: "center",
   },
+}
+
+export const Truncated: Story = {
+  render: truncatedRender,
+  args: {},
 }
 
 export default meta

@@ -1,5 +1,5 @@
 import {type Meta, type StoryObj} from "@storybook/react"
-import {Text, type TextProps} from "@/components/ui/typography"
+import {Text, TruncatedText, type TextProps} from "@/components/ui/typography"
 
 type Story = StoryObj<typeof Text>
 
@@ -49,6 +49,12 @@ const render = (
   </div>
 )
 
+const truncatedRender = (
+  args: Omit<TextProps, "children" | "size">
+): React.JSX.Element => (
+  <TruncatedText text="Truncated text" maxLength={10} {...args} />
+)
+
 export const Default: Story = {
   render,
   args: {},
@@ -73,6 +79,11 @@ export const Center: Story = {
   args: {
     align: "center",
   },
+}
+
+export const Truncated: Story = {
+  render: truncatedRender,
+  args: {},
 }
 
 export default meta
