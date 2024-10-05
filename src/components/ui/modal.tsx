@@ -30,10 +30,7 @@ const ModalHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>): React.JSX.Element => (
   <div className="flex w-full sm:items-center">
-    <div
-      className={cn("flex grow flex-col text-center sm:text-left", className)}
-      {...props}
-    />
+    <div className={cn("flex grow flex-col text-left", className)} {...props} />
 
     <AlertDialogPrimitive.AlertDialogCancel
       className={cn(
@@ -89,13 +86,7 @@ const ModalFooter = ({
       </div>
     )}
 
-    <div
-      className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
-        className
-      )}
-      {...props}
-    />
+    <div className={cn("flex gap-2 sm:justify-end", className)} {...props} />
   </div>
 )
 
@@ -127,7 +118,7 @@ const ModalMoreInfo = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant={variant}
       ref={ref}
       className={cn(
-        "mr-auto w-full px-0 py-0 font-sans font-bold sm:w-max",
+        "mr-auto w-full w-max px-0 py-0 font-sans font-bold",
         className
       )}
       {...props}
