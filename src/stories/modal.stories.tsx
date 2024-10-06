@@ -1,23 +1,52 @@
-import Modal, {type ModalProps} from "@/components/Modal"
-import Typography from "@/components/Typography"
 import {type Meta, type StoryObj} from "@storybook/react"
 import React from "react"
+import {Button} from "@/components/ui/button"
+import {
+  Modal,
+  ModalTrigger,
+  ModalCancel,
+  ModalAction,
+  ModalContent,
+  ModalDescription,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+  ModalMoreInfo,
+} from "@/components/ui/modal"
 
 type Story = StoryObj<typeof Modal>
 
 const meta: Meta<typeof Modal> = {component: Modal}
 
-const render = (args: ModalProps): React.JSX.Element => <Modal {...args} />
+const render = (): React.JSX.Element => (
+  <div className="flex size-full items-center justify-center">
+    <Modal>
+      <ModalTrigger asChild>
+        <Button>Open</Button>
+      </ModalTrigger>
+
+      <ModalContent>
+        <ModalHeader>
+          <ModalTitle>Modal title</ModalTitle>
+
+          <ModalDescription>Modal subtitle goes here</ModalDescription>
+        </ModalHeader>
+
+        <ModalFooter>
+          <ModalMoreInfo>Need help?</ModalMoreInfo>
+
+          <ModalCancel>Cancel</ModalCancel>
+
+          <ModalAction>Continue</ModalAction>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  </div>
+)
 
 export const Default: Story = {
   render,
-  args: {
-    title: "New Space",
-    actionText: "Create Space",
-    children: <Typography>Space is powerful</Typography>,
-    onAccept: () => {},
-    onClose: () => {},
-  },
+  args: {},
 }
 
 export default meta
