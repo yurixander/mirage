@@ -1,5 +1,4 @@
-import Input, {
-  type InputAction,
+import {
   type InputConstraint,
   nonEmptyConstraint,
   userIdConstraint,
@@ -8,7 +7,6 @@ import Typography, {TypographyVariant} from "@/components/Typography"
 import {useState, type FC} from "react"
 import {StaticAssetPath} from "@/utils/util"
 import {Link} from "react-router-dom"
-import {ReactSVG} from "react-svg"
 import {IoIosContact} from "react-icons/io"
 import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
 import useLogin from "@/hooks/util/useLogin"
@@ -17,6 +15,7 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Button} from "@/components/ui/button"
 import AppLogo from "@/components/AppLogo"
+import {type InputIconActionProps, InputWithIcon} from "@/components/ui/input"
 
 const LoginView: FC = () => {
   const {t} = useTranslation()
@@ -28,7 +27,7 @@ const LoginView: FC = () => {
   return (
     <div className="flex size-full max-h-screen items-center justify-center p-6">
       {/* Decorative background */}
-      <div className="hidden h-full items-center justify-center md:flex">
+      <div className="hidden h-full items-center justify-center sm:flex">
         <img
           className="max-h-full max-w-full object-contain"
           src={StaticAssetPath.LoginPhoto}
@@ -72,17 +71,15 @@ const LoginView: FC = () => {
               icon={IoKey}
               placeholder={t(LangKey.Password)}
               isPassword={!isPasswordVisible}
-              actions={[
-                {
-                  tooltip: isPasswordVisible
-                    ? t(LangKey.HideToken)
-                    : t(LangKey.ShowToken),
-                  icon: isPasswordVisible ? IoEyeOff : IoEye,
-                  onClick: () => {
-                    setIsPasswordVisible(!isPasswordVisible)
-                  },
+              actions={{
+                tooltip: isPasswordVisible
+                  ? t(LangKey.HideToken)
+                  : t(LangKey.ShowToken),
+                Icon: isPasswordVisible ? IoEyeOff : IoEye,
+                onClick: () => {
+                  setIsPasswordVisible(!isPasswordVisible)
                 },
-              ]}
+              }}
             />
 
             <div className="flex flex-col gap-1">
@@ -126,29 +123,13 @@ const LoginView: FC = () => {
   )
 }
 
-const Logo: FC = () => {
-  return (
-    <div className="flex w-full justify-center">
-      <div className="m-2 flex items-center">
-        <ReactSVG src={StaticAssetPath.AppLogoSmall} />
-
-        <div className="flex items-end font-iowan">
-          <div>Mirage</div>
-
-          <span className="ml-0.5 text-xs italic">©</span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 type InputSectionProps = {
   title: string
   onValueChange: (value: string) => void
   icon: IconType
   placeholder: string
   constraints?: InputConstraint[]
-  actions?: InputAction[]
+  actions?: InputIconActionProps
   isPassword?: boolean
 }
 
@@ -165,14 +146,18 @@ const InputSection: FC<InputSectionProps> = ({
     <div className="flex flex-col gap-1">
       <Typography className="font-medium">{title}</Typography>
 
-      <Input
-        className="w-full"
-        placeholder={placeholder}
+      <InputWithIcon
+        inputProps={{
+          placeholder,
+          type: isPassword === true ? "password" : "text",
+          autoCapitalize: "none",
+          autoComplete: "off",
+          spellCheck: false,
+        }}
         onValueChange={onValueChange}
         Icon={icon}
-        actions={actions}
+        action={actions}
         constraints={constraints}
-        type={isPassword === true ? "password" : "text"}
       />
     </div>
   )
