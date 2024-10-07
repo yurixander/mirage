@@ -1764,10 +1764,10 @@
   resolved "https://registry.yarnpkg.com/@storybook/components/-/components-8.3.2.tgz#b11099e485134f4adc49a65457f5e6e9f844761f"
   integrity sha512-yB/ETNTNVZi8xvVsTMWvtiI4APRj2zzAa3nHyQO0X+DC4jjysT9D1ruL6jZJ/2DHMp7A9U6v2if83dby/kszfg==
 
-"@storybook/core@8.3.2":
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/@storybook/core/-/core-8.3.2.tgz#b550730994168f7757fc71813b5bd15fd347b75f"
-  integrity sha512-DVXs9AZzXHUKEhi5hKQ4gmH2ODFFM9hmd3odnlqenIINxGynbRtAGzU8pMhjrTRSrnlLr1liGew1IcY+hwkFjQ==
+"@storybook/core@8.3.5":
+  version "8.3.5"
+  resolved "https://registry.yarnpkg.com/@storybook/core/-/core-8.3.5.tgz#d77c93bb67c2df12e3bf84ae7def4693891b225d"
+  integrity sha512-GOGfTvdioNa/n+Huwg4u/dsyYyBcM+gEcdxi3B7i5x4yJ3I912KoVshumQAOF2myKSRdI8h8aGWdx7nnjd0+5Q==
   dependencies:
     "@storybook/csf" "^0.1.11"
     "@types/express" "^4.17.21"
@@ -7893,12 +7893,12 @@ stop-iteration-iterator@^1.0.0:
   dependencies:
     internal-slot "^1.0.4"
 
-storybook@^8.3.2:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/storybook/-/storybook-8.3.2.tgz#264315dd2c1df1136a3f55a8a8ad2be6988248c0"
-  integrity sha512-jfDPtoPTtXcQ4O82u6+VE0V8q05hnj9NdmTVJvUxab796FoEbhk07xFLynOopfd9h9i0D/jc5Sf4C+iMe1bhmA==
+storybook@^8.3.5:
+  version "8.3.5"
+  resolved "https://registry.yarnpkg.com/storybook/-/storybook-8.3.5.tgz#aef0542c08e245b7ac22742c1e1633a125063b8e"
+  integrity sha512-hYQVtP2l+3kO8oKDn4fjXXQYxgTRsj/LaV6lUMJH0zt+OhVmDXKJLxmdUP4ieTm0T8wEbSYosFavgPcQZlxRfw==
   dependencies:
-    "@storybook/core" "8.3.2"
+    "@storybook/core" "8.3.5"
 
 "string-width-cjs@npm:string-width@^4.2.0":
   version "4.2.3"
