@@ -283,6 +283,7 @@ export const spanish: LangDefinition = {
   [LangKey.Typing]: "escribiendo...",
   [LangKey.Are]: "están",
   [LangKey.Is]: "está",
+  [LangKey.AllSpaces]: "Todos los espacios",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Bienvenido a Mirage",

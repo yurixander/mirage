@@ -246,6 +246,7 @@ export const english: LangDefinition = {
   [LangKey.EmojiIcon]: "Emoji icon",
   [LangKey.SearchAnyEmoji]: "Search emoji...",
   [LangKey.MoreVariants]: "More variants",
+  [LangKey.AllSpaces]: "All spaces",
   [LangKey.MessagesError]: "Messages Error",
   [LangKey.MessagesErrorSubtitle]:
     "An error occurred when obtaining messages from this room.",

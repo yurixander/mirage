@@ -5,10 +5,16 @@ import {StaticAssetPath} from "@/utils/util"
 import LoadingEffect from "@/components/LoadingEffect"
 import {motion} from "framer-motion"
 import {scaleInAnimation} from "@/utils/animations"
-import {t} from "@/utils/lang"
 import {LangKey} from "@/lang/allKeys"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {twMerge} from "tailwind-merge"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import useTranslation from "@/hooks/util/useTranslation"
 
 type SpacesNavProps = {
   spaces: PartialSpace[]
@@ -27,6 +33,8 @@ const Spaces: FC<SpacesNavProps> = ({
   spaceSelected,
   className,
 }) => {
+  const {t} = useTranslation()
+
   return (
     <ScrollArea
       className={twMerge("flex h-[500px] w-max flex-col", className)}
@@ -34,7 +42,7 @@ const Spaces: FC<SpacesNavProps> = ({
       isScrollBarHidden>
       <nav className="flex flex-col gap-3 pr-1">
         <Space
-          spaceName="All spaces"
+          spaceName={t(LangKey.AllSpaces)}
           isSelected={spaceSelected === undefined}
           spaceId="home_space_id"
           avatarUrl={StaticAssetPath.SpaceHome}
@@ -62,17 +70,27 @@ const Spaces: FC<SpacesNavProps> = ({
         <div className="flex w-max justify-center gap-1">
           <div className="-ml-0.5 w-1.5" />
 
-          <motion.button
-            aria-label={t(LangKey.CreateSpace)}
-            variants={scaleInAnimation}
-            initial="initial"
-            whileInView="whileInView"
-            className="box-border flex size-10 items-center justify-center rounded-md border-[3px] border-neutral-200 dark:border-neutral-400"
-            onClick={onCreateSpace}>
-            <div className="absolute h-0.5 w-4 rounded-full bg-neutral-200 dark:bg-neutral-400" />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <motion.button
+                  aria-label={t(LangKey.CreateSpace)}
+                  variants={scaleInAnimation}
+                  initial="initial"
+                  whileInView="whileInView"
+                  className="box-border flex size-10 items-center justify-center rounded-md border-[3px] border-neutral-200 dark:border-neutral-400"
+                  onClick={onCreateSpace}>
+                  <div className="absolute h-0.5 w-4 rounded-full bg-neutral-200 dark:bg-neutral-400" />
 
-            <div className="absolute h-4 w-0.5 rounded-full bg-neutral-200 dark:bg-neutral-400" />
-          </motion.button>
+                  <div className="absolute h-4 w-0.5 rounded-full bg-neutral-200 dark:bg-neutral-400" />
+                </motion.button>
+              </TooltipTrigger>
+
+              <TooltipContent side="right">
+                {t(LangKey.CreateSpace)}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         <div className="h-6 w-1" />
