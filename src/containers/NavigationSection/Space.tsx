@@ -2,9 +2,11 @@ import Avatar from "boring-avatars"
 import {useState, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
+import {scaleInAnimation} from "@/utils/animations"
 
 export type SpaceProps = {
   isSelected: boolean
+  spaceName: string
   spaceId: string
   onSpaceSelected: (spaceId: string) => void
   avatarUrl?: string
@@ -14,6 +16,7 @@ export type SpaceProps = {
 const Space: FC<SpaceProps> = ({
   isSelected,
   onSpaceSelected,
+  spaceName,
   spaceId,
   avatarUrl,
   classNames,
@@ -22,6 +25,7 @@ const Space: FC<SpaceProps> = ({
 
   return (
     <motion.div
+      aria-label={spaceName}
       className="flex items-center gap-1"
       onTapStart={() => {
         setIsActive(true)
@@ -34,6 +38,7 @@ const Space: FC<SpaceProps> = ({
       }}>
       {isSelected ? (
         <motion.div
+          aria-hidden
           animate={{height: isActive ? 8 : 26}}
           className={twMerge(
             "-ml-0.5 w-1.5 rounded-full",
@@ -41,12 +46,14 @@ const Space: FC<SpaceProps> = ({
           )}
         />
       ) : (
-        <div className="-ml-0.5 w-1.5" />
+        <div aria-hidden className="-ml-0.5 w-1.5" />
       )}
 
       <motion.button
-        initial={{scale: 0.5, opacity: 0.5}}
-        whileInView={{scale: 1, opacity: 1}}
+        aria-hidden
+        variants={scaleInAnimation}
+        initial="initial"
+        whileInView="whileInView"
         whileTap={{scale: 0.9}}
         animate={{scale: isActive ? 0.9 : 1}}
         transition={{
@@ -61,12 +68,19 @@ const Space: FC<SpaceProps> = ({
           onSpaceSelected(spaceId)
         }}>
         {avatarUrl === undefined ? (
-          <Avatar square size="100%" variant="bauhaus" />
+          <Avatar
+            className="dark:opacity-90"
+            aria-hidden
+            square
+            size="100%"
+            variant="bauhaus"
+          />
         ) : (
           <img
-            className="size-full object-cover"
+            aria-hidden
+            className="size-full object-cover dark:opacity-90"
             src={avatarUrl}
-            alt={spaceId}
+            alt={`Avatar of ${spaceName}`}
           />
         )}
       </motion.button>
