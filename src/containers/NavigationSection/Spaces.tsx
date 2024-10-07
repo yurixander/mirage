@@ -78,7 +78,7 @@ const Spaces: FC<SpacesNavProps> = ({
                   variants={scaleInAnimation}
                   initial="initial"
                   whileInView="whileInView"
-                  className="box-border flex size-[30px] items-center justify-center rounded-md border-2 border-neutral-200 dark:border-neutral-400 sm:size-10 sm:border-[3px]"
+                  className="box-border flex size-[30px] items-center justify-center rounded-sm border-2 border-neutral-200 dark:border-neutral-400 sm:size-10 sm:rounded-md sm:border-[3px]"
                   onClick={onCreateSpace}>
                   <div className="absolute h-0.5 w-4 rounded-full bg-neutral-200 dark:bg-neutral-400" />
 
@@ -106,11 +106,11 @@ const SpacesPlaceHolder: FC<{length?: number}> = ({length = 1}) => {
       variants={scaleInAnimation}
       initial="initial"
       whileInView="whileInView"
-      className="flex w-max items-center gap-1"
+      className="flex w-max items-center gap-0.5 sm:gap-1"
       key={index}>
-      <div className="-ml-0.5 h-0.5 w-1.5 bg-transparent" />
+      <div className="-ml-0.5 w-1 bg-transparent sm:w-1.5" />
 
-      <div className="size-10 overflow-hidden rounded-md bg-neutral-300 dark:bg-neutral-700">
+      <div className="size-8 overflow-hidden rounded-sm bg-neutral-300 dark:bg-neutral-700 sm:size-10 sm:rounded-md">
         <LoadingEffect />
       </div>
     </motion.div>
