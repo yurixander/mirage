@@ -29,9 +29,10 @@ const Spaces: FC<SpacesNavProps> = ({
 }) => {
   return (
     <ScrollArea
-      className={twMerge("flex h-full w-max flex-col", className)}
-      type="scroll">
-      <nav className="flex flex-col gap-3">
+      className={twMerge("flex h-[500px] w-max flex-col", className)}
+      type="scroll"
+      isScrollBarHidden>
+      <nav className="flex flex-col gap-3 pr-1">
         <Space
           spaceName="All spaces"
           isSelected={spaceSelected === undefined}

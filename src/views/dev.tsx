@@ -62,7 +62,6 @@ const DevelopmentPreview: FC = () => {
   return (
     <>
       <Spaces
-        className="m-2"
         spaces={spacesDummy}
         isLoading={false}
         spaceSelected={space}
