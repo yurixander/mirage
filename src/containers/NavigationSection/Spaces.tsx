@@ -67,8 +67,8 @@ const Spaces: FC<SpacesNavProps> = ({
           ))
         )}
 
-        <div className="flex w-max justify-center gap-1">
-          <div className="-ml-0.5 w-1.5" />
+        <div className="flex w-max justify-center gap-0.5 sm:gap-1">
+          <div className="-ml-0.5 w-1 sm:w-1.5" />
 
           <TooltipProvider>
             <Tooltip>
@@ -78,7 +78,7 @@ const Spaces: FC<SpacesNavProps> = ({
                   variants={scaleInAnimation}
                   initial="initial"
                   whileInView="whileInView"
-                  className="box-border flex size-10 items-center justify-center rounded-md border-[3px] border-neutral-200 dark:border-neutral-400"
+                  className="box-border flex size-[30px] items-center justify-center rounded-md border-2 border-neutral-200 dark:border-neutral-400 sm:size-10 sm:border-[3px]"
                   onClick={onCreateSpace}>
                   <div className="absolute h-0.5 w-4 rounded-full bg-neutral-200 dark:bg-neutral-400" />
 

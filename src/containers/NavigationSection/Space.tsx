@@ -33,7 +33,7 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
             <motion.div
               aria-hidden
               tabIndex={-1}
-              className="flex items-center gap-1"
+              className="flex items-center gap-0.5 sm:gap-1"
               onTapStart={() => {
                 setIsActive(true)
               }}
@@ -48,12 +48,12 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
                   aria-hidden
                   animate={{height: isActive ? 8 : 26}}
                   className={twMerge(
-                    "-ml-0.5 w-1.5 rounded-full",
+                    "-ml-0.5 w-1 rounded-full sm:w-1.5",
                     isSelected ? "bg-purple-500" : "bg-transparent"
                   )}
                 />
               ) : (
-                <div aria-hidden className="-ml-0.5 w-1.5" />
+                <div aria-hidden className="-ml-0.5 w-1 sm:w-1.5" />
               )}
 
               <motion.button
@@ -68,7 +68,7 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
                   duration: 0.2,
                 }}
                 className={twMerge(
-                  "box-border size-10 overflow-hidden rounded-lg border-[3px] transition-colors focus-visible:ring",
+                  "box-border size-8 overflow-hidden rounded-md border-2 transition-colors focus-visible:ring sm:size-10 sm:rounded-lg sm:border-[3px]",
                   isSelected
                     ? "border-purple-500 shadow-md"
                     : "border-transparent",
