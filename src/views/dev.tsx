@@ -1,7 +1,6 @@
 import {type PartialSpace} from "@/containers/NavigationSection/hooks/useSpaces"
-import {
+import SpacesNavigation, {
   DASHBOARD_SPACE_ID,
-  SpacesNavigation,
 } from "@/containers/NavigationSection/SpacesNavigation"
 import {useState, type FC} from "react"
 

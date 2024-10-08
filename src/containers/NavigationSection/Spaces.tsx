@@ -8,12 +8,6 @@ import {scaleInAnimation} from "@/utils/animations"
 import {LangKey} from "@/lang/allKeys"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {twMerge} from "tailwind-merge"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import useTranslation from "@/hooks/util/useTranslation"
 
 type SpacesNavProps = {

@@ -1,7 +1,6 @@
 import ServerDropdown from "@/components/ServerDropdown"
 import {MATRIX_SERVER} from "@/utils/servers"
 import {useState, type FC} from "react"
-import Spaces from "./Spaces"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
 import Typography, {TypographyVariant} from "@/components/Typography"
@@ -12,11 +11,15 @@ import useSpaces from "./hooks/useSpaces"
 import RoomList from "./RoomList"
 import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 import useUserData from "./hooks/useUserData"
+import SpacesNavigation, {
+  DASHBOARD_SPACE_ID,
+  SpacesPlaceHolder,
+} from "./SpacesNavigation"
 
 const NavigationSection: FC<{className?: string}> = ({className}) => {
   const {setActiveModal} = useActiveModalStore()
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
-  const [spaceSelected, setSpaceSelected] = useState<string>()
+  const [spaceSelected, setSpaceSelected] = useState(DASHBOARD_SPACE_ID)
   const {spaces, isLoading} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
 
@@ -36,15 +39,18 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
           <div className="mt-2 h-0.5 w-12 rounded-full bg-slate-300" />
         </div>
 
-        <Spaces
-          isLoading={isLoading}
-          spaces={spaces}
-          spaceSelected={spaceSelected}
-          onSpaceSelected={setSpaceSelected}
-          onCreateSpace={() => {
-            setActiveModal(Modals.CreateSpace)
-          }}
-        />
+        {isLoading ? (
+          <SpacesPlaceHolder length={2} />
+        ) : (
+          <SpacesNavigation
+            spaces={spaces}
+            selectedSpace={spaceSelected}
+            onSelectedSpaceChange={setSpaceSelected}
+            onCreateSpace={() => {
+              setActiveModal(Modals.CreateSpace)
+            }}
+          />
+        )}
 
         <SidebarActions className="mt-auto" />
       </div>

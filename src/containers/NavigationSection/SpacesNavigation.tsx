@@ -18,6 +18,7 @@ import {LangKey} from "@/lang/allKeys"
 import {StaticAssetPath} from "@/utils/util"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {ReactSVG} from "react-svg"
+import LoadingEffect from "@/components/LoadingEffect"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -88,12 +89,12 @@ const SpaceAvatar = React.forwardRef<HTMLButtonElement, SpaceAvatarProps>(
         <motion.div
           variants={spaceIndicatorAnimation}
           animate={isSelected ? "selected" : "default"}
-          className="-ml-0.5 mr-1 w-1.5 rounded-full bg-purple-500"
+          className="-ml-1 mr-1 w-2 rounded-full bg-purple-500"
         />
 
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger tabIndex={-1}>
+            <TooltipTrigger tabIndex={-1} asChild>
               <motion.div
                 tabIndex={-1}
                 variants={scaleInAnimation}
@@ -109,7 +110,7 @@ const SpaceAvatar = React.forwardRef<HTMLButtonElement, SpaceAvatarProps>(
                   aria-label={spaceName}
                   variant="outline"
                   className={twMerge(
-                    "size-8 overflow-clip border-2 px-0 shadow-none transition-transform hover:bg-transparent focus-visible:scale-125 focus-visible:ring-0 focus-visible:active:scale-100 data-[state=off]:border-transparent data-[state=on]:border-purple-500",
+                    "size-10 overflow-clip border-2 px-0 shadow-none transition-transform hover:bg-transparent focus-visible:scale-110 focus-visible:ring-0 focus-visible:active:scale-100 data-[state=off]:border-transparent data-[state=on]:border-purple-500",
                     classNames
                   )}>
                   {avatarUrl === undefined ? (
@@ -174,4 +175,22 @@ const CreateSpaceButton: FC<{
   )
 }
 
-export {SpacesNavigation, SpaceAvatar}
+export const SpacesPlaceHolder: FC<{length?: number}> = ({length = 1}) => {
+  return Array.from({length}, (_, index) => (
+    <motion.div
+      aria-hidden
+      variants={scaleInAnimation}
+      initial="initial"
+      whileInView="whileInView"
+      className="flex w-max items-center gap-0.5 sm:gap-1"
+      key={index}>
+      <div className="-ml-0.5 w-1 bg-transparent sm:w-1.5" />
+
+      <div className="size-8 overflow-hidden rounded-sm bg-neutral-300 dark:bg-neutral-700 sm:size-10 sm:rounded-md">
+        <LoadingEffect />
+      </div>
+    </motion.div>
+  ))
+}
+
+export default SpacesNavigation
