@@ -308,4 +308,5 @@ export const spanish: LangDefinition = {
   [LangKey.PauseRecordError]: "No se pudo finalizar la grabación",
   [LangKey.RecordActiveError]: "La grabación está en curso",
   [LangKey.NoDevicesAvailableError]: "No tienes dispositivos de audio",
+  [LangKey.AvatarOf]: (spaceName: string) => `Avatar de ${spaceName}`,
 }

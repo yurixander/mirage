@@ -253,4 +253,5 @@ export enum LangKey {
   RecordActiveError,
   NoDevicesAvailableError,
   AllSpaces,
+  AvatarOf,
 }

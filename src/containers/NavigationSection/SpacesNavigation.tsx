@@ -1,9 +1,9 @@
-import {useState, type FC} from "react"
+import {type FC} from "react"
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 import {motion} from "framer-motion"
 import Avatar from "boring-avatars"
 import {twMerge} from "tailwind-merge"
-import {scaleInAnimation} from "@/utils/animations"
+import {scaleInAnimation, spaceIndicatorAnimation} from "@/utils/animations"
 import React from "react"
 import {type SpaceProps} from "./Space"
 import {
@@ -12,86 +12,68 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import {type PartialSpace} from "./hooks/useSpaces"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
+import {StaticAssetPath} from "@/utils/util"
+import {ScrollArea} from "@/components/ui/scroll-area"
+import {ReactSVG} from "react-svg"
 
-const spacesDummy = [
-  {
-    name: "Proyecto Alpha",
-    spaceId: "alpha-2023",
-  },
-  {
-    name: "Desarrollo Web",
-    spaceId: "web-dev-team",
-  },
-  {
-    name: "Diseño UX/UI",
-    spaceId: "ux-ui-design",
-  },
-  {
-    name: "Marketing Digital",
-    spaceId: "digital-mkt",
-  },
-  {
-    name: "Recursos Humanos",
-    spaceId: "hr-department",
-  },
-  {
-    name: "Soporte Técnico",
-    spaceId: "tech-support",
-  },
-  {
-    name: "Finanzas",
-    spaceId: "finance-team",
-  },
-  {
-    name: "Investigación",
-    spaceId: "research-lab",
-  },
-  {
-    name: "Ventas",
-    spaceId: "sales-force",
-  },
-  {
-    name: "Operaciones",
-    spaceId: "operations",
-  },
-  {
-    name: "Logística",
-    spaceId: "logistics",
-  },
-  {
-    name: "Innovación",
-    spaceId: "innovation-hub",
-  },
-  {
-    name: "Atención al Cliente",
-    spaceId: "customer-care",
-  },
-]
+export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
-const SpacesNavigation: FC = () => {
-  const [selectedSpace, setSelectedSpace] = useState<string>()
+type SpaceNavigationProps = {
+  spaces: PartialSpace[]
+  selectedSpace?: string
+  onSelectedSpaceChange: (spaceId: string) => void
+  onCreateSpace: () => void
+}
+
+const SpacesNavigation: FC<SpaceNavigationProps> = ({
+  spaces,
+  selectedSpace,
+  onSelectedSpaceChange,
+  onCreateSpace,
+}) => {
+  const {t} = useTranslation()
 
   return (
-    <ToggleGroup
-      onValueChange={value => {
-        if (value.length === 0) {
-          return
-        }
+    <ScrollArea
+      className="flex h-full flex-col"
+      type="scroll"
+      isScrollBarHidden>
+      <ToggleGroup
+        role="navigation"
+        onValueChange={value => {
+          if (value.length === 0) {
+            return
+          }
 
-        setSelectedSpace(value)
-      }}
-      value={selectedSpace}
-      className="flex w-max flex-col"
-      orientation="vertical"
-      type="single">
-      {spacesDummy.map((space, index) => (
+          onSelectedSpaceChange(value)
+        }}
+        value={selectedSpace}
+        className="flex w-max flex-col"
+        orientation="vertical"
+        type="single">
         <SpaceAvatar
-          isSelected={selectedSpace === space.spaceId}
-          spaceName={space.name}
-          spaceId={space.spaceId}
+          isSelected={selectedSpace === DASHBOARD_SPACE_ID}
+          spaceName={t(LangKey.AllSpaces)}
+          spaceId={DASHBOARD_SPACE_ID}
+          avatarUrl={StaticAssetPath.SpaceHome}
         />
-      ))}
-    </ToggleGroup>
+
+        {spaces.map(({name, spaceId, avatarUrl}) => (
+          <SpaceAvatar
+            key={spaceId}
+            isSelected={selectedSpace === spaceId}
+            spaceName={name}
+            spaceId={spaceId}
+            avatarUrl={avatarUrl}
+          />
+        ))}
+
+        <CreateSpaceButton onCreateSpace={onCreateSpace} />
+      </ToggleGroup>
+    </ScrollArea>
   )
 }
 
@@ -99,11 +81,14 @@ type SpaceAvatarProps = Omit<SpaceProps, "onSpaceSelected">
 
 const SpaceAvatar = React.forwardRef<HTMLButtonElement, SpaceAvatarProps>(
   ({spaceName, spaceId, avatarUrl, isSelected, classNames}, ref) => {
+    const {t} = useTranslation()
+
     return (
       <div className="flex items-center">
         <motion.div
-          animate={{height: isSelected ? 20 : 0}}
-          className="-ml-0.5 mr-1 h-6 w-1.5 rounded-full bg-purple-500"
+          variants={spaceIndicatorAnimation}
+          animate={isSelected ? "selected" : "default"}
+          className="-ml-0.5 mr-1 w-1.5 rounded-full bg-purple-500"
         />
 
         <TooltipProvider>
@@ -130,8 +115,9 @@ const SpaceAvatar = React.forwardRef<HTMLButtonElement, SpaceAvatarProps>(
                   {avatarUrl === undefined ? (
                     <Avatar
                       name={spaceName}
-                      className="size-full dark:opacity-90"
+                      className="dark:opacity-90"
                       aria-hidden
+                      size="100%"
                       square
                       variant="bauhaus"
                     />
@@ -140,7 +126,7 @@ const SpaceAvatar = React.forwardRef<HTMLButtonElement, SpaceAvatarProps>(
                       aria-hidden
                       className="size-full object-cover dark:opacity-90"
                       src={avatarUrl}
-                      alt={`Avatar of ${spaceName}`}
+                      alt={t(LangKey.AvatarOf, spaceName)}
                     />
                   )}
                 </ToggleGroupItem>
@@ -156,5 +142,36 @@ const SpaceAvatar = React.forwardRef<HTMLButtonElement, SpaceAvatarProps>(
 )
 
 SpaceAvatar.displayName = "SpaceAvatar"
+
+const CreateSpaceButton: FC<{
+  onCreateSpace: () => void
+  className?: string
+}> = ({onCreateSpace, className}) => {
+  const {t} = useTranslation()
+
+  return (
+    <div className={twMerge("flex w-max justify-center gap-0.5", className)}>
+      <div className="-ml-0.5 w-2" />
+
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <motion.button
+              aria-label={t(LangKey.CreateSpace)}
+              variants={scaleInAnimation}
+              initial="initial"
+              whileInView="whileInView"
+              onClick={onCreateSpace}
+              className="focus-visible:rounded-sm focus-visible:ring">
+              <ReactSVG aria-hidden src={StaticAssetPath.CreateSpace} />
+            </motion.button>
+          </TooltipTrigger>
+
+          <TooltipContent side="right">{t(LangKey.CreateSpace)}</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+  )
+}
 
 export {SpacesNavigation, SpaceAvatar}

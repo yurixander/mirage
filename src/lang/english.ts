@@ -289,4 +289,7 @@ export const english: LangDefinition = {
   [LangKey.PauseRecordError]: "Could not pause recording",
   [LangKey.RecordActiveError]: "Recording is active",
   [LangKey.NoDevicesAvailableError]: "You don't have audio devices",
+
+  // Newly added translation
+  [LangKey.AvatarOf]: (spaceName: string) => `Avatar of ${spaceName}`,
 }

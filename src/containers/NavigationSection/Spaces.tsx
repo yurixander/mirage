@@ -66,49 +66,12 @@ const Spaces: FC<SpacesNavProps> = ({
           ))
         )}
 
-        <CreateSpaceButton onCreateSpace={onCreateSpace} />
+        {/* <CreateSpaceButton onCreateSpace={onCreateSpace} /> */}
 
         {/* Blank space to make space for the create space button */}
         <div className="h-6 w-1" />
       </nav>
     </ScrollArea>
-  )
-}
-
-const CreateSpaceButton: FC<{
-  onCreateSpace: () => void
-  className?: string
-}> = ({onCreateSpace, className}) => {
-  const {t} = useTranslation()
-
-  return (
-    <div
-      className={twMerge(
-        "flex w-max justify-center gap-0.5 sm:gap-1",
-        className
-      )}>
-      <div className="-ml-0.5 w-1 sm:w-1.5" />
-
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <motion.button
-              aria-label={t(LangKey.CreateSpace)}
-              variants={scaleInAnimation}
-              initial="initial"
-              whileInView="whileInView"
-              className="box-border flex size-[30px] items-center justify-center rounded-sm border-2 border-neutral-200 dark:border-neutral-400 sm:size-10 sm:rounded-md sm:border-[3px]"
-              onClick={onCreateSpace}>
-              <div className="absolute h-0.5 w-4 rounded-full bg-neutral-200 dark:bg-neutral-400" />
-
-              <div className="absolute h-4 w-0.5 rounded-full bg-neutral-200 dark:bg-neutral-400" />
-            </motion.button>
-          </TooltipTrigger>
-
-          <TooltipContent side="right">{t(LangKey.CreateSpace)}</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    </div>
   )
 }
 
