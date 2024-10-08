@@ -22,7 +22,7 @@ import LoadingEffect from "@/components/LoadingEffect"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
-type SpaceNavigationProps = {
+export type SpaceNavigationProps = {
   spaces: PartialSpace[]
   selectedSpace?: string
   onSelectedSpaceChange: (spaceId: string) => void
