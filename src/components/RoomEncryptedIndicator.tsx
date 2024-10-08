@@ -8,12 +8,14 @@ const RoomEncryptedIndicator: FC = () => {
   const {t} = useTranslation()
 
   return (
-    <div className="flex w-full items-center justify-center gap-1 p-2">
-      <div>
-        <IoLockClosed className="text-slate-500" />
-      </div>
+    <div className="z-20 flex w-full items-center justify-center p-2">
+      <div className="flex animate-pulse items-center justify-center gap-1 rounded-xl border bg-white px-10">
+        <div>
+          <IoLockClosed className="text-slate-500" />
+        </div>
 
-      <Typography>{t(LangKey.RoomEncrypted)}</Typography>
+        <Typography>{t(LangKey.RoomEncrypted)}</Typography>
+      </div>
     </div>
   )
 }

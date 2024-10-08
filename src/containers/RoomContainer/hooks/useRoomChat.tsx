@@ -179,6 +179,8 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
 
       if (isEncrypted) {
         setIsRoomEncrypted(true)
+      } else {
+        setIsRoomEncrypted(false)
       }
     }
 
