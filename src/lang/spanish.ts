@@ -262,7 +262,7 @@ export const spanish: LangDefinition = {
   [LangKey.SendTextMessage]: "Enviar mensaje de texto",
   [LangKey.EmojiPicker]: "Selector de emoji",
   [LangKey.EmojiIcon]: "Icono de emoji",
-  [LangKey.SearchAnyEmoji]: "Buscar emoji",
+  [LangKey.SearchAnyEmoji]: "Busca emojis...",
   [LangKey.MoreVariants]: "Más variantes",
   [LangKey.MessagesError]: "Error de mensajes",
   [LangKey.MessagesErrorSubtitle]:

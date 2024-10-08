@@ -244,7 +244,7 @@ export const english: LangDefinition = {
   [LangKey.SendTextMessage]: "Send text message",
   [LangKey.EmojiPicker]: "Emoji picker",
   [LangKey.EmojiIcon]: "Emoji icon",
-  [LangKey.SearchAnyEmoji]: "Search any emoji",
+  [LangKey.SearchAnyEmoji]: "Search emoji...",
   [LangKey.MoreVariants]: "More variants",
   [LangKey.MessagesError]: "Messages Error",
   [LangKey.MessagesErrorSubtitle]:

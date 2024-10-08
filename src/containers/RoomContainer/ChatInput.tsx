@@ -2,16 +2,18 @@ import {useEffect, useRef, useState, type FC} from "react"
 import {IoIosHappy} from "react-icons/io"
 import {IoMic, IoSend} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import EmojiPicker, {putEmojiInPosition} from "@/components/EmojiPicker"
+import EmojiPicker from "@/components/EmojiPicker"
 import TextArea from "@/components/TextArea"
 import AttachSource from "./AttachSource"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
-import {Button} from "@/components/ui/button"
+import {Button, IconButton} from "@/components/ui/button"
 import useTooltip from "@/hooks/util/useTooltip"
 import useDebounced from "@/hooks/util/useDebounced"
 import AudioRecorder, {AudioRecorderState} from "./AudioRecorder"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {putEmojiInPosition} from "@/hooks/util/useEmojiPicker"
+import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 
 export type MessageSendRequest = {
   roomId: string
@@ -207,56 +209,38 @@ const InputChatAction: FC<{
   )
 }
 
-const EmojiPickerPopover: FC<{
+export const EmojiPickerPopover: FC<{
   onPickEmoji: (emoji: string) => void
   isDisabled?: boolean
 }> = ({onPickEmoji, isDisabled = false}) => {
   const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false)
   const {t} = useTranslation()
 
-  useEffect(() => {
-    const handleOpenEmojiPicker = (event: KeyboardEvent): void => {
-      if (event.ctrlKey && event.key === "e" && !isDisabled) {
-        event.preventDefault()
-
-        setIsEmojiPickerVisible(prevIsOpen => !prevIsOpen)
-      }
+  useGlobalHotkey({ctrl: true, key: "e"}, () => {
+    if (isDisabled) {
+      return
     }
 
-    document.addEventListener("keydown", handleOpenEmojiPicker)
-
-    return () => {
-      document.removeEventListener("keydown", handleOpenEmojiPicker)
-    }
-  }, [isDisabled])
+    setIsEmojiPickerVisible(prevIsOpen => !prevIsOpen)
+  })
 
   return (
     <Popover open={isEmojiPickerVisible} onOpenChange={setIsEmojiPickerVisible}>
-      <PopoverTrigger asChild>
-        <Button
-          disabled={isDisabled}
+      <PopoverTrigger>
+        <IconButton
+          tooltip={t(LangKey.EmojiPicker)}
+          aria-disabled={isDisabled}
           aria-label={t(LangKey.EmojiPicker)}
-          variant="ghost"
-          size="icon"
-          className={twMerge(
-            isEmojiPickerVisible && "bg-accent text-accent-foreground",
-            "size-max hover:bg-transparent"
-          )}>
-          <IoIosHappy
-            aria-label={t(LangKey.EmojiIcon)}
-            className={twMerge(
-              INPUT_ACTION_CLASS,
-              isEmojiPickerVisible && "text-slate-500"
-            )}
-          />
-        </Button>
+          asBoundary={false}>
+          <IoIosHappy aria-hidden className={INPUT_ACTION_CLASS} />
+        </IconButton>
       </PopoverTrigger>
 
       <PopoverContent
         align="end"
         alignOffset={-70}
         sideOffset={16}
-        className="p-1.5">
+        className="w-80 p-0 dark:bg-neutral-900">
         <EmojiPicker onPickEmoji={onPickEmoji} />
       </PopoverContent>
     </Popover>
