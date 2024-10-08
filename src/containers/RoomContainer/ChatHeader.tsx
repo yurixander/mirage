@@ -35,8 +35,8 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   const {t} = useTranslation()
 
   return (
-    <header className={twMerge(className, "flex flex-col gap-1 w-full")}>
-      <div className="flex items-center justify-center w-full">
+    <header className={twMerge(className, "flex w-full flex-col gap-1")}>
+      <div className="flex w-full items-center justify-center">
         <div className="m-2 flex w-full gap-1">
           <div>
             <LiaSlackHash className="text-blue-800" />
