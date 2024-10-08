@@ -63,7 +63,6 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
                 initial="initial"
                 whileInView="whileInView"
                 whileTap={{scale: 0.9}}
-                animate={{scale: isActive ? 0.9 : 1}}
                 transition={{
                   duration: 0.2,
                 }}

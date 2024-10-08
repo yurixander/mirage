@@ -63,7 +63,7 @@ const DevelopmentPreview: FC = () => {
     <>
       <Spaces
         spaces={spacesDummy}
-        isLoading={true}
+        isLoading={false}
         spaceSelected={space}
         onCreateSpace={function (): void {
           throw new Error("Function not implemented.")
