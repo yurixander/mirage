@@ -5,6 +5,7 @@ import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import {getJoinedSpaces} from "@/utils/spaces"
 
 export type PartialSpace = {
   name: string
@@ -57,13 +58,11 @@ const useSpaces = (): UseSpacesReturnType => {
     }
 
     try {
-      for (const room of client.getRooms()) {
-        if (!room.isSpaceRoom()) {
-          continue
+      void getJoinedSpaces(client).then(spaces => {
+        for (const room of spaces) {
+          addSpace(processSpace(room))
         }
-
-        addSpace(processSpace(room))
-      }
+      })
 
       setIsLoading(false)
     } catch (error) {
