@@ -71,10 +71,13 @@ const InputIconAction: React.FC<InputIconActionProps> = ({
   <div
     {...props}
     className={cn(
-      "absolute right-1 h-auto w-max text-gray-400 dark:text-neutral-500 sm:right-1.5",
+      "absolute right-1 h-auto w-max text-gray-300 dark:text-neutral-500 sm:right-1.5",
       className
     )}>
-    <IconButton tooltip={tooltip} onClick={onClick}>
+    <IconButton
+      tooltip={tooltip}
+      onClick={onClick}
+      className="hover:bg-transparent">
       <Icon />
     </IconButton>
   </div>
@@ -136,6 +139,7 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
 
       {action && <InputIconAction {...action} />}
       {violatedConstraints.map(violation => (
+        // TODO: Fix this problem
         // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
         <>{showTooltip(violation.message, true)}</>
       ))}
