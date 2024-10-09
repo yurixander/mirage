@@ -1,7 +1,12 @@
+import Some from "@/containers/NavigationSection/Rooms"
 import {type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
-  return <></>
+  return (
+    <>
+      <Some />
+    </>
+  )
 }
 
 export default DevelopmentPreview
