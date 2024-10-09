@@ -44,17 +44,17 @@ const SpacesNavigation: FC<SpaceNavigationProps> = ({
       isScrollBarHidden>
       <ToggleGroup
         role="navigation"
+        value={selectedSpace}
+        className="flex w-max flex-col"
+        orientation="vertical"
+        type="single"
         onValueChange={value => {
           if (value.length === 0) {
             return
           }
 
           onSelectedSpaceChange(value)
-        }}
-        value={selectedSpace}
-        className="flex w-max flex-col"
-        orientation="vertical"
-        type="single">
+        }}>
         <SpaceAvatar
           isSelected={selectedSpace === DASHBOARD_SPACE_ID}
           spaceName={t(LangKey.AllSpaces)}
@@ -80,67 +80,73 @@ const SpacesNavigation: FC<SpaceNavigationProps> = ({
 
 type SpaceAvatarProps = Omit<SpaceProps, "onSpaceSelected">
 
-const SpaceAvatar = React.forwardRef<HTMLButtonElement, SpaceAvatarProps>(
-  ({spaceName, spaceId, avatarUrl, isSelected, classNames}, ref) => {
-    const {t} = useTranslation()
+const SpaceAvatar: FC<SpaceAvatarProps> = ({
+  spaceName,
+  spaceId,
+  avatarUrl,
+  isSelected,
+  classNames,
+}) => {
+  const {t} = useTranslation()
 
-    return (
-      <div className="flex items-center">
-        <motion.div
-          variants={spaceIndicatorAnimation}
-          animate={isSelected ? "selected" : "default"}
-          className="-ml-1 mr-1 w-2 rounded-full bg-purple-500"
-        />
+  return (
+    <div className="flex items-center">
+      <motion.div
+        aria-hidden
+        variants={spaceIndicatorAnimation}
+        animate={isSelected ? "selected" : "default"}
+        className="-ml-1 mr-1 w-2 rounded-full bg-purple-500"
+      />
 
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger tabIndex={-1} asChild>
-              <motion.div
-                tabIndex={-1}
-                variants={scaleInAnimation}
-                initial="initial"
-                whileInView="whileInView"
-                whileTap={{scale: 0.9}}
-                transition={{
-                  duration: 0.2,
-                }}>
-                <ToggleGroupItem
-                  ref={ref}
-                  value={spaceId}
-                  aria-label={spaceName}
-                  variant="outline"
-                  className={twMerge(
-                    "size-10 overflow-clip border-2 px-0 shadow-none transition-transform hover:bg-transparent focus-visible:scale-110 focus-visible:ring-0 focus-visible:active:scale-100 data-[state=off]:border-transparent data-[state=on]:border-purple-500",
-                    classNames
-                  )}>
-                  {avatarUrl === undefined ? (
-                    <Avatar
-                      name={spaceName}
-                      className="dark:opacity-90"
-                      aria-hidden
-                      size="100%"
-                      square
-                      variant="bauhaus"
-                    />
-                  ) : (
-                    <img
-                      aria-hidden
-                      className="size-full object-cover dark:opacity-90"
-                      src={avatarUrl}
-                      alt={t(LangKey.AvatarOf, spaceName)}
-                    />
-                  )}
-                </ToggleGroupItem>
-              </motion.div>
-            </TooltipTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger aria-hidden tabIndex={-1} asChild>
+            <motion.div
+              tabIndex={-1}
+              variants={scaleInAnimation}
+              initial="initial"
+              whileInView="whileInView"
+              whileTap={{scale: 0.9}}
+              transition={{
+                duration: 0.2,
+              }}>
+              <ToggleGroupItem
+                value={spaceId}
+                aria-label={spaceName}
+                variant="outline"
+                className={twMerge(
+                  "size-10 overflow-clip border-2 px-0 shadow-none transition-transform hover:bg-transparent focus-visible:scale-110 focus-visible:ring-0 focus-visible:active:scale-100 data-[state=off]:border-transparent data-[state=on]:border-purple-500",
+                  classNames
+                )}>
+                {avatarUrl === undefined ? (
+                  <Avatar
+                    name={spaceName}
+                    className="dark:opacity-90"
+                    aria-hidden
+                    size="100%"
+                    square
+                    variant="bauhaus"
+                  />
+                ) : (
+                  <img
+                    aria-hidden
+                    className="size-full object-cover dark:opacity-90"
+                    src={avatarUrl}
+                    alt={t(LangKey.AvatarOf, spaceName)}
+                  />
+                )}
+              </ToggleGroupItem>
+            </motion.div>
+          </TooltipTrigger>
 
-            <TooltipContent side="right">{spaceName}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-    )
-  }
-)
+          <TooltipContent aria-hidden side="right">
+            {spaceName}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+  )
+}
 
 SpaceAvatar.displayName = "SpaceAvatar"
 
@@ -156,7 +162,7 @@ const CreateSpaceButton: FC<{
 
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild>
+          <TooltipTrigger aria-hidden asChild>
             <motion.button
               aria-label={t(LangKey.CreateSpace)}
               variants={scaleInAnimation}
@@ -168,7 +174,9 @@ const CreateSpaceButton: FC<{
             </motion.button>
           </TooltipTrigger>
 
-          <TooltipContent side="right">{t(LangKey.CreateSpace)}</TooltipContent>
+          <TooltipContent aria-hidden side="right">
+            {t(LangKey.CreateSpace)}
+          </TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </div>
