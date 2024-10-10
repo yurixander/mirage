@@ -1,6 +1,7 @@
 import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import {IoMdArrowDropdown} from "react-icons/io"
+import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 
 import {cn} from "@/utils/utils"
 import {type FC} from "react"
@@ -54,51 +55,73 @@ export const RoomSectionsHandler: FC<RoomSectionsHandlerProps> = ({
   const {directs, groups, recommended} = sections
 
   return (
-    <AccordionPrimitive.Root
-      className={cn("flex flex-col gap-2", className)}
-      type="multiple">
-      {directs.length > 0 && (
-        <AccordionRoomSection title="Chats Directos">
-          {directs.map(room => (
-            <Room
-              key={room.roomId}
-              roomName={room.roomName}
-              roomId={room.roomId}
-              type={room.type}
-              emoji={room.emoji}
-              onRoomClick={roomId => {}}
-            />
-          ))}
-        </AccordionRoomSection>
-      )}
+    <AccordionPrimitive.Root className={className} type="multiple">
+      <ToggleGroup className="flex flex-col items-start gap-2" type="single">
+        {directs.length > 0 && (
+          <AccordionRoomSection title="Chats Directos">
+            {directs.map(room => (
+              <ToggleGroupItem
+                aria-label={room.roomName}
+                className="h-7 p-1"
+                size="sm"
+                key={room.roomId}
+                value={room.roomId}>
+                <Room
+                  roomName={room.roomName}
+                  roomId={room.roomId}
+                  type={room.type}
+                  emoji={room.emoji}
+                  onRoomClick={roomId => {}}
+                />
+              </ToggleGroupItem>
+            ))}
+          </AccordionRoomSection>
+        )}
 
-      <AccordionRoomSection title="Habitaciones">
-        {groups.map(room => (
-          <Room
-            key={room.roomId}
-            roomName={room.roomName}
-            roomId={room.roomId}
-            type={room.type}
-            emoji={room.emoji}
-            onRoomClick={roomId => {}}
-          />
-        ))}
-      </AccordionRoomSection>
+        {groups.length > 0 && (
+          <AccordionRoomSection title="Habitaciones">
+            {groups.map(room => (
+              <ToggleGroupItem
+                aria-label={room.roomName}
+                className="h-7 p-1"
+                size="sm"
+                key={room.roomId}
+                value={room.roomId}>
+                <Room
+                  key={room.roomId}
+                  roomName={room.roomName}
+                  roomId={room.roomId}
+                  type={room.type}
+                  emoji={room.emoji}
+                  onRoomClick={roomId => {}}
+                />
+              </ToggleGroupItem>
+            ))}
+          </AccordionRoomSection>
+        )}
 
-      {recommended.length > 0 && (
-        <AccordionRoomSection title="Recomendados">
-          {recommended.map(room => (
-            <Room
-              key={room.roomId}
-              roomName={room.roomName}
-              roomId={room.roomId}
-              type={room.type}
-              emoji={room.emoji}
-              onRoomClick={roomId => {}}
-            />
-          ))}
-        </AccordionRoomSection>
-      )}
+        {recommended.length > 0 && (
+          <AccordionRoomSection title="Recomendados">
+            {recommended.map(room => (
+              <ToggleGroupItem
+                aria-label={room.roomName}
+                className="h-7 p-1"
+                size="sm"
+                key={room.roomId}
+                value={room.roomId}>
+                <Room
+                  key={room.roomId}
+                  roomName={room.roomName}
+                  roomId={room.roomId}
+                  type={room.type}
+                  emoji={room.emoji}
+                  onRoomClick={roomId => {}}
+                />
+              </ToggleGroupItem>
+            ))}
+          </AccordionRoomSection>
+        )}
+      </ToggleGroup>
     </AccordionPrimitive.Root>
   )
 }
