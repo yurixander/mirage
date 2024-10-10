@@ -162,6 +162,7 @@ export enum LangKey {
   // #region Navigation
   Rooms,
   DirectChats,
+  Recommended,
   GoToHome,
   RoomsLoadingError,
   ViewDirectChats,

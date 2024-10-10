@@ -187,6 +187,7 @@ export const english: LangDefinition = {
   // #region Navigation
   [LangKey.Rooms]: "Rooms",
   [LangKey.DirectChats]: "Direct chats",
+  [LangKey.Recommended]: "Recommended",
   [LangKey.GoToHome]: "Go to home",
   [LangKey.RoomsLoadingError]: "Rooms loading error",
   [LangKey.ViewDirectChats]: "View Direct chats",

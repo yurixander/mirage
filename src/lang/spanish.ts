@@ -205,6 +205,7 @@ export const spanish: LangDefinition = {
   // #region Navigation
   [LangKey.Rooms]: "Salas",
   [LangKey.DirectChats]: "Chats directos",
+  [LangKey.Recommended]: "Recomendados",
   [LangKey.GoToHome]: "Ir a inicio",
   [LangKey.RoomsLoadingError]: "Error al cargar las salas",
   [LangKey.ViewDirectChats]: "Ver chats directos",

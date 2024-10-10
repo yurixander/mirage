@@ -5,7 +5,7 @@ import {RoomType} from "@/components/Room"
 const DevelopmentPreview: FC = () => {
   return (
     <RoomSectionsHandler
-      className="max-w-40"
+      className="max-w-64"
       sections={{
         directs: [
           {
