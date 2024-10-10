@@ -25,7 +25,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
 
   return (
     <div className={twMerge("flex size-full max-w-72", className)}>
-      <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-slate-300 bg-gray-100">
+      <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-slate-300 bg-neutral-100 dark:bg-neutral-900">
         <div className="flex flex-col items-center p-1">
           <ReactSVG src={StaticAssetPath.NewAppLogo} />
 
@@ -36,7 +36,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
             MIRAGE
           </Typography>
 
-          <div className="mt-2 h-0.5 w-12 rounded-full bg-slate-300" />
+          <div className="mt-2 h-0.5 w-12 rounded-full bg-neutral-300" />
         </div>
 
         {isLoading ? (
