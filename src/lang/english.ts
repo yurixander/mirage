@@ -2,6 +2,7 @@ import {type LangDefinition} from "@/utils/lang"
 import {LangKey} from "./allKeys"
 
 export const english: LangDefinition = {
+  [LangKey.MoreActions]: "More actions",
   [LangKey.CreateRoom]: "Create Room",
   [LangKey.Name]: "Name",
   [LangKey.DescriptionOptional]: "Description (optional)",

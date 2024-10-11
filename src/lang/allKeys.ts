@@ -1,4 +1,5 @@
 export enum LangKey {
+  MoreActions,
   CreateRoom,
   Name,
   DescriptionOptional,

@@ -12,7 +12,14 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {IoEllipsisHorizontal} from "react-icons/io5"
 import {IconButton} from "@/components/ui/button"
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 type AccordionRoomSectionProps = {
   title: string
@@ -26,21 +33,30 @@ export const AccordionRoomSection: FC<AccordionRoomSectionProps> = ({
   actions,
 }) => {
   return (
-    <AccordionPrimitive.Item className="w-full" value={title}>
-      <AccordionPrimitive.Header className="flex">
-        <AccordionPrimitive.Trigger className="flex flex-1 items-center gap-0.5 p-1 transition-transform focus-visible:ring [&[data-state=open]>svg]:rotate-180">
-          <IoMdArrowDropdown className="size-5 shrink-0 text-neutral-500 transition-transform duration-200 dark:text-neutral-400" />
+    <AccordionPrimitive.Item
+      aria-label={title}
+      className="w-full"
+      value={title}>
+      <AccordionPrimitive.Header aria-hidden className="flex items-center">
+        <AccordionPrimitive.Trigger
+          aria-hidden
+          className="flex flex-1 items-center gap-0.5 p-1 transition-transform focus-visible:ring [&[data-state=open]>svg]:rotate-180">
+          <IoMdArrowDropdown
+            aria-hidden
+            className="size-5 shrink-0 text-neutral-500 transition-transform duration-200 dark:text-neutral-400"
+          />
 
           <Text
+            aria-hidden
             size="1"
             className="font-bold uppercase text-neutral-500 dark:text-neutral-400">
             {title}
           </Text>
-
-          {actions !== undefined && (
-            <div className="ml-auto max-h-5 max-w-max">{actions}</div>
-          )}
         </AccordionPrimitive.Trigger>
+
+        {actions !== undefined && (
+          <div className="ml-auto max-h-5 max-w-max">{actions}</div>
+        )}
       </AccordionPrimitive.Header>
 
       <AccordionPrimitive.Content className="flex w-full flex-col gap-1 overflow-hidden pl-1 data-[state=open]:animate-accordion-down">
@@ -91,19 +107,64 @@ const SelectableRoom: FC<SelectableRoomProps> = ({
   )
 }
 
+type MoreActionsDropdownProps = {
+  children: React.ReactNode
+}
+
+const MoreActionsDropdown: FC<MoreActionsDropdownProps> = ({children}) => {
+  const {t} = useTranslation()
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <IconButton
+          aria-label={t(LangKey.MoreActions)}
+          className="size-5 rounded"
+          asBoundary={false}>
+          <IoEllipsisHorizontal />
+        </IconButton>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent
+        align="start"
+        alignOffset={24}
+        className="w-48 dark:bg-neutral-900"
+        onCloseAutoFocus={e => {
+          e.preventDefault()
+        }}>
+        {children}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
 type RoomSections = {
   directs: PartialRoom[]
   groups: PartialRoom[]
   recommended: PartialRoom[]
 }
 
-type RoomSectionsHandlerProps = {
+type RoomSectionsGenericActions = {
+  onCreateDM: () => void
+  onCreateRoom: () => void
+  addRoomToSpace: () => void
+  // TODO: Handle search types in the future
+  onSearch: (searchType: string) => void
+}
+
+interface RoomSectionsHandlerProps extends RoomSectionsGenericActions {
   sections: RoomSections
   className?: string
+  isDashboardActive: boolean
 }
 
 export const RoomSectionsHandler: FC<RoomSectionsHandlerProps> = ({
   sections,
+  onCreateDM,
+  onCreateRoom,
+  onSearch,
+  addRoomToSpace,
+  isDashboardActive,
   className,
 }) => {
   const {directs, groups, recommended} = sections
@@ -111,18 +172,23 @@ export const RoomSectionsHandler: FC<RoomSectionsHandlerProps> = ({
 
   return (
     <AccordionPrimitive.Root className={cn("p-1", className)} type="multiple">
-      <ToggleGroup className="flex flex-col items-start gap-4" type="single">
+      <ToggleGroup
+        aria-hidden
+        className="flex flex-col items-start gap-4"
+        type="single">
         {directs.length > 0 && (
           <AccordionRoomSection
             title={t(LangKey.DirectChats)}
             actions={
-              <IconButton
-                className="size-5 rounded"
-                onClick={e => {
-                  e.stopPropagation()
-                }}>
-                <IoEllipsisHorizontal />
-              </IconButton>
+              <MoreActionsDropdown>
+                <DropdownMenuItem
+                  aria-label={t(LangKey.CreateDM)}
+                  onSelect={onCreateDM}>
+                  <DropdownMenuLabel>{t(LangKey.CreateDM)}</DropdownMenuLabel>
+
+                  <DropdownMenuShortcut char="D" ctrl shift />
+                </DropdownMenuItem>
+              </MoreActionsDropdown>
             }>
             {directs.map(room => (
               <SelectableRoom key={room.roomId} {...room} />
@@ -134,25 +200,51 @@ export const RoomSectionsHandler: FC<RoomSectionsHandlerProps> = ({
           <AccordionRoomSection
             title={t(LangKey.Rooms)}
             actions={
-              <Popover>
-                <PopoverTrigger asChild>
-                  <IconButton
-                    className="size-5 rounded"
-                    asBoundary={false}
-                    onClick={e => {
-                      e.stopPropagation()
-                    }}>
-                    <IoEllipsisHorizontal />
-                  </IconButton>
-                </PopoverTrigger>
+              <MoreActionsDropdown>
+                <DropdownMenuItem
+                  aria-label={t(LangKey.CreateRoom)}
+                  onSelect={onCreateRoom}>
+                  <DropdownMenuLabel>{t(LangKey.CreateRoom)}</DropdownMenuLabel>
 
-                <PopoverContent
-                  align="start"
-                  alignOffset={24}
-                  className="size-36 p-0 dark:bg-neutral-900">
-                  <div className="size-full"></div>
-                </PopoverContent>
-              </Popover>
+                  <DropdownMenuShortcut char="R" ctrl shift />
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  aria-label={t(LangKey.SearchRooms)}
+                  onSelect={() => {
+                    // TODO: Temporally, use correct type in the future implementation of search.
+                    onSearch("room")
+                  }}>
+                  <DropdownMenuLabel>
+                    {t(LangKey.SearchRooms)}
+                  </DropdownMenuLabel>
+
+                  <DropdownMenuShortcut char="R" shift />
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  aria-label={t(LangKey.SearchSpaces)}
+                  onSelect={() => {
+                    // TODO: Temporally, use correct type in the future implementation of search.
+                    onSearch("space")
+                  }}>
+                  <DropdownMenuLabel>
+                    {t(LangKey.SearchSpaces)}
+                  </DropdownMenuLabel>
+
+                  <DropdownMenuShortcut char="S" shift />
+                </DropdownMenuItem>
+
+                {!isDashboardActive && (
+                  <DropdownMenuItem
+                    aria-label={t(LangKey.AddToSpace)}
+                    onSelect={addRoomToSpace}>
+                    <DropdownMenuLabel>
+                      {t(LangKey.AddToSpace)}
+                    </DropdownMenuLabel>
+                  </DropdownMenuItem>
+                )}
+              </MoreActionsDropdown>
             }>
             {groups.map(room => (
               <SelectableRoom key={room.roomId} {...room} />

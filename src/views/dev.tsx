@@ -1,10 +1,11 @@
-import {RoomSectionsHandler} from "@/containers/NavigationSection/Rooms"
 import {type FC} from "react"
+import {RoomSectionsHandler} from "@/containers/NavigationSection/Rooms"
 import {RoomType} from "@/components/Room"
 
 const DevelopmentPreview: FC = () => {
   return (
     <RoomSectionsHandler
+      isDashboardActive
       className="max-w-64"
       sections={{
         directs: [
@@ -36,6 +37,14 @@ const DevelopmentPreview: FC = () => {
           },
         ],
         recommended: [],
+      }}
+      onCreateDM={() => {}}
+      onCreateRoom={() => {}}
+      addRoomToSpace={function (): void {
+        throw new Error("Function not implemented.")
+      }}
+      onSearch={function (searchType: string): void {
+        throw new Error("Function not implemented.")
       }}
     />
   )
