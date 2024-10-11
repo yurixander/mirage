@@ -36,87 +36,89 @@ const LoginView: FC = () => {
       </div>
 
       {/* Login form */}
-      <div className="h-full max-w-[500px] p-6">
-        <div className="flex h-full grow flex-col justify-center gap-6 p-3">
-          <div className="flex w-full items-center justify-center">
-            <AppLogo />
-          </div>
+      <div className="h-screen max-w-[500px] overflow-y-auto">
+        <div className="flex h-full min-h-[500px] max-w-[500px] flex-col gap-2 p-6">
+          <div className="flex h-full grow flex-col justify-center gap-6 p-3">
+            <div className="flex w-full items-center justify-center">
+              <AppLogo />
+            </div>
 
-          {/* Welcome message */}
-          <div className="flex flex-col items-center">
-            <Typography
-              variant={TypographyVariant.HeadingLarge}
-              className="text-center">
-              {t(LangKey.WelcomeBack)}
-            </Typography>
+            {/* Welcome message */}
+            <div className="flex flex-col items-center">
+              <Typography
+                variant={TypographyVariant.HeadingLarge}
+                className="text-center">
+                {t(LangKey.WelcomeBack)}
+              </Typography>
 
-            <Typography className="mt-4 text-center">
-              {t(LangKey.LoginSubtitleInfo)}
-            </Typography>
-          </div>
+              <Typography className="mt-4 text-center">
+                {t(LangKey.LoginSubtitleInfo)}
+              </Typography>
+            </div>
 
-          {/* Controls */}
-          <div className="flex flex-col justify-center gap-2">
-            <InputSection
-              title={t(LangKey.UserID)}
-              onValueChange={setUserId}
-              icon={IoIosContact}
-              placeholder="@userId:matrix.org"
-              constraints={[userIdConstraint, nonEmptyConstraint]}
-            />
+            {/* Controls */}
+            <div className="flex flex-col justify-center gap-2">
+              <InputSection
+                title={t(LangKey.UserID)}
+                onValueChange={setUserId}
+                icon={IoIosContact}
+                placeholder="@userId:matrix.org"
+                constraints={[userIdConstraint, nonEmptyConstraint]}
+              />
 
-            <InputSection
-              title={t(LangKey.Password)}
-              onValueChange={setPassword}
-              icon={IoKey}
-              placeholder={t(LangKey.Password)}
-              isPassword={!isPasswordVisible}
-              actions={{
-                tooltip: isPasswordVisible
-                  ? t(LangKey.HideToken)
-                  : t(LangKey.ShowToken),
-                Icon: isPasswordVisible ? IoEyeOff : IoEye,
-                onClick: () => {
-                  setIsPasswordVisible(!isPasswordVisible)
-                },
-              }}
-            />
+              <InputSection
+                title={t(LangKey.Password)}
+                onValueChange={setPassword}
+                icon={IoKey}
+                placeholder={t(LangKey.Password)}
+                isPassword={!isPasswordVisible}
+                actions={{
+                  tooltip: isPasswordVisible
+                    ? t(LangKey.HideToken)
+                    : t(LangKey.ShowToken),
+                  Icon: isPasswordVisible ? IoEyeOff : IoEye,
+                  onClick: () => {
+                    setIsPasswordVisible(!isPasswordVisible)
+                  },
+                }}
+              />
 
-            <div className="flex flex-col gap-1">
-              <Button
-                disabled={isConnecting}
-                aria-label={t(LangKey.SignIn)}
-                onClick={() => {
-                  void login().catch((error: Error) => {
-                    throw error
-                  })
-                }}>
-                {isConnecting ? t(LangKey.Connecting) : t(LangKey.SignIn)}
-              </Button>
+              <div className="flex flex-col gap-1">
+                <Button
+                  disabled={isConnecting}
+                  aria-label={t(LangKey.SignIn)}
+                  onClick={() => {
+                    void login().catch((error: Error) => {
+                      throw error
+                    })
+                  }}>
+                  {isConnecting ? t(LangKey.Connecting) : t(LangKey.SignIn)}
+                </Button>
 
-              {/* FIXME: This is temporary. Remove later on. */}
-              {lastSyncError !== null && <div>{lastSyncError.message}</div>}
+                {/* FIXME: This is temporary. Remove later on. */}
+                {lastSyncError !== null && <div>{lastSyncError.message}</div>}
 
-              <Button
-                variant="link"
-                aria-label={t(LangKey.ForgotPassword)}
-                onClick={() => {
-                  throw new Error("Forgot password link not implemented")
-                }}>
-                {t(LangKey.ForgotPassword)}
-              </Button>
+                <Button
+                  variant="link"
+                  aria-label={t(LangKey.ForgotPassword)}
+                  onClick={() => {
+                    throw new Error("Forgot password link not implemented")
+                  }}>
+                  {t(LangKey.ForgotPassword)}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Bottom sign up link */}
-        <div className="flex w-full items-center justify-center gap-1">
-          <Typography>{t(LangKey.NoAccountText)}</Typography>
+          {/* Bottom sign up link */}
+          <div className="flex w-full items-center justify-center gap-1">
+            <Typography>{t(LangKey.NoAccountText)}</Typography>
 
-          {/* TODO: Provide link. */}
-          <Link to="">
-            <Typography className="font-bold">{t(LangKey.SignUp)}</Typography>
-          </Link>
+            {/* TODO: Provide link. */}
+            <Link to="">
+              <Typography className="font-bold">{t(LangKey.SignUp)}</Typography>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
