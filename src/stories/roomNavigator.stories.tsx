@@ -4,6 +4,7 @@ import {
   type RoomNavigatorProps,
 } from "@/containers/NavigationSection/RoomNavigator"
 import {type StoryObj, type Meta} from "@storybook/react/*"
+import {useState} from "react"
 
 type Story = StoryObj<typeof RoomNavigator>
 
@@ -11,9 +12,17 @@ const meta: Meta<typeof RoomNavigator> = {
   component: RoomNavigator,
 }
 
-const render = (args: RoomNavigatorProps): React.JSX.Element => (
-  <RoomNavigator {...args} />
-)
+const render = (args: RoomNavigatorProps): React.JSX.Element => {
+  const [roomSelected, setRoomSelected] = useState<string | undefined>()
+
+  return (
+    <RoomNavigator
+      {...args}
+      roomSelected={roomSelected}
+      onRoomSelected={setRoomSelected}
+    />
+  )
+}
 
 export const Default: Story = {
   render,
