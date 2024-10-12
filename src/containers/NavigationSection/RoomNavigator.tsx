@@ -20,6 +20,8 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {widthFillAnimNavigator} from "@/utils/animations"
+import {trim} from "@/utils/util"
 
 type AccordionRoomSectionProps = {
   title: string
@@ -86,7 +88,7 @@ const SelectableRoom: FC<SelectableRoomProps> = ({
       <ToggleGroupItem
         aria-label={roomName}
         className={cn(
-          "flex size-full gap-1 p-1 transition-colors hover:bg-neutral-100 focus-visible:bg-neutral-100 focus-visible:ring-0 data-[state=on]:bg-purple-600 dark:hover:bg-neutral-900 dark:focus-visible:bg-neutral-900 dark:data-[state=on]:bg-purple-500 [&[data-state=on]>span]:text-white",
+          "flex size-full gap-1 p-1 transition-colors hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:ring-0 data-[state=on]:bg-purple-600 dark:hover:bg-neutral-800 dark:focus-visible:bg-neutral-800 dark:data-[state=on]:bg-purple-500 [&[data-state=on]>span]:text-white",
           className
         )}
         size="sm"
@@ -100,7 +102,7 @@ const SelectableRoom: FC<SelectableRoomProps> = ({
           className="text-neutral-600 dark:text-neutral-300"
           size="1"
           weight="semibold">
-          {roomName}
+          {trim(roomName, 26)}
         </Text>
       </ToggleGroupItem>
     </motion.div>
@@ -138,13 +140,19 @@ const MoreActionsDropdown: FC<MoreActionsDropdownProps> = ({children}) => {
   )
 }
 
-type RoomSections = {
+export const EMPTY_SECTIONS: RoomSections = {
+  directs: [],
+  groups: [],
+  recommended: [],
+}
+
+export type RoomSections = {
   directs: PartialRoom[]
   groups: PartialRoom[]
   recommended: PartialRoom[]
 }
 
-type RoomSectionsGenericActions = {
+type RoomNavigatorActions = {
   onCreateDM: () => void
   onCreateRoom: () => void
   addRoomToSpace: () => void
@@ -152,23 +160,35 @@ type RoomSectionsGenericActions = {
   onSearch: (searchType: string) => void
 }
 
-interface RoomSectionsHandlerProps extends RoomSectionsGenericActions {
+interface RoomNavigatorProps extends RoomNavigatorActions {
   sections: RoomSections
-  className?: string
   isDashboardActive: boolean
+  isLoading: boolean
+  className?: string
 }
 
-export const RoomSectionsHandler: FC<RoomSectionsHandlerProps> = ({
+export const RoomNavigator: FC<RoomNavigatorProps> = ({
   sections,
   onCreateDM,
   onCreateRoom,
   onSearch,
   addRoomToSpace,
   isDashboardActive,
+  isLoading,
   className,
 }) => {
   const {directs, groups, recommended} = sections
   const {t} = useTranslation()
+
+  if (isLoading) {
+    return (
+      <div className={cn("flex flex-col gap-5 p-2", className)}>
+        <RoomSectionSkeleton />
+
+        <RoomSectionSkeleton roomsLength={2} />
+      </div>
+    )
+  }
 
   return (
     <AccordionPrimitive.Root className={cn("p-1", className)} type="multiple">
@@ -261,5 +281,44 @@ export const RoomSectionsHandler: FC<RoomSectionsHandlerProps> = ({
         )}
       </ToggleGroup>
     </AccordionPrimitive.Root>
+  )
+}
+
+type RoomSectionSkeletonProps = {
+  roomsLength?: number
+  className?: string
+}
+
+const RoomSectionSkeleton: FC<RoomSectionSkeletonProps> = ({
+  roomsLength = 1,
+  className,
+}) => {
+  return (
+    <div className={cn("flex animate-pulse flex-col gap-2", className)}>
+      <div className="flex w-full items-center justify-between gap-2">
+        <motion.div
+          variants={widthFillAnimNavigator}
+          initial="initial"
+          whileInView="whileInView"
+          className="h-5 max-w-24 rounded-sm bg-gray-400"
+        />
+
+        <motion.div
+          initial={{scale: 0.5, opacity: 0}}
+          whileInView={{scale: 1, opacity: 1}}
+          className="size-5 rounded-sm bg-gray-400"
+        />
+      </div>
+
+      {Array.from({length: roomsLength}).map((_, index) => (
+        <motion.div
+          key={index}
+          variants={widthFillAnimNavigator}
+          initial="initial"
+          whileInView="whileInView"
+          className="h-4 w-full rounded-sm bg-gray-400"
+        />
+      ))}
+    </div>
   )
 }

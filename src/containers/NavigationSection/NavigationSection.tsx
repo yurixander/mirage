@@ -9,9 +9,10 @@ import SidebarActions from "./SidebarActions"
 import UserBar from "./UserBar"
 import {twMerge} from "tailwind-merge"
 import useSpaces from "./hooks/useSpaces"
-import RoomList from "./RoomList"
 import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 import useUserData from "./hooks/useUserData"
+import {RoomNavigator} from "./RoomNavigator"
+import useRoomNavigator from "./hooks/useRoomNavigator"
 
 const NavigationSection: FC<{className?: string}> = ({className}) => {
   const {setActiveModal} = useActiveModalStore()
@@ -19,6 +20,8 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
   const [spaceSelected, setSpaceSelected] = useState<string>()
   const {spaces, isLoading} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
+
+  const {isSectionsLoading, sections} = useRoomNavigator(spaceSelected)
 
   return (
     <div className={twMerge("flex size-full max-w-72", className)}>
@@ -49,7 +52,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
         <SidebarActions className="mt-auto" />
       </div>
 
-      <div className="flex size-full flex-col border-r border-r-slate-300 bg-gray-100">
+      <div className="flex size-full flex-col border-r border-r-slate-300 bg-neutral-100 dark:bg-neutral-900">
         <div className="size-full max-h-12 shrink-0 border-b border-b-slate-300 p-2">
           <ServerDropdown
             initiallyServerSelected={serverSelected}
@@ -57,14 +60,18 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
           />
         </div>
 
-        <RoomList
-          onSpaceSelected={setSpaceSelected}
-          spaceId={spaceSelected}
-          className="size-full border-b border-b-slate-300"
+        <RoomNavigator
+          sections={sections}
+          isDashboardActive={spaceSelected === undefined}
+          isLoading={isSectionsLoading}
+          onCreateDM={() => {}}
+          onCreateRoom={() => {}}
+          addRoomToSpace={() => {}}
+          onSearch={() => {}}
         />
 
         <UserBar
-          className="mt-auto h-16 w-full"
+          className="mt-auto h-16 w-full border-t border-t-slate-300"
           userDataState={userDataState}
           userId={userData.userId}
           displayName={userData.displayName}

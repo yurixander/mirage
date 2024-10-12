@@ -1,10 +1,11 @@
 import {type FC} from "react"
-import {RoomSectionsHandler} from "@/containers/NavigationSection/Rooms"
+import {RoomNavigator} from "@/containers/NavigationSection/RoomNavigator"
 import {RoomType} from "@/components/Room"
 
 const DevelopmentPreview: FC = () => {
   return (
-    <RoomSectionsHandler
+    <RoomNavigator
+      isLoading={false}
       isDashboardActive
       className="max-w-64"
       sections={{
