@@ -9,7 +9,7 @@ const RoomEncryptedIndicator: FC = () => {
 
   return (
     <div className="z-20 flex w-full items-center justify-center p-2">
-      <div className="flex animate-pulse items-center justify-center gap-1 rounded-xl border bg-slate-50 px-10 dark:border-slate-500 dark:bg-slate-900">
+      <div className="flex items-center justify-center gap-1 rounded-xl border bg-slate-50 px-10 dark:border-slate-500 dark:bg-slate-900">
         <div>
           <IoLockClosed className="text-slate-500 dark:text-slate-300" />
         </div>
