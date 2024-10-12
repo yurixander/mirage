@@ -11,11 +11,27 @@ import {Button} from "@/components/ui/button"
 import {FaSearch} from "react-icons/fa"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import {Heading} from "@/components/ui/typography"
+import {
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "@radix-ui/react-alert-dialog"
 
 const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-slate-400 hover:bg-transparent"
 const SIDEBAR_BUTTON_SIZE = 20
 
-const SidebarActions: FC<{className?: string}> = ({className}) => {
+const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
+  className,
+  onLogOut,
+}) => {
   const client = useMatrixClient()
   const {t} = useTranslation()
 
@@ -84,14 +100,36 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
           <IoCall size={SIDEBAR_BUTTON_SIZE} />
         </Button>
 
-        <Button
-          aria-label={t(LangKey.ExitApp)}
-          size="icon"
-          variant="ghost"
-          className={SIDEBAR_BUTTON_CLASS}
-          onClick={() => {}}>
-          <IoExit size={SIDEBAR_BUTTON_SIZE} />
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              asBoundary={false}
+              aria-label={t(LangKey.ExitApp)}
+              size="icon"
+              variant="ghost"
+              className={SIDEBAR_BUTTON_CLASS}>
+              <IoExit size={SIDEBAR_BUTTON_SIZE} />
+            </Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent>
+            <AlertDialogTitle asChild>
+              <Heading level="h3">{t(LangKey.LogOut)}</Heading>
+            </AlertDialogTitle>
+
+            <AlertDialogDescription>
+              {t(LangKey.LogOutDescription)}
+            </AlertDialogDescription>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t(LangKey.Cancel)}</AlertDialogCancel>
+
+              <AlertDialogAction onClick={onLogOut}>
+                {t(LangKey.Accept)}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </>
   )

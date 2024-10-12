@@ -211,6 +211,9 @@ export const english: LangDefinition = {
   [LangKey.OpenChatError]: "Failed to open chat room by reason",
   [LangKey.DMChatWith]: "DMChat with",
   [LangKey.RoomOwners]: "Room owners",
+  [LangKey.LogOut]: "Log out",
+  [LangKey.LogOutDescription]:
+    "You are about to log out, once logged out you will be redirected to the login page, do ypu want to continue?",
 
   // #region Notifications
   [LangKey.Notifications]: "Notifications",

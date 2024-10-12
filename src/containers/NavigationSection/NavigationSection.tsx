@@ -13,7 +13,10 @@ import RoomList from "./RoomList"
 import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 import useUserData from "./hooks/useUserData"
 
-const NavigationSection: FC<{className?: string}> = ({className}) => {
+const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
+  className,
+  onLogOut,
+}) => {
   const {setActiveModal} = useActiveModalStore()
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
   const [spaceSelected, setSpaceSelected] = useState<string>()
@@ -46,7 +49,7 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
           }}
         />
 
-        <SidebarActions className="mt-auto" />
+        <SidebarActions className="mt-auto" onLogOut={onLogOut} />
       </div>
 
       <div className="flex size-full flex-col border-r border-r-slate-300 bg-gray-100">
