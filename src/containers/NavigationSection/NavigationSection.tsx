@@ -13,6 +13,7 @@ import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 import useUserData from "./hooks/useUserData"
 import {RoomNavigator} from "./RoomNavigator"
 import useRoomNavigator from "./hooks/useRoomNavigator"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 
 const NavigationSection: FC<{className?: string}> = ({className}) => {
   const {setActiveModal} = useActiveModalStore()
@@ -22,6 +23,8 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
   const {userDataState, userData, onRefreshData} = useUserData()
 
   const {isSectionsLoading, sections} = useRoomNavigator(spaceSelected)
+
+  const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
 
   return (
     <div className={twMerge("flex size-full max-w-72", className)}>
@@ -61,6 +64,8 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
         </div>
 
         <RoomNavigator
+          roomSelected={activeRoomId ?? undefined}
+          onRoomSelected={setActiveRoomId}
           sections={sections}
           isDashboardActive={spaceSelected === undefined}
           isLoading={isSectionsLoading}

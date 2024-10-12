@@ -162,6 +162,8 @@ type RoomNavigatorActions = {
 
 interface RoomNavigatorProps extends RoomNavigatorActions {
   sections: RoomSections
+  roomSelected?: string
+  onRoomSelected: (roomId: string) => void
   isDashboardActive: boolean
   isLoading: boolean
   className?: string
@@ -176,6 +178,8 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
   isDashboardActive,
   isLoading,
   className,
+  onRoomSelected,
+  roomSelected,
 }) => {
   const {directs, groups, recommended} = sections
   const {t} = useTranslation()
@@ -195,7 +199,15 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
       <ToggleGroup
         aria-hidden
         className="flex flex-col items-start gap-4"
-        type="single">
+        type="single"
+        value={roomSelected}
+        onValueChange={value => {
+          if (value.length === 0) {
+            return
+          }
+
+          onRoomSelected(value)
+        }}>
         {directs.length > 0 && (
           <AccordionRoomSection
             title={t(LangKey.DirectChats)}

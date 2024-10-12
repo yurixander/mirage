@@ -1,8 +1,9 @@
-import {type FC} from "react"
+import {useState, type FC} from "react"
 import {RoomNavigator} from "@/containers/NavigationSection/RoomNavigator"
 import {RoomType} from "@/components/Room"
 
 const DevelopmentPreview: FC = () => {
+  const [roomSelected, setRoomSelected] = useState<string | undefined>()
   return (
     <RoomNavigator
       isLoading={false}
@@ -47,6 +48,8 @@ const DevelopmentPreview: FC = () => {
       onSearch={function (searchType: string): void {
         throw new Error("Function not implemented.")
       }}
+      onRoomSelected={setRoomSelected}
+      roomSelected={roomSelected}
     />
   )
 }
