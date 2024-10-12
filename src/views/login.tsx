@@ -1,5 +1,4 @@
-import Input, {
-  type InputAction,
+import {
   type InputConstraint,
   nonEmptyConstraint,
   userIdConstraint,
@@ -8,7 +7,6 @@ import Typography, {TypographyVariant} from "@/components/Typography"
 import {useState, type FC} from "react"
 import {StaticAssetPath} from "@/utils/util"
 import {Link} from "react-router-dom"
-import {ReactSVG} from "react-svg"
 import {IoIosContact} from "react-icons/io"
 import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
 import useLogin from "@/hooks/util/useLogin"
@@ -16,6 +14,8 @@ import {type IconType} from "react-icons"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Button} from "@/components/ui/button"
+import AppLogo from "@/components/AppLogo"
+import {type InputIconActionProps, InputWithIcon} from "@/components/ui/input"
 
 const LoginView: FC = () => {
   const {t} = useTranslation()
@@ -27,7 +27,7 @@ const LoginView: FC = () => {
   return (
     <div className="flex size-full max-h-screen items-center justify-center p-6">
       {/* Decorative background */}
-      <div className="flex h-full items-center justify-center">
+      <div className="hidden h-full items-center justify-center sm:flex">
         <img
           className="max-h-full max-w-full object-contain"
           src={StaticAssetPath.LoginPhoto}
@@ -36,103 +36,91 @@ const LoginView: FC = () => {
       </div>
 
       {/* Login form */}
-      <div className="h-full max-w-[500px] p-6">
-        <div className="flex h-full grow flex-col justify-center gap-6 p-3">
-          <Logo />
+      <div className="h-screen max-w-[500px] overflow-y-auto">
+        <div className="flex h-full min-h-[500px] max-w-[500px] flex-col gap-2 p-6">
+          <div className="flex h-full grow flex-col justify-center gap-6 p-3">
+            <div className="flex w-full items-center justify-center">
+              <AppLogo />
+            </div>
 
-          {/* Welcome message */}
-          <div className="flex flex-col items-center">
-            <Typography
-              variant={TypographyVariant.HeadingLarge}
-              className="text-center">
-              {t(LangKey.WelcomeBack)}
-            </Typography>
+            {/* Welcome message */}
+            <div className="flex flex-col items-center">
+              <Typography
+                variant={TypographyVariant.HeadingLarge}
+                className="text-center">
+                {t(LangKey.WelcomeBack)}
+              </Typography>
 
-            <Typography className="mt-4 text-center">
-              {t(LangKey.LoginSubtitleInfo)}
-            </Typography>
-          </div>
+              <Typography className="mt-4 text-center">
+                {t(LangKey.LoginSubtitleInfo)}
+              </Typography>
+            </div>
 
-          {/* Controls */}
-          <div className="flex flex-col justify-center gap-2">
-            <InputSection
-              title={t(LangKey.UserID)}
-              onValueChange={setUserId}
-              icon={IoIosContact}
-              placeholder="@userId:matrix.org"
-              constraints={[userIdConstraint, nonEmptyConstraint]}
-            />
+            {/* Controls */}
+            <div className="flex flex-col justify-center gap-2">
+              <InputSection
+                title={t(LangKey.UserID)}
+                onValueChange={setUserId}
+                icon={IoIosContact}
+                placeholder="@userId:matrix.org"
+                constraints={[userIdConstraint, nonEmptyConstraint]}
+                ariaLabel={t(LangKey.UserID)}
+              />
 
-            <InputSection
-              title={t(LangKey.Password)}
-              onValueChange={setPassword}
-              icon={IoKey}
-              placeholder={t(LangKey.Password)}
-              isPassword={!isPasswordVisible}
-              actions={[
-                {
+              <InputSection
+                title={t(LangKey.Password)}
+                onValueChange={setPassword}
+                icon={IoKey}
+                placeholder={t(LangKey.Password)}
+                isPassword={!isPasswordVisible}
+                actions={{
                   tooltip: isPasswordVisible
                     ? t(LangKey.HideToken)
                     : t(LangKey.ShowToken),
-                  icon: isPasswordVisible ? IoEyeOff : IoEye,
+                  Icon: isPasswordVisible ? IoEyeOff : IoEye,
                   onClick: () => {
                     setIsPasswordVisible(!isPasswordVisible)
                   },
-                },
-              ]}
-            />
+                }}
+                ariaLabel={t(LangKey.Password)}
+              />
 
-            <div className="flex flex-col gap-1">
-              <Button
-                disabled={isConnecting}
-                aria-label={t(LangKey.SignIn)}
-                onClick={() => {
-                  void login().catch((error: Error) => {
-                    throw error
-                  })
-                }}>
-                {isConnecting ? t(LangKey.Connecting) : t(LangKey.SignIn)}
-              </Button>
+              <div className="flex flex-col gap-1">
+                <Button
+                  disabled={isConnecting}
+                  aria-label={t(LangKey.SignIn)}
+                  onClick={() => {
+                    void login().catch((error: Error) => {
+                      throw error
+                    })
+                  }}>
+                  {isConnecting ? t(LangKey.Connecting) : t(LangKey.SignIn)}
+                </Button>
 
-              {/* FIXME: This is temporary. Remove later on. */}
-              {lastSyncError !== null && <div>{lastSyncError.message}</div>}
+                {/* FIXME: This is temporary. Remove later on. */}
+                {lastSyncError !== null && <div>{lastSyncError.message}</div>}
 
-              <Button
-                variant="link"
-                aria-label={t(LangKey.ForgotPassword)}
-                onClick={() => {
-                  throw new Error("Forgot password link not implemented")
-                }}>
-                {t(LangKey.ForgotPassword)}
-              </Button>
+                <Button
+                  variant="link"
+                  aria-label={t(LangKey.ForgotPassword)}
+                  onClick={() => {
+                    throw new Error("Forgot password link not implemented")
+                  }}>
+                  {t(LangKey.ForgotPassword)}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Bottom sign up link */}
-        <div className="flex w-full items-center justify-center gap-1">
-          <Typography>{t(LangKey.NoAccountText)}</Typography>
+          {/* Bottom sign up link */}
+          <div className="flex w-full items-center justify-center gap-1">
+            <Typography>{t(LangKey.NoAccountText)}</Typography>
 
-          {/* TODO: Provide link. */}
-          <Link to="">
-            <Typography className="font-bold">{t(LangKey.SignUp)}</Typography>
-          </Link>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const Logo: FC = () => {
-  return (
-    <div className="flex w-full justify-center">
-      <div className="m-2 flex items-center">
-        <ReactSVG src={StaticAssetPath.AppLogoSmall} />
-
-        <div className="flex items-end font-iowan">
-          <div>Mirage</div>
-
-          <span className="ml-0.5 text-xs italic">©</span>
+            {/* TODO: Provide link. */}
+            <Link to="">
+              <Typography className="font-bold">{t(LangKey.SignUp)}</Typography>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
@@ -145,8 +133,9 @@ type InputSectionProps = {
   icon: IconType
   placeholder: string
   constraints?: InputConstraint[]
-  actions?: InputAction[]
+  actions?: InputIconActionProps
   isPassword?: boolean
+  ariaLabel?: string
 }
 
 const InputSection: FC<InputSectionProps> = ({
@@ -157,19 +146,25 @@ const InputSection: FC<InputSectionProps> = ({
   constraints,
   placeholder,
   isPassword,
+  ariaLabel,
 }) => {
   return (
     <div className="flex flex-col gap-1">
       <Typography className="font-medium">{title}</Typography>
 
-      <Input
-        className="w-full"
-        placeholder={placeholder}
+      <InputWithIcon
+        inputProps={{
+          placeholder,
+          type: isPassword === true ? "password" : "text",
+          autoCapitalize: "none",
+          autoComplete: "off",
+          spellCheck: false,
+        }}
         onValueChange={onValueChange}
+        ariaLabel={ariaLabel}
         Icon={icon}
-        actions={actions}
+        action={actions}
         constraints={constraints}
-        type={isPassword === true ? "password" : "text"}
       />
     </div>
   )
