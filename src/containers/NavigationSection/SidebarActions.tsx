@@ -12,7 +12,7 @@ import {FaSearch} from "react-icons/fa"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 
-const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-slate-400 hover:bg-transparent"
+const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-neutral-400 hover:bg-transparent"
 const SIDEBAR_BUTTON_SIZE = 20
 
 const SidebarActions: FC<{className?: string}> = ({className}) => {
@@ -46,6 +46,7 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
             throw new Error("onResultUserClick function not implemented.")
           }}>
           <Button
+            asBoundary={false}
             aria-label={t(LangKey.ViewDirectChats)}
             size="icon"
             variant="ghost"
@@ -59,7 +60,8 @@ const SidebarActions: FC<{className?: string}> = ({className}) => {
             aria-label={t(LangKey.ViewNotifications)}
             size="icon"
             variant="ghost"
-            className={SIDEBAR_BUTTON_CLASS}>
+            className={SIDEBAR_BUTTON_CLASS}
+            asBoundary={false}>
             <NotificationDot isVisible={containsUnreadNotifications}>
               <IoNotifications size={SIDEBAR_BUTTON_SIZE} />
             </NotificationDot>

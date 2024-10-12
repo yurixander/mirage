@@ -1,4 +1,4 @@
-import {type MatrixClient, type Room} from "matrix-js-sdk"
+import {RoomEvent, type MatrixClient, type Room} from "matrix-js-sdk"
 import {getDirectRoomsIds} from "./rooms"
 import {RoomType} from "@/components/Room"
 import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
@@ -24,6 +24,15 @@ export const addRoomToSpace = async (
 
     return false
   }
+}
+
+export async function getJoinedSpaces(client: MatrixClient): Promise<Room[]> {
+  const joinedRooms = await client.getJoinedRooms()
+
+  return joinedRooms.joined_rooms
+    .map(roomId => client.getRoom(roomId))
+    .filter(room => room !== null)
+    .filter(room => room.isSpaceRoom())
 }
 
 export async function getRoomsFromSpace(

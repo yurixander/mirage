@@ -29,6 +29,8 @@ type UserBarProps = {
   className?: string
 }
 
+// FIXME: Resolve DOM nesting for button
+
 const UserBar: FC<UserBarProps> = ({
   avatarImageUrl,
   displayName,

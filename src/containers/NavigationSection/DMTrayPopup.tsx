@@ -72,7 +72,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
           clearResult()
         }
       }}>
-      <HoverCardTrigger>{children}</HoverCardTrigger>
+      <HoverCardTrigger children={children} asChild />
 
       <HoverCardContent asChild side="right">
         <div className="z-50 m-2 flex h-[520px] w-[480px] flex-col gap-3 overflow-hidden rounded-md border border-slate-300 md:h-[620px]">

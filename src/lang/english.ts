@@ -246,6 +246,7 @@ export const english: LangDefinition = {
   [LangKey.EmojiIcon]: "Emoji icon",
   [LangKey.SearchAnyEmoji]: "Search emoji...",
   [LangKey.MoreVariants]: "More variants",
+  [LangKey.AllSpaces]: "All spaces",
   [LangKey.MessagesError]: "Messages Error",
   [LangKey.MessagesErrorSubtitle]:
     "An error occurred when obtaining messages from this room.",
@@ -288,4 +289,7 @@ export const english: LangDefinition = {
   [LangKey.PauseRecordError]: "Could not pause recording",
   [LangKey.RecordActiveError]: "Recording is active",
   [LangKey.NoDevicesAvailableError]: "You don't have audio devices",
+
+  // Newly added translation
+  [LangKey.AvatarOf]: (spaceName: string) => `Avatar of ${spaceName}`,
 }

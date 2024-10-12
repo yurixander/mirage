@@ -18,10 +18,11 @@ import {motion} from "framer-motion"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 import {Button} from "@/components/ui/button"
+import {DASHBOARD_SPACE_ID} from "./SpacesNavigation"
 
 export type RoomListProps = {
-  onSpaceSelected: (spaceId?: string) => void
-  spaceId?: string
+  onSpaceSelected: (spaceId: string) => void
+  spaceId: string
   className?: string
 }
 
@@ -55,7 +56,7 @@ const RoomList: FC<RoomListProps> = ({onSpaceSelected, spaceId, className}) => {
           <div className="flex gap-1">
             <Button
               onClick={() => {
-                onSpaceSelected()
+                onSpaceSelected(DASHBOARD_SPACE_ID)
               }}>
               {t(LangKey.GoToHome)}
             </Button>

@@ -1,19 +1,16 @@
 import {useCallback, useEffect, useState} from "react"
-import useList from "../../../hooks/util/useList"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import {getJoinedSpaces} from "@/utils/spaces"
 
 export type PartialSpace = {
   name: string
   spaceId: string
   avatarUrl?: string
 }
-
-const hasSpaceRepeat = (space1: PartialSpace, space2: PartialSpace): boolean =>
-  space1.spaceId === space2.spaceId
 
 const processSpace = (space: Room): PartialSpace => {
   return {
@@ -32,13 +29,7 @@ type UseSpacesReturnType = {
 const useSpaces = (): UseSpacesReturnType => {
   const client = useMatrixClient()
   const [isLoading, setIsLoading] = useState(true)
-
-  const {
-    items: spaces,
-    addItem: addSpace,
-    updateItem: updateSpace,
-    deleteWhen: deleteSpaceWhen,
-  } = useList<PartialSpace>(hasSpaceRepeat)
+  const [spaces, setSpaces] = useState<PartialSpace[]>([])
 
   const onSpaceExit = useCallback(
     (spaceId: string) => {
@@ -57,13 +48,9 @@ const useSpaces = (): UseSpacesReturnType => {
     }
 
     try {
-      for (const room of client.getRooms()) {
-        if (!room.isSpaceRoom()) {
-          continue
-        }
-
-        addSpace(processSpace(room))
-      }
+      void getJoinedSpaces(client).then(spaces => {
+        setSpaces(spaces.map(element => processSpace(element)))
+      })
 
       setIsLoading(false)
     } catch (error) {
@@ -73,7 +60,7 @@ const useSpaces = (): UseSpacesReturnType => {
 
       setIsLoading(false)
     }
-  }, [addSpace, client])
+  }, [client])
 
   useEventListener(RoomEvent.Timeline, (event, room) => {
     if (event.getType() !== EventType.RoomCreate || room === undefined) {
@@ -84,7 +71,7 @@ const useSpaces = (): UseSpacesReturnType => {
       return
     }
 
-    addSpace(processSpace(room))
+    setSpaces(prev => [...prev, processSpace(room)])
   })
 
   useEventListener(RoomEvent.Name, room => {
@@ -92,7 +79,18 @@ const useSpaces = (): UseSpacesReturnType => {
       return
     }
 
-    updateSpace(processSpace(room))
+    setSpaces(prev => {
+      const index = prev.findIndex(space => space.spaceId === room.roomId)
+
+      if (index === -1) {
+        return prev
+      }
+
+      const newSpaces = [...prev]
+      newSpaces[index] = processSpace(room)
+
+      return newSpaces
+    })
   })
 
   useEventListener(RoomEvent.MyMembership, (room, membership) => {
@@ -107,7 +105,7 @@ const useSpaces = (): UseSpacesReturnType => {
       return
     }
 
-    deleteSpaceWhen(spaceIter => spaceIter.spaceId === room.roomId)
+    setSpaces(prev => prev.filter(space => space.spaceId !== room.roomId))
   })
 
   return {spaces, onSpaceExit, isLoading}
