@@ -69,8 +69,10 @@ const NavigationSection: FC<{className?: string}> = ({className}) => {
           sections={sections}
           isDashboardActive={spaceSelected === undefined}
           isLoading={isSectionsLoading}
+          onCreateRoom={() => {
+            setActiveModal(Modals.CreateRoom)
+          }}
           onCreateDM={() => {}}
-          onCreateRoom={() => {}}
           addRoomToSpace={() => {}}
           onSearch={() => {}}
         />

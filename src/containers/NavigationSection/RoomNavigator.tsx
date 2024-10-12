@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {widthFillAnimNavigator} from "@/utils/animations"
 import {trim} from "@/utils/util"
+import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 
 type AccordionRoomSectionProps = {
   title: string
@@ -160,7 +161,7 @@ type RoomNavigatorActions = {
   onSearch: (searchType: string) => void
 }
 
-interface RoomNavigatorProps extends RoomNavigatorActions {
+export interface RoomNavigatorProps extends RoomNavigatorActions {
   sections: RoomSections
   roomSelected?: string
   onRoomSelected: (roomId: string) => void
@@ -183,6 +184,8 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
 }) => {
   const {directs, groups, recommended} = sections
   const {t} = useTranslation()
+
+  useGlobalHotkey({key: "R", alt: true}, onCreateRoom)
 
   if (isLoading) {
     return (
@@ -238,7 +241,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
                   onSelect={onCreateRoom}>
                   <DropdownMenuLabel>{t(LangKey.CreateRoom)}</DropdownMenuLabel>
 
-                  <DropdownMenuShortcut char="R" ctrl shift />
+                  <DropdownMenuShortcut char="R" alt />
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
