@@ -64,6 +64,7 @@ const LoginView: FC = () => {
                 icon={IoIosContact}
                 placeholder="@userId:matrix.org"
                 constraints={[userIdConstraint, nonEmptyConstraint]}
+                ariaLabel={t(LangKey.UserID)}
               />
 
               <InputSection
@@ -81,6 +82,7 @@ const LoginView: FC = () => {
                     setIsPasswordVisible(!isPasswordVisible)
                   },
                 }}
+                ariaLabel={t(LangKey.Password)}
               />
 
               <div className="flex flex-col gap-1">
@@ -133,6 +135,7 @@ type InputSectionProps = {
   constraints?: InputConstraint[]
   actions?: InputIconActionProps
   isPassword?: boolean
+  ariaLabel?: string
 }
 
 const InputSection: FC<InputSectionProps> = ({
@@ -143,6 +146,7 @@ const InputSection: FC<InputSectionProps> = ({
   constraints,
   placeholder,
   isPassword,
+  ariaLabel,
 }) => {
   return (
     <div className="flex flex-col gap-1">
@@ -157,6 +161,7 @@ const InputSection: FC<InputSectionProps> = ({
           spellCheck: false,
         }}
         onValueChange={onValueChange}
+        ariaLabel={ariaLabel}
         Icon={icon}
         action={actions}
         constraints={constraints}

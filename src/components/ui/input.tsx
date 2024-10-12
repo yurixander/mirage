@@ -90,6 +90,7 @@ export type InputWithIconProps = {
   action?: InputIconActionProps
   inputProps: InputProps
   onValueChange?: (value: string) => void
+  ariaLabel?: string
   constraints?: InputConstraint[]
 }
 
@@ -98,6 +99,7 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
   action,
   inputProps,
   onValueChange,
+  ariaLabel,
   constraints,
 }) => {
   const {renderRef, showTooltip} = useTooltip<HTMLInputElement>()
@@ -134,6 +136,7 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
         className="px-7 sm:px-9"
         value={value}
         onChange={handleChange}
+        aria-label={ariaLabel}
         {...inputProps}
       />
 
