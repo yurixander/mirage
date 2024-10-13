@@ -95,6 +95,7 @@ export enum LangKey {
   RoomDetails,
   ExpandRoster,
   DownloadImage,
+  SyncState,
 
   // #region Roster
   People,

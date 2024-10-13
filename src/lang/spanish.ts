@@ -105,6 +105,7 @@ export const spanish: LangDefinition = {
   [LangKey.RoomDetails]: "Información de la room",
   [LangKey.ExpandRoster]: "Expandir el listado de miembros",
   [LangKey.DownloadImage]: "Descargar imagen",
+  [LangKey.SyncState]: "Estado de syncronización",
 
   // #region Roster
   [LangKey.People]: "Personas",

@@ -105,6 +105,7 @@ export const english: LangDefinition = {
   [LangKey.RoomDetails]: "Room details",
   [LangKey.ExpandRoster]: "Expand roster",
   [LangKey.DownloadImage]: "Download image",
+  [LangKey.SyncState]: "Sync state",
 
   // #region Roster
   [LangKey.People]: "People",
