@@ -49,7 +49,7 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
 
   return (
     <HoverCard openDelay={50} closeDelay={50}>
-      <HoverCardTrigger>{children}</HoverCardTrigger>
+      <HoverCardTrigger asChild children={children} />
 
       <HoverCardContent asChild side="right">
         <div className="m-2 max-h-96 w-[448px] max-w-md overflow-auto">

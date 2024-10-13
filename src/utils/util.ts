@@ -21,6 +21,7 @@ export enum StaticAssetPath {
   LoginPhoto = "LoginPhoto.png",
   DotGrid = "icons/dot-grid.svg",
   SpaceHome = "space-home.png",
+  CreateSpace = "icons/create-space.svg",
 }
 
 export type Credentials = {

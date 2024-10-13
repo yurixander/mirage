@@ -53,6 +53,7 @@ module.exports = {
         whitelist: ["read-only"],
       },
     ],
+    "@typescript-eslint/no-throw-literal": "off",
     "promise/always-return": "off",
     "unicorn/number-literal-case": "off",
     "unicorn/prefer-spread": "off",

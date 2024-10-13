@@ -5,6 +5,7 @@ import {getRoomsFromSpace} from "@/utils/spaces"
 import {type Room, RoomEvent, type MatrixClient, EventType} from "matrix-js-sdk"
 import useRoomListener from "./useRoomListener"
 import useMatrixClient from "./useMatrixClient"
+import {DASHBOARD_SPACE_ID} from "@/containers/NavigationSection/SpacesNavigation"
 
 export enum RoomsState {
   Loaded,
@@ -26,9 +27,7 @@ type UseSpaceHierarchyReturnType = {
   onRefreshRooms: () => void
 }
 
-const useSpaceHierarchy = (
-  spaceId: string | undefined
-): UseSpaceHierarchyReturnType => {
+const useSpaceHierarchy = (spaceId: string): UseSpaceHierarchyReturnType => {
   const client = useMatrixClient()
   const [roomsState, setRoomsState] = useState(RoomsState.Loading)
   const [rooms, setRooms] = useState<PartialRoom[]>([])
@@ -38,7 +37,7 @@ const useSpaceHierarchy = (
     (client: MatrixClient) => {
       setActiveSpace(client.getRoom(spaceId))
 
-      if (spaceId === undefined) {
+      if (spaceId === DASHBOARD_SPACE_ID) {
         // If spaceId is not specified fetch all joined rooms.
         void getAllJoinedRooms(client)
           .then(joinedRooms => {

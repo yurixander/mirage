@@ -285,6 +285,7 @@ export const spanish: LangDefinition = {
   [LangKey.Is]: "está",
   [LangKey.RoomEncrypted]:
     "Esta sala está encriptada usando cifrado de extremo a extremo",
+  [LangKey.AllSpaces]: "Todos los espacios",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Bienvenido a Mirage",
@@ -309,4 +310,5 @@ export const spanish: LangDefinition = {
   [LangKey.PauseRecordError]: "No se pudo finalizar la grabación",
   [LangKey.RecordActiveError]: "La grabación está en curso",
   [LangKey.NoDevicesAvailableError]: "No tienes dispositivos de audio",
+  [LangKey.AvatarOf]: (spaceName: string) => `Avatar de ${spaceName}`,
 }
