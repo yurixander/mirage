@@ -11,6 +11,7 @@ import {
   IoSearch,
   IoInformation,
   IoLink,
+  IoLockClosed,
 } from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
 import {twMerge} from "tailwind-merge"
@@ -37,9 +38,19 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   return (
     <header className={twMerge(className, "flex w-full flex-col gap-1")}>
       <div className="flex w-full items-center justify-center">
-        <div className="m-2 flex w-full gap-1">
+        <div className="m-2 flex w-full items-center gap-1">
+          {isRoomEncrypted ? (
+            <div>
+              <IconButton onClick={() => {}} tooltip={t(LangKey.RoomEncrypted)}>
+                <IoLockClosed className="size-5 text-blue-800" />
+              </IconButton>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div>
-            <LiaSlackHash className="text-blue-800" />
+            <LiaSlackHash className="size-5 text-blue-800" />
           </div>
 
           <div>
@@ -91,8 +102,6 @@ const ChatHeader: FC<ChatHeaderProps> = ({
           )}
         </IconButton>
       </div>
-
-      {isRoomEncrypted ? <RoomEncryptedIndicator /> : <></>}
     </header>
   )
 }
