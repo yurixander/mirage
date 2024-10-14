@@ -98,7 +98,7 @@
     "autoprefixer": "^10.4.20",
     "commitizen": "^4.3.1",
     "eslint": "^8.57.0",
-    "eslint-config-love": "^46.0.0",
+    "eslint-config-love": "^84.1.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-array-func": "^5.0.2",
     "eslint-plugin-deprecation": "^3.0.0",
