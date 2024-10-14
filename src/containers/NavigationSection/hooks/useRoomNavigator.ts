@@ -6,15 +6,14 @@ import {getAllJoinedRooms} from "@/utils/rooms"
 import {EventType, type MatrixClient, type Room, RoomEvent} from "matrix-js-sdk"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import {getSpaceRoomSections} from "@/utils/spaces"
+import {DASHBOARD_SPACE_ID} from "../SpacesNavigation"
 
 type UseRoomNavigatorReturnType = {
   isSectionsLoading: boolean
   sections: RoomSections
 }
 
-const useRoomNavigator = (
-  spaceId: string | undefined
-): UseRoomNavigatorReturnType => {
+const useRoomNavigator = (spaceId: string): UseRoomNavigatorReturnType => {
   const client = useMatrixClient()
   const [activeSpace, setActiveSpace] = useState<Room | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -29,8 +28,8 @@ const useRoomNavigator = (
   }, [client, spaceId])
 
   const onLoadSections = useCallback(
-    async (client: MatrixClient, spaceId?: string) => {
-      if (spaceId === undefined) {
+    async (client: MatrixClient, spaceId: string) => {
+      if (spaceId === DASHBOARD_SPACE_ID) {
         const joinedRooms = await getAllJoinedRooms(client)
 
         setSections({

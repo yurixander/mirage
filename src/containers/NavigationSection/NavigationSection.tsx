@@ -33,7 +33,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
 
   return (
-    <div className={twMerge("flex size-full", className)}>
+    <div className={twMerge("flex size-full sm:max-w-80", className)}>
       <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-slate-300 bg-neutral-100 dark:bg-neutral-900">
         <div className="flex flex-col items-center p-1">
           <ReactSVG src={StaticAssetPath.NewAppLogo} />
