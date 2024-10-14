@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import {useState, type FC} from "react"
 import {assert, formatTime, stringToColor, trim} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
@@ -8,9 +8,10 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {twMerge} from "tailwind-merge"
 import {
+  DROPDOWN_ICON_CLASS,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItemGenerator,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
 import {Heading, Text} from "./ui/typography"
@@ -48,6 +49,7 @@ const EventMessage: FC<EventMessageProps> = ({
   onShowMember,
   className,
 }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const Icon = icon ?? IoMdCreate
   const {t} = useTranslation()
   const accentColor = stringToColor(sender.userId)
@@ -62,10 +64,10 @@ const EventMessage: FC<EventMessageProps> = ({
         className="flex items-center gap-1">
         <div className="flex gap-2">
           <div className="flex w-10 items-center justify-end">
-            <Icon aria-hidden className="text-neutral-500" />
+            <Icon aria-hidden className="fill-neutral-500" />
           </div>
 
-          <DropdownMenu>
+          <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger
               style={{borderBottomColor: accentColor}}
               className="box-border shrink-0 focus-visible:border-b-2">
@@ -78,20 +80,31 @@ const EventMessage: FC<EventMessageProps> = ({
               onCloseAutoFocus={event => {
                 event.preventDefault()
               }}>
-              <DropdownMenuItemGenerator
-                items={[
-                  {
-                    label: t(LangKey.ViewMember),
-                    icon: IoPeopleCircle,
-                    onClick: onShowMember,
-                  },
-                  {
-                    label: t(LangKey.FindUser),
-                    icon: IoSearchCircle,
-                    onClick: onFindUser,
-                  },
-                ]}
-              />
+              <DropdownMenuItem
+                onClick={e => {
+                  e.stopPropagation()
+
+                  setIsDropdownOpen(false)
+
+                  onShowMember()
+                }}>
+                <IoPeopleCircle className={DROPDOWN_ICON_CLASS} />
+
+                <Text>{t(LangKey.ViewMember)}</Text>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={e => {
+                  e.stopPropagation()
+
+                  setIsDropdownOpen(false)
+
+                  onShowMember()
+                }}>
+                <IoSearchCircle className={DROPDOWN_ICON_CLASS} />
+
+                <Text>{t(LangKey.FindUser)}</Text>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
