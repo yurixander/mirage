@@ -80,7 +80,7 @@
     "@html-eslint/parser": "^0.27.0",
     "@storybook/addon-essentials": "^8.3.2",
     "@storybook/addon-interactions": "^8.3.2",
-    "@storybook/addon-links": "^8.3.2",
+    "@storybook/addon-links": "^8.3.5",
     "@storybook/addon-onboarding": "^8.3.2",
     "@storybook/blocks": "^8.3.2",
     "@storybook/react": "^8.3.2",
