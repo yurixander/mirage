@@ -21,9 +21,7 @@ type UseSpaceHierarchyReturnType = {
   hierarchySections: RoomSections
 }
 
-const useSpaceHierarchy = (
-  spaceId: string | undefined
-): UseSpaceHierarchyReturnType => {
+const useSpaceHierarchy = (spaceId: string): UseSpaceHierarchyReturnType => {
   const client = useMatrixClient()
   const [activeSpace, setActiveSpace] = useState<Room | null>(null)
   const [hierarchySections, setHierarchySections] = useState(EMPTY_SECTIONS)
