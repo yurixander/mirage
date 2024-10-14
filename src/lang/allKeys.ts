@@ -184,6 +184,8 @@ export enum LangKey {
   OpenChatError,
   DMChatWith,
   RoomOwners,
+  LogOut,
+  LogOutDescription,
 
   // #region Notifications
   Notifications,
