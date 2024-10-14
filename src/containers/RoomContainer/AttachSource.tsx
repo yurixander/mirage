@@ -56,7 +56,10 @@ const AttachSource: FC<ChooseFileButtonProps> = ({
         ref={refs.setReference}
         {...getReferenceProps()}>
         <IoAddCircle
-          className={twMerge("size-5 text-slate-400 md:size-7", className)}
+          className={twMerge(
+            "size-5 fill-neutral-400 dark:fill-neutral-500 md:size-7",
+            className
+          )}
         />
       </motion.button>
 

@@ -58,9 +58,13 @@ const ChatContainer: FC<ChatContainerProps> = ({
       <Loader text={t(LangKey.LoadingRoom)} />
     </div>
   ) : (
-    <div className={twMerge("flex h-full flex-col", className)}>
+    <div
+      className={twMerge(
+        "flex h-full flex-col dark:bg-neutral-950",
+        className
+      )}>
       <ChatHeader
-        className="relative flex size-full max-h-12 items-center border-b border-b-stone-200 px-3 py-1"
+        className="relative flex size-full max-h-12 items-center border-b border-b-neutral-200 px-3 py-1 dark:border-b-neutral-700"
         isRosterExpanded={isRosterExpanded}
         onRosterExpanded={onRosterExpanded}
         roomName={roomName}

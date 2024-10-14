@@ -98,7 +98,7 @@ const ChatInput: FC<ChatInputProps> = ({
   return (
     <div
       className={twMerge(
-        "flex max-h-28 items-start gap-2 rounded-2xl border border-slate-300 bg-gray-50",
+        "flex max-h-28 items-start gap-2 rounded-2xl border border-neutral-300 bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900",
         "w-full md:max-h-36 md:gap-2.5 md:rounded-3xl md:px-3 md:py-2",
         className
       )}>
@@ -108,7 +108,7 @@ const ChatInput: FC<ChatInputProps> = ({
 
           <TextArea
             ref={textAreaRef}
-            className="max-h-24 w-full border-none p-0 text-sm disabled:cursor-default md:max-h-32 md:text-lg"
+            className="max-h-24 w-full border-none p-0 text-sm text-foreground disabled:cursor-default md:max-h-32 md:text-lg"
             value={messageText}
             onValueChanged={setMessageText}
             disabled={isInputDisabled}
