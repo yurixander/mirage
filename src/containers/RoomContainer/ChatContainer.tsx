@@ -30,6 +30,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
     messagesState,
     roomName,
     roomTopic,
+    isRoomEncrypted,
     isChatLoading,
     messages,
     typingUsers,
@@ -64,6 +65,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
         onRosterExpanded={onRosterExpanded}
         roomName={roomName}
         roomDescription={roomTopic}
+        isRoomEncrypted={isRoomEncrypted}
       />
 
       <div
