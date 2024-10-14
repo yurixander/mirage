@@ -257,7 +257,7 @@ export enum LangKey {
   PauseRecordError,
   RecordActiveError,
   NoDevicesAvailableError,
-  AvatarOf,
   Loading,
   AllSpaces,
+  AvatarOf,
 }

@@ -1,9 +1,15 @@
 import {EventType, JoinRule, type MatrixClient, type Room} from "matrix-js-sdk"
 import {getDirectRoomsIds} from "./rooms"
 import {RoomType} from "@/components/Room"
-import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
 import {stringToEmoji} from "./util"
 import {type RoomSections} from "@/containers/NavigationSection/RoomNavigator"
+
+export type PartialRoom = {
+  roomId: string
+  roomName: string
+  emoji: string
+  type: RoomType
+}
 
 export const addRoomToSpace = async (
   spaceId: Room,

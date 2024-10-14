@@ -1,3 +1,4 @@
+import RoomEncryptedIndicator from "@/components/RoomEncryptedIndicator"
 import {IconButton} from "@/components/ui/button"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
