@@ -78,6 +78,8 @@ const ChatInput: FC<ChatInputProps> = ({
         event.preventDefault()
 
         setMessageText(prevText => prevText + "\n")
+
+        return
       }
 
       if (event.key === "Enter" && messageText.length > 0) {
@@ -140,17 +142,19 @@ const ChatInput: FC<ChatInputProps> = ({
               }}
             />
 
-            <InputChatAction
-              ariaLabel={t(LangKey.RecordAudio)}
-              isDisabled={isInputDisabled}
-              onClick={() => {
-                setRecorderState(AudioRecorderState.Recording)
-              }}>
-              <IoMic
-                aria-label={t(LangKey.RecordAudio)}
-                className={INPUT_ACTION_CLASS}
-              />
-            </InputChatAction>
+            {messageText.length === 0 && (
+              <InputChatAction
+                ariaLabel={t(LangKey.RecordAudio)}
+                isDisabled={isInputDisabled}
+                onClick={() => {
+                  setRecorderState(AudioRecorderState.Recording)
+                }}>
+                <IoMic
+                  aria-label={t(LangKey.RecordAudio)}
+                  className={INPUT_ACTION_CLASS}
+                />
+              </InputChatAction>
+            )}
 
             <InputChatAction
               ariaLabel={t(LangKey.SendTextMessage)}
@@ -226,12 +230,13 @@ export const EmojiPickerPopover: FC<{
 
   return (
     <Popover open={isEmojiPickerVisible} onOpenChange={setIsEmojiPickerVisible}>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <IconButton
+          disabled={isDisabled}
           tooltip={t(LangKey.EmojiPicker)}
-          aria-disabled={isDisabled}
           aria-label={t(LangKey.EmojiPicker)}
-          asBoundary={false}>
+          asBoundary={false}
+          className="size-max bg-transparent dark:bg-transparent">
           <IoIosHappy aria-hidden className={INPUT_ACTION_CLASS} />
         </IconButton>
       </PopoverTrigger>

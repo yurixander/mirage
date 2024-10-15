@@ -42,9 +42,9 @@ const AttachSource: FC<ChooseFileButtonProps> = ({
           tabIndex={0}
           aria-label={t(LangKey.AttachSource)}
           tooltip={t(LangKey.AttachSource)}
-          aria-disabled={isDisabled}
           disabled={isDisabled}
-          asBoundary={false}>
+          asBoundary={false}
+          className="size-max bg-transparent dark:bg-transparent">
           <motion.div animate={{rotate: isOpen ? "45deg" : undefined}}>
             <IoAddCircle
               className={twMerge(
