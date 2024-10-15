@@ -53,7 +53,7 @@ const RoomContainer: FC = () => {
         <WelcomeSplash />
       )}
 
-      <SmartActionBar className="flex size-full max-h-4 items-center justify-end gap-4 border-t border-t-stone-200 bg-neutral-50 p-1 pr-2" />
+      <SmartActionBar />
     </div>
   )
 }
