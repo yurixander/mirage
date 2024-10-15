@@ -37,11 +37,13 @@ const AttachSource: FC<ChooseFileButtonProps> = ({
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <IconButton
+          tabIndex={0}
           aria-label={t(LangKey.AttachSource)}
           tooltip={t(LangKey.AttachSource)}
           aria-disabled={isDisabled}
+          disabled={isDisabled}
           asBoundary={false}>
           <motion.div animate={{rotate: isOpen ? "45deg" : undefined}}>
             <IoAddCircle

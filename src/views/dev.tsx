@@ -4,13 +4,7 @@ import {type FC} from "react"
 const DevelopmentPreview: FC = () => {
   return (
     <>
-      <div className="flex size-full items-center justify-center">
-        <AttachSource
-          onPickFile={function (file: File): void {
-            throw new Error("Function not implemented.")
-          }}
-        />
-      </div>
+      <div className="flex size-full items-center justify-center"></div>
     </>
   )
 }
