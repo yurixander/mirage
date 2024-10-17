@@ -1,17 +1,8 @@
 import useFilePicker, {type SourceType} from "@/hooks/util/useFilePicker"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
-import {
-  IoAddCircle,
-  IoDocument,
-  IoImage,
-  IoVideocam,
-  IoMic,
-} from "react-icons/io5"
-import {motion} from "framer-motion"
+import {IoDocument, IoImage, IoVideocam, IoMic} from "react-icons/io5"
 import React, {type FC, useEffect, useState} from "react"
-import {twMerge} from "tailwind-merge"
-import {IconButton} from "@/components/ui/button"
 import {
   DROPDOWN_ICON_CLASS,
   DropdownMenu,
@@ -23,38 +14,16 @@ import {Text} from "@/components/ui/typography"
 
 type ChooseFileButtonProps = {
   onPickFile: (file: File) => void
-  isDisabled?: boolean
-  className?: string
+  children: React.ReactNode
 }
 
-const AttachSource: FC<ChooseFileButtonProps> = ({
-  onPickFile,
-  isDisabled,
-  className,
-}) => {
+const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, children}) => {
   const [isOpen, setIsOpen] = useState(false)
   const {t} = useTranslation()
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        <IconButton
-          tabIndex={0}
-          aria-label={t(LangKey.AttachSource)}
-          tooltip={t(LangKey.AttachSource)}
-          disabled={isDisabled}
-          asBoundary={false}
-          className="size-max bg-transparent dark:bg-transparent">
-          <motion.div animate={{rotate: isOpen ? "45deg" : undefined}}>
-            <IoAddCircle
-              className={twMerge(
-                "size-5 fill-neutral-400 dark:fill-neutral-500 md:size-7",
-                className
-              )}
-            />
-          </motion.div>
-        </IconButton>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 
       <DropdownMenuContent side="top" align="start" className="w-40">
         <AttachAction
