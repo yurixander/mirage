@@ -1,9 +1,7 @@
 import {type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
-  return (
-    <></>
-  )
+  return <></>
 }
 
 export default DevelopmentPreview
