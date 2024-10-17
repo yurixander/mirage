@@ -17,6 +17,7 @@ import SpacesNavigation, {
   DASHBOARD_SPACE_ID,
   SpacesPlaceHolder,
 } from "./SpacesNavigation"
+import {ScrollArea} from "@/components/ui/scroll-area"
 
 const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,
@@ -72,20 +73,21 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           />
         </div>
 
-        <RoomNavigator
-          className="w-full sm:w-60"
-          roomSelected={activeRoomId ?? undefined}
-          onRoomSelected={setActiveRoomId}
-          sections={sections}
-          isDashboardActive={spaceSelected === undefined}
-          isLoading={isSectionsLoading}
-          onCreateRoom={() => {
-            setActiveModal(Modals.CreateRoom)
-          }}
-          onCreateDM={() => {}}
-          addRoomToSpace={() => {}}
-          onSearch={() => {}}
-        />
+        <ScrollArea className="size-full sm:h-full sm:w-60" isScrollBarHidden>
+          <RoomNavigator
+            roomSelected={activeRoomId ?? undefined}
+            onRoomSelected={setActiveRoomId}
+            sections={sections}
+            isDashboardActive={spaceSelected === undefined}
+            isLoading={isSectionsLoading}
+            onCreateRoom={() => {
+              setActiveModal(Modals.CreateRoom)
+            }}
+            onCreateDM={() => {}}
+            addRoomToSpace={() => {}}
+            onSearch={() => {}}
+          />
+        </ScrollArea>
 
         <UserBar
           className="mt-auto h-16 w-full border-t border-t-slate-300"
