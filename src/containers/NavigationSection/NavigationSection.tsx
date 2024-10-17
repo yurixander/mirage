@@ -15,6 +15,8 @@ import SpacesNavigation, {
   DASHBOARD_SPACE_ID,
   SpacesPlaceHolder,
 } from "./SpacesNavigation"
+import {useIsSmall} from "@/hooks/util/useMediaQuery"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 
 const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,
@@ -25,6 +27,12 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const [spaceSelected, setSpaceSelected] = useState(DASHBOARD_SPACE_ID)
   const {spaces, isLoading} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
+  const {activeRoomId} = useActiveRoomIdStore()
+  const isSm = useIsSmall()
+
+  if (!isSm && activeRoomId !== null) {
+    return <></>
+  }
 
   return (
     <div className={twMerge("flex size-full max-w-72", className)}>

@@ -104,6 +104,9 @@ type MenuItemProps = {
   isDestructive?: boolean
 }
 
+export const DROPDOWN_ICON_CLASS =
+  "size-6 text-gray-700 dark:text-neutral-400 mr-1.5"
+
 const DropdownMenuItemGenerator: FC<{
   items: MenuItemProps[]
 }> = ({items}) => {

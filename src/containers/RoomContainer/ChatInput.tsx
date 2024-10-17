@@ -1,13 +1,12 @@
 import {useEffect, useRef, useState, type FC} from "react"
 import {IoIosHappy} from "react-icons/io"
-import {IoMic, IoSend} from "react-icons/io5"
+import {IoAddCircle, IoMic, IoSend} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import EmojiPicker from "@/components/EmojiPicker"
 import TextArea from "@/components/TextArea"
 import AttachSource from "./AttachSource"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
-import {Button, IconButton} from "@/components/ui/button"
-import useTooltip from "@/hooks/util/useTooltip"
+import {IconButton} from "@/components/ui/button"
 import useDebounced from "@/hooks/util/useDebounced"
 import AudioRecorder, {AudioRecorderState} from "./AudioRecorder"
 import useTranslation from "@/hooks/util/useTranslation"
@@ -35,7 +34,7 @@ export type SelectionRange = {
   selectionEnd: number | null
 }
 
-const INPUT_ACTION_CLASS = "size-5 md:size-6 text-slate-300"
+const INPUT_ACTION_CLASS = "size-6 text-neutral-400 dark:text-neutral-500"
 
 const ChatInput: FC<ChatInputProps> = ({
   roomId,
@@ -78,6 +77,8 @@ const ChatInput: FC<ChatInputProps> = ({
         event.preventDefault()
 
         setMessageText(prevText => prevText + "\n")
+
+        return
       }
 
       if (event.key === "Enter" && messageText.length > 0) {
@@ -98,17 +99,33 @@ const ChatInput: FC<ChatInputProps> = ({
   return (
     <div
       className={twMerge(
-        "flex max-h-28 items-start gap-2 rounded-2xl border border-slate-300 bg-gray-50",
-        "w-full md:max-h-36 md:gap-2.5 md:rounded-3xl md:px-3 md:py-2",
+        "flex items-start border border-neutral-300 bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900",
+        "max-h-36 w-full gap-2.5 rounded-3xl px-3 py-2",
         className
       )}>
       {recorderState === AudioRecorderState.Idle ? (
         <div className="flex h-max w-full items-start gap-1">
-          <AttachSource isDisabled={isInputDisabled} onPickFile={onPickFile} />
+          <AttachSource onPickFile={onPickFile}>
+            <IconButton
+              tabIndex={0}
+              aria-label={t(LangKey.AttachSource)}
+              tooltip={t(LangKey.AttachSource)}
+              disabled={isInputDisabled}
+              asBoundary={false}
+              className="size-max bg-transparent dark:bg-transparent">
+              <IoAddCircle
+                aria-hidden
+                className={twMerge(
+                  "size-7 fill-neutral-400 dark:fill-neutral-500",
+                  className
+                )}
+              />
+            </IconButton>
+          </AttachSource>
 
           <TextArea
             ref={textAreaRef}
-            className="max-h-24 w-full border-none p-0 text-sm disabled:cursor-default md:max-h-32 md:text-lg"
+            className="max-h-32 w-full border-none p-0 text-lg text-foreground disabled:cursor-default"
             value={messageText}
             onValueChanged={setMessageText}
             disabled={isInputDisabled}
@@ -127,7 +144,7 @@ const ChatInput: FC<ChatInputProps> = ({
             }}
           />
 
-          <div className="ml-auto flex h-7 items-center gap-2">
+          <div className="ml-auto flex h-7 items-center">
             <EmojiPickerPopover
               isDisabled={isInputDisabled}
               onPickEmoji={emoji => {
@@ -140,29 +157,35 @@ const ChatInput: FC<ChatInputProps> = ({
               }}
             />
 
-            <InputChatAction
-              ariaLabel={t(LangKey.RecordAudio)}
-              isDisabled={isInputDisabled}
-              onClick={() => {
-                setRecorderState(AudioRecorderState.Recording)
-              }}>
-              <IoMic
+            {messageText.length === 0 && (
+              <IconButton
                 aria-label={t(LangKey.RecordAudio)}
-                className={INPUT_ACTION_CLASS}
-              />
-            </InputChatAction>
+                tooltip={t(LangKey.RecordAudio)}
+                disabled={isInputDisabled}
+                asBoundary={false}
+                onClick={() => {
+                  setRecorderState(AudioRecorderState.Recording)
+                }}>
+                <IoMic aria-hidden className={INPUT_ACTION_CLASS} />
+              </IconButton>
+            )}
 
-            <InputChatAction
-              ariaLabel={t(LangKey.SendTextMessage)}
-              isDisabled={messageText.length === 0 || isInputDisabled}
+            <IconButton
+              aria-label={t(LangKey.SendTextMessage)}
+              tooltip={t(LangKey.SendTextMessage)}
+              disabled={messageText.length === 0 || isInputDisabled}
+              asBoundary={false}
               onClick={() => {
                 textAreaRef.current?.focus()
 
                 onSendMessageText({roomId, messageText})
                 setMessageText("")
               }}>
-              <IoSend className="size-5 text-blue-500 md:size-[22px]" />
-            </InputChatAction>
+              <IoSend
+                aria-hidden
+                className="size-5 text-blue-500 md:size-[22px]"
+              />
+            </IconButton>
           </div>
         </div>
       ) : (
@@ -174,38 +197,6 @@ const ChatInput: FC<ChatInputProps> = ({
         />
       )}
     </div>
-  )
-}
-
-const InputChatAction: FC<{
-  onClick: () => void
-  children: React.JSX.Element
-  ariaLabel: string
-  isDisabled?: boolean
-}> = ({isDisabled, children, onClick, ariaLabel}) => {
-  const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
-
-  return (
-    <Button
-      aria-label={ariaLabel}
-      ref={renderRef}
-      variant="ghost"
-      size="icon"
-      className="size-max hover:bg-transparent"
-      disabled={isDisabled}
-      onClick={() => {
-        try {
-          onClick()
-        } catch (error) {
-          if (!(error instanceof Error)) {
-            return
-          }
-
-          showTooltip(error.message, true)
-        }
-      }}>
-      {children}
-    </Button>
   )
 }
 
@@ -226,10 +217,11 @@ export const EmojiPickerPopover: FC<{
 
   return (
     <Popover open={isEmojiPickerVisible} onOpenChange={setIsEmojiPickerVisible}>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <IconButton
+          tabIndex={0}
+          disabled={isDisabled}
           tooltip={t(LangKey.EmojiPicker)}
-          aria-disabled={isDisabled}
           aria-label={t(LangKey.EmojiPicker)}
           asBoundary={false}>
           <IoIosHappy aria-hidden className={INPUT_ACTION_CLASS} />
