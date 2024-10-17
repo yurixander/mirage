@@ -1,4 +1,5 @@
 export enum LangKey {
+  MoreActions,
   CreateRoom,
   Name,
   DescriptionOptional,
@@ -163,6 +164,7 @@ export enum LangKey {
   // #region Navigation
   Rooms,
   DirectChats,
+  Recommended,
   GoToHome,
   RoomsLoadingError,
   ViewDirectChats,
@@ -256,6 +258,7 @@ export enum LangKey {
   PauseRecordError,
   RecordActiveError,
   NoDevicesAvailableError,
+  Loading,
   AllSpaces,
   AvatarOf,
 }

@@ -16,6 +16,7 @@ export type RoomProps = {
   emoji: string
   isSelected?: boolean
   onRoomClick: (roomId: string) => void
+  className?: string
 }
 
 const Room: FC<RoomProps> = ({
@@ -24,6 +25,7 @@ const Room: FC<RoomProps> = ({
   onRoomClick,
   emoji,
   isSelected = false,
+  className,
 }) => {
   assert(roomName.length > 0, "Room name should not be empty.")
   assert(roomId.length > 0, "Room id should not be empty.")
@@ -36,7 +38,8 @@ const Room: FC<RoomProps> = ({
       }}
       className={twMerge(
         "relative w-full rounded-md p-1 px-2",
-        isSelected ? "bg-purple-500" : "hover:bg-slate-200"
+        isSelected ? "bg-purple-500" : "hover:bg-slate-200",
+        className
       )}>
       <motion.div
         className="flex w-max items-center gap-2"

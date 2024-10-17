@@ -2,6 +2,7 @@ import {type LangDefinition} from "@/utils/lang"
 import {LangKey} from "./allKeys"
 
 export const spanish: LangDefinition = {
+  [LangKey.MoreActions]: "Mas acciones",
   [LangKey.CreateRoom]: "Crear Sala",
   [LangKey.Name]: "Nombre",
   [LangKey.DescriptionOptional]: "Descripción (opcional)",
@@ -206,6 +207,7 @@ export const spanish: LangDefinition = {
   // #region Navigation
   [LangKey.Rooms]: "Salas",
   [LangKey.DirectChats]: "Chats directos",
+  [LangKey.Recommended]: "Recomendados",
   [LangKey.GoToHome]: "Ir a inicio",
   [LangKey.RoomsLoadingError]: "Error al cargar las salas",
   [LangKey.ViewDirectChats]: "Ver chats directos",
@@ -315,4 +317,5 @@ export const spanish: LangDefinition = {
   [LangKey.RecordActiveError]: "La grabación está en curso",
   [LangKey.NoDevicesAvailableError]: "No tienes dispositivos de audio",
   [LangKey.AvatarOf]: (spaceName: string) => `Avatar de ${spaceName}`,
+  [LangKey.Loading]: "Cargando...",
 }

@@ -1,17 +1,13 @@
 import {type RoomType} from "@/components/Room"
 import {useCallback, useEffect, useState} from "react"
-import {getAllJoinedRooms} from "@/utils/rooms"
-import {getRoomsFromSpace} from "@/utils/spaces"
+import {getSpaceRoomSections} from "@/utils/spaces"
 import {type Room, RoomEvent, type MatrixClient, EventType} from "matrix-js-sdk"
 import useRoomListener from "./useRoomListener"
 import useMatrixClient from "./useMatrixClient"
-import {DASHBOARD_SPACE_ID} from "@/containers/NavigationSection/SpacesNavigation"
-
-export enum RoomsState {
-  Loaded,
-  Loading,
-  Error,
-}
+import {
+  EMPTY_SECTIONS,
+  type RoomSections,
+} from "@/containers/NavigationSection/RoomNavigator"
 
 export type PartialRoom = {
   roomId: string
@@ -21,50 +17,52 @@ export type PartialRoom = {
 }
 
 type UseSpaceHierarchyReturnType = {
-  rooms: PartialRoom[]
-  roomsState: RoomsState
-  client: MatrixClient | null
-  onRefreshRooms: () => void
+  isHierarchyLoading: boolean
+  hierarchySections: RoomSections
 }
 
 const useSpaceHierarchy = (spaceId: string): UseSpaceHierarchyReturnType => {
   const client = useMatrixClient()
-  const [roomsState, setRoomsState] = useState(RoomsState.Loading)
-  const [rooms, setRooms] = useState<PartialRoom[]>([])
   const [activeSpace, setActiveSpace] = useState<Room | null>(null)
+  const [hierarchySections, setHierarchySections] = useState(EMPTY_SECTIONS)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    if (client === null || spaceId === undefined) {
+      return
+    }
+
+    setActiveSpace(client.getRoom(spaceId))
+  }, [client, spaceId])
 
   const fetchSpaceHierarchy = useCallback(
     (client: MatrixClient) => {
-      setActiveSpace(client.getRoom(spaceId))
-
-      if (spaceId === DASHBOARD_SPACE_ID) {
-        // If spaceId is not specified fetch all joined rooms.
-        void getAllJoinedRooms(client)
-          .then(joinedRooms => {
-            setRooms(joinedRooms)
-
-            setRoomsState(RoomsState.Loaded)
-          })
-          .catch(error => {
-            console.error("Failed to load all rooms.", error)
-
-            setRoomsState(RoomsState.Error)
-          })
+      if (spaceId === undefined) {
+        setHierarchySections(EMPTY_SECTIONS)
+        setIsLoading(false)
 
         return
       }
 
-      void getRoomsFromSpace(spaceId, client)
-        .then(roomsHierarchy => {
-          setRooms(roomsHierarchy)
+      setActiveSpace(client.getRoom(spaceId))
 
-          setRoomsState(RoomsState.Loaded)
+      void getSpaceRoomSections(spaceId, client)
+        .then(sections => {
+          if (sections === null) {
+            setHierarchySections(EMPTY_SECTIONS)
+
+            return
+          }
+
+          setHierarchySections(sections)
         })
         .catch(error => {
           console.error("Failed to load child rooms from space.", error)
 
-          setRoomsState(RoomsState.Error)
+          setHierarchySections(EMPTY_SECTIONS)
         })
+
+      setIsLoading(false)
     },
     [spaceId]
   )
@@ -74,7 +72,6 @@ const useSpaceHierarchy = (spaceId: string): UseSpaceHierarchyReturnType => {
       return
     }
 
-    setRoomsState(RoomsState.Loading)
     fetchSpaceHierarchy(client)
   }
 
@@ -83,7 +80,7 @@ const useSpaceHierarchy = (spaceId: string): UseSpaceHierarchyReturnType => {
       return
     }
 
-    setRoomsState(RoomsState.Loading)
+    setIsLoading(true)
 
     const handler = setTimeout(() => {
       fetchSpaceHierarchy(client)
@@ -104,10 +101,8 @@ const useSpaceHierarchy = (spaceId: string): UseSpaceHierarchyReturnType => {
   })
 
   return {
-    rooms,
-    roomsState,
-    onRefreshRooms,
-    client,
+    isHierarchyLoading: isLoading,
+    hierarchySections,
   }
 }
 
