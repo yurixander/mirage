@@ -9,10 +9,11 @@ import {LangKey} from "@/lang/allKeys"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {twMerge} from "tailwind-merge"
 import useTranslation from "@/hooks/util/useTranslation"
+import {type AsyncState} from "@/hooks/util/useMatrixAsyncValue"
+import AsyncValueHandler from "@/components/AsyncValueHandler"
 
 type SpacesNavProps = {
-  spaces: PartialSpace[]
-  isLoading: boolean
+  spacesState: AsyncState<PartialSpace[]>
   spaceSelected?: string
   className?: string
   onCreateSpace: () => void
@@ -20,8 +21,7 @@ type SpacesNavProps = {
 }
 
 const Spaces: FC<SpacesNavProps> = ({
-  spaces,
-  isLoading,
+  spacesState,
   onCreateSpace,
   onSpaceSelected,
   spaceSelected,
@@ -45,20 +45,24 @@ const Spaces: FC<SpacesNavProps> = ({
             onSpaceSelected()
           }}
         />
-        {isLoading ? (
-          <SpacesPlaceHolder length={2} />
-        ) : (
-          spaces.map(space => (
-            <Space
-              spaceName={space.name}
-              key={space.spaceId}
-              spaceId={space.spaceId}
-              isSelected={space.spaceId === spaceSelected}
-              onSpaceSelected={onSpaceSelected}
-              avatarUrl={space.avatarUrl}
-            />
-          ))
-        )}
+        <AsyncValueHandler
+          value={spacesState}
+          loading={<SpacesPlaceHolder length={2} />}
+          // TODO: Put a correct error state.
+          error={error => <div>Error {error.message}</div>}>
+          {spaces =>
+            spaces.map(space => (
+              <Space
+                spaceName={space.name}
+                key={space.spaceId}
+                spaceId={space.spaceId}
+                isSelected={space.spaceId === spaceSelected}
+                onSpaceSelected={onSpaceSelected}
+                avatarUrl={space.avatarUrl}
+              />
+            ))
+          }
+        </AsyncValueHandler>
 
         {/* <CreateSpaceButton onCreateSpace={onCreateSpace} /> */}
 

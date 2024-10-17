@@ -1,10 +1,13 @@
-import {useCallback, useEffect, useState} from "react"
+import {useCallback} from "react"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getJoinedSpaces} from "@/utils/spaces"
+import useMatrixAsyncValue, {
+  type AsyncState,
+} from "@/hooks/util/useMatrixAsyncValue"
 
 export type PartialSpace = {
   name: string
@@ -21,15 +24,18 @@ const processSpace = (space: Room): PartialSpace => {
 }
 
 type UseSpacesReturnType = {
-  spaces: PartialSpace[]
-  isLoading: boolean
+  spaces: AsyncState<PartialSpace[]>
   onSpaceExit: (spaceId: string) => void
 }
 
 const useSpaces = (): UseSpacesReturnType => {
   const client = useMatrixClient()
-  const [isLoading, setIsLoading] = useState(true)
-  const [spaces, setSpaces] = useState<PartialSpace[]>([])
+
+  const {state: spaces, reinvokeAction} = useMatrixAsyncValue(async client => {
+    const joinedSpaces = await getJoinedSpaces(client)
+
+    return joinedSpaces.map(element => processSpace(element))
+  })
 
   const onSpaceExit = useCallback(
     (spaceId: string) => {
@@ -42,26 +48,6 @@ const useSpaces = (): UseSpacesReturnType => {
     [client]
   )
 
-  useEffect(() => {
-    if (client === null) {
-      return
-    }
-
-    try {
-      void getJoinedSpaces(client).then(spaces => {
-        setSpaces(spaces.map(element => processSpace(element)))
-      })
-
-      setIsLoading(false)
-    } catch (error) {
-      // TODO: Show toast when error ocurred.
-
-      console.error("Error fetching spaces", error)
-
-      setIsLoading(false)
-    }
-  }, [client])
-
   useEventListener(RoomEvent.Timeline, (event, room) => {
     if (event.getType() !== EventType.RoomCreate || room === undefined) {
       return
@@ -71,7 +57,7 @@ const useSpaces = (): UseSpacesReturnType => {
       return
     }
 
-    setSpaces(prev => [...prev, processSpace(room)])
+    reinvokeAction()
   })
 
   useEventListener(RoomEvent.Name, room => {
@@ -79,18 +65,7 @@ const useSpaces = (): UseSpacesReturnType => {
       return
     }
 
-    setSpaces(prev => {
-      const index = prev.findIndex(space => space.spaceId === room.roomId)
-
-      if (index === -1) {
-        return prev
-      }
-
-      const newSpaces = [...prev]
-      newSpaces[index] = processSpace(room)
-
-      return newSpaces
-    })
+    reinvokeAction()
   })
 
   useEventListener(RoomEvent.MyMembership, (room, membership) => {
@@ -105,10 +80,10 @@ const useSpaces = (): UseSpacesReturnType => {
       return
     }
 
-    setSpaces(prev => prev.filter(space => space.spaceId !== room.roomId))
+    reinvokeAction()
   })
 
-  return {spaces, onSpaceExit, isLoading}
+  return {spaces, onSpaceExit}
 }
 
 export default useSpaces
