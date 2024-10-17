@@ -9,6 +9,7 @@ import {twMerge} from "tailwind-merge"
 import {assert} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 
 type ChatContainerProps = {
   roomId: string
@@ -25,6 +26,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
 }) => {
   const {t} = useTranslation()
   const scrollRef = useRef<HTMLDivElement>(null)
+  const {clearActiveRoomId} = useActiveRoomIdStore()
 
   const {
     messagesState,
@@ -70,6 +72,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
         roomName={roomName}
         roomDescription={roomTopic}
         isRoomEncrypted={isRoomEncrypted}
+        onCloseRoom={clearActiveRoomId}
       />
 
       <div

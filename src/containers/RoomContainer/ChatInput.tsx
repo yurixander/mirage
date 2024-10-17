@@ -160,6 +160,7 @@ const ChatInput: FC<ChatInputProps> = ({
             {messageText.length === 0 && (
               <IconButton
                 aria-label={t(LangKey.RecordAudio)}
+                tooltip={t(LangKey.RecordAudio)}
                 disabled={isInputDisabled}
                 asBoundary={false}
                 onClick={() => {
@@ -171,6 +172,7 @@ const ChatInput: FC<ChatInputProps> = ({
 
             <IconButton
               aria-label={t(LangKey.SendTextMessage)}
+              tooltip={t(LangKey.SendTextMessage)}
               disabled={messageText.length === 0 || isInputDisabled}
               asBoundary={false}
               onClick={() => {

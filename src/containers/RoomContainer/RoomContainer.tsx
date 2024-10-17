@@ -9,13 +9,19 @@ import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 import {motion} from "framer-motion"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
+import {useIsSmall} from "@/hooks/util/useMediaQuery"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
+  const isSm = useIsSmall()
 
   const {groupedMembers, isMembersLoading, onReloadMembers} =
     useRoomMembers(activeRoomId)
+
+  if (!isSm && activeRoomId === null) {
+    return <></>
+  }
 
   return (
     <div
@@ -35,7 +41,9 @@ const RoomContainer: FC = () => {
             />
           )}
 
-          <motion.div animate={{width: isRosterExpanded ? 250 : 0}}>
+          <motion.div
+            className="hidden sm:block"
+            animate={{width: isRosterExpanded ? 250 : 0}}>
             <Roster
               className="max-w-60"
               groupedMembers={groupedMembers}
