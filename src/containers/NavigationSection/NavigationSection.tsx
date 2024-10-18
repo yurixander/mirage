@@ -8,13 +8,16 @@ import SidebarActions from "./SidebarActions"
 import UserBar from "./UserBar"
 import {twMerge} from "tailwind-merge"
 import useSpaces from "./hooks/useSpaces"
-import RoomList from "./RoomList"
 import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 import useUserData from "./hooks/useUserData"
+import {RoomNavigator} from "./RoomNavigator"
+import useRoomNavigator from "./hooks/useRoomNavigator"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import SpacesNavigation, {
   DASHBOARD_SPACE_ID,
   SpacesPlaceHolder,
 } from "./SpacesNavigation"
+import {ScrollArea} from "@/components/ui/scroll-area"
 
 const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,
@@ -26,8 +29,12 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const {spaces, isLoading} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
 
+  const {isSectionsLoading, sections} = useRoomNavigator(spaceSelected)
+
+  const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
+
   return (
-    <div className={twMerge("flex size-full max-w-72", className)}>
+    <div className={twMerge("flex size-full sm:max-w-80", className)}>
       <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-slate-300 bg-neutral-100 dark:bg-neutral-900">
         <div className="flex flex-col items-center p-1">
           <ReactSVG src={StaticAssetPath.NewAppLogo} />
@@ -58,7 +65,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         <SidebarActions className="mt-auto" onLogOut={onLogOut} />
       </div>
 
-      <div className="flex size-full flex-col border-r border-r-slate-300 bg-gray-100">
+      <div className="flex size-full flex-col border-r border-r-slate-300 bg-neutral-100 dark:bg-neutral-900">
         <div className="size-full max-h-12 shrink-0 border-b border-b-slate-300 p-2">
           <ServerDropdown
             initiallyServerSelected={serverSelected}
@@ -66,14 +73,27 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           />
         </div>
 
-        <RoomList
-          onSpaceSelected={setSpaceSelected}
-          spaceId={spaceSelected}
-          className="size-full border-b border-b-slate-300"
-        />
+        <ScrollArea
+          className="size-full sm:h-full sm:w-60"
+          isScrollBarHidden
+          avoidOverflow>
+          <RoomNavigator
+            roomSelected={activeRoomId ?? undefined}
+            onRoomSelected={setActiveRoomId}
+            sections={sections}
+            isDashboardActive={spaceSelected === undefined}
+            isLoading={isSectionsLoading}
+            onCreateRoom={() => {
+              setActiveModal(Modals.CreateRoom)
+            }}
+            onCreateDM={() => {}}
+            addRoomToSpace={() => {}}
+            onSearch={() => {}}
+          />
+        </ScrollArea>
 
         <UserBar
-          className="mt-auto h-16 w-full"
+          className="mt-auto h-16 w-full border-t border-t-slate-300"
           userDataState={userDataState}
           userId={userData.userId}
           displayName={userData.displayName}
