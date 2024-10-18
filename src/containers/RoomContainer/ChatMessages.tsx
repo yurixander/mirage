@@ -1,7 +1,6 @@
 import EventMessage from "@/components/EventMessage"
 import ImageMessage from "@/components/ImageMessage"
 import TextMessage from "@/components/TextMessage"
-import Typography, {TypographyVariant} from "@/components/Typography"
 import UnreadIndicator from "@/components/UnreadIndicator"
 import {type FC, useMemo, useState} from "react"
 import MessagesPlaceholder from "./MessagesPlaceholder"
@@ -19,6 +18,7 @@ import EventGroupMessage from "@/components/EventGroupMessage"
 import VideoMessage from "@/components/VideoMessage"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Heading, Text} from "@/components/ui/typography"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -45,6 +45,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     () =>
       messages.map((message, index) => (
         <motion.div
+          key={index}
           initial={{translateX: -25, opacity: 0.5}}
           whileInView={{translateX: 0, opacity: 1}}>
           <AnyMessageHandler
@@ -113,9 +114,9 @@ const ChatMessageTemplate: FC<{title: string; subtitle: string}> = ({
 }) => {
   return (
     <div className="flex size-full flex-col items-center justify-center">
-      <Typography variant={TypographyVariant.HeadingLarge}>{title}</Typography>
+      <Heading level="h2">{title}</Heading>
 
-      <Typography>{subtitle}</Typography>
+      <Text>{subtitle}</Text>
     </div>
   )
 }

@@ -8,8 +8,8 @@ import {
 } from "../utils/util"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
-import Typography, {TypographyVariant} from "./Typography"
 import {type ContextMenuItem} from "./ContextMenu"
+import {Heading} from "./ui/typography"
 
 export interface MessageBaseProps extends MessageBaseData {
   contextMenuItems: ContextMenuItem[]
@@ -58,7 +58,7 @@ const MessageContainer: FC<MessageContainerProps> = ({
     <div className="flex w-full items-start justify-start">
       <div className="flex w-full gap-3">
         <button
-          className="size-10 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-neutral-50"
+          className="size-10 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-transparent"
           onClick={() => {
             onAuthorClick(userId)
           }}>
@@ -71,20 +71,20 @@ const MessageContainer: FC<MessageContainerProps> = ({
         </button>
 
         <div className="w-full">
-          <Typography
-            className="w-max select-text font-bold"
+          <Heading
+            level="h6"
+            className="w-max select-text"
             style={{color: authorDisplayNameColor}}
             onClick={() => {
               onAuthorClick(userId)
-            }}
-            variant={TypographyVariant.Body}>
+            }}>
             {cleanDisplayName(authorDisplayName)}
-          </Typography>
+          </Heading>
 
           <div className="flex w-full justify-between">
             {children}
 
-            <time className="min-w-16 text-right text-gray-300">
+            <time className="min-w-16 text-right text-neutral-300 dark:text-neutral-600">
               {localeTimeString}
             </time>
           </div>

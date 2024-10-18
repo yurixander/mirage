@@ -1,5 +1,5 @@
-import RoomEncryptedIndicator from "@/components/RoomEncryptedIndicator"
 import {IconButton} from "@/components/ui/button"
+import {useIsSmall} from "@/hooks/util/useMediaQuery"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {type FC} from "react"
@@ -12,6 +12,7 @@ import {
   IoInformation,
   IoLink,
   IoLockClosed,
+  IoClose,
 } from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
 import {twMerge} from "tailwind-merge"
@@ -20,6 +21,7 @@ export type ChatHeaderProps = {
   roomName: string
   isRosterExpanded: boolean
   onRosterExpanded: (isExpanded: boolean) => void
+  onCloseRoom: () => void
   className?: string
   roomDescription?: string
   isRoomEncrypted: boolean
@@ -30,10 +32,12 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   isRosterExpanded,
   onRosterExpanded,
   className,
+  onCloseRoom,
   roomDescription,
   isRoomEncrypted,
 }) => {
   const {t} = useTranslation()
+  const isSm = useIsSmall()
 
   return (
     <header className={twMerge(className, "flex w-full flex-col gap-1")}>
@@ -70,37 +74,45 @@ const ChatHeader: FC<ChatHeaderProps> = ({
           )}
         </div>
 
-        <IconButton tooltip={t(LangKey.Call)}>
-          <IoCall className="size-5" />
-        </IconButton>
+        {isSm ? (
+          <>
+            <IconButton tooltip={t(LangKey.Call)}>
+              <IoCall className="size-5" />
+            </IconButton>
 
-        <IconButton tooltip={t(LangKey.VideoCall)}>
-          <IoVideocam className="size-5" />
-        </IconButton>
+            <IconButton tooltip={t(LangKey.VideoCall)}>
+              <IoVideocam className="size-5" />
+            </IconButton>
 
-        <IconButton tooltip={t(LangKey.CopyLink)}>
-          <IoLink className="size-5" />
-        </IconButton>
+            <IconButton tooltip={t(LangKey.CopyLink)}>
+              <IoLink className="size-5" />
+            </IconButton>
 
-        <IconButton tooltip={t(LangKey.SearchInRoom)}>
-          <IoSearch className="size-5" />
-        </IconButton>
+            <IconButton tooltip={t(LangKey.SearchInRoom)}>
+              <IoSearch className="size-5" />
+            </IconButton>
 
-        <IconButton tooltip={t(LangKey.RoomDetails)}>
-          <IoInformation className="size-5" />
-        </IconButton>
+            <IconButton tooltip={t(LangKey.RoomDetails)}>
+              <IoInformation className="size-5" />
+            </IconButton>
 
-        <IconButton
-          tooltip={t(LangKey.ExpandRoster)}
-          onClick={() => {
-            onRosterExpanded(!isRosterExpanded)
-          }}>
-          {isRosterExpanded ? (
-            <IoChevronForward className="size-5" />
-          ) : (
-            <IoChevronBack className="size-5" />
-          )}
-        </IconButton>
+            <IconButton
+              tooltip={t(LangKey.ExpandRoster)}
+              onClick={() => {
+                onRosterExpanded(!isRosterExpanded)
+              }}>
+              {isRosterExpanded ? (
+                <IoChevronForward className="size-5" />
+              ) : (
+                <IoChevronBack className="size-5" />
+              )}
+            </IconButton>
+          </>
+        ) : (
+          <IconButton tooltip={t(LangKey.Close)} onClick={onCloseRoom}>
+            <IoClose className="size-5" />
+          </IconButton>
+        )}
       </div>
     </header>
   )

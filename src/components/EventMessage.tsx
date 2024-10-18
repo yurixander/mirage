@@ -1,7 +1,6 @@
-import {type FC} from "react"
+import {useState, type FC} from "react"
 import {assert, formatTime, stringToColor, trim} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
-import Typography from "./Typography"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
 import {type EventType} from "matrix-js-sdk"
@@ -9,11 +8,13 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {twMerge} from "tailwind-merge"
 import {
+  DROPDOWN_ICON_CLASS,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItemGenerator,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
+import {Heading, Text} from "./ui/typography"
 
 export type EventSender = {
   displayName: string
@@ -48,6 +49,7 @@ const EventMessage: FC<EventMessageProps> = ({
   onShowMember,
   className,
 }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const Icon = icon ?? IoMdCreate
   const {t} = useTranslation()
   const accentColor = stringToColor(sender.userId)
@@ -59,51 +61,60 @@ const EventMessage: FC<EventMessageProps> = ({
       <div
         role="article"
         aria-label={`${sender.displayName} ${body}`}
-        className="flex items-start gap-1">
-        <div className="inline-flex gap-2">
+        className="flex items-center gap-1">
+        <div className="flex gap-2">
           <div className="flex w-10 items-center justify-end">
-            <Icon aria-hidden className="text-neutral-500" />
+            <Icon aria-hidden className="fill-neutral-500" />
           </div>
 
-          <DropdownMenu>
+          <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger
               style={{borderBottomColor: accentColor}}
               className="box-border shrink-0 focus-visible:border-b-2">
-              <Typography className="font-bold" style={{color: accentColor}}>
+              <Heading level="h6" style={{color: accentColor}}>
                 {trim(sender.displayName, MAX_EVENT_SENDER_NAME_LENGTH)}
-              </Typography>
+              </Heading>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent
               onCloseAutoFocus={event => {
                 event.preventDefault()
               }}>
-              <DropdownMenuItemGenerator
-                items={[
-                  {
-                    label: t(LangKey.ViewMember),
-                    icon: IoPeopleCircle,
-                    onClick: onShowMember,
-                  },
-                  {
-                    label: t(LangKey.FindUser),
-                    icon: IoSearchCircle,
-                    onClick: onFindUser,
-                  },
-                ]}
-              />
+              <DropdownMenuItem
+                onClick={e => {
+                  e.stopPropagation()
+
+                  setIsDropdownOpen(false)
+
+                  onShowMember()
+                }}>
+                <IoPeopleCircle className={DROPDOWN_ICON_CLASS} />
+
+                <Text>{t(LangKey.ViewMember)}</Text>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={e => {
+                  e.stopPropagation()
+
+                  setIsDropdownOpen(false)
+
+                  onShowMember()
+                }}>
+                <IoSearchCircle className={DROPDOWN_ICON_CLASS} />
+
+                <Text>{t(LangKey.FindUser)}</Text>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-        <Typography
-          ariaHidden
-          className="inline-flex gap-1 whitespace-pre-line break-words font-normal italic">
+        <Text className="size-max italic">
           {trim(body, MAX_EVENT_BODY_LENGTH)}
-        </Typography>
+        </Text>
       </div>
 
-      <time className="ml-auto text-base font-normal text-gray-300">
+      <time className="ml-auto text-base font-normal">
         {formatTime(timestamp)}
       </time>
     </div>
