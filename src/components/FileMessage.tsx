@@ -59,7 +59,7 @@ const FileMessage: FC<FileMessageProps> = ({
       onAuthorClick={onAuthorClick}
       userId={userId}>
       <ContextMenu id={`file-message-${messageId}`} elements={contextMenuItems}>
-        <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2 dark:border-slate-800 dark:bg-slate-950">
+        <div className="flex w-60 flex-col items-center gap-2 rounded border bg-gray-50 p-2 dark:border-slate-800 dark:bg-slate-950 sm:w-messageMaxWidth">
           <div className="flex w-full items-center gap-2">
             <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2 dark:bg-slate-900">
               <IconFile typeFile={fileExtension.toLowerCase()} />
