@@ -57,13 +57,13 @@ const FileMessage: FC<FileMessageProps> = ({
       onAuthorClick={onAuthorClick}
       userId={userId}>
       {/* TODO: Handle context menu here @lazaroysr96 */}
-      <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2">
+      <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2 dark:border-slate-800 dark:bg-slate-950">
         <div className="flex w-full items-center gap-2">
-          <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2">
+          <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2 dark:bg-slate-900">
             <IconFile typeFile={fileExtension.toLowerCase()} />
 
             <Typography
-              className="font-light text-black"
+              className="font-light text-black dark:text-white"
               variant={TypographyVariant.Body}>
               {fileName}
             </Typography>
