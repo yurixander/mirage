@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import EventMessage, {
   type EventSender,
   type EventMessageData,
@@ -6,7 +6,7 @@ import EventMessage, {
   MAX_EVENT_SENDER_NAME_LENGTH,
 } from "./EventMessage"
 import {formatTime, strCapitalize, trim} from "@/utils/util"
-import {type IconType} from "react-icons"
+import type {IconType} from "react-icons"
 import {IoMdCreate} from "react-icons/io"
 import {twMerge} from "tailwind-merge"
 import Typography from "./Typography"

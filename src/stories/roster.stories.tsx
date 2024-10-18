@@ -1,7 +1,7 @@
-import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
+import type {GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 import Roster, {type RosterProps} from "@/containers/Roster/Roster"
 import {UserPowerLevel} from "@/utils/members"
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 
 type Story = StoryObj<typeof Roster>
 

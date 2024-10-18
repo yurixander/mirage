@@ -1,8 +1,8 @@
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 import UserProfile, {type UserProfileProps} from "../components/UserProfile"
 import {IoHeadsetSharp} from "react-icons/io5"
 import Typography, {TypographyVariant} from "@/components/Typography"
-import React from "react"
+import type React from "react"
 
 type Story = StoryObj<typeof UserProfile>
 

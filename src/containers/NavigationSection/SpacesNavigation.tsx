@@ -1,18 +1,18 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 import {motion} from "framer-motion"
 import Avatar from "boring-avatars"
 import {twMerge} from "tailwind-merge"
 import {scaleInAnimation, spaceIndicatorAnimation} from "@/utils/animations"
 import React from "react"
-import {type SpaceProps} from "./Space"
+import type {SpaceProps} from "./Space"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import {type PartialSpace} from "./hooks/useSpaces"
+import type {PartialSpace} from "./hooks/useSpaces"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {StaticAssetPath} from "@/utils/util"

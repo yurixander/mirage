@@ -1,6 +1,6 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import Typography, {TypographyVariant} from "../../components/Typography"
-import {type IconType} from "react-icons"
+import type {IconType} from "react-icons"
 import {FaCompass, FaGithub, FaHand} from "react-icons/fa6"
 import AppLogo from "@/components/AppLogo"
 import useTranslation from "@/hooks/util/useTranslation"

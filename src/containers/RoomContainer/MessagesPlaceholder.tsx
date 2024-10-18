@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import LoadingEffect from "../../components/LoadingEffect"
 import {twMerge} from "tailwind-merge"
 

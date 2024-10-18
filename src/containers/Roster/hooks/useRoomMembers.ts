@@ -1,9 +1,9 @@
 import {useEffect, useState, useCallback} from "react"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
 import {getRoomMembers} from "@/utils/rooms"
-import {type Room} from "matrix-js-sdk"
+import type {Room} from "matrix-js-sdk"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
-import {type RosterUserData} from "../RosterUser"
+import type {RosterUserData} from "../RosterUser"
 
 export type GroupedMembers = {
   admins: RosterUserData[]

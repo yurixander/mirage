@@ -1,6 +1,6 @@
 import useSelectionToggle from "@/hooks/util/useSelectionToggle"
 import {assert} from "@/utils/util"
-import {type FC} from "react"
+import type {FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type SwitchButtonProps = {

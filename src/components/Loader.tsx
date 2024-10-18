@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import Typography from "./Typography"
 import {twMerge} from "tailwind-merge"
 

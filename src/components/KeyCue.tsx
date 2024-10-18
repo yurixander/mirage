@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import {assert} from "../utils/util"
 import {cn} from "@/utils/utils"
 

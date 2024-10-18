@@ -1,5 +1,5 @@
 import {LocalStorageKey} from "@/hooks/util/useLocalStorage"
-import {type LangKey} from "@/lang/allKeys"
+import type {LangKey} from "@/lang/allKeys"
 import {english} from "@/lang/english"
 import {spanish} from "@/lang/spanish"
 

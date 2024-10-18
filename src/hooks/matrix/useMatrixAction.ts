@@ -1,4 +1,4 @@
-import {type MatrixClient} from "matrix-js-sdk"
+import type {MatrixClient} from "matrix-js-sdk"
 import {useCallback} from "react"
 import useMatrixClient from "./useMatrixClient"
 

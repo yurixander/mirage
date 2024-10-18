@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import {formatTime} from "../utils/util"
 import Label from "./Label"
 import UserProfile, {

@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import useNotifications from "./hooks/useNotifications"

@@ -1,4 +1,4 @@
-import {type Points} from "@/components/ContextMenu"
+import type {Points} from "@/components/ContextMenu"
 import {useState} from "react"
 
 type UseElementPointsReturnType = {

@@ -1,6 +1,6 @@
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 import RosterUser, {type RosterUserProps} from "../containers/Roster/RosterUser"
-import React from "react"
+import type React from "react"
 import {UserPowerLevel} from "@/utils/members"
 
 type Story = StoryObj<typeof RosterUser>

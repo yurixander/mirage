@@ -11,7 +11,7 @@ import {
 } from "@floating-ui/react"
 import {motion} from "framer-motion"
 import {type FC, useEffect, useState} from "react"
-import {type IconType} from "react-icons"
+import type {IconType} from "react-icons"
 import {
   IoAddCircle,
   IoDocument,

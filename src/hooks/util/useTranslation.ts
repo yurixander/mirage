@@ -1,4 +1,4 @@
-import {type LangKey} from "@/lang/allKeys"
+import type {LangKey} from "@/lang/allKeys"
 import {
   getDefaultLang,
   type Lang,

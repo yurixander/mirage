@@ -1,9 +1,10 @@
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 import SpacesNavigation, {
   type SpaceNavigationProps,
   DASHBOARD_SPACE_ID,
 } from "@/containers/NavigationSection/SpacesNavigation"
-import React, {useState} from "react"
+import type React from "react"
+import {useState} from "react"
 
 type Story = StoryObj<typeof SpacesNavigation>
 

@@ -1,4 +1,4 @@
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 import {Text, TruncatedText, type TextProps} from "@/components/ui/typography"
 
 type Story = StoryObj<typeof Text>

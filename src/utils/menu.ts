@@ -1,4 +1,4 @@
-import {type ContextMenuItem} from "@/components/ContextMenu"
+import type {ContextMenuItem} from "@/components/ContextMenu"
 import {IoMdDownload, IoMdTrash, IoIosSettings} from "react-icons/io"
 import {
   IoArrowUndo,

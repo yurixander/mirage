@@ -1,4 +1,4 @@
-import {type NotificationProps} from "@/components/Notification"
+import type {NotificationProps} from "@/components/Notification"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"

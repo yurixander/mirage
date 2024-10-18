@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import {
   assert,
   cleanDisplayName,
@@ -7,9 +7,9 @@ import {
   validateUrl,
 } from "../utils/util"
 import AvatarImage, {AvatarType} from "./AvatarImage"
-import React from "react"
+import type React from "react"
 import Typography, {TypographyVariant} from "./Typography"
-import {type ContextMenuItem} from "./ContextMenu"
+import type {ContextMenuItem} from "./ContextMenu"
 
 export interface MessageBaseProps extends MessageBaseData {
   contextMenuItems: ContextMenuItem[]

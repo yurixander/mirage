@@ -1,5 +1,5 @@
 import {assert} from "@/utils/util"
-import {type FC} from "react"
+import type {FC} from "react"
 
 export type UnreadIndicatorProps = {
   lastReadEventId: string

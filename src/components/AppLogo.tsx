@@ -1,5 +1,5 @@
 import {StaticAssetPath} from "@/utils/util"
-import {type FC} from "react"
+import type {FC} from "react"
 import {ReactSVG} from "react-svg"
 import Typography, {TypographyVariant} from "./Typography"
 

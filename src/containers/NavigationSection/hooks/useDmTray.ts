@@ -1,7 +1,7 @@
 import useUsersSearch from "@/hooks/matrix/useUserSearch"
-import {type MatrixClient} from "matrix-js-sdk"
+import type {MatrixClient} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
-import {type DMUser, type DMRoomData} from "../DMTrayPopup"
+import type {DMUser, DMRoomData} from "../DMTrayPopup"
 import {getDirectRoomsIds, getPartnerUserIdFromRoomDirect} from "@/utils/rooms"
 import {normalizeName} from "@/utils/util"
 

@@ -1,4 +1,5 @@
-import React, {type FC} from "react"
+import type React from "react"
+import type {FC} from "react"
 import ContextMenu, {ClickActions, type ContextMenuItem} from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
 import {IoEllipsisHorizontal} from "react-icons/io5"

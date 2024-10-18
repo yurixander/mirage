@@ -1,5 +1,5 @@
 import {stringToColor, formatTime, assert, validateUrl} from "@/utils/util"
-import {type FC} from "react"
+import type {FC} from "react"
 import {IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./AvatarImage"

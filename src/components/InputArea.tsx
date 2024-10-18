@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState, type FC} from "react"
-import React from "react"
+import type React from "react"
 import {twMerge} from "tailwind-merge"
 
 export type InputAreaProps = {

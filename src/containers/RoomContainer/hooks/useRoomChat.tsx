@@ -1,13 +1,13 @@
-import {type AudioMessageData} from "@/components/AudioMessage"
-import {type EventGroupMessageData} from "@/components/EventGroupMessage"
-import {type EventMessageData} from "@/components/EventMessage"
-import {type FileMessageData} from "@/components/FileMessage"
-import {type ImageMessageData} from "@/components/ImageMessage"
-import {type ReplyMessageData} from "@/components/ReplyMessage"
-import {type TextMessageData} from "@/components/TextMessage"
-import {type TypingIndicatorUser} from "@/components/TypingIndicator"
-import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
-import {type VideoMessageData} from "@/components/VideoMessage"
+import type {AudioMessageData} from "@/components/AudioMessage"
+import type {EventGroupMessageData} from "@/components/EventGroupMessage"
+import type {EventMessageData} from "@/components/EventMessage"
+import type {FileMessageData} from "@/components/FileMessage"
+import type {ImageMessageData} from "@/components/ImageMessage"
+import type {ReplyMessageData} from "@/components/ReplyMessage"
+import type {TextMessageData} from "@/components/TextMessage"
+import type {TypingIndicatorUser} from "@/components/TypingIndicator"
+import type {UnreadIndicatorProps} from "@/components/UnreadIndicator"
+import type {VideoMessageData} from "@/components/VideoMessage"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
@@ -24,7 +24,7 @@ import {
   RoomMemberEvent,
 } from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
-import {type MessageSendRequest} from "../ChatInput"
+import type {MessageSendRequest} from "../ChatInput"
 
 export enum MessageKind {
   Text,

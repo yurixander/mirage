@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import {saveAs} from "file-saver"
 import {IoMdDownload, IoMdTrash} from "react-icons/io"
 import {

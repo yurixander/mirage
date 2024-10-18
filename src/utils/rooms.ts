@@ -16,7 +16,7 @@ import {
   stringToColor,
   stringToEmoji,
 } from "./util"
-import {type RosterUserData} from "@/containers/Roster/RosterUser"
+import type {RosterUserData} from "@/containers/Roster/RosterUser"
 import {
   getRoomUsersIdWithPowerLevels,
   getUserLastPresence,
@@ -28,9 +28,9 @@ import {
   type AnyMessage,
   MessageKind,
 } from "@/containers/RoomContainer/hooks/useRoomChat"
-import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
+import type {PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
 import {RoomType} from "@/components/Room"
-import {type IconType} from "react-icons"
+import type {IconType} from "react-icons"
 import {
   IoAtCircle,
   IoLockClosed,
@@ -40,14 +40,14 @@ import {
   IoReceipt,
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
-import {type MessageBaseData} from "@/components/MessageContainer"
+import type {MessageBaseData} from "@/components/MessageContainer"
 import {parseReplyMessageFromBody, validateReplyMessage} from "./parser"
 import {
   type EventGroupMessageData,
   EventShortenerType,
 } from "@/components/EventGroupMessage"
-import {type EventMessageData} from "@/components/EventMessage"
-import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
+import type {EventMessageData} from "@/components/EventMessage"
+import type {GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 import {t} from "./lang"
 import {LangKey} from "@/lang/allKeys"
 

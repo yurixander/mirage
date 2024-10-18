@@ -1,6 +1,6 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {assert} from "@/utils/util"
-import {type FC} from "react"
+import type {FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
 

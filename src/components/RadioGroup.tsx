@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import RadioButton, {type RadioButtonProps} from "./RadioButton"
 import {twMerge} from "tailwind-merge"
 

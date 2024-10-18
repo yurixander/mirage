@@ -1,6 +1,6 @@
 import {assert, CommonAssertion, validateUrl} from "@/utils/util"
 import Avatar from "boring-avatars"
-import {type FC} from "react"
+import type {FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export enum AvatarType {

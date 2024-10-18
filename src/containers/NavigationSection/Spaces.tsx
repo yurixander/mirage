@@ -1,6 +1,6 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import Space from "./Space"
-import {type PartialSpace} from "./hooks/useSpaces"
+import type {PartialSpace} from "./hooks/useSpaces"
 import {StaticAssetPath} from "@/utils/util"
 import LoadingEffect from "@/components/LoadingEffect"
 import {motion} from "framer-motion"

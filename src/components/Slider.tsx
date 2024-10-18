@@ -1,4 +1,5 @@
-import React, {useRef, useState, type FC} from "react"
+import type React from "react"
+import {useRef, useState, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 
 export type SliderProps = {

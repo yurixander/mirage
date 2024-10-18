@@ -1,6 +1,6 @@
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 import RadioGroup, {type RadioGroupProps} from "../components/RadioGroup"
-import React from "react"
+import type React from "react"
 
 type Story = StoryObj<typeof RadioGroup>
 

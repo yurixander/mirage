@@ -1,4 +1,4 @@
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 import ContextMenu, {
   ClickActions,
   type ContextMenuProps,
@@ -8,7 +8,7 @@ import {
   CONTEXT_MENU_DELETE,
   CONTEXT_MENU_RELOAD,
 } from "@/utils/menu"
-import React from "react"
+import type React from "react"
 import {Button} from "@/components/ui/button"
 
 type Story = StoryObj<typeof ContextMenu>

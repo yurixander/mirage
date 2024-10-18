@@ -1,6 +1,6 @@
 import WelcomeSplash from "@/containers/RoomContainer/WelcomeSplash"
-import {type Meta, type StoryObj} from "@storybook/react"
-import React from "react"
+import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 
 type Story = StoryObj<typeof WelcomeSplash>
 

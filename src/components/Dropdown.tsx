@@ -1,5 +1,6 @@
 import useClickOutside from "@/hooks/util/useClickOutside"
-import React, {useState, type FC} from "react"
+import type React from "react"
+import {useState, type FC} from "react"
 import {IoCaretDownOutline, IoCaretUpOutline} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"

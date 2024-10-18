@@ -1,4 +1,4 @@
-import {type Emoji} from "@emoji-mart/data"
+import type {Emoji} from "@emoji-mart/data"
 import {useEffect, useState} from "react"
 import {searchEmoji} from "./useEmojiPicker"
 

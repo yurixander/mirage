@@ -1,5 +1,5 @@
-import {type FC} from "react"
-import {type IconType} from "react-icons"
+import type {FC} from "react"
+import type {IconType} from "react-icons"
 import Input, {type InputConstraint, type InputAction} from "./Input"
 import Typography, {TypographyVariant} from "./Typography"
 import {twMerge} from "tailwind-merge"

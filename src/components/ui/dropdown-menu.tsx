@@ -3,9 +3,9 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import {CheckIcon, ChevronRightIcon, DotFilledIcon} from "@radix-ui/react-icons"
 
 import {cn} from "@/utils/utils"
-import {type IconType} from "react-icons"
+import type {IconType} from "react-icons"
 import Typography from "../Typography"
-import {type FC} from "react"
+import type {FC} from "react"
 import KeyCue, {type KeyCueProps} from "../KeyCue"
 
 const DropdownMenu = DropdownMenuPrimitive.Root

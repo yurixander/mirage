@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState, type FC} from "react"
 import {twMerge} from "tailwind-merge"
-import {type Emoji} from "@emoji-mart/data"
+import type {Emoji} from "@emoji-mart/data"
 import {
   IoIosCafe,
   IoIosPartlySunny,
@@ -9,7 +9,7 @@ import {
   IoIosBulb,
   IoIosNuclear,
 } from "react-icons/io"
-import {type IconType} from "react-icons"
+import type {IconType} from "react-icons"
 import {IconButton} from "@/components/ui/button"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {ScrollArea} from "@/components/ui/scroll-area"

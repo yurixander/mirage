@@ -2,8 +2,8 @@ import {useCallback, useMemo, useState} from "react"
 import {LocalStorageKey} from "./useLocalStorage"
 import useEmojiSearch from "./useEmojiSearch"
 import emojiData from "@/../public/data/emoji-data.json"
-import {type Emoji, type EmojiMartData} from "@emoji-mart/data"
-import {type SelectionRange} from "@/containers/RoomContainer/ChatInput"
+import type {Emoji, EmojiMartData} from "@emoji-mart/data"
+import type {SelectionRange} from "@/containers/RoomContainer/ChatInput"
 
 const emojiMartData: EmojiMartData = emojiData
 const emojis: Emoji[] = Object.values(emojiData.emojis)

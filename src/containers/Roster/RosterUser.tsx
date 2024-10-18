@@ -1,8 +1,8 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import {stringToColor, formatTime, trim, cleanDisplayName} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {type UserPowerLevel} from "@/utils/members"
+import type {UserPowerLevel} from "@/utils/members"
 import {motion} from "framer-motion"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
 import {

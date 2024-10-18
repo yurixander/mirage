@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import {IoCloseCircle} from "react-icons/io5"
 import useTranslation from "@/hooks/util/useTranslation"

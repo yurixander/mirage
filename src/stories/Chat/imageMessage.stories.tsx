@@ -1,5 +1,5 @@
 import ImageMessage, {type ImageMessageProps} from "@/components/ImageMessage"
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 
 type Story = StoryObj<typeof ImageMessage>
 

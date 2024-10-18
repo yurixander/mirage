@@ -1,8 +1,8 @@
 import DropdownActions, {
   type DropdownActionsProps,
 } from "@/components/DropdownActions"
-import {type Meta, type StoryObj} from "@storybook/react"
-import React from "react"
+import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 
 import {IoAccessibility, IoAdd, IoFlame} from "react-icons/io5"
 

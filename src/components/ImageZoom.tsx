@@ -1,7 +1,8 @@
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {assert, validateUrl} from "@/utils/util"
-import React, {type FC, useState} from "react"
+import type React from "react"
+import {type FC, useState} from "react"
 
 export type ImageZoomProps = {
   className?: string

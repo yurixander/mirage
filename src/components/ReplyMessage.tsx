@@ -1,8 +1,8 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
 import TextMessage from "./TextMessage"
 import Typography, {TypographyVariant} from "./Typography"
-import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
+import type {MessageBaseData, MessageBaseProps} from "./MessageContainer"
 import {cleanDisplayName, stringToColor} from "@/utils/util"
 
 export interface ReplyMessageProps extends MessageBaseProps {

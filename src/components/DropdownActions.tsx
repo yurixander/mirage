@@ -1,5 +1,5 @@
 import {type FC, useState} from "react"
-import {type IconType} from "react-icons"
+import type {IconType} from "react-icons"
 import {IoMdCheckmark} from "react-icons/io"
 import Dropdown from "./Dropdown"
 import Typography from "./Typography"

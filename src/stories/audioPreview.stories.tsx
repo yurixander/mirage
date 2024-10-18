@@ -1,4 +1,4 @@
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 import AudioFilePreview, {
   type AudioFilePreviewProps,
 } from "../components/AudioFilePreview"

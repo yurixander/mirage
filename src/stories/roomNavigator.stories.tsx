@@ -3,7 +3,7 @@ import {
   RoomNavigator,
   type RoomNavigatorProps,
 } from "@/containers/NavigationSection/RoomNavigator"
-import {type StoryObj, type Meta} from "@storybook/react/*"
+import type {StoryObj, Meta} from "@storybook/react/*"
 import {useState} from "react"
 
 type Story = StoryObj<typeof RoomNavigator>

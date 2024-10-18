@@ -1,6 +1,6 @@
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 import RadioButton, {type RadioButtonProps} from "../components/RadioButton"
-import React from "react"
+import type React from "react"
 
 type Story = StoryObj<typeof RadioButton>
 

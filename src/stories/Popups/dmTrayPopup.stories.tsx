@@ -1,10 +1,10 @@
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {Meta, StoryObj} from "@storybook/react"
 import DMTrayPopup, {
   type DMUser,
   type DMTrayPopupProps,
   type DMRoomData,
 } from "@/containers/NavigationSection/DMTrayPopup"
-import React from "react"
+import type React from "react"
 import {Button} from "@/components/ui/button"
 import {IoPaperPlane} from "react-icons/io5"
 

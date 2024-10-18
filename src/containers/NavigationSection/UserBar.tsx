@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {IoMdSettings} from "react-icons/io"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"

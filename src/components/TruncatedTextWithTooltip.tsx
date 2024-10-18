@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import Typography, {type TypographyVariant} from "./Typography"
 import {
   Tooltip,

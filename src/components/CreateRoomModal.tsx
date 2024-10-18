@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import Typography, {TypographyVariant} from "./Typography"
 import Dropdown, {type DropdownOption} from "./DropdownActions"
 import {Visibility} from "matrix-js-sdk"

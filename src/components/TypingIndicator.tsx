@@ -1,4 +1,5 @@
-import React, {useMemo, type FC} from "react"
+import type React from "react"
+import {useMemo, type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {stringToColor} from "@/utils/util"
 import Avatar from "boring-avatars"

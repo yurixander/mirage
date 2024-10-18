@@ -2,7 +2,7 @@ import RoomEncryptedIndicator from "@/components/RoomEncryptedIndicator"
 import {IconButton} from "@/components/ui/button"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
-import {type FC} from "react"
+import type {FC} from "react"
 import {
   IoChevronForward,
   IoChevronBack,

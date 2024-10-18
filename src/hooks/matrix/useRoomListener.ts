@@ -1,11 +1,11 @@
-import {
-  type Room,
-  type RoomEmittedEvents,
-  type RoomEventHandlerMap,
+import type {
+  Room,
+  RoomEmittedEvents,
+  RoomEventHandlerMap,
 } from "matrix-js-sdk"
-import {
-  type Listener,
-  type EventEmitterEvents,
+import type {
+  Listener,
+  EventEmitterEvents,
 } from "matrix-js-sdk/lib/models/typed-event-emitter"
 import {useEffect} from "react"
 

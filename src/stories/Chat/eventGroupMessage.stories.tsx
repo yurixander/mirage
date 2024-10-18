@@ -2,10 +2,10 @@ import EventGroupMessage, {
   EventShortenerType,
   type EventGroupMessageProps,
 } from "@/components/EventGroupMessage"
-import {type EventMessageData} from "@/components/EventMessage"
-import {type Meta, type StoryObj} from "@storybook/react"
+import type {EventMessageData} from "@/components/EventMessage"
+import type {Meta, StoryObj} from "@storybook/react"
 import {EventType, RoomMemberEvent} from "matrix-js-sdk"
-import React from "react"
+import type React from "react"
 
 type Story = StoryObj<typeof EventGroupMessage>
 

@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import type {FC} from "react"
 import Typography, {TypographyVariant} from "@/components/Typography"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"

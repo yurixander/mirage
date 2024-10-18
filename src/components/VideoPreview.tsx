@@ -1,6 +1,6 @@
 import {IoCloseCircle} from "react-icons/io5"
 import Typography, {TypographyVariant} from "./Typography"
-import {type FC} from "react"
+import type {FC} from "react"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Button} from "./ui/button"

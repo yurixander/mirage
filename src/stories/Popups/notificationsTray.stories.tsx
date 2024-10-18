@@ -1,12 +1,12 @@
-import {type NotificationProps} from "@/components/Notification"
+import type {NotificationProps} from "@/components/Notification"
 import NotificationDot from "@/components/NotificationDot"
 import {Button} from "@/components/ui/button"
 import NotificationsTray, {
   type NotificationsTrayProps,
 } from "@/containers/NavigationSection/NotificationsTray"
 import {NotificationType} from "@/utils/notifications"
-import {type Meta, type StoryObj} from "@storybook/react"
-import React from "react"
+import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 import {IoNotifications} from "react-icons/io5"
 
 type Story = StoryObj<typeof NotificationsTray>

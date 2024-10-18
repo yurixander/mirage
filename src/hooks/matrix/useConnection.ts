@@ -1,4 +1,4 @@
-import {type Credentials} from "@/utils/util"
+import type {Credentials} from "@/utils/util"
 import {
   type MatrixClient,
   createClient,
