@@ -18,6 +18,7 @@ import {assert, validateUrl} from "@/utils/util"
 import {IconButton} from "./ui/button"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
+import ContextMenu from "./ContextMenu"
 
 const ICON_SIZE = 20
 
@@ -40,6 +41,7 @@ const FileMessage: FC<FileMessageProps> = ({
   fileSize,
   fileUrl,
   userId,
+  messageId,
 }) => {
   const {t} = useTranslation()
   const fileExtension = getFileExtension(fileName).toUpperCase()
@@ -56,45 +58,46 @@ const FileMessage: FC<FileMessageProps> = ({
       timestamp={timestamp}
       onAuthorClick={onAuthorClick}
       userId={userId}>
-      {/* TODO: Handle context menu here @lazaroysr96 */}
-      <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2 dark:border-slate-800 dark:bg-slate-950">
-        <div className="flex w-full items-center gap-2">
-          <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2 dark:bg-slate-900">
-            <IconFile typeFile={fileExtension.toLowerCase()} />
+      <ContextMenu id={`file-message-${messageId}`} elements={contextMenuItems}>
+        <div className="flex w-messageMaxWidth flex-col items-center gap-2 rounded border bg-gray-50 p-2 dark:border-slate-800 dark:bg-slate-950">
+          <div className="flex w-full items-center gap-2">
+            <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2 dark:bg-slate-900">
+              <IconFile typeFile={fileExtension.toLowerCase()} />
+
+              <Typography
+                className="font-light text-black dark:text-white"
+                variant={TypographyVariant.Body}>
+                {fileName}
+              </Typography>
+            </div>
+
+            <div>
+              <IconButton
+                color="lightslategrey"
+                tooltip={t(LangKey.ClickToDownload)}
+                onClick={() => {
+                  if (fileUrl !== undefined) open(fileUrl)
+                }}>
+                <FaDownload />
+              </IconButton>
+            </div>
+          </div>
+
+          <div className="flex w-full">
+            <Typography
+              className="w-full font-semibold text-gray-400"
+              variant={TypographyVariant.BodySmall}>
+              {fileExtension}
+            </Typography>
 
             <Typography
-              className="font-light text-black dark:text-white"
-              variant={TypographyVariant.Body}>
-              {fileName}
+              className="min-w-20 text-right font-semibold text-gray-400"
+              variant={TypographyVariant.BodySmall}>
+              {fileSizeToString(fileSize)}
             </Typography>
           </div>
-
-          <div>
-            <IconButton
-              color="lightslategrey"
-              tooltip={t(LangKey.ClickToDownload)}
-              onClick={() => {
-                if (fileUrl !== undefined) open(fileUrl)
-              }}>
-              <FaDownload />
-            </IconButton>
-          </div>
         </div>
-
-        <div className="flex w-full">
-          <Typography
-            className="w-full font-semibold text-gray-400"
-            variant={TypographyVariant.BodySmall}>
-            {fileExtension}
-          </Typography>
-
-          <Typography
-            className="min-w-20 text-right font-semibold text-gray-400"
-            variant={TypographyVariant.BodySmall}>
-            {fileSizeToString(fileSize)}
-          </Typography>
-        </div>
-      </div>
+      </ContextMenu>
     </MessageContainer>
   )
 }
