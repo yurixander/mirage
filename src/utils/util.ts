@@ -6,7 +6,7 @@ import {
   type ICreateRoomOpts,
   type MatrixClient,
 } from "matrix-js-sdk"
-import {type RoomMessageEventContent} from "matrix-js-sdk/lib/types"
+import type {RoomMessageEventContent} from "matrix-js-sdk/lib/types"
 
 export enum ViewPath {
   App = "/",

@@ -41,7 +41,7 @@ const RoomContainer: FC = () => {
               groupedMembers={groupedMembers}
               isLoading={isMembersLoading}
               onReloadMembers={onReloadMembers}
-              onUserClick={function (userId: string): void {
+              onUserClick={function (_userId: string): void {
                 throw new Error("`onUserClick` function not implemented.")
               }}
             />

@@ -2,7 +2,6 @@
 .storybook
 github
 vite.config.ts
-!.storybook¡
 commitlint.config.ts
 tailwind.config.ts
 node_modules

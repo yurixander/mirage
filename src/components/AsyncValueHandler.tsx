@@ -1,6 +1,7 @@
-import {type AsyncState} from "@/hooks/util/useAsyncValue"
+import type {AsyncState} from "@/hooks/util/useAsyncValue"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import type React from "react"
 
 type AsyncValueHandlerProps<T> = {
   value: AsyncState<T>
