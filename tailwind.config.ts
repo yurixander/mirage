@@ -128,19 +128,19 @@ const config = {
       "160": "160%",
     },
     animation: {
-      "hold": "hold 200ms",
-      "fadeIn": "fadeIn 0.1s ease-out",
-      "fade": "fade 0.1s",
-      "spin": "rotate 0.6s infinite linear",
-      "enter": "enter 200ms",
+      hold: "hold 200ms",
+      fadeIn: "fadeIn 0.1s ease-out",
+      fade: "fade 0.1s",
+      spin: "rotate 0.6s infinite linear",
+      enter: "enter 200ms",
       "dot-jump": "dot-jump 400ms ease-in-out infinite alternate",
-      "loading": "loading 1.5s infinite ease-in-out",
-      "indicator": "indicator 300ms",
-      "rotation": "rotation 1s infinite linear",
-      "pulse": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      loading: "loading 1.5s infinite ease-in-out",
+      indicator: "indicator 300ms",
+      rotation: "rotation 1s infinite linear",
+      pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
     },
     keyframes: {
-      "slideIn": {
+      slideIn: {
         from: {
           width: "0%",
         },
@@ -148,12 +148,12 @@ const config = {
           width: "100%",
         },
       },
-      "pulse": {
+      pulse: {
         "50%": {
           opacity: ".5",
         },
       },
-      "hold": {
+      hold: {
         from: {
           transform: "scale(0.9)",
         },
@@ -161,7 +161,7 @@ const config = {
           transform: "scale(0.8)",
         },
       },
-      "loading": {
+      loading: {
         "0%": {
           transform: "translate(-75px, 0)",
           boxShadow: "0 0 40px 30px #E9EBED",
@@ -177,20 +177,20 @@ const config = {
           boxShadow: "0 0 20px 15px #E9EBED",
         },
       },
-      "indicator": {
+      indicator: {
         from: {
           "background-color": "#C463FF",
-          "width": "8px",
-          "height": "8px",
+          width: "8px",
+          height: "8px",
           "border-radius": "50%",
         },
         to: {
           "background-color": "#C463FF",
-          "height": "25px",
+          height: "25px",
           "border-radius": "10px",
         },
       },
-      "enter": {
+      enter: {
         from: {
           transform: "scale(50%)",
         },
@@ -198,7 +198,7 @@ const config = {
           transform: "scale(100%)",
         },
       },
-      "show": {
+      show: {
         from: {
           opacity: "0",
         },
@@ -211,7 +211,7 @@ const config = {
           transform: "translateY(-4px)",
         },
       },
-      "fadeIn": {
+      fadeIn: {
         from: {
           opacity: "0",
           transform: "translateY(-20px)",
@@ -221,7 +221,7 @@ const config = {
           transform: "translateY(0)",
         },
       },
-      "rotation": {
+      rotation: {
         from: {
           transform: "rotate(0deg)",
         },
@@ -229,7 +229,7 @@ const config = {
           transform: "rotate(360deg)",
         },
       },
-      "fade": {
+      fade: {
         from: {
           opacity: "0",
           transform: "translateY(+20px)",

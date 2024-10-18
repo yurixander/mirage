@@ -26,12 +26,14 @@
     "attributePosition": "auto",
     "bracketSpacing": true,
     "ignore": [
-      "**/.github",
-      "**/.storybook",
-      "**/github",
-      "**/node_modules",
-      "**/public",
-      "**/dist"
+      "**/.github/**",
+      "**/.storybook/**",
+      "**/github/**",
+      "**/node_modules/**",
+      "**/public/**",
+      "**/dist/**",
+      "**/.git/**",
+      "**/.vscode/**"
     ]
   },
   "organizeImports": {"enabled": true},
@@ -246,8 +248,8 @@
       "trailingCommas": "es5",
       "semicolons": "asNeeded",
       "arrowParentheses": "asNeeded",
-      "bracketSameLine": false,
-      "quoteStyle": "single",
+      "bracketSameLine": true,
+      "quoteStyle": "double",
       "attributePosition": "auto",
       "bracketSpacing": false
     },

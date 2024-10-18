@@ -1,8 +1,4 @@
-import type {
-  Room,
-  RoomEmittedEvents,
-  RoomEventHandlerMap,
-} from "matrix-js-sdk"
+import type {Room, RoomEmittedEvents, RoomEventHandlerMap} from "matrix-js-sdk"
 import type {
   Listener,
   EventEmitterEvents,
