@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react"
 import useDebounced from "../util/useDebounced"
 import type {IPublicRoomsChunkRoom, MatrixClient} from "matrix-js-sdk"
+import type React from "react"
 
 type UsePublicRoomsSearch = {
   isResultLoading: boolean

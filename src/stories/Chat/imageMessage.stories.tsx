@@ -1,5 +1,6 @@
 import ImageMessage, {type ImageMessageProps} from "@/components/ImageMessage"
 import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 
 type Story = StoryObj<typeof ImageMessage>
 
@@ -21,7 +22,7 @@ export const Default: Story = {
     timestamp: Date.now(),
     onAuthorClick: () => {},
     messageId: "id-3",
-    onClickImage(imgUrl) {},
+    onClickImage() {},
     userId: "user-id",
   },
 }

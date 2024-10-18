@@ -22,8 +22,8 @@ export const Default: Story = {
     roomId: "roomId",
     notificationTime: Date.now(),
     notificationId: "notificationId",
-    markAsRead(notificationId) {},
-    onDelete(notificationId) {},
+    markAsRead(_notificationId) {},
+    onDelete(_notificationId) {},
     action() {},
   },
 }

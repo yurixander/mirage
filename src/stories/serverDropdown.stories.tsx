@@ -18,7 +18,7 @@ export const Default: Story = {
   render,
   args: {
     initiallyServerSelected: MATRIX_SERVER,
-    onServerSelected: server => {},
+    onServerSelected: () => {},
   },
 }
 

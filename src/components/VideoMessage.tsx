@@ -18,8 +18,6 @@ const VideoMessage: FC<VideoMessageProps> = ({
   authorDisplayName,
   authorAvatarUrl,
   authorDisplayNameColor,
-  contextMenuItems,
-  messageId,
   onAuthorClick,
   timestamp,
   userId,

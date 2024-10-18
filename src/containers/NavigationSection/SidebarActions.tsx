@@ -55,10 +55,10 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
           searchResult={results}
           setQuery={setQuery}
           clearResult={clearResults}
-          dmRoomClick={function (roomId: string): void {
+          dmRoomClick={function (_roomId: string): void {
             throw new Error("DMRoomClick function not implemented.")
           }}
-          onResultUserClick={function (userId: string): void {
+          onResultUserClick={function (_userId: string): void {
             throw new Error("onResultUserClick function not implemented.")
           }}>
           <Button

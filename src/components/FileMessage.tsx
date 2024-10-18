@@ -33,7 +33,6 @@ const FileMessage: FC<FileMessageProps> = ({
   authorDisplayName,
   authorAvatarUrl,
   onAuthorClick,
-  contextMenuItems,
   authorDisplayNameColor,
   timestamp,
   fileName,
@@ -74,7 +73,9 @@ const FileMessage: FC<FileMessageProps> = ({
               color="lightslategrey"
               tooltip={t(LangKey.ClickToDownload)}
               onClick={() => {
-                if (fileUrl !== undefined) open(fileUrl)
+                if (fileUrl !== undefined) {
+                  open(fileUrl)
+                }
               }}>
               <FaDownload />
             </IconButton>

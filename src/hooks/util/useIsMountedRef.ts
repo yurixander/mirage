@@ -1,4 +1,5 @@
 import {useEffect, useRef} from "react"
+import type React from "react"
 
 const useIsMountedReference = (): React.MutableRefObject<boolean> => {
   const isMounted = useRef(false)

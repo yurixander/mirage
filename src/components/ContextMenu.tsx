@@ -68,7 +68,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
   const isRightClick = actionType === ClickActions.RightClick
   const isLeftClick = actionType === ClickActions.LeftClick
 
-  const onShowMenu = (event: React.MouseEvent<HTMLDivElement>): void => {
+  const onShowMenu = (event: React.MouseEvent<HTMLButtonElement>): void => {
     showMenu(id, event)
   }
 
@@ -76,14 +76,12 @@ const ContextMenu: FC<ContextMenuProps> = ({
 
   return (
     <>
-      <div
-        role="button"
-        aria-hidden
+      <button
         className={twMerge("appearance-none", className)}
         onContextMenu={isRightClick ? onShowMenu : undefined}
         onClick={isLeftClick ? onShowMenu : undefined}>
         {children}
-      </div>
+      </button>
 
       {isActive &&
         points !== null &&
@@ -102,14 +100,12 @@ const ContextMenu: FC<ContextMenuProps> = ({
               top: `${points.y}px`,
             }}>
             {elements.map((element, index) => (
-              <div
+              <button
                 className="flex max-h-7 cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-gray-100"
                 onClick={() => {
                   element.onClick()
                   hideMenu()
                 }}
-                role="button"
-                aria-hidden
                 key={index}>
                 <div className="flex size-5 items-center justify-center">
                   <element.icon
@@ -125,7 +121,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
                   className="line-clamp-1 font-medium text-gray-700">
                   {element.text}
                 </Typography>
-              </div>
+              </button>
             ))}
           </motion.div>,
           document.body

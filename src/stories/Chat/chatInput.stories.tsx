@@ -2,6 +2,7 @@ import type {Meta, StoryObj} from "@storybook/react"
 import ChatInput, {
   type ChatInputProps,
 } from "@/containers/RoomContainer/ChatInput"
+import type React from "react"
 
 type Story = StoryObj<typeof ChatInput>
 
@@ -17,10 +18,10 @@ export const Default: Story = {
   args: {
     roomId: "room_id_test",
     isInputDisabled: false,
-    onPickFile(file) {},
-    onSendTypingEvent(roomId) {},
+    onPickFile(_file) {},
+    onSendTypingEvent(_roomId) {},
     onSendAudio: async () => {},
-    onSendMessageText(messageSendRequest) {},
+    onSendMessageText(_messageSendRequest) {},
   },
 }
 
@@ -29,10 +30,10 @@ export const IsDisabled: Story = {
   args: {
     roomId: "room_id_test",
     isInputDisabled: true,
-    onPickFile(file) {},
-    onSendTypingEvent(roomId) {},
+    onPickFile(_file) {},
+    onSendTypingEvent(_roomId) {},
     onSendAudio: async () => {},
-    onSendMessageText(messageSendRequest) {},
+    onSendMessageText(_messageSendRequest) {},
   },
 }
 

@@ -1,5 +1,6 @@
 import type {Points} from "@/components/ContextMenu"
 import {useState} from "react"
+import type React from "react"
 
 type UseElementPointsReturnType = {
   points: Points | null

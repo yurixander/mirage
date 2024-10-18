@@ -5,6 +5,7 @@ import {
 } from "@/containers/NavigationSection/RoomNavigator"
 import type {StoryObj, Meta} from "@storybook/react/*"
 import {useState} from "react"
+import type React from "react"
 
 type Story = StoryObj<typeof RoomNavigator>
 

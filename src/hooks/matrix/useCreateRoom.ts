@@ -3,6 +3,7 @@ import {useState} from "react"
 import usePublicRoomsSearch from "./usePublicRoomsSearch"
 import useActiveModalStore from "../util/useActiveModal"
 import useMatrixClient from "./useMatrixClient"
+import type React from "react"
 
 // Initial event that declares the room as encrypted.
 const ROOM_ENCRYPTION_OBJECT = {

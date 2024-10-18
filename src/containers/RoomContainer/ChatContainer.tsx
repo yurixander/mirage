@@ -86,7 +86,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           isInputDisabled={isInputDisabled}
           roomId={roomId}
           onSendMessageText={sendMessageText}
-          onPickFile={file => {
+          onPickFile={() => {
             // TODO: Handle files preview here.
           }}
           onSendAudio={async audioBlob => {

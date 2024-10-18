@@ -14,7 +14,6 @@ export type ImagePreviewProps = {
 
 const ImagePreview: FC<ImagePreviewProps> = ({
   imageUrl,
-  imageName,
   onClear,
   onSendImage,
 }) => {

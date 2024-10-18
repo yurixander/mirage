@@ -20,6 +20,7 @@ import useTooltip from "@/hooks/util/useTooltip"
 import {IoIosSearch} from "react-icons/io"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import type React from "react"
 
 export type DMUser = {
   displayName: string

@@ -68,13 +68,12 @@ const SearchBar: FC<SearchBarProps> = ({onQueryChange, className}) => {
       {results.length > 0 && (
         <div className="absolute left-0 top-full w-full rounded-b-xl border-t border-solid border-neutral-300 bg-neutral-300 p-3">
           {results.map((result, index) => (
-            <div
+            <button
               key={index}
               className="cursor-pointer rounded-md p-3 hover:bg-neutral-300"
-              onClick={result.onClick}
-              aria-hidden="true">
+              onClick={result.onClick}>
               {result.text}
-            </div>
+            </button>
           ))}
         </div>
       )}

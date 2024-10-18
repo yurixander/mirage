@@ -2,6 +2,7 @@ import type {GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 import Roster, {type RosterProps} from "@/containers/Roster/Roster"
 import {UserPowerLevel} from "@/utils/members"
 import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 
 type Story = StoryObj<typeof Roster>
 
@@ -48,7 +49,7 @@ export const Default: Story = {
     groupedMembers,
     isLoading: false,
     onReloadMembers() {},
-    onUserClick(userId) {},
+    onUserClick(_userId) {},
   },
 }
 
@@ -58,7 +59,7 @@ export const WithGhosts: Story = {
     groupedMembers,
     isLoading: false,
     onReloadMembers() {},
-    onUserClick(userId) {},
+    onUserClick(_userId) {},
   },
 }
 
@@ -68,17 +69,17 @@ export const Loading: Story = {
     groupedMembers,
     isLoading: true,
     onReloadMembers() {},
-    onUserClick(userId) {},
+    onUserClick(_userId) {},
   },
 }
 
-export const Error: Story = {
+export const ErrorVariant: Story = {
   render,
   args: {
     groupedMembers,
     isLoading: false,
     onReloadMembers() {},
-    onUserClick(userId) {},
+    onUserClick(_userId) {},
   },
 }
 

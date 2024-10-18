@@ -1,13 +1,14 @@
 import type {Emoji} from "@emoji-mart/data"
 import {useEffect, useState} from "react"
 import {searchEmoji} from "./useEmojiPicker"
+import type React from "react"
 
 type UseEmojiSearchReturnType = {
   emojisResult: Emoji[] | null
   setEmojiQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
-const useEmojiSearch = (searchDelay = 500): UseEmojiSearchReturnType => {
+const useEmojiSearch = (): UseEmojiSearchReturnType => {
   const [emojiQuery, setEmojiQuery] = useState("")
   const [results, setResult] = useState<Emoji[] | null>(null)
 

@@ -3,6 +3,7 @@ import type {MatrixClient} from "matrix-js-sdk"
 import useDebounced from "../util/useDebounced"
 import {getImageUrl} from "@/utils/util"
 import type {DMUser} from "@/containers/NavigationSection/DMTrayPopup"
+import type React from "react"
 
 const LIMIT_USER_SEARCH = 100
 

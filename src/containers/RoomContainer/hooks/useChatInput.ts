@@ -2,6 +2,7 @@ import useDebounced from "@/hooks/util/useDebounced"
 import {MsgType} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import type React from "react"
 
 type MsgRequestContentOf<IsText extends boolean> = IsText extends true
   ? string

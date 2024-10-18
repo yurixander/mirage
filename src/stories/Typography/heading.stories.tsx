@@ -4,6 +4,7 @@ import {
   TruncatedHeading,
   type HeadingProps,
 } from "@/components/ui/typography"
+import type React from "react"
 
 type Story = StoryObj<typeof Heading>
 

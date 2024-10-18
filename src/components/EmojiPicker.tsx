@@ -22,6 +22,7 @@ import useEmojiPicker, {
 import {SearchInput} from "./ui/input"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import type React from "react"
 
 type CategoryWithIcon = {
   category: string

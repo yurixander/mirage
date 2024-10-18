@@ -22,7 +22,6 @@ type SpacesNavProps = {
 const Spaces: FC<SpacesNavProps> = ({
   spaces,
   isLoading,
-  onCreateSpace,
   onSpaceSelected,
   spaceSelected,
   className,

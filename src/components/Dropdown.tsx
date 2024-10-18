@@ -18,19 +18,17 @@ const Dropdown: FC<DropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const {elementRef: dropdownRef} = useClickOutside<HTMLDivElement>(() => {
+  const {elementRef: dropdownRef} = useClickOutside<HTMLButtonElement>(() => {
     setIsOpen(false)
   })
 
   return (
-    <div
+    <button
       ref={dropdownRef}
       className={twMerge(
         "flex max-w-xs flex-col overflow-hidden rounded-md border border-slate-300 bg-gray-50",
         className
       )}
-      role="button"
-      aria-hidden
       onClick={() => {
         setIsOpen(prevValue => !prevValue)
       }}>
@@ -50,7 +48,7 @@ const Dropdown: FC<DropdownProps> = ({
           {children}
         </motion.div>
       )}
-    </div>
+    </button>
   )
 }
 

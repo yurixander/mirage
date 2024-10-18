@@ -50,10 +50,10 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <AnyMessageHandler
             isAtTheEnd={index !== messages.length - 1}
             anyMessage={message}
-            onAuthorClick={(userId: string) => {
+            onAuthorClick={() => {
               throw new Error("Author click function not implemented.")
             }}
-            onClickImage={(imgUrl: string) => {
+            onClickImage={() => {
               throw new Error("Click image function not implemented.")
             }}
             onResendMessage={() => {
@@ -222,7 +222,7 @@ const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
           key={anyMessage.data.messageId}
           {...anyMessage.data}
           onAuthorClick={onAuthorClick}
-          onQuoteMessageClick={quoteMessageId => {
+          onQuoteMessageClick={() => {
             // TODO Handle `onQuoteMessageClick` for `ReplyMessage`
           }}
           contextMenuItems={buildMessageMenuItems({

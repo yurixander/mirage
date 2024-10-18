@@ -73,10 +73,9 @@ const GetStartedCard: FC<GetStartedCardProps> = ({
   onClick,
 }) => {
   return (
-    <div
-      className="flex cursor-pointer flex-col gap-3 rounded-md border border-slate-300 bg-gray-50 px-4 py-3 transition-transform hover:translate-y-1 hover:shadow-md"
-      onClick={onClick}
-      aria-hidden>
+    <button
+      className="flex flex-col gap-3 rounded-md border border-slate-300 bg-gray-50 px-4 py-3 transition-transform hover:translate-y-1 hover:shadow-md"
+      onClick={onClick}>
       <Icon className="fill-black" size={20} />
 
       <div>
@@ -90,7 +89,7 @@ const GetStartedCard: FC<GetStartedCardProps> = ({
           {subtitle}
         </Typography>
       </div>
-    </div>
+    </button>
   )
 }
 

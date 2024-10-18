@@ -14,6 +14,7 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {putEmojiInPosition} from "@/hooks/util/useEmojiPicker"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
+import type React from "react"
 
 export type MessageSendRequest = {
   roomId: string

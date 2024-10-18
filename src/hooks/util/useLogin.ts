@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom"
 import useConnection from "../matrix/useConnection"
 import useLocalStorage, {LocalStorageKey} from "./useLocalStorage"
 import {MATRIX_SERVER} from "@/utils/servers"
+import type React from "react"
 
 type UseLoginReturnType = {
   isConnecting: boolean

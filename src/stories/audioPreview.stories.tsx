@@ -2,6 +2,7 @@ import type {Meta, StoryObj} from "@storybook/react"
 import AudioFilePreview, {
   type AudioFilePreviewProps,
 } from "../components/AudioFilePreview"
+import type React from "react"
 
 type Story = StoryObj<typeof AudioFilePreview>
 

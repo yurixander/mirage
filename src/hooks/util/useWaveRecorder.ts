@@ -4,6 +4,7 @@ import {useWavesurfer} from "@wavesurfer/react"
 import {useEffect, useRef, useState} from "react"
 import type WaveSurfer from "wavesurfer.js"
 import RecordPlugin from "wavesurfer.js/dist/plugins/record"
+import type React from "react"
 
 class RecordUnavailableError extends Error {
   name: string = t(LangKey.RecordUnavailableError)

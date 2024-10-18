@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import {trim} from "@/utils/util"
+import type React from "react"
 
 export type TruncatedTextWithTooltipProps = {
   text: string

@@ -54,7 +54,9 @@ const AudioMessage: FC<AudioMessageProps> = ({
 
   useEffect(() => {
     const loadTimeout = setTimeout(() => {
-      if (!isReady) setError(true)
+      if (!isReady) {
+        setError(true)
+      }
     }, 40_000)
 
     return () => {
@@ -94,7 +96,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
     return () => {
       wavesurfer.unAll()
     }
-  }, [isReady, stopPlayer, wavesurfer])
+  }, [stopPlayer, wavesurfer])
 
   return (
     <>
@@ -137,19 +139,17 @@ const AudioMessage: FC<AudioMessageProps> = ({
           <div className="ml-auto flex shrink-0 items-center gap-2">
             <Typography>{formatTime(timestamp)}</Typography>
 
-            <div
-              role="button"
+            <button
               onClick={() => {
                 onAuthorClick(userId)
-              }}
-              aria-hidden>
+              }}>
               <AvatarImage
                 isRounded
                 avatarType={AvatarType.Profile}
                 displayName={authorDisplayName}
                 avatarUrl={authorAvatarUrl}
               />
-            </div>
+            </button>
           </div>
         </div>
       </ContextMenu>

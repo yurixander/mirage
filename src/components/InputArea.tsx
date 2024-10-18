@@ -21,13 +21,14 @@ const InputArea: FC<InputAreaProps> = ({
   const textareaReference = useRef<HTMLTextAreaElement>(null)
 
   const handleKeyDown = (event: React.KeyboardEvent): void => {
-    if (event.key === "Enter")
+    if (event.key === "Enter") {
       if (event.ctrlKey) {
         onValueChange(value + "\n")
         setValue(value + "\n")
       } else {
         event.preventDefault()
       }
+    }
   }
 
   // Move scroll to last message.

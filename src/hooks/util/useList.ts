@@ -23,7 +23,7 @@ const useList = <T>(
         let hasUpdated = false
 
         const updatedList = prevItems.map(prevItem => {
-          if (hasRepeat && hasRepeat(prevItem, newItem)) {
+          if (hasRepeat?.(prevItem, newItem)) {
             hasUpdated = true
 
             return newItem
@@ -42,7 +42,7 @@ const useList = <T>(
     (newItem: T) => {
       setItem(prevItems =>
         prevItems.map(prevItem => {
-          if (hasRepeat && hasRepeat(prevItem, newItem)) {
+          if (hasRepeat?.(prevItem, newItem)) {
             return newItem
           }
 
