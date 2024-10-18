@@ -15,7 +15,7 @@ import {LangKey} from "@/lang/allKeys"
 const AppView: FC = () => {
   const {t} = useTranslation()
   const navigate = useNavigate()
-  const {connect} = useConnection()
+  const {connect, disconnect} = useConnection()
   const [connectionError, setConnectionError] = useState(false)
 
   const {value: credentials} = useLocalStorage<Credentials>(
@@ -67,7 +67,13 @@ const AppView: FC = () => {
       <ModalHandler />
 
       <div className="flex size-full flex-row">
-        <NavigationSection />
+        <NavigationSection
+          onLogOut={() => {
+            void disconnect().finally(() => {
+              navigate(ViewPath.Login)
+            })
+          }}
+        />
 
         <RoomContainer />
       </div>

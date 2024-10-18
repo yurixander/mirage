@@ -105,6 +105,7 @@ export const spanish: LangDefinition = {
   [LangKey.RoomDetails]: "Información de la room",
   [LangKey.ExpandRoster]: "Expandir el listado de miembros",
   [LangKey.DownloadImage]: "Descargar imagen",
+  [LangKey.SyncState]: "Estado de syncronización",
 
   // #region Roster
   [LangKey.People]: "Personas",
@@ -229,6 +230,9 @@ export const spanish: LangDefinition = {
   [LangKey.OpenChatError]: "No se pudo abrir la sala de chat por razón",
   [LangKey.DMChatWith]: "Chat directo con",
   [LangKey.RoomOwners]: "Propietarios de la sala",
+  [LangKey.LogOut]: "Cerrar sesión",
+  [LangKey.LogOutDescription]:
+    "Está a punto de cerrar sesión, una vez cerrada será redirigido a la página de inicio de sesión, desea continuar?",
 
   // #region Notifications
   [LangKey.Notifications]: "Notificaciones",
@@ -283,6 +287,8 @@ export const spanish: LangDefinition = {
   [LangKey.Typing]: "escribiendo...",
   [LangKey.Are]: "están",
   [LangKey.Is]: "está",
+  [LangKey.RoomEncrypted]:
+    "Esta sala está encriptada usando cifrado de extremo a extremo",
   [LangKey.AllSpaces]: "Todos los espacios",
 
   // #region WelcomeSplash

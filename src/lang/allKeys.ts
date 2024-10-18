@@ -95,6 +95,7 @@ export enum LangKey {
   RoomDetails,
   ExpandRoster,
   DownloadImage,
+  SyncState,
 
   // #region Roster
   People,
@@ -184,6 +185,8 @@ export enum LangKey {
   OpenChatError,
   DMChatWith,
   RoomOwners,
+  LogOut,
+  LogOutDescription,
 
   // #region Notifications
   Notifications,
@@ -230,6 +233,7 @@ export enum LangKey {
   Typing,
   Are,
   Is,
+  RoomEncrypted,
 
   // #region WelcomeSplash
   WelcomeSplashTitle,

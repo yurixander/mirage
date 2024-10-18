@@ -74,6 +74,10 @@ export async function getAllJoinedRooms(
         continue
       }
 
+      if (joinedRoom.isSpaceRoom()) {
+        continue
+      }
+
       currentJoinedRooms.push({
         roomId: joinedRoom.roomId,
         roomName: joinedRoom.name,
