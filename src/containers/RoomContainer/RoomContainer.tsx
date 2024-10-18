@@ -9,6 +9,7 @@ import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 import {motion} from "framer-motion"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
+import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
@@ -16,6 +17,10 @@ const RoomContainer: FC = () => {
 
   const {groupedMembers, isMembersLoading, onReloadMembers} =
     useRoomMembers(activeRoomId)
+
+  useGlobalHotkey({key: "M", ctrl: true}, () => {
+    setIsRosterExpanded(prevIsExpanded => !prevIsExpanded)
+  })
 
   return (
     <div
