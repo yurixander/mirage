@@ -25,7 +25,7 @@ const RoomContainer: FC = () => {
 
   return (
     <div
-      className="flex size-full flex-col"
+      className="hidden size-full flex-col sm:flex"
       id={ModalRenderLocation.RoomContainer}>
       {(roomState === RoomState.Joined || roomState === RoomState.Invited) &&
       activeRoomId !== null ? (
