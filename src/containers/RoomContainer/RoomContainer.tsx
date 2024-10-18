@@ -35,7 +35,7 @@ const RoomContainer: FC = () => {
             />
           )}
 
-          <motion.div animate={{width: isRosterExpanded ? 250 : 0}}>
+          <motion.div animate={{width: isRosterExpanded ? "15rem" : 0}}>
             <Roster
               className="max-w-60"
               groupedMembers={groupedMembers}
