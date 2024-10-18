@@ -73,7 +73,10 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           />
         </div>
 
-        <ScrollArea className="size-full sm:h-full sm:w-60" isScrollBarHidden>
+        <ScrollArea
+          className="size-full sm:h-full sm:w-60"
+          isScrollBarHidden
+          avoidOverflow>
           <RoomNavigator
             roomSelected={activeRoomId ?? undefined}
             onRoomSelected={setActiveRoomId}
