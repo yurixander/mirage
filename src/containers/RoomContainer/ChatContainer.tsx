@@ -62,7 +62,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
   ) : (
     <div
       className={twMerge(
-        "flex h-full flex-col dark:bg-neutral-950",
+        "flex h-full flex-col dark:bg-neutral-900",
         className
       )}>
       <ChatHeader

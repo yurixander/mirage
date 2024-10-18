@@ -39,7 +39,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
 
   return (
     <div className={twMerge("flex size-full sm:max-w-80", className)}>
-      <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-slate-300 bg-neutral-100 dark:bg-neutral-900">
+      <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
         <div className="flex flex-col items-center p-1">
           <ReactSVG src={StaticAssetPath.NewAppLogo} />
 
@@ -69,8 +69,8 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         <SidebarActions className="mt-auto" onLogOut={onLogOut} />
       </div>
 
-      <div className="flex size-full flex-col border-r border-r-slate-300 bg-neutral-100 dark:bg-neutral-900">
-        <div className="size-full max-h-12 shrink-0 border-b border-b-slate-300 p-2">
+      <div className="flex size-full flex-col border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
+        <div className="size-full max-h-12 shrink-0 border-b border-neutral-300 p-2 dark:border-neutral-700">
           <ServerDropdown
             initiallyServerSelected={serverSelected}
             onServerSelected={setServerSelected}
@@ -97,7 +97,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         </ScrollArea>
 
         <UserBar
-          className="mt-auto h-16 w-full border-t border-t-slate-300"
+          className="mt-auto h-16 w-full border-t border-t-neutral-300 dark:border-t-neutral-700"
           userDataState={userDataState}
           userId={userData.userId}
           displayName={userData.displayName}
