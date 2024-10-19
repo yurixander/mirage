@@ -7,18 +7,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Setup Node.js 20
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-    - name: Install Dependencies
-      run: yarn install
+      - name: Install Dependencies
+        run: yarn install
 
-    - name: Check Code Format
-      run: npx prettier --check .
+      - name: Check Code Format
+        run: npx biome format .
 
-    - name: Run ESLint
-      run: npx eslint . --ext .js,.jsx,.ts,.tsx
+      - name: Run ESLint
+        run: npx biome lint .
