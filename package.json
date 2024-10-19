@@ -15,9 +15,9 @@
     "prepack": "pinst --disable",
     "postpack": "pinst --enable",
     "prepare": "husky install",
-    "biome-check": "biome check ./src",
-    "lint": "biome lint ./src",
-    "format": "biome format ./src"
+    "biome-check": "biome check .",
+    "lint": "biome lint .",
+    "format": "biome format ."
   },
   "dependencies": {
     "@commitlint/cli": "^19.5.0",
