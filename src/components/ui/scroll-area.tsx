@@ -12,24 +12,29 @@ interface ScrollAreaProps
 const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
   ScrollAreaProps
->(({className, isScrollBarHidden, avoidOverflow, children, ...props}, ref) => (
-  <ScrollAreaPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative overflow-hidden",
-      avoidOverflow && "grow basis-0",
-      className
-    )}
-    {...props}>
-    <ScrollAreaPrimitive.Viewport className="size-full rounded-[inherit]">
-      {children}
-    </ScrollAreaPrimitive.Viewport>
+>(
+  (
+    {className, isScrollBarHidden, avoidOverflow = false, children, ...props},
+    ref
+  ) => (
+    <ScrollAreaPrimitive.Root
+      ref={ref}
+      className={cn(
+        "relative overflow-hidden",
+        avoidOverflow && "grow basis-0",
+        className
+      )}
+      {...props}>
+      <ScrollAreaPrimitive.Viewport className="size-full rounded-[inherit]">
+        {children}
+      </ScrollAreaPrimitive.Viewport>
 
-    <ScrollBar className={cn(isScrollBarHidden && "hidden")} />
+      <ScrollBar className={cn(isScrollBarHidden && "hidden")} />
 
-    <ScrollAreaPrimitive.Corner />
-  </ScrollAreaPrimitive.Root>
-))
+      <ScrollAreaPrimitive.Corner />
+    </ScrollAreaPrimitive.Root>
+  )
+)
 
 ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
 

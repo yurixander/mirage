@@ -9,6 +9,7 @@ import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 import {motion} from "framer-motion"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
+import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import {useIsSmall} from "@/hooks/util/useMediaQuery"
 
 const RoomContainer: FC = () => {
@@ -18,6 +19,10 @@ const RoomContainer: FC = () => {
 
   const {groupedMembers, isMembersLoading, onReloadMembers} =
     useRoomMembers(activeRoomId)
+
+  useGlobalHotkey({key: "M", ctrl: true}, () => {
+    setIsRosterExpanded(prevIsExpanded => !prevIsExpanded)
+  })
 
   if (!isSm && activeRoomId === null) {
     return <></>
@@ -41,9 +46,7 @@ const RoomContainer: FC = () => {
             />
           )}
 
-          <motion.div
-            className="hidden sm:block"
-            animate={{width: isRosterExpanded ? 250 : 0}}>
+          <motion.div animate={{width: isRosterExpanded ? "15rem" : 0}}>
             <Roster
               className="max-w-60"
               groupedMembers={groupedMembers}

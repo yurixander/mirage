@@ -1,19 +1,13 @@
 import {type FC} from "react"
-import {stringToColor, formatTime, trim, cleanDisplayName} from "@/utils/util"
+import {stringToColor, formatTime, cleanDisplayName} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
-import Typography, {TypographyVariant} from "@/components/Typography"
 import {type UserPowerLevel} from "@/utils/members"
 import {motion} from "framer-motion"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import useTooltip from "@/hooks/util/useTooltip"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {TruncatedHeading, TruncatedText} from "@/components/ui/typography"
 
 export type RosterUserData = {
   displayName: string
@@ -47,17 +41,19 @@ const RosterUser: FC<RosterUserProps> = ({
       ? t(LangKey.SeenLongAgo)
       : t(LangKey.LastSeenDate, formatTime(lastPresenceAge))
 
+  const name = displayName.length === 0 ? userId : cleanDisplayName(displayName)
+
   return (
     <motion.button
-      aria-label={`Member: ${displayName}`}
-      initial={{opacity: 0, scale: 0.5}}
+      aria-label={`Member: ${name}`}
+      initial={{opacity: 0, scale: 0.8}}
       whileInView={{opacity: 1, scale: 1}}
       transition={{
         duration: 0.2,
       }}
       ref={renderRef}
       className={twMerge(
-        "flex w-full gap-2 rounded-lg px-2 py-1 hover:bg-gray-100",
+        "flex w-full gap-2 rounded-lg px-2 py-1 hover:bg-gray-200 dark:hover:bg-neutral-800",
         className
       )}
       onClick={() => {
@@ -75,51 +71,27 @@ const RosterUser: FC<RosterUserProps> = ({
         className="shrink-0"
         avatarUrl={avatarUrl}
         avatarType={AvatarType.Profile}
-        displayName={displayName}
+        displayName={name}
         isRounded={false}
       />
 
       <div className="flex w-full flex-col items-start">
-        <RosterUserTypography
+        <TruncatedHeading
+          level="h6"
           style={{color: stringToColor(userId)}}
-          text={displayName.length === 0 ? userId : displayName}
+          text={name}
           maxLength={NAME_MAX_LENGTH}
+          delayDuration={2000}
         />
 
-        <RosterUserTypography
-          variant={TypographyVariant.BodySmall}
+        <TruncatedText
+          size="2"
           text={lastPresence}
           maxLength={USER_ID_MAX_LENGTH}
+          delayDuration={2000}
         />
       </div>
     </motion.button>
-  )
-}
-
-const RosterUserTypography: FC<{
-  text: string
-  maxLength: number
-  variant?: TypographyVariant
-  style?: React.CSSProperties
-}> = ({maxLength, text, style, variant = TypographyVariant.Body}) => {
-  const exceedsLimit = text.length > maxLength
-
-  return exceedsLimit ? (
-    <TooltipProvider delayDuration={2000}>
-      <Tooltip>
-        <TooltipTrigger aria-label={trim(text, maxLength)}>
-          <Typography className="w-max" style={style} variant={variant}>
-            {cleanDisplayName(trim(text, maxLength))}
-          </Typography>
-        </TooltipTrigger>
-
-        <TooltipContent aria-label={text}>{text}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  ) : (
-    <Typography style={style} variant={variant}>
-      {text}
-    </Typography>
   )
 }
 

@@ -30,14 +30,14 @@ const UserProfileGhost: FC<UserProfileGhostProps> = ({
           key={index}
           style={{opacity: 1 - multiplier}}
           className="flex gap-1">
-          <div className="relative size-10 overflow-hidden rounded-lg bg-neutral-300" />
+          <div className="relative size-10 overflow-hidden rounded-lg bg-neutral-300 dark:bg-neutral-800" />
 
           <div className="mr-auto inline-flex flex-col">
-            <div className="overflow-hidden rounded-xl bg-neutral-300 text-profileGhost">
+            <div className="overflow-hidden rounded-xl bg-neutral-300 text-transparent dark:bg-neutral-800">
               Emerald branch
             </div>
 
-            <div className="mt-1 max-h-3 w-min overflow-hidden rounded-xl bg-neutral-300 text-xs text-profileGhost">
+            <div className="mt-1 max-h-3 w-min overflow-hidden rounded-xl bg-neutral-300 text-xs text-transparent dark:bg-neutral-800">
               @emerald
             </div>
           </div>
