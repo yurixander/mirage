@@ -10,10 +10,12 @@ import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 import {motion} from "framer-motion"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
+import {useIsSmall} from "@/hooks/util/useMediaQuery"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
+  const isSm = useIsSmall()
 
   const {groupedMembers, isMembersLoading, onReloadMembers} =
     useRoomMembers(activeRoomId)
@@ -22,9 +24,13 @@ const RoomContainer: FC = () => {
     setIsRosterExpanded(prevIsExpanded => !prevIsExpanded)
   })
 
+  if (!isSm && activeRoomId === null) {
+    return <></>
+  }
+
   return (
     <div
-      className="flex size-full flex-col"
+      className="size-full flex-col sm:flex"
       id={ModalRenderLocation.RoomContainer}>
       {(roomState === RoomState.Joined || roomState === RoomState.Invited) &&
       activeRoomId !== null ? (

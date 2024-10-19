@@ -9,7 +9,6 @@ import {formatTime, strCapitalize, trim} from "@/utils/util"
 import {type IconType} from "react-icons"
 import {IoMdCreate} from "react-icons/io"
 import {twMerge} from "tailwind-merge"
-import Typography from "./Typography"
 import {IoCube} from "react-icons/io5"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
@@ -19,6 +18,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import {Text} from "./ui/typography"
 
 export enum EventShortenerType {
   EqualInfo = "EqualInfo",
@@ -123,16 +123,14 @@ export const EventMessageChild: FC<EventMessageChildProps> = ({
       aria-label={accessibilityText}
       className={twMerge("flex items-center px-1", className)}>
       <div className="inline-flex gap-2">
-        <Icon aria-hidden className="mt-1 text-gray-500" />
+        <Icon aria-hidden className="mt-1 fill-neutral-500" />
 
-        <Typography
-          ariaHidden
-          className="whitespace-pre-line break-words italic text-gray-500">
+        <Text className="whitespace-pre-line break-words italic">
           {trim(strCapitalize(body), MAX_CHILD_EVENT_BODY_LENGTH)}
-        </Typography>
+        </Text>
       </div>
 
-      <time className="ml-auto text-base text-gray-400">
+      <time className="ml-auto text-base font-normal">
         {formatTime(timestamp)}
       </time>
     </div>
