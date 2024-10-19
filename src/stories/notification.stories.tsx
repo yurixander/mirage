@@ -1,7 +1,7 @@
-import type {Meta, StoryObj} from "@storybook/react"
-import Notification, {type NotificationProps} from "../components/Notification"
 import {NotificationType} from "@/utils/notifications"
+import type {Meta, StoryObj} from "@storybook/react"
 import type React from "react"
+import Notification, {type NotificationProps} from "../components/Notification"
 
 type Story = StoryObj<typeof Notification>
 

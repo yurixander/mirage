@@ -1,11 +1,11 @@
+import {MATRIX_SERVER} from "@/utils/servers"
 import {type Credentials, ViewPath} from "@/utils/util"
-import {createClient, SyncState} from "matrix-js-sdk"
-import {useState, useCallback, useEffect} from "react"
+import {SyncState, createClient} from "matrix-js-sdk"
+import {useCallback, useEffect, useState} from "react"
+import type React from "react"
 import {useNavigate} from "react-router-dom"
 import useConnection from "../matrix/useConnection"
 import useLocalStorage, {LocalStorageKey} from "./useLocalStorage"
-import {MATRIX_SERVER} from "@/utils/servers"
-import type React from "react"
 
 type UseLoginReturnType = {
   isConnecting: boolean

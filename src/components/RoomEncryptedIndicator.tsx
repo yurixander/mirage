@@ -1,8 +1,8 @@
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 import type {FC} from "react"
 import {IoLockClosed} from "react-icons/io5"
 import Typography from "./Typography"
-import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/lang/allKeys"
 
 const RoomEncryptedIndicator: FC = () => {
   const {t} = useTranslation()

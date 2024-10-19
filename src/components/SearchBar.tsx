@@ -1,8 +1,8 @@
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import React, {useState, type FC} from "react"
-import KeyCue from "./KeyCue"
-import {twMerge} from "tailwind-merge"
 import {IoSearch} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
+import KeyCue from "./KeyCue"
 
 export type SearchResult = {
   text: string

@@ -1,6 +1,6 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "vcs": {"enabled": true, "clientKind": "git", "useIgnoreFile": false},
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": false },
   "files": {
     "ignoreUnknown": false,
     "ignore": [
@@ -36,7 +36,7 @@
       "**/.vscode/**"
     ]
   },
-  "organizeImports": {"enabled": true},
+  "organizeImports": { "enabled": true },
   "linter": {
     "enabled": true,
     "rules": {
@@ -75,7 +75,7 @@
         "noBannedTypes": "error",
         "noExcessiveCognitiveComplexity": {
           "level": "error",
-          "options": {"maxAllowedComplexity": 24}
+          "options": { "maxAllowedComplexity": 24 }
         },
         "noExtraBooleanCast": "error",
         "noForEach": "error",
@@ -130,7 +130,7 @@
         "useValidForDirection": "error",
         "useYield": "error"
       },
-      "security": {"noGlobalEval": "error"},
+      "security": { "noGlobalEval": "error" },
       "style": {
         "noCommaOperator": "error",
         "noNamespace": "error",
@@ -143,7 +143,7 @@
         "useBlockStatements": "error",
         "useConsistentArrayType": {
           "level": "error",
-          "options": {"syntax": "shorthand"}
+          "options": { "syntax": "shorthand" }
         },
         "useConsistentBuiltinInstantiation": "error",
         "useConst": "error",
@@ -151,7 +151,7 @@
         "useExportType": "error",
         "useFilenamingConvention": {
           "level": "off",
-          "options": {"requireAscii": true, "filenameCases": ["kebab-case"]}
+          "options": { "requireAscii": true, "filenameCases": ["kebab-case"] }
         },
         "useForOf": "error",
         "useImportType": "error",
@@ -161,17 +161,17 @@
             "strictCase": false,
             "conventions": [
               {
-                "selector": {"kind": "variable"},
+                "selector": { "kind": "variable" },
                 "match": "_?([^_]*)_?",
                 "formats": ["camelCase", "PascalCase", "CONSTANT_CASE"]
               },
               {
-                "selector": {"kind": "function"},
+                "selector": { "kind": "function" },
                 "match": "_?([^_]*)_?",
                 "formats": ["camelCase", "PascalCase", "CONSTANT_CASE"]
               },
               {
-                "selector": {"kind": "functionParameter"},
+                "selector": { "kind": "functionParameter" },
                 "match": "_?([^_]*)_?",
                 "formats": ["camelCase", "PascalCase", "CONSTANT_CASE"]
               }
@@ -261,22 +261,22 @@
         "*.stories.@(ts|tsx|js|jsx|mjs|cjs)",
         "*.story.@(ts|tsx|js|jsx|mjs|cjs)"
       ],
-      "linter": {"rules": {"correctness": {"useHookAtTopLevel": "off"}}}
+      "linter": { "rules": { "correctness": { "useHookAtTopLevel": "off" } } }
     },
     {
       "include": [".storybook/main.@(js|cjs|mjs|ts)"],
-      "linter": {"rules": {}}
+      "linter": { "rules": {} }
     },
     {
       "include": [
         "*.stories.@(ts|tsx|js|jsx|mjs|cjs)",
         "*.story.@(ts|tsx|js|jsx|mjs|cjs)"
       ],
-      "linter": {"rules": {"correctness": {"useHookAtTopLevel": "off"}}}
+      "linter": { "rules": { "correctness": { "useHookAtTopLevel": "off" } } }
     },
     {
       "include": [".storybook/main.@(js|cjs|mjs|ts)"],
-      "linter": {"rules": {}}
+      "linter": { "rules": {} }
     }
   ]
 }

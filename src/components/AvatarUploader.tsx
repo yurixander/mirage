@@ -1,12 +1,12 @@
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import useFilePicker from "@/hooks/util/useFilePicker"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 import {uploadImageToMatrix} from "@/utils/util"
-import {useEffect, useMemo, useState, type FC} from "react"
+import {type FC, useEffect, useMemo, useState} from "react"
 import {IoCamera, IoTrashBin} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import Typography, {TypographyVariant} from "./Typography"
-import useMatrixClient from "@/hooks/matrix/useMatrixClient"
-import useFilePicker from "@/hooks/util/useFilePicker"
-import {LangKey} from "@/lang/allKeys"
-import useTranslation from "@/hooks/util/useTranslation"
 import {IconButton} from "./ui/button"
 
 type UploadAvatarProps = {

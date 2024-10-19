@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import RoomEncryptedIndicator from "../components/RoomEncryptedIndicator"
 import type React from "react"
+import RoomEncryptedIndicator from "../components/RoomEncryptedIndicator"
 
 type Story = StoryObj<typeof RoomEncryptedIndicator>
 

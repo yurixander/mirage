@@ -1,7 +1,7 @@
-import type {Meta, StoryObj} from "@storybook/react"
-import UserCard, {type UserCardProps} from "../components/UserCard"
 import Typography from "@/components/Typography"
+import type {Meta, StoryObj} from "@storybook/react"
 import type React from "react"
+import UserCard, {type UserCardProps} from "../components/UserCard"
 
 type Story = StoryObj<typeof UserCard>
 

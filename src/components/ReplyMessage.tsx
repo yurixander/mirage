@@ -1,9 +1,9 @@
+import {cleanDisplayName, stringToColor} from "@/utils/util"
 import type {FC} from "react"
 import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
+import type {MessageBaseData, MessageBaseProps} from "./MessageContainer"
 import TextMessage from "./TextMessage"
 import Typography, {TypographyVariant} from "./Typography"
-import type {MessageBaseData, MessageBaseProps} from "./MessageContainer"
-import {cleanDisplayName, stringToColor} from "@/utils/util"
 
 export interface ReplyMessageProps extends MessageBaseProps {
   onQuoteMessageClick: (quoteMessageId: string) => void

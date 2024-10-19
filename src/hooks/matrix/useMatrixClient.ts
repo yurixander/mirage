@@ -1,5 +1,5 @@
-import {useClientStore} from "./useConnection"
 import {type MatrixClient, SyncState} from "matrix-js-sdk"
+import {useClientStore} from "./useConnection"
 
 const useMatrixClient = (): MatrixClient | null => {
   const {client, isConnecting, syncState} = useClientStore()

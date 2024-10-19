@@ -1,16 +1,4 @@
-import type {FC} from "react"
-import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
-import {twMerge} from "tailwind-merge"
-import useNotifications from "./hooks/useNotifications"
-import DMTrayPopup from "./DMTrayPopup"
-import useMatrixClient from "@/hooks/matrix/useMatrixClient"
-import useDmTray from "./hooks/useDmTray"
-import NotificationsTray from "./NotificationsTray"
 import NotificationDot from "@/components/NotificationDot"
-import {Button} from "@/components/ui/button"
-import {FaSearch} from "react-icons/fa"
-import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/lang/allKeys"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,11 +7,23 @@ import {
   AlertDialogFooter,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {Button} from "@/components/ui/button"
 import {Heading} from "@/components/ui/typography"
+import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 import {
   AlertDialogDescription,
   AlertDialogTitle,
 } from "@radix-ui/react-alert-dialog"
+import type {FC} from "react"
+import {FaSearch} from "react-icons/fa"
+import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
+import DMTrayPopup from "./DMTrayPopup"
+import NotificationsTray from "./NotificationsTray"
+import useDmTray from "./hooks/useDmTray"
+import useNotifications from "./hooks/useNotifications"
 
 const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-neutral-400 hover:bg-transparent"
 const SIDEBAR_BUTTON_SIZE = 20

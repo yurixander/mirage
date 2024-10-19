@@ -13,12 +13,12 @@ import useEventListener from "@/hooks/matrix/useEventListener"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import useIsMountedRef from "@/hooks/util/useIsMountedRef"
-import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
+import {handleRoomEvents, handleRoomMessageEvent} from "@/utils/rooms"
 import {getImageUrl, sendAudioMessage} from "@/utils/util"
 import {
-  MsgType,
   EventTimeline,
   EventType,
+  MsgType,
   type Room,
   RoomEvent,
   RoomMemberEvent,

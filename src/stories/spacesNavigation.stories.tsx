@@ -1,8 +1,8 @@
-import type {Meta, StoryObj} from "@storybook/react"
 import SpacesNavigation, {
   type SpaceNavigationProps,
   DASHBOARD_SPACE_ID,
 } from "@/containers/NavigationSection/SpacesNavigation"
+import type {Meta, StoryObj} from "@storybook/react"
 import type React from "react"
 import {useState} from "react"
 

@@ -1,14 +1,14 @@
+import LoadingEffect from "@/components/LoadingEffect"
+import {ScrollArea} from "@/components/ui/scroll-area"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
+import {scaleInAnimation} from "@/utils/animations"
+import {StaticAssetPath} from "@/utils/util"
+import {motion} from "framer-motion"
 import type {FC} from "react"
+import {twMerge} from "tailwind-merge"
 import Space from "./Space"
 import type {PartialSpace} from "./hooks/useSpaces"
-import {StaticAssetPath} from "@/utils/util"
-import LoadingEffect from "@/components/LoadingEffect"
-import {motion} from "framer-motion"
-import {scaleInAnimation} from "@/utils/animations"
-import {LangKey} from "@/lang/allKeys"
-import {ScrollArea} from "@/components/ui/scroll-area"
-import {twMerge} from "tailwind-merge"
-import useTranslation from "@/hooks/util/useTranslation"
 
 type SpacesNavProps = {
   spaces: PartialSpace[]

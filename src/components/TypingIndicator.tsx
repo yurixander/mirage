@@ -1,10 +1,10 @@
-import type React from "react"
-import {useMemo, type FC} from "react"
-import {twMerge} from "tailwind-merge"
-import {stringToColor} from "@/utils/util"
-import Avatar from "boring-avatars"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {stringToColor} from "@/utils/util"
+import Avatar from "boring-avatars"
+import type React from "react"
+import {type FC, useMemo} from "react"
+import {twMerge} from "tailwind-merge"
 
 export type TypingIndicatorUser = {
   displayName: string

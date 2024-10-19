@@ -1,28 +1,28 @@
-import {useEffect, useRef, useState, type FC} from "react"
-import {twMerge} from "tailwind-merge"
-import type {Emoji} from "@emoji-mart/data"
-import {
-  IoIosCafe,
-  IoIosPartlySunny,
-  IoIosGlobe,
-  IoIosAmericanFootball,
-  IoIosBulb,
-  IoIosNuclear,
-} from "react-icons/io"
-import type {IconType} from "react-icons"
 import {IconButton} from "@/components/ui/button"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {ScrollArea} from "@/components/ui/scroll-area"
-import {IoHappy, IoTime} from "react-icons/io5"
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 import useEmojiPicker, {
   Category,
   getCachedEmojiSkin,
 } from "@/hooks/util/useEmojiPicker"
-import {SearchInput} from "./ui/input"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import type {Emoji} from "@emoji-mart/data"
+import {type FC, useEffect, useRef, useState} from "react"
 import type React from "react"
+import type {IconType} from "react-icons"
+import {
+  IoIosAmericanFootball,
+  IoIosBulb,
+  IoIosCafe,
+  IoIosGlobe,
+  IoIosNuclear,
+  IoIosPartlySunny,
+} from "react-icons/io"
+import {IoHappy, IoTime} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
+import {SearchInput} from "./ui/input"
 
 type CategoryWithIcon = {
   category: string

@@ -1,23 +1,23 @@
 import ServerDropdown from "@/components/ServerDropdown"
-import {MATRIX_SERVER} from "@/utils/servers"
-import {useState, type FC} from "react"
-import {StaticAssetPath} from "@/utils/util"
-import {ReactSVG} from "react-svg"
 import Typography, {TypographyVariant} from "@/components/Typography"
-import SidebarActions from "./SidebarActions"
-import UserBar from "./UserBar"
-import {twMerge} from "tailwind-merge"
-import useSpaces from "./hooks/useSpaces"
-import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
-import useUserData from "./hooks/useUserData"
-import {RoomNavigator} from "./RoomNavigator"
-import useRoomNavigator from "./hooks/useRoomNavigator"
+import {ScrollArea} from "@/components/ui/scroll-area"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
+import {MATRIX_SERVER} from "@/utils/servers"
+import {StaticAssetPath} from "@/utils/util"
+import {type FC, useState} from "react"
+import {ReactSVG} from "react-svg"
+import {twMerge} from "tailwind-merge"
+import {RoomNavigator} from "./RoomNavigator"
+import SidebarActions from "./SidebarActions"
 import SpacesNavigation, {
   DASHBOARD_SPACE_ID,
   SpacesPlaceHolder,
 } from "./SpacesNavigation"
-import {ScrollArea} from "@/components/ui/scroll-area"
+import UserBar from "./UserBar"
+import useRoomNavigator from "./hooks/useRoomNavigator"
+import useSpaces from "./hooks/useSpaces"
+import useUserData from "./hooks/useUserData"
 
 const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,

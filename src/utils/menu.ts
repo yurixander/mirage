@@ -1,16 +1,16 @@
 import type {ContextMenuItem} from "@/components/ContextMenu"
-import {IoMdDownload, IoMdTrash, IoIosSettings} from "react-icons/io"
+import {LangKey} from "@/lang/allKeys"
+import {IoIosSettings, IoMdDownload, IoMdTrash} from "react-icons/io"
 import {
-  IoArrowUndo,
-  IoArrowRedo,
-  IoReloadCircle,
   IoAddCircle,
+  IoArrowRedo,
+  IoArrowUndo,
+  IoReloadCircle,
   IoSearchCircle,
 } from "react-icons/io5"
-import {assert} from "./util"
 import {MdPlaylistAddCircle} from "react-icons/md"
 import {t} from "./lang"
-import {LangKey} from "@/lang/allKeys"
+import {assert} from "./util"
 
 export const CONTEXT_MENU_REPLY = {
   text: t(LangKey.Reply),

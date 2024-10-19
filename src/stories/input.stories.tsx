@@ -1,4 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
+import {IoArrowRedo, IoArrowUndo, IoTrash} from "react-icons/io5"
 import Input, {
   type InputProps as InputProperties,
   integerConstraint,
@@ -6,8 +8,6 @@ import Input, {
   urlConstraint,
   userIdConstraint,
 } from "../components/Input"
-import {IoArrowUndo, IoTrash, IoArrowRedo} from "react-icons/io5"
-import type React from "react"
 
 type Story = StoryObj<typeof Input>
 

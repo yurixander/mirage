@@ -1,11 +1,11 @@
-import React from "react"
-import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
-import {AlertDialogContent} from "./alert-dialog"
-import {cn} from "@/utils/utils"
-import {Button, type ButtonProps, buttonVariants} from "./button"
-import {IoClose} from "react-icons/io5"
 import {StaticAssetPath} from "@/utils/util"
+import {cn} from "@/utils/utils"
+import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
+import React from "react"
+import {IoClose} from "react-icons/io5"
 import {ReactSVG} from "react-svg"
+import {AlertDialogContent} from "./alert-dialog"
+import {Button, type ButtonProps, buttonVariants} from "./button"
 
 const Modal = AlertDialogPrimitive.Root
 

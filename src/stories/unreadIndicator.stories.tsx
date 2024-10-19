@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import UnreadIndicator from "../components/UnreadIndicator"
 import type React from "react"
+import UnreadIndicator from "../components/UnreadIndicator"
 
 type Story = StoryObj<typeof UnreadIndicator>
 

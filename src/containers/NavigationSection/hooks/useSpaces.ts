@@ -1,10 +1,10 @@
-import {useCallback, useEffect, useState} from "react"
 import useEventListener from "@/hooks/matrix/useEventListener"
-import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
-import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getJoinedSpaces} from "@/utils/spaces"
+import {getImageUrl} from "@/utils/util"
+import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import {useCallback, useEffect, useState} from "react"
 
 export type PartialSpace = {
   name: string

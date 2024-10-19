@@ -1,10 +1,5 @@
-import type {FC} from "react"
-import {stringToColor, formatTime, trim, cleanDisplayName} from "@/utils/util"
-import {twMerge} from "tailwind-merge"
-import Typography, {TypographyVariant} from "@/components/Typography"
-import type {UserPowerLevel} from "@/utils/members"
-import {motion} from "framer-motion"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
+import Typography, {TypographyVariant} from "@/components/Typography"
 import {
   Tooltip,
   TooltipContent,
@@ -14,7 +9,12 @@ import {
 import useTooltip from "@/hooks/util/useTooltip"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import type {UserPowerLevel} from "@/utils/members"
+import {cleanDisplayName, formatTime, stringToColor, trim} from "@/utils/util"
+import {motion} from "framer-motion"
+import type {FC} from "react"
 import type React from "react"
+import {twMerge} from "tailwind-merge"
 
 export type RosterUserData = {
   displayName: string

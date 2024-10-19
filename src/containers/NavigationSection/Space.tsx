@@ -1,14 +1,14 @@
-import Avatar from "boring-avatars"
-import {useState, forwardRef} from "react"
-import {twMerge} from "tailwind-merge"
-import {motion} from "framer-motion"
-import {scaleInAnimation} from "@/utils/animations"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import {scaleInAnimation} from "@/utils/animations"
+import Avatar from "boring-avatars"
+import {motion} from "framer-motion"
+import {forwardRef, useState} from "react"
+import {twMerge} from "tailwind-merge"
 
 export type SpaceProps = {
   isSelected: boolean

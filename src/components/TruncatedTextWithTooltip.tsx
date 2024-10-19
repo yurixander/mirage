@@ -1,5 +1,3 @@
-import type {FC} from "react"
-import Typography, {type TypographyVariant} from "./Typography"
 import {
   Tooltip,
   TooltipContent,
@@ -7,7 +5,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import {trim} from "@/utils/util"
+import type {FC} from "react"
 import type React from "react"
+import Typography, {type TypographyVariant} from "./Typography"
 
 export type TruncatedTextWithTooltipProps = {
   text: string

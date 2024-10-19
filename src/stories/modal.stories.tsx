@@ -1,18 +1,18 @@
-import type {Meta, StoryObj} from "@storybook/react"
-import type React from "react"
 import {Button} from "@/components/ui/button"
 import {
   Modal,
-  ModalTrigger,
-  ModalCancel,
   ModalAction,
+  ModalCancel,
   ModalContent,
   ModalDescription,
   ModalFooter,
   ModalHeader,
-  ModalTitle,
   ModalMoreInfo,
+  ModalTitle,
+  ModalTrigger,
 } from "@/components/ui/modal"
+import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 
 type Story = StoryObj<typeof Modal>
 

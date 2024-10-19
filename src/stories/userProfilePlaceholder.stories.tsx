@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import UserProfilePlaceholder from "../components/UserProfilePlaceholder"
 import type React from "react"
+import UserProfilePlaceholder from "../components/UserProfilePlaceholder"
 
 type Story = StoryObj<typeof UserProfilePlaceholder>
 

@@ -4,14 +4,14 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import type {FC} from "react"
 import {
-  IoChevronForward,
-  IoChevronBack,
   IoCall,
-  IoVideocam,
-  IoSearch,
+  IoChevronBack,
+  IoChevronForward,
   IoInformation,
   IoLink,
   IoLockClosed,
+  IoSearch,
+  IoVideocam,
 } from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
 import {twMerge} from "tailwind-merge"

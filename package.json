@@ -10,14 +10,14 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
-    "format": "prettier --write .",
-    "prettier": "prettier --check .",
-    "lint": "eslint --fix . --ext .ts,.tsx",
     "commit": "commit",
     "postinstall": "husky install",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "biome-check": "biome check ./src",
+    "lint": "biome lint ./src",
+    "format": "biome format ./src"
   },
   "dependencies": {
     "@commitlint/cli": "^19.5.0",
@@ -121,7 +121,6 @@
     "eslint-plugin-write-good-comments": "^0.2.0",
     "husky": "^8.0.0",
     "husky-init": "8.0.0",
-    "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "prop-types": "^15.8.1",
     "storybook": "^8.3.5",

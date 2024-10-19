@@ -1,6 +1,6 @@
 import type {FC} from "react"
-import {assert} from "../utils/util"
 import {twMerge} from "tailwind-merge"
+import {assert} from "../utils/util"
 
 export type NotificationIndicatorProps = {
   mentionAmount?: number

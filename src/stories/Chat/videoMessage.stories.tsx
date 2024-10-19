@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 import VideoMessage, {
   type VideoMessageProps,
 } from "../../components/VideoMessage"
-import type React from "react"
 
 type Story = StoryObj<typeof VideoMessage>
 

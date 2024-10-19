@@ -1,15 +1,15 @@
-import type {FC} from "react"
-import {IoFilterCircle, IoPeople, IoReloadOutline} from "react-icons/io5"
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {ScrollArea} from "@/components/ui/scroll-area"
-import RosterUser, {type RosterUserData} from "./RosterUser"
-import {twMerge} from "tailwind-merge"
-import {motion} from "framer-motion"
-import {Button} from "@/components/ui/button"
 import UserProfileGhost from "@/components/UserProfileGhost"
-import type {GroupedMembers} from "./hooks/useRoomMembers"
+import {Button} from "@/components/ui/button"
+import {ScrollArea} from "@/components/ui/scroll-area"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {motion} from "framer-motion"
+import type {FC} from "react"
+import {IoFilterCircle, IoPeople, IoReloadOutline} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
+import RosterUser, {type RosterUserData} from "./RosterUser"
+import type {GroupedMembers} from "./hooks/useRoomMembers"
 
 export enum RosterUserCategory {
   Admin,

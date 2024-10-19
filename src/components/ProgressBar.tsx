@@ -1,9 +1,9 @@
-import type {FC} from "react"
-import {twMerge} from "tailwind-merge"
-import {IoIosAlert, IoIosCheckmarkCircle} from "react-icons/io"
-import Typography from "./Typography"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import type {FC} from "react"
+import {IoIosAlert, IoIosCheckmarkCircle} from "react-icons/io"
+import {twMerge} from "tailwind-merge"
+import Typography from "./Typography"
 
 export enum ProgressBarState {
   Progress,

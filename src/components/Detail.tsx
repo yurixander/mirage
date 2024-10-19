@@ -1,11 +1,11 @@
-import type React from "react"
-import type {FC} from "react"
-import ContextMenu, {ClickActions, type ContextMenuItem} from "./ContextMenu"
-import Typography, {TypographyVariant} from "./Typography"
-import {IoEllipsisHorizontal} from "react-icons/io5"
-import {twMerge} from "tailwind-merge"
 import {assert} from "@/utils/util"
 import {motion} from "framer-motion"
+import type React from "react"
+import type {FC} from "react"
+import {IoEllipsisHorizontal} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
+import ContextMenu, {ClickActions, type ContextMenuItem} from "./ContextMenu"
+import Typography, {TypographyVariant} from "./Typography"
 
 export type DetailProps = {
   title: string

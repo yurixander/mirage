@@ -1,8 +1,8 @@
+import {RoomType} from "@/components/Room"
+import type {RoomSections} from "@/containers/NavigationSection/RoomNavigator"
 import {EventType, JoinRule, type MatrixClient, type Room} from "matrix-js-sdk"
 import {getDirectRoomsIds} from "./rooms"
-import {RoomType} from "@/components/Room"
 import {stringToEmoji} from "./util"
-import type {RoomSections} from "@/containers/NavigationSection/RoomNavigator"
 
 export type PartialRoom = {
   roomId: string

@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 import TypingIndicator, {
   type TypingIndicatorProps,
 } from "../components/TypingIndicator"
-import type React from "react"
 
 type Story = StoryObj<typeof TypingIndicator>
 

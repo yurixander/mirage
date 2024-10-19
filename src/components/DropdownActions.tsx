@@ -1,9 +1,9 @@
+import {assert} from "@/utils/util"
 import {type FC, useState} from "react"
 import type {IconType} from "react-icons"
 import {IoMdCheckmark} from "react-icons/io"
 import Dropdown from "./Dropdown"
 import Typography from "./Typography"
-import {assert} from "@/utils/util"
 
 export type DropdownOption = {
   text: string

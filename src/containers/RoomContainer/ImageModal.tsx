@@ -1,5 +1,10 @@
-import type {FC} from "react"
+import ImageZoom from "@/components/ImageZoom"
+import Typography from "@/components/Typography"
+import {IconButton} from "@/components/ui/button"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 import {saveAs} from "file-saver"
+import type {FC} from "react"
 import {IoMdDownload, IoMdTrash} from "react-icons/io"
 import {
   IoArrowRedo,
@@ -7,11 +12,6 @@ import {
   IoCloseCircle,
   IoInformationCircle,
 } from "react-icons/io5"
-import ImageZoom from "@/components/ImageZoom"
-import Typography from "@/components/Typography"
-import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/lang/allKeys"
-import {IconButton} from "@/components/ui/button"
 
 const ICON_BUTTON_MODAL_SIZE = 26
 

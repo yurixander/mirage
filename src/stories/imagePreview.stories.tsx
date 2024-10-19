@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import ImagePreview, {type ImagePreviewProps} from "../components/ImagePreview"
 import type React from "react"
+import ImagePreview, {type ImagePreviewProps} from "../components/ImagePreview"
 
 type Story = StoryObj<typeof ImagePreview>
 

@@ -1,14 +1,14 @@
-import {useState, type FC} from "react"
-import ChatContainer from "./ChatContainer"
-import Roster from "../Roster/Roster"
 import SmartActionBar from "@/components/SmartActionBar"
-import WelcomeSplash from "./WelcomeSplash"
-import RoomNotFoundSplash from "./RoomNotFoundSplash"
-import RoomInvitedSplash from "./RoomInvitedSplash"
 import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
-import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 import {motion} from "framer-motion"
+import {type FC, useState} from "react"
+import Roster from "../Roster/Roster"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
+import ChatContainer from "./ChatContainer"
+import RoomInvitedSplash from "./RoomInvitedSplash"
+import RoomNotFoundSplash from "./RoomNotFoundSplash"
+import WelcomeSplash from "./WelcomeSplash"
+import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()

@@ -1,6 +1,6 @@
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useLocalStorage, {LocalStorageKey} from "@/hooks/util/useLocalStorage"
-import {cleanDisplayName, type Credentials, getImageUrl} from "@/utils/util"
+import {type Credentials, cleanDisplayName, getImageUrl} from "@/utils/util"
 import {useCallback, useEffect, useState} from "react"
 
 export enum UserDataState {

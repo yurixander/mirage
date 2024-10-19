@@ -1,13 +1,13 @@
-import {stringToColor, formatTime, assert, validateUrl} from "@/utils/util"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
+import {type NotificationType, notificationsBody} from "@/utils/notifications"
+import {assert, formatTime, stringToColor, validateUrl} from "@/utils/util"
 import type {FC} from "react"
 import {IoCheckbox, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import Typography, {TypographyVariant} from "./Typography"
-import {notificationsBody, type NotificationType} from "@/utils/notifications"
 import {Button} from "./ui/button"
-import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/lang/allKeys"
 
 export type NotificationProps = {
   type: NotificationType

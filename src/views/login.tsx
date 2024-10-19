@@ -1,21 +1,21 @@
+import AppLogo from "@/components/AppLogo"
 import {
   type InputConstraint,
   nonEmptyConstraint,
   userIdConstraint,
 } from "@/components/Input"
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {useState, type FC} from "react"
-import {StaticAssetPath} from "@/utils/util"
-import {Link} from "react-router-dom"
-import {IoIosContact} from "react-icons/io"
-import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
+import {Button} from "@/components/ui/button"
+import {type InputIconActionProps, InputWithIcon} from "@/components/ui/input"
 import useLogin from "@/hooks/util/useLogin"
-import type {IconType} from "react-icons"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
-import {Button} from "@/components/ui/button"
-import AppLogo from "@/components/AppLogo"
-import {type InputIconActionProps, InputWithIcon} from "@/components/ui/input"
+import {StaticAssetPath} from "@/utils/util"
+import {type FC, useState} from "react"
+import type {IconType} from "react-icons"
+import {IoIosContact} from "react-icons/io"
+import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
+import {Link} from "react-router-dom"
 
 const LoginView: FC = () => {
   const {t} = useTranslation()

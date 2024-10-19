@@ -1,14 +1,14 @@
-import {useEffect, useRef, type FC} from "react"
-import useRoomChat from "./hooks/useRoomChat"
-import ChatHeader from "./ChatHeader"
-import {ChatMessages} from "./ChatMessages"
-import ChatInput from "./ChatInput"
-import TypingIndicator from "@/components/TypingIndicator"
 import Loader from "@/components/Loader"
-import {twMerge} from "tailwind-merge"
-import {assert} from "@/utils/util"
+import TypingIndicator from "@/components/TypingIndicator"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {assert} from "@/utils/util"
+import {type FC, useEffect, useRef} from "react"
+import {twMerge} from "tailwind-merge"
+import ChatHeader from "./ChatHeader"
+import ChatInput from "./ChatInput"
+import {ChatMessages} from "./ChatMessages"
+import useRoomChat from "./hooks/useRoomChat"
 
 type ChatContainerProps = {
   roomId: string

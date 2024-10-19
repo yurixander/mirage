@@ -1,9 +1,9 @@
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import {useEffect, useState} from "react"
-import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import {type MatrixClient, RoomMemberEvent} from "matrix-js-sdk"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import {type MatrixClient, RoomMemberEvent} from "matrix-js-sdk"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import {useEffect, useState} from "react"
 
 export enum RoomState {
   Idle,

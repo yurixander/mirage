@@ -1,8 +1,9 @@
-import type {FC} from "react"
-import {twMerge} from "tailwind-merge"
-import {IoMdSettings} from "react-icons/io"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
+import LoadingEffect from "@/components/LoadingEffect"
 import Typography, {TypographyVariant} from "@/components/Typography"
+import {IconButton} from "@/components/ui/button"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 import {
   assert,
   getUsernameByUserId,
@@ -10,12 +11,11 @@ import {
   trim,
   validateUrl,
 } from "@/utils/util"
-import LoadingEffect from "@/components/LoadingEffect"
-import {UserDataState} from "./hooks/useUserData"
+import type {FC} from "react"
+import {IoMdSettings} from "react-icons/io"
 import {IoAlertCircle, IoRefreshCircle} from "react-icons/io5"
-import {LangKey} from "@/lang/allKeys"
-import useTranslation from "@/hooks/util/useTranslation"
-import {IconButton} from "@/components/ui/button"
+import {twMerge} from "tailwind-merge"
+import {UserDataState} from "./hooks/useUserData"
 
 const MAX_USER_ID_LENGTH = 18
 

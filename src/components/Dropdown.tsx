@@ -1,9 +1,9 @@
 import useClickOutside from "@/hooks/util/useClickOutside"
+import {motion} from "framer-motion"
 import type React from "react"
-import {useState, type FC} from "react"
+import {type FC, useState} from "react"
 import {IoCaretDownOutline, IoCaretUpOutline} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import {motion} from "framer-motion"
 
 export type DropdownProps = {
   initiallyContent: React.JSX.Element

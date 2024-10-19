@@ -1,16 +1,8 @@
-import type * as React from "react"
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import {IoMdArrowDropdown} from "react-icons/io"
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
+import * as AccordionPrimitive from "@radix-ui/react-accordion"
+import type * as React from "react"
+import {IoMdArrowDropdown} from "react-icons/io"
 
-import {cn} from "@/utils/utils"
-import type {FC} from "react"
-import {Text} from "@/components/ui/typography"
-import type {PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
-import {motion} from "framer-motion"
-import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/lang/allKeys"
-import {IoEllipsisHorizontal} from "react-icons/io5"
 import {IconButton} from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -20,9 +12,17 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {Text} from "@/components/ui/typography"
+import type {PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
+import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 import {widthFillAnimNavigator} from "@/utils/animations"
 import {trim} from "@/utils/util"
-import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
+import {cn} from "@/utils/utils"
+import {motion} from "framer-motion"
+import type {FC} from "react"
+import {IoEllipsisHorizontal} from "react-icons/io5"
 
 type AccordionRoomSectionProps = {
   title: string

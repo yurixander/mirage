@@ -1,10 +1,10 @@
 import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 import ProgressBar, {
   type ProgressBarProps,
   ProgressBarState,
   ProgressBarVariant,
 } from "../components/ProgressBar"
-import type React from "react"
 
 type Story = StoryObj<typeof ProgressBar>
 

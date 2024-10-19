@@ -1,11 +1,11 @@
+import {RoomType} from "@/components/Room"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
+import useRoomListener from "@/hooks/matrix/useRoomListener"
+import {getAllJoinedRooms} from "@/utils/rooms"
+import {getSpaceRoomSections} from "@/utils/spaces"
+import {EventType, type MatrixClient, type Room, RoomEvent} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 import {EMPTY_SECTIONS, type RoomSections} from "../RoomNavigator"
-import {RoomType} from "@/components/Room"
-import {getAllJoinedRooms} from "@/utils/rooms"
-import {EventType, type MatrixClient, type Room, RoomEvent} from "matrix-js-sdk"
-import useRoomListener from "@/hooks/matrix/useRoomListener"
-import {getSpaceRoomSections} from "@/utils/spaces"
 import {DASHBOARD_SPACE_ID} from "../SpacesNavigation"
 
 type UseRoomNavigatorReturnType = {

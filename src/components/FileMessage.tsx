@@ -1,9 +1,7 @@
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
+import {assert, validateUrl} from "@/utils/util"
 import type {FC} from "react"
-import MessageContainer, {
-  type MessageBaseData,
-  type MessageBaseProps,
-} from "./MessageContainer"
-import Typography, {TypographyVariant} from "./Typography"
 import {
   FaDownload,
   FaFile,
@@ -14,10 +12,12 @@ import {
   FaFileWord,
   FaFileZipper,
 } from "react-icons/fa6"
-import {assert, validateUrl} from "@/utils/util"
+import MessageContainer, {
+  type MessageBaseData,
+  type MessageBaseProps,
+} from "./MessageContainer"
+import Typography, {TypographyVariant} from "./Typography"
 import {IconButton} from "./ui/button"
-import {LangKey} from "@/lang/allKeys"
-import useTranslation from "@/hooks/util/useTranslation"
 
 const ICON_SIZE = 20
 

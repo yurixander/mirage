@@ -1,8 +1,8 @@
-import type {FC} from "react"
-import Typography, {TypographyVariant} from "./Typography"
-import {IoAdd, IoCloseCircle} from "react-icons/io5"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import type {FC} from "react"
+import {IoAdd, IoCloseCircle} from "react-icons/io5"
+import Typography, {TypographyVariant} from "./Typography"
 import {Button, IconButton} from "./ui/button"
 
 export type ImagePreviewProps = {

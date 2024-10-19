@@ -1,26 +1,26 @@
-import type {FC} from "react"
+import Input from "@/components/Input"
+import Loader from "@/components/Loader"
+import Typography, {TypographyVariant} from "@/components/Typography"
+import UserProfile from "@/components/UserProfile"
 import {Button} from "@/components/ui/button"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import {IoCopy} from "react-icons/io5"
-import Typography, {TypographyVariant} from "@/components/Typography"
-import Input from "@/components/Input"
-import {twMerge} from "tailwind-merge"
-import UserProfile from "@/components/UserProfile"
-import {
-  stringToColor,
-  getUsernameByUserId,
-  validateMatrixUser,
-} from "@/utils/util"
-import Loader from "@/components/Loader"
 import useTooltip from "@/hooks/util/useTooltip"
-import {IoIosSearch} from "react-icons/io"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {
+  getUsernameByUserId,
+  stringToColor,
+  validateMatrixUser,
+} from "@/utils/util"
+import type {FC} from "react"
 import type React from "react"
+import {IoIosSearch} from "react-icons/io"
+import {IoCopy} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
 
 export type DMUser = {
   displayName: string

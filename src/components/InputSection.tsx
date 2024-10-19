@@ -1,8 +1,8 @@
 import type {FC} from "react"
 import type {IconType} from "react-icons"
+import {twMerge} from "tailwind-merge"
 import Input, {type InputConstraint, type InputAction} from "./Input"
 import Typography, {TypographyVariant} from "./Typography"
-import {twMerge} from "tailwind-merge"
 
 export type InputSectionProps = {
   title: string

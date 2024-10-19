@@ -1,4 +1,4 @@
-import {useState, useRef, useCallback, useEffect} from "react"
+import {useCallback, useEffect, useRef, useState} from "react"
 
 type UseQueueReturnType<T> = {
   current: T | null

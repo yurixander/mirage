@@ -1,7 +1,7 @@
-import type {Meta, StoryObj} from "@storybook/react"
 import ChatHeader, {
   type ChatHeaderProps,
 } from "@/containers/RoomContainer/ChatHeader"
+import type {Meta, StoryObj} from "@storybook/react"
 import type React from "react"
 
 type Story = StoryObj<typeof ChatHeader>

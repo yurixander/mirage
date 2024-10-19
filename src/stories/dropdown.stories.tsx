@@ -1,6 +1,6 @@
-import type {Meta, StoryObj} from "@storybook/react"
-import Typography from "@/components/Typography"
 import Dropdown, {type DropdownProps} from "@/components/Dropdown"
+import Typography from "@/components/Typography"
+import type {Meta, StoryObj} from "@storybook/react"
 import type React from "react"
 
 type Story = StoryObj<typeof Dropdown>

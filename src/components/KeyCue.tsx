@@ -1,6 +1,6 @@
+import {cn} from "@/utils/utils"
 import type {FC} from "react"
 import {assert} from "../utils/util"
-import {cn} from "@/utils/utils"
 
 type KeyCueSize = "default" | "sm"
 

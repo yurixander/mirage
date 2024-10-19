@@ -1,14 +1,14 @@
+import useActiveModalStore, {
+  ModalPosition,
+  Modals,
+} from "@/hooks/util/useActiveModal"
+import {assert} from "@/utils/util"
 import type React from "react"
 import type {FC} from "react"
 import {createPortal} from "react-dom"
 import {twMerge} from "tailwind-merge"
 import CreateRoomModal from "./CreateRoomModal"
 import CreateSpaceModal from "./CreateSpaceModal"
-import useActiveModalStore, {
-  ModalPosition,
-  Modals,
-} from "@/hooks/util/useActiveModal"
-import {assert} from "@/utils/util"
 
 const modalComponents: {[key in Modals]: React.JSX.Element} = {
   [Modals.CreateRoom]: <CreateRoomModal />,

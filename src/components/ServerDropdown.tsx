@@ -1,15 +1,15 @@
-import Avatar from "boring-avatars"
-import {useState, type FC} from "react"
-import Typography from "./Typography"
-import {twMerge} from "tailwind-merge"
 import {
   CUTEFUNNYART_SERVER,
   MATRIX_SERVER,
-  TRYGVEME_SERVER,
   type Server,
+  TRYGVEME_SERVER,
 } from "@/utils/servers"
-import Dropdown from "./Dropdown"
+import Avatar from "boring-avatars"
+import {type FC, useState} from "react"
 import {IoMdCheckmark} from "react-icons/io"
+import {twMerge} from "tailwind-merge"
+import Dropdown from "./Dropdown"
+import Typography from "./Typography"
 
 const servers = [MATRIX_SERVER, CUTEFUNNYART_SERVER, TRYGVEME_SERVER]
 

@@ -1,7 +1,3 @@
-import type React from "react"
-import type {FC} from "react"
-import {cva} from "class-variance-authority"
-import {cn} from "@/utils/utils"
 import {
   Tooltip,
   TooltipContent,
@@ -9,6 +5,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import {trim} from "@/utils/util"
+import {cn} from "@/utils/utils"
+import {cva} from "class-variance-authority"
+import type React from "react"
+import type {FC} from "react"
 
 type TruncatedProps = {
   text: string

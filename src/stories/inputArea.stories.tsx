@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import InputArea, {type InputAreaProps} from "../components/InputArea"
 import type React from "react"
+import InputArea, {type InputAreaProps} from "../components/InputArea"
 
 type Story = StoryObj<typeof InputArea>
 

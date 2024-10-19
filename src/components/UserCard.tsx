@@ -1,12 +1,12 @@
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
 import type {FC} from "react"
 import {formatTime} from "../utils/util"
 import Label from "./Label"
+import Typography, {TypographyVariant} from "./Typography"
 import UserProfile, {
   type UserProfileProps as UserProfileProperties,
 } from "./UserProfile"
-import Typography, {TypographyVariant} from "./Typography"
-import {LangKey} from "@/lang/allKeys"
-import useTranslation from "@/hooks/util/useTranslation"
 import {Button} from "./ui/button"
 
 export type UserCardProps = {

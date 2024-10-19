@@ -1,24 +1,24 @@
-import type {FC} from "react"
-import EventMessage, {
-  type EventSender,
-  type EventMessageData,
-  MAX_EVENT_BODY_LENGTH,
-  MAX_EVENT_SENDER_NAME_LENGTH,
-} from "./EventMessage"
-import {formatTime, strCapitalize, trim} from "@/utils/util"
-import type {IconType} from "react-icons"
-import {IoMdCreate} from "react-icons/io"
-import {twMerge} from "tailwind-merge"
-import Typography from "./Typography"
-import {IoCube} from "react-icons/io5"
-import useTranslation from "@/hooks/util/useTranslation"
-import {LangKey} from "@/lang/allKeys"
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import useTranslation from "@/hooks/util/useTranslation"
+import {LangKey} from "@/lang/allKeys"
+import {formatTime, strCapitalize, trim} from "@/utils/util"
+import type {FC} from "react"
+import type {IconType} from "react-icons"
+import {IoMdCreate} from "react-icons/io"
+import {IoCube} from "react-icons/io5"
+import {twMerge} from "tailwind-merge"
+import EventMessage, {
+  type EventSender,
+  type EventMessageData,
+  MAX_EVENT_BODY_LENGTH,
+  MAX_EVENT_SENDER_NAME_LENGTH,
+} from "./EventMessage"
+import Typography from "./Typography"
 
 export enum EventShortenerType {
   EqualInfo = "EqualInfo",

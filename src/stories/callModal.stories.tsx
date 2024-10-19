@@ -1,9 +1,9 @@
 import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 import CallModal, {
   VariantCall,
   type CallModalProps,
 } from "../components/CallModal"
-import type React from "react"
 
 type Story = StoryObj<typeof CallModal>
 

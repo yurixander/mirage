@@ -31,5 +31,8 @@
   "tailwindCSS.classAttributes": ["className", ".*Class.*", ".*Classes.*"],
   "editor.quickSuggestions": {
     "strings": "on"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
   }
 }

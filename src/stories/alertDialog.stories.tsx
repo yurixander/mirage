@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import AlertDialog, {type AlertDialogProps} from "../components/AlertDialog"
 import type React from "react"
+import AlertDialog, {type AlertDialogProps} from "../components/AlertDialog"
 
 type Story = StoryObj<typeof AlertDialog>
 

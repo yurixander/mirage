@@ -1,24 +1,24 @@
-import type {FC} from "react"
+import LoadingEffect from "@/components/LoadingEffect"
+import {ScrollArea} from "@/components/ui/scroll-area"
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
-import {motion} from "framer-motion"
-import Avatar from "boring-avatars"
-import {twMerge} from "tailwind-merge"
-import {scaleInAnimation, spaceIndicatorAnimation} from "@/utils/animations"
-import React from "react"
-import type {SpaceProps} from "./Space"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import type {PartialSpace} from "./hooks/useSpaces"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {scaleInAnimation, spaceIndicatorAnimation} from "@/utils/animations"
 import {StaticAssetPath} from "@/utils/util"
-import {ScrollArea} from "@/components/ui/scroll-area"
+import Avatar from "boring-avatars"
+import {motion} from "framer-motion"
+import type {FC} from "react"
+import React from "react"
 import {ReactSVG} from "react-svg"
-import LoadingEffect from "@/components/LoadingEffect"
+import {twMerge} from "tailwind-merge"
+import type {SpaceProps} from "./Space"
+import type {PartialSpace} from "./hooks/useSpaces"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 

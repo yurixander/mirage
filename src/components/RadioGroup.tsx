@@ -1,6 +1,6 @@
 import type {FC} from "react"
-import RadioButton, {type RadioButtonProps} from "./RadioButton"
 import {twMerge} from "tailwind-merge"
+import RadioButton, {type RadioButtonProps} from "./RadioButton"
 
 export type RadioGroupProps = {
   items: RadioButtonProps[]

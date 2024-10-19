@@ -1,11 +1,11 @@
-import type {FC} from "react"
-import Typography, {TypographyVariant} from "./Typography"
-import {IoCloseCircle} from "react-icons/io5"
-import {fileSizeToString, getFileExtension, IconFile} from "./FileMessage"
-import {ReactSVG} from "react-svg"
-import {StaticAssetPath} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {StaticAssetPath} from "@/utils/util"
+import type {FC} from "react"
+import {IoCloseCircle} from "react-icons/io5"
+import {ReactSVG} from "react-svg"
+import {IconFile, fileSizeToString, getFileExtension} from "./FileMessage"
+import Typography, {TypographyVariant} from "./Typography"
 import {Button, IconButton} from "./ui/button"
 
 export type FilePreviewProps = {

@@ -1,4 +1,4 @@
-import {type Room, EventTimeline, EventType} from "matrix-js-sdk"
+import {EventTimeline, EventType, type Room} from "matrix-js-sdk"
 
 // #region PowerLevels
 export enum UserPowerLevel {

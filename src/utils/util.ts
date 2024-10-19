@@ -2,9 +2,9 @@ import {getEmojiByIndex} from "@/hooks/util/useEmojiPicker"
 import dayjs from "dayjs"
 import {
   EventType,
-  MsgType,
   type ICreateRoomOpts,
   type MatrixClient,
+  MsgType,
 } from "matrix-js-sdk"
 import type {RoomMessageEventContent} from "matrix-js-sdk/lib/types"
 

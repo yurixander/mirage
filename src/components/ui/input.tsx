@@ -1,10 +1,10 @@
 import * as React from "react"
 
-import {cn} from "@/utils/utils"
-import {IoSearch} from "react-icons/io5"
 import useDebounced from "@/hooks/util/useDebounced"
-import type {IconType} from "react-icons"
 import useTooltip from "@/hooks/util/useTooltip"
+import {cn} from "@/utils/utils"
+import type {IconType} from "react-icons"
+import {IoSearch} from "react-icons/io5"
 import {IconButton} from "./button"
 
 export interface InputProps

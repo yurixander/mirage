@@ -1,7 +1,7 @@
 import {assert} from "@/utils/util"
+import {motion} from "framer-motion"
 import type {FC} from "react"
 import {twMerge} from "tailwind-merge"
-import {motion} from "framer-motion"
 
 export type UserProfileGhostProps = {
   count: number

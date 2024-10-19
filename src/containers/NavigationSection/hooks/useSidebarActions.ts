@@ -1,6 +1,6 @@
-import useConnection from "../../../hooks/matrix/useConnection"
-import {useNavigate} from "react-router-dom"
 import {ViewPath} from "@/utils/util"
+import {useNavigate} from "react-router-dom"
+import useConnection from "../../../hooks/matrix/useConnection"
 
 type UseSidebarActions = {
   onLogout: () => void

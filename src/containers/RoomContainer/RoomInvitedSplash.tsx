@@ -1,13 +1,13 @@
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
 import Typography, {TypographyVariant} from "@/components/Typography"
-import {useMemo, useState, type FC} from "react"
-import RoomNotFoundSplash from "./RoomNotFoundSplash"
+import {Button} from "@/components/ui/button"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
-import {Button} from "@/components/ui/button"
+import {getImageUrl} from "@/utils/util"
+import {type FC, useMemo, useState} from "react"
+import RoomNotFoundSplash from "./RoomNotFoundSplash"
 
 enum ActionTypes {
   Join,

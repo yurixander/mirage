@@ -1,11 +1,11 @@
+import {assert, CommonAssertion} from "@/utils/util"
 import type {FC} from "react"
+import ContextMenu from "./ContextMenu"
 import MessageContainer, {
   type MessageBaseData,
   type MessageBaseProps,
 } from "./MessageContainer"
-import ContextMenu from "./ContextMenu"
 import Typography, {TypographyVariant} from "./Typography"
-import {assert, CommonAssertion} from "@/utils/util"
 
 export interface TextMessageData extends MessageBaseData {
   text: string

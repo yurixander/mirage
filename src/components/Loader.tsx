@@ -1,6 +1,6 @@
 import type {FC} from "react"
-import Typography from "./Typography"
 import {twMerge} from "tailwind-merge"
+import Typography from "./Typography"
 
 export type LoaderProps = {
   text: string

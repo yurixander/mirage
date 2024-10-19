@@ -1,10 +1,10 @@
-import type {FC} from "react"
-import Typography, {TypographyVariant} from "../../components/Typography"
-import type {IconType} from "react-icons"
-import {FaCompass, FaGithub, FaHand} from "react-icons/fa6"
 import AppLogo from "@/components/AppLogo"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import type {FC} from "react"
+import type {IconType} from "react-icons"
+import {FaCompass, FaGithub, FaHand} from "react-icons/fa6"
+import Typography, {TypographyVariant} from "../../components/Typography"
 
 const WelcomeSplash: FC = () => {
   const {t} = useTranslation()

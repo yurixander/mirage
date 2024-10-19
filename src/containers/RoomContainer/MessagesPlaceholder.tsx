@@ -1,6 +1,6 @@
 import type {FC} from "react"
-import LoadingEffect from "../../components/LoadingEffect"
 import {twMerge} from "tailwind-merge"
+import LoadingEffect from "../../components/LoadingEffect"
 
 const MessagesPlaceholder: FC = () => {
   return (

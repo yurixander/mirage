@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import SwitchButton, {type SwitchButtonProps} from "../components/SwitchButton"
 import type React from "react"
+import SwitchButton, {type SwitchButtonProps} from "../components/SwitchButton"
 
 type Story = StoryObj<typeof SwitchButton>
 

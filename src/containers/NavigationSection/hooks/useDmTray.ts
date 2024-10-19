@@ -1,9 +1,9 @@
 import useUsersSearch from "@/hooks/matrix/useUserSearch"
-import type {MatrixClient} from "matrix-js-sdk"
-import {useEffect, useState} from "react"
-import type {DMUser, DMRoomData} from "../DMTrayPopup"
 import {getDirectRoomsIds, getPartnerUserIdFromRoomDirect} from "@/utils/rooms"
 import {normalizeName} from "@/utils/util"
+import type {MatrixClient} from "matrix-js-sdk"
+import {useEffect, useState} from "react"
+import type {DMRoomData, DMUser} from "../DMTrayPopup"
 
 type UseDMTrayReturnType = {
   isDMLoading: boolean

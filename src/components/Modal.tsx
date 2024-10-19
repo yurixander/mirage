@@ -1,14 +1,14 @@
-import type {FC} from "react"
-import Typography, {TypographyVariant} from "./Typography"
-import {IoCloseCircle} from "react-icons/io5"
-import type React from "react"
-import {StaticAssetPath} from "@/utils/util"
-import {ReactSVG} from "react-svg"
-import {twMerge} from "tailwind-merge"
-import {motion} from "framer-motion"
-import {Button, IconButton} from "./ui/button"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {StaticAssetPath} from "@/utils/util"
+import {motion} from "framer-motion"
+import type {FC} from "react"
+import type React from "react"
+import {IoCloseCircle} from "react-icons/io5"
+import {ReactSVG} from "react-svg"
+import {twMerge} from "tailwind-merge"
+import Typography, {TypographyVariant} from "./Typography"
+import {Button, IconButton} from "./ui/button"
 
 export type ModalProps = {
   children: React.JSX.Element

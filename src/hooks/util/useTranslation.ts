@@ -1,7 +1,7 @@
 import type {LangKey} from "@/lang/allKeys"
 import {
-  getDefaultLang,
   type Lang,
+  getDefaultLang,
   setDefaultLang,
   translate,
 } from "@/utils/lang"

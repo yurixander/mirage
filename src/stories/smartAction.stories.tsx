@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import SmartAction, {type SmartActionProps} from "../components/SmartAction"
-import {IoMdMedical} from "react-icons/io"
 import type React from "react"
+import {IoMdMedical} from "react-icons/io"
+import SmartAction, {type SmartActionProps} from "../components/SmartAction"
 
 type Story = StoryObj<typeof SmartAction>
 

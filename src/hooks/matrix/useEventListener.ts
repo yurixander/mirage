@@ -1,10 +1,10 @@
 import type {
+  ClientEventHandlerMap,
   EmittedEvents,
+  EventEmitterEvents,
+  Listener,
   MatrixEvent,
   RoomState,
-  Listener,
-  ClientEventHandlerMap,
-  EventEmitterEvents,
 } from "matrix-js-sdk"
 import {useEffect} from "react"
 import useMatrixClient from "./useMatrixClient"

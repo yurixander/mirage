@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/hover-card"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
-import {useMemo, type FC} from "react"
+import {type FC, useMemo} from "react"
 import type React from "react"
 
 const sortNotificationsByReadState = (

@@ -1,8 +1,8 @@
 import Typography, {TypographyVariant} from "@/components/Typography"
 import {assert} from "@/utils/util"
+import {motion} from "framer-motion"
 import type {FC} from "react"
 import {twMerge} from "tailwind-merge"
-import {motion} from "framer-motion"
 
 export enum RoomType {
   Direct,

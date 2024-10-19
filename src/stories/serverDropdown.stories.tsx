@@ -1,9 +1,9 @@
+import {MATRIX_SERVER} from "@/utils/servers"
 import type {Meta, StoryObj} from "@storybook/react"
+import type React from "react"
 import ServerDropdown, {
   type ServerDropdownProps,
 } from "../components/ServerDropdown"
-import {MATRIX_SERVER} from "@/utils/servers"
-import type React from "react"
 
 type Story = StoryObj<typeof ServerDropdown>
 

@@ -1,9 +1,9 @@
-import {useState, useEffect} from "react"
-import type {MatrixClient} from "matrix-js-sdk"
-import useDebounced from "../util/useDebounced"
-import {getImageUrl} from "@/utils/util"
 import type {DMUser} from "@/containers/NavigationSection/DMTrayPopup"
+import {getImageUrl} from "@/utils/util"
+import type {MatrixClient} from "matrix-js-sdk"
+import {useEffect, useState} from "react"
 import type React from "react"
+import useDebounced from "../util/useDebounced"
 
 const LIMIT_USER_SEARCH = 100
 

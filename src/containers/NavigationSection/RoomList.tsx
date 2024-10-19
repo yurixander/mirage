@@ -1,23 +1,23 @@
 import Detail from "@/components/Detail"
+import LoadingEffect from "@/components/LoadingEffect"
 import Room, {RoomType} from "@/components/Room"
+import Typography, {TypographyVariant} from "@/components/Typography"
+import {Button} from "@/components/ui/button"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useSpaceHierarchy, {
   type PartialRoom,
   RoomsState,
 } from "@/hooks/matrix/useSpaceHierarchy"
-import {useMemo, type FC} from "react"
-import {twMerge} from "tailwind-merge"
-import LoadingEffect from "@/components/LoadingEffect"
-import Typography, {TypographyVariant} from "@/components/Typography"
-import {buildDirectRoomsMenuItems, buildRoomsMenuItems} from "@/utils/menu"
 import useActiveModalStore, {
   ModalRenderLocation,
   Modals,
 } from "@/hooks/util/useActiveModal"
-import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import {motion} from "framer-motion"
-import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
-import {Button} from "@/components/ui/button"
+import {LangKey} from "@/lang/allKeys"
+import {buildDirectRoomsMenuItems, buildRoomsMenuItems} from "@/utils/menu"
+import {motion} from "framer-motion"
+import {type FC, useMemo} from "react"
+import {twMerge} from "tailwind-merge"
 import {DASHBOARD_SPACE_ID} from "./SpacesNavigation"
 
 export type RoomListProps = {

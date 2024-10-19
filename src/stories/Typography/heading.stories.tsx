@@ -1,9 +1,9 @@
-import type {Meta, StoryObj} from "@storybook/react"
 import {
   Heading,
-  TruncatedHeading,
   type HeadingProps,
+  TruncatedHeading,
 } from "@/components/ui/typography"
+import type {Meta, StoryObj} from "@storybook/react"
 import type React from "react"
 
 type Story = StoryObj<typeof Heading>

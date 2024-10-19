@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import VideoPreview, {type VideoPreviewProps} from "../components/VideoPreview"
 import type React from "react"
+import VideoPreview, {type VideoPreviewProps} from "../components/VideoPreview"
 
 type Story = StoryObj<typeof VideoPreview>
 

@@ -1,10 +1,10 @@
-import type React from "react"
-import {useState, type FC} from "react"
-import Label from "./Label"
-import {twMerge} from "tailwind-merge"
-import type {IconType} from "react-icons"
-import {t} from "@/utils/lang"
 import {LangKey} from "@/lang/allKeys"
+import {t} from "@/utils/lang"
+import type React from "react"
+import {type FC, useState} from "react"
+import type {IconType} from "react-icons"
+import {twMerge} from "tailwind-merge"
+import Label from "./Label"
 import {IconButton} from "./ui/button"
 
 export type InputConstraint = {

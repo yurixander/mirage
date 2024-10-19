@@ -2,16 +2,16 @@ import type {NotificationProps} from "@/components/Notification"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
-import {getRoomPowerLevelByUserId, UserPowerLevel} from "@/utils/members"
+import {UserPowerLevel, getRoomPowerLevelByUserId} from "@/utils/members"
 import {
-  getPowerLevelsHistory,
-  type LocalNotificationData,
   type CurrentPowerLevelData,
-  getNotificationsHistory,
-  setNotificationsHistory,
-  notificationTypeTransformer,
-  setPowerLevelsHistory,
+  type LocalNotificationData,
   NotificationType,
+  getNotificationsHistory,
+  getPowerLevelsHistory,
+  notificationTypeTransformer,
+  setNotificationsHistory,
+  setPowerLevelsHistory,
 } from "@/utils/notifications"
 import {generateRandomId, getImageUrl} from "@/utils/util"
 import {type MatrixClient, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"

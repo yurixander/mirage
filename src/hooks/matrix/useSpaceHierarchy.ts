@@ -1,13 +1,13 @@
 import type {RoomType} from "@/components/Room"
-import {useCallback, useEffect, useState} from "react"
-import {getSpaceRoomSections} from "@/utils/spaces"
-import {type Room, RoomEvent, type MatrixClient, EventType} from "matrix-js-sdk"
-import useRoomListener from "./useRoomListener"
-import useMatrixClient from "./useMatrixClient"
 import {
   EMPTY_SECTIONS,
   type RoomSections,
 } from "@/containers/NavigationSection/RoomNavigator"
+import {getSpaceRoomSections} from "@/utils/spaces"
+import {EventType, type MatrixClient, type Room, RoomEvent} from "matrix-js-sdk"
+import {useCallback, useEffect, useState} from "react"
+import useMatrixClient from "./useMatrixClient"
+import useRoomListener from "./useRoomListener"
 
 export type PartialRoom = {
   roomId: string

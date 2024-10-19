@@ -1,5 +1,5 @@
-import type {Meta, StoryObj} from "@storybook/react"
 import TextMessage, {type TextMessageProps} from "@/components/TextMessage"
+import type {Meta, StoryObj} from "@storybook/react"
 import type React from "react"
 
 type Story = StoryObj<typeof TextMessage>

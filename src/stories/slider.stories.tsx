@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import Slider, {type SliderProps} from "../components/Slider"
 import type React from "react"
+import Slider, {type SliderProps} from "../components/Slider"
 
 type Story = StoryObj<typeof Slider>
 

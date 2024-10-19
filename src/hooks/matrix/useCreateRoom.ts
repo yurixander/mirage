@@ -1,9 +1,9 @@
-import {Visibility, Preset} from "matrix-js-sdk"
+import {Preset, Visibility} from "matrix-js-sdk"
 import {useState} from "react"
-import usePublicRoomsSearch from "./usePublicRoomsSearch"
+import type React from "react"
 import useActiveModalStore from "../util/useActiveModal"
 import useMatrixClient from "./useMatrixClient"
-import type React from "react"
+import usePublicRoomsSearch from "./usePublicRoomsSearch"
 
 // Initial event that declares the room as encrypted.
 const ROOM_ENCRYPTION_OBJECT = {

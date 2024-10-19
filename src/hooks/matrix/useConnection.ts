@@ -1,10 +1,10 @@
 import type {Credentials} from "@/utils/util"
 import {
-  type MatrixClient,
-  createClient,
   ClientEvent,
-  SyncState,
   LocalStorageCryptoStore,
+  type MatrixClient,
+  SyncState,
+  createClient,
 } from "matrix-js-sdk"
 import {useCallback} from "react"
 import {create} from "zustand"

@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from "@storybook/react"
-import KeyCue, {type KeyCueProps} from "../components/KeyCue"
 import type React from "react"
+import KeyCue, {type KeyCueProps} from "../components/KeyCue"
 
 type Story = StoryObj<typeof KeyCue>
 

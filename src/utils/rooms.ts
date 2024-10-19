@@ -1,36 +1,31 @@
 import {
-  type Room,
-  type MatrixClient,
-  EventType,
-  HistoryVisibility,
-  JoinRule,
-  type MatrixEvent,
-  MsgType,
-  type IContent,
-} from "matrix-js-sdk"
-import {
-  assert,
-  getFileUrl,
-  getImageUrl,
-  normalizeName,
-  stringToColor,
-  stringToEmoji,
-} from "./util"
-import type {RosterUserData} from "@/containers/Roster/RosterUser"
-import {
-  getRoomUsersIdWithPowerLevels,
-  getUserLastPresence,
-  isCurrentUserAdminOrMod,
-  UserPowerLevel,
-} from "./members"
-import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+  type EventGroupMessageData,
+  EventShortenerType,
+} from "@/components/EventGroupMessage"
+import type {EventMessageData} from "@/components/EventMessage"
+import type {MessageBaseData} from "@/components/MessageContainer"
+import {RoomType} from "@/components/Room"
 import {
   type AnyMessage,
   MessageKind,
 } from "@/containers/RoomContainer/hooks/useRoomChat"
+import type {RosterUserData} from "@/containers/Roster/RosterUser"
+import type {GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 import type {PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
-import {RoomType} from "@/components/Room"
+import {LangKey} from "@/lang/allKeys"
+import {
+  EventType,
+  HistoryVisibility,
+  type IContent,
+  JoinRule,
+  type MatrixClient,
+  type MatrixEvent,
+  MsgType,
+  type Room,
+} from "matrix-js-sdk"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import type {IconType} from "react-icons"
+import {IoIosPaper, IoIosText} from "react-icons/io"
 import {
   IoAtCircle,
   IoLockClosed,
@@ -39,17 +34,22 @@ import {
   IoPersonCircle,
   IoReceipt,
 } from "react-icons/io5"
-import {IoIosPaper, IoIosText} from "react-icons/io"
-import type {MessageBaseData} from "@/components/MessageContainer"
+import {t} from "./lang"
+import {
+  UserPowerLevel,
+  getRoomUsersIdWithPowerLevels,
+  getUserLastPresence,
+  isCurrentUserAdminOrMod,
+} from "./members"
 import {parseReplyMessageFromBody, validateReplyMessage} from "./parser"
 import {
-  type EventGroupMessageData,
-  EventShortenerType,
-} from "@/components/EventGroupMessage"
-import type {EventMessageData} from "@/components/EventMessage"
-import type {GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
-import {t} from "./lang"
-import {LangKey} from "@/lang/allKeys"
+  assert,
+  getFileUrl,
+  getImageUrl,
+  normalizeName,
+  stringToColor,
+  stringToEmoji,
+} from "./util"
 
 export enum ImageSizes {
   Server = 47,
