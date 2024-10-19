@@ -1,140 +1,82 @@
 import useFilePicker, {type SourceType} from "@/hooks/util/useFilePicker"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {IoDocument, IoImage, IoVideocam, IoMic} from "react-icons/io5"
+import React, {type FC, useEffect, useState} from "react"
 import {
-  flip,
-  offset,
-  shift,
-  useClick,
-  useFloating,
-  useInteractions,
-} from "@floating-ui/react"
-import {motion} from "framer-motion"
-import {type FC, useEffect, useState} from "react"
-import {type IconType} from "react-icons"
-import {
-  IoAddCircle,
-  IoDocument,
-  IoImage,
-  IoVideocam,
-  IoMic,
-} from "react-icons/io5"
-import {twMerge} from "tailwind-merge"
+  DROPDOWN_ICON_CLASS,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {Text} from "@/components/ui/typography"
 
 type ChooseFileButtonProps = {
   onPickFile: (file: File) => void
-  isDisabled?: boolean
-  className?: string
+  children: React.ReactNode
 }
 
-const AttachSource: FC<ChooseFileButtonProps> = ({
-  onPickFile,
-  isDisabled,
-  className,
-}) => {
+const AttachSource: FC<ChooseFileButtonProps> = ({onPickFile, children}) => {
   const [isOpen, setIsOpen] = useState(false)
   const {t} = useTranslation()
 
-  const {refs, floatingStyles, context} = useFloating({
-    open: isOpen,
-    onOpenChange: setIsOpen,
-    placement: "top",
-    middleware: [flip(), shift(), offset({crossAxis: 20, mainAxis: 16})],
-  })
-
-  const click = useClick(context)
-
-  const {getReferenceProps, getFloatingProps} = useInteractions([click])
-
   return (
-    <>
-      <motion.button
-        aria-label={t(LangKey.AttachSource)}
-        disabled={isDisabled}
-        className="disabled:opacity-80"
-        animate={{rotate: isOpen ? "45deg" : undefined}}
-        ref={refs.setReference}
-        {...getReferenceProps()}>
-        <IoAddCircle
-          className={twMerge("size-5 text-slate-400 md:size-7", className)}
-        />
-      </motion.button>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 
-      {isOpen && (
-        <motion.div
-          animate={{opacity: 0.8}}
-          whileInView={{opacity: 1}}
-          className="z-50 flex w-full max-w-40 flex-col gap-1 rounded-md border border-slate-200 bg-white px-1 py-2 shadow-md"
-          ref={refs.setFloating}
-          style={floatingStyles}
-          {...getFloatingProps()}>
-          <AttachAction
-            ariaLabel={t(LangKey.AttachFile)}
-            label={t(LangKey.File)}
-            sourceType="file/*"
-            Icon={IoDocument}
-            onFileLoaded={file => {
-              setIsOpen(false)
+      <DropdownMenuContent side="top" align="start" className="w-40">
+        <AttachAction
+          aria-label={t(LangKey.AttachFile)}
+          sourceType="file/*"
+          onFileLoaded={onPickFile}>
+          <IoDocument className={DROPDOWN_ICON_CLASS} />
 
-              onPickFile(file)
-            }}
-          />
+          <Text>{t(LangKey.File)}</Text>
+        </AttachAction>
 
-          <AttachAction
-            ariaLabel={t(LangKey.AttachImage)}
-            label={t(LangKey.Image)}
-            sourceType="image/*"
-            Icon={IoImage}
-            onFileLoaded={file => {
-              setIsOpen(false)
+        <AttachAction
+          aria-label={t(LangKey.AttachImage)}
+          sourceType="image/*"
+          onFileLoaded={onPickFile}>
+          <IoImage className={DROPDOWN_ICON_CLASS} />
 
-              onPickFile(file)
-            }}
-          />
+          <Text>{t(LangKey.Image)}</Text>
+        </AttachAction>
 
-          <AttachAction
-            ariaLabel={t(LangKey.AttachVideo)}
-            label={t(LangKey.Video)}
-            sourceType="video/*"
-            Icon={IoVideocam}
-            onFileLoaded={file => {
-              setIsOpen(false)
+        <AttachAction
+          aria-label={t(LangKey.AttachVideo)}
+          sourceType="video/*"
+          onFileLoaded={onPickFile}>
+          <IoVideocam className={DROPDOWN_ICON_CLASS} />
 
-              onPickFile(file)
-            }}
-          />
+          <Text>{t(LangKey.Video)}</Text>
+        </AttachAction>
 
-          <AttachAction
-            label={t(LangKey.Audio)}
-            ariaLabel={t(LangKey.AttachAudio)}
-            sourceType="audio/*"
-            Icon={IoMic}
-            onFileLoaded={file => {
-              setIsOpen(false)
+        <AttachAction
+          aria-label={t(LangKey.AttachAudio)}
+          sourceType="audio/*"
+          onFileLoaded={onPickFile}>
+          <IoMic className={DROPDOWN_ICON_CLASS} />
 
-              onPickFile(file)
-            }}
-          />
-        </motion.div>
-      )}
-    </>
+          <Text>{t(LangKey.Audio)}</Text>
+        </AttachAction>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
-type AttachActionProps = {
-  label: string
-  ariaLabel: string
+interface AttachActionProps extends React.AriaAttributes {
   sourceType: SourceType
   onFileLoaded: (file: File) => void
-  Icon: IconType
+  children: React.ReactNode
 }
 
 const AttachAction: FC<AttachActionProps> = ({
-  Icon,
-  label,
-  ariaLabel,
   onFileLoaded,
   sourceType,
+  children,
+  ...ariaProps
 }) => {
   const {contentPicked, onPickFile} = useFilePicker(false, sourceType)
 
@@ -151,13 +93,11 @@ const AttachAction: FC<AttachActionProps> = ({
   }, [contentPicked, onFileLoaded])
 
   return (
-    <motion.button
-      aria-label={ariaLabel}
-      className="flex gap-2 rounded-md px-3 py-2 hover:bg-gray-100"
-      onClick={onPickFile}>
-      <Icon />
-      {label}
-    </motion.button>
+    <DropdownMenuItem
+      children={children}
+      {...ariaProps}
+      onSelect={onPickFile}
+    />
   )
 }
 
