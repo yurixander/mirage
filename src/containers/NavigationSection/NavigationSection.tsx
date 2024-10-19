@@ -15,6 +15,7 @@ import SpacesNavigation, {
   DASHBOARD_SPACE_ID,
   SpacesPlaceHolder,
 } from "./SpacesNavigation"
+import AsyncValueHandler from "@/components/AsyncValueHandler"
 
 const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,
@@ -23,7 +24,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const {setActiveModal} = useActiveModalStore()
   const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
   const [spaceSelected, setSpaceSelected] = useState(DASHBOARD_SPACE_ID)
-  const {spaces, isLoading} = useSpaces()
+  const {spaces: spacesState} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
 
   return (
@@ -42,18 +43,22 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           <div className="mt-2 h-0.5 w-12 rounded-full bg-neutral-300" />
         </div>
 
-        {isLoading ? (
-          <SpacesPlaceHolder length={2} />
-        ) : (
-          <SpacesNavigation
-            spaces={spaces}
-            selectedSpace={spaceSelected}
-            onSelectedSpaceChange={setSpaceSelected}
-            onCreateSpace={() => {
-              setActiveModal(Modals.CreateSpace)
-            }}
-          />
-        )}
+        <AsyncValueHandler
+          value={spacesState}
+          loading={<SpacesPlaceHolder length={2} />}
+          // TODO: Put a correct error state.
+          error={error => <div>Error {error.message}</div>}>
+          {spaces => (
+            <SpacesNavigation
+              spaces={spaces}
+              selectedSpace={spaceSelected}
+              onSelectedSpaceChange={setSpaceSelected}
+              onCreateSpace={() => {
+                setActiveModal(Modals.CreateSpace)
+              }}
+            />
+          )}
+        </AsyncValueHandler>
 
         <SidebarActions className="mt-auto" onLogOut={onLogOut} />
       </div>

@@ -1,11 +1,7 @@
 import {type MatrixClient} from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 import useMatrixClient from "../matrix/useMatrixClient"
-
-export type AsyncState<T> =
-  | {status: "loading"}
-  | {status: "error"; error: Error}
-  | {status: "success"; data: T}
+import useAsyncState, {type AsyncState} from "./useAsyncState"
 
 type MatrixAsyncValueReturnType<T> = {
   state: AsyncState<T>
@@ -17,8 +13,7 @@ const useMatrixAsyncValue = <T>(
   action: (client: MatrixClient) => Promise<T>
 ): MatrixAsyncValueReturnType<T> => {
   const client = useMatrixClient()
-
-  const [state, setState] = useState<AsyncState<T>>({status: "loading"})
+  const [state, setState] = useAsyncState<T>()
 
   const reinvokeAction = useCallback(() => {
     if (client === null) {
@@ -53,7 +48,19 @@ const useMatrixAsyncValue = <T>(
     [client, state.status]
   )
 
-  useEffect(reinvokeAction, [reinvokeAction])
+  useEffect(() => {
+    if (client === null) {
+      return
+    }
+
+    void action(client)
+      .then(data => {
+        setState({status: "success", data})
+      })
+      .catch((error: Error) => {
+        setState({status: "error", error})
+      })
+  }, [action, client])
 
   return {state, execute, reinvokeAction}
 }
