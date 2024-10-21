@@ -9,8 +9,8 @@ import {LangKey} from "@/lang/allKeys"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {twMerge} from "tailwind-merge"
 import useTranslation from "@/hooks/util/useTranslation"
-import {type AsyncState} from "@/hooks/util/useMatrixAsyncValue"
-import AsyncValueHandler from "@/components/AsyncValueHandler"
+import {type AsyncState} from "@/hooks/matrix/useMatrixValue"
+import AsyncValueHandler from "@/components/ValueStateHandler"
 
 type SpacesNavProps = {
   spacesState: AsyncState<PartialSpace[]>

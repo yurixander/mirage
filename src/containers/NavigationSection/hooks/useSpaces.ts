@@ -5,7 +5,7 @@ import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getJoinedSpaces} from "@/utils/spaces"
-import useAsyncState, {type AsyncState} from "@/hooks/util/useAsyncState"
+import useValueState, {type ValueState} from "@/hooks/util/useValueState"
 
 export type PartialSpace = {
   name: string
@@ -22,13 +22,13 @@ const processSpace = (space: Room): PartialSpace => {
 }
 
 type UseSpacesReturnType = {
-  spaces: AsyncState<PartialSpace[]>
+  spaces: ValueState<PartialSpace[]>
   onSpaceExit: (spaceId: string) => void
 }
 
 const useSpaces = (): UseSpacesReturnType => {
   const client = useMatrixClient()
-  const [spaces, setSpacesState] = useAsyncState<PartialSpace[]>()
+  const [spaces, setSpacesState] = useValueState<PartialSpace[]>()
 
   useEffect(() => {
     if (client === null) {
@@ -69,10 +69,7 @@ const useSpaces = (): UseSpacesReturnType => {
 
     setSpacesState(prev => {
       if (prev.status !== "success") {
-        return {
-          status: "success",
-          data: [processSpace(room)],
-        }
+        return prev
       }
 
       return {status: "success", data: [...prev.data, processSpace(room)]}
@@ -86,10 +83,7 @@ const useSpaces = (): UseSpacesReturnType => {
 
     setSpacesState(prev => {
       if (prev.status !== "success") {
-        return {
-          status: "success",
-          data: [processSpace(room)],
-        }
+        return prev
       }
 
       const index = prev.data.findIndex(space => space.spaceId === room.roomId)

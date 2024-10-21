@@ -15,7 +15,7 @@ import SpacesNavigation, {
   DASHBOARD_SPACE_ID,
   SpacesPlaceHolder,
 } from "./SpacesNavigation"
-import AsyncValueHandler from "@/components/AsyncValueHandler"
+import ValueStateHandler from "@/components/ValueStateHandler"
 
 const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,
@@ -43,7 +43,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           <div className="mt-2 h-0.5 w-12 rounded-full bg-neutral-300" />
         </div>
 
-        <AsyncValueHandler
+        <ValueStateHandler
           value={spacesState}
           loading={<SpacesPlaceHolder length={2} />}
           // TODO: Put a correct error state.
@@ -58,7 +58,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
               }}
             />
           )}
-        </AsyncValueHandler>
+        </ValueStateHandler>
 
         <SidebarActions className="mt-auto" onLogOut={onLogOut} />
       </div>

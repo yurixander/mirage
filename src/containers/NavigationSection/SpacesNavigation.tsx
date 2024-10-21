@@ -4,7 +4,6 @@ import {motion} from "framer-motion"
 import Avatar from "boring-avatars"
 import {twMerge} from "tailwind-merge"
 import {scaleInAnimation, spaceIndicatorAnimation} from "@/utils/animations"
-import React from "react"
 import {type SpaceProps} from "./Space"
 import {
   Tooltip,

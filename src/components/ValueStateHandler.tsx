@@ -1,18 +1,18 @@
-import {type AsyncState} from "@/hooks/util/useMatrixAsyncValue"
+import {type ValueState} from "@/hooks/util/useValueState"
 
-type AsyncValueHandlerProps<T> = {
-  value: AsyncState<T>
+type ValueStateHandlerProps<T> = {
+  value: ValueState<T>
   children: (value: T) => React.ReactNode
   loading: React.ReactNode
   error: (error: Error) => React.ReactNode
 }
 
-function AsyncValueHandler<T>({
+function ValueStateHandler<T>({
   value,
   error,
   loading,
   children,
-}: AsyncValueHandlerProps<T>): React.ReactNode {
+}: ValueStateHandlerProps<T>): React.ReactNode {
   switch (value.status) {
     case "loading": {
       return loading
@@ -32,4 +32,4 @@ function AsyncValueHandler<T>({
   }
 }
 
-export default AsyncValueHandler
+export default ValueStateHandler
