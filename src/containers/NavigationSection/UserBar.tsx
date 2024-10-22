@@ -2,12 +2,10 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {IoMdSettings} from "react-icons/io"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
-import Typography, {TypographyVariant} from "@/components/Typography"
 import {
   assert,
   getUsernameByUserId,
   stringToColor,
-  trim,
   validateUrl,
 } from "@/utils/util"
 import LoadingEffect from "@/components/LoadingEffect"
@@ -16,8 +14,7 @@ import {IoAlertCircle, IoRefreshCircle} from "react-icons/io5"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 import {IconButton} from "@/components/ui/button"
-
-const MAX_USER_ID_LENGTH = 18
+import {Heading, Text} from "@/components/ui/typography"
 
 type UserBarProps = {
   userDataState: UserDataState
@@ -28,8 +25,6 @@ type UserBarProps = {
   avatarImageUrl?: string
   className?: string
 }
-
-// FIXME: Resolve DOM nesting for button
 
 const UserBar: FC<UserBarProps> = ({
   avatarImageUrl,
@@ -44,7 +39,6 @@ const UserBar: FC<UserBarProps> = ({
 
   if (userDataState === UserDataState.Prepared) {
     assert(displayName.length > 0, "Display name should not be empty")
-    assert(userId.length > 0, "User id should not be empty")
   }
 
   if (avatarImageUrl !== undefined) {
@@ -55,8 +49,8 @@ const UserBar: FC<UserBarProps> = ({
   }
 
   return (
-    <div className={twMerge("max-h-14 p-2", className)}>
-      <div className="flex items-center justify-between">
+    <div className={twMerge("h-14 max-h-14 px-2", className)}>
+      <div className="flex size-full items-center justify-between">
         {userDataState === UserDataState.Loading ? (
           <UserBarPlaceHolder />
         ) : userDataState === UserDataState.Error ? (
@@ -64,7 +58,7 @@ const UserBar: FC<UserBarProps> = ({
         ) : (
           <div className="flex gap-1.5 overflow-hidden">
             <AvatarImage
-              className="flex shrink-0"
+              className="shrink-0"
               isRounded
               avatarType={AvatarType.Profile}
               displayName={displayName}
@@ -72,29 +66,32 @@ const UserBar: FC<UserBarProps> = ({
             />
 
             <div className="flex flex-col">
-              <Typography
-                variant={TypographyVariant.BodyMedium}
+              <Heading
+                level="h6"
                 style={{color: stringToColor(userId)}}
-                className="line-clamp-1 font-bold">
+                className="line-clamp-1">
                 {displayName}
-              </Typography>
+              </Heading>
 
-              <Typography
-                className="line-clamp-1"
-                variant={TypographyVariant.BodySmall}>
-                {trim(getUsernameByUserId(userId), MAX_USER_ID_LENGTH)}
-              </Typography>
+              <Text size="1" className="line-clamp-1">
+                {getUsernameByUserId(userId)}
+              </Text>
             </div>
           </div>
         )}
 
-        {/* TODO: Handle click on settings button. */}
         {userDataState === UserDataState.Error ? (
-          <IconButton tooltip={t(LangKey.Refresh)} onClick={onRefreshData}>
-            <IoRefreshCircle />
+          <IconButton
+            className="shrink-0"
+            tooltip={t(LangKey.Refresh)}
+            onClick={onRefreshData}>
+            <IoRefreshCircle className="size-5" />
           </IconButton>
         ) : (
-          <IconButton tooltip={t(LangKey.Settings)} onClick={onOpenSettings}>
+          <IconButton
+            className="shrink-0"
+            tooltip={t(LangKey.Settings)}
+            onClick={onOpenSettings}>
             <IoMdSettings className="size-5" />
           </IconButton>
         )}
@@ -106,16 +103,16 @@ const UserBar: FC<UserBarProps> = ({
 const UserBarPlaceHolder: FC = () => {
   return (
     <div className="flex gap-1.5">
-      <div className="size-9 overflow-hidden rounded-full bg-neutral-300">
+      <div className="size-9 overflow-hidden rounded-full bg-neutral-300 dark:bg-neutral-700">
         <LoadingEffect />
       </div>
 
       <div className="flex flex-col gap-1">
-        <div className="h-4 w-20 overflow-hidden rounded-lg bg-neutral-300">
+        <div className="h-5 w-28 overflow-hidden rounded-xl bg-neutral-300 dark:bg-neutral-700">
           <LoadingEffect />
         </div>
 
-        <div className="h-3 w-14 overflow-hidden rounded-md bg-neutral-300">
+        <div className="h-3.5 w-20 overflow-hidden rounded-lg bg-neutral-300 dark:bg-neutral-700">
           <LoadingEffect />
         </div>
       </div>
@@ -132,16 +129,14 @@ const UserBarError: FC = () => {
         <IoAlertCircle className="text-red-500" />
       </div>
 
-      <div className="flex flex-col gap-0.5">
-        <Typography
-          className="font-bold text-red-500"
-          variant={TypographyVariant.BodyMedium}>
+      <div className="flex flex-col gap-0.5 truncate">
+        <Heading level="h6" className="text-red-500">
           {t(LangKey.ClientError)}
-        </Typography>
+        </Heading>
 
-        <Typography variant={TypographyVariant.BodySmall}>
+        <Text size="1" className="truncate">
           {t(LangKey.PleaseRefresh)}
-        </Typography>
+        </Text>
       </div>
     </div>
   )
