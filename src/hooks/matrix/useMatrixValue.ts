@@ -6,10 +6,12 @@ import useIsMountedReference from "../util/useIsMountedRef"
 
 type MatrixAsyncValueReturnType<T> = {
   state: ValueState<T>
+  execute: (callback: (client: MatrixClient) => Promise<T>) => void
+  setState: React.Dispatch<React.SetStateAction<ValueState<T>>>
 }
 
 const useMatrixValue = <T>(
-  action: (client: MatrixClient) => Promise<T>
+  action?: (client: MatrixClient) => Promise<T>
 ): MatrixAsyncValueReturnType<T> => {
   const client = useMatrixClient()
   const [state, setState] = useState<ValueState<T>>({status: "loading"})
@@ -48,10 +50,14 @@ const useMatrixValue = <T>(
   )
 
   useEffect(() => {
-    execute(action)
-  }, [action, execute])
+    if (action === undefined) {
+      return
+    }
 
-  return {state}
+    execute(action)
+  }, [execute])
+
+  return {state, execute, setState}
 }
 
 export default useMatrixValue

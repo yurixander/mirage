@@ -1,11 +1,12 @@
-import {useCallback, useEffect} from "react"
+import {useCallback} from "react"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {getImageUrl} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getJoinedSpaces} from "@/utils/spaces"
-import useValueState, {type ValueState} from "@/hooks/util/useValueState"
+import {type ValueState} from "@/hooks/util/useValueState"
+import useMatrixValue from "@/hooks/matrix/useMatrixValue"
 
 export type PartialSpace = {
   name: string
@@ -28,24 +29,14 @@ type UseSpacesReturnType = {
 
 const useSpaces = (): UseSpacesReturnType => {
   const client = useMatrixClient()
-  const [spaces, setSpacesState] = useValueState<PartialSpace[]>()
 
-  useEffect(() => {
-    if (client === null) {
-      return
+  const {state: spaces, setState: setSpacesState} = useMatrixValue(
+    async client => {
+      const joinedSpaces = await getJoinedSpaces(client)
+
+      return joinedSpaces.map(element => processSpace(element))
     }
-
-    void getJoinedSpaces(client)
-      .then(joinedSpaces => {
-        setSpacesState({
-          status: "success",
-          data: joinedSpaces.map(element => processSpace(element)),
-        })
-      })
-      .catch(error => {
-        setSpacesState({status: "error", error})
-      })
-  }, [client, setSpacesState])
+  )
 
   const onSpaceExit = useCallback(
     (spaceId: string) => {
