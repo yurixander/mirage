@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState, type FC} from "react"
 import {IoAlertCircle, IoPause, IoPlay} from "react-icons/io5"
-import Typography from "./Typography"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion, formatTime, validateUrl} from "@/utils/util"
@@ -10,6 +9,7 @@ import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {IconButton} from "./ui/button"
+import {Text} from "./ui/typography"
 
 export interface AudioMessageProps extends MessageBaseProps, AudioMessageData {}
 
@@ -102,11 +102,12 @@ const AudioMessage: FC<AudioMessageProps> = ({
         id={`audio-menu-${messageId}`}
         elements={contextMenuItems}
         className="cursor-default">
-        <div className="flex size-full max-h-14 max-w-72 items-center gap-1 rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm">
+        <div className="flex size-full max-h-14 max-w-72 items-center gap-1 rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
           {error ? (
-            <Typography className="inline-flex items-center gap-1">
-              <IoAlertCircle className="text-red-500" /> {t(LangKey.LoadError)}
-            </Typography>
+            <Text className="inline-flex items-center gap-1">
+              <IoAlertCircle className="text-red-500" />
+              {t(LangKey.LoadError)}
+            </Text>
           ) : (
             <>
               {isReady ? (
@@ -135,7 +136,7 @@ const AudioMessage: FC<AudioMessageProps> = ({
           )}
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
-            <Typography>{formatTime(timestamp)}</Typography>
+            <time>{formatTime(timestamp)}</time>
 
             <div
               role="button"
