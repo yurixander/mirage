@@ -2,10 +2,8 @@ import {type FC} from "react"
 import EventMessage, {
   type EventSender,
   type EventMessageData,
-  MAX_EVENT_BODY_LENGTH,
-  MAX_EVENT_SENDER_NAME_LENGTH,
 } from "./EventMessage"
-import {formatTime, strCapitalize, trim} from "@/utils/util"
+import {formatTime, strCapitalize} from "@/utils/util"
 import {type IconType} from "react-icons"
 import {IoMdCreate} from "react-icons/io"
 import {twMerge} from "tailwind-merge"
@@ -73,8 +71,8 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
           />
         </AccordionTrigger>
 
-        <AccordionContent className="overflow-hidden px-3.5">
-          <div className="flex w-full flex-col gap-3 p-2">
+        <AccordionContent className="overflow-hidden py-1">
+          <div className="flex w-full flex-col gap-3 p-1">
             {eventMessages.map(eventMessageData => (
               <EventMessageChild
                 key={eventMessageData.eventId}
@@ -103,9 +101,6 @@ export type EventMessageChildProps = {
   className?: string
 }
 
-const MAX_CHILD_EVENT_BODY_LENGTH =
-  MAX_EVENT_BODY_LENGTH + MAX_EVENT_SENDER_NAME_LENGTH
-
 export const EventMessageChild: FC<EventMessageChildProps> = ({
   body,
   icon,
@@ -119,16 +114,16 @@ export const EventMessageChild: FC<EventMessageChildProps> = ({
     <div
       role="article"
       aria-label={accessibilityText}
-      className={twMerge("flex items-center px-1", className)}>
+      className={twMerge("flex items-center", className)}>
       <div className="inline-flex gap-2">
-        <Icon aria-hidden className="mt-1 fill-neutral-500" />
+        <div className="flex size-5 items-center justify-end sm:size-6">
+          <Icon aria-hidden className="fill-neutral-500" />
+        </div>
 
-        <Text className="whitespace-pre-line break-words italic">
-          {trim(strCapitalize(body), MAX_CHILD_EVENT_BODY_LENGTH)}
-        </Text>
+        <Text className="italic">{strCapitalize(body)}</Text>
       </div>
 
-      <time className="ml-auto text-base font-normal">
+      <time className="mb-auto ml-auto mr-5 shrink-0 text-sm font-normal sm:mr-7 sm:text-base">
         {formatTime(timestamp)}
       </time>
     </div>
