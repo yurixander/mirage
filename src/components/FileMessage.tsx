@@ -3,7 +3,6 @@ import MessageContainer, {
   type MessageBaseData,
   type MessageBaseProps,
 } from "./MessageContainer"
-import Typography, {TypographyVariant} from "./Typography"
 import {
   FaDownload,
   FaFile,
@@ -19,6 +18,7 @@ import {IconButton} from "./ui/button"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 import ContextMenu from "./ContextMenu"
+import {Text} from "./ui/typography"
 
 const ICON_SIZE = 20
 
@@ -59,21 +59,19 @@ const FileMessage: FC<FileMessageProps> = ({
       onAuthorClick={onAuthorClick}
       userId={userId}>
       <ContextMenu id={`file-message-${messageId}`} elements={contextMenuItems}>
-        <div className="flex w-60 flex-col items-center gap-2 rounded border bg-gray-50 p-2 dark:border-slate-800 dark:bg-slate-950 sm:w-messageMaxWidth">
+        <div className="flex w-60 flex-col items-center gap-2 rounded border bg-gray-50 p-2 dark:border-neutral-800 dark:bg-neutral-950 sm:w-messageMaxWidth">
           <div className="flex w-full items-center gap-2">
-            <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2 dark:bg-slate-900">
+            <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2 dark:bg-neutral-900">
               <IconFile typeFile={fileExtension.toLowerCase()} />
 
-              <Typography
-                className="font-light text-black dark:text-white"
-                variant={TypographyVariant.Body}>
+              <Text className="text-gray-900 dark:text-gray-100">
                 {fileName}
-              </Typography>
+              </Text>
             </div>
 
             <div>
               <IconButton
-                color="lightslategrey"
+                className="text-gray-400"
                 tooltip={t(LangKey.ClickToDownload)}
                 onClick={() => {
                   if (fileUrl !== undefined) open(fileUrl)
@@ -84,17 +82,13 @@ const FileMessage: FC<FileMessageProps> = ({
           </div>
 
           <div className="flex w-full">
-            <Typography
-              className="w-full font-semibold text-gray-400"
-              variant={TypographyVariant.BodySmall}>
+            <Text className="w-full font-semibold text-gray-400">
               {fileExtension}
-            </Typography>
+            </Text>
 
-            <Typography
-              className="min-w-20 text-right font-semibold text-gray-400"
-              variant={TypographyVariant.BodySmall}>
+            <Text className="min-w-20 text-right font-semibold text-gray-400">
               {fileSizeToString(fileSize)}
-            </Typography>
+            </Text>
           </div>
         </div>
       </ContextMenu>
