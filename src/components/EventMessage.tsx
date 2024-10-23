@@ -57,14 +57,15 @@ const EventMessage: FC<EventMessageProps> = ({
   assert(eventId.length > 0, "Event id should not be empty.")
 
   return (
-    <div className={twMerge("flex items-center gap-1 sm:gap-3", className)}>
+    <div
+      className={twMerge("flex w-full items-center gap-1 sm:gap-3", className)}>
       <div role="article" aria-label={`${sender.displayName} ${body}`}>
         <div className="flex gap-1 sm:gap-2">
           <div className="flex size-5 items-center justify-end sm:size-6">
             <Icon aria-hidden className="fill-neutral-500" />
           </div>
 
-          <div className="inline-block">
+          <div className="inline-block text-start">
             <DropdownMenu
               open={isDropdownOpen}
               onOpenChange={setIsDropdownOpen}>

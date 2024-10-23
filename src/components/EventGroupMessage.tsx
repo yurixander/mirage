@@ -57,43 +57,41 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
   const {t} = useTranslation()
 
   return (
-    <div className="flex flex-col gap-2">
-      <Accordion type="single" collapsible>
-        <AccordionItem className="border-none" value={eventMessages[0].eventId}>
-          <AccordionTrigger className="h-10 hover:no-underline focus-visible:ring-1 focus-visible:ring-ring">
-            <EventMessage
-              className="w-full pr-2"
-              onShowMember={onShowMember}
-              onFindUser={onFindUser}
-              body={t(eventShortenerBody[shortenerType])}
-              eventId={eventMessages[0].eventId}
-              sender={sender}
-              timestamp={eventMessages[0].timestamp}
-              icon={IoCube}
-              type={shortenerType}
-            />
-          </AccordionTrigger>
+    <Accordion type="single" collapsible>
+      <AccordionItem className="border-none" value={eventMessages[0].eventId}>
+        <AccordionTrigger className="items-start py-0 hover:no-underline focus-visible:ring-1 focus-visible:ring-ring">
+          <EventMessage
+            className="pr-1 sm:pr-2"
+            onShowMember={onShowMember}
+            onFindUser={onFindUser}
+            body={t(eventShortenerBody[shortenerType])}
+            eventId={eventMessages[0].eventId}
+            sender={sender}
+            timestamp={eventMessages[0].timestamp}
+            icon={IoCube}
+            type={shortenerType}
+          />
+        </AccordionTrigger>
 
-          <AccordionContent className="overflow-hidden px-3.5">
-            <div className="flex w-full flex-col gap-3 p-2">
-              {eventMessages.map(eventMessageData => (
-                <EventMessageChild
-                  key={eventMessageData.eventId}
-                  icon={eventMessageData.icon}
-                  body={eventMessageData.body}
-                  timestamp={eventMessageData.timestamp}
-                  accessibilityText={t(
-                    LangKey.EventBodyWithTime,
-                    eventMessageData.body,
-                    formatTime(eventMessageData.timestamp)
-                  )}
-                />
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
+        <AccordionContent className="overflow-hidden px-3.5">
+          <div className="flex w-full flex-col gap-3 p-2">
+            {eventMessages.map(eventMessageData => (
+              <EventMessageChild
+                key={eventMessageData.eventId}
+                icon={eventMessageData.icon}
+                body={eventMessageData.body}
+                timestamp={eventMessageData.timestamp}
+                accessibilityText={t(
+                  LangKey.EventBodyWithTime,
+                  eventMessageData.body,
+                  formatTime(eventMessageData.timestamp)
+                )}
+              />
+            ))}
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   )
 }
 
