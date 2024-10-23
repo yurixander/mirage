@@ -72,7 +72,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
         </AccordionTrigger>
 
         <AccordionContent className="overflow-hidden py-1">
-          <div className="flex w-full flex-col gap-3 p-1">
+          <div className="flex w-full flex-col gap-4 p-1">
             {eventMessages.map(eventMessageData => (
               <EventMessageChild
                 key={eventMessageData.eventId}
@@ -114,7 +114,7 @@ export const EventMessageChild: FC<EventMessageChildProps> = ({
     <div
       role="article"
       aria-label={accessibilityText}
-      className={twMerge("flex items-center", className)}>
+      className={twMerge("flex items-center gap-4", className)}>
       <div className="inline-flex gap-2">
         <div className="flex size-5 items-center justify-end sm:size-6">
           <Icon aria-hidden className="fill-neutral-500" />
