@@ -7,6 +7,7 @@ type Story = StoryObj<typeof Room>
 const meta: Meta<typeof Room> = {
   component: Room,
 }
+
 const render = (args: RoomProps): React.JSX.Element => <Room {...args} />
 
 export const Default: Story = {
@@ -19,6 +20,7 @@ export const Default: Story = {
     roomId: "room-id",
   },
 }
+
 export const Selected: Story = {
   render,
   args: {

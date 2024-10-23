@@ -6,6 +6,7 @@ import {cn} from "@/utils/utils"
 import {type IconType} from "react-icons"
 import Typography from "../Typography"
 import {type FC} from "react"
+import KeyCue, {type KeyCueProps} from "../KeyCue"
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 
@@ -104,6 +105,9 @@ type MenuItemProps = {
   isDestructive?: boolean
 }
 
+export const DROPDOWN_ICON_CLASS =
+  "size-6 text-gray-700 dark:text-neutral-400 mr-1.5"
+
 const DropdownMenuItemGenerator: FC<{
   items: MenuItemProps[]
 }> = ({items}) => {
@@ -180,17 +184,11 @@ DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName
 
 const DropdownMenuLabel = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Label>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & {
-    inset?: boolean
-  }
->(({className, inset, ...props}, ref) => (
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label>
+>(({className, ...props}, ref) => (
   <DropdownMenuPrimitive.Label
     ref={ref}
-    className={cn(
-      "px-2 py-1.5 text-sm font-semibold",
-      inset && "pl-8",
-      className
-    )}
+    className={cn("text-sm", className)}
     {...props}
   />
 ))
@@ -212,13 +210,10 @@ DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName
 
 const DropdownMenuShortcut = ({
   className,
-  ...props
-}: React.HTMLAttributes<HTMLSpanElement>): React.JSX.Element => {
+  ...keyCueProps
+}: Omit<KeyCueProps, "size"> & {className?: string}): React.JSX.Element => {
   return (
-    <span
-      className={cn("ml-auto text-xs tracking-widest opacity-60", className)}
-      {...props}
-    />
+    <KeyCue className={cn("ml-auto", className)} {...keyCueProps} size="sm" />
   )
 }
 

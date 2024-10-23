@@ -94,7 +94,7 @@ const Roster: FC<RosterProps> = ({
           <RosterSectionSkeleton elementsCount={5} />
         </div>
       ) : (
-        <ScrollArea className="max-w-56 px-1 pt-3" type="scroll">
+        <ScrollArea className="max-w-56 px-1 pt-3" type="scroll" avoidOverflow>
           <div className="flex flex-col gap-4">
             <RosterSection
               title={t(LangKey.Admins, admins.length.toString())}

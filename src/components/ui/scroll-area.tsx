@@ -6,15 +6,20 @@ import {cn} from "@/utils/utils"
 interface ScrollAreaProps
   extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
   isScrollBarHidden?: boolean
+  avoidOverflow?: boolean
 }
 
 const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
   ScrollAreaProps
->(({className, isScrollBarHidden, children, ...props}, ref) => (
+>(({className, isScrollBarHidden, avoidOverflow, children, ...props}, ref) => (
   <ScrollAreaPrimitive.Root
     ref={ref}
-    className={cn("relative overflow-hidden", className)}
+    className={cn(
+      "relative overflow-hidden",
+      avoidOverflow && "grow basis-0",
+      className
+    )}
     {...props}>
     <ScrollAreaPrimitive.Viewport className="size-full rounded-[inherit]">
       {children}
