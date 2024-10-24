@@ -1,4 +1,5 @@
 import TextMessage from "@/components/TextMessage"
+import {CONTEXT_MENU_RESEND} from "@/utils/menu"
 import {type FC} from "react"
 
 const DevelopmentPreview: FC = () => {
@@ -6,7 +7,8 @@ const DevelopmentPreview: FC = () => {
     <>
       <div className="m-1">
         <TextMessage
-          contextMenuItems={[]}
+          text="Some think about this"
+          contextMenuItems={[{...CONTEXT_MENU_RESEND, onClick() {}}]}
           onAuthorClick={function (userId: string): void {
             throw new Error("Function not implemented.")
           }}
@@ -14,7 +16,6 @@ const DevelopmentPreview: FC = () => {
           authorDisplayName="Emerald Branch"
           timestamp={Date.now()}
           messageId="message-test-id"
-          text="This is a test message for view the preview of the message."
         />
       </div>
     </>

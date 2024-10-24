@@ -8,11 +8,11 @@ import {
 } from "../utils/util"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import React from "react"
-import {type ContextMenuItem} from "./ContextMenu"
 import {Heading} from "./ui/typography"
+import {type MessageMenuItem} from "./ui/context-menu"
 
 export interface MessageBaseProps extends MessageBaseData {
-  contextMenuItems: ContextMenuItem[]
+  contextMenuItems: MessageMenuItem[]
   onAuthorClick: (userId: string) => void
 }
 

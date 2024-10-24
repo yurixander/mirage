@@ -3,11 +3,11 @@ import MessageContainer, {
   type MessageBaseData,
   type MessageBaseProps,
 } from "./MessageContainer"
-import {IoIosAlert} from "react-icons/io"
 import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion, validateUrl} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Text} from "./ui/typography"
 
 export interface ImageMessageProps extends MessageBaseProps, ImageMessageData {
   onClickImage: (imgUrl: string) => void
@@ -47,11 +47,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
       userId={userId}>
       <div className="flex flex-col pt-1">
         {imageUrl === undefined ? (
-          <div className="flex flex-row items-center gap-1">
-            <IoIosAlert className="text-red-500" />
-
-            <div className="leading-160">{t(LangKey.ImageUploadedError)}</div>
-          </div>
+          <Text>{t(LangKey.ImageUploadedError)}</Text>
         ) : (
           <ContextMenu
             id={`image-menu-${messageId}`}
