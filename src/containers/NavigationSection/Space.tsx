@@ -86,7 +86,6 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
                   />
                 ) : (
                   <img
-                    aria-hidden
                     className="size-full object-cover dark:opacity-90"
                     src={avatarUrl}
                     alt={`Avatar of ${spaceName}`}
