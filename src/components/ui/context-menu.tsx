@@ -194,31 +194,40 @@ export type MessageMenuItem = {
   onClick: () => void
 }
 
-const MessageMenuItemGenerator: React.FC<{items: MessageMenuItem[]}> = ({
-  items,
-}) => {
-  return items.map((menuitem, index) => (
-    <ContextMenuItem key={index} className="flex gap-2">
-      <menuitem.icon
-        className={cn(
-          "size-5 sm:size-6",
-          menuitem.isDestructive === true
-            ? "text-red-600 dark:text-red-500"
-            : "text-gray-700 dark:text-gray-300"
-        )}
-      />
+const MessageContextMenu: React.FC<{
+  items: MessageMenuItem[]
+  children: React.ReactNode
+}> = ({children, items}) => {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger>{children}</ContextMenuTrigger>
 
-      <Text
-        weight="medium"
-        className={cn(
-          menuitem.isDestructive === true
-            ? "text-red-600 dark:text-red-500"
-            : "text-gray-700 dark:text-gray-300"
-        )}>
-        {menuitem.text}
-      </Text>
-    </ContextMenuItem>
-  ))
+      <ContextMenuContent className="sm:min-w-36">
+        {items.map((menuitem, index) => (
+          <ContextMenuItem key={index} className="flex gap-2">
+            <menuitem.icon
+              className={cn(
+                "size-5 sm:size-6",
+                menuitem.isDestructive === true
+                  ? "text-red-600 dark:text-red-500"
+                  : "text-gray-700 dark:text-gray-300"
+              )}
+            />
+
+            <Text
+              weight="medium"
+              className={cn(
+                menuitem.isDestructive === true
+                  ? "text-red-600 dark:text-red-500"
+                  : "text-gray-700 dark:text-gray-300"
+              )}>
+              {menuitem.text}
+            </Text>
+          </ContextMenuItem>
+        ))}
+      </ContextMenuContent>
+    </ContextMenu>
+  )
 }
 
 export {
@@ -237,5 +246,5 @@ export {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
-  MessageMenuItemGenerator,
+  MessageContextMenu,
 }

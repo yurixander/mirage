@@ -5,12 +5,7 @@ import MessageContainer, {
 } from "./MessageContainer"
 import {assert, CommonAssertion} from "@/utils/util"
 import {Text} from "./ui/typography"
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuTrigger,
-  MessageMenuItemGenerator,
-} from "./ui/context-menu"
+import {MessageContextMenu} from "./ui/context-menu"
 
 export interface TextMessageData extends MessageBaseData {
   text: string
@@ -40,17 +35,11 @@ const TextMessage: FC<TextMessageProps> = ({
       timestamp={timestamp}
       onAuthorClick={onAuthorClick}
       userId={userId}>
-      <ContextMenu>
-        <ContextMenuTrigger>
-          <Text className="max-w-messageMaxWidth cursor-text select-text break-words">
-            {text.split(/(\n)/).map(line => (line === "\n" ? <br /> : line))}
-          </Text>
-        </ContextMenuTrigger>
-
-        <ContextMenuContent>
-          <MessageMenuItemGenerator items={contextMenuItems} />
-        </ContextMenuContent>
-      </ContextMenu>
+      <MessageContextMenu items={contextMenuItems}>
+        <Text className="max-w-messageMaxWidth cursor-text select-text break-words">
+          {text.split(/(\n)/).map(line => (line === "\n" ? <br /> : line))}
+        </Text>
+      </MessageContextMenu>
     </MessageContainer>
   )
 }
