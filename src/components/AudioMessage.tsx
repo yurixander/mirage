@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState, type FC} from "react"
 import {IoAlertCircle, IoPause, IoPlay} from "react-icons/io5"
 import AvatarImage, {AvatarType} from "./AvatarImage"
-import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion, formatTime, validateUrl} from "@/utils/util"
 import {useWavesurfer} from "@wavesurfer/react"
 import useAudioPlayerStore from "@/hooks/util/useAudioPlayerStore"
@@ -10,6 +9,7 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {IconButton} from "./ui/button"
 import {Text} from "./ui/typography"
+import {MessageContextMenu} from "./ui/context-menu"
 
 export interface AudioMessageProps extends MessageBaseProps, AudioMessageData {}
 
@@ -97,64 +97,59 @@ const AudioMessage: FC<AudioMessageProps> = ({
   }, [isReady, stopPlayer, wavesurfer])
 
   return (
-    <>
-      <ContextMenu
-        id={`audio-menu-${messageId}`}
-        elements={contextMenuItems}
-        className="cursor-default">
-        <div className="flex size-full max-h-14 max-w-72 items-center gap-1 rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-          {error ? (
-            <Text className="inline-flex items-center gap-1">
-              <IoAlertCircle className="text-red-500" />
-              {t(LangKey.LoadError)}
-            </Text>
-          ) : (
-            <>
-              {isReady ? (
-                <IconButton
-                  aria-label={t(LangKey.TogglePlayPause)}
-                  tooltip={isAudioPlaying ? t(LangKey.Pause) : t(LangKey.Play)}
-                  onClick={() => {
-                    if (audioPlayingId === messageId) {
-                      wavesurfer?.pause()
+    <MessageContextMenu items={contextMenuItems}>
+      <div className="flex size-full max-h-14 max-w-72 items-center gap-1 rounded-xl border-2 border-gray-100 bg-white p-2 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        {error ? (
+          <Text className="inline-flex items-center gap-1">
+            <IoAlertCircle className="text-red-500" />
+            {t(LangKey.LoadError)}
+          </Text>
+        ) : (
+          <>
+            {isReady ? (
+              <IconButton
+                aria-label={t(LangKey.TogglePlayPause)}
+                tooltip={isAudioPlaying ? t(LangKey.Pause) : t(LangKey.Play)}
+                onClick={() => {
+                  if (audioPlayingId === messageId) {
+                    wavesurfer?.pause()
 
-                      stopPlayer()
-                    } else {
-                      void wavesurfer?.play()
+                    stopPlayer()
+                  } else {
+                    void wavesurfer?.play()
 
-                      setAudioPlayingId(messageId)
-                    }
-                  }}>
-                  {isAudioPlaying ? <IoPause /> : <IoPlay />}
-                </IconButton>
-              ) : (
-                <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
-              )}
+                    setAudioPlayingId(messageId)
+                  }
+                }}>
+                {isAudioPlaying ? <IoPause /> : <IoPlay />}
+              </IconButton>
+            ) : (
+              <div className="size-6 animate-rotation rounded-full border-2 border-white border-t-gray-300" />
+            )}
 
-              <div ref={waveformRef} className="max-h-12 w-full" />
-            </>
-          )}
+            <div ref={waveformRef} className="max-h-12 w-full" />
+          </>
+        )}
 
-          <div className="ml-auto flex shrink-0 items-center gap-2">
-            <time>{formatTime(timestamp)}</time>
+        <div className="ml-auto flex shrink-0 items-center gap-2">
+          <time>{formatTime(timestamp)}</time>
 
-            <div
-              role="button"
-              onClick={() => {
-                onAuthorClick(userId)
-              }}
-              aria-hidden>
-              <AvatarImage
-                isRounded
-                avatarType={AvatarType.Profile}
-                displayName={authorDisplayName}
-                avatarUrl={authorAvatarUrl}
-              />
-            </div>
+          <div
+            role="button"
+            onClick={() => {
+              onAuthorClick(userId)
+            }}
+            aria-hidden>
+            <AvatarImage
+              isRounded
+              avatarType={AvatarType.Profile}
+              displayName={authorDisplayName}
+              avatarUrl={authorAvatarUrl}
+            />
           </div>
         </div>
-      </ContextMenu>
-    </>
+      </div>
+    </MessageContextMenu>
   )
 }
 

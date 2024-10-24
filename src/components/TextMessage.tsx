@@ -3,9 +3,9 @@ import MessageContainer, {
   type MessageBaseData,
   type MessageBaseProps,
 } from "./MessageContainer"
-import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion} from "@/utils/util"
 import {Text} from "./ui/typography"
+import {MessageContextMenu} from "./ui/context-menu"
 
 export interface TextMessageData extends MessageBaseData {
   text: string
@@ -35,11 +35,11 @@ const TextMessage: FC<TextMessageProps> = ({
       timestamp={timestamp}
       onAuthorClick={onAuthorClick}
       userId={userId}>
-      <ContextMenu id={`text-message-${messageId}`} elements={contextMenuItems}>
+      <MessageContextMenu items={contextMenuItems}>
         <Text className="max-w-messageMaxWidth cursor-text select-text break-words">
           {text.split(/(\n)/).map(line => (line === "\n" ? <br /> : line))}
         </Text>
-      </ContextMenu>
+      </MessageContextMenu>
     </MessageContainer>
   )
 }

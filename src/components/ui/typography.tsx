@@ -91,14 +91,14 @@ type TextVariants = {
 const textSizeClass: TextVariants = {
   size: {
     "1": "text-xs",
-    "2": "text-sm",
-    "3": "text-base",
-    "4": "text-lg",
-    "5": "text-xl",
-    "6": "text-2xl",
-    "7": "text-3xl",
-    "8": "text-4xl",
-    "9": "text-5xl",
+    "2": "text-xs sm:text-sm ",
+    "3": "text-sm sm:text-base",
+    "4": "text-base sm:text-lg",
+    "5": "text-lg sm:text-xl",
+    "6": "text-2xl sm:text-3xl",
+    "7": "text-3xl sm:text-4xl",
+    "8": "text-4xl sm:text-5xl",
+    "9": "text-5xl sm:text-6xl",
   },
 }
 
@@ -147,12 +147,12 @@ type HeadingVariants = {
 
 const headingClass: HeadingVariants = {
   level: {
-    h1: "text-5xl",
-    h2: "text-3xl",
-    h3: "text-2xl",
-    h4: "text-xl",
-    h5: "text-lg",
-    h6: "text-base",
+    h1: "text-4xl sm:text-5xl",
+    h2: "text-2xl sm:text-3xl",
+    h3: "text-xl sm:text-2xl",
+    h4: "text-lg sm:text-xl",
+    h5: "text-base sm:text-lg",
+    h6: "text-sm sm:text-base",
   },
 }
 

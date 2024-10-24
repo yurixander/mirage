@@ -1,7 +1,7 @@
 import {useCallback, useMemo, useState} from "react"
 import {LocalStorageKey} from "./useLocalStorage"
 import useEmojiSearch from "./useEmojiSearch"
-import emojiData from "@/../public/data/emoji-data.json"
+import emojiData from "@/data/emoji-data.json" with {type: "json"}
 import {type Emoji, type EmojiMartData} from "@emoji-mart/data"
 import {type SelectionRange} from "@/containers/RoomContainer/ChatInput"
 
