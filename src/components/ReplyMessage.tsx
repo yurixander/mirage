@@ -4,6 +4,7 @@ import TextMessage from "./TextMessage"
 import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
 import {cleanDisplayName, stringToColor} from "@/utils/util"
 import {Text} from "./ui/typography"
+import useTooltip from "@/hooks/util/useTooltip"
 
 export interface ReplyMessageProps extends MessageBaseProps {
   onQuoteMessageClick: (quoteMessageId: string) => void
@@ -38,19 +39,22 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
   onQuoteMessageClick,
   userId,
 }) => {
+  const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
+
   return (
     <div className="flex flex-col">
       <div className="flex w-messageMaxWidth items-end">
         <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200 dark:border-slate-800" />
         <button
+          ref={renderRef}
           onClick={() => {
             if (quotedMessageId === undefined) {
-              // TODO: toast quotedMessageId is undefined or error
+              showTooltip("Quoted MessageId is undefined", true)
               return
             }
             onQuoteMessageClick(quotedMessageId)
           }}
-          className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100 dark:bg-gray-950 dark:hover:bg-gray-900">
+          className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100 dark:bg-neutral-950 dark:hover:bg-neutral-900">
           <AvatarImage
             avatarType={AvatarType.Message}
             displayName={quotedUserDisplayName}
