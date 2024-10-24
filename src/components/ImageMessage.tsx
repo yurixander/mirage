@@ -3,11 +3,11 @@ import MessageContainer, {
   type MessageBaseData,
   type MessageBaseProps,
 } from "./MessageContainer"
-import ContextMenu from "./ContextMenu"
 import {assert, CommonAssertion, validateUrl} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Text} from "./ui/typography"
+import {MessageContextMenu} from "./ui/context-menu"
 
 export interface ImageMessageProps extends MessageBaseProps, ImageMessageData {
   onClickImage: (imgUrl: string) => void
@@ -49,9 +49,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
         {imageUrl === undefined ? (
           <Text>{t(LangKey.ImageUploadedError)}</Text>
         ) : (
-          <ContextMenu
-            id={`image-menu-${messageId}`}
-            elements={contextMenuItems}>
+          <MessageContextMenu items={contextMenuItems}>
             <button
               className="max-h-52 max-w-44 appearance-none overflow-hidden rounded-xl"
               onClick={() => {
@@ -63,7 +61,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
                 alt={`${t(LangKey.MessageBy)} ${authorDisplayName}`}
               />
             </button>
-          </ContextMenu>
+          </MessageContextMenu>
         )}
       </div>
     </MessageContainer>
