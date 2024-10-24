@@ -1,15 +1,15 @@
 import {type FC} from "react"
 import {IoFilterCircle, IoPeople, IoReloadOutline} from "react-icons/io5"
-import Typography, {TypographyVariant} from "@/components/Typography"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import RosterUser, {type RosterUserData} from "./RosterUser"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
-import {Button} from "@/components/ui/button"
+import {Button, IconButton} from "@/components/ui/button"
 import UserProfileGhost from "@/components/UserProfileGhost"
 import {type GroupedMembers} from "./hooks/useRoomMembers"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Heading, Text} from "@/components/ui/typography"
 
 export enum RosterUserCategory {
   Admin,
@@ -49,38 +49,42 @@ const Roster: FC<RosterProps> = ({
   return (
     <div
       className={twMerge(
-        "flex h-full w-60 flex-col border border-l-slate-300 bg-gray-50",
+        "flex h-full w-60 flex-col border border-l-neutral-300 bg-gray-50 dark:border-l-neutral-600 dark:bg-neutral-900",
         className
       )}>
-      <header className="flex size-full max-h-12 border-b border-b-slate-300">
-        <div className="m-0.5 mx-3 flex w-full items-center justify-center">
-          <IoPeople size={25} className="text-neutral-500" />
+      <header className="flex size-full max-h-12 border-b border-b-neutral-300 dark:border-b-neutral-600">
+        <div className="m-0.5 ml-3 flex w-full items-center justify-center">
+          <IoPeople
+            size={25}
+            className="text-neutral-500 dark:text-neutral-400"
+          />
 
-          <Typography className="ml-1 w-full text-lg text-neutral-600">
+          <Heading
+            level="h5"
+            className="ml-2 w-full text-neutral-600 dark:text-neutral-300">
             {t(LangKey.People)}
-          </Typography>
+          </Heading>
 
-          <Button
+          <IconButton
             aria-label={t(LangKey.SortMembers)}
-            variant="ghost"
-            size="icon"
-            className="size-6 text-neutral-500">
+            tooltip={t(LangKey.SortMembers)}
+            className="text-neutral-500 dark:text-neutral-400">
             <IoFilterCircle size={20} />
-          </Button>
+          </IconButton>
         </div>
       </header>
 
       {hasError ? (
         <div className="flex size-full flex-col items-center justify-center gap-1 p-1">
-          <Typography variant={TypographyVariant.Heading}>
+          <Heading level="h4" align="center">
             {t(LangKey.MembersError)}
-          </Typography>
+          </Heading>
 
           <Button
             aria-label={t(LangKey.ReloadMembers)}
             className="mt-1"
             size="sm"
-            variant="outline"
+            variant="secondary"
             onClick={onReloadMembers}>
             {t(LangKey.ReloadMembers)} <IoReloadOutline className="ml-1" />
           </Button>
@@ -94,7 +98,7 @@ const Roster: FC<RosterProps> = ({
           <RosterSectionSkeleton elementsCount={5} />
         </div>
       ) : (
-        <ScrollArea className="max-w-56 px-1 pt-3" type="scroll" avoidOverflow>
+        <ScrollArea avoidOverflow className="px-1 pt-3" type="scroll">
           <div className="flex flex-col gap-4">
             <RosterSection
               title={t(LangKey.Admins, admins.length.toString())}
@@ -141,13 +145,15 @@ const RosterSection: FC<{
   return (
     <div className="flex w-full flex-col gap-2.5">
       <motion.div
-        initial={{scale: 0, opacity: 0}}
+        initial={{scale: 0.8, opacity: 0}}
         whileInView={{scale: 1, opacity: 1}}>
-        <Typography
-          variant={TypographyVariant.BodyMedium}
-          className="ml-2 font-medium text-slate-400">
+        <Text
+          size="2"
+          as="label"
+          weight="medium"
+          className="ml-2 text-neutral-500 dark:text-neutral-400">
           {title}
-        </Typography>
+        </Text>
       </motion.div>
 
       <div className="flex w-full flex-col gap-1.5">

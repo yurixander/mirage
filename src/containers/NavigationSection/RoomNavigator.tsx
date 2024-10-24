@@ -315,13 +315,13 @@ const RoomSectionSkeleton: FC<RoomSectionSkeletonProps> = ({
           variants={widthFillAnimNavigator}
           initial="initial"
           whileInView="whileInView"
-          className="h-5 max-w-24 rounded-sm bg-gray-400"
+          className="h-5 max-w-24 rounded-sm bg-gray-400 dark:bg-neutral-600"
         />
 
         <motion.div
           initial={{scale: 0.5, opacity: 0}}
           whileInView={{scale: 1, opacity: 1}}
-          className="size-5 rounded-sm bg-gray-400"
+          className="size-5 rounded-sm bg-gray-400 dark:bg-neutral-600"
         />
       </div>
 
@@ -331,7 +331,7 @@ const RoomSectionSkeleton: FC<RoomSectionSkeletonProps> = ({
           variants={widthFillAnimNavigator}
           initial="initial"
           whileInView="whileInView"
-          className="h-4 w-full rounded-sm bg-gray-400"
+          className="h-4 w-full rounded-sm bg-gray-400 dark:bg-neutral-600"
         />
       ))}
     </div>
