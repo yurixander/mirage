@@ -17,8 +17,8 @@ import {assert, validateUrl} from "@/utils/util"
 import {IconButton} from "./ui/button"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
-import ContextMenu from "./ContextMenu"
 import {Text} from "./ui/typography"
+import {MessageContextMenu} from "./ui/context-menu"
 
 const ICON_SIZE = 20
 
@@ -58,7 +58,7 @@ const FileMessage: FC<FileMessageProps> = ({
       timestamp={timestamp}
       onAuthorClick={onAuthorClick}
       userId={userId}>
-      <ContextMenu id={`file-message-${messageId}`} elements={contextMenuItems}>
+      <MessageContextMenu items={contextMenuItems}>
         <div className="flex w-60 flex-col items-center gap-2 rounded border bg-gray-50 p-2 dark:border-neutral-800 dark:bg-neutral-950 sm:w-messageMaxWidth">
           <div className="flex w-full items-center gap-2">
             <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2 dark:bg-neutral-900">
@@ -91,7 +91,7 @@ const FileMessage: FC<FileMessageProps> = ({
             </Text>
           </div>
         </div>
-      </ContextMenu>
+      </MessageContextMenu>
     </MessageContainer>
   )
 }
