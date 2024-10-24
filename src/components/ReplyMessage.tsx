@@ -1,9 +1,9 @@
 import {type FC} from "react"
 import AvatarImage, {AvatarSize, AvatarType} from "./AvatarImage"
 import TextMessage from "./TextMessage"
-import Typography, {TypographyVariant} from "./Typography"
 import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
 import {cleanDisplayName, stringToColor} from "@/utils/util"
+import {Text} from "./ui/typography"
 
 export interface ReplyMessageProps extends MessageBaseProps {
   onQuoteMessageClick: (quoteMessageId: string) => void
@@ -41,7 +41,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
   return (
     <div className="flex flex-col">
       <div className="flex w-messageMaxWidth items-end">
-        <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200" />
+        <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200 dark:border-slate-800" />
         <button
           onClick={() => {
             if (quotedMessageId === undefined) {
@@ -50,7 +50,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
             }
             onQuoteMessageClick(quotedMessageId)
           }}
-          className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100">
+          className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100 dark:bg-gray-950 dark:hover:bg-gray-900">
           <AvatarImage
             avatarType={AvatarType.Message}
             displayName={quotedUserDisplayName}
@@ -59,18 +59,15 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
             avatarUrl={quotedAvatarUrl}
           />
 
-          <Typography
-            className="w-max shrink-0 select-text font-bold"
-            style={{color: stringToColor(quotedUserDisplayName)}}
-            variant={TypographyVariant.BodySmall}>
+          <Text
+            className="w-max shrink-0 select-text text-xs font-bold"
+            style={{color: stringToColor(quotedUserDisplayName)}}>
             {cleanDisplayName(quotedUserDisplayName)}
-          </Typography>
+          </Text>
 
-          <Typography
-            className="line-clamp-1 max-w-40 shrink-0"
-            variant={TypographyVariant.BodySmall}>
+          <Text className="line-clamp-1 max-w-40 shrink-0 text-xs">
             {quotedText}
-          </Typography>
+          </Text>
         </button>
       </div>
 
