@@ -102,8 +102,19 @@ interface IconButtonProps extends ButtonProps {
 }
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({tooltip, size = "icon", variant = "ghost", ...props}, ref) => {
-    const button = <Button size={size} variant={variant} {...props} ref={ref} />
+  (
+    {tooltip, size = "icon", variant = "ghost", asBoundary = true, ...props},
+    ref
+  ) => {
+    const button = (
+      <Button
+        size={size}
+        variant={variant}
+        {...props}
+        ref={ref}
+        asBoundary={tooltip === undefined && asBoundary}
+      />
+    )
 
     return tooltip === undefined ? (
       button
