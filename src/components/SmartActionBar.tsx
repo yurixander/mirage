@@ -22,6 +22,8 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
   const {syncState} = useClientStore()
   const {t} = useTranslation()
 
+  let isDark = true
+
   return (
     <div
       className={cn(
@@ -50,7 +52,12 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
         aria-label={t(LangKey.SwitchTheme)}
         icon={IoContrast}
         onClick={() => {
-          /* TODO: Handle `Switch theme` click. */
+          if (isDark) {
+            document.querySelectorAll("html")[0].className = "dark"
+          } else {
+            document.querySelectorAll("html")[0].className = ""
+          }
+          isDark = !isDark
         }}>
         {t(LangKey.SwitchTheme)}
       </SmartAction>
