@@ -5,6 +5,12 @@ import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
 import {cleanDisplayName, stringToColor} from "@/utils/util"
 import {Text} from "./ui/typography"
 import useTooltip from "@/hooks/util/useTooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export interface ReplyMessageProps extends MessageBaseProps {
   onQuoteMessageClick: (quoteMessageId: string) => void
@@ -41,38 +47,51 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
 }) => {
   const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
 
+  const quoteMessage = (
+    <button
+      type="button"
+      ref={renderRef}
+      onClick={() => {
+        if (quotedMessageId === undefined) {
+          showTooltip("Quoted MessageId is undefined", true)
+          return
+        }
+        onQuoteMessageClick(quotedMessageId)
+      }}
+      className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100 dark:bg-neutral-950 dark:hover:bg-neutral-900">
+      <AvatarImage
+        avatarType={AvatarType.Message}
+        displayName={quotedUserDisplayName}
+        isRounded={false}
+        avatarSize={AvatarSize.ExtraSmall}
+        avatarUrl={quotedAvatarUrl}
+      />
+
+      <Text
+        className="w-max shrink-0 select-text text-xs font-bold"
+        style={{color: stringToColor(quotedUserDisplayName)}}>
+        {cleanDisplayName(quotedUserDisplayName)}
+      </Text>
+
+      <Text className="line-clamp-1 max-w-40 shrink-0 text-xs">
+        {quotedText}
+      </Text>
+    </button>
+  )
+
   return (
     <div className="flex flex-col">
       <div className="flex w-messageMaxWidth items-end">
         <div className="ml-5 h-4 w-8 rounded-tl border-l-2 border-t-2 border-slate-200 dark:border-slate-800" />
-        <button
-          ref={renderRef}
-          onClick={() => {
-            if (quotedMessageId === undefined) {
-              showTooltip("Quoted MessageId is undefined", true)
-              return
-            }
-            onQuoteMessageClick(quotedMessageId)
-          }}
-          className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100 dark:bg-neutral-950 dark:hover:bg-neutral-900">
-          <AvatarImage
-            avatarType={AvatarType.Message}
-            displayName={quotedUserDisplayName}
-            isRounded={false}
-            avatarSize={AvatarSize.ExtraSmall}
-            avatarUrl={quotedAvatarUrl}
-          />
+        <TooltipProvider delayDuration={500}>
+          <Tooltip>
+            <TooltipTrigger tabIndex={-1} asChild>
+              {quoteMessage}
+            </TooltipTrigger>
 
-          <Text
-            className="w-max shrink-0 select-text text-xs font-bold"
-            style={{color: stringToColor(quotedUserDisplayName)}}>
-            {cleanDisplayName(quotedUserDisplayName)}
-          </Text>
-
-          <Text className="line-clamp-1 max-w-40 shrink-0 text-xs">
-            {quotedText}
-          </Text>
-        </button>
+            <TooltipContent aria-hidden>{quotedText}</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
       <TextMessage
