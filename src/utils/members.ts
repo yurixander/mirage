@@ -48,6 +48,31 @@ export function getRoomPowerLevelByUserId(
   return processPowerLevelByNumber(user)
 }
 
+export function getOwnersWithLevelsMap(
+  room: Room
+): Map<string, UserPowerLevel> {
+  const powerLevels = getPowerLevelsFromRoom(room)
+  const ownersWithLevelsMap = new Map<string, UserPowerLevel>()
+
+  const users = Object.entries(powerLevels)
+
+  for (const [userId, powerLevel] of users) {
+    if (typeof powerLevel !== "number") {
+      continue
+    }
+
+    const userPowerLevel = processPowerLevelByNumber(powerLevel)
+
+    if (userPowerLevel === UserPowerLevel.Member) {
+      continue
+    }
+
+    ownersWithLevelsMap.set(userId, powerLevel)
+  }
+
+  return ownersWithLevelsMap
+}
+
 export function getOwnersIdWithPowerLevels(
   room: Room
 ): RoomMemberWithPowerLevel[] {
