@@ -1,6 +1,6 @@
-import {useEffect, useRef, type FC} from "react"
+import {type FC} from "react"
 import {IoFilterCircle, IoPeople, IoReloadOutline} from "react-icons/io5"
-import {ScrollArea} from "@/components/ui/scroll-area"
+import {SmartScrollArea} from "@/components/ui/scroll-area"
 import RosterUser, {type RosterUserData} from "./RosterUser"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
@@ -10,7 +10,6 @@ import {type GroupedMembers} from "./hooks/useRoomMembers"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Heading, Text} from "@/components/ui/typography"
-import useIntersection from "@/hooks/util/useIntersection"
 import {type ValueState} from "@/hooks/util/useValueState"
 import ValueStateHandler from "@/components/ValueStateHandler"
 
@@ -37,18 +36,6 @@ const Roster: FC<RosterProps> = ({
   className,
 }) => {
   const {t} = useTranslation()
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [lastRef, isIntersecting] = useIntersection(scrollRef.current)
-
-  useEffect(() => {
-    console.log(isIntersecting)
-
-    if (!isIntersecting) {
-      return
-    }
-
-    onLazyLoad()
-  }, [isIntersecting, onLazyLoad])
 
   return (
     <div
@@ -106,7 +93,17 @@ const Roster: FC<RosterProps> = ({
           </div>
         )}>
         {({admins, moderators, members}) => (
-          <ScrollArea avoidOverflow className="px-1 pt-3" type="scroll">
+          <SmartScrollArea
+            avoidOverflow
+            className="px-1 pt-3"
+            type="scroll"
+            endScrollChange={isEnd => {
+              if (!isEnd) {
+                return
+              }
+
+              onLazyLoad()
+            }}>
             <div className="flex flex-col gap-4">
               <RosterSection
                 title={t(LangKey.Admins, admins.length.toString())}
@@ -125,8 +122,6 @@ const Roster: FC<RosterProps> = ({
                 members={members}
                 onUserClick={onUserClick}
               />
-
-              <div className="h-20 w-10 bg-red-300" ref={lastRef} />
             </div>
 
             {admins.length + moderators.length + members.length <=
@@ -137,7 +132,7 @@ const Roster: FC<RosterProps> = ({
                 opacityMultiplier={0.2}
               />
             )}
-          </ScrollArea>
+          </SmartScrollArea>
         )}
       </ValueStateHandler>
     </div>
