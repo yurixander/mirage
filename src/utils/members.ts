@@ -88,7 +88,7 @@ export function getOwnersIdWithPowerLevels(
 
     const userPowerLevel = processPowerLevelByNumber(powerLevel)
 
-    if (userPowerLevel !== UserPowerLevel.Member) {
+    if (userPowerLevel === UserPowerLevel.Member) {
       continue
     }
 

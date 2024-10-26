@@ -17,7 +17,7 @@ const RoomContainer: FC = () => {
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
   const isSm = useIsSmall()
 
-  const {membersState, onReloadMembers, onLazyReload} =
+  const {membersState, onReloadMembers, onLazyReload, isLazyLoading} =
     useRoomMembers(activeRoomId)
 
   useGlobalHotkey({key: "M", ctrl: true}, () => {
@@ -49,6 +49,7 @@ const RoomContainer: FC = () => {
           <motion.div animate={{width: isRosterExpanded ? "15rem" : 0}}>
             <Roster
               className="max-w-60"
+              isLazyLoading={isLazyLoading}
               membersState={membersState}
               onReloadMembers={onReloadMembers}
               onLazyLoad={onLazyReload}

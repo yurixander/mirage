@@ -12,6 +12,7 @@ import {LangKey} from "@/lang/allKeys"
 import {Heading, Text} from "@/components/ui/typography"
 import {type ValueState} from "@/hooks/util/useValueState"
 import ValueStateHandler from "@/components/ValueStateHandler"
+import Loader from "@/components/Loader"
 
 export enum RosterUserCategory {
   Admin,
@@ -19,6 +20,7 @@ export enum RosterUserCategory {
 }
 
 export type RosterProps = {
+  isLazyLoading: boolean
   membersState: ValueState<GroupedMembers>
   onUserClick: (userId: string) => void
   onLazyLoad: () => void
@@ -33,6 +35,7 @@ const Roster: FC<RosterProps> = ({
   onReloadMembers,
   membersState,
   onLazyLoad,
+  isLazyLoading,
   className,
 }) => {
   const {t} = useTranslation()
@@ -131,6 +134,12 @@ const Roster: FC<RosterProps> = ({
                 count={4}
                 opacityMultiplier={0.2}
               />
+            )}
+
+            {isLazyLoading && (
+              <div className="h-32 w-full">
+                <Loader text="Loading" />
+              </div>
             )}
           </SmartScrollArea>
         )}

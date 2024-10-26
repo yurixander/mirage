@@ -1,5 +1,4 @@
-import {useEffect, useCallback} from "react"
-import {getRoomMembers} from "@/utils/rooms"
+import {useEffect, useCallback, useState} from "react"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {type RosterUserData} from "../RosterUser"
 import useValueState, {type ValueState} from "@/hooks/util/useValueState"
@@ -9,7 +8,6 @@ import {
   UserPowerLevel,
 } from "@/utils/members"
 import {getImageUrl} from "@/utils/util"
-import {type Room} from "matrix-js-sdk"
 
 export type GroupedMembers = {
   admins: RosterUserData[]
@@ -18,36 +16,18 @@ export type GroupedMembers = {
 }
 
 export type UseRoomMembersReturnType = {
+  isLazyLoading: boolean
   membersState: ValueState<GroupedMembers>
   onLazyReload: () => void
   onReloadMembers: () => void
 }
 
-function processMember(
-  memberId: string,
-  room: Room,
-  powerLevel: UserPowerLevel
-): RosterUserData | null {
-  const member = room.getMember(memberId)
-
-  if (member === null) {
-    return null
-  }
-
-  return {
-    displayName: member.name,
-    userId: member.userId,
-    avatarUrl: getImageUrl(member.getMxcAvatarUrl(), room.client),
-    lastPresenceAge: member.getLastModifiedTime(),
-    powerLevel,
-  }
-}
-
 const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
   const client = useMatrixClient()
   const [state, setState] = useValueState<GroupedMembers>()
+  const [isLazyLoading, setIsLazyLoading] = useState(false)
 
-  const loadMembers = useCallback(() => {
+  const loadMembers = useCallback(async () => {
     if (client === null || roomId === null) {
       return
     }
@@ -62,29 +42,8 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
       return
     }
 
-    getRoomMembers(activeRoom)
-      .then(groupedMembers => {
-        setState({status: "success", data: groupedMembers})
-      })
-      .catch((error: Error) => {
-        setState({status: "error", error})
-      })
-  }, [client, roomId, setState])
-
-  useEffect(() => {
-    if (client === null || roomId === null) {
-      return
-    }
-
-    const activeRoom = client.getRoom(roomId)
-
-    if (activeRoom === null) {
-      setState({status: "error", error: new Error("Active room is null.")})
-
-      return
-    }
-
     const ownersWithLevelsMap = getOwnersWithLevelsMap(activeRoom)
+    const joinedMembers = await client.getJoinedRoomMembers(activeRoom.roomId)
 
     const membersResult: GroupedMembers = {
       admins: [],
@@ -104,28 +63,107 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
     }
 
     for (const [ownerId, powerLevel] of ownersWithLevelsMap) {
-      const member = processMember(ownerId, activeRoom, powerLevel)
+      const member = joinedMembers.joined[ownerId]
 
-      if (member === null) {
+      if (member === undefined) {
         continue
       }
 
       if (powerLevel === UserPowerLevel.Admin) {
-        membersResult.admins.push(member)
+        membersResult.admins.push({
+          displayName: member.display_name,
+          userId: ownerId,
+          avatarUrl: getImageUrl(member.avatar_url, client),
+          powerLevel,
+        })
       } else {
-        membersResult.moderators.push(member)
+        membersResult.moderators.push({
+          displayName: member.display_name,
+          userId: ownerId,
+          avatarUrl: getImageUrl(member.avatar_url, client),
+          powerLevel,
+        })
       }
     }
 
     setState({status: "success", data: membersResult})
   }, [client, roomId, setState])
 
-  const onLazyReload = useCallback(() => {}, [])
+  useEffect(() => {
+    void loadMembers()
+  }, [loadMembers])
+
+  const onLazyReload = useCallback(() => {
+    if (client === null || roomId === null) {
+      return
+    }
+
+    const activeRoom = client.getRoom(roomId)
+
+    if (activeRoom === null) {
+      setState({status: "error", error: new Error("Active room is null.")})
+
+      return
+    }
+
+    const ownersWithLevelsMap = getOwnersWithLevelsMap(activeRoom)
+
+    setIsLazyLoading(true)
+
+    void activeRoom
+      .loadMembersIfNeeded()
+      .then(isNeeded => {
+        if (!isNeeded) {
+          return
+        }
+
+        setState(prevState => {
+          if (prevState.status !== "success") {
+            return prevState
+          }
+
+          return {
+            status: "success",
+            data: {
+              admins: prevState.data.admins,
+              moderators: prevState.data.moderators,
+              members: [
+                ...prevState.data.members,
+                ...activeRoom
+                  .getMembers()
+                  .filter(
+                    member =>
+                      !ownersWithLevelsMap.has(member.userId) &&
+                      member.isOutOfBand()
+                  )
+                  .map(member => {
+                    return {
+                      displayName: member.name,
+                      userId: member.userId,
+                      powerLevel: processPowerLevelByNumber(
+                        member.powerLevelNorm
+                      ),
+                      avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
+                      lastPresenceAge: member.getLastModifiedTime(),
+                    }
+                  }),
+              ],
+            },
+          }
+        })
+      })
+      .finally(() => {
+        setIsLazyLoading(false)
+      })
+  }, [client, roomId, setState])
 
   return {
     onLazyReload,
     membersState: state,
-    onReloadMembers: loadMembers,
+    isLazyLoading,
+    onReloadMembers: () => {
+      void loadMembers()
+    },
   }
 }
 
