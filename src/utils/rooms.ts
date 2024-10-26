@@ -18,7 +18,7 @@ import {
 } from "./util"
 import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {
-  getRoomUsersIdWithPowerLevels,
+  getOwnersIdWithPowerLevels,
   getUserLastPresence,
   isCurrentUserAdminOrMod,
   UserPowerLevel,
@@ -105,9 +105,7 @@ export async function getRoomMembers(room: Room): Promise<GroupedMembers> {
   const moderators: RosterUserData[] = []
   const admins: RosterUserData[] = []
 
-  const roomOwnersWithLevels = getRoomUsersIdWithPowerLevels(room).filter(
-    user => user.powerLevel !== UserPowerLevel.Member
-  )
+  const roomOwnersWithLevels = getOwnersIdWithPowerLevels(room)
 
   for (const roomOwner of roomOwnersWithLevels) {
     const roomOwnerMember = membersResponse.joined[roomOwner.userId]

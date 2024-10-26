@@ -1,4 +1,4 @@
-import {type FC} from "react"
+import {useEffect, useRef, type FC} from "react"
 import {IoFilterCircle, IoPeople, IoReloadOutline} from "react-icons/io5"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import RosterUser, {type RosterUserData} from "./RosterUser"
@@ -10,6 +10,9 @@ import {type GroupedMembers} from "./hooks/useRoomMembers"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Heading, Text} from "@/components/ui/typography"
+import useIntersection from "@/hooks/util/useIntersection"
+import {type ValueState} from "@/hooks/util/useValueState"
+import ValueStateHandler from "@/components/ValueStateHandler"
 
 export enum RosterUserCategory {
   Admin,
@@ -17,34 +20,35 @@ export enum RosterUserCategory {
 }
 
 export type RosterProps = {
-  groupedMembers: GroupedMembers | Error
-  isLoading: boolean
+  membersState: ValueState<GroupedMembers>
   onUserClick: (userId: string) => void
+  onLazyLoad: () => void
   onReloadMembers: () => void
   className?: string
 }
 
 const MAX_MEMBERS_LENGTH_FOR_GHOST = 10
 
-const EMPTY_GROUPED_MEMBERS: GroupedMembers = {
-  admins: [],
-  moderators: [],
-  members: [],
-}
-
 const Roster: FC<RosterProps> = ({
-  groupedMembers,
   onUserClick,
-  isLoading,
   onReloadMembers,
+  membersState,
+  onLazyLoad,
   className,
 }) => {
   const {t} = useTranslation()
-  const hasError = groupedMembers instanceof Error
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [lastRef, isIntersecting] = useIntersection(scrollRef.current)
 
-  const {admins, moderators, members} = hasError
-    ? EMPTY_GROUPED_MEMBERS
-    : groupedMembers
+  useEffect(() => {
+    console.log(isIntersecting)
+
+    if (!isIntersecting) {
+      return
+    }
+
+    onLazyLoad()
+  }, [isIntersecting, onLazyLoad])
 
   return (
     <div
@@ -74,61 +78,68 @@ const Roster: FC<RosterProps> = ({
         </div>
       </header>
 
-      {hasError ? (
-        <div className="flex size-full flex-col items-center justify-center gap-1 p-1">
-          <Heading level="h4" align="center">
-            {t(LangKey.MembersError)}
-          </Heading>
+      <ValueStateHandler
+        value={membersState}
+        loading={
+          <div className="flex flex-col gap-6 pt-3">
+            <RosterSectionSkeleton elementsCount={2} />
 
-          <Button
-            aria-label={t(LangKey.ReloadMembers)}
-            className="mt-1"
-            size="sm"
-            variant="secondary"
-            onClick={onReloadMembers}>
-            {t(LangKey.ReloadMembers)} <IoReloadOutline className="ml-1" />
-          </Button>
-        </div>
-      ) : isLoading ? (
-        <div className="flex flex-col gap-6 pt-3">
-          <RosterSectionSkeleton elementsCount={2} />
+            <RosterSectionSkeleton elementsCount={1} />
 
-          <RosterSectionSkeleton elementsCount={1} />
-
-          <RosterSectionSkeleton elementsCount={5} />
-        </div>
-      ) : (
-        <ScrollArea avoidOverflow className="px-1 pt-3" type="scroll">
-          <div className="flex flex-col gap-4">
-            <RosterSection
-              title={t(LangKey.Admins, admins.length.toString())}
-              members={admins}
-              onUserClick={onUserClick}
-            />
-
-            <RosterSection
-              title={t(LangKey.Moderators, moderators.length.toString())}
-              members={moderators}
-              onUserClick={onUserClick}
-            />
-
-            <RosterSection
-              title={t(LangKey.Members, members.length.toString())}
-              members={members}
-              onUserClick={onUserClick}
-            />
+            <RosterSectionSkeleton elementsCount={5} />
           </div>
+        }
+        error={() => (
+          <div className="flex size-full flex-col items-center justify-center gap-1 p-1">
+            <Heading level="h4" align="center">
+              {t(LangKey.MembersError)}
+            </Heading>
 
-          {admins.length + moderators.length + members.length <=
-            MAX_MEMBERS_LENGTH_FOR_GHOST && (
-            <UserProfileGhost
-              className="p-2"
-              count={4}
-              opacityMultiplier={0.2}
-            />
-          )}
-        </ScrollArea>
-      )}
+            <Button
+              aria-label={t(LangKey.ReloadMembers)}
+              className="mt-1"
+              size="sm"
+              variant="secondary"
+              onClick={onReloadMembers}>
+              {t(LangKey.ReloadMembers)} <IoReloadOutline className="ml-1" />
+            </Button>
+          </div>
+        )}>
+        {({admins, moderators, members}) => (
+          <ScrollArea avoidOverflow className="px-1 pt-3" type="scroll">
+            <div className="flex flex-col gap-4">
+              <RosterSection
+                title={t(LangKey.Admins, admins.length.toString())}
+                members={admins}
+                onUserClick={onUserClick}
+              />
+
+              <RosterSection
+                title={t(LangKey.Moderators, moderators.length.toString())}
+                members={moderators}
+                onUserClick={onUserClick}
+              />
+
+              <RosterSection
+                title={t(LangKey.Members, members.length.toString())}
+                members={members}
+                onUserClick={onUserClick}
+              />
+
+              <div className="h-20 w-10 bg-red-300" ref={lastRef} />
+            </div>
+
+            {admins.length + moderators.length + members.length <=
+              MAX_MEMBERS_LENGTH_FOR_GHOST && (
+              <UserProfileGhost
+                className="p-2"
+                count={4}
+                opacityMultiplier={0.2}
+              />
+            )}
+          </ScrollArea>
+        )}
+      </ValueStateHandler>
     </div>
   )
 }

@@ -38,6 +38,57 @@ const ScrollArea = React.forwardRef<
 
 ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
 
+interface SmartScrollAreaProps extends ScrollAreaProps {
+  endScrollChange?: (isEndScroll: boolean) => void
+}
+
+const SmartScrollArea: React.FC<SmartScrollAreaProps> = ({
+  children,
+  endScrollChange,
+  ...props
+}) => {
+  const elementRef = React.useRef<HTMLDivElement>(null)
+  const containerRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    const targetElement = elementRef.current
+    const containerElement = containerRef.current
+
+    if (
+      targetElement === null ||
+      containerElement === null ||
+      endScrollChange === undefined
+    ) {
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        endScrollChange(entry.isIntersecting)
+      },
+      {
+        root: containerElement,
+        rootMargin: "0px",
+        threshold: 0.1,
+      }
+    )
+
+    observer.observe(targetElement)
+
+    return () => {
+      observer.unobserve(targetElement)
+    }
+  }, [endScrollChange])
+
+  return (
+    <ScrollArea ref={containerRef} {...props}>
+      {children}
+
+      <div ref={elementRef} />
+    </ScrollArea>
+  )
+}
+
 const ScrollBar = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
   React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
@@ -60,4 +111,4 @@ const ScrollBar = React.forwardRef<
 
 ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
 
-export {ScrollArea, ScrollBar}
+export {ScrollArea, ScrollBar, SmartScrollArea}

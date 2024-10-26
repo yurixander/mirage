@@ -1,16 +1,24 @@
 import {useEffect, useRef, useState} from "react"
 
-const useIntersection = <T extends HTMLElement = HTMLDivElement>(): [
-  React.RefObject<T>,
-  boolean,
-] => {
-  const elementRef = useRef<T>(null)
-  const [isIntersection, setIsIntersection] = useState(false)
+type UseIntersectionReturnType<C extends HTMLElement, E extends HTMLElement> = {
+  containerRef: React.RefObject<C>
+  elementRef: React.RefObject<E>
+  isIntersecting: boolean
+}
+
+const useIntersection = <
+  C extends HTMLElement = HTMLDivElement,
+  E extends HTMLElement = HTMLDivElement,
+>(): UseIntersectionReturnType<C, E> => {
+  const containerRef = useRef<C>(null)
+  const elementRef = useRef<E>(null)
+  const [isIntersecting, setIsIntersection] = useState(false)
 
   useEffect(() => {
-    const ref = elementRef.current
+    const targetElement = elementRef.current
+    const containerElement = containerRef.current
 
-    if (ref === null) {
+    if (!targetElement || !containerElement) {
       return
     }
 
@@ -23,20 +31,20 @@ const useIntersection = <T extends HTMLElement = HTMLDivElement>(): [
         }
       },
       {
-        root: null,
+        root: elementRef.current,
         rootMargin: "0px",
         threshold: 1,
       }
     )
 
-    observer.observe(ref)
+    observer.observe(targetElement)
 
     return () => {
-      observer.unobserve(ref)
+      observer.unobserve(targetElement)
     }
   }, [])
 
-  return [elementRef, isIntersection]
+  return {containerRef, elementRef, isIntersecting}
 }
 
 export default useIntersection
