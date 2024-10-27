@@ -1,13 +1,15 @@
-import {useEffect, useCallback, useState} from "react"
+import {useEffect, useCallback, useState, useRef} from "react"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {type RosterUserData} from "../RosterUser"
 import useValueState, {type ValueState} from "@/hooks/util/useValueState"
 import {
-  getOwnersWithLevelsMap,
+  getUserLastPresence,
   processPowerLevelByNumber,
   UserPowerLevel,
 } from "@/utils/members"
 import {getImageUrl} from "@/utils/util"
+import {type MatrixClient} from "matrix-js-sdk"
+import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 
 export type GroupedMembers = {
   admins: RosterUserData[]
@@ -22,76 +24,89 @@ export type UseRoomMembersReturnType = {
   onReloadMembers: () => void
 }
 
+async function loadJoinedMembers(
+  client: MatrixClient,
+  roomId: string
+): Promise<GroupedMembers> {
+  const room = client.getRoom(roomId)
+
+  if (room === null) {
+    throw new Error("Room is not available")
+  }
+
+  const roomWIthLimit = await client.scrollback(room, 30)
+
+  const members = room.getMembers()
+
+  const groupedMembers: GroupedMembers = {
+    admins: [],
+    moderators: [],
+    members: [],
+  }
+
+  for (const member of members) {
+    if (!member.isOutOfBand() || member.membership !== KnownMembership.Join) {
+      continue
+    }
+
+    const lastPresenceAge =
+      (await getUserLastPresence(roomWIthLimit, 30, member.userId)) ?? undefined
+
+    const memberProcessed: RosterUserData = {
+      displayName: member.name,
+      userId: member.userId,
+      powerLevel: processPowerLevelByNumber(member.powerLevelNorm),
+      avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
+      lastPresenceAge,
+    }
+
+    if (memberProcessed.powerLevel === UserPowerLevel.Admin) {
+      groupedMembers.admins.push(memberProcessed)
+    } else if (memberProcessed.powerLevel === UserPowerLevel.Moderator) {
+      groupedMembers.moderators.push(memberProcessed)
+    } else {
+      groupedMembers.members.push(memberProcessed)
+    }
+  }
+
+  return groupedMembers
+}
+
 const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
   const client = useMatrixClient()
+  const isMountedRef = useRef(roomId)
+
   const [state, setState] = useValueState<GroupedMembers>()
   const [isLazyLoading, setIsLazyLoading] = useState(false)
 
-  const loadMembers = useCallback(async () => {
+  const loadMembers = useCallback(
+    (client: MatrixClient, roomId: string) => {
+      setState({status: "loading"})
+
+      loadJoinedMembers(client, roomId)
+        .then(membersResult => {
+          if (isMountedRef.current === roomId) {
+            setState({status: "success", data: membersResult})
+          }
+        })
+        .catch((error: Error) => {
+          if (isMountedRef.current === roomId) {
+            setState({status: "error", error})
+          }
+        })
+    },
+    [setState]
+  )
+
+  useEffect(() => {
+    isMountedRef.current = roomId
+
     if (client === null || roomId === null) {
       return
     }
 
-    setState({status: "loading"})
-
-    const activeRoom = client.getRoom(roomId)
-
-    if (activeRoom === null) {
-      setState({status: "error", error: new Error("Active room is null.")})
-
-      return
-    }
-
-    const ownersWithLevelsMap = getOwnersWithLevelsMap(activeRoom)
-    const joinedMembers = await client.getJoinedRoomMembers(activeRoom.roomId)
-
-    const membersResult: GroupedMembers = {
-      admins: [],
-      moderators: [],
-      members: activeRoom
-        .getMembers()
-        .filter(member => !ownersWithLevelsMap.has(member.userId))
-        .map(member => {
-          return {
-            displayName: member.name,
-            userId: member.userId,
-            powerLevel: processPowerLevelByNumber(member.powerLevelNorm),
-            avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
-            lastPresenceAge: member.getLastModifiedTime(),
-          }
-        }),
-    }
-
-    for (const [ownerId, powerLevel] of ownersWithLevelsMap) {
-      const member = joinedMembers.joined[ownerId]
-
-      if (member === undefined) {
-        continue
-      }
-
-      if (powerLevel === UserPowerLevel.Admin) {
-        membersResult.admins.push({
-          displayName: member.display_name,
-          userId: ownerId,
-          avatarUrl: getImageUrl(member.avatar_url, client),
-          powerLevel,
-        })
-      } else {
-        membersResult.moderators.push({
-          displayName: member.display_name,
-          userId: ownerId,
-          avatarUrl: getImageUrl(member.avatar_url, client),
-          powerLevel,
-        })
-      }
-    }
-
-    setState({status: "success", data: membersResult})
-  }, [client, roomId, setState])
-
-  useEffect(() => {
-    void loadMembers()
-  }, [loadMembers])
+    loadMembers(client, roomId)
+  }, [client, loadMembers, roomId])
 
   const onLazyReload = useCallback(() => {
     if (client === null || roomId === null) {
@@ -101,59 +116,51 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
     const activeRoom = client.getRoom(roomId)
 
     if (activeRoom === null) {
-      setState({status: "error", error: new Error("Active room is null.")})
+      setState({status: "error", error: new Error("This room is not valid.")})
 
       return
     }
-
-    const ownersWithLevelsMap = getOwnersWithLevelsMap(activeRoom)
 
     setIsLazyLoading(true)
 
     void activeRoom
       .loadMembersIfNeeded()
-      .then(isNeeded => {
-        if (!isNeeded) {
+      .then(async isNeeded => {
+        if (!isNeeded || isMountedRef.current !== roomId) {
           return
         }
 
+        const newMembers = await loadJoinedMembers(client, roomId)
+
         setState(prevState => {
-          if (prevState.status !== "success") {
+          if (
+            prevState.status !== "success" ||
+            isMountedRef.current !== roomId
+          ) {
             return prevState
           }
+
+          const {data} = prevState
 
           return {
             status: "success",
             data: {
-              admins: prevState.data.admins,
-              moderators: prevState.data.moderators,
-              members: [
-                ...prevState.data.members,
-                ...activeRoom
-                  .getMembers()
-                  .filter(
-                    member =>
-                      !ownersWithLevelsMap.has(member.userId) &&
-                      member.isOutOfBand()
-                  )
-                  .map(member => {
-                    return {
-                      displayName: member.name,
-                      userId: member.userId,
-                      powerLevel: processPowerLevelByNumber(
-                        member.powerLevelNorm
-                      ),
-                      avatarUrl: getImageUrl(member.getMxcAvatarUrl(), client),
-                      lastPresenceAge: member.getLastModifiedTime(),
-                    }
-                  }),
-              ],
+              admins: data.admins.concat(newMembers.admins),
+              moderators: data.moderators.concat(newMembers.moderators),
+              members: data.members.concat(newMembers.members),
             },
           }
         })
       })
+      .catch((error: Error) => {
+        if (isMountedRef.current === roomId) {
+          setState({status: "error", error})
+        }
+      })
       .finally(() => {
-        setIsLazyLoading(false)
+        if (isMountedRef.current === roomId) {
+          setIsLazyLoading(false)
+        }
       })
   }, [client, roomId, setState])
 
@@ -162,7 +169,11 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
     membersState: state,
     isLazyLoading,
     onReloadMembers: () => {
-      void loadMembers()
+      if (client === null || roomId === null) {
+        throw new Error("Client not be initialized")
+      }
+
+      loadMembers(client, roomId)
     },
   }
 }
