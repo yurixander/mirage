@@ -101,7 +101,7 @@ const Roster: FC<RosterProps> = ({
             className="px-1 pt-3"
             type="scroll"
             endScrollChange={isEnd => {
-              if (!isEnd) {
+              if (!isEnd || isLazyLoading) {
                 return
               }
 
@@ -128,13 +128,14 @@ const Roster: FC<RosterProps> = ({
             </div>
 
             {admins.length + moderators.length + members.length <=
-              MAX_MEMBERS_LENGTH_FOR_GHOST && (
-              <UserProfileGhost
-                className="p-2"
-                count={4}
-                opacityMultiplier={0.2}
-              />
-            )}
+              MAX_MEMBERS_LENGTH_FOR_GHOST &&
+              !isLazyLoading && (
+                <UserProfileGhost
+                  className="p-2"
+                  count={4}
+                  opacityMultiplier={0.2}
+                />
+              )}
 
             {isLazyLoading && (
               <div className="h-32 w-full">

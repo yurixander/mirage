@@ -26,7 +26,8 @@ export type UseRoomMembersReturnType = {
 
 async function loadJoinedMembers(
   client: MatrixClient,
-  roomId: string
+  roomId: string,
+  isOutOfBand: boolean
 ): Promise<GroupedMembers> {
   const room = client.getRoom(roomId)
 
@@ -44,8 +45,13 @@ async function loadJoinedMembers(
     members: [],
   }
 
+  console.log(members)
+
   for (const member of members) {
-    if (!member.isOutOfBand() || member.membership !== KnownMembership.Join) {
+    if (
+      member.isOutOfBand() === isOutOfBand ||
+      member.membership !== KnownMembership.Join
+    ) {
       continue
     }
 
@@ -83,7 +89,7 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
     (client: MatrixClient, roomId: string) => {
       setState({status: "loading"})
 
-      loadJoinedMembers(client, roomId)
+      loadJoinedMembers(client, roomId, true)
         .then(membersResult => {
           if (isMountedRef.current === roomId) {
             setState({status: "success", data: membersResult})
@@ -109,7 +115,7 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
   }, [client, loadMembers, roomId])
 
   const onLazyReload = useCallback(() => {
-    if (client === null || roomId === null) {
+    if (client === null || roomId === null || isLazyLoading) {
       return
     }
 
@@ -117,52 +123,60 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
 
     if (activeRoom === null) {
       setState({status: "error", error: new Error("This room is not valid.")})
-
       return
     }
 
     setIsLazyLoading(true)
 
-    void activeRoom
+    activeRoom
       .loadMembersIfNeeded()
       .then(async isNeeded => {
         if (!isNeeded || isMountedRef.current !== roomId) {
+          setIsLazyLoading(false)
+
           return
         }
 
-        const newMembers = await loadJoinedMembers(client, roomId)
+        try {
+          const newMembers = await loadJoinedMembers(client, roomId, false)
 
-        setState(prevState => {
-          if (
-            prevState.status !== "success" ||
-            isMountedRef.current !== roomId
-          ) {
-            return prevState
+          setState(prevState => {
+            if (
+              prevState.status !== "success" ||
+              isMountedRef.current !== roomId
+            ) {
+              return prevState
+            }
+
+            const {data} = prevState
+
+            return {
+              status: "success",
+              data: {
+                admins: data.admins.concat(newMembers.admins),
+                moderators: data.moderators.concat(newMembers.moderators),
+                members: data.members.concat(newMembers.members),
+              },
+            }
+          })
+        } catch (error) {
+          if (isMountedRef.current === roomId) {
+            setState({status: "error", error: error as Error})
           }
-
-          const {data} = prevState
-
-          return {
-            status: "success",
-            data: {
-              admins: data.admins.concat(newMembers.admins),
-              moderators: data.moderators.concat(newMembers.moderators),
-              members: data.members.concat(newMembers.members),
-            },
+        } finally {
+          if (isMountedRef.current === roomId) {
+            setIsLazyLoading(false)
           }
-        })
+        }
       })
       .catch((error: Error) => {
         if (isMountedRef.current === roomId) {
           setState({status: "error", error})
-        }
-      })
-      .finally(() => {
-        if (isMountedRef.current === roomId) {
+
           setIsLazyLoading(false)
         }
       })
-  }, [client, roomId, setState])
+  }, [client, roomId, isLazyLoading, setState])
 
   return {
     onLazyReload,
