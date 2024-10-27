@@ -160,17 +160,13 @@ const RosterSection: FC<{
 
   return (
     <div className="flex w-full flex-col gap-2.5">
-      <motion.div
-        initial={{scale: 0.8, opacity: 0}}
-        whileInView={{scale: 1, opacity: 1}}>
-        <Text
-          size="2"
-          as="label"
-          weight="medium"
-          className="ml-2 text-neutral-500 dark:text-neutral-400">
-          {title}
-        </Text>
-      </motion.div>
+      <Text
+        size="2"
+        as="label"
+        weight="medium"
+        className="ml-2 text-neutral-500 dark:text-neutral-400">
+        {title}
+      </Text>
 
       <div className="flex w-full flex-col gap-1.5">
         {members.map(member => (

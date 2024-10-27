@@ -45,8 +45,6 @@ async function loadJoinedMembers(
     members: [],
   }
 
-  console.log(members)
-
   for (const member of members) {
     if (
       member.isOutOfBand() === isOutOfBand ||
@@ -106,6 +104,7 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
 
   useEffect(() => {
     isMountedRef.current = roomId
+    setIsLazyLoading(false)
 
     if (client === null || roomId === null) {
       return
@@ -115,7 +114,7 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
   }, [client, loadMembers, roomId])
 
   const onLazyReload = useCallback(() => {
-    if (client === null || roomId === null || isLazyLoading) {
+    if (client === null || roomId === null) {
       return
     }
 
@@ -123,6 +122,17 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
 
     if (activeRoom === null) {
       setState({status: "error", error: new Error("This room is not valid.")})
+
+      return
+    }
+
+    if (
+      state.status !== "success" ||
+      state.data.admins.length +
+        state.data.members.length +
+        state.data.moderators.length ===
+        activeRoom.getJoinedMemberCount()
+    ) {
       return
     }
 
@@ -132,8 +142,6 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
       .loadMembersIfNeeded()
       .then(async isNeeded => {
         if (!isNeeded || isMountedRef.current !== roomId) {
-          setIsLazyLoading(false)
-
           return
         }
 
@@ -160,8 +168,8 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
             }
           })
         } catch (error) {
-          if (isMountedRef.current === roomId) {
-            setState({status: "error", error: error as Error})
+          if (isMountedRef.current === roomId && error instanceof Error) {
+            setState({status: "error", error})
           }
         } finally {
           if (isMountedRef.current === roomId) {
@@ -176,7 +184,7 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
           setIsLazyLoading(false)
         }
       })
-  }, [client, roomId, isLazyLoading, setState])
+  }, [client, roomId, setState, state])
 
   return {
     onLazyReload,
