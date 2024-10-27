@@ -3,7 +3,7 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {cn} from "@/utils/utils"
 import {SyncState} from "matrix-js-sdk"
-import React from "react"
+import React, {useState} from "react"
 import {type FC} from "react"
 import {type IconType} from "react-icons"
 import {IoMdMedical} from "react-icons/io"
@@ -22,7 +22,13 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
   const {syncState} = useClientStore()
   const {t} = useTranslation()
 
-  let isDark = true
+  const [isDarkTheme, setIsDarkTheme] = useState(false)
+
+  document.querySelectorAll("html")[0].className = isDarkTheme ? "dark" : ""
+
+  const handleSwitchTheme = (): void => {
+    setIsDarkTheme(!isDarkTheme)
+  }
 
   return (
     <div
@@ -51,14 +57,7 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
       <SmartAction
         aria-label={t(LangKey.SwitchTheme)}
         icon={IoContrast}
-        onClick={() => {
-          if (isDark) {
-            document.querySelectorAll("html")[0].className = "dark"
-          } else {
-            document.querySelectorAll("html")[0].className = ""
-          }
-          isDark = !isDark
-        }}>
+        onClick={handleSwitchTheme}>
         {t(LangKey.SwitchTheme)}
       </SmartAction>
 
