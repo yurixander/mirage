@@ -1,5 +1,5 @@
 import {useState, type FC} from "react"
-import {assert, formatTime, stringToColor, trim} from "../utils/util"
+import {assert, formatTime, stringToColor} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
@@ -57,64 +57,63 @@ const EventMessage: FC<EventMessageProps> = ({
   assert(eventId.length > 0, "Event id should not be empty.")
 
   return (
-    <div className={twMerge("flex items-center gap-3", className)}>
-      <div
-        role="article"
-        aria-label={`${sender.displayName} ${body}`}
-        className="flex items-center gap-1">
-        <div className="flex gap-2">
-          <div className="flex w-10 items-center justify-end">
+    <div className={twMerge("flex w-full items-center gap-3", className)}>
+      <div role="article" aria-label={`${sender.displayName} ${body}`}>
+        <div className="flex gap-1 sm:gap-2">
+          <div className="flex size-5 items-center justify-end sm:size-6">
             <Icon aria-hidden className="fill-neutral-500" />
           </div>
 
-          <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-            <DropdownMenuTrigger
-              style={{borderBottomColor: accentColor}}
-              className="box-border shrink-0 focus-visible:border-b-2">
-              <Heading level="h6" style={{color: accentColor}}>
-                {trim(sender.displayName, MAX_EVENT_SENDER_NAME_LENGTH)}
-              </Heading>
-            </DropdownMenuTrigger>
+          <div className="inline-block text-start">
+            <DropdownMenu
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}>
+              <DropdownMenuTrigger
+                style={{borderBottomColor: accentColor}}
+                className="box-border focus-visible:border-b sm:focus-visible:border-b-2">
+                <Heading level="h6" style={{color: accentColor}}>
+                  {sender.displayName}
+                </Heading>
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent
-              onCloseAutoFocus={event => {
-                event.preventDefault()
-              }}>
-              <DropdownMenuItem
-                onClick={e => {
-                  e.stopPropagation()
-
-                  setIsDropdownOpen(false)
-
-                  onShowMember()
+              <DropdownMenuContent
+                onCloseAutoFocus={event => {
+                  event.preventDefault()
                 }}>
-                <IoPeopleCircle className={DROPDOWN_ICON_CLASS} />
+                <DropdownMenuItem
+                  onClick={e => {
+                    e.stopPropagation()
 
-                <Text>{t(LangKey.ViewMember)}</Text>
-              </DropdownMenuItem>
+                    setIsDropdownOpen(false)
 
-              <DropdownMenuItem
-                onClick={e => {
-                  e.stopPropagation()
+                    onShowMember()
+                  }}>
+                  <IoPeopleCircle className={DROPDOWN_ICON_CLASS} />
 
-                  setIsDropdownOpen(false)
+                  <Text>{t(LangKey.ViewMember)}</Text>
+                </DropdownMenuItem>
 
-                  onShowMember()
-                }}>
-                <IoSearchCircle className={DROPDOWN_ICON_CLASS} />
+                <DropdownMenuItem
+                  onClick={e => {
+                    e.stopPropagation()
 
-                <Text>{t(LangKey.FindUser)}</Text>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                    setIsDropdownOpen(false)
+
+                    onFindUser()
+                  }}>
+                  <IoSearchCircle className={DROPDOWN_ICON_CLASS} />
+
+                  <Text>{t(LangKey.FindUser)}</Text>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Text className="ml-1 italic sm:ml-2">{body}</Text>
+          </div>
         </div>
-
-        <Text className="size-max italic">
-          {trim(body, MAX_EVENT_BODY_LENGTH)}
-        </Text>
       </div>
 
-      <time className="ml-auto text-base font-normal">
+      <time className="mb-auto ml-auto shrink-0 text-sm font-normal sm:text-base">
         {formatTime(timestamp)}
       </time>
     </div>

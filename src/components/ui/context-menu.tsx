@@ -3,6 +3,8 @@ import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
 import {CheckIcon, ChevronRightIcon, DotFilledIcon} from "@radix-ui/react-icons"
 
 import {cn} from "@/utils/utils"
+import {type IconType} from "react-icons"
+import {Text} from "./typography"
 
 const ContextMenu = ContextMenuPrimitive.Root
 
@@ -185,6 +187,49 @@ const ContextMenuShortcut = ({
 
 ContextMenuShortcut.displayName = "ContextMenuShortcut"
 
+export type MessageMenuItem = {
+  text: string
+  icon: IconType
+  isDestructive?: boolean
+  onClick: () => void
+}
+
+const MessageContextMenu: React.FC<{
+  items: MessageMenuItem[]
+  children: React.ReactNode
+}> = ({children, items}) => {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger>{children}</ContextMenuTrigger>
+
+      <ContextMenuContent className="sm:min-w-36">
+        {items.map((menuitem, index) => (
+          <ContextMenuItem key={index} className="flex gap-2">
+            <menuitem.icon
+              className={cn(
+                "size-5 sm:size-6",
+                menuitem.isDestructive === true
+                  ? "text-red-600 dark:text-red-500"
+                  : "text-gray-700 dark:text-gray-300"
+              )}
+            />
+
+            <Text
+              weight="medium"
+              className={cn(
+                menuitem.isDestructive === true
+                  ? "text-red-600 dark:text-red-500"
+                  : "text-gray-700 dark:text-gray-300"
+              )}>
+              {menuitem.text}
+            </Text>
+          </ContextMenuItem>
+        ))}
+      </ContextMenuContent>
+    </ContextMenu>
+  )
+}
+
 export {
   ContextMenu,
   ContextMenuTrigger,
@@ -201,4 +246,5 @@ export {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
+  MessageContextMenu,
 }

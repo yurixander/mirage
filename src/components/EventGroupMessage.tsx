@@ -2,10 +2,8 @@ import {type FC} from "react"
 import EventMessage, {
   type EventSender,
   type EventMessageData,
-  MAX_EVENT_BODY_LENGTH,
-  MAX_EVENT_SENDER_NAME_LENGTH,
 } from "./EventMessage"
-import {formatTime, strCapitalize, trim} from "@/utils/util"
+import {formatTime, strCapitalize} from "@/utils/util"
 import {type IconType} from "react-icons"
 import {IoMdCreate} from "react-icons/io"
 import {twMerge} from "tailwind-merge"
@@ -57,43 +55,41 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
   const {t} = useTranslation()
 
   return (
-    <div className="flex flex-col gap-2">
-      <Accordion type="single" collapsible>
-        <AccordionItem className="border-none" value={eventMessages[0].eventId}>
-          <AccordionTrigger className="h-10 hover:no-underline focus-visible:ring-1 focus-visible:ring-ring">
-            <EventMessage
-              className="w-full pr-2"
-              onShowMember={onShowMember}
-              onFindUser={onFindUser}
-              body={t(eventShortenerBody[shortenerType])}
-              eventId={eventMessages[0].eventId}
-              sender={sender}
-              timestamp={eventMessages[0].timestamp}
-              icon={IoCube}
-              type={shortenerType}
-            />
-          </AccordionTrigger>
+    <Accordion type="single" collapsible>
+      <AccordionItem className="border-none" value={eventMessages[0].eventId}>
+        <AccordionTrigger className="items-start py-0 hover:no-underline focus-visible:ring-1 focus-visible:ring-ring">
+          <EventMessage
+            className="pr-1 sm:pr-2"
+            onShowMember={onShowMember}
+            onFindUser={onFindUser}
+            body={t(eventShortenerBody[shortenerType])}
+            eventId={eventMessages[0].eventId}
+            sender={sender}
+            timestamp={eventMessages[0].timestamp}
+            icon={IoCube}
+            type={shortenerType}
+          />
+        </AccordionTrigger>
 
-          <AccordionContent className="overflow-hidden px-3.5">
-            <div className="flex w-full flex-col gap-3 p-2">
-              {eventMessages.map(eventMessageData => (
-                <EventMessageChild
-                  key={eventMessageData.eventId}
-                  icon={eventMessageData.icon}
-                  body={eventMessageData.body}
-                  timestamp={eventMessageData.timestamp}
-                  accessibilityText={t(
-                    LangKey.EventBodyWithTime,
-                    eventMessageData.body,
-                    formatTime(eventMessageData.timestamp)
-                  )}
-                />
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
+        <AccordionContent className="overflow-hidden py-1">
+          <div className="flex w-full flex-col gap-4 p-1">
+            {eventMessages.map(eventMessageData => (
+              <EventMessageChild
+                key={eventMessageData.eventId}
+                icon={eventMessageData.icon}
+                body={eventMessageData.body}
+                timestamp={eventMessageData.timestamp}
+                accessibilityText={t(
+                  LangKey.EventBodyWithTime,
+                  eventMessageData.body,
+                  formatTime(eventMessageData.timestamp)
+                )}
+              />
+            ))}
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   )
 }
 
@@ -104,9 +100,6 @@ export type EventMessageChildProps = {
   accessibilityText: string
   className?: string
 }
-
-const MAX_CHILD_EVENT_BODY_LENGTH =
-  MAX_EVENT_BODY_LENGTH + MAX_EVENT_SENDER_NAME_LENGTH
 
 export const EventMessageChild: FC<EventMessageChildProps> = ({
   body,
@@ -121,16 +114,16 @@ export const EventMessageChild: FC<EventMessageChildProps> = ({
     <div
       role="article"
       aria-label={accessibilityText}
-      className={twMerge("flex items-center px-1", className)}>
+      className={twMerge("flex items-center gap-4", className)}>
       <div className="inline-flex gap-2">
-        <Icon aria-hidden className="mt-1 fill-neutral-500" />
+        <div className="flex size-5 items-center justify-end sm:size-6">
+          <Icon aria-hidden className="fill-neutral-500" />
+        </div>
 
-        <Text className="whitespace-pre-line break-words italic">
-          {trim(strCapitalize(body), MAX_CHILD_EVENT_BODY_LENGTH)}
-        </Text>
+        <Text className="italic">{strCapitalize(body)}</Text>
       </div>
 
-      <time className="ml-auto text-base font-normal">
+      <time className="mb-auto ml-auto mr-5 shrink-0 text-sm font-normal sm:mr-7 sm:text-base">
         {formatTime(timestamp)}
       </time>
     </div>
