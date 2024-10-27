@@ -47,17 +47,20 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
 }) => {
   const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
 
+  const handleTooltip = (): void => {
+    if (quotedMessageId === undefined) {
+      showTooltip("Message not found", true)
+
+      return
+    }
+    onQuoteMessageClick(quotedMessageId)
+  }
+
   const quoteMessage = (
     <button
       type="button"
       ref={renderRef}
-      onClick={() => {
-        if (quotedMessageId === undefined) {
-          showTooltip("Quoted MessageId is undefined", true)
-          return
-        }
-        onQuoteMessageClick(quotedMessageId)
-      }}
+      onClick={handleTooltip}
       className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100 dark:bg-neutral-950 dark:hover:bg-neutral-900">
       <AvatarImage
         avatarType={AvatarType.Message}
@@ -68,12 +71,14 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
       />
 
       <Text
-        className="w-max shrink-0 select-text text-xs font-bold"
+        weight="bold"
+        size="1"
+        className="w-max shrink-0 select-text"
         style={{color: stringToColor(quotedUserDisplayName)}}>
         {cleanDisplayName(quotedUserDisplayName)}
       </Text>
 
-      <Text className="line-clamp-1 max-w-40 shrink-0 text-xs">
+      <Text size="1" className="line-clamp-1 max-w-40 shrink-0">
         {quotedText}
       </Text>
     </button>
@@ -89,7 +94,7 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
               {quoteMessage}
             </TooltipTrigger>
 
-            <TooltipContent aria-hidden>{quotedText}</TooltipContent>
+            <TooltipContent>{quotedText}</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
