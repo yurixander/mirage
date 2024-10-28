@@ -157,7 +157,7 @@ export const fileSizeToString = (fileSize: number): string => {
 export const getFileExtension = (fileName: string): string => {
   const match = fileName.lastIndexOf(".")
 
-  return match === -1 ? "file" : fileName.slice(match + 1, fileName.length)
+  return match === -1 ? "file" : fileName.slice(match + 1)
 }
 
 export default FileMessage

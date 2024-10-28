@@ -156,7 +156,7 @@ const headingClass: HeadingVariants = {
   },
 }
 
-const headingVariants = cva("font-bold leading-[160%]", {
+const headingVariants = cva("font-bold leading-160", {
   variants: headingClass,
   defaultVariants: {
     level: "h3",
