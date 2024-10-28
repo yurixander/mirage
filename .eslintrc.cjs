@@ -58,6 +58,7 @@ module.exports = {
     "unicorn/number-literal-case": "off",
     "unicorn/prefer-spread": "off",
     "jsx-a11y/media-has-caption": [0],
+    "unicorn/prefer-global-this": "off",
   },
   settings: {
     "react": {
