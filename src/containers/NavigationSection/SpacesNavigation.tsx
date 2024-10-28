@@ -18,6 +18,7 @@ import {StaticAssetPath} from "@/utils/util"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {ReactSVG} from "react-svg"
 import LoadingEffect from "@/components/LoadingEffect"
+import MatrixImage from "@/components/MatrixImage"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -127,7 +128,7 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
                     variant="bauhaus"
                   />
                 ) : (
-                  <img
+                  <MatrixImage
                     aria-hidden
                     className="size-full object-cover dark:opacity-90"
                     src={avatarUrl}

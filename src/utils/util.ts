@@ -7,6 +7,7 @@ import {
   type MatrixClient,
 } from "matrix-js-sdk"
 import {type RoomMessageEventContent} from "matrix-js-sdk/lib/types"
+import {mxcUrlToHttp} from "./matrix"
 
 export enum ViewPath {
   App = "/",
@@ -159,8 +160,8 @@ export function getImageUrl(
 
   const imageUrl =
     size === undefined
-      ? client.mxcUrlToHttp(url)
-      : client.mxcUrlToHttp(url, size, size, "scale")
+      ? mxcUrlToHttp(client, url, true)
+      : mxcUrlToHttp(client, url, true, size, size, "scale")
 
   return imageUrl ?? undefined
 }
