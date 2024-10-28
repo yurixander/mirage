@@ -83,7 +83,7 @@
     "@storybook/addon-links": "^8.3.5",
     "@storybook/addon-onboarding": "^8.3.2",
     "@storybook/blocks": "^8.3.2",
-    "@storybook/react": "^8.3.2",
+    "@storybook/react": "^8.3.5",
     "@storybook/react-vite": "^8.3.2",
     "@storybook/test": "^8.3.5",
     "@testing-library/dom": "^10.4.0",
