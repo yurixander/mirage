@@ -7,14 +7,11 @@ export type ReplyMessageBodyData = {
 export const parseReplyMessageFromBody = (
   body: string
 ): ReplyMessageBodyData => {
-  const message = body.slice(body.indexOf("\n\n") + 2, body.length)
+  const message = body.slice(body.indexOf("\n\n") + 2)
 
   const match = body.split(/\n{2}/)[0]
 
-  const quotedMessage = match.slice(
-    match.indexOf(">", match.indexOf("<")) + 1,
-    match.length
-  )
+  const quotedMessage = match.slice(match.indexOf(">", match.indexOf("<")) + 1)
 
   let quotedUser = match.slice(
     match.indexOf("<") + 1,

@@ -146,7 +146,7 @@ export function putEmojiInPosition(
         return prevText
           .slice(0, selectionStart)
           .concat(emoji)
-          .concat(prevText.slice(selectionEnd, prevText.length))
+          .concat(prevText.slice(selectionEnd))
       } catch (error) {
         console.error("Error updating text", error)
       }
@@ -159,7 +159,7 @@ export function putEmojiInPosition(
     return prevText
       .slice(0, caretPosition)
       .concat(emoji)
-      .concat(prevText.slice(caretPosition, prevText.length))
+      .concat(prevText.slice(caretPosition))
   })
 }
 

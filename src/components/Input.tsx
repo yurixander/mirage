@@ -35,19 +35,19 @@ export type InputProps = {
 
 const urlPattern = new RegExp(
   // Protocol.
-  "^(https?:\\/\\/)?" +
+  String.raw`^(https?:\/\/)?` +
     // Domain name and extension.
-    "([a-z\\d-]+\\.)+[a-z]{2,}|" +
+    String.raw`([a-z\d-]+\.)+[a-z]{2,}|` +
     // Or IP (v4) address.
-    "((\\d{1,3}\\.){3}\\d{1,3})" +
+    String.raw`((\d{1,3}\.){3}\d{1,3})` +
     // Port.
-    "(:\\d+)?" +
+    String.raw`(:\d+)?` +
     // Path.
-    "(\\/[-\\w%.~+]*)*" +
+    String.raw`(\/[-\w%.~+]*)*` +
     // Query string.
-    "(\\?[;&\\w%.~+=-]*)?" +
+    String.raw`(\?[;&\w%.~+=-]*)?` +
     // Fragment locator.
-    "(#[-\\w]*)?$",
+    String.raw`(#[-\w]*)?$`,
   "i"
 )
 
