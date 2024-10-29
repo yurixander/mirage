@@ -29,6 +29,7 @@ export default [
       "**/postcss.config.js",
       "**/.github",
       "**/.storybook",
+      "src/stories/**",
       "**/github",
       "**/vite.config.ts",
       "!**/.storybook¡",
@@ -37,6 +38,7 @@ export default [
       "**/node_modules",
       "**/index.html",
       "**/postcss.config.js",
+      "eslint.config.mjs",
     ],
   },
   ...fixupConfigRules(
@@ -133,6 +135,24 @@ export default [
       "unicorn/prefer-spread": "off",
       "jsx-a11y/media-has-caption": [0],
       "unicorn/prefer-global-this": "off",
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        {
+          allowExpressions: true,
+        },
+      ],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          args: "all",
+          argsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
     },
   },
 ]

@@ -7,8 +7,7 @@ import {type IconType} from "react-icons"
 import useTooltip from "@/hooks/util/useTooltip"
 import {IconButton} from "./button"
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({className, type, ...props}, ref) => {
@@ -117,6 +116,7 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
       const violations = constraints.filter(
         constraint => !constraint.pattern.test(value)
       )
+
       setViolatedConstraints(violations)
     }
 
@@ -124,6 +124,17 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
       onValueChange(value)
     }
   }
+
+  React.useEffect(() => {
+    if (violatedConstraints.length === 0) {
+      return
+    }
+
+    // TODO: @lazaroysr96 Resolve this.
+    for (const violation of violatedConstraints) {
+      showTooltip(violation.message, true)
+    }
+  }, [showTooltip, violatedConstraints])
 
   return (
     <InputRoot>
@@ -141,11 +152,6 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
       />
 
       {action && <InputIconAction {...action} />}
-      {violatedConstraints.map(violation => (
-        // TODO: Fix this problem
-        // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-        <>{showTooltip(violation.message, true)}</>
-      ))}
     </InputRoot>
   )
 }
