@@ -6,6 +6,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
+import {Heading, Text} from "@/components/ui/typography"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {useMemo, type FC} from "react"
@@ -56,14 +57,12 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
           {isLoading ? (
             <Loader className="p-4" text={t(LangKey.LoadingNotifications)} />
           ) : notifications.length === 0 ? (
-            <Typography className="p-3">
+            <Text size="4" className="p-3">
               {t(LangKey.NotificationsEmpty)}
-            </Typography>
+            </Text>
           ) : (
             <div className="flex flex-col gap-4">
-              <Typography variant={TypographyVariant.Heading}>
-                {t(LangKey.Notifications)}
-              </Typography>
+              <Heading> {t(LangKey.Notifications)}</Heading>
 
               <div className="flex h-72 flex-col overflow-y-scroll scrollbar-hide">
                 {notificationsComponents}
