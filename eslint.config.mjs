@@ -72,6 +72,7 @@ export default [
     languageOptions: {
       globals: {
         ...globals.browser,
+        AudioWorkletGlobalScope: false,
       },
 
       parser: tsParser,

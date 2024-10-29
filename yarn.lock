@@ -9130,11 +9130,6 @@ use-sidecar@^1.1.2:
     detect-node-es "^1.1.0"
     tslib "^2.0.0"
 
-use-sync-external-store@1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.2.tgz#c3b6390f3a30eba13200d2302dcdf1e7b57b2ef9"
-  integrity sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==
-
 util-deprecate@^1.0.1, util-deprecate@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
@@ -9222,10 +9217,10 @@ watchpack@^2.4.1:
     glob-to-regexp "^0.4.1"
     graceful-fs "^4.1.2"
 
-wavesurfer.js@^7.8.6:
-  version "7.8.6"
-  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.8.6.tgz#753eb22c93c27225a1c878f13d1a1bee073365dd"
-  integrity sha512-EDexkMwkkQBTWruhfWQRkTtvRggtKFTPuJX/oZ5wbIZEfyww9EBeLr2mtkxzA1S8TlWPx6adY5WyjOlNYNyHSg==
+wavesurfer.js@^7.8.8:
+  version "7.8.8"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.8.8.tgz#5ace659a8eae615aaed943d417e036bef31d007e"
+  integrity sha512-FNiJ6RCAu4TijRcwdaqlN19+Y+Hhqb7Nfo2P4LudzhNnQRMKvF3QmXd9+KHlQZrSjexeK3WbY4COsxgGJkxMag==
 
 wcwidth@^1.0.1:
   version "1.0.1"
@@ -9239,10 +9234,10 @@ weasel-words@^0.1.1:
   resolved "https://registry.yarnpkg.com/weasel-words/-/weasel-words-0.1.1.tgz#7137946585c73fe44882013853bd000c5d687a4e"
   integrity sha512-rWkTAGqs4TN6qreS06+irmFUMrQVx5KoFjD8CxMHUsAwmxw/upDcfleaEYOLsonUbornahg+VJ9xrWxp4udyJA==
 
-web-vitals@^4.2.3:
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-4.2.3.tgz#270c4baecfbc6ec6fc15da1989e465e5f9b94fb7"
-  integrity sha512-/CFAm1mNxSmOj6i0Co+iGFJ58OS4NRGVP+AWS/l509uIK5a1bSoIVaHz/ZumpHTfHSZBpgrJ+wjfpAOrTHok5Q==
+web-vitals@^4.2.4:
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-4.2.4.tgz#1d20bc8590a37769bd0902b289550936069184b7"
+  integrity sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==
 
 webpack-sources@^3.2.3:
   version "3.2.3"
@@ -9469,9 +9464,7 @@ zod@^3.23.8:
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.23.8.tgz#e37b957b5d52079769fb8097099b592f0ef4067d"
   integrity sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==
 
-zustand@^4.5.5:
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.5.5.tgz#f8c713041543715ec81a2adda0610e1dc82d4ad1"
-  integrity sha512-+0PALYNJNgK6hldkgDq2vLrw5f6g/jCInz52n9RTpropGgeAf/ioFUCdtsjCqu4gNhW9D01rUQBROoRjdzyn2Q==
-  dependencies:
-    use-sync-external-store "1.2.2"
+zustand@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-5.0.0.tgz#71f8aaecf185592a3ba2743d7516607361899da9"
+  integrity sha512-LE+VcmbartOPM+auOjCCLQOsQ05zUTp8RkgwRzefUk+2jISdMMFnxvyTjA4YNWr5ZGXYbVsEMZosttuxUBkojQ==
