@@ -1,6 +1,5 @@
 import Loader from "@/components/Loader"
 import Notification, {type NotificationProps} from "@/components/Notification"
-import Typography, {TypographyVariant} from "@/components/Typography"
 import {
   HoverCard,
   HoverCardContent,
@@ -53,7 +52,7 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
       <HoverCardTrigger asChild children={children} />
 
       <HoverCardContent asChild side="right">
-        <div className="m-2 max-h-96 w-[448px] max-w-md overflow-auto">
+        <div className="m-2 max-h-96 w-[448px] max-w-md overflow-auto dark:bg-neutral-900">
           {isLoading ? (
             <Loader className="p-4" text={t(LangKey.LoadingNotifications)} />
           ) : notifications.length === 0 ? (
@@ -62,7 +61,7 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
             </Text>
           ) : (
             <div className="flex flex-col gap-4">
-              <Heading> {t(LangKey.Notifications)}</Heading>
+              <Heading>{t(LangKey.Notifications)}</Heading>
 
               <div className="flex h-72 flex-col overflow-y-scroll scrollbar-hide">
                 {notificationsComponents}

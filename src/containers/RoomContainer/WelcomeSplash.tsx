@@ -10,7 +10,7 @@ const WelcomeSplash: FC = () => {
   const {t} = useTranslation()
 
   return (
-    <div className="flex size-full flex-col items-center justify-center gap-3 dark:bg-neutral-950">
+    <div className="flex size-full flex-col items-center justify-center gap-3 dark:bg-neutral-900">
       <div className="mb-6 flex flex-col items-center gap-3">
         <AppLogo />
 

@@ -1,13 +1,11 @@
 import {type FC} from "react"
-import {Button} from "@/components/ui/button"
+import {IconButton} from "@/components/ui/button"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import {IoCopy} from "react-icons/io5"
-import Typography, {TypographyVariant} from "@/components/Typography"
-import Input from "@/components/Input"
 import {twMerge} from "tailwind-merge"
 import UserProfile from "@/components/UserProfile"
 import {
@@ -17,9 +15,10 @@ import {
 } from "@/utils/util"
 import Loader from "@/components/Loader"
 import useTooltip from "@/hooks/util/useTooltip"
-import {IoIosSearch} from "react-icons/io"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Heading, Text} from "@/components/ui/typography"
+import {SearchInput} from "@/components/ui/input"
 
 export type DMUser = {
   displayName: string
@@ -41,7 +40,7 @@ export type DMTrayPopupProps = {
   children: React.JSX.Element
   dmRoomClick: (roomId: string) => void
   onResultUserClick: (userId: string) => void
-  setQuery: (query: string) => void
+  setDebouncedQuery: (query: string) => void
   clearResult: () => void
 }
 
@@ -52,7 +51,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
   onResultUserClick,
   dmRoomClick,
   searchResult,
-  setQuery,
+  setDebouncedQuery,
   clearResult,
   children,
 }) => {
@@ -75,23 +74,19 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
       <HoverCardTrigger children={children} asChild />
 
       <HoverCardContent asChild side="right">
-        <div className="z-50 m-2 flex h-[520px] w-[480px] flex-col gap-3 overflow-hidden rounded-md border border-slate-300 md:h-[620px]">
+        <div className="z-50 m-2 flex h-[520px] w-[480px] flex-col gap-3 overflow-hidden rounded-md border dark:bg-neutral-900 md:h-[620px]">
           {isLoading ? (
             <Loader text={t(LangKey.LoadingDMs)} />
           ) : (
             <>
-              <Typography variant={TypographyVariant.Heading}>
-                {t(LangKey.DirectChats)}
-              </Typography>
+              <Heading>{t(LangKey.DirectChats)}</Heading>
 
               <div className="flex flex-col gap-2">
-                <Typography className="text-black">
-                  {t(LangKey.DMTrayFindUserDescription)}
-                </Typography>
+                <Text>{t(LangKey.DMTrayFindUserDescription)}</Text>
 
-                <Input
-                  onValueChange={setQuery}
-                  Icon={IoIosSearch}
+                <SearchInput
+                  hasIcon
+                  onQueryDebounceChange={setDebouncedQuery}
                   placeholder={t(LangKey.EnterNameOrUsername)}
                 />
 
@@ -99,17 +94,19 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                   {searchResult === null ? (
                     dmRooms.length === 0 ? (
                       <div className="flex h-72 flex-col items-center justify-center">
-                        <Typography variant={TypographyVariant.Heading}>
+                        <Heading align="center">
                           {t(LangKey.RoomsEmptyTitle)}
-                        </Typography>
+                        </Heading>
 
-                        <Typography>{t(LangKey.RoomsEmptySubtitle)}</Typography>
+                        <Text align="center">
+                          {t(LangKey.RoomsEmptySubtitle)}
+                        </Text>
                       </div>
                     ) : (
                       <>
-                        <Typography className="p-2 text-black">
+                        <Text className="p-2">
                           {t(LangKey.RecentConversations)}
-                        </Typography>
+                        </Text>
 
                         <div className="grow overflow-y-auto">
                           <div className="flex flex-col gap-1">
@@ -145,9 +142,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
               </div>
 
               <div className="mt-auto flex flex-col gap-2">
-                <Typography className="text-black">
-                  {t(LangKey.DMTrayFoundedDescription)}
-                </Typography>
+                <Text size="2">{t(LangKey.DMTrayFoundedDescription)}</Text>
 
                 <InvitationLinkBar invitationLink={invitationLink} />
               </div>
@@ -165,29 +160,26 @@ const InvitationLinkBar: FC<{invitationLink: string | null}> = ({
   const {t} = useTranslation()
 
   return (
-    <div className="flex h-10 items-center justify-between rounded border border-neutral-300 bg-neutral-50 px-2">
-      <Typography
-        variant={TypographyVariant.BodyMedium}
-        className="select-text text-blue-600">
+    <div className="flex h-10 items-center justify-between rounded border border-neutral-300 bg-neutral-50 px-2 dark:border-neutral-700 dark:bg-neutral-800">
+      <Text className="select-text text-purple-600 dark:text-purple-400">
         {invitationLink ?? t(LangKey.UserInvalid)}
-      </Typography>
+      </Text>
 
-      <Button
-        aria-label="Copy invitation link"
-        className="text-slate-300 hover:bg-transparent hover:text-slate-600"
-        variant="ghost"
-        size="icon"
+      <IconButton
+        className="text-neutral-500 dark:text-neutral-400"
+        aria-label={t(LangKey.CopyLink)}
+        tooltip={t(LangKey.CopyLink)}
         onClick={() => {
           if (invitationLink === null) {
             throw new Error(t(LangKey.InvitationLinkIncorrect))
           }
 
           void navigator.clipboard.writeText(invitationLink).catch(error => {
-            throw new Error(`${t(LangKey.CopyLinkError)}: ${error}`)
+            throw new Error(`${t(LangKey.Error)}: ${error}`)
           })
         }}>
         <IoCopy />
-      </Button>
+      </IconButton>
     </div>
   )
 }
@@ -226,7 +218,7 @@ const DMDisplay: FC<DMDisplayProps> = ({
         }
       }}
       className={twMerge(
-        "flex w-full max-w-md cursor-pointer flex-row items-center justify-between rounded-2xl px-3 py-2 hover:bg-gray-100",
+        "flex w-full max-w-md cursor-pointer flex-row items-center justify-between rounded-2xl px-3 py-2 hover:bg-gray-100 dark:hover:bg-neutral-800",
         className
       )}>
       <UserProfile
@@ -235,9 +227,7 @@ const DMDisplay: FC<DMDisplayProps> = ({
         avatarUrl={avatarUrl}
         displayName={displayName}
         displayNameColor={stringToColor(id)}>
-        <Typography variant={TypographyVariant.BodySmall}>
-          {getUsernameByUserId(id)}
-        </Typography>
+        <Text>{getUsernameByUserId(id)}</Text>
       </UserProfile>
     </button>
   )
