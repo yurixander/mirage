@@ -17,10 +17,10 @@ export const Default: Story = {
   args: {
     roomId: "room_id_test",
     isInputDisabled: false,
-    onPickFile(file) {},
-    onSendTypingEvent(roomId) {},
+    onPickFile(_file) {},
+    onSendTypingEvent(_roomId) {},
     onSendAudio: async () => {},
-    onSendMessageText(messageSendRequest) {},
+    onSendMessageText(_messageSendRequest) {},
   },
 }
 
@@ -29,10 +29,10 @@ export const IsDisabled: Story = {
   args: {
     roomId: "room_id_test",
     isInputDisabled: true,
-    onPickFile(file) {},
-    onSendTypingEvent(roomId) {},
+    onPickFile(_file) {},
+    onSendTypingEvent(_roomId) {},
     onSendAudio: async () => {},
-    onSendMessageText(messageSendRequest) {},
+    onSendMessageText(_messageSendRequest) {},
   },
 }
 

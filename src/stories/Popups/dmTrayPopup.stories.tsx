@@ -47,12 +47,12 @@ export const Default: Story = {
     userId: currentUserId,
     searchResult: null,
     isLoading: false,
-    setQuery(query) {},
+    setQuery(_query) {},
     clearResult() {},
-    onResultUserClick(userId) {
+    onResultUserClick(_userId) {
       throw new Error(resultUserClickErrorMsg)
     },
-    dmRoomClick(roomId) {
+    dmRoomClick(_roomId) {
       throw new Error(dmClickErrorMsg)
     },
   },
@@ -65,12 +65,12 @@ export const LoadingState: Story = {
     userId: currentUserId,
     searchResult: null,
     isLoading: true,
-    setQuery(query) {},
+    setQuery(_query) {},
     clearResult() {},
-    onResultUserClick(userId) {
+    onResultUserClick(_userId) {
       throw new Error(resultUserClickErrorMsg)
     },
-    dmRoomClick(roomId) {
+    dmRoomClick(_roomId) {
       throw new Error(dmClickErrorMsg)
     },
   },
@@ -83,12 +83,12 @@ export const ResultsState: Story = {
     searchResult,
     userId: currentUserId,
     isLoading: false,
-    setQuery(query) {},
+    setQuery(_query) {},
     clearResult() {},
-    onResultUserClick(userId) {
+    onResultUserClick(_userId) {
       throw new Error(resultUserClickErrorMsg)
     },
-    dmRoomClick(roomId) {
+    dmRoomClick(_roomId) {
       throw new Error(dmClickErrorMsg)
     },
   },

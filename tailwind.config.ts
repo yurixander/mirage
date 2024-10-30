@@ -1,4 +1,7 @@
 import type {Config} from "tailwindcss"
+import animate from "tailwindcss-animate"
+import animateDelay from "tailwindcss-animation-delay"
+import scrollbarHide from "tailwind-scrollbar-hide"
 
 const config = {
   darkMode: ["class"],
@@ -249,9 +252,9 @@ const config = {
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
-    require("tailwindcss-animation-delay"),
-    require("tailwind-scrollbar-hide"),
+    animate,
+    animateDelay,
+    scrollbarHide,
     function ({addUtilities}) {
       const newUtilities = {
         ".bg-clip-text": {

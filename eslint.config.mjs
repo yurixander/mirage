@@ -3,7 +3,6 @@ import prettier from "eslint-plugin-prettier"
 import writeGoodComments from "eslint-plugin-write-good-comments"
 import functional from "eslint-plugin-functional"
 import promise from "eslint-plugin-promise"
-import globals from "globals"
 import tsParser from "@typescript-eslint/parser"
 import path from "node:path"
 import {fileURLToPath} from "node:url"
@@ -23,6 +22,7 @@ const compat = new FlatCompat({
 
 export default [
   {
+    files: ["**/*.ts", "**/*.tsx"],
     ignores: [
       "**/dist",
       "**/.eslintrc.cjs",
@@ -70,11 +70,6 @@ export default [
     },
 
     languageOptions: {
-      globals: {
-        ...globals.browser,
-        AudioWorkletGlobalScope: false,
-      },
-
       parser: tsParser,
 
       parserOptions: {
@@ -101,9 +96,7 @@ export default [
 
     rules: {
       "prettier/prettier": "error",
-      "@typescript-eslint/explicit-function-return-type": "error",
       "@typescript-eslint/quotes": "off",
-      "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/space-before-function-paren": "off",
       "@typescript-eslint/strict-boolean-expressions": "off",
       "@typescript-eslint/consistent-type-definitions": "off",
@@ -143,7 +136,7 @@ export default [
         },
       ],
       "@typescript-eslint/no-unused-vars": [
-        "error",
+        "warn",
         {
           args: "all",
           argsIgnorePattern: "^_",

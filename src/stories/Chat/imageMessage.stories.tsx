@@ -21,7 +21,7 @@ export const Default: Story = {
     timestamp: Date.now(),
     onAuthorClick: () => {},
     messageId: "id-3",
-    onClickImage(imgUrl) {},
+    onClickImage(_imgUrl) {},
     userId: "user-id",
   },
 }

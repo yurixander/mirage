@@ -48,7 +48,7 @@ export const Default: Story = {
     groupedMembers,
     isLoading: false,
     onReloadMembers() {},
-    onUserClick(userId) {},
+    onUserClick(_userId) {},
   },
 }
 
@@ -58,7 +58,7 @@ export const WithGhosts: Story = {
     groupedMembers,
     isLoading: false,
     onReloadMembers() {},
-    onUserClick(userId) {},
+    onUserClick(_userId) {},
   },
 }
 
@@ -68,7 +68,7 @@ export const Loading: Story = {
     groupedMembers,
     isLoading: true,
     onReloadMembers() {},
-    onUserClick(userId) {},
+    onUserClick(_userId) {},
   },
 }
 
@@ -78,7 +78,7 @@ export const Error: Story = {
     groupedMembers,
     isLoading: false,
     onReloadMembers() {},
-    onUserClick(userId) {},
+    onUserClick(_userId) {},
   },
 }
 
