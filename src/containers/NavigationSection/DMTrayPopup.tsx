@@ -20,6 +20,7 @@ import {LangKey} from "@/lang/allKeys"
 import {Heading, Text} from "@/components/ui/typography"
 import {SearchInput} from "@/components/ui/input"
 import {useIsSmall} from "@/hooks/util/useMediaQuery"
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 
 export type DMUser = {
   displayName: string
@@ -64,7 +65,83 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
       ? `https://matrix.to/#/${userId}`
       : null
 
-  return (
+  const content = (
+    <div className="flex h-full w-screen flex-col gap-3 overflow-hidden overflow-y-auto rounded-md border dark:bg-neutral-900 sm:m-2 sm:h-[520px] sm:w-[480px] md:h-[620px]">
+      {isLoading ? (
+        <Loader text={t(LangKey.LoadingDMs)} />
+      ) : (
+        <>
+          <Heading>{t(LangKey.DirectChats)}</Heading>
+
+          <div className="flex h-full flex-col gap-2">
+            <Text>{t(LangKey.DMTrayFindUserDescription)}</Text>
+
+            <SearchInput
+              hasIcon
+              onQueryDebounceChange={setDebouncedQuery}
+              placeholder={t(LangKey.EnterNameOrUsername)}
+            />
+
+            <div className="flex h-48 flex-col gap-1 overflow-y-auto sm:max-h-72">
+              {searchResult === null ? (
+                dmRooms.length === 0 ? (
+                  <div className="flex h-full flex-col items-center justify-center">
+                    <Heading align="center">
+                      {t(LangKey.RoomsEmptyTitle)}
+                    </Heading>
+
+                    <Text align="center">{t(LangKey.RoomsEmptySubtitle)}</Text>
+                  </div>
+                ) : (
+                  <>
+                    <Text className="p-2">
+                      {t(LangKey.RecentConversations)}
+                    </Text>
+
+                    <div className="grow overflow-y-auto">
+                      <div className="flex flex-col gap-1">
+                        {dmRooms.map((dmRoom, index) => {
+                          return (
+                            <DMDisplay
+                              key={index}
+                              id={dmRoom.partnerId}
+                              displayName={dmRoom.partnerName}
+                              onClick={() => {
+                                dmRoomClick(dmRoom.roomId)
+                              }}
+                            />
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </>
+                )
+              ) : (
+                searchResult.map((dmUser, index) => (
+                  <DMDisplay
+                    key={index}
+                    id={dmUser.userId}
+                    displayName={dmUser.displayName}
+                    onClick={() => {
+                      onResultUserClick(dmUser.userId)
+                    }}
+                  />
+                ))
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Text size="2">{t(LangKey.DMTrayFoundedDescription)}</Text>
+
+            <InvitationLinkBar invitationLink={invitationLink} />
+          </div>
+        </>
+      )}
+    </div>
+  )
+
+  return isSmall ? (
     <HoverCard
       openDelay={50}
       closeDelay={50}
@@ -75,84 +152,23 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
       }}>
       <HoverCardTrigger children={children} asChild />
 
-      <HoverCardContent asChild side={isSmall ? "right" : "top"}>
-        <div className="flex h-full w-screen flex-col gap-3 overflow-hidden overflow-y-auto rounded-md border dark:bg-neutral-900 sm:m-2 sm:h-[520px] sm:w-[480px] md:h-[620px]">
-          {isLoading ? (
-            <Loader text={t(LangKey.LoadingDMs)} />
-          ) : (
-            <>
-              <Heading>{t(LangKey.DirectChats)}</Heading>
-
-              <div className="flex h-full flex-col gap-2">
-                <Text>{t(LangKey.DMTrayFindUserDescription)}</Text>
-
-                <SearchInput
-                  hasIcon
-                  onQueryDebounceChange={setDebouncedQuery}
-                  placeholder={t(LangKey.EnterNameOrUsername)}
-                />
-
-                <div className="flex h-48 flex-col gap-1 overflow-y-auto sm:max-h-72">
-                  {searchResult === null ? (
-                    dmRooms.length === 0 ? (
-                      <div className="flex h-full flex-col items-center justify-center">
-                        <Heading align="center">
-                          {t(LangKey.RoomsEmptyTitle)}
-                        </Heading>
-
-                        <Text align="center">
-                          {t(LangKey.RoomsEmptySubtitle)}
-                        </Text>
-                      </div>
-                    ) : (
-                      <>
-                        <Text className="p-2">
-                          {t(LangKey.RecentConversations)}
-                        </Text>
-
-                        <div className="grow overflow-y-auto">
-                          <div className="flex flex-col gap-1">
-                            {dmRooms.map((dmRoom, index) => {
-                              return (
-                                <DMDisplay
-                                  key={index}
-                                  id={dmRoom.partnerId}
-                                  displayName={dmRoom.partnerName}
-                                  onClick={() => {
-                                    dmRoomClick(dmRoom.roomId)
-                                  }}
-                                />
-                              )
-                            })}
-                          </div>
-                        </div>
-                      </>
-                    )
-                  ) : (
-                    searchResult.map((dmUser, index) => (
-                      <DMDisplay
-                        key={index}
-                        id={dmUser.userId}
-                        displayName={dmUser.displayName}
-                        onClick={() => {
-                          onResultUserClick(dmUser.userId)
-                        }}
-                      />
-                    ))
-                  )}
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <Text size="2">{t(LangKey.DMTrayFoundedDescription)}</Text>
-
-                <InvitationLinkBar invitationLink={invitationLink} />
-              </div>
-            </>
-          )}
-        </div>
+      <HoverCardContent asChild side="right">
+        {content}
       </HoverCardContent>
     </HoverCard>
+  ) : (
+    <Popover
+      onOpenChange={isOpen => {
+        if (!isOpen) {
+          clearResult()
+        }
+      }}>
+      <PopoverTrigger children={children} asChild />
+
+      <PopoverContent asChild side="top">
+        {content}
+      </PopoverContent>
+    </Popover>
   )
 }
 
