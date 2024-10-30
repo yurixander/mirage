@@ -12,7 +12,7 @@
     "build:storybook": "storybook build",
     "format": "prettier --write .",
     "prettier": "prettier --check .",
-    "lint": "eslint --fix .",
+    "lint": "eslint .",
     "commit": "commit",
     "postinstall": "husky",
     "prepack": "pinst --disable",
