@@ -25,8 +25,6 @@ export default [
     files: ["**/*.ts", "**/*.tsx"],
     ignores: [
       "**/dist",
-      "**/.eslintrc.cjs",
-      "**/postcss.config.js",
       "**/.github",
       "**/.storybook",
       "src/stories/**",
@@ -34,11 +32,9 @@ export default [
       "**/vite.config.ts",
       "!**/.storybook¡",
       "**/commitlint.config.ts",
-      "**/tailwind.config.ts",
       "**/node_modules",
       "**/index.html",
       "**/postcss.config.js",
-      "eslint.config.mjs",
     ],
   },
   ...fixupConfigRules(
