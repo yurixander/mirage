@@ -19,6 +19,7 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Heading, Text} from "@/components/ui/typography"
 import {SearchInput} from "@/components/ui/input"
+import {useIsSmall} from "@/hooks/util/useMediaQuery"
 
 export type DMUser = {
   displayName: string
@@ -56,6 +57,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
   children,
 }) => {
   const {t} = useTranslation()
+  const isSmall = useIsSmall()
 
   const invitationLink =
     userId !== undefined && validateMatrixUser(userId)
@@ -73,15 +75,15 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
       }}>
       <HoverCardTrigger children={children} asChild />
 
-      <HoverCardContent asChild side="right">
-        <div className="z-50 m-2 flex h-[520px] w-[480px] flex-col gap-3 overflow-hidden rounded-md border dark:bg-neutral-900 md:h-[620px]">
+      <HoverCardContent asChild side={isSmall ? "right" : "top"}>
+        <div className="flex h-full w-screen flex-col gap-3 overflow-hidden overflow-y-auto rounded-md border dark:bg-neutral-900 sm:m-2 sm:h-[520px] sm:w-[480px] md:h-[620px]">
           {isLoading ? (
             <Loader text={t(LangKey.LoadingDMs)} />
           ) : (
             <>
               <Heading>{t(LangKey.DirectChats)}</Heading>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex h-full flex-col gap-2">
                 <Text>{t(LangKey.DMTrayFindUserDescription)}</Text>
 
                 <SearchInput
@@ -90,10 +92,10 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                   placeholder={t(LangKey.EnterNameOrUsername)}
                 />
 
-                <div className="flex max-h-72 flex-col gap-1 overflow-y-auto">
+                <div className="flex h-48 flex-col gap-1 overflow-y-auto sm:max-h-72">
                   {searchResult === null ? (
                     dmRooms.length === 0 ? (
-                      <div className="flex h-72 flex-col items-center justify-center">
+                      <div className="flex h-full flex-col items-center justify-center">
                         <Heading align="center">
                           {t(LangKey.RoomsEmptyTitle)}
                         </Heading>
@@ -141,7 +143,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                 </div>
               </div>
 
-              <div className="mt-auto flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
                 <Text size="2">{t(LangKey.DMTrayFoundedDescription)}</Text>
 
                 <InvitationLinkBar invitationLink={invitationLink} />
