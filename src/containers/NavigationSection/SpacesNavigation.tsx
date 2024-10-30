@@ -18,8 +18,7 @@ import {StaticAssetPath} from "@/utils/util"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {ReactSVG} from "react-svg"
 import LoadingEffect from "@/components/LoadingEffect"
-
-export const DASHBOARD_SPACE_ID = "dashboard_space_id"
+import {DASHBOARD_SPACE_ID} from "./NavigationSection"
 
 export type SpaceNavigationProps = {
   spaces: PartialSpace[]
