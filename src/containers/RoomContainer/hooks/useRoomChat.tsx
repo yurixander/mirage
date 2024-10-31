@@ -31,13 +31,6 @@ export enum MessageKind {
   Unread,
 }
 
-export enum MessagesState {
-  Loading,
-  Loaded,
-  NotMessages,
-  Error,
-}
-
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
   ? TextMessageData
   : Kind extends MessageKind.Image
@@ -60,6 +53,7 @@ export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
 
 export type Message<Kind extends MessageKind> = {
   kind: Kind
+  messageId: string
   data: MessageOf<Kind>
 }
 
@@ -110,7 +104,6 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     }
 
     setChatLoading(false)
-
     setCurrentRoom(room)
   }, [clearActiveRoomId, client, roomId])
 

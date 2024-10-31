@@ -1,5 +1,5 @@
 import {useState, type FC} from "react"
-import {assert, formatTime, stringToColor} from "../utils/util"
+import {formatTime, stringToColor} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
 import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
@@ -53,8 +53,6 @@ const EventMessage: FC<EventMessageProps> = ({
   const Icon = icon ?? IoMdCreate
   const {t} = useTranslation()
   const accentColor = stringToColor(sender.userId)
-
-  assert(eventId.length > 0, "Event id should not be empty.")
 
   return (
     <div className={twMerge("flex w-full items-center gap-3", className)}>
