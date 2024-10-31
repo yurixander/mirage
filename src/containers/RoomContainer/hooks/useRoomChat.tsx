@@ -26,6 +26,7 @@ import {
 import {useCallback, useEffect, useState} from "react"
 import {type MessageSendRequest} from "../ChatInput"
 import useValueState, {type ValueState} from "@/hooks/util/useValueState"
+import useRoomTimeline from "./useRoomTimeline"
 
 export enum MessageKind {
   Text,
@@ -97,7 +98,6 @@ type UseRoomChatReturnType = {
 
 const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const client = useMatrixClient()
-  const isMountedReference = useIsMountedRef()
   const {clearActiveRoomId} = useActiveRoomIdStore()
 
   const [roomName, setRoomName] = useState("")
@@ -108,46 +108,10 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null)
 
-  const [messagesState, setMessagesState] = useValueState<AnyMessage[]>()
-
-  const fetchRoomMessages = useCallback(
-    async (room: Room) => {
-      try {
-        const anyMessages = await handleRoomEvents(room)
-
-        setMessagesState({status: "success", data: anyMessages})
-      } catch (error) {
-        console.error("Error fetching messages", error)
-
-        setMessagesState({status: "error", error: error as Error})
-      }
-    },
-    [setMessagesState]
-  )
+  const messagesState = useRoomTimeline(currentRoom)
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setMessagesState(prevState => {
-        if (prevState.status !== "success") {
-          return prevState
-        }
-
-        return {
-          status: "success",
-          data: prevState.data.filter(
-            message => message.kind !== MessageKind.Unread
-          ),
-        }
-      })
-    }, 10_000)
-
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [roomId, setMessagesState])
-
-  useEffect(() => {
-    if (client === null || !isMountedReference.current) {
+    if (client === null) {
       return
     }
 
@@ -159,108 +123,38 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       return
     }
 
-    setRoomName(room.name)
-
-    const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
-
-    if (roomState) {
-      const roomDescription = roomState
-        .getStateEvents(EventType.RoomTopic, "")
-        ?.getContent().topic
-
-      if (typeof roomDescription === "string") {
-        setRoomTopic(roomDescription)
-      } else {
-        setRoomTopic("")
-      }
-
-      const isEncrypted = roomState.getStateEvents(EventType.RoomEncryption, "")
-
-      if (isEncrypted) {
-        setIsRoomEncrypted(true)
-      } else {
-        setIsRoomEncrypted(false)
-      }
-    }
-
     setChatLoading(false)
 
-    void fetchRoomMessages(room)
-
     setCurrentRoom(room)
-  }, [clearActiveRoomId, client, fetchRoomMessages, isMountedReference, roomId])
+
+    // setRoomName(room.name)
+
+    // const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
+
+    // if (roomState) {
+    //   const roomDescription = roomState
+    //     .getStateEvents(EventType.RoomTopic, "")
+    //     ?.getContent().topic
+
+    //   if (typeof roomDescription === "string") {
+    //     setRoomTopic(roomDescription)
+    //   } else {
+    //     setRoomTopic("")
+    //   }
+
+    //   const isEncrypted = roomState.getStateEvents(EventType.RoomEncryption, "")
+
+    //   if (isEncrypted) {
+    //     setIsRoomEncrypted(true)
+    //   } else {
+    //     setIsRoomEncrypted(false)
+    //   }
+    // }
+  }, [clearActiveRoomId, client, roomId])
 
   // #region Listeners
   useRoomListener(currentRoom, RoomEvent.Name, room => {
     setRoomName(room.name)
-  })
-
-  useRoomListener(
-    currentRoom,
-    RoomEvent.Timeline,
-    (event, room, toStartOfTimeline) => {
-      if (room === undefined || toStartOfTimeline !== false) {
-        return
-      }
-
-      const senderId = event.sender?.userId ?? event.getSender()
-
-      void handleRoomMessageEvent(event, room).then(messageOrEvent => {
-        if (messageOrEvent === null) {
-          return
-        }
-
-        if (room.myUserId === senderId) {
-          setMessagesState(prevState => {
-            if (prevState.status !== "success") {
-              return prevState
-            }
-
-            return {
-              status: "success",
-              data: [
-                ...prevState.data.filter(
-                  message => message.kind !== MessageKind.Unread
-                ),
-                messageOrEvent,
-              ],
-            }
-          })
-
-          return
-        }
-
-        setMessagesState(prevState => {
-          if (prevState.status !== "success") {
-            return prevState
-          }
-
-          return {
-            status: "success",
-            data: [...prevState.data, messageOrEvent],
-          }
-        })
-
-        void room.client.sendReadReceipt(event)
-      })
-    }
-  )
-
-  // When someone deletes a message.
-  useRoomListener(currentRoom, RoomEvent.Redaction, (event, room) => {
-    if (room === undefined) {
-      return
-    }
-
-    const eventContent = event.getContent()
-
-    if (eventContent.msgtype !== undefined) {
-      return
-    }
-
-    // TODO: Optimize this, not reload all messages when process one message.
-    void fetchRoomMessages(room)
-    void room.client.sendReadReceipt(event)
   })
 
   useEventListener(RoomMemberEvent.Typing, (_event, member) => {
