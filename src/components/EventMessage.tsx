@@ -58,7 +58,7 @@ const EventMessage: FC<EventMessageProps> = ({
 
   return (
     <div className={twMerge("flex w-full items-center gap-3", className)}>
-      <div role="article" aria-label={`${sender.displayName} ${body}`}>
+      <article aria-label={`${sender.displayName} ${body}`}>
         <div className="flex gap-1 sm:gap-2">
           <div className="flex size-5 items-center justify-end sm:size-6">
             <Icon aria-hidden className="fill-neutral-500" />
@@ -111,7 +111,7 @@ const EventMessage: FC<EventMessageProps> = ({
             <Text className="ml-1 italic sm:ml-2">{body}</Text>
           </div>
         </div>
-      </div>
+      </article>
 
       <time className="mb-auto ml-auto shrink-0 text-sm font-normal sm:text-base">
         {formatTime(timestamp)}

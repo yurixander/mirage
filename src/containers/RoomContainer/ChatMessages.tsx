@@ -2,13 +2,10 @@ import EventMessage from "@/components/EventMessage"
 import ImageMessage from "@/components/ImageMessage"
 import TextMessage from "@/components/TextMessage"
 import UnreadIndicator from "@/components/UnreadIndicator"
-import {type FC, useMemo, useState} from "react"
-import MessagesPlaceholder from "./MessagesPlaceholder"
+import {type FC, useEffect, useMemo, useRef} from "react"
 import {assert} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
 import {type AnyMessage, MessageKind, MessagesState} from "./hooks/useRoomChat"
-import {createPortal} from "react-dom"
-import ImageModal from "./ImageModal"
 import {buildMessageMenuItems} from "@/utils/menu"
 import FileMessage from "@/components/FileMessage"
 import AudioMessage from "@/components/AudioMessage"
@@ -19,6 +16,7 @@ import VideoMessage from "@/components/VideoMessage"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Heading, Text} from "@/components/ui/typography"
+import {ScrollArea} from "@/components/ui/scroll-area"
 
 export type ChatMessagesProps = {
   messages: AnyMessage[]
@@ -32,7 +30,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   className,
 }) => {
   const {t} = useTranslation()
-  const [imagePrevUrl, setImagePrevUrl] = useState<string>()
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   if (messagesState === MessagesState.Loaded) {
     assert(
@@ -41,12 +39,19 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     )
   }
 
+  useEffect(() => {
+    if (scrollContainerRef.current && messagesState === MessagesState.Loaded) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight
+    }
+  }, [messagesState])
+
   const messageElements = useMemo(
     () =>
       messages.map((message, index) => (
         <motion.div
           key={index}
-          initial={{translateX: -25, opacity: 0.5}}
+          initial={{translateX: -15, opacity: 0.8}}
           whileInView={{translateX: 0, opacity: 1}}>
           <AnyMessageHandler
             isAtTheEnd={index !== messages.length - 1}
@@ -73,38 +78,27 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   )
 
   return (
-    <>
-      {imagePrevUrl !== undefined &&
-        createPortal(
-          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-modalOverlay">
-            <ImageModal
-              imageUrl={imagePrevUrl}
-              onClose={() => {
-                setImagePrevUrl(undefined)
-              }}
-            />
-          </div>,
-          document.body
-        )}
-
-      <div className={twMerge("flex size-full flex-col gap-4", className)}>
-        {messagesState === MessagesState.Loaded ? (
-          messageElements
-        ) : messagesState === MessagesState.Loading ? (
-          <MessagesPlaceholder />
-        ) : messagesState === MessagesState.Error ? (
-          <ChatMessageTemplate
-            title={t(LangKey.MessagesError)}
-            subtitle={t(LangKey.MessagesErrorSubtitle)}
-          />
-        ) : (
-          <ChatMessageTemplate
-            title={t(LangKey.NoMessages)}
-            subtitle={t(LangKey.NoMessagesSubtitle)}
-          />
-        )}
-      </div>
-    </>
+    <div className={twMerge("flex size-full flex-col gap-4", className)}>
+      {messagesState === MessagesState.Loaded ? (
+        <ScrollArea avoidOverflow ref={scrollContainerRef}>
+          <div className="flex-1 space-y-4">{messageElements}</div>
+        </ScrollArea>
+      ) : messagesState === MessagesState.Loading ? (
+        // TODO: @lazaroysr96 Dark mode and limit height for MessagesPlaceholder.
+        // <MessagesPlaceholder />
+        <></>
+      ) : messagesState === MessagesState.Error ? (
+        <ChatMessageTemplate
+          title={t(LangKey.MessagesError)}
+          subtitle={t(LangKey.MessagesErrorSubtitle)}
+        />
+      ) : (
+        <ChatMessageTemplate
+          title={t(LangKey.NoMessages)}
+          subtitle={t(LangKey.NoMessagesSubtitle)}
+        />
+      )}
+    </div>
   )
 }
 

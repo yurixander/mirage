@@ -1,4 +1,4 @@
-import {useEffect, useRef, type FC} from "react"
+import {type FC} from "react"
 import useRoomChat from "./hooks/useRoomChat"
 import ChatHeader from "./ChatHeader"
 import {ChatMessages} from "./ChatMessages"
@@ -25,7 +25,6 @@ const ChatContainer: FC<ChatContainerProps> = ({
   className,
 }) => {
   const {t} = useTranslation()
-  const scrollRef = useRef<HTMLDivElement>(null)
   const {clearActiveRoomId} = useActiveRoomIdStore()
 
   const {
@@ -43,17 +42,6 @@ const ChatContainer: FC<ChatContainerProps> = ({
   } = useRoomChat(roomId)
 
   assert(roomId.length > 0, "The roomId should not be empty.")
-
-  useEffect(() => {
-    if (scrollRef.current === null || scrollRef.current.scrollTop !== 0) {
-      return
-    }
-
-    scrollRef.current.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    })
-  }, [messages.length])
 
   return isChatLoading ? (
     <div className="flex size-full items-center justify-center">
@@ -75,17 +63,11 @@ const ChatContainer: FC<ChatContainerProps> = ({
         onCloseRoom={clearActiveRoomId}
       />
 
-      <div
-        ref={scrollRef}
-        className="relative z-10 order-2 shrink-0 grow basis-0 overflow-y-auto">
-        <div className="shrink-0 grow-0 basis-auto pb-2">
-          <ChatMessages
-            className="relative grow p-3"
-            messages={messages}
-            messagesState={messagesState}
-          />
-        </div>
-      </div>
+      <ChatMessages
+        className="p-3"
+        messages={messages}
+        messagesState={messagesState}
+      />
 
       <footer className="order-3 flex flex-col px-3.5">
         <ChatInput
