@@ -2,10 +2,9 @@ import EventMessage from "@/components/EventMessage"
 import ImageMessage from "@/components/ImageMessage"
 import TextMessage from "@/components/TextMessage"
 import UnreadIndicator from "@/components/UnreadIndicator"
-import {type FC, useEffect, useMemo, useRef} from "react"
-import {assert} from "@/utils/util"
+import {type FC, useEffect, useRef} from "react"
 import {twMerge} from "tailwind-merge"
-import {type AnyMessage, MessageKind, MessagesState} from "./hooks/useRoomChat"
+import {type AnyMessage, MessageKind} from "./hooks/useRoomChat"
 import {buildMessageMenuItems} from "@/utils/menu"
 import FileMessage from "@/components/FileMessage"
 import AudioMessage from "@/components/AudioMessage"
@@ -17,87 +16,80 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Heading, Text} from "@/components/ui/typography"
 import {ScrollArea} from "@/components/ui/scroll-area"
+import {type ValueState} from "@/hooks/util/useValueState"
+import ValueStateHandler from "@/components/ValueStateHandler"
 
 export type ChatMessagesProps = {
-  messages: AnyMessage[]
-  messagesState: MessagesState
+  messagesState: ValueState<AnyMessage[]>
   className?: string
 }
 
 export const ChatMessages: FC<ChatMessagesProps> = ({
-  messages,
   messagesState,
   className,
 }) => {
   const {t} = useTranslation()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
-  if (messagesState === MessagesState.Loaded) {
-    assert(
-      messages.length > 0,
-      "If you have no messages, your status should be NotMessages."
-    )
-  }
-
   useEffect(() => {
-    if (scrollContainerRef.current && messagesState === MessagesState.Loaded) {
+    if (scrollContainerRef.current && messagesState.status === "success") {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight
     }
   }, [messagesState])
 
-  const messageElements = useMemo(
-    () =>
-      messages.map((message, index) => (
-        <motion.div
-          key={index}
-          initial={{translateX: -15, opacity: 0.8}}
-          whileInView={{translateX: 0, opacity: 1}}>
-          <AnyMessageHandler
-            isAtTheEnd={index !== messages.length - 1}
-            anyMessage={message}
-            onAuthorClick={(userId: string) => {
-              throw new Error("Author click function not implemented.")
-            }}
-            onClickImage={(imgUrl: string) => {
-              throw new Error("Click image function not implemented.")
-            }}
-            onResendMessage={() => {
-              throw new Error("Resend message function not implemented.")
-            }}
-            onReplyMessage={() => {
-              throw new Error("Reply message function not implemented.")
-            }}
-            onDeleteMessage={() => {
-              throw new Error("Delete message function not implemented.")
-            }}
-          />
-        </motion.div>
-      )),
-    [messages]
-  )
-
   return (
     <div className={twMerge("flex size-full flex-col gap-4", className)}>
-      {messagesState === MessagesState.Loaded ? (
-        <ScrollArea avoidOverflow ref={scrollContainerRef}>
-          <div className="flex-1 space-y-4">{messageElements}</div>
-        </ScrollArea>
-      ) : messagesState === MessagesState.Loading ? (
-        // TODO: @lazaroysr96 Dark mode and limit height for MessagesPlaceholder.
-        // <MessagesPlaceholder />
-        <></>
-      ) : messagesState === MessagesState.Error ? (
-        <ChatMessageTemplate
-          title={t(LangKey.MessagesError)}
-          subtitle={t(LangKey.MessagesErrorSubtitle)}
-        />
-      ) : (
-        <ChatMessageTemplate
-          title={t(LangKey.NoMessages)}
-          subtitle={t(LangKey.NoMessagesSubtitle)}
-        />
-      )}
+      <ValueStateHandler
+        value={messagesState}
+        loading={
+          // TODO: @lazaroysr96 Dark mode and limit height for MessagesPlaceholder.
+          // <MessagesPlaceholder />
+          <></>
+        }
+        error={_error => (
+          <ChatMessageTemplate
+            title={t(LangKey.MessagesError)}
+            subtitle={t(LangKey.MessagesErrorSubtitle)}
+          />
+        )}>
+        {messages => (
+          <ScrollArea avoidOverflow ref={scrollContainerRef}>
+            <div className="flex-1 space-y-4">
+              {messages.map((message, index) => (
+                <motion.div
+                  key={index}
+                  initial={{translateX: -15, opacity: 0.8}}
+                  whileInView={{translateX: 0, opacity: 1}}>
+                  <AnyMessageHandler
+                    isAtTheEnd={index !== messages.length - 1}
+                    anyMessage={message}
+                    onAuthorClick={(_userId: string) => {
+                      throw new Error("Author click function not implemented.")
+                    }}
+                    onClickImage={(_imgUrl: string) => {
+                      throw new Error("Click image function not implemented.")
+                    }}
+                    onResendMessage={() => {
+                      throw new Error(
+                        "Resend message function not implemented."
+                      )
+                    }}
+                    onReplyMessage={() => {
+                      throw new Error("Reply message function not implemented.")
+                    }}
+                    onDeleteMessage={() => {
+                      throw new Error(
+                        "Delete message function not implemented."
+                      )
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </ScrollArea>
+        )}
+      </ValueStateHandler>
     </div>
   )
 }
@@ -217,7 +209,7 @@ const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
           key={anyMessage.data.messageId}
           {...anyMessage.data}
           onAuthorClick={onAuthorClick}
-          onQuoteMessageClick={quoteMessageId => {
+          onQuoteMessageClick={_quoteMessageId => {
             // TODO Handle `onQuoteMessageClick` for `ReplyMessage`
           }}
           contextMenuItems={buildMessageMenuItems({

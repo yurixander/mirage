@@ -25,6 +25,7 @@ import {
 } from "matrix-js-sdk"
 import {useCallback, useEffect, useState} from "react"
 import {type MessageSendRequest} from "../ChatInput"
+import useValueState, {type ValueState} from "@/hooks/util/useValueState"
 
 export enum MessageKind {
   Text,
@@ -82,12 +83,11 @@ export type AnyMessage =
   | Message<MessageKind.EventGroup>
 
 type UseRoomChatReturnType = {
-  messagesState: MessagesState
+  messagesState: ValueState<AnyMessage[]>
   isChatLoading: boolean
   roomName: string
   roomTopic: string
   isRoomEncrypted: boolean
-  messages: AnyMessage[]
   typingUsers: TypingIndicatorUser[]
   isInputDisabled: boolean
   sendTypingEvent: (roomId: string) => void
@@ -104,48 +104,47 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const [roomTopic, setRoomTopic] = useState("")
   const [isRoomEncrypted, setIsRoomEncrypted] = useState(false)
   const [isChatLoading, setChatLoading] = useState(true)
-  const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
-  const [messages, setMessages] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null)
 
-  const fetchRoomMessages = useCallback(async (room: Room) => {
-    try {
-      setMessagesState(MessagesState.Loading)
+  const [messagesState, setMessagesState] = useValueState<AnyMessage[]>()
 
-      const anyMessages = await handleRoomEvents(room)
+  const fetchRoomMessages = useCallback(
+    async (room: Room) => {
+      try {
+        const anyMessages = await handleRoomEvents(room)
 
-      if (anyMessages.length === 0) {
-        setMessagesState(MessagesState.NotMessages)
+        setMessagesState({status: "success", data: anyMessages})
+      } catch (error) {
+        console.error("Error fetching messages", error)
 
-        return
+        setMessagesState({status: "error", error: error as Error})
       }
-
-      setMessages(anyMessages)
-      setMessagesState(MessagesState.Loaded)
-    } catch (error) {
-      console.error("Error fetching messages", error)
-
-      setMessagesState(MessagesState.Error)
-    }
-  }, [])
+    },
+    [setMessagesState]
+  )
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (messages.length === 0) {
-        return
-      }
+      setMessagesState(prevState => {
+        if (prevState.status !== "success") {
+          return prevState
+        }
 
-      setMessages(prevMessages =>
-        prevMessages.filter(message => message.kind !== MessageKind.Unread)
-      )
+        return {
+          status: "success",
+          data: prevState.data.filter(
+            message => message.kind !== MessageKind.Unread
+          ),
+        }
+      })
     }, 10_000)
 
     return () => {
       clearTimeout(handler)
     }
-  }, [messages.length, roomId])
+  }, [roomId, setMessagesState])
 
   useEffect(() => {
     if (client === null || !isMountedReference.current) {
@@ -212,15 +211,36 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
         }
 
         if (room.myUserId === senderId) {
-          setMessages(messages => [
-            ...messages.filter(message => message.kind !== MessageKind.Unread),
-            messageOrEvent,
-          ])
+          setMessagesState(prevState => {
+            if (prevState.status !== "success") {
+              return prevState
+            }
+
+            return {
+              status: "success",
+              data: [
+                ...prevState.data.filter(
+                  message => message.kind !== MessageKind.Unread
+                ),
+                messageOrEvent,
+              ],
+            }
+          })
 
           return
         }
 
-        setMessages(messages => [...messages, messageOrEvent])
+        setMessagesState(prevState => {
+          if (prevState.status !== "success") {
+            return prevState
+          }
+
+          return {
+            status: "success",
+            data: [...prevState.data, messageOrEvent],
+          }
+        })
+
         void room.client.sendReadReceipt(event)
       })
     }
@@ -286,7 +306,6 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     roomName,
     roomTopic,
     isRoomEncrypted,
-    messages,
     typingUsers,
     isInputDisabled: client === null,
     onSendAudioMessage,

@@ -33,7 +33,6 @@ const ChatContainer: FC<ChatContainerProps> = ({
     roomTopic,
     isRoomEncrypted,
     isChatLoading,
-    messages,
     typingUsers,
     sendTypingEvent,
     isInputDisabled,
@@ -63,11 +62,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
         onCloseRoom={clearActiveRoomId}
       />
 
-      <ChatMessages
-        className="p-3"
-        messages={messages}
-        messagesState={messagesState}
-      />
+      <ChatMessages className="p-3" messagesState={messagesState} />
 
       <footer className="order-3 flex flex-col px-3.5">
         <ChatInput
