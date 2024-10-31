@@ -16,28 +16,26 @@ import {
 } from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
 import {twMerge} from "tailwind-merge"
+import {type RoomDetail} from "./hooks/useRoomDetail"
 
 export type ChatHeaderProps = {
-  roomName: string
+  roomDetail: RoomDetail
   isRosterExpanded: boolean
   onRosterExpanded: (isExpanded: boolean) => void
   onCloseRoom: () => void
   className?: string
-  roomDescription?: string
-  isRoomEncrypted: boolean
 }
 
 const ChatHeader: FC<ChatHeaderProps> = ({
-  roomName,
+  roomDetail,
   isRosterExpanded,
   onRosterExpanded,
   className,
   onCloseRoom,
-  roomDescription,
-  isRoomEncrypted,
 }) => {
   const {t} = useTranslation()
   const isSm = useIsSmall()
+  const {isRoomEncrypted, roomName, roomDescription} = roomDetail
 
   return (
     <header className={twMerge(className, "flex w-full flex-col gap-1")}>

@@ -29,9 +29,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
 
   const {
     messagesState,
-    roomName,
-    roomTopic,
-    isRoomEncrypted,
+    roomDetail,
     isChatLoading,
     typingUsers,
     sendTypingEvent,
@@ -56,9 +54,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
         className="relative flex size-full max-h-12 items-center border-b border-b-neutral-200 px-3 py-1 dark:border-b-neutral-700"
         isRosterExpanded={isRosterExpanded}
         onRosterExpanded={onRosterExpanded}
-        roomName={roomName}
-        roomDescription={roomTopic}
-        isRoomEncrypted={isRoomEncrypted}
+        roomDetail={roomDetail}
         onCloseRoom={clearActiveRoomId}
       />
 

@@ -11,22 +11,13 @@ import {type VideoMessageData} from "@/components/VideoMessage"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
-import useRoomListener from "@/hooks/matrix/useRoomListener"
-import useIsMountedRef from "@/hooks/util/useIsMountedRef"
-import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl, sendAudioMessage} from "@/utils/util"
-import {
-  MsgType,
-  EventTimeline,
-  EventType,
-  type Room,
-  RoomEvent,
-  RoomMemberEvent,
-} from "matrix-js-sdk"
-import {useCallback, useEffect, useState} from "react"
+import {MsgType, type Room, RoomMemberEvent} from "matrix-js-sdk"
+import {useEffect, useState} from "react"
 import {type MessageSendRequest} from "../ChatInput"
-import useValueState, {type ValueState} from "@/hooks/util/useValueState"
+import {type ValueState} from "@/hooks/util/useValueState"
 import useRoomTimeline from "./useRoomTimeline"
+import useRoomDetail, {type RoomDetail} from "./useRoomDetail"
 
 export enum MessageKind {
   Text,
@@ -85,10 +76,8 @@ export type AnyMessage =
 
 type UseRoomChatReturnType = {
   messagesState: ValueState<AnyMessage[]>
+  roomDetail: RoomDetail
   isChatLoading: boolean
-  roomName: string
-  roomTopic: string
-  isRoomEncrypted: boolean
   typingUsers: TypingIndicatorUser[]
   isInputDisabled: boolean
   sendTypingEvent: (roomId: string) => void
@@ -99,16 +88,13 @@ type UseRoomChatReturnType = {
 const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const client = useMatrixClient()
   const {clearActiveRoomId} = useActiveRoomIdStore()
-
-  const [roomName, setRoomName] = useState("")
-  const [roomTopic, setRoomTopic] = useState("")
-  const [isRoomEncrypted, setIsRoomEncrypted] = useState(false)
   const [isChatLoading, setChatLoading] = useState(true)
 
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null)
 
   const messagesState = useRoomTimeline(currentRoom)
+  const roomDetail = useRoomDetail(currentRoom)
 
   useEffect(() => {
     if (client === null) {
@@ -126,36 +112,9 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     setChatLoading(false)
 
     setCurrentRoom(room)
-
-    // setRoomName(room.name)
-
-    // const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
-
-    // if (roomState) {
-    //   const roomDescription = roomState
-    //     .getStateEvents(EventType.RoomTopic, "")
-    //     ?.getContent().topic
-
-    //   if (typeof roomDescription === "string") {
-    //     setRoomTopic(roomDescription)
-    //   } else {
-    //     setRoomTopic("")
-    //   }
-
-    //   const isEncrypted = roomState.getStateEvents(EventType.RoomEncryption, "")
-
-    //   if (isEncrypted) {
-    //     setIsRoomEncrypted(true)
-    //   } else {
-    //     setIsRoomEncrypted(false)
-    //   }
-    // }
   }, [clearActiveRoomId, client, roomId])
 
   // #region Listeners
-  useRoomListener(currentRoom, RoomEvent.Name, room => {
-    setRoomName(room.name)
-  })
 
   useEventListener(RoomMemberEvent.Typing, (_event, member) => {
     const currentUserId = client?.getUserId()
@@ -196,10 +155,8 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
 
   return {
     messagesState,
+    roomDetail,
     isChatLoading,
-    roomName,
-    roomTopic,
-    isRoomEncrypted,
     typingUsers,
     isInputDisabled: client === null,
     onSendAudioMessage,
