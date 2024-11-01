@@ -3,6 +3,9 @@ import {LangKey} from "./allKeys"
 
 export const spanish: LangDefinition = {
   [LangKey.MoreActions]: "Mas acciones",
+  [LangKey.CloseRoom]: "Cerrar sala",
+  [LangKey.MoreErrorInformation]: "Mas información sobre el error",
+  [LangKey.HelpInfoError]: "Informacion sobre el error",
   [LangKey.CreateRoom]: "Crear Sala",
   [LangKey.Name]: "Nombre",
   [LangKey.DescriptionOptional]: "Descripción (opcional)",
@@ -113,6 +116,7 @@ export const spanish: LangDefinition = {
   [LangKey.SortMembers]: "Agrupar miembros",
   [LangKey.MembersError]: "Error de miembros",
   [LangKey.ReloadMembers]: "Recargar miembros",
+  [LangKey.ReloadMessages]: "Recargar mensajes",
   [LangKey.Admins]: (length: string) => `ADMINISTRADORES — ${length}`,
   [LangKey.Moderators]: (length: string) => `MODERADORES — ${length}`,
   [LangKey.Members]: (length: string) => `MIEMBROS — ${length}`,
@@ -272,7 +276,7 @@ export const spanish: LangDefinition = {
   [LangKey.MoreVariants]: "Más variantes",
   [LangKey.MessagesError]: "Error de mensajes",
   [LangKey.MessagesErrorSubtitle]:
-    "Ocurrió un error mientras se cargaban los mensajes.",
+    "Ocurrió un error mientras se cargaban los mensajes de esta sala.",
   [LangKey.NoMessages]: "No hay mensajes",
   [LangKey.NoMessagesSubtitle]: "Esta sala es nueva o no tiene mensajes",
   [LangKey.LoadingImageError]: "Ocurrió un error mientras se cargaba la imagen",

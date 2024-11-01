@@ -1,6 +1,9 @@
 export enum LangKey {
   MoreActions,
   CreateRoom,
+  CloseRoom,
+  MoreErrorInformation,
+  HelpInfoError,
   Name,
   DescriptionOptional,
   RoomDescriptionPlaceholder,
@@ -236,6 +239,7 @@ export enum LangKey {
   Are,
   Is,
   RoomEncrypted,
+  ReloadMessages,
 
   // #region WelcomeSplash
   WelcomeSplashTitle,

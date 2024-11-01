@@ -3,6 +3,9 @@ import {LangKey} from "./allKeys"
 
 export const english: LangDefinition = {
   [LangKey.MoreActions]: "More actions",
+  [LangKey.CloseRoom]: "Close room",
+  [LangKey.MoreErrorInformation]: "More error information",
+  [LangKey.HelpInfoError]: "Info about error",
   [LangKey.CreateRoom]: "Create Room",
   [LangKey.Name]: "Name",
   [LangKey.DescriptionOptional]: "Description (optional)",
@@ -113,6 +116,7 @@ export const english: LangDefinition = {
   [LangKey.SortMembers]: "Sort members",
   [LangKey.MembersError]: "Members Error",
   [LangKey.ReloadMembers]: "Reload members",
+  [LangKey.ReloadMessages]: "Reload messages",
   [LangKey.Admins]: (length: string) => `ADMINS — ${length}`,
   [LangKey.Moderators]: (length: string) => `MODERATORS — ${length}`,
   [LangKey.Members]: (length: string) => `MEMBERS — ${length}`,

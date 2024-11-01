@@ -36,6 +36,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
     isInputDisabled,
     sendMessageText,
     onSendAudioMessage,
+    onReloadMessages,
   } = useRoomChat(roomId)
 
   assert(roomId.length > 0, "The roomId should not be empty.")
@@ -58,7 +59,12 @@ const ChatContainer: FC<ChatContainerProps> = ({
         onCloseRoom={clearActiveRoomId}
       />
 
-      <ChatMessages className="p-3" messagesState={messagesState} />
+      <ChatMessages
+        className="p-3"
+        messagesState={messagesState}
+        onReloadMessages={onReloadMessages}
+        onCloseRoom={clearActiveRoomId}
+      />
 
       <footer className="order-3 flex flex-col px-3.5">
         <ChatInput

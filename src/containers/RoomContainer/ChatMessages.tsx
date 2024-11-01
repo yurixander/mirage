@@ -8,17 +8,31 @@ import {ScrollArea} from "@/components/ui/scroll-area"
 import {type ValueState} from "@/hooks/util/useValueState"
 import ValueStateHandler from "@/components/ValueStateHandler"
 import AnyMessageHandler from "./AnyMessageHandler"
+import {AlertDialogFooter} from "@/components/ui/alert-dialog"
+import {IconButton} from "@/components/ui/button"
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+} from "@radix-ui/react-alert-dialog"
+import {IoReload, IoHelp, IoClose} from "react-icons/io5"
 
 export type ChatMessagesProps = {
   messagesState: ValueState<AnyMessage[]>
+  onReloadMessages: () => void
+  onCloseRoom: () => void
   className?: string
 }
 
 export const ChatMessages: FC<ChatMessagesProps> = ({
   messagesState,
+  onCloseRoom,
+  onReloadMessages,
   className,
 }) => {
-  const {t} = useTranslation()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -32,17 +46,18 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     <div className={twMerge("flex size-full flex-col gap-4", className)}>
       <ValueStateHandler
         value={messagesState}
+        error={error => (
+          <MessagesError
+            error={error}
+            onReloadMessages={onReloadMessages}
+            onCloseRoom={onCloseRoom}
+          />
+        )}
         loading={
           // TODO: @lazaroysr96 Dark mode and limit height for MessagesPlaceholder.
           // <MessagesPlaceholder />
           <></>
-        }
-        error={_error => (
-          <ChatMessageTemplate
-            title={t(LangKey.MessagesError)}
-            subtitle={t(LangKey.MessagesErrorSubtitle)}
-          />
-        )}>
+        }>
         {messages => (
           <ScrollArea avoidOverflow ref={scrollContainerRef}>
             <div className="flex-1 space-y-4">
@@ -76,15 +91,73 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   )
 }
 
-const ChatMessageTemplate: FC<{title: string; subtitle: string}> = ({
-  title,
-  subtitle,
-}) => {
-  return (
-    <div className="flex size-full flex-col items-center justify-center">
-      <Heading level="h2">{title}</Heading>
+type MessagesErrorProps = {
+  error: Error
+  onReloadMessages: () => void
+  onCloseRoom: () => void
+}
 
-      <Text>{subtitle}</Text>
+const MessagesError: FC<MessagesErrorProps> = ({
+  error,
+  onReloadMessages,
+  onCloseRoom,
+}) => {
+  const {t} = useTranslation()
+
+  return (
+    <div className="flex h-72 w-auto flex-col items-center justify-center gap-2 px-2 sm:size-96 sm:px-0">
+      <div className="flex flex-col rounded-md bg-red-200 px-2 dark:bg-red-800">
+        <Heading
+          level="h2"
+          align="center"
+          className="text-red-800 dark:text-red-200">
+          {t(LangKey.MessagesError)}
+        </Heading>
+
+        <Text align="center" className="text-red-800 dark:text-red-200">
+          {t(LangKey.MessagesErrorSubtitle)}
+        </Text>
+      </div>
+
+      <div className="flex w-full justify-end gap-2">
+        <div className="flex">
+          <IconButton
+            aria-label={t(LangKey.ReloadMembers)}
+            tooltip={t(LangKey.ReloadMembers)}
+            onClick={onReloadMessages}>
+            <IoReload size={18} />
+          </IconButton>
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <IconButton
+                aria-label={t(LangKey.MoreErrorInformation)}
+                tooltip={t(LangKey.MoreErrorInformation)}>
+                <IoHelp size={18} />
+              </IconButton>
+            </AlertDialogTrigger>
+
+            <AlertDialogContent>
+              <AlertDialogTitle asChild>
+                <Heading level="h3">{t(LangKey.HelpInfoError)}</Heading>
+              </AlertDialogTitle>
+
+              <AlertDialogDescription>{error.message}</AlertDialogDescription>
+
+              <AlertDialogFooter>
+                <AlertDialogAction>{t(LangKey.Accept)}</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          <IconButton
+            aria-label={t(LangKey.CloseRoom)}
+            tooltip={t(LangKey.CloseRoom)}
+            onClick={onCloseRoom}>
+            <IoClose size={18} />
+          </IconButton>
+        </div>
+      </div>
     </div>
   )
 }

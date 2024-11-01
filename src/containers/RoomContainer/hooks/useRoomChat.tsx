@@ -77,6 +77,7 @@ type UseRoomChatReturnType = {
   sendTypingEvent: (roomId: string) => void
   sendMessageText: (messageSendRequest: MessageSendRequest) => void
   onSendAudioMessage: (audioBlob: Blob, roomId: string) => Promise<void>
+  onReloadMessages: () => void
 }
 
 const useRoomChat = (roomId: string): UseRoomChatReturnType => {
@@ -87,7 +88,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null)
 
-  const messagesState = useRoomTimeline(currentRoom)
+  const [messagesState, reloadMessages] = useRoomTimeline(currentRoom)
   const roomDetail = useRoomDetail(currentRoom)
 
   useEffect(() => {
@@ -153,6 +154,7 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     typingUsers,
     isInputDisabled: client === null,
     onSendAudioMessage,
+    onReloadMessages: reloadMessages,
     sendMessageText({messageText, roomId}) {
       if (client === null || messageText.length === 0) {
         return

@@ -2,15 +2,17 @@ import useValueState, {type ValueState} from "@/hooks/util/useValueState"
 import {MessageKind, type AnyMessage} from "./useRoomChat"
 import {RoomEvent, type Room} from "matrix-js-sdk"
 import {useCallback, useEffect, useRef} from "react"
-import {handleRoomEvents} from "@/utils/rooms"
+import {handleRoomEvents, handleRoomMessageEvent} from "@/utils/rooms"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 
-const useRoomTimeline = (room: Room | null): ValueState<AnyMessage[]> => {
+const useRoomTimeline = (
+  room: Room | null
+): [ValueState<AnyMessage[]>, () => void] => {
   const roomIdRef = useRef<string | null>(null)
   const [anyMessagesState, setAnyMessagesState] = useValueState<AnyMessage[]>()
 
   const setMessagesScope = useCallback(
-    (roomId: string, execute: () => Promise<AnyMessage[]>) => {
+    (roomId: string, execute: () => Promise<AnyMessage[] | null>) => {
       setAnyMessagesState(prevState => {
         if (prevState.status === "loading") {
           return prevState
@@ -21,7 +23,7 @@ const useRoomTimeline = (room: Room | null): ValueState<AnyMessage[]> => {
 
       execute()
         .then(messages => {
-          if (roomIdRef.current !== roomId) {
+          if (roomIdRef.current !== roomId || messages === null) {
             return
           }
 
@@ -91,58 +93,52 @@ const useRoomTimeline = (room: Room | null): ValueState<AnyMessage[]> => {
     void room.client.sendReadReceipt(event)
   })
 
-  // useRoomListener(
-  //   room,
-  //   RoomEvent.Timeline,
-  //   (event, room, toStartOfTimeline) => {
-  //     if (room === undefined || toStartOfTimeline !== false) {
-  //       return
-  //     }
+  useRoomListener(
+    room,
+    RoomEvent.Timeline,
+    (event, room, toStartOfTimeline) => {
+      if (
+        room === undefined ||
+        toStartOfTimeline !== false ||
+        anyMessagesState.status !== "success"
+      ) {
+        return
+      }
 
-  //     const senderId = event.sender?.userId ?? event.getSender()
+      const senderId = event.sender?.userId ?? event.getSender()
 
-  //     void handleRoomMessageEvent(event, room).then(messageOrEvent => {
-  //       if (messageOrEvent === null) {
-  //         return
-  //       }
+      setMessagesScope(room.roomId, async () => {
+        const messageResult = await handleRoomMessageEvent(event, room)
 
-  //       if (room.myUserId === senderId) {
-  //         setMessagesState(prevState => {
-  //           if (prevState.status !== "success") {
-  //             return prevState
-  //           }
+        if (messageResult === null) {
+          return null
+        }
 
-  //           return {
-  //             status: "success",
-  //             data: [
-  //               ...prevState.data.filter(
-  //                 message => message.kind !== MessageKind.Unread
-  //               ),
-  //               messageOrEvent,
-  //             ],
-  //           }
-  //         })
+        await room.client.sendReadReceipt(event)
 
-  //         return
-  //       }
+        if (room.myUserId === senderId) {
+          const messagesRead = anyMessagesState.data.filter(
+            message => message.kind !== MessageKind.Unread
+          )
 
-  //       setMessagesState(prevState => {
-  //         if (prevState.status !== "success") {
-  //           return prevState
-  //         }
+          return [...messagesRead, messageResult]
+        }
 
-  //         return {
-  //           status: "success",
-  //           data: [...prevState.data, messageOrEvent],
-  //         }
-  //       })
+        return anyMessagesState.data.concat([messageResult])
+      })
+    }
+  )
 
-  //       void room.client.sendReadReceipt(event)
-  //     })
-  //   }
-  // )
+  return [
+    anyMessagesState,
+    () => {
+      if (room === null) {
+        return
+      }
 
-  return anyMessagesState
+      setMessagesScope(room.roomId, async () => await handleRoomEvents(room))
+    },
+  ]
 }
 
 export default useRoomTimeline

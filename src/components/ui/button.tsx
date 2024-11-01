@@ -119,7 +119,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     return tooltip === undefined ? (
       button
     ) : (
-      <TooltipProvider delayDuration={1500}>
+      <TooltipProvider delayDuration={1000}>
         <Tooltip>
           <TooltipTrigger tabIndex={-1} asChild>
             {button}
