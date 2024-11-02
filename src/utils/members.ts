@@ -53,7 +53,6 @@ export function getOwnersWithLevelsMap(
 ): Map<string, UserPowerLevel> {
   const powerLevels = getPowerLevelsFromRoom(room)
   const ownersWithLevelsMap = new Map<string, UserPowerLevel>()
-
   const users = Object.entries(powerLevels)
 
   for (const [userId, powerLevel] of users) {
