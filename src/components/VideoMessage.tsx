@@ -14,12 +14,11 @@ export interface VideoMessageProps extends MessageBaseProps {
   thumbnail?: string
 }
 
+// TODO: @lazaroysr96 Handle context menu and messageId
 const VideoMessage: FC<VideoMessageProps> = ({
   authorDisplayName,
   authorAvatarUrl,
   authorDisplayNameColor,
-  contextMenuItems,
-  messageId,
   onAuthorClick,
   timestamp,
   userId,

@@ -14,7 +14,7 @@ const render = (args: InputAreaProps): React.JSX.Element => (
 
 export const Default: Story = {
   render,
-  args: {onValueChange(value) {}, initiallyRows: 1},
+  args: {onValueChange() {}, initiallyRows: 1},
 }
 
 export default meta

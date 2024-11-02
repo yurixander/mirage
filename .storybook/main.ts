@@ -1,5 +1,5 @@
 import type {StorybookConfig} from "@storybook/react-vite"
-const path = require("path")
+import path from "node:path"
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -17,7 +17,7 @@ const config: StorybookConfig = {
 
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@": path.resolve(__dirname, "../src"),
+      "@": path.resolve(import.meta.dirname, "../src"),
     }
 
     return config

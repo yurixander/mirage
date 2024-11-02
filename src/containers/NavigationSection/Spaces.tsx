@@ -10,7 +10,7 @@ import {ScrollArea} from "@/components/ui/scroll-area"
 import {twMerge} from "tailwind-merge"
 import useTranslation from "@/hooks/util/useTranslation"
 import AsyncValueHandler from "@/components/ValueStateHandler"
-import {type ValueState} from "@/hooks/util/useValueState"
+import {ValueState} from "@/hooks/util/useValueState"
 
 type SpacesNavProps = {
   spacesState: ValueState<PartialSpace[]>
@@ -22,7 +22,6 @@ type SpacesNavProps = {
 
 const Spaces: FC<SpacesNavProps> = ({
   spacesState,
-  onCreateSpace,
   onSpaceSelected,
   spaceSelected,
   className,
