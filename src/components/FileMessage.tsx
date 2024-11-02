@@ -41,7 +41,6 @@ const FileMessage: FC<FileMessageProps> = ({
   fileSize,
   fileUrl,
   userId,
-  messageId,
 }) => {
   const {t} = useTranslation()
   const fileExtension = getFileExtension(fileName).toUpperCase()

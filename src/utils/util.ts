@@ -15,12 +15,10 @@ export enum ViewPath {
 }
 
 export enum StaticAssetPath {
-  AppLogo = "logo.svg",
   NewAppLogo = "new-logo.svg",
-  AppLogoSmall = "logo-small.svg",
-  LoginPhoto = "LoginPhoto.png",
+  LoginPhoto = "LoginPhoto.webp",
   DotGrid = "icons/dot-grid.svg",
-  SpaceHome = "space-home.png",
+  SpaceHome = "space-home.webp",
   CreateSpace = "icons/create-space.svg",
 }
 

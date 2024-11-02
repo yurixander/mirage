@@ -13,11 +13,6 @@
       name="description"
       content="A simple, lightweight, and easy-to-use web client for the [Matrix] protocol." />
 
-    <!-- Satoshi font -->
-    <link
-      href="https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap"
-      rel="stylesheet" />
-
     <!-- Unbounded font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap"
@@ -39,6 +34,48 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Mirage &mdash; Matrix web client</title>
+
+    <style>
+      @font-face {
+        font-family: "Satoshi";
+        src: url("/fonts/Satoshi-Light.woff2") format("woff2");
+        font-weight: 300;
+        font-display: swap;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Satoshi";
+        src: url("/fonts/Satoshi-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-display: swap;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Satoshi";
+        src: url("/fonts/Satoshi-Medium.woff2") format("woff2");
+        font-weight: 500;
+        font-display: swap;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Satoshi";
+        src: url("/fonts/Satoshi-Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-display: swap;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Satoshi";
+        src: url("/fonts/Satoshi-Black.woff2") format("woff2");
+        font-weight: 900;
+        font-display: swap;
+        font-style: normal;
+      }
+    </style>
   </head>
   <body>
     <noscript
