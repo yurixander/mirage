@@ -6,7 +6,7 @@ import {getAllJoinedRooms} from "@/utils/rooms"
 import {EventType, type MatrixClient, type Room, RoomEvent} from "matrix-js-sdk"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import {getSpaceRoomSections} from "@/utils/spaces"
-import {DASHBOARD_SPACE_ID} from "../SpacesNavigation"
+import {DASHBOARD_SPACE_ID} from "../NavigationSection"
 
 type UseRoomNavigatorReturnType = {
   isSectionsLoading: boolean

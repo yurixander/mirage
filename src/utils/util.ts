@@ -7,6 +7,7 @@ import {
   type MatrixClient,
 } from "matrix-js-sdk"
 import {type RoomMessageEventContent} from "matrix-js-sdk/lib/types"
+import {mxcUrlToHttp} from "./matrix"
 
 export enum ViewPath {
   App = "/",
@@ -15,12 +16,10 @@ export enum ViewPath {
 }
 
 export enum StaticAssetPath {
-  AppLogo = "logo.svg",
   NewAppLogo = "new-logo.svg",
-  AppLogoSmall = "logo-small.svg",
-  LoginPhoto = "LoginPhoto.png",
+  LoginPhoto = "LoginPhoto.webp",
   DotGrid = "icons/dot-grid.svg",
-  SpaceHome = "space-home.png",
+  SpaceHome = "space-home.webp",
   CreateSpace = "icons/create-space.svg",
 }
 
@@ -159,8 +158,8 @@ export function getImageUrl(
 
   const imageUrl =
     size === undefined
-      ? client.mxcUrlToHttp(url)
-      : client.mxcUrlToHttp(url, size, size, "scale")
+      ? mxcUrlToHttp(client, url, true)
+      : mxcUrlToHttp(client, url, true, size, size, "scale")
 
   return imageUrl ?? undefined
 }

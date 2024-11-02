@@ -10,13 +10,13 @@ type UseDMTrayReturnType = {
   userId?: string
   dmRooms: DMRoomData[]
   results: DMUser[] | null
-  setQuery: (query: string) => void
+  setDebouncedQuery: (query: string) => void
   clearResults: () => void
 }
 
 const useDmTray = (client: MatrixClient | null): UseDMTrayReturnType => {
   const [userId, setUserId] = useState<string>()
-  const {setQuery, results, clearResults} = useUsersSearch(client)
+  const {setDebouncedQuery, results, clearResults} = useUsersSearch(client)
   const [dmRooms, setDMRooms] = useState<DMRoomData[]>([])
   const [isDMLoading, setIsDMLoading] = useState(true)
 
@@ -56,7 +56,7 @@ const useDmTray = (client: MatrixClient | null): UseDMTrayReturnType => {
     dmRooms,
     results,
     userId,
-    setQuery,
+    setDebouncedQuery,
     clearResults,
   }
 }

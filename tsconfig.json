@@ -20,5 +20,13 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", ".storybook"]
+  "include": [
+    "src",
+    ".storybook/*",
+    "tailwind.config.ts",
+    "vite.config.ts",
+    "postcss.config.js",
+    "eslint.config.mjs",
+    "commitlint.config.ts"
+  ]
 }

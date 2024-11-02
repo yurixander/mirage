@@ -15,7 +15,7 @@ import {
   useEffect,
 } from "react"
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({className, type, ...props}, ref) => {
@@ -119,6 +119,7 @@ const InputWithIcon: FC<InputWithIconProps> = ({
       const violations = constraints.filter(
         constraint => !constraint.pattern.test(value)
       )
+
       setViolatedConstraints(violations)
     }
 
@@ -126,6 +127,17 @@ const InputWithIcon: FC<InputWithIconProps> = ({
       onValueChange(value)
     }
   }
+
+  useEffect(() => {
+    if (violatedConstraints.length === 0) {
+      return
+    }
+
+    // TODO: @lazaroysr96 Resolve this.
+    for (const violation of violatedConstraints) {
+      showTooltip(violation.message, true)
+    }
+  }, [showTooltip, violatedConstraints])
 
   return (
     <InputRoot>
@@ -143,11 +155,6 @@ const InputWithIcon: FC<InputWithIconProps> = ({
       />
 
       {action && <InputIconAction {...action} />}
-      {violatedConstraints.map(violation => (
-        // TODO: Fix this problem
-        // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-        <>{showTooltip(violation.message, true)}</>
-      ))}
     </InputRoot>
   )
 }

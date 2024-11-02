@@ -1,5 +1,3 @@
-import ServerDropdown from "@/components/ServerDropdown"
-import {MATRIX_SERVER} from "@/utils/servers"
 import {useState, type FC} from "react"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
@@ -13,28 +11,27 @@ import useUserData from "./hooks/useUserData"
 import {RoomNavigator} from "./RoomNavigator"
 import useRoomNavigator from "./hooks/useRoomNavigator"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
-import SpacesNavigation, {
-  DASHBOARD_SPACE_ID,
-  SpacesPlaceHolder,
-} from "./SpacesNavigation"
+import SpacesNavigation, {SpacesPlaceHolder} from "./SpacesNavigation"
 import ValueStateHandler from "@/components/ValueStateHandler"
-import {useIsSmall} from "@/hooks/util/useMediaQuery"
+import useBreakpoint from "@/hooks/util/useMediaQuery"
 import {ScrollArea} from "@/components/ui/scroll-area"
+import {SearchInput} from "@/components/ui/input"
+
+export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
 const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,
   onLogOut,
 }) => {
   const {setActiveModal} = useActiveModalStore()
-  const [serverSelected, setServerSelected] = useState(MATRIX_SERVER)
   const [spaceSelected, setSpaceSelected] = useState(DASHBOARD_SPACE_ID)
   const {spaces: spacesState} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
-  const isSm = useIsSmall()
+  const {isSmall} = useBreakpoint()
   const {isSectionsLoading, sections} = useRoomNavigator(spaceSelected)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
 
-  if (!isSm && activeRoomId !== null) {
+  if (!isSmall && activeRoomId !== null) {
     return <></>
   }
 
@@ -75,10 +72,11 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
       </div>
 
       <div className="flex size-full flex-col border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
-        <div className="size-full max-h-12 shrink-0 border-b border-neutral-300 p-2 dark:border-neutral-700">
-          <ServerDropdown
-            initiallyServerSelected={serverSelected}
-            onServerSelected={setServerSelected}
+        <div className="border-b border-neutral-300 p-2 dark:border-neutral-700">
+          <SearchInput
+            onQueryDebounceChange={() => {
+              // TODO: Handle global search.
+            }}
           />
         </div>
 
@@ -95,9 +93,15 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
             onCreateRoom={() => {
               setActiveModal(Modals.CreateRoom)
             }}
-            onCreateDM={() => {}}
-            addRoomToSpace={() => {}}
-            onSearch={() => {}}
+            onCreateDM={() => {
+              throw new Error("Create DM not implemented.")
+            }}
+            addRoomToSpace={() => {
+              throw new Error("Add room to space not implemented.")
+            }}
+            onSearch={() => {
+              throw new Error("Room search not implemented.")
+            }}
           />
         </ScrollArea>
 

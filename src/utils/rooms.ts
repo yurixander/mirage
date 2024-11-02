@@ -919,8 +919,7 @@ export const handleMessage = async (
 
       const poster =
         typeof eventContent.info.thumbnail_url === "string"
-          ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            getImageUrl(eventContent.info.thumbnail_url, room.client)
+          ? getImageUrl(eventContent.info.thumbnail_url, room.client)
           : eventContent.info.thumbnail_url
 
       return {
