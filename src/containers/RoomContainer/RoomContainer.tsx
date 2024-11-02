@@ -10,12 +10,12 @@ import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 import {motion} from "framer-motion"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
-import {useIsSmall} from "@/hooks/util/useMediaQuery"
+import useBreakpoint from "@/hooks/util/useMediaQuery"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
-  const isSm = useIsSmall()
+  const {isSmall} = useBreakpoint()
 
   const {groupedMembers, isMembersLoading, onReloadMembers} =
     useRoomMembers(activeRoomId)
@@ -24,7 +24,7 @@ const RoomContainer: FC = () => {
     setIsRosterExpanded(prevIsExpanded => !prevIsExpanded)
   })
 
-  if (!isSm && activeRoomId === null) {
+  if (!isSmall && activeRoomId === null) {
     return <></>
   }
 
@@ -52,7 +52,7 @@ const RoomContainer: FC = () => {
               groupedMembers={groupedMembers}
               isLoading={isMembersLoading}
               onReloadMembers={onReloadMembers}
-              onUserClick={function (userId: string): void {
+              onUserClick={function (_userId: string): void {
                 throw new Error("`onUserClick` function not implemented.")
               }}
             />

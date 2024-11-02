@@ -198,12 +198,13 @@ export enum LangKey {
   LoadingNotifications,
   NotificationsEmpty,
   GoTo,
-  RemoveNotification,
   NotificationTypeInvited,
   NotificationTypeInvitationRemoved,
   NotificationTypeDowngradeToMember,
   NotificationTypeUpgradeToAdmin,
   NotificationTypeUpgradeToModerator,
+  RemoveNotification,
+  MarkAsRead,
 
   // #region RoomContainer
   AttachSource,

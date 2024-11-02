@@ -5,9 +5,10 @@ import {twMerge} from "tailwind-merge"
 import AvatarImage, {AvatarType} from "./AvatarImage"
 import Typography, {TypographyVariant} from "./Typography"
 import {notificationsBody, type NotificationType} from "@/utils/notifications"
-import {Button} from "./ui/button"
+import {Button, IconButton} from "./ui/button"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Heading, Text} from "./ui/typography"
 
 export type NotificationProps = {
   type: NotificationType
@@ -47,7 +48,11 @@ const Notification: FC<NotificationProps> = ({
   }
 
   return (
-    <div className={twMerge("flex gap-2 p-3", !isRead && "bg-slate-50")}>
+    <div
+      className={twMerge(
+        "flex gap-2 p-3",
+        !isRead && "bg-neutral-50 dark:bg-neutral-900"
+      )}>
       <AvatarImage
         isRounded
         displayName={sender}
@@ -57,48 +62,43 @@ const Notification: FC<NotificationProps> = ({
 
       <div className="flex w-full flex-col">
         <div className="flex h-max items-center gap-2">
-          <Typography
-            variant={TypographyVariant.BodyMedium}
-            style={{color: stringToColor(sender)}}>
+          <Heading level="h6" style={{color: stringToColor(sender)}}>
             {sender}
-          </Typography>
+          </Heading>
 
-          <Typography
-            className="text-gray-300"
-            variant={TypographyVariant.BodySmall}>
+          <time className="shrink-0 text-xs text-foreground">
             {formatTime(notificationTime)}
-          </Typography>
+          </time>
 
-          <div className="ml-auto flex items-center gap-1">
+          <div className="ml-auto flex items-center">
             {!isRead && (
-              <Button
-                className="size-max text-neutral-300 hover:bg-transparent"
-                aria-label={t(LangKey.RemoveNotification)}
-                variant="ghost"
-                size="icon"
+              <IconButton
+                className="size-6 text-neutral-500"
+                aria-label={t(LangKey.MarkAsRead)}
+                tooltip={t(LangKey.MarkAsRead)}
                 onClick={() => {
                   markAsRead(notificationId)
                 }}>
                 <IoCheckbox size={14} />
-              </Button>
+              </IconButton>
             )}
 
-            <Button
-              className="size-max text-neutral-300 hover:bg-transparent"
-              variant="ghost"
-              size="icon"
+            <IconButton
+              className="size-6 text-neutral-500"
+              aria-label={t(LangKey.RemoveNotification)}
+              tooltip={t(LangKey.RemoveNotification)}
               onClick={() => {
                 onDelete(notificationId)
               }}>
               <IoTrash size={14} />
-            </Button>
+            </IconButton>
           </div>
         </div>
 
-        <Typography variant={TypographyVariant.BodyMedium}>
+        <Text>
           {t(notificationsBody[type])}{" "}
           <b style={{color: stringToColor(roomName)}}>{roomName}</b>
-        </Typography>
+        </Text>
 
         {action !== undefined && (
           <Button

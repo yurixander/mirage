@@ -228,6 +228,7 @@ export const english: LangDefinition = {
   [LangKey.NotificationsEmpty]: "You not have notifications",
   [LangKey.GoTo]: "Go to ⟶",
   [LangKey.RemoveNotification]: "Remove notification",
+  [LangKey.MarkAsRead]: "Mark as read",
   [LangKey.NotificationTypeInvited]: "Has invited you to",
   [LangKey.NotificationTypeInvitationRemoved]:
     "The invitation to join has been withdrawn to",

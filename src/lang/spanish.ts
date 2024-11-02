@@ -246,6 +246,7 @@ export const spanish: LangDefinition = {
   [LangKey.NotificationsEmpty]: "No tienes notificaciones",
   [LangKey.GoTo]: "Ir a ⟶",
   [LangKey.RemoveNotification]: "Borrar notificación",
+  [LangKey.MarkAsRead]: "Marcar como leído",
   [LangKey.NotificationTypeInvited]: "Has sido invitado(a) a",
   [LangKey.NotificationTypeInvitationRemoved]:
     "La invitación para unirse ha sido retirada de",

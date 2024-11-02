@@ -8,6 +8,7 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Text} from "./ui/typography"
 import {MessageContextMenu} from "./ui/context-menu"
+import MatrixImage from "./MatrixImage"
 
 export interface ImageMessageProps extends MessageBaseProps, ImageMessageData {
   onClickImage: (imgUrl: string) => void
@@ -52,7 +53,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
               onClick={() => {
                 onClickImage(imageUrl)
               }}>
-              <img
+              <MatrixImage
                 className="cursor-pointer object-contain"
                 src={imageUrl}
                 alt={`${t(LangKey.MessageBy)} ${authorDisplayName}`}
