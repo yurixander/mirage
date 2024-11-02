@@ -14,10 +14,8 @@
     "prettier": "prettier --check .",
     "lint": "eslint .",
     "commit": "commit",
-    "postinstall": "husky",
     "prepack": "pinst --disable",
-    "postpack": "pinst --enable",
-    "prepare": "husky"
+    "postpack": "pinst --enable"
   },
   "dependencies": {
     "@commitlint/cli": "^19.5.0",
@@ -119,7 +117,6 @@
     "eslint-plugin-tailwindcss": "^3.17.5",
     "eslint-plugin-unicorn": "^56.0.0",
     "eslint-plugin-write-good-comments": "^0.2.0",
-    "husky": "^9.1.6",
     "husky-init": "8.0.0",
     "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
