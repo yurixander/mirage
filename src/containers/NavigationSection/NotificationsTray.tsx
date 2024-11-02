@@ -6,7 +6,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import {Heading, Text} from "@/components/ui/typography"
-import {useIsSmall} from "@/hooks/util/useMediaQuery"
+import useBreakpoint from "@/hooks/util/useMediaQuery"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {useMemo, type FC} from "react"
@@ -34,7 +34,7 @@ const NotificationsTray: FC<NotificationsTrayProps> = ({
   children,
 }) => {
   const {t} = useTranslation()
-  const isSmall = useIsSmall()
+  const {isSmall} = useBreakpoint()
 
   const notificationsComponents: React.JSX.Element[] = useMemo(
     () =>

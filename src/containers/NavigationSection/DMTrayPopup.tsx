@@ -19,8 +19,8 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Heading, Text} from "@/components/ui/typography"
 import {SearchInput} from "@/components/ui/input"
-import {useIsSmall} from "@/hooks/util/useMediaQuery"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
+import useBreakpoint from "@/hooks/util/useMediaQuery"
 
 export type DMUser = {
   displayName: string
@@ -58,7 +58,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
   children,
 }) => {
   const {t} = useTranslation()
-  const isSmall = useIsSmall()
+  const {isSmall} = useBreakpoint()
 
   const invitationLink =
     userId !== undefined && validateMatrixUser(userId)

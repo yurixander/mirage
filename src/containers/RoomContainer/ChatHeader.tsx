@@ -1,5 +1,5 @@
 import {IconButton} from "@/components/ui/button"
-import {useIsSmall} from "@/hooks/util/useMediaQuery"
+import useBreakpoint from "@/hooks/util/useMediaQuery"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {type FC} from "react"
@@ -37,7 +37,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
   isRoomEncrypted,
 }) => {
   const {t} = useTranslation()
-  const isSm = useIsSmall()
+  const {isSmall} = useBreakpoint()
 
   return (
     <header className={twMerge(className, "flex w-full flex-col gap-1")}>
@@ -74,7 +74,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
           )}
         </div>
 
-        {isSm ? (
+        {isSmall ? (
           <>
             <IconButton tooltip={t(LangKey.Call)}>
               <IoCall className="size-5" />

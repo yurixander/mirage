@@ -13,7 +13,7 @@ import useRoomNavigator from "./hooks/useRoomNavigator"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import SpacesNavigation, {SpacesPlaceHolder} from "./SpacesNavigation"
 import ValueStateHandler from "@/components/ValueStateHandler"
-import {useIsSmall} from "@/hooks/util/useMediaQuery"
+import useBreakpoint from "@/hooks/util/useMediaQuery"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {SearchInput} from "@/components/ui/input"
 
@@ -27,11 +27,11 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const [spaceSelected, setSpaceSelected] = useState(DASHBOARD_SPACE_ID)
   const {spaces: spacesState} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
-  const isSm = useIsSmall()
+  const {isSmall} = useBreakpoint()
   const {isSectionsLoading, sections} = useRoomNavigator(spaceSelected)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
 
-  if (!isSm && activeRoomId !== null) {
+  if (!isSmall && activeRoomId !== null) {
     return <></>
   }
 
