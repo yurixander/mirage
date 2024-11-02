@@ -14,3 +14,14 @@ export const spaceIndicatorAnimation: Variants = {
   default: {height: "0"},
   selected: {height: "var(--space-selected-indicator-height)"},
 }
+
+export const SLIDE_UP_SMALL_ANIM: Variants = {
+  default: {
+    translateY: "4rem",
+    opacity: 0,
+  },
+  slideUp: {
+    translateY: "0rem",
+    opacity: 1,
+  },
+}

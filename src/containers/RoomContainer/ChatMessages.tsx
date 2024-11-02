@@ -18,7 +18,10 @@ import {
   AlertDialogDescription,
   AlertDialogAction,
 } from "@radix-ui/react-alert-dialog"
-import {IoReload, IoHelp, IoClose} from "react-icons/io5"
+import {IoReload, IoHelp, IoClose, IoChevronDown} from "react-icons/io5"
+import useScrollPercent from "@/hooks/util/useScrollPercent"
+import {motion} from "framer-motion"
+import {SLIDE_UP_SMALL_ANIM} from "@/utils/animations"
 
 export type ChatMessagesProps = {
   messagesState: ValueState<AnyMessage[]>
@@ -34,13 +37,34 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   className,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const percent = useScrollPercent(scrollContainerRef)
+  const statusRef = useRef(messagesState.status)
+
+  const canJumpToDown = percent < 85
 
   useEffect(() => {
-    if (scrollContainerRef.current && messagesState.status === "success") {
+    if (
+      scrollContainerRef.current !== null &&
+      messagesState.status === "success" &&
+      messagesState.status !== statusRef.current
+    ) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight
     }
+
+    statusRef.current = messagesState.status
   }, [messagesState])
+
+  const scrollToDown = (): void => {
+    if (scrollContainerRef.current === null) {
+      return
+    }
+
+    scrollContainerRef.current.scrollTo({
+      top: scrollContainerRef.current.scrollHeight,
+      behavior: "smooth",
+    })
+  }
 
   return (
     <div className={twMerge("flex size-full flex-col gap-4", className)}>
@@ -83,6 +107,39 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
                   }}
                 />
               ))}
+            </div>
+
+            <div className="pointer-events-none absolute bottom-0 flex w-full justify-center bg-transparent p-1">
+              <div className="flex flex-col items-center gap-1">
+                {/* TODO: Handle when using custom unread indicator. */}
+                {/* <motion.div
+                  variants={SLIDE_UP_SMALL_ANIM}
+                  transition={{duration: 0.2}}
+                  animate={
+                    canJumpToDown && unreadMessagesIfNeeded !== null
+                      ? "slideUp"
+                      : "default"
+                  }>
+                  <Text size="1" className="w-max">
+                    {unreadMessagesIfNeeded} Unread messages
+                  </Text>
+                </motion.div> */}
+
+                <motion.button
+                  className="pointer-events-auto flex h-8 items-center gap-1 rounded-full border border-b-2 border-neutral-500 bg-white px-3 hover:bg-neutral-50 active:scale-95 active:transition-transform dark:bg-neutral-900 hover:dark:bg-neutral-800"
+                  onClick={scrollToDown}
+                  variants={SLIDE_UP_SMALL_ANIM}
+                  animate={canJumpToDown ? "slideUp" : "default"}
+                  transition={{duration: 0.2}}>
+                  <Text
+                    size="2"
+                    className="whitespace-nowrap text-neutral-800 dark:text-neutral-200">
+                    Jump to down
+                  </Text>
+
+                  <IoChevronDown className="text-neutral-800 dark:text-neutral-200" />
+                </motion.button>
+              </div>
             </div>
           </ScrollArea>
         )}

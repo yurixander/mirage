@@ -12,9 +12,13 @@ const useRoomTimeline = (
   const [anyMessagesState, setAnyMessagesState] = useValueState<AnyMessage[]>()
 
   const setMessagesScope = useCallback(
-    (roomId: string, execute: () => Promise<AnyMessage[] | null>) => {
+    (
+      roomId: string,
+      execute: () => Promise<AnyMessage[] | null>,
+      useLoading: boolean = true
+    ) => {
       setAnyMessagesState(prevState => {
-        if (prevState.status === "loading") {
+        if (prevState.status === "loading" || !useLoading) {
           return prevState
         }
 
@@ -107,25 +111,29 @@ const useRoomTimeline = (
 
       const senderId = event.sender?.userId ?? event.getSender()
 
-      setMessagesScope(room.roomId, async () => {
-        const messageResult = await handleRoomMessageEvent(event, room)
+      setMessagesScope(
+        room.roomId,
+        async () => {
+          const messageResult = await handleRoomMessageEvent(event, room)
 
-        if (messageResult === null) {
-          return null
-        }
+          if (messageResult === null) {
+            return null
+          }
 
-        await room.client.sendReadReceipt(event)
+          await room.client.sendReadReceipt(event)
 
-        if (room.myUserId === senderId) {
-          const messagesRead = anyMessagesState.data.filter(
-            message => message.kind !== MessageKind.Unread
-          )
+          if (room.myUserId === senderId) {
+            const messagesRead = anyMessagesState.data.filter(
+              message => message.kind !== MessageKind.Unread
+            )
 
-          return [...messagesRead, messageResult]
-        }
+            return [...messagesRead, messageResult]
+          }
 
-        return anyMessagesState.data.concat([messageResult])
-      })
+          return anyMessagesState.data.concat([messageResult])
+        },
+        false
+      )
     }
   )
 
