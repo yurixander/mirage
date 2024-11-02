@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import MatrixImage from "@/components/MatrixImage"
 
 export type SpaceProps = {
   isSelected: boolean
@@ -85,7 +86,7 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
                     variant="bauhaus"
                   />
                 ) : (
-                  <img
+                  <MatrixImage
                     className="size-full object-cover dark:opacity-90"
                     src={avatarUrl}
                     alt={`Avatar of ${spaceName}`}

@@ -54,22 +54,20 @@ export function getRoomUsersIdWithPowerLevels(
   const powerLevels = getPowerLevelsFromRoom(room)
   const usersWithPowerLevels: RoomMemberWithPowerLevel[] = []
 
-  try {
-    const users = Object.entries(powerLevels)
+  const users = Object.entries(powerLevels)
 
-    for (const [userId, powerLevel] of users) {
-      if (typeof powerLevel !== "number") {
-        continue
-      }
-
-      const userPowerLevel = processPowerLevelByNumber(powerLevel)
-
-      usersWithPowerLevels.push({
-        userId,
-        powerLevel: userPowerLevel,
-      })
+  for (const [userId, powerLevel] of users) {
+    if (typeof powerLevel !== "number") {
+      continue
     }
-  } catch {}
+
+    const userPowerLevel = processPowerLevelByNumber(powerLevel)
+
+    usersWithPowerLevels.push({
+      userId,
+      powerLevel: userPowerLevel,
+    })
+  }
 
   return usersWithPowerLevels
 }

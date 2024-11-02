@@ -18,7 +18,9 @@ import {StaticAssetPath} from "@/utils/util"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {ReactSVG} from "react-svg"
 import LoadingEffect from "@/components/LoadingEffect"
-import {DASHBOARD_SPACE_ID} from "./NavigationSection"
+import MatrixImage from "@/components/MatrixImage"
+
+export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
 export type SpaceNavigationProps = {
   spaces: PartialSpace[]
@@ -126,7 +128,7 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
                     variant="bauhaus"
                   />
                 ) : (
-                  <img
+                  <MatrixImage
                     aria-hidden
                     className="size-full object-cover dark:opacity-90"
                     src={avatarUrl}
