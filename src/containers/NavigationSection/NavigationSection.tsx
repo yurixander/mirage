@@ -73,7 +73,11 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
 
       <div className="flex size-full flex-col border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
         <div className="border-b border-neutral-300 p-2 dark:border-neutral-700">
-          <SearchInput onQueryDebounceChange={() => {}} />
+          <SearchInput
+            onQueryDebounceChange={() => {
+              // TODO: Handle global search.
+            }}
+          />
         </div>
 
         <ScrollArea
@@ -89,9 +93,15 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
             onCreateRoom={() => {
               setActiveModal(Modals.CreateRoom)
             }}
-            onCreateDM={() => {}}
-            addRoomToSpace={() => {}}
-            onSearch={() => {}}
+            onCreateDM={() => {
+              throw new Error("Create DM not implemented.")
+            }}
+            addRoomToSpace={() => {
+              throw new Error("Add room to space not implemented.")
+            }}
+            onSearch={() => {
+              throw new Error("Room search not implemented.")
+            }}
           />
         </ScrollArea>
 
