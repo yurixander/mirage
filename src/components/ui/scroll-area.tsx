@@ -1,16 +1,23 @@
-import * as React from "react"
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 
 import {cn} from "@/utils/utils"
+import {
+  type ComponentPropsWithoutRef,
+  forwardRef,
+  type ElementRef,
+  type FC,
+  useRef,
+  useEffect,
+} from "react"
 
 interface ScrollAreaProps
-  extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
+  extends ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
   isScrollBarHidden?: boolean
   avoidOverflow?: boolean
 }
 
-const ScrollArea = React.forwardRef<
-  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
+const ScrollArea = forwardRef<
+  ElementRef<typeof ScrollAreaPrimitive.Root>,
   ScrollAreaProps
 >(
   (
@@ -42,15 +49,15 @@ interface SmartScrollAreaProps extends ScrollAreaProps {
   endScrollChange?: (isEndScroll: boolean) => void
 }
 
-const SmartScrollArea: React.FC<SmartScrollAreaProps> = ({
+const SmartScrollArea: FC<SmartScrollAreaProps> = ({
   children,
   endScrollChange,
   ...props
 }) => {
-  const elementRef = React.useRef<HTMLDivElement>(null)
-  const containerRef = React.useRef<HTMLDivElement>(null)
+  const elementRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     const targetElement = elementRef.current
     const containerElement = containerRef.current
 
@@ -89,9 +96,9 @@ const SmartScrollArea: React.FC<SmartScrollAreaProps> = ({
   )
 }
 
-const ScrollBar = React.forwardRef<
-  React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
+const ScrollBar = forwardRef<
+  ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
+  ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
 >(({className, orientation = "vertical", ...props}, ref) => (
   <ScrollAreaPrimitive.ScrollAreaScrollbar
     ref={ref}

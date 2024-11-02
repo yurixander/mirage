@@ -180,7 +180,6 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
       .catch((error: Error) => {
         if (isMountedRef.current === roomId) {
           setState({status: "error", error})
-
           setIsLazyLoading(false)
         }
       })
