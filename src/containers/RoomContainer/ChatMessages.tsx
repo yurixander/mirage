@@ -23,7 +23,6 @@ import useScrollPercent from "@/hooks/util/useScrollPercent"
 import {motion} from "framer-motion"
 import {SLIDE_UP_SMALL_ANIM} from "@/utils/animations"
 import UnreadIndicator from "@/components/UnreadIndicator"
-import {delay} from "@/utils/util"
 
 const MIN_PERCENT_FOR_JUMP = 99
 
@@ -48,7 +47,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   const unreadIndicatorRef = useRef<HTMLDivElement>(null)
 
   const percent = useScrollPercent(scrollContainerRef)
-  const statusRef = useRef(messagesState.status)
+  const beforeStatusRef = useRef(messagesState.status)
 
   const internalLastMessageIdRef = useRef<string | null>(null)
 
@@ -57,16 +56,16 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     if (
       scrollContainerRef.current !== null &&
       messagesState.status === "success" &&
-      messagesState.status !== statusRef.current
+      messagesState.status !== beforeStatusRef.current
     ) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight
     }
 
-    statusRef.current = messagesState.status
+    beforeStatusRef.current = messagesState.status
   }, [messagesState])
 
-  // Remove unread indicator when 10 seconds past
+  // Remove unread indicator after 10 seconds.
   useEffect(() => {
     if (messagesState.status !== "success") {
       return
@@ -78,13 +77,15 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
       return
     }
 
-    void delay(10_000).finally(() => {
+    const timeoutId = setTimeout(() => {
       if (unreadIndicatorRef.current === null) {
         return
       }
 
       onLastMessageReadIdChange(null)
-    })
+    }, 10_000)
+
+    return () => clearTimeout(timeoutId)
   }, [lastMessageReadId, messagesState.status, onLastMessageReadIdChange])
 
   // Put or actualize the unread indicator location.
