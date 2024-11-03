@@ -51,8 +51,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 
   const internalLastMessageIdRef = useRef<string | null>(null)
 
-  const canJumpToDown = percent < MIN_PERCENT_FOR_JUMP
-
   useEffect(() => {
     if (
       scrollContainerRef.current !== null &&
@@ -65,17 +63,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 
     statusRef.current = messagesState.status
   }, [messagesState])
-
-  const scrollToDown = (): void => {
-    if (scrollContainerRef.current === null) {
-      return
-    }
-
-    scrollContainerRef.current.scrollTo({
-      top: scrollContainerRef.current.scrollHeight,
-      behavior: "smooth",
-    })
-  }
 
   useEffect(() => {
     if (messagesState.status !== "success") {
@@ -173,41 +160,67 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
               ))}
             </div>
 
-            <div className="pointer-events-none absolute bottom-0 flex w-full justify-center bg-transparent p-1">
-              <div className="flex flex-col items-center gap-1">
-                {/* TODO: Handle when using custom unread indicator. */}
-                {/* <motion.div
-                  variants={SLIDE_UP_SMALL_ANIM}
-                  transition={{duration: 0.2}}
-                  animate={
-                    canJumpToDown && unreadMessagesCount > 0
-                      ? "slideUp"
-                      : "default"
-                  }>
-                  <Text size="1" className="w-max">
-                    0 Unread messages
-                  </Text>
-                </motion.div> */}
+            <JumpToDownAction
+              percent={percent}
+              scrollToDown={() => {
+                if (scrollContainerRef.current === null) {
+                  return
+                }
 
-                <motion.button
-                  className="pointer-events-auto flex h-8 items-center gap-1 rounded-full border border-b-2 border-neutral-500 bg-white px-3 hover:bg-neutral-50 active:scale-95 active:transition-transform dark:bg-neutral-900 hover:dark:bg-neutral-800"
-                  onClick={scrollToDown}
-                  variants={SLIDE_UP_SMALL_ANIM}
-                  animate={canJumpToDown ? "slideUp" : "default"}
-                  transition={{duration: 0.2}}>
-                  <Text
-                    size="2"
-                    className="whitespace-nowrap text-neutral-800 dark:text-neutral-200">
-                    Jump to down
-                  </Text>
-
-                  <IoChevronDown className="text-neutral-800 dark:text-neutral-200" />
-                </motion.button>
-              </div>
-            </div>
+                scrollContainerRef.current.scrollTo({
+                  top: scrollContainerRef.current.scrollHeight,
+                  behavior: "smooth",
+                })
+              }}
+            />
           </ScrollArea>
         )}
       </ValueStateHandler>
+    </div>
+  )
+}
+
+type JumpToDownActionProps = {
+  percent: number
+  scrollToDown: () => void
+}
+
+const JumpToDownAction: FC<JumpToDownActionProps> = ({
+  percent,
+  scrollToDown,
+}) => {
+  return (
+    <div className="pointer-events-none absolute bottom-0 flex w-full justify-center bg-transparent p-1">
+      <div className="flex flex-col items-center gap-1">
+        {/* TODO: Handle when using custom unread indicator. */}
+        {/* <motion.div
+      variants={SLIDE_UP_SMALL_ANIM}
+      transition={{duration: 0.2}}
+      animate={
+        canJumpToDown && unreadMessagesCount > 0
+          ? "slideUp"
+          : "default"
+      }>
+      <Text size="1" className="w-max">
+        0 Unread messages
+      </Text>
+    </motion.div> */}
+
+        <motion.button
+          className="pointer-events-auto flex h-8 items-center gap-1 rounded-full border border-b-2 border-neutral-500 bg-white px-3 hover:bg-neutral-50 active:scale-95 active:transition-transform dark:bg-neutral-900 hover:dark:bg-neutral-800"
+          onClick={scrollToDown}
+          variants={SLIDE_UP_SMALL_ANIM}
+          animate={percent < MIN_PERCENT_FOR_JUMP ? "slideUp" : "default"}
+          transition={{duration: 0.2}}>
+          <Text
+            size="2"
+            className="whitespace-nowrap text-neutral-800 dark:text-neutral-200">
+            Jump to down
+          </Text>
+
+          <IoChevronDown className="text-neutral-800 dark:text-neutral-200" />
+        </motion.button>
+      </div>
     </div>
   )
 }
