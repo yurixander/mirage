@@ -1,5 +1,12 @@
 import {type DependencyList, useEffect, useState} from "react"
 
+function calculateScrollPercent(scroll: HTMLDivElement): number {
+  const scrollTop = scroll.scrollTop
+  const scrollHeight = scroll.scrollHeight - scroll.clientHeight
+
+  return (scrollTop / scrollHeight) * 100
+}
+
 const useScrollPercent = (
   containerScrollRef: React.RefObject<HTMLDivElement>,
   depsUpdater: DependencyList = []
@@ -13,18 +20,19 @@ const useScrollPercent = (
       return
     }
 
-    const handleScroll = (): void => {
-      const scrollTop = scroll.scrollTop
-      const scrollHeight = scroll.scrollHeight - scroll.clientHeight
-      const percentage = (scrollTop / scrollHeight) * 100
-
-      setPercent(Math.round(percentage))
+    const updatePercent = (): void => {
+      setPercent(Math.round(calculateScrollPercent(scroll)))
     }
 
-    scroll.addEventListener("scroll", handleScroll)
+    const resizeObserver = new ResizeObserver(updatePercent)
+    resizeObserver.observe(scroll)
+
+    scroll.addEventListener("scroll", updatePercent)
 
     return () => {
-      scroll.removeEventListener("scroll", handleScroll)
+      scroll.removeEventListener("scroll", updatePercent)
+
+      resizeObserver.disconnect()
     }
   }, [containerScrollRef, depsUpdater])
 
