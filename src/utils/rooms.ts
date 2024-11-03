@@ -235,7 +235,6 @@ export const handleRoomEvents = async (
   const client = activeRoom.client
   const roomHistory = await client.scrollback(activeRoom, SCROLLBACK_MAX)
   const events = roomHistory.getLiveTimeline().getEvents()
-  const lastReadEventId = activeRoom.getEventReadUpTo(activeRoom.myUserId)
   const allMessageProperties: AnyMessage[] = []
 
   for (const event of events) {
@@ -247,15 +246,7 @@ export const handleRoomEvents = async (
 
     allMessageProperties.push(messageProperties)
 
-    if (lastReadEventId === event.event.event_id) {
-      allMessageProperties.push({
-        kind: MessageKind.Unread,
-        data: {lastReadEventId},
-        messageId: lastReadEventId,
-      })
-    }
-
-    void client.sendReadReceipt(event)
+    await client.sendReadReceipt(event)
   }
 
   return groupEventMessage(allMessageProperties)

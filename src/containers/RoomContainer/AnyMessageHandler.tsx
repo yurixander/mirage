@@ -12,7 +12,6 @@ import {type FC} from "react"
 import {type AnyMessage, MessageKind} from "./hooks/useRoomChat"
 
 type AnyMessageHandlerProps = {
-  isAtTheEnd: boolean
   anyMessage: AnyMessage
   onAuthorClick: (userId: string) => void
   onClickImage: (imgUrl: string) => void
@@ -22,7 +21,6 @@ type AnyMessageHandlerProps = {
 }
 
 const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
-  isAtTheEnd,
   anyMessage,
   onAuthorClick,
   onResendMessage,
@@ -122,11 +120,7 @@ const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
       )
     }
     case MessageKind.Unread: {
-      return (
-        isAtTheEnd && (
-          <UnreadIndicator key="unread-indicator" {...anyMessage.data} />
-        )
-      )
+      return <UnreadIndicator {...anyMessage.data} />
     }
     case MessageKind.EventGroup: {
       return (

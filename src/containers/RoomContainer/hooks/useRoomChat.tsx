@@ -6,7 +6,6 @@ import {type ImageMessageData} from "@/components/ImageMessage"
 import {type ReplyMessageData} from "@/components/ReplyMessage"
 import {type TextMessageData} from "@/components/TextMessage"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
-import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {type VideoMessageData} from "@/components/VideoMessage"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useEventListener from "@/hooks/matrix/useEventListener"
@@ -28,7 +27,6 @@ export enum MessageKind {
   Reply,
   EventGroup,
   Video,
-  Unread,
 }
 
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
@@ -47,9 +45,7 @@ export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
               ? ReplyMessageData
               : Kind extends MessageKind.EventGroup
                 ? EventGroupMessageData
-                : Kind extends MessageKind.Video
-                  ? VideoMessageData
-                  : UnreadIndicatorProps
+                : VideoMessageData
 
 export type Message<Kind extends MessageKind> = {
   kind: Kind
@@ -63,7 +59,6 @@ export type AnyMessage =
   | Message<MessageKind.Event>
   | Message<MessageKind.File>
   | Message<MessageKind.Video>
-  | Message<MessageKind.Unread>
   | Message<MessageKind.Audio>
   | Message<MessageKind.Reply>
   | Message<MessageKind.EventGroup>
@@ -72,6 +67,8 @@ type UseRoomChatReturnType = {
   messagesState: ValueState<AnyMessage[]>
   roomDetail: RoomDetail
   isChatLoading: boolean
+  lastMessageReadId: string | null
+  onLastMessageReadIdChange: (messageId: string | null) => void
   typingUsers: TypingIndicatorUser[]
   isInputDisabled: boolean
   sendTypingEvent: (roomId: string) => void
@@ -88,8 +85,14 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null)
 
-  const [messagesState, reloadMessages] = useRoomTimeline(currentRoom)
   const roomDetail = useRoomDetail(currentRoom)
+
+  const {
+    messagesState,
+    lastMessageReadId,
+    reloadMessages,
+    onLastMessageReadIdChange,
+  } = useRoomTimeline(currentRoom)
 
   useEffect(() => {
     if (client === null) {
@@ -155,6 +158,8 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     isInputDisabled: client === null,
     onSendAudioMessage,
     onReloadMessages: reloadMessages,
+    lastMessageReadId,
+    onLastMessageReadIdChange,
     sendMessageText({messageText, roomId}) {
       if (client === null || messageText.length === 0) {
         return

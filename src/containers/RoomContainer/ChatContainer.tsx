@@ -30,6 +30,8 @@ const ChatContainer: FC<ChatContainerProps> = ({
   const {
     messagesState,
     roomDetail,
+    lastMessageReadId,
+    onLastMessageReadIdChange,
     isChatLoading,
     typingUsers,
     sendTypingEvent,
@@ -61,9 +63,11 @@ const ChatContainer: FC<ChatContainerProps> = ({
 
       <ChatMessages
         className="p-3"
+        lastMessageReadId={lastMessageReadId}
         messagesState={messagesState}
         onReloadMessages={onReloadMessages}
         onCloseRoom={clearActiveRoomId}
+        onLastMessageReadIdChange={onLastMessageReadIdChange}
       />
 
       <footer className="order-3 flex flex-col px-3.5">

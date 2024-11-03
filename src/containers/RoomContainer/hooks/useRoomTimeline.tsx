@@ -1,15 +1,24 @@
 import useValueState, {type ValueState} from "@/hooks/util/useValueState"
-import {MessageKind, type AnyMessage} from "./useRoomChat"
+import {type AnyMessage} from "./useRoomChat"
 import {RoomEvent, type Room} from "matrix-js-sdk"
-import {useCallback, useEffect, useRef} from "react"
+import {useCallback, useEffect, useRef, useState} from "react"
 import {handleRoomEvents, handleRoomMessageEvent} from "@/utils/rooms"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 
-const useRoomTimeline = (
-  room: Room | null
-): [ValueState<AnyMessage[]>, () => void] => {
+type UseRoomTimelineReturnType = {
+  messagesState: ValueState<AnyMessage[]>
+  lastMessageReadId: string | null
+  onLastMessageReadIdChange: (messageId: string | null) => void
+  reloadMessages: () => void
+}
+
+const useRoomTimeline = (room: Room | null): UseRoomTimelineReturnType => {
   const roomIdRef = useRef<string | null>(null)
   const [anyMessagesState, setAnyMessagesState] = useValueState<AnyMessage[]>()
+
+  const [lastMessageReadId, setLastReadMessageId] = useState<string | null>(
+    null
+  )
 
   const setMessagesScope = useCallback(
     (
@@ -48,37 +57,16 @@ const useRoomTimeline = (
   // Initial messages fetching.
   useEffect(() => {
     if (room === null) {
+      setLastReadMessageId(null)
+
       return
     }
+
+    const lastReadMessageId = room.getEventReadUpTo(room.myUserId)
 
     setMessagesScope(room.roomId, async () => await handleRoomEvents(room))
+    setLastReadMessageId(lastReadMessageId)
   }, [room, setMessagesScope])
-
-  // Remove the unread indicator after 10 seconds have passed.
-  useEffect(() => {
-    if (anyMessagesState.status !== "success") {
-      return
-    }
-
-    const handler = setTimeout(() => {
-      setAnyMessagesState(prevState => {
-        if (prevState.status !== "success") {
-          return prevState
-        }
-
-        return {
-          status: "success",
-          data: prevState.data.filter(
-            message => message.kind !== MessageKind.Unread
-          ),
-        }
-      })
-    }, 10_000)
-
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [anyMessagesState.status, setAnyMessagesState])
 
   // When someone deletes a message.
   useRoomListener(room, RoomEvent.Redaction, (event, room) => {
@@ -93,7 +81,12 @@ const useRoomTimeline = (
     }
 
     // TODO: Optimize this, not reload all messages when process one message.
-    // void fetchRoomMessages(room)
+    setMessagesScope(
+      room.roomId,
+      async () => await handleRoomEvents(room),
+      false
+    )
+
     void room.client.sendReadReceipt(event)
   })
 
@@ -111,6 +104,10 @@ const useRoomTimeline = (
 
       const senderId = event.sender?.userId ?? event.getSender()
 
+      if (senderId === room.myUserId) {
+        setLastReadMessageId(null)
+      }
+
       setMessagesScope(
         room.roomId,
         async () => {
@@ -122,14 +119,6 @@ const useRoomTimeline = (
 
           await room.client.sendReadReceipt(event)
 
-          if (room.myUserId === senderId) {
-            const messagesRead = anyMessagesState.data.filter(
-              message => message.kind !== MessageKind.Unread
-            )
-
-            return [...messagesRead, messageResult]
-          }
-
           return anyMessagesState.data.concat([messageResult])
         },
         false
@@ -137,16 +126,21 @@ const useRoomTimeline = (
     }
   )
 
-  return [
-    anyMessagesState,
-    () => {
+  return {
+    messagesState: anyMessagesState,
+    lastMessageReadId,
+    onLastMessageReadIdChange: setLastReadMessageId,
+    reloadMessages() {
       if (room === null) {
         return
       }
 
+      const lastReadMessageId = room.getEventReadUpTo(room.myUserId)
+
       setMessagesScope(room.roomId, async () => await handleRoomEvents(room))
+      setLastReadMessageId(lastReadMessageId)
     },
-  ]
+  }
 }
 
 export default useRoomTimeline

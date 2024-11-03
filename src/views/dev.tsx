@@ -6,7 +6,7 @@ import {
 import useValueState from "@/hooks/util/useValueState"
 import {DUMMY_MESSAGE_TEXT} from "@/stories/Chat/textMessage.stories"
 import {delay} from "@/utils/util"
-import {useEffect, type FC} from "react"
+import {useEffect, useState, type FC} from "react"
 
 const TEST: AnyMessage = {
   kind: MessageKind.Text,
@@ -16,6 +16,10 @@ const TEST: AnyMessage = {
 
 const DevelopmentPreview: FC = () => {
   const [state, setState] = useValueState<AnyMessage[]>()
+
+  const [lastMessageReadId, setLastMessageReadId] = useState<string | null>(
+    "mes 44"
+  )
 
   useEffect(() => {
     void delay(1000).then(() => {
@@ -27,13 +31,30 @@ const DevelopmentPreview: FC = () => {
     })
   }, [setState])
 
+  useEffect(() => {
+    void delay(4000).then(() => {
+      setState(prev => {
+        if (prev.status === "success") {
+          return {
+            status: "success",
+            data: prev.data.concat([{...TEST, messageId: "mes 49"}]),
+          }
+        }
+
+        return prev
+      })
+    })
+  }, [setState])
+
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center">
       <ChatMessages
         className="max-w-2xl py-10"
+        lastMessageReadId={lastMessageReadId}
         messagesState={state}
         onReloadMessages={() => {}}
         onCloseRoom={() => {}}
+        onLastMessageReadIdChange={setLastMessageReadId}
       />
     </div>
   )

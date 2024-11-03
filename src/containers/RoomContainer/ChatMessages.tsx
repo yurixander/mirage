@@ -22,9 +22,15 @@ import {IoReload, IoHelp, IoClose, IoChevronDown} from "react-icons/io5"
 import useScrollPercent from "@/hooks/util/useScrollPercent"
 import {motion} from "framer-motion"
 import {SLIDE_UP_SMALL_ANIM} from "@/utils/animations"
+import UnreadIndicator from "@/components/UnreadIndicator"
+import {delay} from "@/utils/util"
+
+const MIN_PERCENT_FOR_JUMP = 99
 
 export type ChatMessagesProps = {
   messagesState: ValueState<AnyMessage[]>
+  lastMessageReadId: string | null
+  onLastMessageReadIdChange: (messageId: string | null) => void
   onReloadMessages: () => void
   onCloseRoom: () => void
   className?: string
@@ -32,15 +38,20 @@ export type ChatMessagesProps = {
 
 export const ChatMessages: FC<ChatMessagesProps> = ({
   messagesState,
+  lastMessageReadId,
   onCloseRoom,
+  onLastMessageReadIdChange,
   onReloadMessages,
   className,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const unreadIndicatorRef = useRef<HTMLDivElement>(null)
   const percent = useScrollPercent(scrollContainerRef)
   const statusRef = useRef(messagesState.status)
 
-  const canJumpToDown = percent < 85
+  const internalLastMessageIdRef = useRef<string | null>(null)
+
+  const canJumpToDown = percent < MIN_PERCENT_FOR_JUMP
 
   useEffect(() => {
     if (
@@ -66,6 +77,50 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     })
   }
 
+  useEffect(() => {
+    if (messagesState.status !== "success") {
+      return
+    }
+
+    if (lastMessageReadId === null) {
+      unreadIndicatorRef.current?.remove()
+
+      return
+    }
+
+    void delay(10_000).then(() => {
+      if (unreadIndicatorRef.current === null) {
+        return
+      }
+
+      onLastMessageReadIdChange(null)
+    })
+  }, [lastMessageReadId, messagesState.status, onLastMessageReadIdChange])
+
+  useEffect(() => {
+    if (
+      messagesState.status !== "success" ||
+      percent > MIN_PERCENT_FOR_JUMP ||
+      internalLastMessageIdRef.current === messagesState.data.at(-1)?.messageId
+    ) {
+      return
+    }
+
+    const cachedLastMessageId = messagesState.data.at(-1)?.messageId
+
+    if (cachedLastMessageId === undefined) {
+      return
+    }
+
+    internalLastMessageIdRef.current = cachedLastMessageId
+
+    if (lastMessageReadId !== null) {
+      return
+    }
+
+    onLastMessageReadIdChange(cachedLastMessageId)
+  }, [lastMessageReadId, messagesState, onLastMessageReadIdChange, percent])
+
   return (
     <div className={twMerge("flex size-full flex-col gap-4", className)}>
       <ValueStateHandler
@@ -86,26 +141,35 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
           <ScrollArea avoidOverflow ref={scrollContainerRef}>
             <div className="flex-1 space-y-4">
               {messages.map((message, index) => (
-                <AnyMessageHandler
-                  key={message.messageId}
-                  isAtTheEnd={index !== messages.length - 1}
-                  anyMessage={message}
-                  onAuthorClick={(_userId: string) => {
-                    throw new Error("Author click function not implemented.")
-                  }}
-                  onClickImage={(_imgUrl: string) => {
-                    throw new Error("Click image function not implemented.")
-                  }}
-                  onResendMessage={() => {
-                    throw new Error("Resend message function not implemented.")
-                  }}
-                  onReplyMessage={() => {
-                    throw new Error("Reply message function not implemented.")
-                  }}
-                  onDeleteMessage={() => {
-                    throw new Error("Delete message function not implemented.")
-                  }}
-                />
+                <div key={message.messageId}>
+                  <AnyMessageHandler
+                    anyMessage={message}
+                    onAuthorClick={(_userId: string) => {
+                      throw new Error("Author click function not implemented.")
+                    }}
+                    onClickImage={(_imgUrl: string) => {
+                      throw new Error("Click image function not implemented.")
+                    }}
+                    onResendMessage={() => {
+                      throw new Error(
+                        "Resend message function not implemented."
+                      )
+                    }}
+                    onReplyMessage={() => {
+                      throw new Error("Reply message function not implemented.")
+                    }}
+                    onDeleteMessage={() => {
+                      throw new Error(
+                        "Delete message function not implemented."
+                      )
+                    }}
+                  />
+
+                  {message.messageId === lastMessageReadId &&
+                    index !== messages.length - 1 && (
+                      <UnreadIndicator ref={unreadIndicatorRef} />
+                    )}
+                </div>
               ))}
             </div>
 
@@ -116,12 +180,12 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
                   variants={SLIDE_UP_SMALL_ANIM}
                   transition={{duration: 0.2}}
                   animate={
-                    canJumpToDown && unreadMessagesIfNeeded !== null
+                    canJumpToDown && unreadMessagesCount > 0
                       ? "slideUp"
                       : "default"
                   }>
                   <Text size="1" className="w-max">
-                    {unreadMessagesIfNeeded} Unread messages
+                    0 Unread messages
                   </Text>
                 </motion.div> */}
 
