@@ -21,7 +21,7 @@ const useScrollPercent = (
     }
 
     const updatePercent = (): void => {
-      setPercent(Math.round(calculateScrollPercent(scroll)))
+      setPercent(calculateScrollPercent(scroll))
     }
 
     const resizeObserver = new ResizeObserver(updatePercent)

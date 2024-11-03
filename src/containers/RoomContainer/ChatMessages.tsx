@@ -1,4 +1,4 @@
-import {type FC, useEffect, useRef} from "react"
+import {type FC, useEffect, useRef, useState} from "react"
 import {twMerge} from "tailwind-merge"
 import {type AnyMessage} from "./hooks/useRoomChat"
 import useTranslation from "@/hooks/util/useTranslation"
@@ -24,7 +24,7 @@ import {motion} from "framer-motion"
 import {SLIDE_UP_SMALL_ANIM} from "@/utils/animations"
 import UnreadIndicator from "@/components/UnreadIndicator"
 
-const MIN_PERCENT_FOR_JUMP = 99
+const MIN_PERCENT_FOR_JUMP = 99.5
 
 export type ChatMessagesProps = {
   messagesState: ValueState<AnyMessage[]>
@@ -83,10 +83,10 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
       }
 
       onLastMessageReadIdChange(null)
-    }, 10_000)
+    }, 8000)
 
     return () => clearTimeout(timeoutId)
-  }, [lastMessageReadId, messagesState.status, onLastMessageReadIdChange])
+  }, [lastMessageReadId, messagesState, onLastMessageReadIdChange])
 
   // Put or actualize the unread indicator location.
   useEffect(() => {
@@ -166,23 +166,92 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
               ))}
             </div>
 
-            <JumpToDownAction
-              percent={percent}
-              scrollToDown={() => {
-                if (scrollContainerRef.current === null) {
-                  return
-                }
+            <div className="pointer-events-none absolute bottom-0 flex w-full justify-center bg-transparent p-1">
+              <div className="flex flex-col items-center gap-1">
+                <UnreadMessagesCountPopup
+                  percent={percent}
+                  messagesState={messagesState}
+                />
 
-                scrollContainerRef.current.scrollTo({
-                  top: scrollContainerRef.current.scrollHeight,
-                  behavior: "smooth",
-                })
-              }}
-            />
+                <JumpToDownAction
+                  percent={percent}
+                  scrollToDown={() => {
+                    if (scrollContainerRef.current === null) {
+                      return
+                    }
+
+                    scrollContainerRef.current.scrollTo({
+                      top: scrollContainerRef.current.scrollHeight,
+                      behavior: "smooth",
+                    })
+                  }}
+                />
+              </div>
+            </div>
           </ScrollArea>
         )}
       </ValueStateHandler>
     </div>
+  )
+}
+
+type UnreadMessagesCountProps = {
+  percent: number
+  messagesState: ValueState<AnyMessage[]>
+}
+
+const UnreadMessagesCountPopup: FC<UnreadMessagesCountProps> = ({
+  percent,
+  messagesState,
+}) => {
+  const beforeLengthRef = useRef<number | null>(null)
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
+
+  useEffect(() => {
+    if (messagesState.status !== "success") {
+      beforeLengthRef.current = null
+      setUnreadMessagesCount(0)
+
+      return
+    }
+
+    if (beforeLengthRef.current === null) {
+      beforeLengthRef.current = messagesState.data.length
+      setUnreadMessagesCount(0)
+
+      return
+    }
+
+    if (beforeLengthRef.current > messagesState.data.length) {
+      setUnreadMessagesCount(0)
+      beforeLengthRef.current = messagesState.data.length
+
+      return
+    }
+
+    setUnreadMessagesCount(messagesState.data.length - beforeLengthRef.current)
+    beforeLengthRef.current = messagesState.data.length
+  }, [messagesState])
+
+  useEffect(() => {
+    if (percent > MIN_PERCENT_FOR_JUMP) {
+      setUnreadMessagesCount(0)
+    }
+  }, [percent])
+
+  return (
+    <motion.div
+      variants={SLIDE_UP_SMALL_ANIM}
+      transition={{duration: 0.2}}
+      animate={
+        percent < MIN_PERCENT_FOR_JUMP && unreadMessagesCount > 0
+          ? "slideUp"
+          : "default"
+      }>
+      <Text size="1" className="w-max">
+        {unreadMessagesCount} Unread messages
+      </Text>
+    </motion.div>
   )
 }
 
@@ -196,38 +265,20 @@ const JumpToDownAction: FC<JumpToDownActionProps> = ({
   scrollToDown,
 }) => {
   return (
-    <div className="pointer-events-none absolute bottom-0 flex w-full justify-center bg-transparent p-1">
-      <div className="flex flex-col items-center gap-1">
-        {/* TODO: Handle when using custom unread indicator. */}
-        {/* <motion.div
+    <motion.button
+      className="pointer-events-auto flex h-8 items-center gap-1 rounded-full border border-b-2 border-neutral-500 bg-white px-3 hover:bg-neutral-50 active:scale-95 active:transition-transform dark:bg-neutral-900 hover:dark:bg-neutral-800"
+      onClick={scrollToDown}
       variants={SLIDE_UP_SMALL_ANIM}
-      transition={{duration: 0.2}}
-      animate={
-        canJumpToDown && unreadMessagesCount > 0
-          ? "slideUp"
-          : "default"
-      }>
-      <Text size="1" className="w-max">
-        0 Unread messages
+      animate={percent < MIN_PERCENT_FOR_JUMP ? "slideUp" : "default"}
+      transition={{duration: 0.2}}>
+      <Text
+        size="2"
+        className="whitespace-nowrap text-neutral-800 dark:text-neutral-200">
+        Jump to down
       </Text>
-    </motion.div> */}
 
-        <motion.button
-          className="pointer-events-auto flex h-8 items-center gap-1 rounded-full border border-b-2 border-neutral-500 bg-white px-3 hover:bg-neutral-50 active:scale-95 active:transition-transform dark:bg-neutral-900 hover:dark:bg-neutral-800"
-          onClick={scrollToDown}
-          variants={SLIDE_UP_SMALL_ANIM}
-          animate={percent < MIN_PERCENT_FOR_JUMP ? "slideUp" : "default"}
-          transition={{duration: 0.2}}>
-          <Text
-            size="2"
-            className="whitespace-nowrap text-neutral-800 dark:text-neutral-200">
-            Jump to down
-          </Text>
-
-          <IoChevronDown className="text-neutral-800 dark:text-neutral-200" />
-        </motion.button>
-      </div>
-    </div>
+      <IoChevronDown className="text-neutral-800 dark:text-neutral-200" />
+    </motion.button>
   )
 }
 
