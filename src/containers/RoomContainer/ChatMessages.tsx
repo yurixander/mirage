@@ -46,11 +46,13 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const unreadIndicatorRef = useRef<HTMLDivElement>(null)
+
   const percent = useScrollPercent(scrollContainerRef)
   const statusRef = useRef(messagesState.status)
 
   const internalLastMessageIdRef = useRef<string | null>(null)
 
+  // Scroll down when messages status has changed.
   useEffect(() => {
     if (
       scrollContainerRef.current !== null &&
@@ -64,6 +66,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     statusRef.current = messagesState.status
   }, [messagesState])
 
+  // Remove unread indicator when 10 seconds past
   useEffect(() => {
     if (messagesState.status !== "success") {
       return
@@ -75,7 +78,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
       return
     }
 
-    void delay(10_000).then(() => {
+    void delay(10_000).finally(() => {
       if (unreadIndicatorRef.current === null) {
         return
       }
@@ -84,6 +87,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     })
   }, [lastMessageReadId, messagesState.status, onLastMessageReadIdChange])
 
+  // Put or actualize the unread indicator location.
   useEffect(() => {
     if (
       messagesState.status !== "success" ||
@@ -101,6 +105,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
 
     internalLastMessageIdRef.current = cachedLastMessageId
 
+    // If there is already unread indicator do nothing.
     if (lastMessageReadId !== null) {
       return
     }
