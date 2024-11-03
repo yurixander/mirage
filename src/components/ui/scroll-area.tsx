@@ -25,14 +25,15 @@ const ScrollArea = forwardRef<
     ref
   ) => (
     <ScrollAreaPrimitive.Root
-      ref={ref}
       className={cn(
         "relative overflow-hidden",
         avoidOverflow && "grow basis-0",
         className
       )}
       {...props}>
-      <ScrollAreaPrimitive.Viewport className="size-full rounded-[inherit]">
+      <ScrollAreaPrimitive.Viewport
+        className="size-full rounded-[inherit]"
+        ref={ref}>
         {children}
       </ScrollAreaPrimitive.Viewport>
 

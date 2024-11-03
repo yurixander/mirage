@@ -3,7 +3,7 @@ import MessageContainer, {
   type MessageBaseData,
   type MessageBaseProps,
 } from "./MessageContainer"
-import {assert, CommonAssertion, validateUrl} from "@/utils/util"
+import {assert, validateUrl} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Text} from "./ui/typography"
@@ -27,7 +27,6 @@ const ImageMessage: FC<ImageMessageProps> = ({
   onClickImage,
   timestamp,
   contextMenuItems,
-  messageId,
   userId,
 }) => {
   const {t} = useTranslation()
@@ -35,8 +34,6 @@ const ImageMessage: FC<ImageMessageProps> = ({
   if (imageUrl !== undefined) {
     assert(validateUrl(imageUrl), "The image url should be valid.")
   }
-
-  assert(messageId.length > 0, CommonAssertion.MessageIdEmpty)
 
   return (
     <MessageContainer
