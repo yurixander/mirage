@@ -126,6 +126,8 @@ const useRoomMembers = (roomId: string | null): UseRoomMembersReturnType => {
       return
     }
 
+    // If status is error or loading do nothing.
+    // Check if all users have already been loaded, if they have already been loaded do nothing.
     if (
       state.status !== "success" ||
       state.data.admins.length +
