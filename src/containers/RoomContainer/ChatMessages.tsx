@@ -204,6 +204,7 @@ const UnreadMessagesCountPopup: FC<UnreadMessagesCountProps> = ({
   percent,
   messagesState,
 }) => {
+  const {t} = useTranslation()
   const beforeLengthRef = useRef<number | null>(null)
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
 
@@ -249,7 +250,7 @@ const UnreadMessagesCountPopup: FC<UnreadMessagesCountProps> = ({
           : "default"
       }>
       <Text size="1" className="w-max">
-        {unreadMessagesCount} Unread messages
+        {t(LangKey.UnreadMessagesCount, unreadMessagesCount.toString())}
       </Text>
     </motion.div>
   )
@@ -264,17 +265,20 @@ const JumpToDownAction: FC<JumpToDownActionProps> = ({
   percent,
   scrollToDown,
 }) => {
+  const {t} = useTranslation()
+
   return (
     <motion.button
       className="pointer-events-auto flex h-8 items-center gap-1 rounded-full border border-b-2 border-neutral-500 bg-white px-3 hover:bg-neutral-50 active:scale-95 active:transition-transform dark:bg-neutral-900 hover:dark:bg-neutral-800"
       onClick={scrollToDown}
       variants={SLIDE_UP_SMALL_ANIM}
       animate={percent < MIN_PERCENT_FOR_JUMP ? "slideUp" : "default"}
-      transition={{duration: 0.2}}>
+      transition={{duration: 0.2}}
+      aria-label={t(LangKey.JumpToDown)}>
       <Text
         size="2"
         className="whitespace-nowrap text-neutral-800 dark:text-neutral-200">
-        Jump to down
+        {t(LangKey.JumpToDown)}
       </Text>
 
       <IoChevronDown className="text-neutral-800 dark:text-neutral-200" />

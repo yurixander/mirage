@@ -110,6 +110,8 @@ export const english: LangDefinition = {
   [LangKey.ExpandRoster]: "Expand roster",
   [LangKey.DownloadImage]: "Download image",
   [LangKey.SyncState]: "Sync state",
+  [LangKey.JumpToDown]: "Jump to down",
+  [LangKey.UnreadMessagesCount]: (count: string) => `${count} Unread messages`,
 
   // #region Roster
   [LangKey.People]: "People",

@@ -100,6 +100,8 @@ export enum LangKey {
   ExpandRoster,
   DownloadImage,
   SyncState,
+  JumpToDown,
+  UnreadMessagesCount,
 
   // #region Roster
   People,

@@ -110,6 +110,9 @@ export const spanish: LangDefinition = {
   [LangKey.ExpandRoster]: "Expandir el listado de miembros",
   [LangKey.DownloadImage]: "Descargar imagen",
   [LangKey.SyncState]: "Estado de syncronización",
+  [LangKey.JumpToDown]: "Ir abajo",
+  [LangKey.UnreadMessagesCount]: (count: string) =>
+    `${count} Mensajes no leídos`,
 
   // #region Roster
   [LangKey.People]: "Personas",
