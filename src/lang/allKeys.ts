@@ -1,6 +1,9 @@
 export enum LangKey {
   MoreActions,
   CreateRoom,
+  CloseRoom,
+  MoreErrorInformation,
+  HelpInfoError,
   Name,
   DescriptionOptional,
   RoomDescriptionPlaceholder,
@@ -97,6 +100,8 @@ export enum LangKey {
   ExpandRoster,
   DownloadImage,
   SyncState,
+  JumpToDown,
+  UnreadMessagesCount,
 
   // #region Roster
   People,
@@ -237,6 +242,7 @@ export enum LangKey {
   Are,
   Is,
   RoomEncrypted,
+  ReloadMessages,
 
   // #region WelcomeSplash
   WelcomeSplashTitle,

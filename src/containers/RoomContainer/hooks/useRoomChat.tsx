@@ -6,25 +6,17 @@ import {type ImageMessageData} from "@/components/ImageMessage"
 import {type ReplyMessageData} from "@/components/ReplyMessage"
 import {type TextMessageData} from "@/components/TextMessage"
 import {type TypingIndicatorUser} from "@/components/TypingIndicator"
-import {type UnreadIndicatorProps} from "@/components/UnreadIndicator"
 import {type VideoMessageData} from "@/components/VideoMessage"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
-import useRoomListener from "@/hooks/matrix/useRoomListener"
-import useIsMountedRef from "@/hooks/util/useIsMountedRef"
-import {handleRoomMessageEvent, handleRoomEvents} from "@/utils/rooms"
 import {getImageUrl, sendAudioMessage} from "@/utils/util"
-import {
-  MsgType,
-  EventTimeline,
-  EventType,
-  type Room,
-  RoomEvent,
-  RoomMemberEvent,
-} from "matrix-js-sdk"
-import {useCallback, useEffect, useState} from "react"
+import {MsgType, type Room, RoomMemberEvent} from "matrix-js-sdk"
+import {useEffect, useState} from "react"
 import {type MessageSendRequest} from "../ChatInput"
+import {type ValueState} from "@/hooks/util/useValueState"
+import useRoomTimeline from "./useRoomTimeline"
+import useRoomDetail, {type RoomDetail} from "./useRoomDetail"
 
 export enum MessageKind {
   Text,
@@ -35,14 +27,6 @@ export enum MessageKind {
   Reply,
   EventGroup,
   Video,
-  Unread,
-}
-
-export enum MessagesState {
-  Loading,
-  Loaded,
-  NotMessages,
-  Error,
 }
 
 export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
@@ -61,12 +45,11 @@ export type MessageOf<Kind extends MessageKind> = Kind extends MessageKind.Text
               ? ReplyMessageData
               : Kind extends MessageKind.EventGroup
                 ? EventGroupMessageData
-                : Kind extends MessageKind.Video
-                  ? VideoMessageData
-                  : UnreadIndicatorProps
+                : VideoMessageData
 
 export type Message<Kind extends MessageKind> = {
   kind: Kind
+  messageId: string
   data: MessageOf<Kind>
 }
 
@@ -76,79 +59,43 @@ export type AnyMessage =
   | Message<MessageKind.Event>
   | Message<MessageKind.File>
   | Message<MessageKind.Video>
-  | Message<MessageKind.Unread>
   | Message<MessageKind.Audio>
   | Message<MessageKind.Reply>
   | Message<MessageKind.EventGroup>
 
 type UseRoomChatReturnType = {
-  messagesState: MessagesState
+  messagesState: ValueState<AnyMessage[]>
+  roomDetail: RoomDetail
   isChatLoading: boolean
-  roomName: string
-  roomTopic: string
-  isRoomEncrypted: boolean
-  messages: AnyMessage[]
+  lastMessageReadId: string | null
+  onLastMessageReadIdChange: (messageId: string | null) => void
   typingUsers: TypingIndicatorUser[]
   isInputDisabled: boolean
   sendTypingEvent: (roomId: string) => void
   sendMessageText: (messageSendRequest: MessageSendRequest) => void
   onSendAudioMessage: (audioBlob: Blob, roomId: string) => Promise<void>
+  onReloadMessages: () => void
 }
 
 const useRoomChat = (roomId: string): UseRoomChatReturnType => {
   const client = useMatrixClient()
-  const isMountedReference = useIsMountedRef()
   const {clearActiveRoomId} = useActiveRoomIdStore()
-
-  const [roomName, setRoomName] = useState("")
-  const [roomTopic, setRoomTopic] = useState("")
-  const [isRoomEncrypted, setIsRoomEncrypted] = useState(false)
   const [isChatLoading, setChatLoading] = useState(true)
-  const [messagesState, setMessagesState] = useState(MessagesState.NotMessages)
 
-  const [messages, setMessages] = useState<AnyMessage[]>([])
   const [typingUsers, setTypingUsers] = useState<TypingIndicatorUser[]>([])
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null)
 
-  const fetchRoomMessages = useCallback(async (room: Room) => {
-    try {
-      setMessagesState(MessagesState.Loading)
+  const roomDetail = useRoomDetail(currentRoom)
 
-      const anyMessages = await handleRoomEvents(room)
-
-      if (anyMessages.length === 0) {
-        setMessagesState(MessagesState.NotMessages)
-
-        return
-      }
-
-      setMessages(anyMessages)
-      setMessagesState(MessagesState.Loaded)
-    } catch (error) {
-      console.error("Error fetching messages", error)
-
-      setMessagesState(MessagesState.Error)
-    }
-  }, [])
+  const {
+    messagesState,
+    lastMessageReadId,
+    reloadMessages,
+    onLastMessageReadIdChange,
+  } = useRoomTimeline(currentRoom)
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      if (messages.length === 0) {
-        return
-      }
-
-      setMessages(prevMessages =>
-        prevMessages.filter(message => message.kind !== MessageKind.Unread)
-      )
-    }, 10_000)
-
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [messages.length, roomId])
-
-  useEffect(() => {
-    if (client === null || !isMountedReference.current) {
+    if (client === null) {
       return
     }
 
@@ -160,88 +107,11 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       return
     }
 
-    setRoomName(room.name)
-
-    const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS)
-
-    if (roomState) {
-      const roomDescription = roomState
-        .getStateEvents(EventType.RoomTopic, "")
-        ?.getContent().topic
-
-      if (typeof roomDescription === "string") {
-        setRoomTopic(roomDescription)
-      } else {
-        setRoomTopic("")
-      }
-
-      const isEncrypted = roomState.getStateEvents(EventType.RoomEncryption, "")
-
-      if (isEncrypted) {
-        setIsRoomEncrypted(true)
-      } else {
-        setIsRoomEncrypted(false)
-      }
-    }
-
     setChatLoading(false)
-
-    void fetchRoomMessages(room)
-
     setCurrentRoom(room)
-  }, [clearActiveRoomId, client, fetchRoomMessages, isMountedReference, roomId])
+  }, [clearActiveRoomId, client, roomId])
 
   // #region Listeners
-  useRoomListener(currentRoom, RoomEvent.Name, room => {
-    setRoomName(room.name)
-  })
-
-  useRoomListener(
-    currentRoom,
-    RoomEvent.Timeline,
-    (event, room, toStartOfTimeline) => {
-      if (room === undefined || toStartOfTimeline !== false) {
-        return
-      }
-
-      const senderId = event.sender?.userId ?? event.getSender()
-
-      void handleRoomMessageEvent(event, room).then(messageOrEvent => {
-        if (messageOrEvent === null) {
-          return
-        }
-
-        if (room.myUserId === senderId) {
-          setMessages(messages => [
-            ...messages.filter(message => message.kind !== MessageKind.Unread),
-            messageOrEvent,
-          ])
-
-          return
-        }
-
-        setMessages(messages => [...messages, messageOrEvent])
-        void room.client.sendReadReceipt(event)
-      })
-    }
-  )
-
-  // When someone deletes a message.
-  useRoomListener(currentRoom, RoomEvent.Redaction, (event, room) => {
-    if (room === undefined) {
-      return
-    }
-
-    const eventContent = event.getContent()
-
-    if (eventContent.msgtype !== undefined) {
-      return
-    }
-
-    // TODO: Optimize this, not reload all messages when process one message.
-    void fetchRoomMessages(room)
-    void room.client.sendReadReceipt(event)
-  })
 
   useEventListener(RoomMemberEvent.Typing, (_event, member) => {
     const currentUserId = client?.getUserId()
@@ -282,14 +152,14 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
 
   return {
     messagesState,
+    roomDetail,
     isChatLoading,
-    roomName,
-    roomTopic,
-    isRoomEncrypted,
-    messages,
     typingUsers,
     isInputDisabled: client === null,
     onSendAudioMessage,
+    onReloadMessages: reloadMessages,
+    lastMessageReadId,
+    onLastMessageReadIdChange,
     sendMessageText({messageText, roomId}) {
       if (client === null || messageText.length === 0) {
         return

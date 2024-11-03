@@ -235,7 +235,6 @@ export const handleRoomEvents = async (
   const client = activeRoom.client
   const roomHistory = await client.scrollback(activeRoom, SCROLLBACK_MAX)
   const events = roomHistory.getLiveTimeline().getEvents()
-  const lastReadEventId = activeRoom.getEventReadUpTo(activeRoom.myUserId)
   const allMessageProperties: AnyMessage[] = []
 
   for (const event of events) {
@@ -247,14 +246,7 @@ export const handleRoomEvents = async (
 
     allMessageProperties.push(messageProperties)
 
-    if (lastReadEventId === event.event.event_id) {
-      allMessageProperties.push({
-        kind: MessageKind.Unread,
-        data: {lastReadEventId},
-      })
-    }
-
-    void client.sendReadReceipt(event)
+    await client.sendReadReceipt(event)
   }
 
   return groupEventMessage(allMessageProperties)
@@ -287,6 +279,7 @@ const processPatterns = (
   ) {
     return {
       kind: MessageKind.EventGroup,
+      messageId: lastMessage.eventId,
       data: {
         eventMessages: [lastMessage, currentMessage],
         eventGroupMainBody: {
@@ -301,6 +294,7 @@ const processPatterns = (
 
   return {
     kind: MessageKind.EventGroup,
+    messageId: lastMessage.eventId,
     data: {
       eventMessages: [lastMessage, currentMessage],
       eventGroupMainBody: {
@@ -321,6 +315,7 @@ const updateEventGroup = (
 
   const partialMessage: AnyMessage = {
     kind: MessageKind.EventGroup,
+    messageId: newEvent.eventId,
     data: {
       eventMessages: [...eventGroup.eventMessages, newEvent],
       eventGroupMainBody: eventGroup.eventGroupMainBody,
@@ -414,6 +409,7 @@ export const handleRoomMessageEvent = async (
 
   return {
     kind: MessageKind.Event,
+    messageId: event.event.event_id,
     data: {
       eventId: event.event.event_id,
       timestamp: event.localTimestamp,
@@ -834,8 +830,10 @@ export const handleMessage = async (
           validateReplyMessage(eventContent.body)
         ) {
           const replyData = parseReplyMessageFromBody(eventContent.body)
+
           return {
             kind: MessageKind.Reply,
+            messageId: messageBaseProperties.messageId,
             data: {
               ...messageBaseProperties,
               text: replyData.message,
@@ -849,6 +847,7 @@ export const handleMessage = async (
 
       return {
         kind: MessageKind.Text,
+        messageId: messageBaseProperties.messageId,
         data: {
           ...messageBaseProperties,
           text: eventContent.body,
@@ -865,6 +864,7 @@ export const handleMessage = async (
 
       return {
         kind: MessageKind.Image,
+        messageId: messageBaseProperties.messageId,
         data: {
           ...messageBaseProperties,
           imageUrl: getImageUrl(eventContent.url, room.client),
@@ -883,6 +883,7 @@ export const handleMessage = async (
 
       return {
         kind: MessageKind.File,
+        messageId: messageBaseProperties.messageId,
         data: {
           ...messageBaseProperties,
           fileUrl: getFileUrl(fileUrl, room.client),
@@ -901,6 +902,7 @@ export const handleMessage = async (
 
       return {
         kind: MessageKind.Audio,
+        messageId: messageBaseProperties.messageId,
         data: {
           ...messageBaseProperties,
           audioUrl: getFileUrl(audioUrl, room.client),
@@ -926,6 +928,7 @@ export const handleMessage = async (
 
       return {
         kind: MessageKind.Video,
+        messageId: messageBaseProperties.messageId,
         data: {
           ...messageBaseProperties,
           url: videoUrl,
@@ -973,6 +976,7 @@ const convertToMessageDeleted = (
 
   return {
     kind: MessageKind.Text,
+    messageId: eventId,
     data: {
       userId: sender.userId,
       authorAvatarUrl: getImageUrl(sender.getMxcAvatarUrl(), room.client),

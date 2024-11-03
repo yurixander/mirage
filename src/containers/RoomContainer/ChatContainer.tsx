@@ -1,4 +1,4 @@
-import {useEffect, useRef, type FC} from "react"
+import {type FC} from "react"
 import useRoomChat from "./hooks/useRoomChat"
 import ChatHeader from "./ChatHeader"
 import {ChatMessages} from "./ChatMessages"
@@ -25,35 +25,23 @@ const ChatContainer: FC<ChatContainerProps> = ({
   className,
 }) => {
   const {t} = useTranslation()
-  const scrollRef = useRef<HTMLDivElement>(null)
   const {clearActiveRoomId} = useActiveRoomIdStore()
 
   const {
     messagesState,
-    roomName,
-    roomTopic,
-    isRoomEncrypted,
+    roomDetail,
+    lastMessageReadId,
+    onLastMessageReadIdChange,
     isChatLoading,
-    messages,
     typingUsers,
     sendTypingEvent,
     isInputDisabled,
     sendMessageText,
     onSendAudioMessage,
+    onReloadMessages,
   } = useRoomChat(roomId)
 
   assert(roomId.length > 0, "The roomId should not be empty.")
-
-  useEffect(() => {
-    if (scrollRef.current === null || scrollRef.current.scrollTop !== 0) {
-      return
-    }
-
-    scrollRef.current.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    })
-  }, [messages.length])
 
   return isChatLoading ? (
     <div className="flex size-full items-center justify-center">
@@ -69,23 +57,18 @@ const ChatContainer: FC<ChatContainerProps> = ({
         className="relative flex size-full max-h-12 items-center border-b border-b-neutral-200 px-3 py-1 dark:border-b-neutral-700"
         isRosterExpanded={isRosterExpanded}
         onRosterExpanded={onRosterExpanded}
-        roomName={roomName}
-        roomDescription={roomTopic}
-        isRoomEncrypted={isRoomEncrypted}
+        roomDetail={roomDetail}
         onCloseRoom={clearActiveRoomId}
       />
 
-      <div
-        ref={scrollRef}
-        className="relative z-10 order-2 shrink-0 grow basis-0 overflow-y-auto">
-        <div className="shrink-0 grow-0 basis-auto pb-2">
-          <ChatMessages
-            className="relative grow p-3"
-            messages={messages}
-            messagesState={messagesState}
-          />
-        </div>
-      </div>
+      <ChatMessages
+        className="p-3"
+        lastMessageReadId={lastMessageReadId}
+        messagesState={messagesState}
+        onReloadMessages={onReloadMessages}
+        onCloseRoom={clearActiveRoomId}
+        onLastMessageReadIdChange={onLastMessageReadIdChange}
+      />
 
       <footer className="order-3 flex flex-col px-3.5">
         <ChatInput
