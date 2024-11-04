@@ -67,7 +67,8 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
     if (
       contentPicked === null ||
       contentPicked.isMultiple ||
-      contentPicked.pickerResult === null
+      contentPicked.pickerResult === null ||
+      !contentPicked.pickerResult.type.startsWith("image/")
     ) {
       return null
     }

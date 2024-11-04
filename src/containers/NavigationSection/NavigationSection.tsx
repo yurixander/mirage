@@ -16,6 +16,7 @@ import useBreakpoint from "@/hooks/util/useMediaQuery"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {SearchInput} from "@/components/ui/input"
 import CreateSpaceModal from "@/components/CreateSpaceModal"
+import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -30,6 +31,10 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const {isSectionsLoading, sections} = useRoomNavigator(spaceSelected)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const [modalCreateSpaceOpen, setModalCreateSpaceIsOpen] = useState(false)
+
+  useGlobalHotkey({key: "S", ctrl: true, shift: true}, () =>
+    setModalCreateSpaceIsOpen(true)
+  )
 
   if (!isSmall && activeRoomId !== null) {
     return <></>
