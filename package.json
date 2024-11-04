@@ -21,7 +21,7 @@
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
     "@emoji-mart/data": "^1.2.1",
-    "@floating-ui/react": "^0.26.25",
+    "@floating-ui/react": "^0.26.27",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-context-menu": "^2.2.2",
