@@ -7,6 +7,8 @@ export const spanish: LangDefinition = {
   [LangKey.MoreErrorInformation]: "Mas información sobre el error",
   [LangKey.HelpInfoError]: "Informacion sobre el error",
   [LangKey.CreateRoom]: "Crear Sala",
+  [LangKey.CreateRoomModalSubtitle]:
+    "Crea una sala para comunicarte con varias personas.",
   [LangKey.Name]: "Nombre",
   [LangKey.DescriptionOptional]: "Descripción (opcional)",
   [LangKey.RoomDescriptionPlaceholder]:

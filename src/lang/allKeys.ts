@@ -1,6 +1,7 @@
 export enum LangKey {
   MoreActions,
   CreateRoom,
+  CreateRoomModalSubtitle,
   CloseRoom,
   MoreErrorInformation,
   HelpInfoError,
