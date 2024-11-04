@@ -4,7 +4,6 @@ import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Text} from "@/components/ui/typography"
 import {Input} from "@/components/ui/input"
-import {Textarea} from "@/components/ui/textarea"
 import {
   Modal,
   ModalCancel,
@@ -23,7 +22,10 @@ type CreateSpaceModalProps = {
   open: boolean
   onOpenChange: (isOpen: boolean) => void
   onCreateSpace: (props: CreationSpaceOptions) => Promise<void>
-  onUploadAvatar: (file: File) => Promise<string>
+  onUploadAvatar: (
+    file: File,
+    progressCallback: (percent: number) => void
+  ) => Promise<string>
 }
 
 const CreateSpaceModal: FC<CreateSpaceModalProps> = ({
@@ -36,9 +38,16 @@ const CreateSpaceModal: FC<CreateSpaceModalProps> = ({
   const [spaceName, setSpaceName] = useState("")
   const [spaceDescription, setSpaceDescription] = useState<string>()
   const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
+  const [isCreatingSpace, setIsCreatingSpace] = useState(false)
   const {toast} = useToast()
 
   const makeSpace = (): void => {
+    if (isCreatingSpace) {
+      throw new Error(t(LangKey.CreateSpaceInProgressError))
+    }
+
+    setIsCreatingSpace(true)
+
     onCreateSpace({
       name: spaceName,
       topic: spaceDescription,
@@ -49,7 +58,7 @@ const CreateSpaceModal: FC<CreateSpaceModalProps> = ({
 
         toast({
           title: spaceName,
-          description: "Se ha creado satisfactoriamente.",
+          description: t(LangKey.SpaceCreatedSuccess),
         })
       })
       .catch((error: Error) => {
@@ -58,6 +67,9 @@ const CreateSpaceModal: FC<CreateSpaceModalProps> = ({
           title: error.name,
           description: error.message,
         })
+      })
+      .finally(() => {
+        setIsCreatingSpace(false)
       })
   }
 
@@ -96,7 +108,8 @@ const CreateSpaceModal: FC<CreateSpaceModalProps> = ({
           <div className="flex flex-col gap-1 pt-3">
             <Text size="2">{t(LangKey.DescriptionOptional)}</Text>
 
-            <Textarea
+            <Input
+              className="dark:bg-neutral-900"
               placeholder={t(LangKey.SpaceDescriptionPlaceholder)}
               value={spaceDescription}
               onChange={e => {
@@ -112,6 +125,7 @@ const CreateSpaceModal: FC<CreateSpaceModalProps> = ({
           <ModalCancel>{t(LangKey.Cancel)}</ModalCancel>
 
           <ModalAction
+            disabled={isCreatingSpace}
             onClick={e => {
               e.preventDefault()
 

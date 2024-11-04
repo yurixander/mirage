@@ -162,7 +162,7 @@ export const CreateSpaceButton: FC<{
 
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger aria-hidden asChild>
+          <TooltipTrigger asChild>
             <motion.button
               aria-label={t(LangKey.CreateSpace)}
               variants={scaleInAnimation}
@@ -170,7 +170,7 @@ export const CreateSpaceButton: FC<{
               whileInView="whileInView"
               onClick={onCreateSpace}
               className="focus-visible:rounded-sm focus-visible:ring">
-              <ReactSVG aria-hidden src={StaticAssetPath.CreateSpace} />
+              <ReactSVG src={StaticAssetPath.CreateSpace} />
             </motion.button>
           </TooltipTrigger>
 

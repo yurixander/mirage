@@ -6,10 +6,14 @@ import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 import {IconButton} from "./ui/button"
 import {useToast} from "@/hooks/use-toast"
+import {Text} from "./ui/typography"
 
 type UploadAvatarProps = {
   onMxcUrlResult: (matrixSrc: string) => void
-  onUploadAvatar: (file: File) => Promise<string>
+  onUploadAvatar: (
+    file: File,
+    progressCallback: (percent: number) => void
+  ) => Promise<string>
   className?: string
 }
 
@@ -21,6 +25,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
   className,
 }) => {
   const [isImageUploading, setIsImageUploading] = useState(false)
+  const [progress, setProgress] = useState(0)
   const [isUploaded, setIsUploaded] = useState(false)
   const {contentPicked, onPickFile, clear} = useFilePicker(false, "image/*")
   const {t} = useTranslation()
@@ -38,7 +43,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
 
     setIsImageUploading(true)
 
-    onUploadAvatar(contentPicked.pickerResult)
+    onUploadAvatar(contentPicked.pickerResult, setProgress)
       .then(mxcUrl => {
         onMxcUrlResult(mxcUrl)
 
@@ -83,6 +88,8 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
   return avatarImageUrl === null ? (
     <IconButton
       onClick={onPickFile}
+      tooltip={t(LangKey.UploadImage)}
+      aria-label={t(LangKey.UploadImage)}
       className={twMerge(
         "flex shrink-0 items-center justify-center rounded-md bg-neutral-100 hover:bg-neutral-100 dark:bg-neutral-900 dark:hover:bg-neutral-800",
         AVATAR_UPLOADER_SIZE,
@@ -111,14 +118,19 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
           "relative flex items-center justify-center overflow-hidden rounded-md",
           AVATAR_UPLOADER_SIZE
         )}>
-        {isImageUploading ? (
+        <img src={avatarImageUrl} alt={t(LangKey.UserAvatar)} />
+
+        {isImageUploading && (
           <>
             <div className="absolute size-full bg-modalOverlay" />
 
-            <img src={avatarImageUrl} alt="User profile avatar" />
+            <Text
+              className="absolute text-white dark:text-white"
+              align="center"
+              weight="bold">
+              {progress}%
+            </Text>
           </>
-        ) : (
-          <img src={avatarImageUrl} alt={t(LangKey.UserAvatar)} />
         )}
       </div>
     </div>

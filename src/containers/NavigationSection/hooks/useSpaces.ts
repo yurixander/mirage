@@ -33,7 +33,10 @@ type UseSpacesReturnType = {
   spaces: ValueState<PartialSpace[]>
   onSpaceExit: (spaceId: string) => void
   onCreateSpace: (spaceOptions: CreationSpaceOptions) => Promise<void>
-  uploadSpaceAvatar: (file: File) => Promise<string>
+  uploadSpaceAvatar: (
+    file: File,
+    progressCallback: (percent: number) => void
+  ) => Promise<string>
 }
 
 const useSpaces = (): UseSpacesReturnType => {
@@ -80,19 +83,29 @@ const useSpaces = (): UseSpacesReturnType => {
     await createSpace(client, spaceOptions)
   }
 
-  const uploadSpaceAvatar = async (file: File): Promise<string> => {
-    if (client === null) {
-      throw new Error("The client must be initialized.")
-    }
+  const uploadSpaceAvatar = useCallback(
+    async (
+      file: File,
+      progressCallback: (percent: number) => void
+    ): Promise<string> => {
+      if (client === null) {
+        throw new Error("The client must be initialized.")
+      }
 
-    const uploadResult = await uploadImageToMatrix(file, client, () => {})
+      const uploadResult = await uploadImageToMatrix(
+        file,
+        client,
+        progressCallback
+      )
 
-    if (uploadResult?.matrixUrl === undefined) {
-      throw new Error("Image upload failed")
-    }
+      if (uploadResult?.matrixUrl === undefined) {
+        throw new Error("Image upload failed")
+      }
 
-    return uploadResult.matrixUrl
-  }
+      return uploadResult.matrixUrl
+    },
+    [client]
+  )
 
   useEventListener(RoomEvent.Timeline, (event, room) => {
     if (event.getType() !== EventType.RoomCreate || room === undefined) {

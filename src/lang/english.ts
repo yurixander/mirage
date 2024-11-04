@@ -113,6 +113,7 @@ export const english: LangDefinition = {
   [LangKey.SyncState]: "Sync state",
   [LangKey.JumpToDown]: "Jump to down",
   [LangKey.UnreadMessagesCount]: (count: string) => `${count} Unread messages`,
+  [LangKey.SpaceCreatedSuccess]: "Space created successfully",
 
   // #region Roster
   [LangKey.People]: "People",
@@ -293,7 +294,7 @@ export const english: LangDefinition = {
   [LangKey.CheckoutGitHub]: "Checkout GitHub",
   [LangKey.CheckoutGitHubSubtitle]: "to view latest updates",
 
-  // Audio Recorder
+  // #region Audio Recorder
   [LangKey.RemoveAudio]: "Remove audio",
   [LangKey.StopRecord]: "Stop record",
   [LangKey.SendAudioRecorded]: "Send audio recorded",
@@ -306,4 +307,8 @@ export const english: LangDefinition = {
   [LangKey.NoDevicesAvailableError]: "You don't have audio devices",
   [LangKey.AvatarOf]: (spaceName: string) => `Avatar of ${spaceName}`,
   [LangKey.Loading]: "Loading...",
+
+  // #region Errors
+  [LangKey.CreateSpaceInProgressError]:
+    "There is already a creation in progress.",
 }
