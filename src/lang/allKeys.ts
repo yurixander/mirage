@@ -21,6 +21,7 @@ export enum LangKey {
   PrivateRoom,
   Accept,
   Cancel,
+  NeedHelp,
   UploadAudio,
   Send,
   LoadError,

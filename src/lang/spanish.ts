@@ -21,7 +21,7 @@ export const spanish: LangDefinition = {
   [LangKey.NewSpace]: "Nuevo Espacio",
   [LangKey.CreateSpace]: "Crear Espacio",
   [LangKey.CreateSpaceSpecInfo]:
-    "Los espacios son una nueva forma de agrupar habitaciones y personas. Puedes cambiar el tipo de espacio que quieras crear.",
+    "Los espacios son una nueva forma de agrupar habitaciones y personas.",
   [LangKey.SpaceName]: "Nombre del espacio",
   [LangKey.SpaceDescriptionPlaceholder]:
     "Escribe una breve descripción sobre el propósito de este espacio",
@@ -29,6 +29,7 @@ export const spanish: LangDefinition = {
   [LangKey.PrivateRoom]: "Sala privada",
   [LangKey.Accept]: "Aceptar",
   [LangKey.Cancel]: "Cancelar",
+  [LangKey.NeedHelp]: "Ayuda",
   [LangKey.UploadAudio]: "Subir audio",
   [LangKey.Send]: "Enviar",
   [LangKey.LoadError]: "Error de carga",

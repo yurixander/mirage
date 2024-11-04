@@ -150,7 +150,7 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
 
 SpaceAvatar.displayName = "SpaceAvatar"
 
-const CreateSpaceButton: FC<{
+export const CreateSpaceButton: FC<{
   onCreateSpace: () => void
   className?: string
 }> = ({onCreateSpace, className}) => {

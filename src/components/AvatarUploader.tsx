@@ -84,7 +84,7 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
     <IconButton
       onClick={onPickFile}
       className={twMerge(
-        "flex shrink-0 items-center justify-center rounded-md bg-gray-100 hover:bg-gray-100",
+        "flex shrink-0 items-center justify-center rounded-md bg-neutral-100 hover:bg-neutral-100 dark:bg-neutral-900 dark:hover:bg-neutral-800",
         AVATAR_UPLOADER_SIZE,
         className
       )}>
