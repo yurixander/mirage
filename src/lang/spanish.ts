@@ -327,5 +327,11 @@ export const spanish: LangDefinition = {
   [LangKey.NoDevicesAvailableError]: "No tienes dispositivos de audio",
   [LangKey.AvatarOf]: (spaceName: string) => `Avatar de ${spaceName}`,
   [LangKey.Loading]: "Cargando...",
+
+  // #region Errors
   [LangKey.CreateSpaceInProgressError]: "Ya hay una creación en curso.",
+  [LangKey.ClientMustBeInitialized]: "El cliente no esta activo.",
+  [LangKey.SpaceNameEmptyError]: "El nombre del espacio no puede estar vacío.",
+  [LangKey.SpaceTopicEmptyError]:
+    "La descripción del espacio no puede estar vacía.",
 }

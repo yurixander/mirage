@@ -14,6 +14,8 @@ import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getJoinedSpaces} from "@/utils/spaces"
 import {type ValueState} from "@/hooks/util/useValueState"
 import useMatrixValue from "@/hooks/matrix/useMatrixValue"
+import {LangKey} from "@/lang/allKeys"
+import useTranslation from "@/hooks/util/useTranslation"
 
 export type PartialSpace = {
   name: string
@@ -41,6 +43,7 @@ type UseSpacesReturnType = {
 
 const useSpaces = (): UseSpacesReturnType => {
   const client = useMatrixClient()
+  const {t} = useTranslation()
 
   const {state: spaces, setState: setSpacesState} = useMatrixValue(
     async client => {
@@ -65,15 +68,15 @@ const useSpaces = (): UseSpacesReturnType => {
     spaceOptions: CreationSpaceOptions
   ): Promise<void> => {
     if (client === null) {
-      throw new Error("The client must be initialized.")
+      throw new Error(t(LangKey.ClientMustBeInitialized))
     }
 
     const {name, topic, mxcAvatarUrl} = spaceOptions
 
-    assert(name.length > 0, "Space name should not be empty.")
+    assert(name.length > 0, t(LangKey.SpaceNameEmptyError))
 
     if (topic !== undefined) {
-      assert(topic.length > 0, "Space description should not be empty.")
+      assert(topic.length > 0, t(LangKey.SpaceTopicEmptyError))
     }
 
     if (mxcAvatarUrl !== undefined) {
@@ -89,7 +92,7 @@ const useSpaces = (): UseSpacesReturnType => {
       progressCallback: (percent: number) => void
     ): Promise<string> => {
       if (client === null) {
-        throw new Error("The client must be initialized.")
+        throw new Error(t(LangKey.ClientMustBeInitialized))
       }
 
       const uploadResult = await uploadImageToMatrix(
@@ -99,12 +102,12 @@ const useSpaces = (): UseSpacesReturnType => {
       )
 
       if (uploadResult?.matrixUrl === undefined) {
-        throw new Error("Image upload failed")
+        throw new Error(t(LangKey.ImageUploadedError))
       }
 
       return uploadResult.matrixUrl
     },
-    [client]
+    [client, t]
   )
 
   useEventListener(RoomEvent.Timeline, (event, room) => {

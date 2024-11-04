@@ -311,4 +311,7 @@ export const english: LangDefinition = {
   // #region Errors
   [LangKey.CreateSpaceInProgressError]:
     "There is already a creation in progress.",
+  [LangKey.ClientMustBeInitialized]: "The client must be initialized.",
+  [LangKey.SpaceNameEmptyError]: "Space name should not be empty.",
+  [LangKey.SpaceTopicEmptyError]: "Space description should not be empty.",
 }

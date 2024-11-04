@@ -273,4 +273,7 @@ export enum LangKey {
 
   // #region Errors
   CreateSpaceInProgressError,
+  ClientMustBeInitialized,
+  SpaceNameEmptyError,
+  SpaceTopicEmptyError,
 }
