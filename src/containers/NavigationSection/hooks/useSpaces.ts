@@ -2,7 +2,14 @@ import {useCallback} from "react"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import {getImageUrl} from "@/utils/util"
+import {
+  assert,
+  createSpace,
+  CreationSpaceOptions,
+  getImageUrl,
+  uploadImageToMatrix,
+  validateMxcUrl,
+} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getJoinedSpaces} from "@/utils/spaces"
 import {type ValueState} from "@/hooks/util/useValueState"
@@ -25,6 +32,8 @@ const processSpace = (space: Room): PartialSpace => {
 type UseSpacesReturnType = {
   spaces: ValueState<PartialSpace[]>
   onSpaceExit: (spaceId: string) => void
+  onCreateSpace: (spaceOptions: CreationSpaceOptions) => Promise<void>
+  uploadSpaceAvatar: (file: File) => Promise<string>
 }
 
 const useSpaces = (): UseSpacesReturnType => {
@@ -48,6 +57,42 @@ const useSpaces = (): UseSpacesReturnType => {
     },
     [client]
   )
+
+  const onCreateSpace = async (
+    spaceOptions: CreationSpaceOptions
+  ): Promise<void> => {
+    if (client === null) {
+      throw new Error("The client must be initialized.")
+    }
+
+    const {name, topic, mxcAvatarUrl} = spaceOptions
+
+    assert(name.length > 0, "Space name should not be empty.")
+
+    if (topic !== undefined) {
+      assert(topic.length > 0, "Space description should not be empty.")
+    }
+
+    if (mxcAvatarUrl !== undefined) {
+      validateMxcUrl(mxcAvatarUrl)
+    }
+
+    await createSpace(client, spaceOptions)
+  }
+
+  const uploadSpaceAvatar = async (file: File): Promise<string> => {
+    if (client === null) {
+      throw new Error("The client must be initialized.")
+    }
+
+    const uploadResult = await uploadImageToMatrix(file, client, () => {})
+
+    if (uploadResult?.matrixUrl === undefined) {
+      throw new Error("Image upload failed")
+    }
+
+    return uploadResult.matrixUrl
+  }
 
   useEventListener(RoomEvent.Timeline, (event, room) => {
     if (event.getType() !== EventType.RoomCreate || room === undefined) {
@@ -117,7 +162,7 @@ const useSpaces = (): UseSpacesReturnType => {
     })
   })
 
-  return {spaces, onSpaceExit}
+  return {spaces, onSpaceExit, onCreateSpace, uploadSpaceAvatar}
 }
 
 export default useSpaces

@@ -1,104 +1,126 @@
 import {useState, type FC} from "react"
-import Typography, {TypographyVariant} from "./Typography"
-import InputSection from "./InputSection"
-import {createSpace} from "@/utils/util"
-import InputArea from "./InputArea"
-import {EventType} from "matrix-js-sdk"
 import AvatarUploader from "./AvatarUploader"
-import useActiveModalStore from "@/hooks/util/useActiveModal"
-import Modal from "./Modal"
-import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Text} from "@/components/ui/typography"
+import {Input} from "@/components/ui/input"
+import {Textarea} from "@/components/ui/textarea"
+import {
+  Modal,
+  ModalCancel,
+  ModalAction,
+  ModalContent,
+  ModalDescription,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+  ModalMoreInfo,
+} from "@/components/ui/modal"
+import {CreationSpaceOptions} from "@/utils/util"
+import {useToast} from "@/hooks/use-toast"
 
-const CreateSpaceModal: FC = () => {
-  const client = useMatrixClient()
-  const [spaceName, setSpaceName] = useState("")
-  const [spaceDescription, setSpaceDescription] = useState("")
-  const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
-  const [isCreatingSpace, setIsCreatingSpace] = useState(false)
-  const {clearActiveModal} = useActiveModalStore()
+type CreateSpaceModalProps = {
+  open: boolean
+  onOpenChange: (isOpen: boolean) => void
+  onCreateSpace: (props: CreationSpaceOptions) => Promise<void>
+  onUploadAvatar: (file: File) => Promise<string>
+}
+
+const CreateSpaceModal: FC<CreateSpaceModalProps> = ({
+  open,
+  onOpenChange,
+  onCreateSpace,
+  onUploadAvatar,
+}) => {
   const {t} = useTranslation()
+  const [spaceName, setSpaceName] = useState("")
+  const [spaceDescription, setSpaceDescription] = useState<string>()
+  const [spaceAvatarUrl, setSpaceAvatarUrl] = useState<string>()
+  const {toast} = useToast()
 
-  const onCreateSpace = (): void => {
-    if (client === null) {
-      return
-    }
-
-    setIsCreatingSpace(true)
-
-    void createSpace(client, {
+  const makeSpace = (): void => {
+    onCreateSpace({
       name: spaceName,
       topic: spaceDescription,
-      initial_state: [
-        {
-          type: EventType.RoomAvatar,
-          content: {
-            url: spaceAvatarUrl,
-          },
-        },
-      ],
+      mxcAvatarUrl: spaceAvatarUrl,
     })
-      .then(_roomId => {
-        // TODO: Send here notification that the room has been created.
+      .then(() => {
+        onOpenChange(false)
 
-        setIsCreatingSpace(false)
-        clearActiveModal()
+        toast({
+          title: spaceName,
+          description: "Se ha creado satisfactoriamente.",
+        })
       })
-      .catch(_error => {
-        // TODO: Send here notification that the room has not been created.
-
-        setIsCreatingSpace(false)
+      .catch((error: Error) => {
+        toast({
+          variant: "destructive",
+          title: error.name,
+          description: error.message,
+        })
       })
   }
 
   return (
-    <Modal
-      title={t(LangKey.NewSpace)}
-      actionText={t(LangKey.CreateSpace)}
-      isLoading={isCreatingSpace}
-      isDisabled={client === null || spaceName.length <= 0}
-      onAccept={onCreateSpace}
-      onClose={clearActiveModal}>
-      <div className="flex flex-col gap-6">
-        <div className="flex items-center gap-2">
-          <AvatarUploader onAvatarUploaded={setSpaceAvatarUrl} />
+    <Modal open={open} onOpenChange={onOpenChange}>
+      <ModalContent>
+        <ModalHeader>
+          <ModalTitle>{t(LangKey.NewSpace)}</ModalTitle>
 
-          <div className="flex flex-col">
-            <Typography
-              className="font-bold text-black"
-              variant={TypographyVariant.Heading}>
-              {t(LangKey.CreateSpace)}
-            </Typography>
+          <ModalDescription>{t(LangKey.CreateSpaceSpecInfo)}</ModalDescription>
+        </ModalHeader>
 
-            <Typography variant={TypographyVariant.BodySmall}>
-              {t(LangKey.CreateSpaceSpecInfo)}
-            </Typography>
+        <ModalDescription className="flex flex-col gap-3">
+          <div className="flex w-full gap-4">
+            <AvatarUploader
+              onMxcUrlResult={setSpaceAvatarUrl}
+              onUploadAvatar={onUploadAvatar}
+            />
+
+            <div className="flex w-full max-w-64 flex-col gap-1">
+              <Text size="2" className="flex items-center gap-1">
+                * {t(LangKey.SpaceName)}
+              </Text>
+
+              <Input
+                className="dark:bg-neutral-900"
+                placeholder="Ej. Figma Community"
+                value={spaceName}
+                onChange={e => {
+                  setSpaceName(e.target.value)
+                }}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-3">
-          <InputSection
-            title={`* ${t(LangKey.SpaceName)}`}
-            placeholder="Ej. Figma Community"
-            onValueChange={setSpaceName}
-          />
+          <div className="flex flex-col gap-1 pt-3">
+            <Text size="2">{t(LangKey.DescriptionOptional)}</Text>
 
-          {/* TODO: This input description prefer use `text-area` */}
-          <div className="flex flex-col gap-1">
-            <Typography variant={TypographyVariant.BodySmall}>
-              {t(LangKey.DescriptionOptional)}
-            </Typography>
-
-            <InputArea
-              className="w-full"
-              onValueChange={setSpaceDescription}
-              initialValue={spaceDescription}
+            <Textarea
               placeholder={t(LangKey.SpaceDescriptionPlaceholder)}
+              value={spaceDescription}
+              onChange={e => {
+                setSpaceDescription(e.target.value)
+              }}
             />
           </div>
-        </div>
-      </div>
+        </ModalDescription>
+
+        <ModalFooter>
+          <ModalMoreInfo>{t(LangKey.NeedHelp)}</ModalMoreInfo>
+
+          <ModalCancel>{t(LangKey.Cancel)}</ModalCancel>
+
+          <ModalAction
+            onClick={e => {
+              e.preventDefault()
+
+              makeSpace()
+            }}>
+            {t(LangKey.CreateSpace)}
+          </ModalAction>
+        </ModalFooter>
+      </ModalContent>
     </Modal>
   )
 }
