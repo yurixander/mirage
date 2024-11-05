@@ -1,0 +1,8 @@
+{
+  "React Functional Component": {
+    "prefix": "lkey",
+    "scope": "typescript,typescriptreact",
+    "body": ["[LangKey.$1]: $2,"],
+    "description": "Snippet for LangKeys",
+  },
+}

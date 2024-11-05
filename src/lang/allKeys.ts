@@ -22,6 +22,7 @@ export enum LangKey {
   PrivateRoom,
   Accept,
   Cancel,
+  NeedHelp,
   UploadAudio,
   Send,
   LoadError,
@@ -103,6 +104,7 @@ export enum LangKey {
   SyncState,
   JumpToDown,
   UnreadMessagesCount,
+  SpaceCreatedSuccess,
 
   // #region Roster
   People,
@@ -255,7 +257,7 @@ export enum LangKey {
   CheckoutGitHub,
   CheckoutGitHubSubtitle,
 
-  // Audio Recorder
+  // #region Audio Recorder
   RemoveAudio,
   StopRecord,
   SendAudioRecorded,
@@ -269,4 +271,10 @@ export enum LangKey {
   Loading,
   AllSpaces,
   AvatarOf,
+
+  // #region Errors
+  CreateSpaceInProgressError,
+  ClientMustBeInitialized,
+  SpaceNameEmptyError,
+  SpaceTopicEmptyError,
 }

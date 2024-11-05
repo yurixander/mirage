@@ -6,7 +6,6 @@ import SidebarActions from "./SidebarActions"
 import UserBar from "./UserBar"
 import {twMerge} from "tailwind-merge"
 import useSpaces from "./hooks/useSpaces"
-import useActiveModalStore, {Modals} from "@/hooks/util/useActiveModal"
 import useUserData from "./hooks/useUserData"
 import {RoomNavigator} from "./RoomNavigator"
 import useRoomNavigator from "./hooks/useRoomNavigator"
@@ -17,6 +16,8 @@ import useBreakpoint from "@/hooks/util/useMediaQuery"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {SearchInput} from "@/components/ui/input"
 import CreateRoomModal from "@/components/CreateRoomModal"
+import CreateSpaceModal from "@/components/CreateSpaceModal"
+import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -24,13 +25,17 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,
   onLogOut,
 }) => {
-  const {setActiveModal} = useActiveModalStore()
   const [spaceSelected, setSpaceSelected] = useState(DASHBOARD_SPACE_ID)
-  const {spaces: spacesState} = useSpaces()
+  const {spaces: spacesState, onCreateSpace, uploadSpaceAvatar} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
   const {isSmall} = useBreakpoint()
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
+  const [modalCreateSpaceOpen, setModalCreateSpaceIsOpen] = useState(false)
+
+  useGlobalHotkey({key: "S", ctrl: true, shift: true}, () =>
+    setModalCreateSpaceIsOpen(true)
+  )
 
   const {isSectionsLoading, sections, onCreateRoom} =
     useRoomNavigator(spaceSelected)
@@ -44,7 +49,13 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
       <CreateRoomModal
         open={isCreateRoomModalOpen}
         onOpenChange={setIsCreateRoomModalOpen}
-        onCreateRoom={onCreateRoom}
+        onCreateRoom={onCreateRoom} />
+        
+      <CreateSpaceModal
+        open={modalCreateSpaceOpen}
+        onOpenChange={setModalCreateSpaceIsOpen}
+        onCreateSpace={onCreateSpace}
+        onUploadAvatar={uploadSpaceAvatar}
       />
 
       <div className={twMerge("flex size-full sm:max-w-80", className)}>
@@ -72,9 +83,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
                 spaces={spaces}
                 selectedSpace={spaceSelected}
                 onSelectedSpaceChange={setSpaceSelected}
-                onCreateSpace={() => {
-                  setActiveModal(Modals.CreateSpace)
-                }}
+                onCreateSpace={() => setModalCreateSpaceIsOpen(true)}
               />
             )}
           </ValueStateHandler>

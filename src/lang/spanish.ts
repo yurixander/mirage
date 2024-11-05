@@ -23,7 +23,7 @@ export const spanish: LangDefinition = {
   [LangKey.NewSpace]: "Nuevo Espacio",
   [LangKey.CreateSpace]: "Crear Espacio",
   [LangKey.CreateSpaceSpecInfo]:
-    "Los espacios son una nueva forma de agrupar habitaciones y personas. Puedes cambiar el tipo de espacio que quieras crear.",
+    "Los espacios son una nueva forma de agrupar habitaciones y personas.",
   [LangKey.SpaceName]: "Nombre del espacio",
   [LangKey.SpaceDescriptionPlaceholder]:
     "Escribe una breve descripción sobre el propósito de este espacio",
@@ -31,6 +31,7 @@ export const spanish: LangDefinition = {
   [LangKey.PrivateRoom]: "Sala privada",
   [LangKey.Accept]: "Aceptar",
   [LangKey.Cancel]: "Cancelar",
+  [LangKey.NeedHelp]: "Ayuda",
   [LangKey.UploadAudio]: "Subir audio",
   [LangKey.Send]: "Enviar",
   [LangKey.LoadError]: "Error de carga",
@@ -115,7 +116,7 @@ export const spanish: LangDefinition = {
   [LangKey.JumpToDown]: "Ir abajo",
   [LangKey.UnreadMessagesCount]: (count: string) =>
     `${count} Mensajes no leídos`,
-
+  [LangKey.SpaceCreatedSuccess]: "Espacio creado exitosamente",
   // #region Roster
   [LangKey.People]: "Personas",
   [LangKey.SortMembers]: "Agrupar miembros",
@@ -309,12 +310,12 @@ export const spanish: LangDefinition = {
     "¡Invita a tus amigos a chatear! Selecciona una Sala o Mensajes Directos para comenzar una conversación. También puedes seleccionar una acción a continuación para comenzar rápidamente.",
   [LangKey.ExploreServers]: "Explorar Servidores",
   [LangKey.ExploreServersSubtitle]: "únete a una comunidad relevante",
-  [LangKey.SendAMessage]: "Enviar un mensaje",
+  [LangKey.SendAMessage]: "Envia un mensaje",
   [LangKey.SendAMessageSubtitle]: "a un colega o amigo",
   [LangKey.CheckoutGitHub]: "Consulta GitHub",
   [LangKey.CheckoutGitHubSubtitle]: "para ver las últimas actualizaciones",
 
-  // Audio Recorder
+  // #region Audio Recorder
   [LangKey.RemoveAudio]: "Borrar audio",
   [LangKey.StopRecord]: "Finalizar grabación",
   [LangKey.SendAudioRecorded]: "Enviar audio grabado",
@@ -328,4 +329,11 @@ export const spanish: LangDefinition = {
   [LangKey.NoDevicesAvailableError]: "No tienes dispositivos de audio",
   [LangKey.AvatarOf]: (spaceName: string) => `Avatar de ${spaceName}`,
   [LangKey.Loading]: "Cargando...",
+
+  // #region Errors
+  [LangKey.CreateSpaceInProgressError]: "Ya hay una creación en curso.",
+  [LangKey.ClientMustBeInitialized]: "El cliente no esta activo.",
+  [LangKey.SpaceNameEmptyError]: "El nombre del espacio no puede estar vacío.",
+  [LangKey.SpaceTopicEmptyError]:
+    "La descripción del espacio no puede estar vacía.",
 }
