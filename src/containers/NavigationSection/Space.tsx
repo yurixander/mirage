@@ -2,7 +2,7 @@ import Avatar from "boring-avatars"
 import {useState, forwardRef} from "react"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
-import {scaleInAnimation} from "@/utils/animations"
+import {SCALE_IN_ANIM} from "@/utils/animations"
 import {
   Tooltip,
   TooltipContent,
@@ -60,7 +60,7 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
               <motion.button
                 ref={ref}
                 aria-label={spaceName}
-                variants={scaleInAnimation}
+                variants={SCALE_IN_ANIM}
                 initial="initial"
                 whileInView="whileInView"
                 whileTap={{scale: 0.9}}

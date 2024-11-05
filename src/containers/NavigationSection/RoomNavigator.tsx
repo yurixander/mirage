@@ -20,7 +20,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {widthFillAnimNavigator} from "@/utils/animations"
+import {WIDTH_FILL_NAVIGATOR_ANIM} from "@/utils/animations"
 import {trim} from "@/utils/util"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 
@@ -312,7 +312,7 @@ const RoomSectionSkeleton: FC<RoomSectionSkeletonProps> = ({
     <div className={cn("flex animate-pulse flex-col gap-2", className)}>
       <div className="flex w-full items-center justify-between gap-2">
         <motion.div
-          variants={widthFillAnimNavigator}
+          variants={WIDTH_FILL_NAVIGATOR_ANIM}
           initial="initial"
           whileInView="whileInView"
           className="h-5 max-w-24 rounded-sm bg-gray-400 dark:bg-neutral-600"
@@ -328,7 +328,7 @@ const RoomSectionSkeleton: FC<RoomSectionSkeletonProps> = ({
       {Array.from({length: roomsLength}).map((_, index) => (
         <motion.div
           key={index}
-          variants={widthFillAnimNavigator}
+          variants={WIDTH_FILL_NAVIGATOR_ANIM}
           initial="initial"
           whileInView="whileInView"
           className="h-4 w-full rounded-sm bg-gray-400 dark:bg-neutral-600"
