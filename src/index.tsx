@@ -5,6 +5,7 @@ import {ViewPath, assert} from "./utils/util"
 import AppView from "./views/app.jsx"
 import LoginView from "./views/login"
 import DevPreview from "./views/dev"
+import {Toaster} from "@/components/ui/toaster"
 
 // Special imports.
 import "./polyfills"
@@ -24,6 +25,8 @@ createRoot($root).render(
 
         <Route path={ViewPath.Development} element={<DevPreview />} />
       </Routes>
+
+      <Toaster />
     </BrowserRouter>
   </StrictMode>
 )

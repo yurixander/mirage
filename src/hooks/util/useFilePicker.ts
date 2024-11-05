@@ -68,11 +68,11 @@ const useFilePicker = <Multiple extends boolean>(
 
   return {
     contentPicked: contentPicked ?? null,
-    onPickFile() {
-      input.click()
-    },
-    clear() {
+    onPickFile: () => input.click(),
+    clear: () => {
       setContentPicked(undefined)
+
+      input.value = ""
     },
   }
 }
