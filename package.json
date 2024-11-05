@@ -59,7 +59,7 @@
     "react-svg": "^16.1.33",
     "tailwind-merge": "^2.5.4",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "tailwindcss": "^3.4.13",
+    "tailwindcss": "^3.4.14",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-animation-delay": "^2.0.1",
     "tippy.js": "^6.3.7",
