@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {widthFillAnimNavigator} from "@/utils/animations"
 import {trim} from "@/utils/util"
-import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 
 type AccordionRoomSectionProps = {
   title: string
@@ -154,11 +153,7 @@ export type RoomSections = {
 }
 
 type RoomNavigatorActions = {
-  onCreateDM: () => void
   onCreateRoom: () => void
-  addRoomToSpace: () => void
-  // TODO: Handle search types in the future
-  onSearch: (searchType: string) => void
 }
 
 export interface RoomNavigatorProps extends RoomNavigatorActions {
@@ -172,11 +167,7 @@ export interface RoomNavigatorProps extends RoomNavigatorActions {
 
 export const RoomNavigator: FC<RoomNavigatorProps> = ({
   sections,
-  onCreateDM,
   onCreateRoom,
-  onSearch,
-  addRoomToSpace,
-  isDashboardActive,
   isLoading,
   className,
   onRoomSelected,
@@ -184,8 +175,6 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
 }) => {
   const {directs, groups, recommended} = sections
   const {t} = useTranslation()
-
-  useGlobalHotkey({key: "R", alt: true}, onCreateRoom)
 
   if (isLoading) {
     return (
@@ -212,19 +201,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
           onRoomSelected(value)
         }}>
         {directs.length > 0 && (
-          <AccordionRoomSection
-            title={t(LangKey.DirectChats)}
-            actions={
-              <MoreActionsDropdown>
-                <DropdownMenuItem
-                  aria-label={t(LangKey.CreateDM)}
-                  onSelect={onCreateDM}>
-                  <DropdownMenuLabel>{t(LangKey.CreateDM)}</DropdownMenuLabel>
-
-                  <DropdownMenuShortcut char="D" ctrl shift />
-                </DropdownMenuItem>
-              </MoreActionsDropdown>
-            }>
+          <AccordionRoomSection title={t(LangKey.DirectChats)}>
             {directs.map(room => (
               <SelectableRoom key={room.roomId} {...room} />
             ))}
@@ -241,44 +218,8 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
                   onSelect={onCreateRoom}>
                   <DropdownMenuLabel>{t(LangKey.CreateRoom)}</DropdownMenuLabel>
 
-                  <DropdownMenuShortcut char="R" alt />
+                  <DropdownMenuShortcut char="R" ctrl shift />
                 </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  aria-label={t(LangKey.SearchRooms)}
-                  onSelect={() => {
-                    // TODO: Temporally, use correct type in the future implementation of search.
-                    onSearch("room")
-                  }}>
-                  <DropdownMenuLabel>
-                    {t(LangKey.SearchRooms)}
-                  </DropdownMenuLabel>
-
-                  <DropdownMenuShortcut char="R" shift />
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  aria-label={t(LangKey.SearchSpaces)}
-                  onSelect={() => {
-                    // TODO: Temporally, use correct type in the future implementation of search.
-                    onSearch("space")
-                  }}>
-                  <DropdownMenuLabel>
-                    {t(LangKey.SearchSpaces)}
-                  </DropdownMenuLabel>
-
-                  <DropdownMenuShortcut char="S" shift />
-                </DropdownMenuItem>
-
-                {!isDashboardActive && (
-                  <DropdownMenuItem
-                    aria-label={t(LangKey.AddToSpace)}
-                    onSelect={addRoomToSpace}>
-                    <DropdownMenuLabel>
-                      {t(LangKey.AddToSpace)}
-                    </DropdownMenuLabel>
-                  </DropdownMenuItem>
-                )}
               </MoreActionsDropdown>
             }>
             {groups.map(room => (

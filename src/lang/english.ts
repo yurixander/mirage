@@ -116,6 +116,7 @@ export const english: LangDefinition = {
   [LangKey.JumpToDown]: "Jump to down",
   [LangKey.UnreadMessagesCount]: (count: string) => `${count} Unread messages`,
   [LangKey.SpaceCreatedSuccess]: "Space created successfully",
+  [LangKey.RoomCreatedSuccess]: "Room created successfully",
 
   // #region Roster
   [LangKey.People]: "People",

@@ -23,6 +23,7 @@ import {
 import {Switch} from "@/components/ui/switch"
 import {Visibility} from "matrix-js-sdk"
 import {RoomCreationProps} from "@/utils/rooms"
+import {useToast} from "@/hooks/use-toast"
 
 const ROOM_PUBLIC_PRIVACY_KEY = Visibility.Public
 const ROOM_PRIVATE_PRIVACY_KEY = Visibility.Private
@@ -43,20 +44,21 @@ const CreateRoomModal: FC<CreateRoomModalProps> = ({
   const [roomName, setRoomName] = useState("")
   const [roomDescription, setRoomDescription] = useState<string>()
   const [roomAddress, setRoomAddress] = useState<string>()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isCreatingRoom, setIsCreatingRoom] = useState(false)
+  const {toast} = useToast()
 
   const [privacyMode, setPrivacyMode] = useState<string>(
     ROOM_PRIVATE_PRIVACY_KEY
   )
 
   const makeRoom = (): void => {
-    if (isLoading) {
-      throw new Error("Ya hay un proceso en curso")
+    if (isCreatingRoom) {
+      throw new Error(t(LangKey.CreateSpaceInProgressError))
     }
 
-    setIsLoading(true)
+    setIsCreatingRoom(true)
 
-    void onCreateRoom({
+    onCreateRoom({
       name: roomName,
       description: roomDescription,
       privacy: privacyMode,
@@ -65,9 +67,21 @@ const CreateRoomModal: FC<CreateRoomModalProps> = ({
     })
       .then(() => {
         onOpenChange(false)
+
+        toast({
+          title: roomName,
+          description: t(LangKey.RoomCreatedSuccess),
+        })
+      })
+      .catch((error: Error) => {
+        toast({
+          variant: "destructive",
+          title: error.name,
+          description: error.message,
+        })
       })
       .finally(() => {
-        setIsLoading(false)
+        setIsCreatingRoom(false)
       })
   }
 
@@ -174,7 +188,7 @@ const CreateRoomModal: FC<CreateRoomModalProps> = ({
           <ModalMoreInfo>Need help?</ModalMoreInfo>
 
           <ModalAction
-            disabled={isLoading}
+            disabled={isCreatingRoom}
             onClick={e => {
               e.preventDefault()
 

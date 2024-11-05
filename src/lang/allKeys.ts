@@ -105,6 +105,7 @@ export enum LangKey {
   JumpToDown,
   UnreadMessagesCount,
   SpaceCreatedSuccess,
+  RoomCreatedSuccess,
 
   // #region Roster
   People,

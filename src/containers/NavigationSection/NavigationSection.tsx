@@ -33,12 +33,16 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const [modalCreateSpaceOpen, setModalCreateSpaceIsOpen] = useState(false)
 
+  const {isSectionsLoading, sections, onCreateRoom} =
+    useRoomNavigator(spaceSelected)
+
   useGlobalHotkey({key: "S", ctrl: true, shift: true}, () =>
     setModalCreateSpaceIsOpen(true)
   )
 
-  const {isSectionsLoading, sections, onCreateRoom} =
-    useRoomNavigator(spaceSelected)
+  useGlobalHotkey({key: "R", ctrl: true, shift: true}, () =>
+    setModalCreateSpaceIsOpen(true)
+  )
 
   if (!isSmall && activeRoomId !== null) {
     return <></>
@@ -49,8 +53,9 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
       <CreateRoomModal
         open={isCreateRoomModalOpen}
         onOpenChange={setIsCreateRoomModalOpen}
-        onCreateRoom={onCreateRoom} />
-        
+        onCreateRoom={onCreateRoom}
+      />
+
       <CreateSpaceModal
         open={modalCreateSpaceOpen}
         onOpenChange={setModalCreateSpaceIsOpen}
@@ -58,7 +63,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         onUploadAvatar={uploadSpaceAvatar}
       />
 
-      <div className={twMerge("flex size-full sm:max-w-80", className)}>
+      <div className={twMerge("flex size-full sm:max-w-max", className)}>
         <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="flex flex-col items-center p-1">
             <ReactSVG src={StaticAssetPath.NewAppLogo} />
@@ -101,7 +106,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           </div>
 
           <ScrollArea
-            className="size-full sm:h-full sm:w-60"
+            className="size-full sm:h-full sm:w-64"
             isScrollBarHidden
             avoidOverflow>
             <RoomNavigator
@@ -110,18 +115,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
               sections={sections}
               isDashboardActive={spaceSelected === undefined}
               isLoading={isSectionsLoading}
-              onCreateRoom={() => {
-                // setActiveModal(Modals.CreateRoom)
-              }}
-              onCreateDM={() => {
-                throw new Error("Create DM not implemented.")
-              }}
-              addRoomToSpace={() => {
-                throw new Error("Add room to space not implemented.")
-              }}
-              onSearch={() => {
-                throw new Error("Room search not implemented.")
-              }}
+              onCreateRoom={() => setIsCreateRoomModalOpen(true)}
             />
           </ScrollArea>
 
