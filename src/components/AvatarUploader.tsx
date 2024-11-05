@@ -1,36 +1,74 @@
-import {uploadImageToMatrix} from "@/utils/util"
 import {useEffect, useMemo, useState, type FC} from "react"
 import {IoCamera, IoTrashBin} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import Typography, {TypographyVariant} from "./Typography"
-import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useFilePicker from "@/hooks/util/useFilePicker"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 import {IconButton} from "./ui/button"
+import {useToast} from "@/hooks/use-toast"
+import {Text} from "./ui/typography"
 
 type UploadAvatarProps = {
-  onAvatarUploaded: (matrixSrc: string) => void
+  onMxcUrlResult: (matrixSrc: string) => void
+  onUploadAvatar: (
+    file: File,
+    progressCallback: (percent: number) => void
+  ) => Promise<string>
   className?: string
 }
 
 const AVATAR_UPLOADER_SIZE = "size-16"
 
 const AvatarUploader: FC<UploadAvatarProps> = ({
-  onAvatarUploaded,
+  onMxcUrlResult,
+  onUploadAvatar,
   className,
 }) => {
-  const client = useMatrixClient()
   const [isImageUploading, setIsImageUploading] = useState(false)
-  const [imagePercent, setImagePercent] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const [isUploaded, setIsUploaded] = useState(false)
   const {contentPicked, onPickFile, clear} = useFilePicker(false, "image/*")
   const {t} = useTranslation()
+  const {toast} = useToast()
+
+  useEffect(() => {
+    if (
+      contentPicked === null ||
+      contentPicked.isMultiple ||
+      contentPicked.pickerResult === null ||
+      isUploaded
+    ) {
+      return
+    }
+
+    setIsImageUploading(true)
+
+    onUploadAvatar(contentPicked.pickerResult, setProgress)
+      .then(mxcUrl => {
+        onMxcUrlResult(mxcUrl)
+
+        setIsUploaded(true)
+      })
+      .catch((error: Error) => {
+        clear()
+
+        toast({
+          variant: "destructive",
+          title: error.name,
+          description: error.message,
+        })
+      })
+      .finally(() => {
+        setIsImageUploading(false)
+      })
+  }, [clear, contentPicked, isUploaded, onMxcUrlResult, onUploadAvatar, toast])
 
   const avatarImageUrl: string | null = useMemo(() => {
     if (
       contentPicked === null ||
       contentPicked.isMultiple ||
-      contentPicked.pickerResult === null
+      contentPicked.pickerResult === null ||
+      !contentPicked.pickerResult.type.startsWith("image/")
     ) {
       return null
     }
@@ -48,43 +86,13 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
     }
   }, [avatarImageUrl])
 
-  useEffect(() => {
-    if (
-      client === null ||
-      contentPicked === null ||
-      contentPicked.isMultiple ||
-      contentPicked.pickerResult === null
-    ) {
-      return
-    }
-
-    setIsImageUploading(true)
-
-    void uploadImageToMatrix(
-      contentPicked.pickerResult,
-      client,
-      setImagePercent
-    )
-      .then(imageUploadedInfo => {
-        if (imageUploadedInfo === null) {
-          // TODO: Send here notification that the image has not been uploaded.
-
-          throw new Error("Image upload failed")
-        }
-
-        setIsImageUploading(false)
-        onAvatarUploaded(imageUploadedInfo.matrixUrl)
-      })
-      .catch(_error => {
-        // TODO: Send here notification that the image has not been uploaded.
-      })
-  }, [client, contentPicked, onAvatarUploaded])
-
   return avatarImageUrl === null ? (
     <IconButton
       onClick={onPickFile}
+      tooltip={t(LangKey.UploadImage)}
+      aria-label={t(LangKey.UploadImage)}
       className={twMerge(
-        "flex shrink-0 items-center justify-center rounded-md bg-gray-100 hover:bg-gray-100",
+        "flex shrink-0 items-center justify-center rounded-md bg-neutral-100 hover:bg-neutral-100 dark:bg-neutral-900 dark:hover:bg-neutral-800",
         AVATAR_UPLOADER_SIZE,
         className
       )}>
@@ -97,7 +105,11 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
         <IconButton
           className="absolute -bottom-1 -right-1 z-10 size-6 rounded-full transition-transform hover:scale-125"
           variant="destructive"
-          onClick={clear}>
+          onClick={() => {
+            setIsUploaded(false)
+
+            clear()
+          }}>
           <IoTrashBin className="size-4 text-white" />
         </IconButton>
       )}
@@ -107,20 +119,19 @@ const AvatarUploader: FC<UploadAvatarProps> = ({
           "relative flex items-center justify-center overflow-hidden rounded-md",
           AVATAR_UPLOADER_SIZE
         )}>
-        {isImageUploading ? (
+        <img src={avatarImageUrl} alt={t(LangKey.UserAvatar)} />
+
+        {isImageUploading && (
           <>
             <div className="absolute size-full bg-modalOverlay" />
 
-            <img src={avatarImageUrl} alt="User profile avatar" />
-
-            <Typography
-              variant={TypographyVariant.BodySmall}
-              className="absolute font-bold text-white">
-              {imagePercent}%
-            </Typography>
+            <Text
+              className="absolute text-white dark:text-white"
+              align="center"
+              weight="bold">
+              {progress}%
+            </Text>
           </>
-        ) : (
-          <img src={avatarImageUrl} alt={t(LangKey.UserAvatar)} />
         )}
       </div>
     </div>

@@ -2,8 +2,8 @@ import {getEmojiByIndex} from "@/hooks/util/useEmojiPicker"
 import dayjs from "dayjs"
 import {
   EventType,
+  ICreateRoomStateEvent,
   MsgType,
-  type ICreateRoomOpts,
   type MatrixClient,
 } from "matrix-js-sdk"
 import {type RoomMessageEventContent} from "matrix-js-sdk/lib/types"
@@ -65,6 +65,30 @@ export function validateUrl(url: string): boolean {
   } catch {
     return false
   }
+}
+
+const mxcRegex = /^mxc:\/\/([^/]+)\/([^/]+)$/
+
+export function validateMxcUrl(url: string): boolean {
+  const match = url.match(mxcRegex)
+
+  if (match === null) {
+    throw new Error(
+      "Invalid MXC URL format. Must be mxc://<server-name>/<media-id>"
+    )
+  }
+
+  const [_, serverName, mediaId] = match
+
+  if (!serverName || serverName.length === 0) {
+    throw new Error("Server name cannot be empty")
+  }
+
+  if (!mediaId || mediaId.length === 0) {
+    throw new Error("Media ID cannot be empty")
+  }
+
+  return true
 }
 
 const matrixUserRegex = new RegExp(/^@[\w+.-]+:matrix\.org$/)
@@ -314,17 +338,47 @@ export function deleteMessage(
   })
 }
 
+function processInitialState(
+  options: CreationSpaceOptions
+): ICreateRoomStateEvent[] | undefined {
+  const {mxcAvatarUrl} = options
+  const initialState: ICreateRoomStateEvent[] = []
+
+  if (mxcAvatarUrl !== undefined) {
+    initialState.push({
+      type: EventType.RoomAvatar,
+      content: {
+        url: mxcAvatarUrl,
+      },
+    })
+  }
+
+  return mxcAvatarUrl === undefined ? undefined : initialState
+}
+
+export type CreationSpaceOptions = {
+  name: string
+  topic?: string
+  mxcAvatarUrl?: string
+}
+
 export async function createSpace(
   client: MatrixClient,
-  options: ICreateRoomOpts
+  spaceOptions: CreationSpaceOptions
 ): Promise<{room_id: string}> {
-  return await client.createRoom({
-    ...options,
+  const {name, topic} = spaceOptions
+  const initialState = processInitialState(spaceOptions)
+
+  const spaceId = await client.createRoom({
+    name: name,
+    topic: topic,
+    initial_state: initialState,
     creation_content: {
-      ...options.creation_content,
       type: "m.space",
     },
   })
+
+  return spaceId
 }
 
 export function getUsernameByUserId(userId: string): string {

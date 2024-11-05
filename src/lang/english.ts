@@ -21,7 +21,7 @@ export const english: LangDefinition = {
   [LangKey.NewSpace]: "New Space",
   [LangKey.CreateSpace]: "Create Space",
   [LangKey.CreateSpaceSpecInfo]:
-    "Spaces are a new way of grouping rooms and people. What kind of space you want to create you can change",
+    "Spaces are a new way of grouping rooms and people.",
   [LangKey.SpaceName]: "Space Name",
   [LangKey.SpaceDescriptionPlaceholder]:
     "Write a brief description of what your space will be about.",
@@ -29,6 +29,7 @@ export const english: LangDefinition = {
   [LangKey.PrivateRoom]: "Private Room",
   [LangKey.Accept]: "Accept",
   [LangKey.Cancel]: "Cancel",
+  [LangKey.NeedHelp]: "Need help?",
   [LangKey.UploadAudio]: "Upload Audio",
   [LangKey.Send]: "Send",
   [LangKey.LoadError]: "Load error",
@@ -112,6 +113,7 @@ export const english: LangDefinition = {
   [LangKey.SyncState]: "Sync state",
   [LangKey.JumpToDown]: "Jump to down",
   [LangKey.UnreadMessagesCount]: (count: string) => `${count} Unread messages`,
+  [LangKey.SpaceCreatedSuccess]: "Space created successfully",
 
   // #region Roster
   [LangKey.People]: "People",
@@ -292,7 +294,7 @@ export const english: LangDefinition = {
   [LangKey.CheckoutGitHub]: "Checkout GitHub",
   [LangKey.CheckoutGitHubSubtitle]: "to view latest updates",
 
-  // Audio Recorder
+  // #region Audio Recorder
   [LangKey.RemoveAudio]: "Remove audio",
   [LangKey.StopRecord]: "Stop record",
   [LangKey.SendAudioRecorded]: "Send audio recorded",
@@ -305,4 +307,11 @@ export const english: LangDefinition = {
   [LangKey.NoDevicesAvailableError]: "You don't have audio devices",
   [LangKey.AvatarOf]: (spaceName: string) => `Avatar of ${spaceName}`,
   [LangKey.Loading]: "Loading...",
+
+  // #region Errors
+  [LangKey.CreateSpaceInProgressError]:
+    "There is already a creation in progress.",
+  [LangKey.ClientMustBeInitialized]: "The client must be initialized.",
+  [LangKey.SpaceNameEmptyError]: "Space name should not be empty.",
+  [LangKey.SpaceTopicEmptyError]: "Space description should not be empty.",
 }
