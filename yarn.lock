@@ -6184,10 +6184,10 @@ ignore@^5.0.5, ignore@^5.2.0, ignore@^5.2.4, ignore@^5.3.1:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.3.2.tgz#3cd40e729f3643fd87cb04e50bf0eb722bc596f5"
   integrity sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==
 
-immutable@^5.0.0-rc.2:
-  version "5.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-5.0.0-rc.2.tgz#fd1d20e02798b1b5bcc691951419b1388484bf63"
-  integrity sha512-iqmDkN2+LGR8DT/7ua4foLlf55Y40ZrDC31YJTJX7lv6yMLpU5pE4rOYnt3/T3Mw5tp/xFeMEwtqAURtVDkMQQ==
+immutable@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-5.0.0.tgz#33d76138ae6e007328842fa7483f1070ba0abc24"
+  integrity sha512-6ooCHBvtm9B06fFLW2p0VjKVryK20YgWN04Pju2Tq/L6UP4K/vMj4AzsJs9WQy1wiN80oXl3hSS8unYjqA7vOQ==
 
 import-fresh@^3.2.1, import-fresh@^3.3.0:
   version "3.3.0"
