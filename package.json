@@ -129,6 +129,6 @@
     "typescript-eslint": "^8.12.0",
     "vite": "^5.4.10",
     "vite-react-jsx": "^1.1.2",
-    "webpack": "^5.95.0"
+    "webpack": "^5.96.1"
   }
 }
