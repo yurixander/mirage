@@ -4,8 +4,6 @@ import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {
   assert,
-  createSpace,
-  CreationSpaceOptions,
   getImageUrl,
   uploadImageToMatrix,
   validateMxcUrl,
@@ -16,6 +14,7 @@ import {type ValueState} from "@/hooks/util/useValueState"
 import useMatrixValue from "@/hooks/matrix/useMatrixValue"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
+import {createSpace, CreationSpaceOptions} from "@/utils/matrix"
 
 export type PartialSpace = {
   name: string

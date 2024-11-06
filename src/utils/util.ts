@@ -1,11 +1,6 @@
 import {getEmojiByIndex} from "@/hooks/util/useEmojiPicker"
 import dayjs from "dayjs"
-import {
-  EventType,
-  ICreateRoomStateEvent,
-  MsgType,
-  type MatrixClient,
-} from "matrix-js-sdk"
+import {EventType, MsgType, type MatrixClient} from "matrix-js-sdk"
 import {type RoomMessageEventContent} from "matrix-js-sdk/lib/types"
 import {mxcUrlToHttp} from "./matrix"
 
@@ -336,49 +331,6 @@ export function deleteMessage(
   client.redactEvent(roomId, eventId).catch(error => {
     console.error("Error deleting message", error)
   })
-}
-
-function processInitialState(
-  options: CreationSpaceOptions
-): ICreateRoomStateEvent[] | undefined {
-  const {mxcAvatarUrl} = options
-  const initialState: ICreateRoomStateEvent[] = []
-
-  if (mxcAvatarUrl !== undefined) {
-    initialState.push({
-      type: EventType.RoomAvatar,
-      content: {
-        url: mxcAvatarUrl,
-      },
-    })
-  }
-
-  return mxcAvatarUrl === undefined ? undefined : initialState
-}
-
-export type CreationSpaceOptions = {
-  name: string
-  topic?: string
-  mxcAvatarUrl?: string
-}
-
-export async function createSpace(
-  client: MatrixClient,
-  spaceOptions: CreationSpaceOptions
-): Promise<{room_id: string}> {
-  const {name, topic} = spaceOptions
-  const initialState = processInitialState(spaceOptions)
-
-  const spaceId = await client.createRoom({
-    name: name,
-    topic: topic,
-    initial_state: initialState,
-    creation_content: {
-      type: "m.space",
-    },
-  })
-
-  return spaceId
 }
 
 export function getUsernameByUserId(userId: string): string {
