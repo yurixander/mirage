@@ -5,7 +5,6 @@ import SmartActionBar from "@/components/SmartActionBar"
 import WelcomeSplash from "./WelcomeSplash"
 import RoomNotFoundSplash from "./RoomNotFoundSplash"
 import RoomInvitedSplash from "./RoomInvitedSplash"
-import {ModalRenderLocation} from "@/hooks/util/useActiveModal"
 import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 import {motion} from "framer-motion"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
@@ -29,9 +28,7 @@ const RoomContainer: FC = () => {
   }
 
   return (
-    <div
-      className="size-full flex-col sm:flex"
-      id={ModalRenderLocation.RoomContainer}>
+    <div className="size-full flex-col sm:flex">
       {(roomState === RoomState.Joined || roomState === RoomState.Invited) &&
       activeRoomId !== null ? (
         <div className="flex size-full">

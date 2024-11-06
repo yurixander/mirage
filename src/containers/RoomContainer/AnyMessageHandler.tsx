@@ -5,11 +5,10 @@ import FileMessage from "@/components/FileMessage"
 import ImageMessage from "@/components/ImageMessage"
 import ReplyMessage from "@/components/ReplyMessage"
 import TextMessage from "@/components/TextMessage"
-import UnreadIndicator from "@/components/UnreadIndicator"
 import VideoMessage from "@/components/VideoMessage"
-import {buildMessageMenuItems} from "@/utils/menu"
 import {type FC} from "react"
 import {type AnyMessage, MessageKind} from "./hooks/useRoomChat"
+import {buildMessageMenuItems} from "@/utils/menu"
 
 type AnyMessageHandlerProps = {
   anyMessage: AnyMessage
@@ -118,9 +117,6 @@ const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
           })}
         />
       )
-    }
-    case MessageKind.Unread: {
-      return <UnreadIndicator {...anyMessage.data} />
     }
     case MessageKind.EventGroup: {
       return (

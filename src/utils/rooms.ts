@@ -41,12 +41,11 @@ import {
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
-import {parseReplyMessageFromBody, validateReplyMessage} from "./parser"
 import {
-  type EventGroupMessageData,
-  EventShortenerType,
-} from "@/components/EventGroupMessage"
-import {type EventMessageData} from "@/components/EventMessage"
+  groupEventMessage,
+  parseReplyMessageFromBody,
+  validateReplyMessage,
+} from "./parser"
 import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 import {t} from "./lang"
 import {LangKey} from "@/lang/allKeys"
@@ -63,32 +62,23 @@ export async function getAllJoinedRooms(
   const currentJoinedRooms: PartialRoom[] = []
   const directRoomIds = getDirectRoomsIds(client)
 
-  try {
-    const joinedRooms = await client.getJoinedRooms()
+  const joinedRooms = await client.getJoinedRooms()
 
-    for (const joinedRoomId of joinedRooms.joined_rooms) {
-      const joinedRoom = client.getRoom(joinedRoomId)
+  for (const joinedRoomId of joinedRooms.joined_rooms) {
+    const joinedRoom = client.getRoom(joinedRoomId)
 
-      // TODO: Handle errors instead continue.
-      if (joinedRoom === null) {
-        continue
-      }
-
-      if (joinedRoom.isSpaceRoom()) {
-        continue
-      }
-
-      currentJoinedRooms.push({
-        roomId: joinedRoom.roomId,
-        roomName: joinedRoom.name,
-        type: directRoomIds.includes(joinedRoomId)
-          ? RoomType.Direct
-          : RoomType.Group,
-        emoji: stringToEmoji(joinedRoomId),
-      })
+    if (joinedRoom === null || joinedRoom.isSpaceRoom()) {
+      continue
     }
-  } catch (error) {
-    console.error("An error ocurred while getting all joined rooms", error)
+
+    currentJoinedRooms.push({
+      roomId: joinedRoom.roomId,
+      roomName: joinedRoom.name,
+      type: directRoomIds.includes(joinedRoomId)
+        ? RoomType.Direct
+        : RoomType.Group,
+      emoji: stringToEmoji(joinedRoomId),
+    })
   }
 
   return currentJoinedRooms
@@ -252,142 +242,6 @@ export const handleRoomEvents = async (
   return groupEventMessage(allMessageProperties)
 }
 
-const configRoomPattern = new Set<string>([
-  EventType.RoomTopic,
-  EventType.RoomAvatar,
-  EventType.RoomName,
-  EventType.RoomEncryption,
-  EventType.RoomCanonicalAlias,
-  EventType.RoomGuestAccess,
-  EventType.RoomJoinRules,
-  EventType.RoomHistoryVisibility,
-  EventType.RoomCreate,
-  EventType.RoomJoinRules,
-])
-
-const processPatterns = (
-  lastMessage: EventMessageData,
-  currentMessage: EventMessageData
-): AnyMessage | null => {
-  if (lastMessage.sender.userId !== currentMessage.sender.userId) {
-    return null
-  }
-
-  if (
-    configRoomPattern.has(lastMessage.type) &&
-    configRoomPattern.has(currentMessage.type)
-  ) {
-    return {
-      kind: MessageKind.EventGroup,
-      messageId: lastMessage.eventId,
-      data: {
-        eventMessages: [lastMessage, currentMessage],
-        eventGroupMainBody: {
-          sender: lastMessage.sender,
-          shortenerType: EventShortenerType.ConfigureRoom,
-        },
-      },
-    }
-  } else if (configRoomPattern.has(currentMessage.type)) {
-    return null
-  }
-
-  return {
-    kind: MessageKind.EventGroup,
-    messageId: lastMessage.eventId,
-    data: {
-      eventMessages: [lastMessage, currentMessage],
-      eventGroupMainBody: {
-        sender: lastMessage.sender,
-        shortenerType: EventShortenerType.EqualInfo,
-      },
-    },
-  }
-}
-
-const updateEventGroup = (
-  eventGroup: EventGroupMessageData,
-  newEvent: EventMessageData
-): AnyMessage | null => {
-  if (eventGroup.eventGroupMainBody.sender.userId !== newEvent.sender.userId) {
-    return null
-  }
-
-  const partialMessage: AnyMessage = {
-    kind: MessageKind.EventGroup,
-    messageId: newEvent.eventId,
-    data: {
-      eventMessages: [...eventGroup.eventMessages, newEvent],
-      eventGroupMainBody: eventGroup.eventGroupMainBody,
-    },
-  }
-
-  switch (eventGroup.eventGroupMainBody.shortenerType) {
-    case EventShortenerType.EqualInfo: {
-      if (configRoomPattern.has(newEvent.type)) {
-        return null
-      }
-
-      return partialMessage
-    }
-    case EventShortenerType.PersonalInfo: {
-      throw new Error(
-        "Not implemented yet: EventShortenerType.PersonalInfo case"
-      )
-    }
-    case EventShortenerType.ConfigureRoom: {
-      if (!configRoomPattern.has(newEvent.type)) {
-        return null
-      }
-
-      return partialMessage
-    }
-  }
-}
-
-const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
-  const result: AnyMessage[] = []
-
-  for (const message of anyMessages) {
-    const lastMessage = result.at(-1)
-
-    if (lastMessage === undefined) {
-      result.push(message)
-
-      continue
-    }
-
-    const isLastMessageEvent = lastMessage.kind === MessageKind.Event
-    const isMessageEvent = message.kind === MessageKind.Event
-
-    if (isLastMessageEvent && isMessageEvent) {
-      const newEventGroup = processPatterns(lastMessage.data, message.data)
-
-      if (newEventGroup === null) {
-        result.push(message)
-
-        continue
-      }
-
-      result[result.length - 1] = newEventGroup
-    } else if (lastMessage.kind === MessageKind.EventGroup && isMessageEvent) {
-      const eventGroupUpdated = updateEventGroup(lastMessage.data, message.data)
-
-      if (eventGroupUpdated === null) {
-        result.push(message)
-
-        continue
-      }
-
-      result[result.length - 1] = eventGroupUpdated
-    } else {
-      result.push(message)
-    }
-  }
-
-  return result
-}
-
 export const handleRoomMessageEvent = async (
   event: MatrixEvent,
   room: Room
@@ -398,7 +252,6 @@ export const handleRoomMessageEvent = async (
 
   const eventMessageData = await handleEventMessage(event)
 
-  // TODO: Handle errors instead of throwing null.
   if (
     event.sender === null ||
     event.event.event_id === undefined ||
@@ -789,8 +642,6 @@ export const handleRoomNameEvent = async (
 export const handleMessage = async (
   event: MatrixEvent,
   room: Room
-  // TODO: Resolve this problem
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): Promise<AnyMessage | null> => {
   const sender = event.sender
   const eventContent = event.getContent()
@@ -818,31 +669,13 @@ export const handleMessage = async (
 
   switch (eventContent.msgtype) {
     case MsgType.Text: {
-      const relates = eventContent["m.relates_to"]
+      const replyMessage = convertToReplyMessage(
+        eventContent,
+        messageBaseProperties
+      )
 
-      if (relates !== undefined) {
-        const reply = relates["m.in_reply_to"]
-
-        if (
-          reply !== undefined &&
-          eventContent.body !== undefined &&
-          typeof eventContent.body === "string" &&
-          validateReplyMessage(eventContent.body)
-        ) {
-          const replyData = parseReplyMessageFromBody(eventContent.body)
-
-          return {
-            kind: MessageKind.Reply,
-            messageId: messageBaseProperties.messageId,
-            data: {
-              ...messageBaseProperties,
-              text: replyData.message,
-              quotedMessageId: reply.event_id,
-              quotedText: replyData.quotedMessage,
-              quotedUserDisplayName: replyData.quotedUser,
-            },
-          }
-        }
+      if (replyMessage !== null) {
+        return replyMessage
       }
 
       return {
@@ -873,68 +706,15 @@ export const handleMessage = async (
     }
 
     case MsgType.File: {
-      const fileUrl = eventContent.url
-
-      if (typeof fileUrl !== "string") {
-        console.warn("File url should be valid,", eventContent.url)
-
-        return null
-      }
-
-      return {
-        kind: MessageKind.File,
-        messageId: messageBaseProperties.messageId,
-        data: {
-          ...messageBaseProperties,
-          fileUrl: getFileUrl(fileUrl, room.client),
-          fileName: eventContent.body,
-          fileSize: eventContent.info.size,
-        },
-      }
+      return convertToFileMessage(eventContent, room, messageBaseProperties)
     }
 
     case MsgType.Audio: {
-      const audioUrl = eventContent.url
-
-      if (typeof audioUrl !== "string") {
-        return null
-      }
-
-      return {
-        kind: MessageKind.Audio,
-        messageId: messageBaseProperties.messageId,
-        data: {
-          ...messageBaseProperties,
-          audioUrl: getFileUrl(audioUrl, room.client),
-        },
-      }
+      return convertToAudioMessage(eventContent, room, messageBaseProperties)
     }
 
     case MsgType.Video: {
-      if (typeof eventContent.url !== "string") {
-        return null
-      }
-
-      const videoUrl = getFileUrl(eventContent.url, room.client)
-
-      if (videoUrl === undefined) {
-        return null
-      }
-
-      const poster =
-        typeof eventContent.info.thumbnail_url === "string"
-          ? getImageUrl(eventContent.info.thumbnail_url, room.client)
-          : eventContent.info.thumbnail_url
-
-      return {
-        kind: MessageKind.Video,
-        messageId: messageBaseProperties.messageId,
-        data: {
-          ...messageBaseProperties,
-          url: videoUrl,
-          thumbnail: poster,
-        },
-      }
+      return convertToVideoMessage(eventContent, room, messageBaseProperties)
     }
 
     case undefined: {
@@ -950,6 +730,119 @@ export const handleMessage = async (
     default: {
       return null
     }
+  }
+}
+
+const convertToVideoMessage = (
+  eventContent: IContent,
+  room: Room,
+  messageBaseProperties: MessageBaseData
+): AnyMessage | null => {
+  if (typeof eventContent.url !== "string") {
+    return null
+  }
+
+  const videoUrl = getFileUrl(eventContent.url, room.client)
+
+  if (videoUrl === undefined) {
+    return null
+  }
+
+  const poster =
+    typeof eventContent.info.thumbnail_url === "string"
+      ? getImageUrl(eventContent.info.thumbnail_url, room.client)
+      : eventContent.info.thumbnail_url
+
+  return {
+    kind: MessageKind.Video,
+    messageId: messageBaseProperties.messageId,
+    data: {
+      ...messageBaseProperties,
+      url: videoUrl,
+      thumbnail: poster,
+    },
+  }
+}
+
+const convertToAudioMessage = (
+  eventContent: IContent,
+  room: Room,
+  messageBaseProperties: MessageBaseData
+): AnyMessage | null => {
+  const audioUrl = eventContent.url
+
+  if (typeof audioUrl !== "string") {
+    return null
+  }
+
+  return {
+    kind: MessageKind.Audio,
+    messageId: messageBaseProperties.messageId,
+    data: {
+      ...messageBaseProperties,
+      audioUrl: getFileUrl(audioUrl, room.client),
+    },
+  }
+}
+
+const convertToFileMessage = (
+  eventContent: IContent,
+  room: Room,
+  messageBaseProperties: MessageBaseData
+): AnyMessage | null => {
+  const fileUrl = eventContent.url
+
+  if (typeof fileUrl !== "string") {
+    console.warn("File url should be valid,", eventContent.url)
+
+    return null
+  }
+
+  return {
+    kind: MessageKind.File,
+    messageId: messageBaseProperties.messageId,
+    data: {
+      ...messageBaseProperties,
+      fileUrl: getFileUrl(fileUrl, room.client),
+      fileName: eventContent.body,
+      fileSize: eventContent.info.size,
+    },
+  }
+}
+
+const convertToReplyMessage = (
+  eventContent: IContent,
+  messageBaseProperties: MessageBaseData
+): AnyMessage | null => {
+  const relates = eventContent["m.relates_to"]
+
+  if (relates === undefined) {
+    return null
+  }
+
+  const reply = relates["m.in_reply_to"]
+
+  if (
+    reply === undefined ||
+    eventContent.body === undefined ||
+    typeof eventContent.body !== "string" ||
+    !validateReplyMessage(eventContent.body)
+  ) {
+    return null
+  }
+
+  const replyData = parseReplyMessageFromBody(eventContent.body)
+
+  return {
+    kind: MessageKind.Reply,
+    messageId: messageBaseProperties.messageId,
+    data: {
+      ...messageBaseProperties,
+      text: replyData.message,
+      quotedMessageId: reply.event_id,
+      quotedText: replyData.quotedMessage,
+      quotedUserDisplayName: replyData.quotedUser,
+    },
   }
 }
 
