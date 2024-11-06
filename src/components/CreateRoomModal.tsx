@@ -2,6 +2,7 @@ import {FC, useState} from "react"
 import {
   Modal,
   ModalAction,
+  ModalCancel,
   ModalContent,
   ModalDescription,
   ModalFooter,
@@ -186,6 +187,8 @@ const CreateRoomModal: FC<CreateRoomModalProps> = ({
 
         <ModalFooter>
           <ModalMoreInfo>Need help?</ModalMoreInfo>
+
+          <ModalCancel>{t(LangKey.Cancel)}</ModalCancel>
 
           <ModalAction
             disabled={isCreatingRoom}
