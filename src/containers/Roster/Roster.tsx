@@ -1,6 +1,6 @@
 import {type FC} from "react"
 import {IoFilterCircle, IoPeople, IoReloadOutline} from "react-icons/io5"
-import {ScrollArea} from "@/components/ui/scroll-area"
+import {SmartScrollArea} from "@/components/ui/scroll-area"
 import RosterUser, {type RosterUserData} from "./RosterUser"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
@@ -10,6 +10,9 @@ import {type GroupedMembers} from "./hooks/useRoomMembers"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Heading, Text} from "@/components/ui/typography"
+import {type ValueState} from "@/hooks/util/useValueState"
+import ValueStateHandler from "@/components/ValueStateHandler"
+import Loader from "@/components/Loader"
 
 export enum RosterUserCategory {
   Admin,
@@ -17,34 +20,25 @@ export enum RosterUserCategory {
 }
 
 export type RosterProps = {
-  groupedMembers: GroupedMembers | Error
-  isLoading: boolean
+  isLazyLoading: boolean
+  membersState: ValueState<GroupedMembers>
   onUserClick: (userId: string) => void
+  onLazyLoad: () => void
   onReloadMembers: () => void
   className?: string
 }
 
 const MAX_MEMBERS_LENGTH_FOR_GHOST = 10
 
-const EMPTY_GROUPED_MEMBERS: GroupedMembers = {
-  admins: [],
-  moderators: [],
-  members: [],
-}
-
 const Roster: FC<RosterProps> = ({
-  groupedMembers,
   onUserClick,
-  isLoading,
   onReloadMembers,
+  membersState,
+  onLazyLoad,
+  isLazyLoading,
   className,
 }) => {
   const {t} = useTranslation()
-  const hasError = groupedMembers instanceof Error
-
-  const {admins, moderators, members} = hasError
-    ? EMPTY_GROUPED_MEMBERS
-    : groupedMembers
 
   return (
     <div
@@ -74,61 +68,83 @@ const Roster: FC<RosterProps> = ({
         </div>
       </header>
 
-      {hasError ? (
-        <div className="flex size-full flex-col items-center justify-center gap-1 p-1">
-          <Heading level="h4" align="center">
-            {t(LangKey.MembersError)}
-          </Heading>
+      <ValueStateHandler
+        value={membersState}
+        loading={
+          <div className="flex flex-col gap-6 pt-3">
+            <RosterSectionSkeleton elementsCount={2} />
 
-          <Button
-            aria-label={t(LangKey.ReloadMembers)}
-            className="mt-1"
-            size="sm"
-            variant="secondary"
-            onClick={onReloadMembers}>
-            {t(LangKey.ReloadMembers)} <IoReloadOutline className="ml-1" />
-          </Button>
-        </div>
-      ) : isLoading ? (
-        <div className="flex flex-col gap-6 pt-3">
-          <RosterSectionSkeleton elementsCount={2} />
+            <RosterSectionSkeleton elementsCount={1} />
 
-          <RosterSectionSkeleton elementsCount={1} />
-
-          <RosterSectionSkeleton elementsCount={5} />
-        </div>
-      ) : (
-        <ScrollArea avoidOverflow className="px-1 pt-3" type="scroll">
-          <div className="flex flex-col gap-4">
-            <RosterSection
-              title={t(LangKey.Admins, admins.length.toString())}
-              members={admins}
-              onUserClick={onUserClick}
-            />
-
-            <RosterSection
-              title={t(LangKey.Moderators, moderators.length.toString())}
-              members={moderators}
-              onUserClick={onUserClick}
-            />
-
-            <RosterSection
-              title={t(LangKey.Members, members.length.toString())}
-              members={members}
-              onUserClick={onUserClick}
-            />
+            <RosterSectionSkeleton elementsCount={5} />
           </div>
+        }
+        error={() => (
+          <div className="flex size-full flex-col items-center justify-center gap-1 p-1">
+            <Heading level="h4" align="center">
+              {t(LangKey.MembersError)}
+            </Heading>
 
-          {admins.length + moderators.length + members.length <=
-            MAX_MEMBERS_LENGTH_FOR_GHOST && (
-            <UserProfileGhost
-              className="p-2"
-              count={4}
-              opacityMultiplier={0.2}
-            />
-          )}
-        </ScrollArea>
-      )}
+            <Button
+              aria-label={t(LangKey.ReloadMembers)}
+              className="mt-1"
+              size="sm"
+              variant="secondary"
+              onClick={onReloadMembers}>
+              {t(LangKey.ReloadMembers)} <IoReloadOutline className="ml-1" />
+            </Button>
+          </div>
+        )}>
+        {({admins, moderators, members}) => (
+          <SmartScrollArea
+            avoidOverflow
+            className="px-1 pt-3"
+            type="scroll"
+            endScrollChange={isEnd => {
+              if (!isEnd || isLazyLoading) {
+                return
+              }
+
+              onLazyLoad()
+            }}>
+            <div className="flex flex-col gap-4">
+              <RosterSection
+                title={t(LangKey.Admins, admins.length.toString())}
+                members={admins}
+                onUserClick={onUserClick}
+              />
+
+              <RosterSection
+                title={t(LangKey.Moderators, moderators.length.toString())}
+                members={moderators}
+                onUserClick={onUserClick}
+              />
+
+              <RosterSection
+                title={t(LangKey.Members, members.length.toString())}
+                members={members}
+                onUserClick={onUserClick}
+              />
+            </div>
+
+            {admins.length + moderators.length + members.length <=
+              MAX_MEMBERS_LENGTH_FOR_GHOST &&
+              !isLazyLoading && (
+                <UserProfileGhost
+                  className="p-2"
+                  count={4}
+                  opacityMultiplier={0.2}
+                />
+              )}
+
+            {isLazyLoading && (
+              <div className="h-32 w-full">
+                <Loader text="Loading" />
+              </div>
+            )}
+          </SmartScrollArea>
+        )}
+      </ValueStateHandler>
     </div>
   )
 }
@@ -144,17 +160,13 @@ const RosterSection: FC<{
 
   return (
     <div className="flex w-full flex-col gap-2.5">
-      <motion.div
-        initial={{scale: 0.8, opacity: 0}}
-        whileInView={{scale: 1, opacity: 1}}>
-        <Text
-          size="2"
-          as="label"
-          weight="medium"
-          className="ml-2 text-neutral-500 dark:text-neutral-400">
-          {title}
-        </Text>
-      </motion.div>
+      <Text
+        size="2"
+        as="label"
+        weight="medium"
+        className="ml-2 text-neutral-500 dark:text-neutral-400">
+        {title}
+      </Text>
 
       <div className="flex w-full flex-col gap-1.5">
         {members.map(member => (

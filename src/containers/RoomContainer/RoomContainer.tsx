@@ -17,7 +17,7 @@ const RoomContainer: FC = () => {
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
   const {isSmall} = useBreakpoint()
 
-  const {groupedMembers, isMembersLoading, onReloadMembers} =
+  const {membersState, onReloadMembers, onLazyReload, isLazyLoading} =
     useRoomMembers(activeRoomId)
 
   useGlobalHotkey({key: "M", ctrl: true}, () => {
@@ -49,10 +49,11 @@ const RoomContainer: FC = () => {
           <motion.div animate={{width: isRosterExpanded ? "15rem" : 0}}>
             <Roster
               className="max-w-60"
-              groupedMembers={groupedMembers}
-              isLoading={isMembersLoading}
+              isLazyLoading={isLazyLoading}
+              membersState={membersState}
               onReloadMembers={onReloadMembers}
-              onUserClick={function (_userId: string): void {
+              onLazyLoad={onLazyReload}
+              onUserClick={function (userId: string): void {
                 throw new Error("`onUserClick` function not implemented.")
               }}
             />
