@@ -8,11 +8,7 @@ import {
 import {IoCopy} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import UserProfile from "@/components/UserProfile"
-import {
-  stringToColor,
-  getUsernameByUserId,
-  validateMatrixUser,
-} from "@/utils/util"
+import {stringToColor} from "@/utils/util"
 import Loader from "@/components/Loader"
 import useTooltip from "@/hooks/util/useTooltip"
 import useTranslation from "@/hooks/util/useTranslation"
@@ -21,6 +17,7 @@ import {Heading, Text} from "@/components/ui/typography"
 import {SearchInput} from "@/components/ui/input"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import useBreakpoint from "@/hooks/util/useMediaQuery"
+import {validateMatrixUser, getUsernameByUserId} from "@/utils/matrix"
 
 export type DMUser = {
   displayName: string

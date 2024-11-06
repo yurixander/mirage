@@ -2,19 +2,20 @@ import {useCallback} from "react"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import {
-  assert,
-  getImageUrl,
-  uploadImageToMatrix,
-  validateMxcUrl,
-} from "@/utils/util"
+import {assert} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getJoinedSpaces} from "@/utils/spaces"
 import {type ValueState} from "@/hooks/util/useValueState"
 import useMatrixValue from "@/hooks/matrix/useMatrixValue"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
-import {createSpace, CreationSpaceOptions} from "@/utils/matrix"
+import {
+  createSpace,
+  CreationSpaceOptions,
+  getImageUrl,
+  uploadImageToMatrix,
+  validateMxcUrl,
+} from "@/utils/matrix"
 
 export type PartialSpace = {
   name: string

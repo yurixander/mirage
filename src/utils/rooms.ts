@@ -8,14 +8,7 @@ import {
   MsgType,
   type IContent,
 } from "matrix-js-sdk"
-import {
-  assert,
-  getFileUrl,
-  getImageUrl,
-  normalizeName,
-  stringToColor,
-  stringToEmoji,
-} from "./util"
+import {assert, normalizeName, stringToColor, stringToEmoji} from "./util"
 import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {
   getRoomUsersIdWithPowerLevels,
@@ -49,6 +42,7 @@ import {
 import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 import {t} from "./lang"
 import {LangKey} from "@/lang/allKeys"
+import {getImageUrl, getFileUrl} from "./matrix"
 
 export enum ImageSizes {
   Server = 47,

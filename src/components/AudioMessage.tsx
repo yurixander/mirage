@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState, type FC} from "react"
 import {IoAlertCircle, IoPause, IoPlay} from "react-icons/io5"
 import AvatarImage, {AvatarType} from "./AvatarImage"
-import {assert, CommonAssertion, formatTime, validateUrl} from "@/utils/util"
+import {assert, formatTime, validateUrl} from "@/utils/util"
 import {useWavesurfer} from "@wavesurfer/react"
 import useAudioPlayerStore from "@/hooks/util/useAudioPlayerStore"
 import {type MessageBaseData, type MessageBaseProps} from "./MessageContainer"
@@ -27,8 +27,6 @@ const AudioMessage: FC<AudioMessageProps> = ({
   messageId,
   userId,
 }) => {
-  assert(messageId.length > 0, CommonAssertion.MessageIdEmpty)
-
   if (audioUrl !== undefined) {
     assert(validateUrl(audioUrl), "The audio url should be valid.")
   }
