@@ -1,6 +1,7 @@
 export enum LangKey {
   MoreActions,
   CreateRoom,
+  CreateRoomModalSubtitle,
   CloseRoom,
   MoreErrorInformation,
   HelpInfoError,
@@ -104,6 +105,7 @@ export enum LangKey {
   JumpToDown,
   UnreadMessagesCount,
   SpaceCreatedSuccess,
+  RoomCreatedSuccess,
 
   // #region Roster
   People,

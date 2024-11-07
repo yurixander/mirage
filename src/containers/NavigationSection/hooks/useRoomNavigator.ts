@@ -2,7 +2,7 @@ import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {useCallback, useEffect, useState} from "react"
 import {EMPTY_SECTIONS, type RoomSections} from "../RoomNavigator"
 import {RoomType} from "@/components/Room"
-import {getAllJoinedRooms} from "@/utils/rooms"
+import {createRoom, getAllJoinedRooms, RoomCreationProps} from "@/utils/rooms"
 import {EventType, type MatrixClient, type Room, RoomEvent} from "matrix-js-sdk"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import {getSpaceRoomSections} from "@/utils/spaces"
@@ -11,6 +11,7 @@ import {DASHBOARD_SPACE_ID} from "../NavigationSection"
 type UseRoomNavigatorReturnType = {
   isSectionsLoading: boolean
   sections: RoomSections
+  onCreateRoom: (props: RoomCreationProps) => Promise<void>
 }
 
 const useRoomNavigator = (spaceId: string): UseRoomNavigatorReturnType => {
@@ -26,6 +27,17 @@ const useRoomNavigator = (spaceId: string): UseRoomNavigatorReturnType => {
 
     setActiveSpace(client.getRoom(spaceId))
   }, [client, spaceId])
+
+  const onCreateRoom = useCallback(
+    async (props: RoomCreationProps) => {
+      if (client === null) {
+        throw new Error("The client is null")
+      }
+
+      await createRoom(client, props)
+    },
+    [client]
+  )
 
   const onLoadSections = useCallback(
     async (client: MatrixClient, spaceId: string) => {
@@ -76,6 +88,7 @@ const useRoomNavigator = (spaceId: string): UseRoomNavigatorReturnType => {
   return {
     isSectionsLoading: isLoading || client === null,
     sections,
+    onCreateRoom,
   }
 }
 
