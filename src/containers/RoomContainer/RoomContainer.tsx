@@ -50,7 +50,7 @@ const RoomContainer: FC = () => {
               membersState={membersState}
               onReloadMembers={onReloadMembers}
               onLazyLoad={onLazyReload}
-              onUserClick={function (userId: string): void {
+              onUserClick={function (_userId: string): void {
                 throw new Error("`onUserClick` function not implemented.")
               }}
             />

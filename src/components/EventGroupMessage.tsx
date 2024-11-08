@@ -71,7 +71,7 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
           />
         </AccordionTrigger>
 
-        <AccordionContent className="overflow-hidden py-1">
+        <AccordionContent className="overflow-hidden py-2">
           <div className="flex w-full flex-col gap-4 p-1">
             {eventMessages.map(eventMessageData => (
               <EventMessageChild

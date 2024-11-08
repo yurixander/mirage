@@ -115,7 +115,11 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   }, [lastMessageReadId, messagesState, onLastMessageReadIdChange, percent])
 
   return (
-    <div className={twMerge("flex size-full flex-col gap-4", className)}>
+    <div
+      className={twMerge(
+        "flex size-full flex-col items-center justify-center gap-4",
+        className
+      )}>
       <ValueStateHandler
         value={messagesState}
         error={error => (

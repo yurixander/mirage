@@ -43,7 +43,6 @@ const EventMessage: FC<EventMessageProps> = ({
   timestamp,
   body,
   sender,
-  eventId,
   icon,
   onFindUser,
   onShowMember,

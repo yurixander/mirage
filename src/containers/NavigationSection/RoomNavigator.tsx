@@ -88,7 +88,7 @@ const SelectableRoom: FC<SelectableRoomProps> = ({
         )}
         size="sm"
         value={roomId}>
-        <Text aria-hidden className="size-4 shrink-0" align="center" size="1">
+        <Text className="size-4 shrink-0" align="center" size="1">
           {emoji}
         </Text>
 
@@ -125,7 +125,7 @@ const MoreActionsDropdown: FC<MoreActionsDropdownProps> = ({children}) => {
       <DropdownMenuContent
         align="start"
         alignOffset={24}
-        className="w-48 dark:bg-neutral-900"
+        className="w-48 "
         onCloseAutoFocus={e => {
           e.preventDefault()
         }}>
