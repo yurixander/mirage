@@ -23,6 +23,7 @@ import useScrollPercent from "@/hooks/util/useScrollPercent"
 import {motion} from "framer-motion"
 import {SLIDE_UP_SMALL_ANIM} from "@/utils/animations"
 import UnreadIndicator from "@/components/UnreadIndicator"
+import MessagesPlaceholder from "./MessagesPlaceholder"
 
 const MIN_PERCENT_FOR_JUMP = 99.5
 
@@ -129,11 +130,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
             onCloseRoom={onCloseRoom}
           />
         )}
-        loading={
-          // TODO: @lazaroysr96 Dark mode and limit height for MessagesPlaceholder.
-          // <MessagesPlaceholder />
-          <></>
-        }>
+        loading={<MessagesPlaceholder />}>
         {messages => (
           <ScrollArea avoidOverflow ref={scrollContainerRef}>
             <div className="flex-1 space-y-4">

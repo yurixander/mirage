@@ -54,7 +54,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
         className
       )}>
       <ChatHeader
-        className="relative flex size-full max-h-12 items-center border-b border-b-neutral-200 px-3 py-1 dark:border-b-neutral-700"
+        className="flex size-full h-12 items-center border-b border-b-neutral-200 px-3 py-1 dark:border-b-neutral-700"
         isRosterExpanded={isRosterExpanded}
         onRosterExpanded={onRosterExpanded}
         roomDetail={roomDetail}
