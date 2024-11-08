@@ -17,7 +17,7 @@ const config: StorybookConfig = {
 
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@": path.resolve(import.meta.dirname, "../src"),
+      "@": path.resolve(__dirname, "../src"),
     }
 
     return config

@@ -7,7 +7,6 @@ import {
   IoCloseCircle,
   IoInformationCircle,
 } from "react-icons/io5"
-import ImageZoom from "@/components/ImageZoom"
 import Typography from "@/components/Typography"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
@@ -38,7 +37,11 @@ const ImageModal: FC<ImageModalProps> = ({
             <Typography>{t(LangKey.LoadingImageError)}</Typography>
           </div>
         ) : (
-          <ImageZoom className="size-full px-8 py-4" src={imageUrl} />
+          <img
+            className="size-full px-8 py-4"
+            src={imageUrl}
+            alt={`Img ${imageUrl} from message`}
+          />
         )}
       </div>
 
