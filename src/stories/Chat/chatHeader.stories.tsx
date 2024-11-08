@@ -18,8 +18,7 @@ export const Default: Story = {
   args: {
     roomDetail: {
       roomName: "Help & guides",
-      roomDescription:
-        "Request assistance from your colleagues Help & guidesHelp & guidesHelp & guidesHelp & guidesHelp & guidesHelp & guidesHelp & guidesHelp & guidesHelp & guides",
+      roomDescription: "Request assistance from your colleagues",
       isRoomEncrypted: true,
     },
     className: "flex",

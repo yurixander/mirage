@@ -55,7 +55,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
           {containDescription && (
             <Text
               size="4"
-              className="hidden truncate text-neutral-400 sm:block sm:max-w-md">
+              className="hidden w-max truncate text-neutral-400 sm:block sm:max-w-md">
               - {roomDescription}
             </Text>
           )}
