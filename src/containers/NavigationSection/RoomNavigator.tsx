@@ -40,14 +40,9 @@ export const AccordionRoomSection: FC<AccordionRoomSectionProps> = ({
       aria-label={title}
       className="w-full"
       value={title}>
-      <AccordionPrimitive.Header aria-hidden className="flex items-center">
-        <AccordionPrimitive.Trigger
-          aria-hidden
-          className="flex flex-1 items-center gap-0.5 p-1 transition-transform focus-visible:ring [&[data-state=open]>svg]:rotate-180">
-          <IoMdArrowDropdown
-            aria-hidden
-            className="size-5 shrink-0 text-neutral-500 transition-transform duration-200 dark:text-neutral-400"
-          />
+      <AccordionPrimitive.Header className="flex items-center">
+        <AccordionPrimitive.Trigger className="flex flex-1 items-center gap-0.5 p-1 transition-transform focus-visible:ring [&[data-state=open]>svg]:rotate-180">
+          <IoMdArrowDropdown className="size-5 shrink-0 text-neutral-500 transition-transform duration-200 dark:text-neutral-400" />
 
           <Text
             aria-hidden

@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
+import {IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import useNotifications from "./hooks/useNotifications"
 import DMTrayPopup from "./DMTrayPopup"
@@ -8,7 +8,6 @@ import useDmTray from "./hooks/useDmTray"
 import NotificationsTray from "./NotificationsTray"
 import NotificationDot from "@/components/NotificationDot"
 import {IconButton} from "@/components/ui/button"
-import {FaSearch} from "react-icons/fa"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {
@@ -83,18 +82,6 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
             </NotificationDot>
           </IconButton>
         </NotificationsTray>
-
-        <IconButton
-          className={SIDEBAR_BUTTON_CLASS}
-          aria-label={t(LangKey.SearchAnything)}>
-          <FaSearch size={SIDEBAR_BUTTON_SIZE - 1} />
-        </IconButton>
-
-        <IconButton
-          className={SIDEBAR_BUTTON_CLASS}
-          aria-label={t(LangKey.Calls)}>
-          <IoCall size={SIDEBAR_BUTTON_SIZE} />
-        </IconButton>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
