@@ -2,7 +2,6 @@ import {type FC} from "react"
 import {stringToColor, formatTime, cleanDisplayName} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
 import {type UserPowerLevel} from "@/utils/members"
-import {motion} from "framer-motion"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
 import useTooltip from "@/hooks/util/useTooltip"
 import useTranslation from "@/hooks/util/useTranslation"
@@ -44,13 +43,8 @@ const RosterUser: FC<RosterUserProps> = ({
   const name = displayName.length === 0 ? userId : cleanDisplayName(displayName)
 
   return (
-    <motion.button
+    <button
       aria-label={`Member: ${name}`}
-      initial={{opacity: 0, scale: 0.8}}
-      whileInView={{opacity: 1, scale: 1}}
-      transition={{
-        duration: 0.2,
-      }}
       ref={renderRef}
       className={twMerge(
         "flex w-full gap-2 rounded-lg px-2 py-1 hover:bg-gray-200 dark:hover:bg-neutral-800",
@@ -91,7 +85,7 @@ const RosterUser: FC<RosterUserProps> = ({
           delayDuration={2000}
         />
       </div>
-    </motion.button>
+    </button>
   )
 }
 

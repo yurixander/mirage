@@ -58,7 +58,6 @@ const ReplyMessage: FC<ReplyMessageProps> = ({
 
   const quoteMessage = (
     <button
-      type="button"
       ref={renderRef}
       onClick={handleTooltip}
       className="-mt-1 flex items-center gap-1 overflow-hidden rounded-full border bg-gray-50 p-2 px-3 text-left hover:bg-gray-100 dark:bg-neutral-950 dark:hover:bg-neutral-900">

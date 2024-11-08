@@ -7,11 +7,13 @@ import {
   type MatrixEvent,
   MsgType,
   type IContent,
+  Preset,
+  Visibility,
 } from "matrix-js-sdk"
 import {assert, normalizeName, stringToColor, stringToEmoji} from "./util"
 import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {
-  getRoomUsersIdWithPowerLevels,
+  getOwnersIdWithPowerLevels,
   getUserLastPresence,
   isCurrentUserAdminOrMod,
   UserPowerLevel,
@@ -48,6 +50,79 @@ export enum ImageSizes {
   Server = 47,
   MessageAndProfile = 40,
   ProfileLarge = 60,
+}
+
+// Initial event that declares the room as encrypted.
+const ROOM_ENCRYPTION_OBJECT = {
+  type: "m.room.encryption",
+  state_key: "",
+  content: {
+    algorithm: "m.megolm.v1.aes-sha2",
+  },
+}
+
+function getVisibilityFromPrivacy(privacy: string): Visibility {
+  if (privacy === Visibility.Public) {
+    return Visibility.Public
+  } else if (privacy === Visibility.Private) {
+    return Visibility.Private
+  }
+
+  throw new Error("Room privacy invalid.")
+}
+
+export type RoomCreationProps = {
+  name: string
+  privacy: string
+  enableEncryption: boolean
+  description?: string
+  // When privacy is public.
+  address?: string
+}
+
+export async function createRoom(
+  client: MatrixClient,
+  props: RoomCreationProps
+): Promise<{
+  room_id: string
+}> {
+  const {name, description, enableEncryption, address, privacy} = props
+
+  const visibility = getVisibilityFromPrivacy(privacy)
+
+  assert(name.length > 0, "Room name should not be empty.")
+
+  if (description !== undefined) {
+    assert(description.length > 0, "Room description should not be empty.")
+  }
+
+  if (visibility === Visibility.Public) {
+    assert(
+      address !== undefined && address.length > 0,
+      "If visibility is public, it must have at least one valid address"
+    )
+
+    const result = await client.publicRooms({
+      filter: {
+        generic_search_term: address,
+      },
+      include_all_networks: true,
+      limit: 1,
+    })
+
+    if (result.chunk.length === 0) {
+      throw new Error("That address is already taken.")
+    }
+  }
+
+  return await client.createRoom({
+    name,
+    topic: description,
+    visibility,
+    preset: enableEncryption ? Preset.PrivateChat : Preset.PublicChat,
+    room_alias_name: address,
+    initial_state: enableEncryption ? [ROOM_ENCRYPTION_OBJECT] : undefined,
+  })
 }
 
 export async function getAllJoinedRooms(
@@ -89,9 +164,7 @@ export async function getRoomMembers(room: Room): Promise<GroupedMembers> {
   const moderators: RosterUserData[] = []
   const admins: RosterUserData[] = []
 
-  const roomOwnersWithLevels = getRoomUsersIdWithPowerLevels(room).filter(
-    user => user.powerLevel !== UserPowerLevel.Member
-  )
+  const roomOwnersWithLevels = getOwnersIdWithPowerLevels(room)
 
   for (const roomOwner of roomOwnersWithLevels) {
     const roomOwnerMember = membersResponse.joined[roomOwner.userId]

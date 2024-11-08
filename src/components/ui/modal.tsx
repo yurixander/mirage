@@ -1,4 +1,3 @@
-import React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 import {AlertDialogContent} from "./alert-dialog"
 import {cn} from "@/utils/utils"
@@ -6,14 +5,21 @@ import {Button, type ButtonProps, buttonVariants} from "./button"
 import {IoClose} from "react-icons/io5"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
+import {
+  forwardRef,
+  type ElementRef,
+  type ComponentPropsWithoutRef,
+  type HTMLAttributes,
+} from "react"
+import React from "react"
 
 const Modal = AlertDialogPrimitive.Root
 
 const ModalTrigger = AlertDialogPrimitive.Trigger
 
-const ModalContent = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
+const ModalContent = forwardRef<
+  ElementRef<typeof AlertDialogPrimitive.Content>,
+  ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
 >(({className, ...props}, ref) => (
   <AlertDialogContent
     className={cn(
@@ -28,7 +34,7 @@ const ModalContent = React.forwardRef<
 const ModalHeader = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>): React.JSX.Element => (
+}: HTMLAttributes<HTMLDivElement>): React.JSX.Element => (
   <div className="flex w-full sm:items-center">
     <div className={cn("flex grow flex-col text-left", className)} {...props} />
 
@@ -43,9 +49,9 @@ const ModalHeader = ({
   </div>
 )
 
-const ModalTitle = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
+const ModalTitle = forwardRef<
+  ElementRef<typeof AlertDialogPrimitive.Title>,
+  ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
 >(({className, ...props}, ref) => (
   <AlertDialogPrimitive.Title
     ref={ref}
@@ -57,9 +63,9 @@ const ModalTitle = React.forwardRef<
   />
 ))
 
-const ModalDescription = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
+const ModalDescription = forwardRef<
+  ElementRef<typeof AlertDialogPrimitive.Title>,
+  ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
 >(({className, ...props}, ref) => (
   <AlertDialogPrimitive.Description
     ref={ref}
@@ -68,7 +74,7 @@ const ModalDescription = React.forwardRef<
   />
 ))
 
-interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ModalFooterProps extends HTMLAttributes<HTMLDivElement> {
   containDots?: boolean
 }
 
@@ -90,9 +96,9 @@ const ModalFooter = ({
   </div>
 )
 
-const ModalAction = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Action>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
+const ModalAction = forwardRef<
+  ElementRef<typeof AlertDialogPrimitive.Action>,
+  ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
 >(({className, ...props}, ref) => (
   <AlertDialogPrimitive.Action
     ref={ref}
@@ -101,9 +107,9 @@ const ModalAction = React.forwardRef<
   />
 ))
 
-const ModalCancel = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
+const ModalCancel = forwardRef<
+  ElementRef<typeof AlertDialogPrimitive.Cancel>,
+  ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
 >(({className, ...props}, ref) => (
   <AlertDialogPrimitive.Cancel
     ref={ref}
@@ -112,15 +118,12 @@ const ModalCancel = React.forwardRef<
   />
 ))
 
-const ModalMoreInfo = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const ModalMoreInfo = forwardRef<HTMLButtonElement, ButtonProps>(
   ({className, variant = "link", ...props}, ref) => (
     <Button
       variant={variant}
       ref={ref}
-      className={cn(
-        "mr-auto w-full w-max px-0 py-0 font-sans font-bold",
-        className
-      )}
+      className={cn("mr-auto w-max px-0 py-0 font-sans font-bold", className)}
       {...props}
     />
   )

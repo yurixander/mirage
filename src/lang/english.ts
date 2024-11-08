@@ -7,6 +7,8 @@ export const english: LangDefinition = {
   [LangKey.MoreErrorInformation]: "More error information",
   [LangKey.HelpInfoError]: "Info about error",
   [LangKey.CreateRoom]: "Create Room",
+  [LangKey.CreateRoomModalSubtitle]:
+    "Crea una sala para comunicarte con varias personas.",
   [LangKey.Name]: "Name",
   [LangKey.DescriptionOptional]: "Description (optional)",
   [LangKey.RoomDescriptionPlaceholder]:
@@ -114,6 +116,7 @@ export const english: LangDefinition = {
   [LangKey.JumpToDown]: "Jump to down",
   [LangKey.UnreadMessagesCount]: (count: string) => `${count} Unread messages`,
   [LangKey.SpaceCreatedSuccess]: "Space created successfully",
+  [LangKey.RoomCreatedSuccess]: "Room created successfully",
 
   // #region Roster
   [LangKey.People]: "People",
