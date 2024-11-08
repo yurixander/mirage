@@ -118,7 +118,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   return (
     <div
       className={twMerge(
-        "flex size-full flex-col items-center justify-center gap-4",
+        "flex size-full flex-col justify-center gap-4",
         className
       )}>
       <ValueStateHandler

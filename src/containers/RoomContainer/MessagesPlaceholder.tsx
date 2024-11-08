@@ -78,9 +78,9 @@ const MessagesPlaceholder: FC = () => {
           <SkeletonLine className="h-4 w-36" />
 
           <div className="flex w-full flex-row gap-1">
-            <SkeletonLine className="h-52 w-full max-w-44" />
+            <SkeletonLine className="h-36 w-full max-w-44" />
 
-            <SkeletonLine className="h-52 w-full max-w-44" />
+            <SkeletonLine className="h-36 w-full max-w-44" />
 
             <div className="h-3 w-full" />
 

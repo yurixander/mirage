@@ -60,7 +60,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
             </Text>
           )}
 
-          {isRoomEncrypted && (
+          {isRoomEncrypted && containDescription && (
             <IoLockClosed className="hidden size-4 shrink-0 text-neutral-400 sm:block" />
           )}
         </div>
