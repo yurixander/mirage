@@ -40,7 +40,7 @@ export const AccordionRoomSection: FC<AccordionRoomSectionProps> = ({
       className="w-full"
       value={title}>
       <AccordionPrimitive.Header className="flex items-center">
-        <AccordionPrimitive.Trigger className="flex flex-1 items-center gap-0.5 p-1 transition-transform focus-visible:ring [&[data-state=open]>svg]:rotate-180">
+        <AccordionPrimitive.Trigger className="flex flex-1 items-center gap-0.5 transition-transform focus-visible:ring [&[data-state=open]>svg]:rotate-180">
           <IoMdArrowDropdown className="size-5 shrink-0 text-neutral-500 transition-transform duration-200 dark:text-neutral-400" />
 
           <Text
@@ -51,7 +51,7 @@ export const AccordionRoomSection: FC<AccordionRoomSectionProps> = ({
         </AccordionPrimitive.Trigger>
 
         {actions !== undefined && (
-          <div className="ml-auto max-h-5 max-w-max">{actions}</div>
+          <div className="ml-auto max-h-5 max-w-max shrink-0">{actions}</div>
         )}
       </AccordionPrimitive.Header>
 
@@ -74,7 +74,6 @@ const SelectableRoom: FC<SelectableRoomProps> = ({
 }) => {
   return (
     <motion.div
-      aria-hidden
       initial={{translateX: -25, opacity: 0.5}}
       whileInView={{translateX: 0, opacity: 1}}
       whileTap={{scale: 0.95}}
