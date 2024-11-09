@@ -112,7 +112,6 @@ const ChatInput: FC<ChatInputProps> = ({
             onClick={onPickFile}
             className="size-max bg-transparent dark:bg-transparent">
             <IoAddCircle
-              aria-hidden
               className={twMerge(
                 "size-7 fill-neutral-400 dark:fill-neutral-500",
                 className
@@ -163,7 +162,7 @@ const ChatInput: FC<ChatInputProps> = ({
                 onClick={() => {
                   setRecorderState(AudioRecorderState.Recording)
                 }}>
-                <IoMic aria-hidden className={INPUT_ACTION_CLASS} />
+                <IoMic className={INPUT_ACTION_CLASS} />
               </IconButton>
             )}
 
@@ -178,10 +177,7 @@ const ChatInput: FC<ChatInputProps> = ({
                 onSendMessageText({roomId, messageText})
                 setMessageText("")
               }}>
-              <IoSend
-                aria-hidden
-                className="size-5 text-blue-500 md:size-[22px]"
-              />
+              <IoSend className="size-5 text-blue-500 md:size-[22px]" />
             </IconButton>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import {useState, type FC} from "react"
 import {formatTime, stringToColor} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
-import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
+import {IoPeopleCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
 import {type EventType} from "matrix-js-sdk"
 import useTranslation from "@/hooks/util/useTranslation"
@@ -35,7 +35,6 @@ export const MAX_EVENT_SENDER_NAME_LENGTH = 32
 
 export interface EventMessageProps extends EventMessageData {
   onShowMember: () => void
-  onFindUser: () => void
   className?: string
 }
 
@@ -44,7 +43,6 @@ const EventMessage: FC<EventMessageProps> = ({
   body,
   sender,
   icon,
-  onFindUser,
   onShowMember,
   className,
 }) => {
@@ -88,19 +86,6 @@ const EventMessage: FC<EventMessageProps> = ({
                   <IoPeopleCircle className={DROPDOWN_ICON_CLASS} />
 
                   <Text>{t(LangKey.ViewMember)}</Text>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  onClick={e => {
-                    e.stopPropagation()
-
-                    setIsDropdownOpen(false)
-
-                    onFindUser()
-                  }}>
-                  <IoSearchCircle className={DROPDOWN_ICON_CLASS} />
-
-                  <Text>{t(LangKey.FindUser)}</Text>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

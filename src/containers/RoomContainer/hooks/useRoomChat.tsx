@@ -179,7 +179,8 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     roomDetail,
     isChatLoading,
     typingUsers,
-    isInputDisabled: client === null,
+    isInputDisabled:
+      client === null || isChatLoading || messagesState.status !== "success",
     onSendAudioMessage,
     onSendSourceMessage,
     onReloadMessages: reloadMessages,

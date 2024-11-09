@@ -76,9 +76,6 @@ const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
       return (
         <EventMessage
           {...anyMessage.data}
-          onFindUser={() => {
-            // TODO: Handle find user here.
-          }}
           onShowMember={() => {
             // TODO: Handle show member here.
           }}
@@ -125,9 +122,6 @@ const AnyMessageHandler: FC<AnyMessageHandlerProps> = ({
           eventMessages={anyMessage.data.eventMessages}
           onShowMember={function (): void {
             throw new Error("Show member not implemented.")
-          }}
-          onFindUser={function (): void {
-            throw new Error("Find user not implemented.")
           }}
         />
       )

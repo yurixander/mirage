@@ -42,13 +42,11 @@ export type EventGroupMessageData = {
 
 export interface EventGroupMessageProps extends EventGroupMessageData {
   onShowMember: () => void
-  onFindUser: () => void
 }
 
 const EventGroupMessage: FC<EventGroupMessageProps> = ({
   eventGroupMainBody,
   eventMessages,
-  onFindUser,
   onShowMember,
 }) => {
   const {sender, shortenerType} = eventGroupMainBody
@@ -61,7 +59,6 @@ const EventGroupMessage: FC<EventGroupMessageProps> = ({
           <EventMessage
             className="pr-1 sm:pr-2"
             onShowMember={onShowMember}
-            onFindUser={onFindUser}
             body={t(eventShortenerBody[shortenerType])}
             eventId={eventMessages[0].eventId}
             sender={sender}

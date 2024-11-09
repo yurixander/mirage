@@ -44,7 +44,6 @@ export const AccordionRoomSection: FC<AccordionRoomSectionProps> = ({
           <IoMdArrowDropdown className="size-5 shrink-0 text-neutral-500 transition-transform duration-200 dark:text-neutral-400" />
 
           <Text
-            aria-hidden
             size="1"
             className="font-bold uppercase text-neutral-500 dark:text-neutral-400">
             {title}
@@ -93,7 +92,6 @@ const SelectableRoom: FC<SelectableRoomProps> = ({
         </Text>
 
         <Text
-          aria-hidden
           className="text-neutral-600 dark:text-neutral-300"
           size="1"
           weight="semibold">
@@ -184,7 +182,6 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
   return (
     <AccordionPrimitive.Root className={cn("p-1", className)} type="multiple">
       <ToggleGroup
-        aria-hidden
         className="flex flex-col items-start gap-4"
         type="single"
         value={roomSelected ?? ""}
