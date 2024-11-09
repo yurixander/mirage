@@ -4,7 +4,6 @@ import Roster from "../Roster/Roster"
 import SmartActionBar from "@/components/SmartActionBar"
 import WelcomeSplash from "./WelcomeSplash"
 import RoomNotFoundSplash from "./RoomNotFoundSplash"
-import RoomInvitedSplash from "./RoomInvitedSplash"
 import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
 import {motion} from "framer-motion"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
@@ -33,7 +32,8 @@ const RoomContainer: FC = () => {
       activeRoomId !== null ? (
         <div className="flex size-full">
           {roomState === RoomState.Invited ? (
-            <RoomInvitedSplash roomId={activeRoomId} />
+            // TODO: Handle room invited splash.
+            <></>
           ) : (
             <ChatContainer
               className="flex size-full flex-col"

@@ -1,8 +1,8 @@
 import {type Meta, type StoryObj} from "@storybook/react"
 import UserProfile, {type UserProfileProps} from "../components/UserProfile"
 import {IoHeadsetSharp} from "react-icons/io5"
-import Typography, {TypographyVariant} from "@/components/Typography"
 import React from "react"
+import {Text} from "@/components/ui/typography"
 
 type Story = StoryObj<typeof UserProfile>
 
@@ -19,9 +19,7 @@ export const Default: Story = {
   args: {
     displayName,
     displayNameColor: "#5CC679",
-    children: (
-      <Typography variant={TypographyVariant.BodySmall}>{username}</Typography>
-    ),
+    children: <Text size="1">{username}</Text>,
     isLarge: false,
   },
 }
@@ -33,11 +31,9 @@ export const WithActivityIcon: Story = {
     displayNameColor: "#5CC679",
     isLarge: false,
     children: (
-      <Typography
-        className="flex items-center gap-1"
-        variant={TypographyVariant.BodySmall}>
+      <Text className="flex items-center gap-1" size="1">
         Listening to <b>Spotify</b> <IoHeadsetSharp size={12} />
-      </Typography>
+      </Text>
     ),
   },
 }
@@ -47,11 +43,7 @@ export const Large: Story = {
   args: {
     displayName,
     displayNameColor: "#5CC679",
-    children: (
-      <Typography variant={TypographyVariant.BodyMedium}>
-        Last presence age 4:00pm
-      </Typography>
-    ),
+    children: <Text>Last presence age 4:00pm</Text>,
     isLarge: true,
   },
 }

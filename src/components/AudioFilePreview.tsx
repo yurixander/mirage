@@ -1,7 +1,6 @@
 import {useRef, type FC} from "react"
-import Typography, {TypographyVariant} from "./Typography"
 import {IoCloseCircle, IoPause, IoPlay} from "react-icons/io5"
-import {fileSizeToString, getFileExtension} from "./FileMessage"
+import {getFileExtension} from "./FileMessage"
 import {ReactSVG} from "react-svg"
 import {StaticAssetPath} from "@/utils/util"
 import {useWavesurfer} from "@wavesurfer/react"
@@ -19,14 +18,13 @@ export type AudioFilePreviewProps = {
 
 const AudioFilePreview: FC<AudioFilePreviewProps> = ({
   fileName,
-  fileSize,
   audioUrl,
   onClose,
   onSend,
 }) => {
   const {t} = useTranslation()
 
-  const fileExtension = getFileExtension(fileName).toUpperCase()
+  const _fileExtension = getFileExtension(fileName).toUpperCase()
 
   const waveformRef = useRef(null)
 
@@ -46,11 +44,12 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
   return (
     <div className="flex w-messageMaxWidth flex-col rounded border bg-slate-50 shadow-lg">
       <div className="flex h-16 w-full items-center rounded-t border-b bg-slate-100 px-5">
-        <Typography
+        {/* TODO: Use ui/typography.tsx */}
+        {/* <Typography
           variant={TypographyVariant.HeadingMedium}
           className="w-full">
           {t(LangKey.UploadAudio)}
-        </Typography>
+        </Typography> */}
 
         <IoCloseCircle size={20} color="gray" role="button" onClick={onClose} />
       </div>
@@ -58,11 +57,13 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
       <div className="flex size-full flex-col gap-3 p-4">
         <div className="flex w-full flex-col items-center gap-2 rounded border bg-white p-2">
           <div className="flex w-full">
-            <Typography
+            {/* TODO: Use ui/typography.tsx */}
+
+            {/* <Typography
               className="line-clamp-1 font-light text-slate-700"
               variant={TypographyVariant.Body}>
               {fileName}
-            </Typography>
+            </Typography> */}
           </div>
 
           <div className="flex w-full items-center gap-2 rounded bg-slate-100 p-2 shadow">
@@ -92,7 +93,9 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
           </div>
 
           <div className="flex w-full">
-            <Typography
+            {/* TODO: Use ui/typography.tsx */}
+
+            {/* <Typography
               className="w-full font-semibold text-gray-400"
               variant={TypographyVariant.BodySmall}>
               {fileExtension}
@@ -102,7 +105,7 @@ const AudioFilePreview: FC<AudioFilePreviewProps> = ({
               className="min-w-20 text-right font-semibold text-gray-400"
               variant={TypographyVariant.BodySmall}>
               {fileSizeToString(fileSize)}
-            </Typography>
+            </Typography> */}
           </div>
         </div>
 

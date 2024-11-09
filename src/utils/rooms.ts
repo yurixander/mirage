@@ -24,7 +24,6 @@ import {
   MessageKind,
 } from "@/containers/RoomContainer/hooks/useRoomChat"
 import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
-import {RoomType} from "@/components/Room"
 import {type IconType} from "react-icons"
 import {
   IoAtCircle,
@@ -45,6 +44,7 @@ import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 import {t} from "./lang"
 import {LangKey} from "@/lang/allKeys"
 import {getImageUrl, getFileUrl} from "./matrix"
+import {RoomType} from "@/containers/NavigationSection/hooks/useRoomNavigator"
 
 export enum ImageSizes {
   Server = 47,
