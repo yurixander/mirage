@@ -69,14 +69,14 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
             <ReactSVG src={StaticAssetPath.NewAppLogo} />
 
             <Text
-              className="font-unbounded"
+              className="font-unbounded uppercase"
               weight="semibold"
               style={{
                 color: "#D64DF4",
                 fontSize: "0.70rem",
                 lineHeight: "0.75rem",
               }}>
-              MIRAGE
+              Mirage
             </Text>
 
             <div className="mt-2 h-0.5 w-12 rounded-full bg-neutral-300" />
