@@ -55,7 +55,7 @@ export const AccordionRoomSection: FC<AccordionRoomSectionProps> = ({
         )}
       </AccordionPrimitive.Header>
 
-      <AccordionPrimitive.Content className="flex w-full flex-col gap-1 overflow-hidden pl-1 data-[state=open]:animate-accordion-down">
+      <AccordionPrimitive.Content className="flex w-full flex-col gap-1 overflow-hidden py-1 data-[state=open]:animate-accordion-down">
         {children}
       </AccordionPrimitive.Content>
     </AccordionPrimitive.Item>
