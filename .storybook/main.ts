@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-module */
 import type {StorybookConfig} from "@storybook/react-vite"
 import path from "node:path"
 
