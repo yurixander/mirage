@@ -4,6 +4,7 @@ export enum LocalStorageKey {
   Credentials = "credentials",
   Lang = "language",
   RecentEmojis = "recent_emojis",
+  Theme = "app_theme",
 }
 
 const getLocalStorageValue = <T>(key: LocalStorageKey): T | null => {

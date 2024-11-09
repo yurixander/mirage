@@ -1,10 +1,7 @@
 import {type FC} from "react"
-import {formatTime} from "../utils/util"
-import Label from "./Label"
 import UserProfile, {
   type UserProfileProps as UserProfileProperties,
 } from "./UserProfile"
-import Typography, {TypographyVariant} from "./Typography"
 import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 import {Button} from "./ui/button"
@@ -18,14 +15,7 @@ export type UserCardProps = {
   onCancel: () => void
 }
 
-const UserCard: FC<UserCardProps> = ({
-  aboutMe,
-  accountCreationTime,
-  lastMessageTime,
-  serverJoinTime,
-  userProfileProps,
-  onCancel,
-}) => {
+const UserCard: FC<UserCardProps> = ({userProfileProps, onCancel}) => {
   const {t} = useTranslation()
 
   return (
@@ -36,30 +26,7 @@ const UserCard: FC<UserCardProps> = ({
         </div>
 
         <div className="flex grow flex-col gap-4 bg-neutral-50 p-4">
-          <div>
-            <Label text={t(LangKey.AboutMe)} />
-
-            <Typography variant={TypographyVariant.BodySmall}>
-              {aboutMe}
-            </Typography>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <Label text={t(LangKey.Account)} />
-
-            <Typography variant={TypographyVariant.BodySmall}>
-              {t(LangKey.Created)} <b>{formatTime(accountCreationTime)}</b>
-            </Typography>
-
-            <Typography variant={TypographyVariant.BodySmall}>
-              {t(LangKey.JoinedServer)} <b>{formatTime(serverJoinTime)}</b>
-            </Typography>
-
-            <Typography variant={TypographyVariant.BodySmall}>
-              {t(LangKey.LastMessageSentWas)}{" "}
-              <b>{formatTime(lastMessageTime)}</b>
-            </Typography>
-          </div>
+          {/* TODO: Handle user data using real data. */}
         </div>
 
         <div className="flex flex-row justify-end gap-1 border-t border-solid border-neutral-300 bg-cardActionsBg p-3">

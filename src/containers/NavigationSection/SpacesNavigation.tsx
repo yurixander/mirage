@@ -3,7 +3,7 @@ import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 import {motion} from "framer-motion"
 import Avatar from "boring-avatars"
 import {twMerge} from "tailwind-merge"
-import {scaleInAnimation, spaceIndicatorAnimation} from "@/utils/animations"
+import {SCALE_IN_ANIM, SPACE_INDICATOR_ANIM} from "@/utils/animations"
 import {type SpaceProps} from "./Space"
 import {
   Tooltip,
@@ -93,7 +93,7 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
     <div className="flex items-center">
       <motion.div
         aria-hidden
-        variants={spaceIndicatorAnimation}
+        variants={SPACE_INDICATOR_ANIM}
         animate={isSelected ? "selected" : "default"}
         className="-ml-1 mr-1 w-2 rounded-full bg-purple-500"
       />
@@ -103,7 +103,7 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
           <TooltipTrigger aria-hidden tabIndex={-1} asChild>
             <motion.div
               tabIndex={-1}
-              variants={scaleInAnimation}
+              variants={SCALE_IN_ANIM}
               initial="initial"
               whileInView="whileInView"
               whileTap={{scale: 0.9}}
@@ -165,7 +165,7 @@ export const CreateSpaceButton: FC<{
           <TooltipTrigger asChild>
             <motion.button
               aria-label={t(LangKey.CreateSpace)}
-              variants={scaleInAnimation}
+              variants={SCALE_IN_ANIM}
               initial="initial"
               whileInView="whileInView"
               onClick={onCreateSpace}
@@ -187,7 +187,7 @@ export const SpacesPlaceHolder: FC<{length?: number}> = ({length = 1}) => {
   return Array.from({length}, (_, index) => (
     <motion.div
       aria-hidden
-      variants={scaleInAnimation}
+      variants={SCALE_IN_ANIM}
       initial="initial"
       whileInView="whileInView"
       className="flex w-max items-center gap-0.5 sm:gap-1"

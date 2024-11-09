@@ -2,7 +2,7 @@ import Avatar from "boring-avatars"
 import {useState, forwardRef} from "react"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
-import {scaleInAnimation} from "@/utils/animations"
+import {SCALE_IN_ANIM} from "@/utils/animations"
 import {
   Tooltip,
   TooltipContent,
@@ -32,21 +32,13 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
         <Tooltip>
           <TooltipTrigger asChild>
             <motion.div
-              aria-hidden
               tabIndex={-1}
               className="flex items-center gap-0.5 sm:gap-1"
-              onTapStart={() => {
-                setIsActive(true)
-              }}
-              onTap={() => {
-                setIsActive(false)
-              }}
-              onTapCancel={() => {
-                setIsActive(false)
-              }}>
+              onTapStart={() => setIsActive(true)}
+              onTap={() => setIsActive(false)}
+              onTapCancel={() => setIsActive(false)}>
               {isSelected ? (
                 <motion.div
-                  aria-hidden
                   animate={{height: isActive ? 8 : 26}}
                   className={twMerge(
                     "-ml-0.5 w-1 rounded-full sm:w-1.5",
@@ -54,13 +46,13 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
                   )}
                 />
               ) : (
-                <div aria-hidden className="-ml-0.5 w-1 sm:w-1.5" />
+                <div className="-ml-0.5 w-1 sm:w-1.5" />
               )}
 
               <motion.button
                 ref={ref}
                 aria-label={spaceName}
-                variants={scaleInAnimation}
+                variants={SCALE_IN_ANIM}
                 initial="initial"
                 whileInView="whileInView"
                 whileTap={{scale: 0.9}}
@@ -74,13 +66,10 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
                     : "border-transparent",
                   classNames
                 )}
-                onClick={() => {
-                  onSpaceSelected(spaceId)
-                }}>
+                onClick={() => onSpaceSelected(spaceId)}>
                 {avatarUrl === undefined ? (
                   <Avatar
                     className="dark:opacity-90"
-                    aria-hidden
                     square
                     size="100%"
                     variant="bauhaus"

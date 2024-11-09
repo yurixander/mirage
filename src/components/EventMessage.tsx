@@ -1,7 +1,7 @@
 import {useState, type FC} from "react"
 import {formatTime, stringToColor} from "../utils/util"
 import {IoMdCreate} from "react-icons/io"
-import {IoPeopleCircle, IoSearchCircle} from "react-icons/io5"
+import {IoPeopleCircle} from "react-icons/io5"
 import {type IconType} from "react-icons"
 import {type EventType} from "matrix-js-sdk"
 import useTranslation from "@/hooks/util/useTranslation"
@@ -35,7 +35,6 @@ export const MAX_EVENT_SENDER_NAME_LENGTH = 32
 
 export interface EventMessageProps extends EventMessageData {
   onShowMember: () => void
-  onFindUser: () => void
   className?: string
 }
 
@@ -43,9 +42,7 @@ const EventMessage: FC<EventMessageProps> = ({
   timestamp,
   body,
   sender,
-  eventId,
   icon,
-  onFindUser,
   onShowMember,
   className,
 }) => {
@@ -59,7 +56,7 @@ const EventMessage: FC<EventMessageProps> = ({
       <article aria-label={`${sender.displayName} ${body}`}>
         <div className="flex gap-1 sm:gap-2">
           <div className="flex size-5 items-center justify-end sm:size-6">
-            <Icon aria-hidden className="fill-neutral-500" />
+            <Icon className="fill-neutral-500" />
           </div>
 
           <div className="inline-block text-start">
@@ -74,10 +71,7 @@ const EventMessage: FC<EventMessageProps> = ({
                 </Heading>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent
-                onCloseAutoFocus={event => {
-                  event.preventDefault()
-                }}>
+              <DropdownMenuContent onCloseAutoFocus={e => e.preventDefault()}>
                 <DropdownMenuItem
                   onClick={e => {
                     e.stopPropagation()
@@ -89,19 +83,6 @@ const EventMessage: FC<EventMessageProps> = ({
                   <IoPeopleCircle className={DROPDOWN_ICON_CLASS} />
 
                   <Text>{t(LangKey.ViewMember)}</Text>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  onClick={e => {
-                    e.stopPropagation()
-
-                    setIsDropdownOpen(false)
-
-                    onFindUser()
-                  }}>
-                  <IoSearchCircle className={DROPDOWN_ICON_CLASS} />
-
-                  <Text>{t(LangKey.FindUser)}</Text>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

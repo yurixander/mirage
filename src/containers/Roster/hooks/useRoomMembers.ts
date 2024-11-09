@@ -7,9 +7,9 @@ import {
   processPowerLevelByNumber,
   UserPowerLevel,
 } from "@/utils/members"
-import {getImageUrl} from "@/utils/util"
 import {type MatrixClient} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
+import {getImageUrl} from "@/utils/matrix"
 
 export type GroupedMembers = {
   admins: RosterUserData[]

@@ -1,6 +1,5 @@
 import {IoClose, IoSend, IoStop, IoTrash} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
-import TruncatedTextWithTooltip from "@/components/TruncatedTextWithTooltip"
 import useTooltip from "@/hooks/util/useTooltip"
 import useWaveRecorder, {AudioSendError} from "@/hooks/util/useWaveRecorder"
 import {Button} from "@/components/ui/button"
@@ -9,6 +8,7 @@ import {motion} from "framer-motion"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {TruncatedText} from "@/components/ui/typography"
 
 const BUTTON_SIZE_CLASS = "sm:size-5"
 
@@ -91,7 +91,7 @@ const AudioRecorder: FC<AudioRecorderProps> = ({
         </div>
       ) : (
         <div className="flex items-center gap-1.5 rounded-xl border border-slate-300 bg-gray-50 p-2 dark:border-transparent dark:bg-neutral-800 dark:text-gray-300">
-          <TruncatedTextWithTooltip text={errorMsg} maxLength={30} />
+          <TruncatedText text={errorMsg} maxLength={30} />
         </div>
       )}
 

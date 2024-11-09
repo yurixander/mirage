@@ -10,7 +10,13 @@ import {type VideoMessageData} from "@/components/VideoMessage"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
-import {getImageUrl, sendAudioMessage} from "@/utils/util"
+import {
+  getImageUrl,
+  sendAudioMessage,
+  sendFileMessageFromFile,
+  sendImageMessageFromFile,
+  sendVideoMessageFromFile,
+} from "@/utils/matrix"
 import {MsgType, type Room, RoomMemberEvent} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 import {type MessageSendRequest} from "../ChatInput"
@@ -74,6 +80,7 @@ type UseRoomChatReturnType = {
   sendTypingEvent: (roomId: string) => void
   sendMessageText: (messageSendRequest: MessageSendRequest) => void
   onSendAudioMessage: (audioBlob: Blob, roomId: string) => Promise<void>
+  onSendSourceMessage: (file: File, roomId: string) => Promise<void>
   onReloadMessages: () => void
 }
 
@@ -150,13 +157,32 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     await sendAudioMessage(audioBlob, client, roomId)
   }
 
+  const onSendSourceMessage = async (
+    file: File,
+    roomId: string
+  ): Promise<void> => {
+    if (client === null) {
+      return
+    }
+
+    if (file.type.startsWith("image/")) {
+      await sendImageMessageFromFile(file, client, roomId)
+    } else if (file.type.startsWith("video/")) {
+      await sendVideoMessageFromFile(file, client, roomId)
+    } else {
+      await sendFileMessageFromFile(file, client, roomId)
+    }
+  }
+
   return {
     messagesState,
     roomDetail,
     isChatLoading,
     typingUsers,
-    isInputDisabled: client === null,
+    isInputDisabled:
+      client === null || isChatLoading || messagesState.status !== "success",
     onSendAudioMessage,
+    onSendSourceMessage,
     onReloadMessages: reloadMessages,
     lastMessageReadId,
     onLastMessageReadIdChange,

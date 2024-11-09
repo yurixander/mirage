@@ -7,8 +7,6 @@ import {
   IoCloseCircle,
   IoInformationCircle,
 } from "react-icons/io5"
-import ImageZoom from "@/components/ImageZoom"
-import Typography from "@/components/Typography"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {IconButton} from "@/components/ui/button"
@@ -35,10 +33,15 @@ const ImageModal: FC<ImageModalProps> = ({
           <div className="flex flex-col items-center gap-2 rounded-lg bg-white p-2">
             <IoInformationCircle size={28} color="red" />
 
-            <Typography>{t(LangKey.LoadingImageError)}</Typography>
+            {/* TODO: Use ui/typography.tsx */}
+            {/* <Typography>{t(LangKey.LoadingImageError)}</Typography> */}
           </div>
         ) : (
-          <ImageZoom className="size-full px-8 py-4" src={imageUrl} />
+          <img
+            className="size-full px-8 py-4"
+            src={imageUrl}
+            alt={`Img ${imageUrl} from message`}
+          />
         )}
       </div>
 

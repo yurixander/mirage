@@ -1,7 +1,6 @@
 import {Visibility, Preset} from "matrix-js-sdk"
 import {useState} from "react"
 import usePublicRoomsSearch from "./usePublicRoomsSearch"
-import useActiveModalStore from "../util/useActiveModal"
 import useMatrixClient from "./useMatrixClient"
 
 // Initial event that declares the room as encrypted.
@@ -20,7 +19,6 @@ type UseCreateRoomReturnType = {
   enableEncryption: boolean
   roomVisibility: Visibility
   onCreateRoom: () => void
-  clearActiveModal: () => void
   setRoomName: React.Dispatch<React.SetStateAction<string>>
   setRoomDescription: React.Dispatch<React.SetStateAction<string | undefined>>
   setRoomAddress: React.Dispatch<React.SetStateAction<string>>
@@ -35,7 +33,6 @@ const useCreateRoom = (): UseCreateRoomReturnType => {
   const [enableEncryption, setEnableEncryption] = useState(false)
 
   const [isCreatingRoom, setIsCreatingRoom] = useState(false)
-  const {clearActiveModal} = useActiveModalStore()
   const client = useMatrixClient()
 
   const {results, setRoomAddress, roomAddress, isResultLoading} =
@@ -59,8 +56,7 @@ const useCreateRoom = (): UseCreateRoomReturnType => {
       })
       .then(_roomID => {
         // TODO: Send here notification that the room has been created.
-
-        clearActiveModal()
+        // clearActiveModal()
       })
       .catch(_error => {
         // TODO: Send here notification that the room has not been created.
@@ -79,7 +75,7 @@ const useCreateRoom = (): UseCreateRoomReturnType => {
     isCreatingRoom,
     roomVisibility,
     enableEncryption,
-    clearActiveModal,
+    // clearActiveModal,
     isValidAlias: isResultLoading || (results !== null && results.length === 0),
     isDisabled:
       client === null ||

@@ -16,8 +16,11 @@ const render = (args: ChatHeaderProps): React.JSX.Element => (
 export const Default: Story = {
   render,
   args: {
-    roomName: "Help & guides",
-    roomDescription: "Request assistance from your colleagues",
+    roomDetail: {
+      roomName: "Help & guides",
+      roomDescription: "Request assistance from your colleagues",
+      isRoomEncrypted: true,
+    },
     className: "flex",
   },
 }

@@ -147,7 +147,7 @@ const config = {
       "loading": "loading 1.5s infinite ease-in-out",
       "indicator": "indicator 300ms",
       "rotation": "rotation 1s infinite linear",
-      "pulse": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      "pulse": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite alternate",
     },
     keyframes: {
       "slideIn": {
@@ -159,7 +159,10 @@ const config = {
         },
       },
       "pulse": {
-        "50%": {
+        from: {
+          opacity: ".2",
+        },
+        to: {
           opacity: ".5",
         },
       },

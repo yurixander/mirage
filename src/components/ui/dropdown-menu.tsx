@@ -2,14 +2,7 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import {CheckIcon, ChevronRightIcon, DotFilledIcon} from "@radix-ui/react-icons"
 
 import {cn} from "@/utils/utils"
-import {type IconType} from "react-icons"
-import Typography from "../Typography"
-import {
-  type ComponentPropsWithoutRef,
-  type ElementRef,
-  forwardRef,
-  type FC,
-} from "react"
+import {type ComponentPropsWithoutRef, type ElementRef, forwardRef} from "react"
 import KeyCue, {type KeyCueProps} from "../KeyCue"
 import React from "react"
 
@@ -73,7 +66,7 @@ const DropdownMenuContent = forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md focus-visible:outline-none",
+        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md focus-visible:outline-none dark:bg-neutral-900",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         className
       )}
@@ -103,43 +96,8 @@ const DropdownMenuItem = forwardRef<
 
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
 
-type MenuItemProps = {
-  label: string
-  icon: IconType
-  onClick: () => void
-  isDestructive?: boolean
-}
-
 export const DROPDOWN_ICON_CLASS =
   "size-6 text-gray-700 dark:text-neutral-400 mr-1.5"
-
-const DropdownMenuItemGenerator: FC<{
-  items: MenuItemProps[]
-}> = ({items}) => {
-  return items.map(({icon: Icon, isDestructive = false, ...props}, index) => (
-    <DropdownMenuItem
-      key={index}
-      onClick={event => {
-        event.stopPropagation()
-
-        props.onClick()
-      }}>
-      <div className="flex items-center gap-1">
-        <Icon
-          aria-hidden
-          style={{color: isDestructive ? "red" : undefined}}
-          className="size-5 text-gray-700"
-        />
-
-        <Typography
-          style={{color: isDestructive ? "red" : undefined}}
-          className="flex gap-1 font-medium text-gray-700">
-          {props.label}
-        </Typography>
-      </div>
-    </DropdownMenuItem>
-  ))
-}
 
 const DropdownMenuCheckboxItem = forwardRef<
   ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
@@ -229,7 +187,6 @@ export {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuItemGenerator,
   DropdownMenuCheckboxItem,
   DropdownMenuRadioItem,
   DropdownMenuLabel,
