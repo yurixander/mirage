@@ -1,7 +1,6 @@
 import {useState, type FC} from "react"
 import {StaticAssetPath} from "@/utils/util"
 import {ReactSVG} from "react-svg"
-import Typography, {TypographyVariant} from "@/components/Typography"
 import SidebarActions from "./SidebarActions"
 import UserBar from "./UserBar"
 import {twMerge} from "tailwind-merge"
@@ -18,6 +17,7 @@ import {SearchInput} from "@/components/ui/input"
 import CreateRoomModal from "@/components/CreateRoomModal"
 import CreateSpaceModal from "@/components/CreateSpaceModal"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
+import {Text} from "@/components/ui/typography"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -68,12 +68,16 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           <div className="flex flex-col items-center p-1">
             <ReactSVG src={StaticAssetPath.NewAppLogo} />
 
-            <Typography
-              className="font-unbounded font-bold"
-              variant={TypographyVariant.BodySmall}
-              style={{color: "#D64DF4"}}>
+            <Text
+              className="font-unbounded"
+              weight="semibold"
+              style={{
+                color: "#D64DF4",
+                fontSize: "0.70rem",
+                lineHeight: "0.75rem",
+              }}>
               MIRAGE
-            </Typography>
+            </Text>
 
             <div className="mt-2 h-0.5 w-12 rounded-full bg-neutral-300" />
           </div>
