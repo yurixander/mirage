@@ -4,7 +4,6 @@ import {IoAddCircle, IoMic, IoSend} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import EmojiPicker from "@/components/EmojiPicker"
 import TextArea from "@/components/TextArea"
-import AttachSource from "./AttachSource"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {IconButton} from "@/components/ui/button"
 import useDebounced from "@/hooks/util/useDebounced"
@@ -24,7 +23,7 @@ export type ChatInputProps = {
   isInputDisabled: boolean
   onSendMessageText: (messageSendRequest: MessageSendRequest) => void
   onSendAudio: (audioBlob: Blob) => Promise<void>
-  onPickFile: (file: File) => void
+  onPickFile: () => void
   onSendTypingEvent: (roomId: string) => void
   className?: string
 }
@@ -105,23 +104,21 @@ const ChatInput: FC<ChatInputProps> = ({
       )}>
       {recorderState === AudioRecorderState.Idle ? (
         <div className="flex h-max w-full items-start gap-1">
-          <AttachSource onPickFile={onPickFile}>
-            <IconButton
-              tabIndex={0}
-              aria-label={t(LangKey.AttachSource)}
-              tooltip={t(LangKey.AttachSource)}
-              disabled={isInputDisabled}
-              asBoundary={false}
-              className="size-max bg-transparent dark:bg-transparent">
-              <IoAddCircle
-                aria-hidden
-                className={twMerge(
-                  "size-7 fill-neutral-400 dark:fill-neutral-500",
-                  className
-                )}
-              />
-            </IconButton>
-          </AttachSource>
+          <IconButton
+            tabIndex={0}
+            aria-label={t(LangKey.AttachSource)}
+            tooltip={t(LangKey.AttachSource)}
+            disabled={isInputDisabled}
+            onClick={onPickFile}
+            className="size-max bg-transparent dark:bg-transparent">
+            <IoAddCircle
+              aria-hidden
+              className={twMerge(
+                "size-7 fill-neutral-400 dark:fill-neutral-500",
+                className
+              )}
+            />
+          </IconButton>
 
           <TextArea
             ref={textAreaRef}

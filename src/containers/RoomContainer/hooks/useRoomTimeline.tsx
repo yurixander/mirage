@@ -80,7 +80,6 @@ const useRoomTimeline = (room: Room | null): UseRoomTimelineReturnType => {
       return
     }
 
-    // TODO: Optimize this, not reload all messages when process one message.
     setMessagesScope(
       room.roomId,
       async () => await handleRoomEvents(room),
@@ -117,7 +116,9 @@ const useRoomTimeline = (room: Room | null): UseRoomTimelineReturnType => {
             return null
           }
 
-          await room.client.sendReadReceipt(event)
+          if (senderId !== room.myUserId) {
+            await room.client.sendReadReceipt(event)
+          }
 
           return anyMessagesState.data.concat([messageResult])
         },

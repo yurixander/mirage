@@ -10,6 +10,8 @@ import {assert} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import useFilePicker from "@/hooks/util/useFilePicker"
+import FilePreview from "@/components/FilePreview"
 
 type ChatContainerProps = {
   roomId: string
@@ -26,6 +28,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
 }) => {
   const {t} = useTranslation()
   const {clearActiveRoomId} = useActiveRoomIdStore()
+  const {contentPicked, onPickFile, clear} = useFilePicker(false, "file/*")
 
   const {
     messagesState,
@@ -38,6 +41,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
     isInputDisabled,
     sendMessageText,
     onSendAudioMessage,
+    onSendSourceMessage,
     onReloadMessages,
   } = useRoomChat(roomId)
 
@@ -48,53 +52,79 @@ const ChatContainer: FC<ChatContainerProps> = ({
       <Loader text={t(LangKey.LoadingRoom)} />
     </div>
   ) : (
-    <div
-      className={twMerge(
-        "flex h-full flex-col dark:bg-neutral-900",
-        className
-      )}>
-      <ChatHeader
-        className="flex size-full h-12 items-center border-b border-b-neutral-200 px-3 py-1 dark:border-b-neutral-700"
-        isRosterExpanded={isRosterExpanded}
-        onRosterExpanded={onRosterExpanded}
-        roomDetail={roomDetail}
-        onCloseRoom={clearActiveRoomId}
-      />
+    <>
+      {contentPicked !== null &&
+        !contentPicked.isMultiple &&
+        contentPicked.pickerResult !== null && (
+          <FilePreview
+            fileName={contentPicked.pickerResult.name}
+            fileSize={contentPicked.pickerResult.size}
+            open={contentPicked.pickerResult !== null}
+            onOpenChange={isOpen => {
+              if (isOpen) {
+                return
+              }
 
-      <ChatMessages
-        className="p-3"
-        lastMessageReadId={lastMessageReadId}
-        messagesState={messagesState}
-        onReloadMessages={onReloadMessages}
-        onCloseRoom={clearActiveRoomId}
-        onLastMessageReadIdChange={onLastMessageReadIdChange}
-      />
+              clear()
+            }}
+            onSend={async () => {
+              if (contentPicked.pickerResult === null) {
+                return
+              }
 
-      <footer className="order-3 flex flex-col px-3.5">
-        <ChatInput
-          onSendTypingEvent={sendTypingEvent}
-          isInputDisabled={isInputDisabled}
-          roomId={roomId}
-          onSendMessageText={sendMessageText}
-          onPickFile={_file => {
-            // TODO: Handle files preview here.
-          }}
-          onSendAudio={async audioBlob => {
-            await onSendAudioMessage(audioBlob, roomId)
-          }}
+              await onSendSourceMessage(contentPicked.pickerResult, roomId)
+            }}
+          />
+        )}
+
+      <div
+        className={twMerge(
+          "flex h-full flex-col dark:bg-neutral-900",
+          className
+        )}>
+        <ChatHeader
+          className="flex size-full h-12 items-center border-b border-b-neutral-200 px-3 py-1 dark:border-b-neutral-700"
+          isRosterExpanded={isRosterExpanded}
+          onRosterExpanded={onRosterExpanded}
+          roomDetail={roomDetail}
+          onCloseRoom={clearActiveRoomId}
         />
 
-        <div className="flex size-full max-h-9 flex-col">
-          <div className="flex gap-2">
-            <div className="h-9" />
+        <ChatMessages
+          className="p-3"
+          lastMessageReadId={lastMessageReadId}
+          messagesState={messagesState}
+          onReloadMessages={onReloadMessages}
+          onCloseRoom={clearActiveRoomId}
+          onLastMessageReadIdChange={onLastMessageReadIdChange}
+        />
 
-            <div className="h-9" />
+        <footer className="order-3 flex flex-col px-3.5">
+          <ChatInput
+            onSendTypingEvent={sendTypingEvent}
+            isInputDisabled={isInputDisabled}
+            roomId={roomId}
+            onSendMessageText={sendMessageText}
+            onPickFile={onPickFile}
+            onSendAudio={async audioBlob => {
+              await onSendAudioMessage(audioBlob, roomId)
+            }}
+          />
 
-            {typingUsers.length > 0 && <TypingIndicator users={typingUsers} />}
+          <div className="flex size-full max-h-9 flex-col">
+            <div className="flex gap-2">
+              <div className="h-9" />
+
+              <div className="h-9" />
+
+              {typingUsers.length > 0 && (
+                <TypingIndicator users={typingUsers} />
+              )}
+            </div>
           </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </>
   )
 }
 

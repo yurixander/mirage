@@ -125,7 +125,7 @@ const MoreActionsDropdown: FC<MoreActionsDropdownProps> = ({children}) => {
       <DropdownMenuContent
         align="start"
         alignOffset={24}
-        className="w-48 "
+        className="w-48"
         onCloseAutoFocus={e => {
           e.preventDefault()
         }}>
@@ -187,7 +187,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
         aria-hidden
         className="flex flex-col items-start gap-4"
         type="single"
-        value={roomSelected}
+        value={roomSelected ?? ""}
         onValueChange={value => {
           if (value.length === 0) {
             return

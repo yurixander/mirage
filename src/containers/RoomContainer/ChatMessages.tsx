@@ -301,57 +301,59 @@ const MessagesError: FC<MessagesErrorProps> = ({
   const {t} = useTranslation()
 
   return (
-    <div className="flex h-72 w-auto flex-col items-center justify-center gap-2 px-2 sm:size-96 sm:px-0">
-      <div className="flex flex-col rounded-md bg-red-200 px-2 dark:bg-red-800">
-        <Heading
-          level="h2"
-          align="center"
-          className="text-red-800 dark:text-red-200">
-          {t(LangKey.MessagesError)}
-        </Heading>
+    <div className="flex size-full items-center justify-center">
+      <div className="flex h-72 w-auto flex-col items-center justify-center gap-2 px-2 sm:size-96 sm:px-0">
+        <div className="flex flex-col rounded-md bg-red-200 px-2 dark:bg-red-800">
+          <Heading
+            level="h2"
+            align="center"
+            className="text-red-800 dark:text-red-200">
+            {t(LangKey.MessagesError)}
+          </Heading>
 
-        <Text align="center" className="text-red-800 dark:text-red-200">
-          {t(LangKey.MessagesErrorSubtitle)}
-        </Text>
-      </div>
+          <Text align="center" className="text-red-800 dark:text-red-200">
+            {t(LangKey.MessagesErrorSubtitle)}
+          </Text>
+        </div>
 
-      <div className="flex w-full justify-end gap-2">
-        <div className="flex">
-          <IconButton
-            aria-label={t(LangKey.ReloadMembers)}
-            tooltip={t(LangKey.ReloadMembers)}
-            onClick={onReloadMessages}>
-            <IoReload size={18} />
-          </IconButton>
+        <div className="flex w-full justify-end gap-2">
+          <div className="flex">
+            <IconButton
+              aria-label={t(LangKey.ReloadMembers)}
+              tooltip={t(LangKey.ReloadMembers)}
+              onClick={onReloadMessages}>
+              <IoReload size={18} />
+            </IconButton>
 
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <IconButton
-                aria-label={t(LangKey.MoreErrorInformation)}
-                tooltip={t(LangKey.MoreErrorInformation)}>
-                <IoHelp size={18} />
-              </IconButton>
-            </AlertDialogTrigger>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <IconButton
+                  aria-label={t(LangKey.MoreErrorInformation)}
+                  tooltip={t(LangKey.MoreErrorInformation)}>
+                  <IoHelp size={18} />
+                </IconButton>
+              </AlertDialogTrigger>
 
-            <AlertDialogContent>
-              <AlertDialogTitle asChild>
-                <Heading level="h3">{t(LangKey.HelpInfoError)}</Heading>
-              </AlertDialogTitle>
+              <AlertDialogContent>
+                <AlertDialogTitle asChild>
+                  <Heading level="h3">{t(LangKey.HelpInfoError)}</Heading>
+                </AlertDialogTitle>
 
-              <AlertDialogDescription>{error.message}</AlertDialogDescription>
+                <AlertDialogDescription>{error.message}</AlertDialogDescription>
 
-              <AlertDialogFooter>
-                <AlertDialogAction>{t(LangKey.Accept)}</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                <AlertDialogFooter>
+                  <AlertDialogAction>{t(LangKey.Accept)}</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
 
-          <IconButton
-            aria-label={t(LangKey.CloseRoom)}
-            tooltip={t(LangKey.CloseRoom)}
-            onClick={onCloseRoom}>
-            <IoClose size={18} />
-          </IconButton>
+            <IconButton
+              aria-label={t(LangKey.CloseRoom)}
+              tooltip={t(LangKey.CloseRoom)}
+              onClick={onCloseRoom}>
+              <IoClose size={18} />
+            </IconButton>
+          </div>
         </div>
       </div>
     </div>

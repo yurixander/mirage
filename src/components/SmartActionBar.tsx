@@ -43,6 +43,7 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
       </SmartAction>
 
       <SmartAction
+        className="cursor-default"
         aria-label={t(LangKey.SyncState)}
         icon={IoGlobe}
         onClick={() => {}}>

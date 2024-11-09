@@ -220,7 +220,7 @@ export async function sendVideoMessageFromFile(
   videoFile: File,
   client: MatrixClient | null,
   destinationRoom: string | null,
-  onProgressHandler: (progress: number) => void
+  onProgressHandler?: (progress: number) => void
 ): Promise<void> {
   if (client === null || destinationRoom === null) {
     return
@@ -231,7 +231,9 @@ export async function sendVideoMessageFromFile(
     includeFilename: true,
     type: videoFile.type,
     progressHandler: progress => {
-      onProgressHandler(Math.round((progress.loaded / progress.total) * 100))
+      if (onProgressHandler !== undefined) {
+        onProgressHandler(Math.round((progress.loaded / progress.total) * 100))
+      }
     },
   })
 
@@ -252,7 +254,7 @@ export async function sendFileMessageFromFile(
   file: File,
   client: MatrixClient | null,
   destinationRoom: string | null,
-  onProgressHandler: (progressUpload: number) => void
+  onProgressHandler?: (progressUpload: number) => void
 ): Promise<void> {
   if (client === null || destinationRoom === null) {
     return
@@ -263,7 +265,9 @@ export async function sendFileMessageFromFile(
     includeFilename: true,
     type: file.type,
     progressHandler(progress) {
-      onProgressHandler(Math.round(progress.loaded / progress.total) * 100)
+      if (onProgressHandler !== undefined) {
+        onProgressHandler(Math.round(progress.loaded / progress.total) * 100)
+      }
     },
   })
 
