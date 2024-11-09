@@ -13,11 +13,11 @@ import SpacesNavigation, {SpacesPlaceHolder} from "./SpacesNavigation"
 import ValueStateHandler from "@/components/ValueStateHandler"
 import useBreakpoint from "@/hooks/util/useMediaQuery"
 import {ScrollArea} from "@/components/ui/scroll-area"
-import {SearchInput} from "@/components/ui/input"
 import CreateRoomModal from "@/components/CreateRoomModal"
 import CreateSpaceModal from "@/components/CreateSpaceModal"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
-import {Text} from "@/components/ui/typography"
+import {Heading, Text} from "@/components/ui/typography"
+import useSpaceDetail from "@/hooks/matrix/useSpaceDetail"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -32,6 +32,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const [modalCreateSpaceOpen, setModalCreateSpaceIsOpen] = useState(false)
+  const {name} = useSpaceDetail(spaceSelected)
 
   const {isSectionsLoading, sections, onCreateRoom} =
     useRoomNavigator(spaceSelected)
@@ -101,12 +102,10 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         </div>
 
         <div className="flex size-full flex-col border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
-          <div className="border-b border-neutral-300 p-2 dark:border-neutral-700">
-            <SearchInput
-              onQueryDebounceChange={() => {
-                // TODO: Handle global search.
-              }}
-            />
+          <div className="border-b border-neutral-300 px-2.5 py-1.5 dark:border-neutral-700">
+            <Heading level="h5">
+              {spaceSelected === DASHBOARD_SPACE_ID ? "Dashboard" : name}
+            </Heading>
           </div>
 
           <ScrollArea

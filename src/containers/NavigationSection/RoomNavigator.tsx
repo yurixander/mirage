@@ -4,7 +4,7 @@ import {IoMdArrowDropdown} from "react-icons/io"
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 
 import {cn} from "@/utils/utils"
-import {type FC} from "react"
+import {useCallback, useMemo, useState, type FC} from "react"
 import {Text} from "@/components/ui/typography"
 import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
 import {motion} from "framer-motion"
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {WIDTH_FILL_NAVIGATOR_ANIM} from "@/utils/animations"
 import {trim} from "@/utils/util"
+import {SearchInput} from "@/components/ui/input"
 
 type AccordionRoomSectionProps = {
   title: string
@@ -157,6 +158,8 @@ export interface RoomNavigatorProps extends RoomNavigatorActions {
   className?: string
 }
 
+const MAX_ROOM_LENGTH_FOR_SEARCH = 20
+
 export const RoomNavigator: FC<RoomNavigatorProps> = ({
   sections,
   onCreateRoom,
@@ -165,8 +168,35 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
   onRoomSelected,
   roomSelected,
 }) => {
-  const {directs, groups, recommended} = sections
   const {t} = useTranslation()
+  const [searchResult, setSearchResult] = useState<RoomSections | null>(null)
+
+  const allRoomsLength =
+    sections.groups.length +
+    sections.directs.length +
+    sections.recommended.length
+
+  const {directs, groups, recommended} = useMemo(
+    () => (searchResult === null ? sections : searchResult),
+    [searchResult, sections]
+  )
+
+  const searchRoom = useCallback(
+    (query: string) => {
+      setSearchResult({
+        directs: directs.filter(({roomName}) =>
+          roomName.toLowerCase().includes(query)
+        ),
+        groups: groups.filter(({roomName}) =>
+          roomName.toLowerCase().includes(query)
+        ),
+        recommended: recommended.filter(({roomName}) =>
+          roomName.toLowerCase().includes(query)
+        ),
+      })
+    },
+    [directs, groups, recommended]
+  )
 
   if (isLoading) {
     return (
@@ -179,55 +209,75 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
   }
 
   return (
-    <AccordionPrimitive.Root className={cn("p-1", className)} type="multiple">
-      <ToggleGroup
-        className="flex flex-col items-start gap-4"
-        type="single"
-        value={roomSelected ?? ""}
-        onValueChange={value => {
-          if (value.length === 0) {
-            return
-          }
+    <div className={cn("flex flex-col gap-y-1", className)}>
+      {allRoomsLength > MAX_ROOM_LENGTH_FOR_SEARCH && (
+        <div className="p-2">
+          <SearchInput
+            onQueryDebounceChange={debouncedQuery => {
+              if (debouncedQuery.length === 0) {
+                setSearchResult(null)
 
-          onRoomSelected(value)
-        }}>
-        {directs.length > 0 && (
-          <AccordionRoomSection title={t(LangKey.DirectChats)}>
-            {directs.map(room => (
-              <SelectableRoom key={room.roomId} {...room} />
-            ))}
-          </AccordionRoomSection>
-        )}
+                return
+              }
 
-        {groups.length > 0 && (
-          <AccordionRoomSection
-            title={t(LangKey.Rooms)}
-            actions={
-              <MoreActionsDropdown>
-                <DropdownMenuItem
-                  aria-label={t(LangKey.CreateRoom)}
-                  onSelect={onCreateRoom}>
-                  <DropdownMenuLabel>{t(LangKey.CreateRoom)}</DropdownMenuLabel>
+              searchRoom(debouncedQuery.toLowerCase())
+            }}
+          />
+        </div>
+      )}
 
-                  <DropdownMenuShortcut char="R" ctrl shift />
-                </DropdownMenuItem>
-              </MoreActionsDropdown>
-            }>
-            {groups.map(room => (
-              <SelectableRoom key={room.roomId} {...room} />
-            ))}
-          </AccordionRoomSection>
-        )}
+      <AccordionPrimitive.Root className="p-1" type="multiple">
+        <ToggleGroup
+          className="flex flex-col items-start gap-4"
+          type="single"
+          value={roomSelected ?? ""}
+          onValueChange={value => {
+            if (value.length === 0) {
+              return
+            }
 
-        {recommended.length > 0 && (
-          <AccordionRoomSection title={t(LangKey.Recommended)}>
-            {recommended.map(room => (
-              <SelectableRoom key={room.roomId} {...room} />
-            ))}
-          </AccordionRoomSection>
-        )}
-      </ToggleGroup>
-    </AccordionPrimitive.Root>
+            onRoomSelected(value)
+          }}>
+          {directs.length > 0 && (
+            <AccordionRoomSection title={t(LangKey.DirectChats)}>
+              {directs.map(room => (
+                <SelectableRoom key={room.roomId} {...room} />
+              ))}
+            </AccordionRoomSection>
+          )}
+
+          {groups.length > 0 && (
+            <AccordionRoomSection
+              title={t(LangKey.Rooms)}
+              actions={
+                <MoreActionsDropdown>
+                  <DropdownMenuItem
+                    aria-label={t(LangKey.CreateRoom)}
+                    onSelect={onCreateRoom}>
+                    <DropdownMenuLabel>
+                      {t(LangKey.CreateRoom)}
+                    </DropdownMenuLabel>
+
+                    <DropdownMenuShortcut char="R" ctrl shift />
+                  </DropdownMenuItem>
+                </MoreActionsDropdown>
+              }>
+              {groups.map(room => (
+                <SelectableRoom key={room.roomId} {...room} />
+              ))}
+            </AccordionRoomSection>
+          )}
+
+          {recommended.length > 0 && (
+            <AccordionRoomSection title={t(LangKey.Recommended)}>
+              {recommended.map(room => (
+                <SelectableRoom key={room.roomId} {...room} />
+              ))}
+            </AccordionRoomSection>
+          )}
+        </ToggleGroup>
+      </AccordionPrimitive.Root>
+    </div>
   )
 }
 
