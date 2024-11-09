@@ -91,7 +91,7 @@ type TextVariants = {
 const textSizeClass: TextVariants = {
   size: {
     "1": "text-xs",
-    "2": "text-xs sm:text-sm ",
+    "2": "text-xs sm:text-sm",
     "3": "text-sm sm:text-base",
     "4": "text-base sm:text-lg",
     "5": "text-lg sm:text-xl",
@@ -102,7 +102,7 @@ const textSizeClass: TextVariants = {
   },
 }
 
-const textVariants = cva("leading-[110%]", {
+const textVariants = cva("select-none leading-[110%]", {
   variants: textSizeClass,
   defaultVariants: {
     size: "3",
@@ -156,7 +156,7 @@ const headingClass: HeadingVariants = {
   },
 }
 
-const headingVariants = cva("font-bold leading-160", {
+const headingVariants = cva("select-none font-bold leading-160", {
   variants: headingClass,
   defaultVariants: {
     level: "h3",

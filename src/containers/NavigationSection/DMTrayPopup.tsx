@@ -103,9 +103,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                               key={index}
                               id={dmRoom.partnerId}
                               displayName={dmRoom.partnerName}
-                              onClick={() => {
-                                dmRoomClick(dmRoom.roomId)
-                              }}
+                              onClick={() => dmRoomClick(dmRoom.roomId)}
                             />
                           )
                         })}
@@ -119,9 +117,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                     key={index}
                     id={dmUser.userId}
                     displayName={dmUser.displayName}
-                    onClick={() => {
-                      onResultUserClick(dmUser.userId)
-                    }}
+                    onClick={() => onResultUserClick(dmUser.userId)}
                   />
                 ))
               )}

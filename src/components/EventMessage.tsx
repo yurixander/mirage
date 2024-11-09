@@ -56,7 +56,7 @@ const EventMessage: FC<EventMessageProps> = ({
       <article aria-label={`${sender.displayName} ${body}`}>
         <div className="flex gap-1 sm:gap-2">
           <div className="flex size-5 items-center justify-end sm:size-6">
-            <Icon aria-hidden className="fill-neutral-500" />
+            <Icon className="fill-neutral-500" />
           </div>
 
           <div className="inline-block text-start">
@@ -71,10 +71,7 @@ const EventMessage: FC<EventMessageProps> = ({
                 </Heading>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent
-                onCloseAutoFocus={event => {
-                  event.preventDefault()
-                }}>
+              <DropdownMenuContent onCloseAutoFocus={e => e.preventDefault()}>
                 <DropdownMenuItem
                   onClick={e => {
                     e.stopPropagation()
