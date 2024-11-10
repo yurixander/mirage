@@ -247,6 +247,13 @@ export enum LangKey {
   Is,
   RoomEncrypted,
   ReloadMessages,
+  Topic,
+  JoinRoom,
+  TaskCompleted,
+  JoinRoomCompleted,
+  RoomInvitedError,
+  DefaultJoinRoomErrorDescription,
+  DefaultPreviewInvitedErrorDescription,
 
   // #region WelcomeSplash
   WelcomeSplashTitle,

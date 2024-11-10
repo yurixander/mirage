@@ -304,6 +304,15 @@ export const spanish: LangDefinition = {
   [LangKey.RoomEncrypted]:
     "Esta sala está encriptada usando cifrado de extremo a extremo",
   [LangKey.AllSpaces]: "Todos los espacios",
+  [LangKey.Topic]: "Descripción",
+  [LangKey.JoinRoom]: "Unirse",
+  [LangKey.TaskCompleted]: "Tarea completada",
+  [LangKey.JoinRoomCompleted]: "Te uniste exitosamente a la sala.",
+  [LangKey.RoomInvitedError]: "Invitación de sala errónea",
+  [LangKey.DefaultJoinRoomErrorDescription]:
+    "Se produjo un error inesperado al intentar unirse a la sala.",
+  [LangKey.DefaultPreviewInvitedErrorDescription]:
+    "Se produjo un error al cargar la vista previa de la sala, inténtelo nuevamente.",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Bienvenido a Mirage",

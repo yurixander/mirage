@@ -285,6 +285,15 @@ export const english: LangDefinition = {
   [LangKey.Are]: "are",
   [LangKey.Is]: "is",
   [LangKey.RoomEncrypted]: "This room is encrypted using End-to-end encryption",
+  [LangKey.Topic]: "Topic",
+  [LangKey.JoinRoom]: "Join room",
+  [LangKey.TaskCompleted]: "Task completed",
+  [LangKey.JoinRoomCompleted]: "You have successfully joined the room",
+  [LangKey.RoomInvitedError]: "Room Invited Error",
+  [LangKey.DefaultJoinRoomErrorDescription]:
+    "An unexpected error occurred while trying to join the room.",
+  [LangKey.DefaultPreviewInvitedErrorDescription]:
+    "An error occurred while loading the room preview, please try again.",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Welcome to Mirage",

@@ -9,6 +9,7 @@ import {motion} from "framer-motion"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import useBreakpoint from "@/hooks/util/useMediaQuery"
+import RoomInvitedSplash from "./RoomInvitedSplash"
 
 const RoomContainer: FC = () => {
   const {activeRoomId, roomState} = useActiveRoom()
@@ -28,20 +29,14 @@ const RoomContainer: FC = () => {
 
   return (
     <div className="size-full flex-col sm:flex">
-      {(roomState === RoomState.Joined || roomState === RoomState.Invited) &&
-      activeRoomId !== null ? (
+      {roomState === RoomState.Joined && activeRoomId !== null ? (
         <div className="flex size-full">
-          {roomState === RoomState.Invited ? (
-            // TODO: Handle room invited splash.
-            <></>
-          ) : (
-            <ChatContainer
-              className="flex size-full flex-col"
-              roomId={activeRoomId}
-              isRosterExpanded={isRosterExpanded}
-              onRosterExpanded={setIsRosterExpanded}
-            />
-          )}
+          <ChatContainer
+            className="flex size-full flex-col"
+            roomId={activeRoomId}
+            isRosterExpanded={isRosterExpanded}
+            onRosterExpanded={setIsRosterExpanded}
+          />
 
           <motion.div animate={{width: isRosterExpanded ? "15rem" : 0}}>
             <Roster
@@ -56,6 +51,8 @@ const RoomContainer: FC = () => {
             />
           </motion.div>
         </div>
+      ) : roomState === RoomState.Invited ? (
+        <RoomInvitedSplash />
       ) : roomState === RoomState.NotFound ? (
         <RoomNotFoundSplash />
       ) : (

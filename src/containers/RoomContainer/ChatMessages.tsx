@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogAction,
-} from "@radix-ui/react-alert-dialog"
+} from "@/components/ui/alert-dialog"
 import {IoReload, IoHelp, IoClose, IoChevronDown} from "react-icons/io5"
 import useScrollPercent from "@/hooks/util/useScrollPercent"
 import {motion} from "framer-motion"
