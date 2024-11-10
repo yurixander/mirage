@@ -5,7 +5,6 @@ import {type IconType} from "react-icons"
 import useTooltip from "@/hooks/util/useTooltip"
 import {IconButton} from "./button"
 import {
-  type InputHTMLAttributes,
   forwardRef,
   type HTMLAttributes,
   type ReactNode,
