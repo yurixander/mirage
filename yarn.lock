@@ -3174,7 +3174,7 @@
     natural-compare "^1.4.0"
     ts-api-utils "^1.3.0"
 
-"@typescript-eslint/parser@8.12.0", "@typescript-eslint/parser@^8.0.0", "@typescript-eslint/parser@^8.12.0":
+"@typescript-eslint/parser@8.12.0":
   version "8.12.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-8.12.0.tgz#e9a9c047310213169dd500b08622c5641f1997f6"
   integrity sha512-7U20duDQWAOhCk2VtyY41Vor/CJjiEW063Zel9aoRXq89FQ/jr+0e0m3kxh9Sk5SFW9B1AblVIBtXd+1xQ1NWQ==
@@ -3183,6 +3183,17 @@
     "@typescript-eslint/types" "8.12.0"
     "@typescript-eslint/typescript-estree" "8.12.0"
     "@typescript-eslint/visitor-keys" "8.12.0"
+    debug "^4.3.4"
+
+"@typescript-eslint/parser@^8.0.0", "@typescript-eslint/parser@^8.13.0":
+  version "8.13.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-8.13.0.tgz#ef76203b7cac515aa3ccc4f7ce5320dd61c46b29"
+  integrity sha512-w0xp+xGg8u/nONcGw1UXAr6cjCPU1w0XVyBs6Zqaj5eLmxkKQAByTdV/uGgNN5tVvN/kKpoQlP2cL7R+ajZZIQ==
+  dependencies:
+    "@typescript-eslint/scope-manager" "8.13.0"
+    "@typescript-eslint/types" "8.13.0"
+    "@typescript-eslint/typescript-estree" "8.13.0"
+    "@typescript-eslint/visitor-keys" "8.13.0"
     debug "^4.3.4"
 
 "@typescript-eslint/scope-manager@7.16.1":
