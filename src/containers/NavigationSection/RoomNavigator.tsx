@@ -23,6 +23,7 @@ import {
 import {WIDTH_FILL_NAVIGATOR_ANIM} from "@/utils/animations"
 import {trim} from "@/utils/util"
 import {SearchInput} from "@/components/ui/input"
+import {Accordion} from "@/components/ui/accordion"
 
 type AccordionRoomSectionProps = {
   title: string
@@ -170,6 +171,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
 }) => {
   const {t} = useTranslation()
   const [searchResult, setSearchResult] = useState<RoomSections | null>(null)
+  const [accordionValue, setAccordionValue] = useState([t(LangKey.Rooms)])
 
   const allRoomsLength =
     sections.groups.length +
@@ -226,7 +228,11 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
         </div>
       )}
 
-      <AccordionPrimitive.Root className="p-1" type="multiple">
+      <Accordion
+        className="p-1"
+        type="multiple"
+        value={accordionValue}
+        onValueChange={setAccordionValue}>
         <ToggleGroup
           className="flex flex-col items-start gap-4"
           type="single"
@@ -276,7 +282,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
             </AccordionRoomSection>
           )}
         </ToggleGroup>
-      </AccordionPrimitive.Root>
+      </Accordion>
     </div>
   )
 }

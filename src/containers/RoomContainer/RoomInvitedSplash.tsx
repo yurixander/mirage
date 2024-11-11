@@ -20,7 +20,7 @@ import React, {FC, useState} from "react"
 import {IoShield} from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
 
-class RoomInvitedError extends Error {
+export class RoomInvitedError extends Error {
   constructor(message: string, name?: string) {
     super()
 
@@ -29,7 +29,7 @@ class RoomInvitedError extends Error {
   }
 }
 
-type RoomDetailOwner = {
+export type RoomDetailOwner = {
   displayName: string
   avatarUrl?: string
 }
@@ -77,6 +77,8 @@ const RoomInvitedSplash: FC<RoomInvitedSplashProps> = ({
         onClose()
       })
       .catch((error: Error) => {
+        setIsJoiningRoom(false)
+
         const secureError =
           error instanceof RoomInvitedError ? error : DEFAULT_JOIN_ROOM_ERROR
 

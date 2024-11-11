@@ -1,4 +1,5 @@
 import {type NotificationProps} from "@/components/Notification"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
@@ -35,6 +36,7 @@ const useNotifications = (
   client: MatrixClient | null
 ): UseNotificationsReturnType => {
   const {t} = useTranslation()
+  const {setActiveRoomId} = useActiveRoomIdStore()
 
   const [notificationsState, setNotificationsState] = useState(
     NotificationState.Waiting
@@ -122,7 +124,9 @@ const useNotifications = (
             ...cachedNotification,
             onDelete: deleteNotificationById,
             markAsRead: markAsReadByNotificationId,
-            action() {},
+            action() {
+              setActiveRoomId(cachedNotification.roomId)
+            },
           }
         }
 
@@ -132,7 +136,12 @@ const useNotifications = (
           markAsRead: markAsReadByNotificationId,
         }
       }),
-    [cachedNotifications, deleteNotificationById, markAsReadByNotificationId]
+    [
+      cachedNotifications,
+      deleteNotificationById,
+      markAsReadByNotificationId,
+      setActiveRoomId,
+    ]
   )
 
   const fetchInvitedNotifications = useCallback(() => {
