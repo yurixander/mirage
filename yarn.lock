@@ -3343,7 +3343,7 @@
     "@typescript-eslint/types" "8.12.0"
     "@typescript-eslint/typescript-estree" "8.12.0"
 
-"@typescript-eslint/utils@8.13.0", "@typescript-eslint/utils@^8.10.0", "@typescript-eslint/utils@^8.3.0", "@typescript-eslint/utils@^8.8.1":
+"@typescript-eslint/utils@8.13.0", "@typescript-eslint/utils@^8.10.0", "@typescript-eslint/utils@^8.12.0", "@typescript-eslint/utils@^8.8.1":
   version "8.13.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-8.13.0.tgz#f6d40e8b5053dcaeabbd2e26463857abf27d62c0"
   integrity sha512-A1EeYOND6Uv250nybnLZapeXpYMl8tkzYUxqmoKAWnI4sei3ihf2XdZVd+vVOmHGcp3t+P7yRrNsyyiXTvShFQ==
@@ -5053,16 +5053,17 @@ eslint-compat-utils@^0.5.1:
   dependencies:
     semver "^7.5.4"
 
-eslint-config-love@^96.0.0:
-  version "96.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-love/-/eslint-config-love-96.0.0.tgz#f4e871cb8348ea6d74cb6b10b5d6ba0a86ddff94"
-  integrity sha512-IoXpOWvPL8Me8zACmldwjknRfZ2HhA7HJ563mTaT4hEd5aPvecdOsvwTdGTJTYfeJPcZApIloMCyUJS1OjA1dA==
+eslint-config-love@^98.0.1:
+  version "98.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-love/-/eslint-config-love-98.0.1.tgz#72d4df84afebb9a73da8b9fbbe5c878706543d17"
+  integrity sha512-2Q0aFL0SKZEiQiXHUpNxZYGE1Mtd5yCYNaanGI1bUXtaqjOlThSV2yXpIFNQQJv8aDZ0G6xPkvqG3CqGwPqMRw==
   dependencies:
-    "@typescript-eslint/utils" "^8.3.0"
+    "@typescript-eslint/utils" "^8.12.0"
+    eslint-plugin-eslint-comments "^3.2.0"
     eslint-plugin-import "^2.31.0"
     eslint-plugin-n "^17.0.0"
     eslint-plugin-promise "^7.0.0"
-    typescript-eslint "^8.3.0"
+    typescript-eslint "^8.12.0"
 
 eslint-config-prettier@>=8.0.0, eslint-config-prettier@^9.1.0:
   version "9.1.0"
@@ -9086,7 +9087,7 @@ typed-array-length@^1.0.6:
     is-typed-array "^1.1.13"
     possible-typed-array-names "^1.0.0"
 
-typescript-eslint@^8.12.0, typescript-eslint@^8.3.0:
+typescript-eslint@^8.12.0:
   version "8.12.0"
   resolved "https://registry.yarnpkg.com/typescript-eslint/-/typescript-eslint-8.12.0.tgz#507f227097836a8b679108d2a80a3e9f20c5e74a"
   integrity sha512-m8aQM4pqc17dcD3BsQzUqVXkcclCspuCCv7GhYlwMWNYAXFV8xJkn8vUM8YxoR78BY6S+NX/J7rfNVaGNLgXgQ==
