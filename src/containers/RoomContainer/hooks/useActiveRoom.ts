@@ -1,7 +1,7 @@
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import {useCallback, useEffect, useState} from "react"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import {type MatrixClient, Room, RoomMemberEvent} from "matrix-js-sdk"
+import {JoinRule, type MatrixClient, Room, RoomMemberEvent} from "matrix-js-sdk"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useValueState, {ValueState} from "@/hooks/util/useValueState"
@@ -14,6 +14,9 @@ import {getImageUrl, getRoomTopic} from "@/utils/matrix"
 import {isDirectRoom} from "@/utils/rooms"
 import {getOwnersIdWithPowerLevels} from "@/utils/members"
 import {strCapitalize} from "@/utils/util"
+import useActiveSpaceIdStore from "@/hooks/matrix/useActiveSpaceIdStore"
+import {DASHBOARD_SPACE_ID} from "@/containers/NavigationSection/SpacesNavigation"
+import {IHierarchyRoom} from "matrix-js-sdk/lib/@types/spaces"
 
 export enum RoomState {
   Idle,
@@ -95,10 +98,24 @@ async function getRoomOwners(room: Room): Promise<RoomDetailOwner[] | null> {
   return owners.length === 0 ? null : owners
 }
 
+export function validateHierarchyRoom(foundedRoom: IHierarchyRoom): void {
+  if (foundedRoom.room_type === "m.space") {
+    throw new RoomInvitedError("You cannot access the same parent space.")
+  }
+
+  if (
+    foundedRoom.join_rule !== JoinRule.Public &&
+    !foundedRoom.guest_can_join
+  ) {
+    throw new RoomInvitedError("This room does not allow anyone to join.")
+  }
+}
+
 const useActiveRoom = (): UseActiveRoomReturnType => {
   const client = useMatrixClient()
   const [roomState, setRoomState] = useState(RoomState.Idle)
   const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()
+  const {activeSpaceId} = useActiveSpaceIdStore()
 
   const [roomInvitedDetail, setRoomInvitedDetail] =
     useValueState<RoomDetailPreview>()
@@ -135,6 +152,39 @@ const useActiveRoom = (): UseActiveRoomReturnType => {
 
     const room = client.getRoom(activeRoomId)
 
+    if (activeSpaceId !== DASHBOARD_SPACE_ID && room === null) {
+      const space = client.getRoom(activeSpaceId)
+
+      setRoomInvitedDetailScope(async () => {
+        if (space === null) {
+          throw new RoomInvitedError("You not have access to this space.")
+        }
+
+        const hierarchy = await client.getRoomHierarchy(space.roomId)
+
+        const foundedRoom = hierarchy.rooms.find(
+          hierarchyRoom => hierarchyRoom.room_id === activeRoomId
+        )
+
+        if (foundedRoom === undefined) {
+          throw new RoomInvitedError(
+            "You do not have access to the room or it does not exist."
+          )
+        }
+
+        validateHierarchyRoom(foundedRoom)
+
+        return {
+          name: foundedRoom.name ?? foundedRoom.room_id,
+          topic: foundedRoom.topic,
+          avatarUrl: getImageUrl(foundedRoom.avatar_url, client),
+          detailChips: [],
+        }
+      })
+
+      return
+    }
+
     setRoomInvitedDetailScope(async () => {
       if (room === null) {
         throw new RoomInvitedError("You not have access to this room.")
@@ -151,7 +201,7 @@ const useActiveRoom = (): UseActiveRoomReturnType => {
         owners: owners ?? undefined,
       }
     })
-  }, [activeRoomId, client, setRoomInvitedDetailScope])
+  }, [activeRoomId, activeSpaceId, client, setRoomInvitedDetailScope])
 
   useEffect(() => {
     if (client === null || activeRoomId === null) {

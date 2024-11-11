@@ -18,6 +18,7 @@ import CreateSpaceModal from "@/components/CreateSpaceModal"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import {Heading, Text} from "@/components/ui/typography"
 import useSpaceDetail from "@/hooks/matrix/useSpaceDetail"
+import useActiveSpaceIdStore from "@/hooks/matrix/useActiveSpaceIdStore"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -25,17 +26,17 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,
   onLogOut,
 }) => {
-  const [spaceSelected, setSpaceSelected] = useState(DASHBOARD_SPACE_ID)
+  const {activeSpaceId, setActiveSpaceId} = useActiveSpaceIdStore()
   const {spaces: spacesState, onCreateSpace, uploadSpaceAvatar} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
   const {isSmall} = useBreakpoint()
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const [modalCreateSpaceOpen, setModalCreateSpaceIsOpen] = useState(false)
-  const {name} = useSpaceDetail(spaceSelected)
+  const {name} = useSpaceDetail(activeSpaceId)
 
   const {isSectionsLoading, sections, onCreateRoom} =
-    useRoomNavigator(spaceSelected)
+    useRoomNavigator(activeSpaceId)
 
   useGlobalHotkey({key: "S", ctrl: true, shift: true}, () =>
     setModalCreateSpaceIsOpen(true)
@@ -91,8 +92,8 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
             {spaces => (
               <SpacesNavigation
                 spaces={spaces}
-                selectedSpace={spaceSelected}
-                onSelectedSpaceChange={setSpaceSelected}
+                selectedSpace={activeSpaceId}
+                onSelectedSpaceChange={setActiveSpaceId}
                 onCreateSpace={() => setModalCreateSpaceIsOpen(true)}
               />
             )}
@@ -104,7 +105,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         <div className="flex size-full flex-col border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="border-b border-neutral-300 px-2.5 py-1.5 dark:border-neutral-700">
             <Heading level="h5">
-              {spaceSelected === DASHBOARD_SPACE_ID ? "Dashboard" : name}
+              {activeSpaceId === DASHBOARD_SPACE_ID ? "Dashboard" : name}
             </Heading>
           </div>
 
@@ -116,7 +117,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
               roomSelected={activeRoomId ?? undefined}
               onRoomSelected={setActiveRoomId}
               sections={sections}
-              isDashboardActive={spaceSelected === undefined}
+              isDashboardActive={activeSpaceId === undefined}
               isLoading={isSectionsLoading}
               onCreateRoom={() => setIsCreateRoomModalOpen(true)}
             />
