@@ -200,7 +200,7 @@ const RoomDetailChip: FC<{children: React.ReactNode}> = ({children}) => {
     <Text
       size="2"
       weight="regular"
-      className="w-max rounded-md border border-b-2 border-neutral-400 bg-neutral-200 px-2">
+      className="w-max rounded-md border border-b-2 border-neutral-400 bg-neutral-200 px-2 dark:border-neutral-600 dark:bg-neutral-800">
       {children}
     </Text>
   )
