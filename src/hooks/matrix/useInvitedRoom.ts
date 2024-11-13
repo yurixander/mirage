@@ -7,7 +7,11 @@ import useValueState, {ValueState} from "../util/useValueState"
 import useMatrixClient from "./useMatrixClient"
 import {useCallback, useEffect} from "react"
 import {getImageUrl, getRoomTopic} from "@/utils/matrix"
-import {getOwnersIdWithPowerLevels} from "@/utils/members"
+import {
+  getOwnersIdWithPowerLevels,
+  processPowerLevelByNumber,
+  UserPowerLevel,
+} from "@/utils/members"
 import {isDirectRoom} from "@/utils/rooms"
 import {strCapitalize} from "@/utils/util"
 import {Room, JoinRule} from "matrix-js-sdk"
@@ -150,10 +154,26 @@ async function getChipsFromHierarchyRoom(
   return chips
 }
 
+function isDirectOrAvailableForDirect(room: Room): boolean {
+  try {
+    const guessDMUserName = room.getJoinedMembers()[0].name
+
+    return (
+      room.getJoinedMemberCount() === 1 &&
+      (guessDMUserName === room.name || guessDMUserName === room.normalizedName)
+    )
+  } catch (error) {
+    console.error(error)
+
+    return false
+  }
+}
+
 async function getChipsFromRoom(room: Room): Promise<string[]> {
   const chips: string[] = []
 
-  const isDirect = isDirectRoom(room.client, room.roomId)
+  const isDirect =
+    isDirectRoom(room.client, room.roomId) || isDirectOrAvailableForDirect(room)
   const isSpace = room.isSpaceRoom()
   const membersCount = room.getJoinedMemberCount()
 
@@ -167,7 +187,7 @@ async function getChipsFromRoom(room: Room): Promise<string[]> {
 
   if (isSpace) {
     chips.push("Space")
-  } else {
+  } else if (!isSpace && !isDirect) {
     chips.push("Room")
   }
 
@@ -188,6 +208,7 @@ async function getChipsFromRoom(room: Room): Promise<string[]> {
 
 async function getRoomOwners(room: Room): Promise<RoomDetailOwner[] | null> {
   const owners: RoomDetailOwner[] = []
+
   try {
     const ownersId = getOwnersIdWithPowerLevels(room)
 
@@ -205,10 +226,17 @@ async function getRoomOwners(room: Room): Promise<RoomDetailOwner[] | null> {
         avatarUrl: getImageUrl(ownerMember.avatar_url, room.client),
       })
     }
-  } catch (error) {
-    console.error(error)
+  } catch {
+    for (const {powerLevel, name, getMxcAvatarUrl} of room.getJoinedMembers()) {
+      if (processPowerLevelByNumber(powerLevel) === UserPowerLevel.Member) {
+        continue
+      }
 
-    return null
+      owners.push({
+        displayName: name,
+        avatarUrl: getImageUrl(getMxcAvatarUrl(), room.client),
+      })
+    }
   }
 
   return owners.length === 0 ? null : owners
