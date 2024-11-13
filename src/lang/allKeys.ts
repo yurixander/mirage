@@ -254,6 +254,18 @@ export enum LangKey {
   RoomInvitedError,
   DefaultJoinRoomErrorDescription,
   DefaultPreviewInvitedErrorDescription,
+  RoomInvitedAccessError,
+  RoomInvitedRecommendedRoomError,
+  RoomInvitedNoAccessOrNotFound,
+  Public,
+  JoinedMembers,
+  Space,
+  Room,
+  Direct,
+  RoomHierarchyCount,
+  RoomInvitedParentSpaceError,
+  RoomInvitedJoinError,
+  RoomPreviewNotSupport,
 
   // #region WelcomeSplash
   WelcomeSplashTitle,

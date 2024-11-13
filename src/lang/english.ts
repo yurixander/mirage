@@ -294,6 +294,23 @@ export const english: LangDefinition = {
     "An unexpected error occurred while trying to join the room.",
   [LangKey.DefaultPreviewInvitedErrorDescription]:
     "An error occurred while loading the room preview, please try again.",
+  [LangKey.RoomInvitedAccessError]: "You not have access to this room.",
+  [LangKey.RoomInvitedRecommendedRoomError]:
+    "The pace to which this room belongs was not found.",
+  [LangKey.RoomInvitedNoAccessOrNotFound]:
+    "You do not have access to the room or it does not exist.",
+  [LangKey.Public]: "Public",
+  [LangKey.Space]: "Space",
+  [LangKey.Room]: "Room",
+  [LangKey.Direct]: "Direct",
+  [LangKey.RoomHierarchyCount]: (roomHierarchyCount: string) =>
+    `+${roomHierarchyCount} Rooms`,
+  [LangKey.JoinedMembers]: (joinedMembersCount: string) =>
+    `+${joinedMembersCount} Members`,
+  [LangKey.RoomInvitedParentSpaceError]:
+    "You cannot access the same parent space.",
+  [LangKey.RoomInvitedJoinError]: "This room does not allow anyone to join.",
+  [LangKey.RoomPreviewNotSupport]: "This room does not support preview.",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Welcome to Mirage",

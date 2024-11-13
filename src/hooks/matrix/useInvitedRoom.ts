@@ -18,6 +18,8 @@ import {Room, JoinRule} from "matrix-js-sdk"
 import {IHierarchyRoom} from "matrix-js-sdk/lib/@types/spaces"
 import useActiveSpaceIdStore from "./useActiveSpaceIdStore"
 import {DASHBOARD_SPACE_ID} from "@/containers/NavigationSection/SpacesNavigation"
+import {LangKey} from "@/lang/allKeys"
+import {t} from "@/utils/lang"
 
 type UseInvitedRoomReturnType = {
   roomInvitedDetail: ValueState<RoomDetailPreview>
@@ -64,7 +66,7 @@ const useInvitedRoom = (
 
     setRoomInvitedDetailScope(async () => {
       if (room === null) {
-        throw new RoomInvitedError("You not have access to this room.")
+        throw new RoomInvitedError(t(LangKey.RoomInvitedAccessError))
       }
 
       const chips = await getChipsFromRoom(room)
@@ -94,9 +96,7 @@ const useInvitedRoom = (
 
     setRoomInvitedDetailScope(async () => {
       if (space === null) {
-        throw new RoomInvitedError(
-          "The pace to which this room belongs was not found"
-        )
+        throw new RoomInvitedError(t(LangKey.RoomInvitedRecommendedRoomError))
       }
 
       const hierarchy = await client.getRoomHierarchy(activeSpaceId)
@@ -106,9 +106,7 @@ const useInvitedRoom = (
       )
 
       if (foundedRoom === undefined || foundedRoom.room_type === "m.space") {
-        throw new RoomInvitedError(
-          "You do not have access to the room or it does not exist."
-        )
+        throw new RoomInvitedError(t(LangKey.RoomInvitedNoAccessOrNotFound))
       }
 
       validateHierarchyRoom(foundedRoom)
@@ -139,17 +137,15 @@ const useInvitedRoom = (
 async function getChipsFromHierarchyRoom(
   room: IHierarchyRoom
 ): Promise<string[]> {
-  const chips: string[] = ["Recommended"]
+  const chips: string[] = [t(LangKey.Recommended)]
 
   if (room.join_rule === JoinRule.Public) {
-    chips.push("Public")
+    chips.push(t(LangKey.Public))
   }
 
   if (room.num_joined_members > 0) {
-    chips.push(`+${room.num_joined_members} Members`)
+    chips.push(t(LangKey.JoinedMembers, room.num_joined_members.toString()))
   }
-
-  console.log(room)
 
   return chips
 }
@@ -178,24 +174,24 @@ async function getChipsFromRoom(room: Room): Promise<string[]> {
   const membersCount = room.getJoinedMemberCount()
 
   if (isDirect && !isSpace) {
-    chips.push("Direct")
+    chips.push(t(LangKey.Direct))
   }
 
   if (membersCount > 0 && !isDirect) {
-    chips.push(`+${membersCount} Members`)
+    chips.push(t(LangKey.JoinedMembers, membersCount.toString()))
   }
 
   if (isSpace) {
-    chips.push("Space")
+    chips.push(t(LangKey.Space))
   } else if (!isSpace && !isDirect) {
-    chips.push("Room")
+    chips.push(t(LangKey.Room))
   }
 
   if (isSpace) {
     try {
-      const hierarchy = await room.client.getRoomHierarchy(room.roomId)
+      const {rooms} = await room.client.getRoomHierarchy(room.roomId)
 
-      chips.push(`+${hierarchy.rooms.length} Rooms`)
+      chips.push(t(LangKey.RoomHierarchyCount, rooms.length.toString()))
     } catch {
       console.error(`Could not load the space hierarchy ${room.name}`)
     }
@@ -244,14 +240,14 @@ async function getRoomOwners(room: Room): Promise<RoomDetailOwner[] | null> {
 
 function validateHierarchyRoom(foundedRoom: IHierarchyRoom): void {
   if (foundedRoom.room_type === "m.space") {
-    throw new RoomInvitedError("You cannot access the same parent space.")
+    throw new RoomInvitedError(t(LangKey.RoomInvitedParentSpaceError))
   }
 
   if (
     foundedRoom.join_rule !== JoinRule.Public &&
     !foundedRoom.guest_can_join
   ) {
-    throw new RoomInvitedError("This room does not allow anyone to join.")
+    throw new RoomInvitedError(t(LangKey.RoomInvitedJoinError))
   }
 }
 
