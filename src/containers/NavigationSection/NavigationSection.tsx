@@ -19,6 +19,8 @@ import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import {Heading, Text} from "@/components/ui/typography"
 import useSpaceDetail from "@/hooks/matrix/useSpaceDetail"
 import useActiveSpaceIdStore from "@/hooks/matrix/useActiveSpaceIdStore"
+import useInvitedRoom from "@/hooks/matrix/useInvitedRoom"
+import RoomInvitedSplash from "../RoomContainer/RoomInvitedSplash"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -34,6 +36,15 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const [modalCreateSpaceOpen, setModalCreateSpaceIsOpen] = useState(false)
   const {name} = useSpaceDetail(activeSpaceId)
+
+  const [recommendedRoomSelected, setRecommendedRoomSelected] = useState<
+    string | null
+  >(null)
+
+  const {roomInvitedDetail, onJoinRoom} = useInvitedRoom(
+    recommendedRoomSelected,
+    true
+  )
 
   const {isSectionsLoading, sections, onCreateRoom} =
     useRoomNavigator(activeSpaceId)
@@ -65,6 +76,18 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         onUploadAvatar={uploadSpaceAvatar}
       />
 
+      {recommendedRoomSelected !== null && (
+        <RoomInvitedSplash
+          roomDetailPreview={roomInvitedDetail}
+          onClose={() => setRecommendedRoomSelected(null)}
+          onJoinRoom={async () => {
+            await onJoinRoom()
+
+            setRecommendedRoomSelected(null)
+          }}
+        />
+      )}
+
       <div className={twMerge("flex size-full sm:max-w-max", className)}>
         <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="flex flex-col items-center p-1">
@@ -87,7 +110,6 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           <ValueStateHandler
             value={spacesState}
             loading={<SpacesPlaceHolder length={2} />}
-            // TODO: Put a correct error state.
             error={error => <div>Error {error.message}</div>}>
             {spaces => (
               <SpacesNavigation
@@ -120,6 +142,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
               isDashboardActive={activeSpaceId === undefined}
               isLoading={isSectionsLoading}
               onCreateRoom={() => setIsCreateRoomModalOpen(true)}
+              onRecommendedRoomClick={setRecommendedRoomSelected}
             />
           </ScrollArea>
 

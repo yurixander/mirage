@@ -56,6 +56,7 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
                 initial="initial"
                 whileInView="whileInView"
                 whileTap={{scale: 0.9}}
+                onClick={() => onSpaceSelected(spaceId)}
                 transition={{
                   duration: 0.2,
                 }}
@@ -65,8 +66,7 @@ const Space = forwardRef<HTMLButtonElement, SpaceProps>(
                     ? "border-purple-500 shadow-md"
                     : "border-transparent",
                   classNames
-                )}
-                onClick={() => onSpaceSelected(spaceId)}>
+                )}>
                 {avatarUrl === undefined ? (
                   <Avatar
                     className="dark:opacity-90"

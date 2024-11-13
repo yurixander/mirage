@@ -154,6 +154,7 @@ export interface RoomNavigatorProps extends RoomNavigatorActions {
   sections: RoomSections
   roomSelected?: string
   onRoomSelected: (roomId: string) => void
+  onRecommendedRoomClick: (roomId: string) => void
   isDashboardActive: boolean
   isLoading: boolean
   className?: string
@@ -168,6 +169,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
   className,
   onRoomSelected,
   roomSelected,
+  onRecommendedRoomClick,
 }) => {
   const {t} = useTranslation()
   const [searchResult, setSearchResult] = useState<RoomSections | null>(null)
@@ -273,15 +275,39 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
               ))}
             </AccordionRoomSection>
           )}
-
-          {recommended.length > 0 && (
-            <AccordionRoomSection title={t(LangKey.Recommended)}>
-              {recommended.map(room => (
-                <SelectableRoom key={room.roomId} {...room} />
-              ))}
-            </AccordionRoomSection>
-          )}
         </ToggleGroup>
+      </Accordion>
+
+      <Accordion className="p-1" type="multiple">
+        {recommended.length > 0 && (
+          <AccordionRoomSection title={t(LangKey.Recommended)}>
+            {recommended.map(({roomName, emoji, roomId}) => (
+              <motion.button
+                key={roomId}
+                aria-label={roomName}
+                initial={{translateX: -25, opacity: 0.5}}
+                whileInView={{translateX: 0, opacity: 1}}
+                whileTap={{scale: 0.95}}
+                transition={{duration: 0.2}}
+                onClick={() => onRecommendedRoomClick(roomId)}
+                className={cn(
+                  "flex size-full gap-1 p-1 transition-colors hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:ring-0 data-[state=on]:bg-purple-600 dark:hover:bg-neutral-800 dark:focus-visible:bg-neutral-800 dark:data-[state=on]:bg-purple-500 [&[data-state=on]>span]:text-white",
+                  className
+                )}>
+                <Text className="size-4 shrink-0" align="center" size="1">
+                  {emoji}
+                </Text>
+
+                <Text
+                  className="text-neutral-600 dark:text-neutral-300"
+                  size="1"
+                  weight="semibold">
+                  {trim(roomName, 26)}
+                </Text>
+              </motion.button>
+            ))}
+          </AccordionRoomSection>
+        )}
       </Accordion>
     </div>
   )

@@ -12,6 +12,8 @@ import {isDirectRoom} from "@/utils/rooms"
 import {strCapitalize} from "@/utils/util"
 import {Room, JoinRule} from "matrix-js-sdk"
 import {IHierarchyRoom} from "matrix-js-sdk/lib/@types/spaces"
+import useActiveSpaceIdStore from "./useActiveSpaceIdStore"
+import {DASHBOARD_SPACE_ID} from "@/containers/NavigationSection/SpacesNavigation"
 
 type UseInvitedRoomReturnType = {
   roomInvitedDetail: ValueState<RoomDetailPreview>
@@ -19,9 +21,11 @@ type UseInvitedRoomReturnType = {
 }
 
 const useInvitedRoom = (
-  activeRoomId: string | null
+  activeRoomId: string | null,
+  isRecommendedRoom: boolean = false
 ): UseInvitedRoomReturnType => {
   const client = useMatrixClient()
+  const {activeSpaceId} = useActiveSpaceIdStore()
 
   const [roomInvitedDetail, setRoomInvitedDetail] =
     useValueState<RoomDetailPreview>()
@@ -48,7 +52,7 @@ const useInvitedRoom = (
   }, [activeRoomId, client])
 
   useEffect(() => {
-    if (client === null || activeRoomId === null) {
+    if (client === null || activeRoomId === null || isRecommendedRoom) {
       return
     }
 
@@ -70,12 +74,80 @@ const useInvitedRoom = (
         owners: owners ?? undefined,
       }
     })
-  }, [activeRoomId, client, setRoomInvitedDetailScope])
+  }, [activeRoomId, client, isRecommendedRoom, setRoomInvitedDetailScope])
+
+  useEffect(() => {
+    if (
+      client === null ||
+      !isRecommendedRoom ||
+      activeSpaceId === DASHBOARD_SPACE_ID ||
+      activeRoomId === null
+    ) {
+      return
+    }
+
+    const space = client.getRoom(activeSpaceId)
+
+    setRoomInvitedDetailScope(async () => {
+      if (space === null) {
+        throw new RoomInvitedError(
+          "The pace to which this room belongs was not found"
+        )
+      }
+
+      const hierarchy = await client.getRoomHierarchy(activeSpaceId)
+
+      const foundedRoom = hierarchy.rooms.find(
+        room => room.room_id === activeRoomId
+      )
+
+      if (foundedRoom === undefined || foundedRoom.room_type === "m.space") {
+        throw new RoomInvitedError(
+          "You do not have access to the room or it does not exist."
+        )
+      }
+
+      validateHierarchyRoom(foundedRoom)
+
+      const chips = await getChipsFromHierarchyRoom(foundedRoom)
+
+      return {
+        name: foundedRoom.name ?? foundedRoom.room_id,
+        topic: foundedRoom.topic,
+        avatarUrl: getImageUrl(foundedRoom.avatar_url, client),
+        detailChips: chips,
+      }
+    })
+  }, [
+    activeRoomId,
+    activeSpaceId,
+    client,
+    isRecommendedRoom,
+    setRoomInvitedDetailScope,
+  ])
 
   return {
     roomInvitedDetail,
     onJoinRoom,
   }
+}
+
+async function getChipsFromHierarchyRoom(
+  room: IHierarchyRoom
+): Promise<string[]> {
+  const chips: string[] = ["Recommended"]
+
+  if (room.join_rule === JoinRule.Public) {
+    chips.push("Public")
+  }
+
+  if (room.num_joined_members > 0) {
+    chips.push(`+${room.num_joined_members} Members`)
+  }
+
+  console.log(room)
+
+  return chips
 }
 
 async function getChipsFromRoom(room: Room): Promise<string[]> {

@@ -28,47 +28,6 @@ const useActiveRoom = (): UseActiveRoomReturnType => {
     setRoomState(RoomState.Idle)
   }, [activeRoomId])
 
-  // useEffect(() => {
-  //   if (client === null || activeRoomId === null) {
-  //     return
-  //   }
-
-  //   const room = client.getRoom(activeRoomId)
-
-  //   // if (activeSpaceId !== DASHBOARD_SPACE_ID && room === null) {
-  //   //   const space = client.getRoom(activeSpaceId)
-
-  //   //   setRoomInvitedDetailScope(async () => {
-  //   //     if (space === null) {
-  //   //       throw new RoomInvitedError("You not have access to this space.")
-  //   //     }
-
-  //   //     const hierarchy = await client.getRoomHierarchy(space.roomId)
-
-  //   //     const foundedRoom = hierarchy.rooms.find(
-  //   //       hierarchyRoom => hierarchyRoom.room_id === activeRoomId
-  //   //     )
-
-  //   //     if (foundedRoom === undefined) {
-  //   //       throw new RoomInvitedError(
-  //   //         "You do not have access to the room or it does not exist."
-  //   //       )
-  //   //     }
-
-  //   //     validateHierarchyRoom(foundedRoom)
-
-  //   //     return {
-  //   //       name: foundedRoom.name ?? foundedRoom.room_id,
-  //   //       topic: foundedRoom.topic,
-  //   //       avatarUrl: getImageUrl(foundedRoom.avatar_url, client),
-  //   //       detailChips: [],
-  //   //     }
-  //   //   })
-
-  //   //   return
-  //   // }
-  // }, [activeRoomId, client])
-
   useEffect(() => {
     if (client === null || activeRoomId === null) {
       return
