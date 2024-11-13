@@ -10,18 +10,14 @@ import useRoomMembers from "../Roster/hooks/useRoomMembers"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import useBreakpoint from "@/hooks/util/useMediaQuery"
 import RoomInvitedSplash from "./RoomInvitedSplash"
+import useInvitedRoom from "@/hooks/matrix/useInvitedRoom"
 
 const RoomContainer: FC = () => {
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
   const {isSmall} = useBreakpoint()
 
-  const {
-    activeRoomId,
-    roomState,
-    clearActiveRoomId,
-    roomInvitedDetail,
-    onJoinRoom,
-  } = useActiveRoom()
+  const {activeRoomId, roomState, clearActiveRoomId} = useActiveRoom()
+  const {roomInvitedDetail, onJoinRoom} = useInvitedRoom(activeRoomId)
 
   const {membersState, onReloadMembers, onLazyReload, isLazyLoading} =
     useRoomMembers(activeRoomId)

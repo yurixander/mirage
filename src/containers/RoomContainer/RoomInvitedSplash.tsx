@@ -130,6 +130,10 @@ const RoomInvitedSplash: FC<RoomInvitedSplashProps> = ({
               </ModalHeader>
 
               <ModalDescription className="flex flex-col gap-y-5">
+                {topic === undefined && owners === undefined && (
+                  <Text size="4">This room does not support preview.</Text>
+                )}
+
                 {topic !== undefined && (
                   <div className="flex flex-col gap-0.5">
                     <Text
