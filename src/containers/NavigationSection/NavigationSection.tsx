@@ -18,6 +18,9 @@ import CreateSpaceModal from "@/components/CreateSpaceModal"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import {Heading, Text} from "@/components/ui/typography"
 import useSpaceDetail from "@/hooks/matrix/useSpaceDetail"
+import useActiveSpaceIdStore from "@/hooks/matrix/useActiveSpaceIdStore"
+import useInvitedRoom from "@/hooks/matrix/useInvitedRoom"
+import RoomInvitedSplash from "../RoomContainer/RoomInvitedSplash"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -25,17 +28,26 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   className,
   onLogOut,
 }) => {
-  const [spaceSelected, setSpaceSelected] = useState(DASHBOARD_SPACE_ID)
+  const {activeSpaceId, setActiveSpaceId} = useActiveSpaceIdStore()
   const {spaces: spacesState, onCreateSpace, uploadSpaceAvatar} = useSpaces()
   const {userDataState, userData, onRefreshData} = useUserData()
   const {isSmall} = useBreakpoint()
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false)
   const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const [modalCreateSpaceOpen, setModalCreateSpaceIsOpen] = useState(false)
-  const {name} = useSpaceDetail(spaceSelected)
+  const {name} = useSpaceDetail(activeSpaceId)
+
+  const [recommendedRoomSelected, setRecommendedRoomSelected] = useState<
+    string | null
+  >(null)
+
+  const {roomInvitedDetail, onJoinRoom} = useInvitedRoom(
+    recommendedRoomSelected,
+    true
+  )
 
   const {isSectionsLoading, sections, onCreateRoom} =
-    useRoomNavigator(spaceSelected)
+    useRoomNavigator(activeSpaceId)
 
   useGlobalHotkey({key: "S", ctrl: true, shift: true}, () =>
     setModalCreateSpaceIsOpen(true)
@@ -64,6 +76,18 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         onUploadAvatar={uploadSpaceAvatar}
       />
 
+      {recommendedRoomSelected !== null && (
+        <RoomInvitedSplash
+          roomDetailPreview={roomInvitedDetail}
+          onClose={() => setRecommendedRoomSelected(null)}
+          onJoinRoom={async () => {
+            await onJoinRoom()
+
+            setRecommendedRoomSelected(null)
+          }}
+        />
+      )}
+
       <div className={twMerge("flex size-full sm:max-w-max", className)}>
         <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="flex flex-col items-center p-1">
@@ -86,13 +110,12 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           <ValueStateHandler
             value={spacesState}
             loading={<SpacesPlaceHolder length={2} />}
-            // TODO: Put a correct error state.
             error={error => <div>Error {error.message}</div>}>
             {spaces => (
               <SpacesNavigation
                 spaces={spaces}
-                selectedSpace={spaceSelected}
-                onSelectedSpaceChange={setSpaceSelected}
+                selectedSpace={activeSpaceId}
+                onSelectedSpaceChange={setActiveSpaceId}
                 onCreateSpace={() => setModalCreateSpaceIsOpen(true)}
               />
             )}
@@ -104,7 +127,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         <div className="flex size-full flex-col border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="border-b border-neutral-300 px-2.5 py-1.5 dark:border-neutral-700">
             <Heading level="h5">
-              {spaceSelected === DASHBOARD_SPACE_ID ? "Dashboard" : name}
+              {activeSpaceId === DASHBOARD_SPACE_ID ? "Dashboard" : name}
             </Heading>
           </div>
 
@@ -116,9 +139,10 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
               roomSelected={activeRoomId ?? undefined}
               onRoomSelected={setActiveRoomId}
               sections={sections}
-              isDashboardActive={spaceSelected === undefined}
+              isDashboardActive={activeSpaceId === undefined}
               isLoading={isSectionsLoading}
               onCreateRoom={() => setIsCreateRoomModalOpen(true)}
+              onRecommendedRoomClick={setRecommendedRoomSelected}
             />
           </ScrollArea>
 

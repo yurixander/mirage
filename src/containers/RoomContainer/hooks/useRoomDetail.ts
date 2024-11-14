@@ -1,5 +1,6 @@
 import useRoomListener from "@/hooks/matrix/useRoomListener"
-import {EventTimeline, EventType, RoomEvent, type Room} from "matrix-js-sdk"
+import {getRoomTopic} from "@/utils/matrix"
+import {RoomEvent, type Room} from "matrix-js-sdk"
 import {useEffect, useState} from "react"
 
 export type RoomDetail = {
@@ -19,14 +20,7 @@ const useRoomDetail = (room: Room | null): RoomDetail => {
       return
     }
 
-    const roomTopic = room
-      .getLiveTimeline()
-      .getState(EventTimeline.FORWARDS)
-      ?.getStateEvents(EventType.RoomTopic, "")
-      ?.getContent().topic
-
-    const descriptionResult =
-      typeof roomTopic === "string" ? roomTopic : undefined
+    const descriptionResult = getRoomTopic(room) ?? undefined
 
     const isRoomEncrypted = room.hasEncryptionStateEvent()
 
