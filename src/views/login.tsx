@@ -4,7 +4,6 @@ import {
   userIdConstraint,
 } from "@/components/Input"
 import {useState, type FC} from "react"
-import {StaticAssetPath} from "@/utils/util"
 import {IoIosContact} from "react-icons/io"
 import {IoEye, IoEyeOff, IoKey} from "react-icons/io5"
 import useLogin from "@/hooks/util/useLogin"
@@ -25,18 +24,9 @@ const LoginView: FC = () => {
 
   return (
     <div className="flex size-full max-h-screen items-center justify-center p-6">
-      {/* Decorative background */}
-      <div className="hidden h-full items-center justify-center sm:flex">
-        <img
-          className="max-h-full max-w-full object-contain"
-          src={StaticAssetPath.LoginPhoto}
-          alt={t(LangKey.DecorativeBackgroundAlt)}
-        />
-      </div>
-
       {/* Login form */}
-      <div className="h-screen max-w-[500px] overflow-y-auto">
-        <div className="flex h-full min-h-[500px] max-w-[500px] flex-col gap-2 p-6">
+      <div className="h-screen max-w-[400px] overflow-y-auto">
+        <div className="flex h-full min-h-[400px] max-w-[400px] flex-col gap-2 p-6">
           <div className="flex h-full grow flex-col justify-center gap-6 p-3">
             <div className="flex w-full items-center justify-center">
               <AppLogo />

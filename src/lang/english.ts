@@ -74,7 +74,7 @@ export const english: LangDefinition = {
   [LangKey.ConnectionError]: "Connection Error",
   [LangKey.GoToLogin]: "Go to login",
   [LangKey.ConnectionErrorSubtitle]:
-    "Ops we have lost connection with the server, please reload the page or login again.",
+    "Connection lost with the server; please reload the page or login again.",
   [LangKey.Reply]: "Reply",
   [LangKey.Resend]: "Resend",
   [LangKey.Save]: "Save",
@@ -187,7 +187,7 @@ export const english: LangDefinition = {
   [LangKey.DecorativeBackgroundAlt]: "Abstract background for login page",
   [LangKey.WelcomeBack]: "Welcome Back",
   [LangKey.LoginSubtitleInfo]:
-    "Glad to see you here! Already have an account? Please enter your email and password to sign in.",
+    "Already have an account? Please enter your email and password to sign in.",
   [LangKey.UserID]: "User ID",
   [LangKey.Password]: "Password",
   [LangKey.HideToken]: "Hide token",
@@ -213,7 +213,7 @@ export const english: LangDefinition = {
   [LangKey.DMTrayFindUserDescription]:
     "Start a conversation with someone using their name or username (@username:mirage.org).",
   [LangKey.EnterNameOrUsername]: "Enter name or username",
-  [LangKey.RoomsEmptyTitle]: "Ops you don't have rooms",
+  [LangKey.RoomsEmptyTitle]: "No rooms yet",
   [LangKey.RoomsEmptySubtitle]: "You can search for users and start a chat",
   [LangKey.RecentConversations]: "RECENT CONVERSATIONS",
   [LangKey.DMTrayFoundedDescription]:
@@ -232,7 +232,7 @@ export const english: LangDefinition = {
   // #region Notifications
   [LangKey.Notifications]: "Notifications",
   [LangKey.LoadingNotifications]: "Loading Notifications",
-  [LangKey.NotificationsEmpty]: "You not have notifications",
+  [LangKey.NotificationsEmpty]: "There are no notifications",
   [LangKey.GoTo]: "Go to ⟶",
   [LangKey.RemoveNotification]: "Remove notification",
   [LangKey.MarkAsRead]: "Mark as read",
@@ -278,7 +278,7 @@ export const english: LangDefinition = {
     "An error occurred while trying to join the Room.",
   [LangKey.RoomNotFound]: "Room Not Found",
   [LangKey.RoomNotFoundDescription]:
-    "You not have access to this room or this room not found.",
+    "You don't have access to this room or it doesn't exist.",
   [LangKey.SeveralPeople]: "Several people",
   [LangKey.And]: " and ",
   [LangKey.Typing]: "typing...",
