@@ -24,6 +24,7 @@ import {WIDTH_FILL_NAVIGATOR_ANIM} from "@/utils/animations"
 import {trim} from "@/utils/util"
 import {SearchInput} from "@/components/ui/input"
 import {Accordion} from "@/components/ui/accordion"
+import LoadingEffect from "@/components/LoadingEffect"
 
 type AccordionRoomSectionProps = {
   title: string
@@ -204,7 +205,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
 
   if (isLoading) {
     return (
-      <div className={cn("flex flex-col gap-5 p-2", className)}>
+      <div className={cn("flex w-full flex-col gap-4", className)}>
         <RoomSectionSkeleton />
 
         <RoomSectionSkeleton roomsLength={2} />
@@ -323,19 +324,20 @@ const RoomSectionSkeleton: FC<RoomSectionSkeletonProps> = ({
   className,
 }) => {
   return (
-    <div className={cn("flex animate-pulse flex-col gap-2", className)}>
+    <div className={cn("flex w-full flex-col gap-2 p-3", className)}>
       <div className="flex w-full items-center justify-between gap-2">
         <motion.div
           variants={WIDTH_FILL_NAVIGATOR_ANIM}
           initial="initial"
           whileInView="whileInView"
-          className="h-5 max-w-24 rounded-sm bg-gray-400 dark:bg-neutral-600"
-        />
+          className="h-5 max-w-24 overflow-hidden rounded-sm bg-neutral-400/50 dark:bg-neutral-700">
+          <LoadingEffect />
+        </motion.div>
 
         <motion.div
           initial={{scale: 0.5, opacity: 0}}
           whileInView={{scale: 1, opacity: 1}}
-          className="size-5 rounded-sm bg-gray-400 dark:bg-neutral-600"
+          className="size-5 rounded-sm bg-neutral-400/50 dark:bg-neutral-700"
         />
       </div>
 
@@ -345,8 +347,9 @@ const RoomSectionSkeleton: FC<RoomSectionSkeletonProps> = ({
           variants={WIDTH_FILL_NAVIGATOR_ANIM}
           initial="initial"
           whileInView="whileInView"
-          className="h-4 w-full rounded-sm bg-gray-400 dark:bg-neutral-600"
-        />
+          className="h-4 w-full overflow-hidden rounded-sm bg-neutral-400/50 dark:bg-neutral-700">
+          <LoadingEffect />
+        </motion.div>
       ))}
     </div>
   )

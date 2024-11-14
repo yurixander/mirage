@@ -1,7 +1,6 @@
 import {useState, type FC} from "react"
 import ChatContainer from "./ChatContainer"
 import Roster from "../Roster/Roster"
-import SmartActionBar from "@/components/SmartActionBar"
 import WelcomeSplash from "./WelcomeSplash"
 import RoomNotFoundSplash from "./RoomNotFoundSplash"
 import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
@@ -11,6 +10,7 @@ import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import useBreakpoint from "@/hooks/util/useMediaQuery"
 import RoomInvitedSplash from "./RoomInvitedSplash"
 import useInvitedRoom from "@/hooks/matrix/useInvitedRoom"
+import SmartActionBar from "@/components/SmartActionBar"
 
 const RoomContainer: FC = () => {
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)

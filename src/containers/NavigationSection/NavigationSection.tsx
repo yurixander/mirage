@@ -33,9 +33,11 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const {userDataState, userData, onRefreshData} = useUserData()
   const {isSmall} = useBreakpoint()
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false)
-  const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const [modalCreateSpaceOpen, setModalCreateSpaceIsOpen] = useState(false)
   const {name} = useSpaceDetail(activeSpaceId)
+
+  const {activeRoomId, setActiveRoomId, clearActiveRoomId} =
+    useActiveRoomIdStore()
 
   const [recommendedRoomSelected, setRecommendedRoomSelected] = useState<
     string | null
@@ -88,8 +90,8 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         />
       )}
 
-      <div className={twMerge("flex size-full sm:max-w-max", className)}>
-        <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
+      <div className={twMerge("flex size-full max-w-80", className)}>
+        <div className="flex size-full w-20 flex-col gap-2 border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="flex flex-col items-center p-1">
             <ReactSVG src={StaticAssetPath.NewAppLogo} />
 
@@ -115,7 +117,11 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
               <SpacesNavigation
                 spaces={spaces}
                 selectedSpace={activeSpaceId}
-                onSelectedSpaceChange={setActiveSpaceId}
+                onSelectedSpaceChange={spaceId => {
+                  setActiveSpaceId(spaceId)
+
+                  clearActiveRoomId()
+                }}
                 onCreateSpace={() => setModalCreateSpaceIsOpen(true)}
               />
             )}
@@ -132,7 +138,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           </div>
 
           <ScrollArea
-            className="size-full sm:h-full sm:w-64"
+            className="size-full sm:h-full"
             isScrollBarHidden
             avoidOverflow>
             <RoomNavigator

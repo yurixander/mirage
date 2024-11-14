@@ -24,8 +24,6 @@ import {
   AlertDialogTitle,
 } from "@radix-ui/react-alert-dialog"
 
-const SIDEBAR_BUTTON_CLASS =
-  "text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-800"
 const SIDEBAR_BUTTON_SIZE = 20
 
 const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
@@ -66,8 +64,7 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
           }}>
           <IconButton
             asBoundary={false}
-            aria-label={t(LangKey.ViewDirectChats)}
-            className={SIDEBAR_BUTTON_CLASS}>
+            aria-label={t(LangKey.ViewDirectChats)}>
             <IoPaperPlane size={SIDEBAR_BUTTON_SIZE} />
           </IconButton>
         </DMTrayPopup>
@@ -75,8 +72,7 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
         <NotificationsTray isLoading={isLoading} notifications={notifications}>
           <IconButton
             asBoundary={false}
-            aria-label={t(LangKey.ViewNotifications)}
-            className={SIDEBAR_BUTTON_CLASS}>
+            aria-label={t(LangKey.ViewNotifications)}>
             <NotificationDot isVisible={containsUnreadNotifications}>
               <IoNotifications size={SIDEBAR_BUTTON_SIZE} />
             </NotificationDot>
@@ -85,10 +81,7 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <IconButton
-              asBoundary={false}
-              aria-label={t(LangKey.ExitApp)}
-              className={SIDEBAR_BUTTON_CLASS}>
+            <IconButton asBoundary={false} aria-label={t(LangKey.ExitApp)}>
               <IoExit size={SIDEBAR_BUTTON_SIZE} />
             </IconButton>
           </AlertDialogTrigger>
