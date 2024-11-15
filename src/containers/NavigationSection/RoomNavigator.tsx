@@ -116,7 +116,7 @@ const MoreActionsDropdown: FC<MoreActionsDropdownProps> = ({children}) => {
       <DropdownMenuTrigger asChild>
         <IconButton
           aria-label={t(LangKey.MoreActions)}
-          className="size-5 rounded"
+          className="size-5 rounded hover:bg-neutral-300/50"
           asBoundary={false}>
           <IoEllipsisHorizontal />
         </IconButton>
@@ -205,7 +205,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
 
   if (isLoading) {
     return (
-      <div className={cn("flex w-full flex-col gap-4", className)}>
+      <div className={cn("flex w-full flex-col gap-y-2", className)}>
         <RoomSectionSkeleton />
 
         <RoomSectionSkeleton roomsLength={2} />
@@ -232,7 +232,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
       )}
 
       <Accordion
-        className="p-1"
+        className="px-2.5 pt-2"
         type="multiple"
         value={accordionValue}
         onValueChange={setAccordionValue}>

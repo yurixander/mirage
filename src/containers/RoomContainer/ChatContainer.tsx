@@ -83,7 +83,6 @@ const ChatContainer: FC<ChatContainerProps> = ({
           className
         )}>
         <ChatHeader
-          className="flex size-full h-12 items-center border-b border-b-neutral-200 px-3 py-1 dark:border-b-neutral-700"
           isRosterExpanded={isRosterExpanded}
           onRosterExpanded={onRosterExpanded}
           roomDetail={roomDetail}
@@ -91,7 +90,6 @@ const ChatContainer: FC<ChatContainerProps> = ({
         />
 
         <ChatMessages
-          className="p-3"
           lastMessageReadId={lastMessageReadId}
           messagesState={messagesState}
           onReloadMessages={onReloadMessages}

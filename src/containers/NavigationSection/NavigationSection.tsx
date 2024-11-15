@@ -127,16 +127,13 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         </div>
 
         <div className="flex size-full flex-col border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
-          <div className="border-b border-neutral-300 px-2.5 py-1.5 dark:border-neutral-700">
+          <div className="flex h-12 items-center border-b border-neutral-300 px-3 dark:border-neutral-700">
             <Heading level="h5">
               {activeSpaceId === DASHBOARD_SPACE_ID ? "Dashboard" : name}
             </Heading>
           </div>
 
-          <ScrollArea
-            className="size-full sm:h-full"
-            isScrollBarHidden
-            avoidOverflow>
+          <ScrollArea className="size-full" isScrollBarHidden avoidOverflow>
             <RoomNavigator
               roomSelected={activeRoomId ?? undefined}
               onRoomSelected={setActiveRoomId}

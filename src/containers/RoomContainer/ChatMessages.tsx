@@ -1,5 +1,4 @@
 import {type FC, useEffect, useRef, useState} from "react"
-import {twMerge} from "tailwind-merge"
 import {type AnyMessage} from "./hooks/useRoomChat"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
@@ -33,7 +32,6 @@ export type ChatMessagesProps = {
   onLastMessageReadIdChange: (messageId: string | null) => void
   onReloadMessages: () => void
   onCloseRoom: () => void
-  className?: string
 }
 
 export const ChatMessages: FC<ChatMessagesProps> = ({
@@ -42,7 +40,6 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   onCloseRoom,
   onLastMessageReadIdChange,
   onReloadMessages,
-  className,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const unreadIndicatorRef = useRef<HTMLDivElement>(null)
@@ -116,11 +113,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   }, [lastMessageReadId, messagesState, onLastMessageReadIdChange, percent])
 
   return (
-    <div
-      className={twMerge(
-        "flex size-full flex-col justify-center gap-4",
-        className
-      )}>
+    <div className="flex grow basis-0 overflow-y-auto">
       <ValueStateHandler
         value={messagesState}
         error={error => (
@@ -133,7 +126,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
         loading={<MessagesPlaceholder />}>
         {messages => (
           <ScrollArea avoidOverflow ref={scrollContainerRef}>
-            <div className="flex-1 space-y-4">
+            <div className="flex-1 space-y-4 p-4">
               {messages.map((message, index) => (
                 <div key={message.messageId}>
                   <AnyMessageHandler
@@ -167,7 +160,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
               ))}
             </div>
 
-            <div className="pointer-events-none absolute bottom-0 flex w-full justify-center bg-transparent p-1">
+            <div className="pointer-events-none absolute bottom-3 flex w-full justify-center bg-transparent p-1">
               <div className="flex flex-col items-center gap-1">
                 <UnreadMessagesCountPopup
                   percent={percent}

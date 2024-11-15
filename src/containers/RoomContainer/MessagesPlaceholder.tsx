@@ -4,7 +4,7 @@ import {twMerge} from "tailwind-merge"
 
 const MessagesPlaceholder: FC = () => {
   return (
-    <div className="flex w-full flex-col gap-4">
+    <div className="flex w-full flex-col gap-4 p-4">
       <div className="flex w-full gap-1">
         <SkeletonAvatar />
 
