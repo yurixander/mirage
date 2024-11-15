@@ -16,12 +16,17 @@ type UseActiveRoomReturnType = {
   client: MatrixClient | null
   roomState: RoomState
   activeRoomId: string | null
+  clearActiveRoomId: () => void
 }
 
 const useActiveRoom = (): UseActiveRoomReturnType => {
   const client = useMatrixClient()
   const [roomState, setRoomState] = useState(RoomState.Idle)
   const {activeRoomId, clearActiveRoomId} = useActiveRoomIdStore()
+
+  useEffect(() => {
+    setRoomState(RoomState.Idle)
+  }, [activeRoomId])
 
   useEffect(() => {
     if (client === null || activeRoomId === null) {
@@ -83,6 +88,7 @@ const useActiveRoom = (): UseActiveRoomReturnType => {
     client,
     roomState,
     activeRoomId,
+    clearActiveRoomId,
   }
 }
 

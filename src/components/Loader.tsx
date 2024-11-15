@@ -16,7 +16,9 @@ const Loader: FC<LoaderProps> = ({text, className}) => {
       )}>
       <div className="size-8 animate-rotation rounded-full border-4 border-white border-t-slate-500" />
 
-      <Text>{text}</Text>
+      <Text align="center" className="max-w-max">
+        {text}
+      </Text>
     </div>
   )
 }

@@ -9,11 +9,15 @@ import {motion} from "framer-motion"
 import useRoomMembers from "../Roster/hooks/useRoomMembers"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import useBreakpoint from "@/hooks/util/useMediaQuery"
+import RoomInvitedSplash from "./RoomInvitedSplash"
+import useInvitedRoom from "@/hooks/matrix/useInvitedRoom"
 
 const RoomContainer: FC = () => {
-  const {activeRoomId, roomState} = useActiveRoom()
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
   const {isSmall} = useBreakpoint()
+
+  const {activeRoomId, roomState, clearActiveRoomId} = useActiveRoom()
+  const {roomInvitedDetail, onJoinRoom} = useInvitedRoom(activeRoomId)
 
   const {membersState, onReloadMembers, onLazyReload, isLazyLoading} =
     useRoomMembers(activeRoomId)
@@ -27,43 +31,47 @@ const RoomContainer: FC = () => {
   }
 
   return (
-    <div className="size-full flex-col sm:flex">
-      {(roomState === RoomState.Joined || roomState === RoomState.Invited) &&
-      activeRoomId !== null ? (
-        <div className="flex size-full">
-          {roomState === RoomState.Invited ? (
-            // TODO: Handle room invited splash.
-            <></>
-          ) : (
+    <>
+      {roomState === RoomState.Invited && (
+        <RoomInvitedSplash
+          onClose={clearActiveRoomId}
+          roomDetailPreview={roomInvitedDetail}
+          onJoinRoom={onJoinRoom}
+        />
+      )}
+
+      <div className="size-full flex-col sm:flex">
+        {roomState === RoomState.Joined && activeRoomId !== null ? (
+          <div className="flex size-full">
             <ChatContainer
               className="flex size-full flex-col"
               roomId={activeRoomId}
               isRosterExpanded={isRosterExpanded}
               onRosterExpanded={setIsRosterExpanded}
             />
-          )}
 
-          <motion.div animate={{width: isRosterExpanded ? "15rem" : 0}}>
-            <Roster
-              className="max-w-60"
-              isLazyLoading={isLazyLoading}
-              membersState={membersState}
-              onReloadMembers={onReloadMembers}
-              onLazyLoad={onLazyReload}
-              onUserClick={function (_userId: string): void {
-                throw new Error("`onUserClick` function not implemented.")
-              }}
-            />
-          </motion.div>
-        </div>
-      ) : roomState === RoomState.NotFound ? (
-        <RoomNotFoundSplash />
-      ) : (
-        <WelcomeSplash />
-      )}
+            <motion.div animate={{width: isRosterExpanded ? "15rem" : 0}}>
+              <Roster
+                className="max-w-60"
+                isLazyLoading={isLazyLoading}
+                membersState={membersState}
+                onReloadMembers={onReloadMembers}
+                onLazyLoad={onLazyReload}
+                onUserClick={function (_userId: string): void {
+                  throw new Error("`onUserClick` function not implemented.")
+                }}
+              />
+            </motion.div>
+          </div>
+        ) : roomState === RoomState.NotFound ? (
+          <RoomNotFoundSplash />
+        ) : (
+          <WelcomeSplash />
+        )}
 
-      <SmartActionBar />
-    </div>
+        <SmartActionBar />
+      </div>
+    </>
   )
 }
 

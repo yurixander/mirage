@@ -1,7 +1,9 @@
 import {
+  EventTimeline,
   EventType,
   ICreateRoomStateEvent,
   MsgType,
+  Room,
   type MatrixClient,
 } from "matrix-js-sdk"
 import {getImage} from "./util"
@@ -347,4 +349,18 @@ const matrixUserRegex = new RegExp(/^@[\w+.-]+:matrix\.org$/)
 
 export function validateMatrixUser(input: string): boolean {
   return matrixUserRegex.test(input)
+}
+
+export function getRoomTopic(room: Room): string | null {
+  try {
+    const roomTopic = room
+      .getLiveTimeline()
+      .getState(EventTimeline.FORWARDS)
+      ?.getStateEvents(EventType.RoomTopic, "")
+      ?.getContent().topic
+
+    return typeof roomTopic === "string" ? roomTopic : null
+  } catch {
+    return null
+  }
 }

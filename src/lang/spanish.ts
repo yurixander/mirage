@@ -304,6 +304,32 @@ export const spanish: LangDefinition = {
   [LangKey.RoomEncrypted]:
     "Esta sala está encriptada usando cifrado de extremo a extremo",
   [LangKey.AllSpaces]: "Todos los espacios",
+  [LangKey.Topic]: "Descripción",
+  [LangKey.JoinRoom]: "Unirse",
+  [LangKey.TaskCompleted]: "Tarea completada",
+  [LangKey.JoinRoomCompleted]: "Te uniste exitosamente a la sala.",
+  [LangKey.RoomInvitedError]: "Invitación de sala errónea",
+  [LangKey.DefaultJoinRoomErrorDescription]:
+    "Se produjo un error inesperado al intentar unirse a la sala.",
+  [LangKey.DefaultPreviewInvitedErrorDescription]:
+    "Se produjo un error al cargar la vista previa de la sala, inténtelo nuevamente.",
+  [LangKey.RoomInvitedAccessError]: "No tienes acceso a esta sala.",
+  [LangKey.RoomInvitedRecommendedRoomError]:
+    "No tienes accesso al espacio que contiene esa sala.",
+  [LangKey.RoomInvitedNoAccessOrNotFound]:
+    "No tienes acceso a la sala o no existe.",
+  [LangKey.Public]: "Público",
+  [LangKey.Space]: "Espacio",
+  [LangKey.Room]: "Sala",
+  [LangKey.Direct]: "Directo",
+  [LangKey.RoomHierarchyCount]: (roomHierarchyCount: string) =>
+    `+${roomHierarchyCount} Salas`,
+  [LangKey.JoinedMembers]: (joinedMembersCount: string) =>
+    `+${joinedMembersCount} Miembros`,
+  [LangKey.RoomInvitedParentSpaceError]:
+    "No puedes acceder al mismo espacio en el que ya formas parte.",
+  [LangKey.RoomInvitedJoinError]: "Esta sala no permite unirse a cualquiera.",
+  [LangKey.RoomPreviewNotSupport]: "Esta sala no permite previsualización.",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Bienvenido a Mirage",
