@@ -113,7 +113,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   }, [lastMessageReadId, messagesState, onLastMessageReadIdChange, percent])
 
   return (
-    <div className="flex grow basis-0 overflow-y-auto">
+    <div className="relative flex grow basis-0 overflow-y-auto">
       <ValueStateHandler
         value={messagesState}
         error={error => (
@@ -160,7 +160,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
               ))}
             </div>
 
-            <div className="pointer-events-none absolute bottom-3 flex w-full justify-center bg-transparent p-1">
+            <div className="pointer-events-none absolute bottom-4 z-50 flex w-full justify-center bg-transparent p-1">
               <div className="flex flex-col items-center gap-1">
                 <UnreadMessagesCountPopup
                   percent={percent}

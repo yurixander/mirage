@@ -97,7 +97,7 @@ const ChatContainer: FC<ChatContainerProps> = ({
           onLastMessageReadIdChange={onLastMessageReadIdChange}
         />
 
-        <footer className="order-3 flex flex-col px-3.5">
+        <footer className="order-3 flex flex-col px-3.5 pt-2">
           <ChatInput
             onSendTypingEvent={sendTypingEvent}
             isInputDisabled={isInputDisabled}
