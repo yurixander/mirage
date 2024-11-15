@@ -117,6 +117,7 @@ export const english: LangDefinition = {
   [LangKey.UnreadMessagesCount]: (count: string) => `${count} Unread messages`,
   [LangKey.SpaceCreatedSuccess]: "Space created successfully",
   [LangKey.RoomCreatedSuccess]: "Room created successfully",
+  [LangKey.Contacts]: "Contacts",
 
   // #region Roster
   [LangKey.People]: "People",

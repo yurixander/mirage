@@ -1,6 +1,4 @@
 import * as React from "react"
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import {IoMdArrowDropdown} from "react-icons/io"
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 
 import {cn} from "@/utils/utils"
@@ -10,128 +8,45 @@ import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
 import {motion} from "framer-motion"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
-import {IoEllipsisHorizontal} from "react-icons/io5"
-import {IconButton} from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import {IoMedical} from "react-icons/io5"
 import {WIDTH_FILL_NAVIGATOR_ANIM} from "@/utils/animations"
 import {trim} from "@/utils/util"
 import {SearchInput} from "@/components/ui/input"
-import {Accordion} from "@/components/ui/accordion"
 import LoadingEffect from "@/components/LoadingEffect"
+import {RoomType} from "./hooks/useRoomNavigator"
+import {LiaSlackHash} from "react-icons/lia"
+import {twMerge} from "tailwind-merge"
 
-type AccordionRoomSectionProps = {
-  title: string
-  children: React.ReactNode
-  actions?: React.ReactNode
-}
-
-export const AccordionRoomSection: FC<AccordionRoomSectionProps> = ({
-  title,
-  children,
-  actions,
-}) => {
-  return (
-    <AccordionPrimitive.Item
-      aria-label={title}
-      className="w-full"
-      value={title}>
-      <AccordionPrimitive.Header className="flex items-center">
-        <AccordionPrimitive.Trigger className="flex flex-1 items-center gap-0.5 transition-transform focus-visible:ring [&[data-state=open]>svg]:rotate-180">
-          <IoMdArrowDropdown className="size-5 shrink-0 text-neutral-500 transition-transform duration-200 dark:text-neutral-400" />
-
-          <Text
-            size="1"
-            className="font-bold uppercase text-neutral-500 dark:text-neutral-400">
-            {title}
-          </Text>
-        </AccordionPrimitive.Trigger>
-
-        {actions !== undefined && (
-          <div className="ml-auto max-h-5 max-w-max shrink-0">{actions}</div>
-        )}
-      </AccordionPrimitive.Header>
-
-      <AccordionPrimitive.Content className="flex w-full flex-col gap-1 overflow-hidden py-1 data-[state=open]:animate-accordion-down">
-        {children}
-      </AccordionPrimitive.Content>
-    </AccordionPrimitive.Item>
-  )
-}
-
-interface SelectableRoomProps extends Omit<PartialRoom, "type"> {
+interface SelectableRoomProps extends PartialRoom {
   className?: string
 }
 
 const SelectableRoom: FC<SelectableRoomProps> = ({
-  emoji,
   roomId,
   roomName,
+  type,
   className,
 }) => {
-  return (
-    <motion.div
-      initial={{translateX: -25, opacity: 0.5}}
-      whileInView={{translateX: 0, opacity: 1}}
-      whileTap={{scale: 0.95}}
-      transition={{duration: 0.2}}>
-      <ToggleGroupItem
-        aria-label={roomName}
-        className={cn(
-          "flex size-full gap-1 p-1 transition-colors hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:ring-0 data-[state=on]:bg-purple-600 dark:hover:bg-neutral-800 dark:focus-visible:bg-neutral-800 dark:data-[state=on]:bg-purple-500 [&[data-state=on]>span]:text-white",
-          className
-        )}
-        size="sm"
-        value={roomId}>
-        <Text className="size-4 shrink-0" align="center" size="1">
-          {emoji}
-        </Text>
-
-        <Text
-          className="text-neutral-600 dark:text-neutral-300"
-          size="1"
-          weight="semibold">
-          {trim(roomName, 26)}
-        </Text>
-      </ToggleGroupItem>
-    </motion.div>
-  )
-}
-
-type MoreActionsDropdownProps = {
-  children: React.ReactNode
-}
-
-const MoreActionsDropdown: FC<MoreActionsDropdownProps> = ({children}) => {
-  const {t} = useTranslation()
+  const Icon = type === RoomType.Direct ? IoMedical : LiaSlackHash
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <IconButton
-          aria-label={t(LangKey.MoreActions)}
-          className="size-5 rounded hover:bg-neutral-300/50"
-          asBoundary={false}>
-          <IoEllipsisHorizontal />
-        </IconButton>
-      </DropdownMenuTrigger>
+    <ToggleGroupItem
+      aria-label={roomName}
+      value={roomId}
+      size="sm"
+      className={cn(
+        "group hover:bg-transparent data-[state=on]:bg-transparent",
+        className
+      )}>
+      <Text
+        size="4"
+        className="flex w-auto grow items-center gap-2 truncate text-foreground/70 group-data-[state=on]:text-purple-500"
+        weight="medium">
+        <Icon className="text-neutral-400/80 group-data-[state=on]:text-purple-500" />
 
-      <DropdownMenuContent
-        align="start"
-        alignOffset={24}
-        className="w-48"
-        onCloseAutoFocus={e => {
-          e.preventDefault()
-        }}>
-        {children}
-      </DropdownMenuContent>
-    </DropdownMenu>
+        {trim(roomName, 20)}
+      </Text>
+    </ToggleGroupItem>
   )
 }
 
@@ -165,7 +80,6 @@ const MAX_ROOM_LENGTH_FOR_SEARCH = 20
 
 export const RoomNavigator: FC<RoomNavigatorProps> = ({
   sections,
-  onCreateRoom,
   isLoading,
   className,
   onRoomSelected,
@@ -174,7 +88,6 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
 }) => {
   const {t} = useTranslation()
   const [searchResult, setSearchResult] = useState<RoomSections | null>(null)
-  const [accordionValue, setAccordionValue] = useState([t(LangKey.Rooms)])
 
   const allRoomsLength =
     sections.groups.length +
@@ -214,7 +127,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
   }
 
   return (
-    <div className={cn("flex flex-col gap-y-1", className)}>
+    <div className={cn("flex flex-col gap-y-1 p-2", className)}>
       {allRoomsLength > MAX_ROOM_LENGTH_FOR_SEARCH && (
         <div className="p-2">
           <SearchInput
@@ -231,85 +144,72 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
         </div>
       )}
 
-      <Accordion
-        className="px-2.5 pt-2"
-        type="multiple"
-        value={accordionValue}
-        onValueChange={setAccordionValue}>
-        <ToggleGroup
-          className="flex flex-col items-start gap-4"
-          type="single"
-          value={roomSelected ?? ""}
-          onValueChange={value => {
-            if (value.length === 0) {
-              return
-            }
+      <ToggleGroup
+        className="flex flex-col items-start gap-y-4"
+        type="single"
+        value={roomSelected ?? ""}
+        onValueChange={value => {
+          if (value.length === 0) {
+            return
+          }
 
-            onRoomSelected(value)
-          }}>
-          {directs.length > 0 && (
-            <AccordionRoomSection title={t(LangKey.DirectChats)}>
-              {directs.map(room => (
-                <SelectableRoom key={room.roomId} {...room} />
-              ))}
-            </AccordionRoomSection>
-          )}
-
-          {groups.length > 0 && (
-            <AccordionRoomSection
-              title={t(LangKey.Rooms)}
-              actions={
-                <MoreActionsDropdown>
-                  <DropdownMenuItem
-                    aria-label={t(LangKey.CreateRoom)}
-                    onSelect={onCreateRoom}>
-                    <DropdownMenuLabel>
-                      {t(LangKey.CreateRoom)}
-                    </DropdownMenuLabel>
-
-                    <DropdownMenuShortcut char="R" ctrl shift />
-                  </DropdownMenuItem>
-                </MoreActionsDropdown>
-              }>
-              {groups.map(room => (
-                <SelectableRoom key={room.roomId} {...room} />
-              ))}
-            </AccordionRoomSection>
-          )}
-        </ToggleGroup>
-      </Accordion>
-
-      <Accordion className="p-1" type="multiple">
-        {recommended.length > 0 && (
-          <AccordionRoomSection title={t(LangKey.Recommended)}>
-            {recommended.map(({roomName, emoji, roomId}) => (
-              <motion.button
-                key={roomId}
-                aria-label={roomName}
-                initial={{translateX: -25, opacity: 0.5}}
-                whileInView={{translateX: 0, opacity: 1}}
-                whileTap={{scale: 0.95}}
-                transition={{duration: 0.2}}
-                onClick={() => onRecommendedRoomClick(roomId)}
-                className={cn(
-                  "flex size-full gap-1 p-1 transition-colors hover:bg-neutral-200 focus-visible:bg-neutral-200 focus-visible:ring-0 data-[state=on]:bg-purple-600 dark:hover:bg-neutral-800 dark:focus-visible:bg-neutral-800 dark:data-[state=on]:bg-purple-500 [&[data-state=on]>span]:text-white",
-                  className
-                )}>
-                <Text className="size-4 shrink-0" align="center" size="1">
-                  {emoji}
-                </Text>
-
-                <Text
-                  className="text-neutral-600 dark:text-neutral-300"
-                  size="1"
-                  weight="semibold">
-                  {trim(roomName, 26)}
-                </Text>
-              </motion.button>
+          onRoomSelected(value)
+        }}>
+        {directs.length > 0 && (
+          <RoomSection title={t(LangKey.Contacts)}>
+            {directs.map(room => (
+              <SelectableRoom key={room.roomId} {...room} />
             ))}
-          </AccordionRoomSection>
+          </RoomSection>
         )}
-      </Accordion>
+
+        {groups.length > 0 && (
+          <RoomSection title={t(LangKey.Rooms)}>
+            {groups.map(room => (
+              <SelectableRoom key={room.roomId} {...room} />
+            ))}
+          </RoomSection>
+        )}
+      </ToggleGroup>
+
+      {recommended.length > 0 && (
+        <RoomSection className="pt-3" title={t(LangKey.Recommended)}>
+          {recommended.map(({roomName, roomId}) => (
+            <motion.button
+              key={roomId}
+              aria-label={roomName}
+              onClick={() => onRecommendedRoomClick(roomId)}
+              className={className}>
+              <Text
+                className="flex w-auto grow items-center gap-x-2 truncate px-2 text-foreground/70"
+                size="4"
+                weight="medium">
+                <LiaSlackHash className="text-neutral-400/80" />
+
+                {trim(roomName, 20)}
+              </Text>
+            </motion.button>
+          ))}
+        </RoomSection>
+      )}
+    </div>
+  )
+}
+
+type RoomSectionProps = {
+  title: string
+  children: React.ReactNode
+  className?: string
+}
+
+const RoomSection: FC<RoomSectionProps> = ({children, title, className}) => {
+  return (
+    <div className={twMerge("flex flex-col gap-y-1", className)}>
+      <Text className="uppercase text-neutral-400/80" weight="medium" size="2">
+        {title}
+      </Text>
+
+      {children}
     </div>
   )
 }

@@ -214,6 +214,7 @@ export const spanish: LangDefinition = {
   [LangKey.ForgotPassword]: "¿Has olvidado tu contraseña?",
   [LangKey.NoAccountText]: "No tienes cuenta?",
   [LangKey.SignUp]: "Inscribirse",
+  [LangKey.Contacts]: "Contactos",
 
   // #region Navigation
   [LangKey.Rooms]: "Salas",
