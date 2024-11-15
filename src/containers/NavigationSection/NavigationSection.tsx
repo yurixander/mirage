@@ -1,6 +1,5 @@
 import {useState, type FC} from "react"
 import {StaticAssetPath} from "@/utils/util"
-import {ReactSVG} from "react-svg"
 import SidebarActions from "./SidebarActions"
 import UserBar from "./UserBar"
 import {twMerge} from "tailwind-merge"
@@ -93,16 +92,13 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
       <div className={twMerge("flex size-full max-w-80", className)}>
         <div className="flex size-full w-20 flex-col gap-2 border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="flex flex-col items-center p-1">
-            <ReactSVG src={StaticAssetPath.NewAppLogo} />
+            <img
+              src={StaticAssetPath.LogoSmall}
+              alt="mirage logo"
+              className="size-10"
+            />
 
-            <Text
-              className="font-unbounded uppercase"
-              weight="semibold"
-              style={{
-                color: "#D64DF4",
-                fontSize: "0.70rem",
-                lineHeight: "0.75rem",
-              }}>
+            <Text className="font-serif" align="center">
               Mirage
             </Text>
 

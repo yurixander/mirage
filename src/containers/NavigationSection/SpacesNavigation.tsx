@@ -92,7 +92,6 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
   return (
     <div className="flex items-center">
       <motion.div
-        aria-hidden
         variants={SPACE_INDICATOR_ANIM}
         animate={isSelected ? "selected" : "default"}
         className="-ml-1 mr-1 w-2 rounded-full bg-purple-500"

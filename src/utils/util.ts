@@ -9,6 +9,7 @@ export enum ViewPath {
 
 export enum StaticAssetPath {
   NewAppLogo = "new-logo.svg",
+  LogoSmall = "logo-small.webp",
   LoginPhoto = "LoginPhoto.webp",
   DotGrid = "icons/dot-grid.svg",
   SpaceHome = "space-home.webp",
