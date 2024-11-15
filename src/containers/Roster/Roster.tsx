@@ -43,29 +43,24 @@ const Roster: FC<RosterProps> = ({
   return (
     <div
       className={twMerge(
-        "flex h-full w-60 flex-col border border-l-neutral-300 bg-gray-50 dark:border-l-neutral-600 dark:bg-neutral-900",
+        "flex h-full w-60 flex-col border-l border-l-neutral-300 bg-gray-50 dark:border-l-neutral-600 dark:bg-neutral-900",
         className
       )}>
-      <header className="flex size-full max-h-12 border-b border-b-neutral-300 dark:border-b-neutral-600">
-        <div className="m-0.5 ml-3 flex w-full items-center justify-center">
-          <IoPeople
-            size={25}
-            className="text-neutral-500 dark:text-neutral-400"
-          />
+      <header className="flex size-full h-12 items-center gap-x-1.5 border-b border-b-neutral-300 pl-3 pr-1 dark:border-b-neutral-600">
+        <IoPeople className="size-5 text-neutral-500 dark:text-neutral-400" />
 
-          <Heading
-            level="h5"
-            className="ml-2 w-full text-neutral-600 dark:text-neutral-300">
-            {t(LangKey.People)}
-          </Heading>
+        <Heading
+          level="h5"
+          className="w-auto grow text-neutral-600 dark:text-neutral-300">
+          {t(LangKey.People)}
+        </Heading>
 
-          <IconButton
-            aria-label={t(LangKey.SortMembers)}
-            tooltip={t(LangKey.SortMembers)}
-            className="text-neutral-500 dark:text-neutral-400">
-            <IoFilterCircle size={20} />
-          </IconButton>
-        </div>
+        <IconButton
+          aria-label={t(LangKey.SortMembers)}
+          tooltip={t(LangKey.SortMembers)}
+          className="text-neutral-500 dark:text-neutral-400">
+          <IoFilterCircle className="size-5" />
+        </IconButton>
       </header>
 
       <ValueStateHandler
