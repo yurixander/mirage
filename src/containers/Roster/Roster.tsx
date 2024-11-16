@@ -43,7 +43,7 @@ const Roster: FC<RosterProps> = ({
   return (
     <div
       className={twMerge(
-        "flex h-full w-60 flex-col border-l border-l-neutral-300 bg-gray-50 dark:border-l-neutral-600 dark:bg-neutral-900",
+        "flex h-full w-60 flex-col border-l border-l-neutral-300 bg-gray-50/50 dark:border-l-neutral-600 dark:bg-neutral-900",
         className
       )}>
       <header className="flex size-full h-12 items-center gap-x-1.5 border-b border-b-neutral-300 pl-3.5 pr-1 dark:border-b-neutral-600">

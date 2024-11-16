@@ -2,7 +2,7 @@ import * as React from "react"
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 
 import {cn} from "@/utils/utils"
-import {useCallback, useMemo, useState, type FC} from "react"
+import {type FC} from "react"
 import {Text} from "@/components/ui/typography"
 import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
 import {motion} from "framer-motion"
@@ -11,7 +11,6 @@ import {LangKey} from "@/lang/allKeys"
 import {IoMedical} from "react-icons/io5"
 import {WIDTH_FILL_NAVIGATOR_ANIM} from "@/utils/animations"
 import {trim} from "@/utils/util"
-import {SearchInput} from "@/components/ui/input"
 import LoadingEffect from "@/components/LoadingEffect"
 import {RoomType} from "./hooks/useRoomNavigator"
 import {LiaSlackHash} from "react-icons/lia"
@@ -35,16 +34,16 @@ const SelectableRoom: FC<SelectableRoomProps> = ({
       value={roomId}
       size="sm"
       className={cn(
-        "group hover:bg-transparent data-[state=on]:bg-transparent",
+        "group size-max max-w-64 truncate px-2 py-1 hover:bg-transparent data-[state=on]:bg-transparent",
         className
       )}>
       <Text
-        size="4"
-        className="flex w-auto grow items-center gap-2 truncate text-foreground/70 group-data-[state=on]:text-purple-500"
-        weight="medium">
-        <Icon className="text-neutral-400/80 group-data-[state=on]:text-purple-500" />
+        className="flex items-center gap-x-1 text-foreground/70 group-data-[state=on]:text-purple-500"
+        weight="medium"
+        align="left">
+        <Icon className="shrink-0 text-neutral-400/80 group-data-[state=on]:text-purple-500" />
 
-        {trim(roomName, 20)}
+        {trim(roomName, 24)}
       </Text>
     </ToggleGroupItem>
   )
@@ -76,8 +75,6 @@ export interface RoomNavigatorProps extends RoomNavigatorActions {
   className?: string
 }
 
-const MAX_ROOM_LENGTH_FOR_SEARCH = 20
-
 export const RoomNavigator: FC<RoomNavigatorProps> = ({
   sections,
   isLoading,
@@ -87,34 +84,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
   onRecommendedRoomClick,
 }) => {
   const {t} = useTranslation()
-  const [searchResult, setSearchResult] = useState<RoomSections | null>(null)
-
-  const allRoomsLength =
-    sections.groups.length +
-    sections.directs.length +
-    sections.recommended.length
-
-  const {directs, groups, recommended} = useMemo(
-    () => (searchResult === null ? sections : searchResult),
-    [searchResult, sections]
-  )
-
-  const searchRoom = useCallback(
-    (query: string) => {
-      setSearchResult({
-        directs: directs.filter(({roomName}) =>
-          roomName.toLowerCase().includes(query)
-        ),
-        groups: groups.filter(({roomName}) =>
-          roomName.toLowerCase().includes(query)
-        ),
-        recommended: recommended.filter(({roomName}) =>
-          roomName.toLowerCase().includes(query)
-        ),
-      })
-    },
-    [directs, groups, recommended]
-  )
+  const {directs, groups, recommended} = sections
 
   if (isLoading) {
     return (
@@ -127,25 +97,9 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
   }
 
   return (
-    <div className={cn("flex flex-col gap-y-1 p-2", className)}>
-      {allRoomsLength > MAX_ROOM_LENGTH_FOR_SEARCH && (
-        <div className="p-2">
-          <SearchInput
-            onQueryDebounceChange={debouncedQuery => {
-              if (debouncedQuery.length === 0) {
-                setSearchResult(null)
-
-                return
-              }
-
-              searchRoom(debouncedQuery.toLowerCase())
-            }}
-          />
-        </div>
-      )}
-
+    <div className={cn("mx-3 my-3 flex flex-col gap-y-1", className)}>
       <ToggleGroup
-        className="flex flex-col items-start gap-y-4"
+        className="flex flex-col items-start gap-y-4 overflow-x-hidden"
         type="single"
         value={roomSelected ?? ""}
         onValueChange={value => {
@@ -205,11 +159,11 @@ type RoomSectionProps = {
 const RoomSection: FC<RoomSectionProps> = ({children, title, className}) => {
   return (
     <div className={twMerge("flex flex-col gap-y-1", className)}>
-      <Text className="uppercase text-neutral-400/80" weight="medium" size="2">
+      <Text className="uppercase text-neutral-400/80" weight="medium" size="1">
         {title}
       </Text>
 
-      {children}
+      <div className="flex flex-col gap-y-1">{children}</div>
     </div>
   )
 }

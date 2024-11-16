@@ -106,8 +106,8 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         />
       )}
 
-      <div className={twMerge("flex size-full w-96 bg-red-500", className)}>
-        <div className="flex size-full w-20 flex-col gap-2 border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
+      <div className={twMerge("flex size-full max-w-[22rem]", className)}>
+        <div className="flex w-16 grow flex-col gap-2 border-r border-r-neutral-300 bg-gray-50/50 dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="flex flex-col items-center p-1">
             <img
               src={StaticAssetPath.LogoSmall}
@@ -143,7 +143,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           <SidebarActions className="mt-auto" onLogOut={onLogOut} />
         </div>
 
-        <div className="flex size-full flex-col border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
+        <div className="flex size-full flex-col overflow-x-hidden border-r border-r-neutral-300 bg-gray-50/50 dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="flex h-12 items-center border-b border-neutral-300 px-3 dark:border-neutral-700">
             <SearchBar
               onDebounceChange={debouncedQuery => {

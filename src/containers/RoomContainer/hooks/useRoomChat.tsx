@@ -106,6 +106,8 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
       return
     }
 
+    setTypingUsers([])
+
     const room = client.getRoom(roomId)
 
     if (room === null) {
@@ -124,6 +126,8 @@ const useRoomChat = (roomId: string): UseRoomChatReturnType => {
     const currentUserId = client?.getUserId()
 
     if (member.userId === currentUserId || member.roomId !== roomId) {
+      setTypingUsers([])
+
       return
     }
 
