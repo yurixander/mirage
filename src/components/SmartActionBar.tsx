@@ -1,9 +1,10 @@
 import {useClientStore} from "@/hooks/matrix/useConnection"
+import useTheme from "@/hooks/util/useTheme"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {cn} from "@/utils/utils"
 import {SyncState} from "matrix-js-sdk"
-import React, {useState} from "react"
+import React from "react"
 import {type FC} from "react"
 import {type IconType} from "react-icons"
 import {IoContrast, IoGlobe} from "react-icons/io5"
@@ -21,13 +22,9 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
   const {syncState} = useClientStore()
   const {t} = useTranslation()
 
-  const [isDarkTheme, setIsDarkTheme] = useState(false)
+  const {handleSwitchTheme, theme} = useTheme()
 
-  document.querySelectorAll("html")[0].className = isDarkTheme ? "dark" : ""
-
-  const handleSwitchTheme = (): void => {
-    setIsDarkTheme(prevIsDarkTheme => !prevIsDarkTheme)
-  }
+  document.querySelectorAll("html")[0].className = theme
 
   return (
     <div
