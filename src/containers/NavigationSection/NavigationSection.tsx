@@ -114,7 +114,7 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         <div className="flex w-16 grow flex-col gap-2 border-r border-r-neutral-300 bg-[#FAFBFD] dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="flex flex-col items-center p-1">
             <img
-              src={StaticAssetPath.LogoSmall}
+              src={StaticAssetPath.AppLogo}
               alt="Mirage logo"
               className="size-10"
             />

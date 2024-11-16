@@ -13,7 +13,7 @@ const WelcomeSplash: FC = () => {
     <div className="flex size-full flex-col items-center justify-center gap-y-8 overflow-y-scroll dark:bg-neutral-900">
       <div className="flex flex-col items-center gap-3">
         <img
-          src={StaticAssetPath.LogoSmall}
+          src={StaticAssetPath.AppLogo}
           alt="Mirage logo"
           className="size-16"
         />
