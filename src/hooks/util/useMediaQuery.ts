@@ -29,7 +29,7 @@ type UseBreakPointReturnType = {
   isMedium: boolean
 }
 
-const useBreakpoint = (): UseBreakPointReturnType => {
+export const useBreakpoint = (): UseBreakPointReturnType => {
   const isSmall = useMediaQuery("(min-width: 480px)")
   const isMedium = useMediaQuery("(min-width: 768px)")
 

@@ -1,8 +1,8 @@
-import {type FC} from "react"
+import {useCallback, useState, type FC} from "react"
 import {IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import useNotifications from "./hooks/useNotifications"
-import DMTrayPopup from "./DMTrayPopup"
+import DMTrayPopup, {DMUser} from "./DMTrayPopup"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useDmTray from "./hooks/useDmTray"
 import NotificationsTray from "./NotificationsTray"
@@ -23,6 +23,11 @@ import {
   AlertDialogDescription,
   AlertDialogTitle,
 } from "@radix-ui/react-alert-dialog"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
+import RoomInvitedSplash, {
+  RoomInvitedError,
+} from "../RoomContainer/RoomInvitedSplash"
+import {createDM} from "@/utils/rooms"
 
 const SIDEBAR_BUTTON_CLASS =
   "text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-800"
@@ -34,6 +39,8 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
 }) => {
   const client = useMatrixClient()
   const {t} = useTranslation()
+  const {setActiveRoomId} = useActiveRoomIdStore()
+  const [activeDmUser, setActiveDMUser] = useState<DMUser | null>(null)
 
   const {
     dmRooms,
@@ -47,8 +54,38 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
   const {isLoading, notifications, containsUnreadNotifications} =
     useNotifications(client)
 
+  const onCreateRoomFromUser = useCallback(
+    async (user: DMUser) => {
+      if (client === null) {
+        throw new RoomInvitedError(t(LangKey.ClientError))
+      }
+
+      await createDM(client, {
+        name: user.displayName,
+        invite: [user.userId],
+      })
+    },
+    [client, t]
+  )
+
   return (
     <>
+      {activeDmUser !== null && (
+        <RoomInvitedSplash
+          isDirect
+          onJoinRoom={() => onCreateRoomFromUser(activeDmUser)}
+          onClose={() => setActiveDMUser(null)}
+          roomDetailPreview={{
+            status: "success",
+            data: {
+              name: activeDmUser.displayName,
+              avatarUrl: activeDmUser.avatarUrl,
+              detailChips: [t(LangKey.Direct)],
+            },
+          }}
+        />
+      )}
+
       <div
         className={twMerge("flex flex-col items-center gap-1 pb-2", className)}>
         <DMTrayPopup
@@ -58,12 +95,8 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
           searchResult={results}
           setDebouncedQuery={setDebouncedQuery}
           clearResult={clearResults}
-          dmRoomClick={function (_roomId: string): void {
-            throw new Error("DMRoomClick function not implemented.")
-          }}
-          onResultUserClick={function (_userId: string): void {
-            throw new Error("onResultUserClick function not implemented.")
-          }}>
+          dmRoomClick={setActiveRoomId}
+          onResultUserClick={setActiveDMUser}>
           <IconButton
             asBoundary={false}
             aria-label={t(LangKey.ViewDirectChats)}

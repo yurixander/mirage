@@ -46,6 +46,7 @@ type RoomInvitedSplashProps = {
   roomDetailPreview: ValueState<RoomDetailPreview>
   onJoinRoom: () => Promise<void>
   onClose: () => void
+  isDirect?: boolean
 }
 
 const DEFAULT_JOIN_ROOM_ERROR = new RoomInvitedError(
@@ -56,6 +57,7 @@ const RoomInvitedSplash: FC<RoomInvitedSplashProps> = ({
   onClose,
   onJoinRoom,
   roomDetailPreview,
+  isDirect = false,
 }) => {
   const [open, setIsOpen] = useState(true)
   const [isJoiningRoom, setIsJoiningRoom] = useState(false)
@@ -184,7 +186,9 @@ const RoomInvitedSplash: FC<RoomInvitedSplashProps> = ({
 
                     joinAction()
                   }}>
-                  {t(LangKey.JoinRoom)}
+                  {isDirect
+                    ? t(LangKey.CreateConversation)
+                    : t(LangKey.JoinRoom)}
                 </ModalAction>
               </ModalFooter>
             </>

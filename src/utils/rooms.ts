@@ -71,6 +71,29 @@ function getVisibilityFromPrivacy(privacy: string): Visibility {
   throw new Error("Room privacy invalid.")
 }
 
+export type DMCreationProps = {
+  invite: string[]
+  name: string
+}
+
+export async function createDM(
+  client: MatrixClient,
+  props: DMCreationProps
+): Promise<{
+  room_id: string
+}> {
+  const {name, invite} = props
+
+  return await client.createRoom({
+    name: name,
+    is_direct: true,
+    visibility: Visibility.Private,
+    preset: Preset.PrivateChat,
+    initial_state: [ROOM_ENCRYPTION_OBJECT],
+    invite: invite,
+  })
+}
+
 export type RoomCreationProps = {
   name: string
   privacy: string
