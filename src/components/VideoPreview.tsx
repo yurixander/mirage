@@ -1,5 +1,4 @@
 import {IoCloseCircle} from "react-icons/io5"
-import Typography, {TypographyVariant} from "./Typography"
 import {type FC} from "react"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
@@ -23,9 +22,10 @@ const VideoPreview: FC<VideoPreviewProps> = ({
   return (
     <div className="flex size-messageMaxWidth flex-col rounded border bg-slate-50 shadow-xl">
       <div className="flex w-full items-start rounded-t border-b-2 border-b-slate-200 bg-slate-100 p-5">
-        <Typography className="w-full" variant={TypographyVariant.Heading}>
+        {/* TODO: Use ui/typography.tsx */}
+        {/* <Typography className="w-full" variant={TypographyVariant.Heading}>
           {t(LangKey.UploadVideo)}
-        </Typography>
+        </Typography> */}
 
         <IoCloseCircle size={20} role="button" onClick={onClose} />
       </div>

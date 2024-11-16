@@ -7,18 +7,13 @@ import {
   type MatrixEvent,
   MsgType,
   type IContent,
+  Preset,
+  Visibility,
 } from "matrix-js-sdk"
-import {
-  assert,
-  getFileUrl,
-  getImageUrl,
-  normalizeName,
-  stringToColor,
-  stringToEmoji,
-} from "./util"
+import {assert, normalizeName, stringToColor, stringToEmoji} from "./util"
 import {type RosterUserData} from "@/containers/Roster/RosterUser"
 import {
-  getRoomUsersIdWithPowerLevels,
+  getOwnersIdWithPowerLevels,
   getUserLastPresence,
   isCurrentUserAdminOrMod,
   UserPowerLevel,
@@ -29,7 +24,6 @@ import {
   MessageKind,
 } from "@/containers/RoomContainer/hooks/useRoomChat"
 import {type PartialRoom} from "@/hooks/matrix/useSpaceHierarchy"
-import {RoomType} from "@/components/Room"
 import {type IconType} from "react-icons"
 import {
   IoAtCircle,
@@ -41,20 +35,94 @@ import {
 } from "react-icons/io5"
 import {IoIosPaper, IoIosText} from "react-icons/io"
 import {type MessageBaseData} from "@/components/MessageContainer"
-import {parseReplyMessageFromBody, validateReplyMessage} from "./parser"
 import {
-  type EventGroupMessageData,
-  EventShortenerType,
-} from "@/components/EventGroupMessage"
-import {type EventMessageData} from "@/components/EventMessage"
+  groupEventMessage,
+  parseReplyMessageFromBody,
+  validateReplyMessage,
+} from "./parser"
 import {type GroupedMembers} from "@/containers/Roster/hooks/useRoomMembers"
 import {t} from "./lang"
 import {LangKey} from "@/lang/allKeys"
+import {getImageUrl, getFileUrl} from "./matrix"
+import {RoomType} from "@/containers/NavigationSection/hooks/useRoomNavigator"
 
 export enum ImageSizes {
   Server = 47,
   MessageAndProfile = 40,
   ProfileLarge = 60,
+}
+
+// Initial event that declares the room as encrypted.
+const ROOM_ENCRYPTION_OBJECT = {
+  type: "m.room.encryption",
+  state_key: "",
+  content: {
+    algorithm: "m.megolm.v1.aes-sha2",
+  },
+}
+
+function getVisibilityFromPrivacy(privacy: string): Visibility {
+  if (privacy === Visibility.Public) {
+    return Visibility.Public
+  } else if (privacy === Visibility.Private) {
+    return Visibility.Private
+  }
+
+  throw new Error("Room privacy invalid.")
+}
+
+export type RoomCreationProps = {
+  name: string
+  privacy: string
+  enableEncryption: boolean
+  description?: string
+  // When privacy is public.
+  address?: string
+}
+
+export async function createRoom(
+  client: MatrixClient,
+  props: RoomCreationProps
+): Promise<{
+  room_id: string
+}> {
+  const {name, description, enableEncryption, address, privacy} = props
+
+  const visibility = getVisibilityFromPrivacy(privacy)
+
+  assert(name.length > 0, "Room name should not be empty.")
+
+  if (description !== undefined) {
+    assert(description.length > 0, "Room description should not be empty.")
+  }
+
+  if (visibility === Visibility.Public) {
+    assert(
+      address !== undefined && address.length > 0,
+      "If visibility is public, it must have at least one valid address"
+    )
+
+    const result = await client.publicRooms({
+      filter: {
+        generic_search_term: address,
+      },
+      include_all_networks: true,
+      limit: 1,
+    })
+
+    if (result.chunk.length === 0) {
+      throw new Error("That address is already taken.")
+    }
+  }
+
+  return await client.createRoom({
+    name,
+    topic: description,
+    visibility,
+    preset: enableEncryption ? Preset.PrivateChat : Preset.PublicChat,
+    room_alias_name: address,
+    initial_state: enableEncryption ? [ROOM_ENCRYPTION_OBJECT] : undefined,
+  })
 }
 
 export async function getAllJoinedRooms(
@@ -63,32 +131,23 @@ export async function getAllJoinedRooms(
   const currentJoinedRooms: PartialRoom[] = []
   const directRoomIds = getDirectRoomsIds(client)
 
-  try {
-    const joinedRooms = await client.getJoinedRooms()
+  const joinedRooms = await client.getJoinedRooms()
 
-    for (const joinedRoomId of joinedRooms.joined_rooms) {
-      const joinedRoom = client.getRoom(joinedRoomId)
+  for (const joinedRoomId of joinedRooms.joined_rooms) {
+    const joinedRoom = client.getRoom(joinedRoomId)
 
-      // TODO: Handle errors instead continue.
-      if (joinedRoom === null) {
-        continue
-      }
-
-      if (joinedRoom.isSpaceRoom()) {
-        continue
-      }
-
-      currentJoinedRooms.push({
-        roomId: joinedRoom.roomId,
-        roomName: joinedRoom.name,
-        type: directRoomIds.includes(joinedRoomId)
-          ? RoomType.Direct
-          : RoomType.Group,
-        emoji: stringToEmoji(joinedRoomId),
-      })
+    if (joinedRoom === null || joinedRoom.isSpaceRoom()) {
+      continue
     }
-  } catch (error) {
-    console.error("An error ocurred while getting all joined rooms", error)
+
+    currentJoinedRooms.push({
+      roomId: joinedRoom.roomId,
+      roomName: joinedRoom.name,
+      type: directRoomIds.includes(joinedRoomId)
+        ? RoomType.Direct
+        : RoomType.Group,
+      emoji: stringToEmoji(joinedRoomId),
+    })
   }
 
   return currentJoinedRooms
@@ -105,9 +164,7 @@ export async function getRoomMembers(room: Room): Promise<GroupedMembers> {
   const moderators: RosterUserData[] = []
   const admins: RosterUserData[] = []
 
-  const roomOwnersWithLevels = getRoomUsersIdWithPowerLevels(room).filter(
-    user => user.powerLevel !== UserPowerLevel.Member
-  )
+  const roomOwnersWithLevels = getOwnersIdWithPowerLevels(room)
 
   for (const roomOwner of roomOwnersWithLevels) {
     const roomOwnerMember = membersResponse.joined[roomOwner.userId]
@@ -235,7 +292,6 @@ export const handleRoomEvents = async (
   const client = activeRoom.client
   const roomHistory = await client.scrollback(activeRoom, SCROLLBACK_MAX)
   const events = roomHistory.getLiveTimeline().getEvents()
-  const lastReadEventId = activeRoom.getEventReadUpTo(activeRoom.myUserId)
   const allMessageProperties: AnyMessage[] = []
 
   for (const event of events) {
@@ -247,150 +303,10 @@ export const handleRoomEvents = async (
 
     allMessageProperties.push(messageProperties)
 
-    if (lastReadEventId === event.event.event_id) {
-      allMessageProperties.push({
-        kind: MessageKind.Unread,
-        data: {lastReadEventId},
-      })
-    }
-
-    void client.sendReadReceipt(event)
+    await client.sendReadReceipt(event)
   }
 
   return groupEventMessage(allMessageProperties)
-}
-
-const configRoomPattern = new Set<string>([
-  EventType.RoomTopic,
-  EventType.RoomAvatar,
-  EventType.RoomName,
-  EventType.RoomEncryption,
-  EventType.RoomCanonicalAlias,
-  EventType.RoomGuestAccess,
-  EventType.RoomJoinRules,
-  EventType.RoomHistoryVisibility,
-  EventType.RoomCreate,
-  EventType.RoomJoinRules,
-])
-
-const processPatterns = (
-  lastMessage: EventMessageData,
-  currentMessage: EventMessageData
-): AnyMessage | null => {
-  if (lastMessage.sender.userId !== currentMessage.sender.userId) {
-    return null
-  }
-
-  if (
-    configRoomPattern.has(lastMessage.type) &&
-    configRoomPattern.has(currentMessage.type)
-  ) {
-    return {
-      kind: MessageKind.EventGroup,
-      data: {
-        eventMessages: [lastMessage, currentMessage],
-        eventGroupMainBody: {
-          sender: lastMessage.sender,
-          shortenerType: EventShortenerType.ConfigureRoom,
-        },
-      },
-    }
-  } else if (configRoomPattern.has(currentMessage.type)) {
-    return null
-  }
-
-  return {
-    kind: MessageKind.EventGroup,
-    data: {
-      eventMessages: [lastMessage, currentMessage],
-      eventGroupMainBody: {
-        sender: lastMessage.sender,
-        shortenerType: EventShortenerType.EqualInfo,
-      },
-    },
-  }
-}
-
-const updateEventGroup = (
-  eventGroup: EventGroupMessageData,
-  newEvent: EventMessageData
-): AnyMessage | null => {
-  if (eventGroup.eventGroupMainBody.sender.userId !== newEvent.sender.userId) {
-    return null
-  }
-
-  const partialMessage: AnyMessage = {
-    kind: MessageKind.EventGroup,
-    data: {
-      eventMessages: [...eventGroup.eventMessages, newEvent],
-      eventGroupMainBody: eventGroup.eventGroupMainBody,
-    },
-  }
-
-  switch (eventGroup.eventGroupMainBody.shortenerType) {
-    case EventShortenerType.EqualInfo: {
-      if (configRoomPattern.has(newEvent.type)) {
-        return null
-      }
-
-      return partialMessage
-    }
-    case EventShortenerType.PersonalInfo: {
-      throw new Error(
-        "Not implemented yet: EventShortenerType.PersonalInfo case"
-      )
-    }
-    case EventShortenerType.ConfigureRoom: {
-      if (!configRoomPattern.has(newEvent.type)) {
-        return null
-      }
-
-      return partialMessage
-    }
-  }
-}
-
-const groupEventMessage = (anyMessages: AnyMessage[]): AnyMessage[] => {
-  const result: AnyMessage[] = []
-
-  for (const message of anyMessages) {
-    const lastMessage = result.at(-1)
-
-    if (lastMessage === undefined) {
-      result.push(message)
-
-      continue
-    }
-
-    const isLastMessageEvent = lastMessage.kind === MessageKind.Event
-    const isMessageEvent = message.kind === MessageKind.Event
-
-    if (isLastMessageEvent && isMessageEvent) {
-      const newEventGroup = processPatterns(lastMessage.data, message.data)
-
-      if (newEventGroup === null) {
-        result.push(message)
-
-        continue
-      }
-
-      result[result.length - 1] = newEventGroup
-    } else if (lastMessage.kind === MessageKind.EventGroup && isMessageEvent) {
-      const eventGroupUpdated = updateEventGroup(lastMessage.data, message.data)
-
-      if (eventGroupUpdated === null) {
-        result.push(message)
-
-        continue
-      }
-
-      result[result.length - 1] = eventGroupUpdated
-    } else {
-      result.push(message)
-    }
-  }
-
-  return result
 }
 
 export const handleRoomMessageEvent = async (
@@ -403,7 +319,6 @@ export const handleRoomMessageEvent = async (
 
   const eventMessageData = await handleEventMessage(event)
 
-  // TODO: Handle errors instead of throwing null.
   if (
     event.sender === null ||
     event.event.event_id === undefined ||
@@ -414,6 +329,7 @@ export const handleRoomMessageEvent = async (
 
   return {
     kind: MessageKind.Event,
+    messageId: event.event.event_id,
     data: {
       eventId: event.event.event_id,
       timestamp: event.localTimestamp,
@@ -793,8 +709,6 @@ export const handleRoomNameEvent = async (
 export const handleMessage = async (
   event: MatrixEvent,
   room: Room
-  // TODO: Resolve this problem
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): Promise<AnyMessage | null> => {
   const sender = event.sender
   const eventContent = event.getContent()
@@ -822,33 +736,18 @@ export const handleMessage = async (
 
   switch (eventContent.msgtype) {
     case MsgType.Text: {
-      const relates = eventContent["m.relates_to"]
+      const replyMessage = convertToReplyMessage(
+        eventContent,
+        messageBaseProperties
+      )
 
-      if (relates !== undefined) {
-        const reply = relates["m.in_reply_to"]
-
-        if (
-          reply !== undefined &&
-          eventContent.body !== undefined &&
-          typeof eventContent.body === "string" &&
-          validateReplyMessage(eventContent.body)
-        ) {
-          const replyData = parseReplyMessageFromBody(eventContent.body)
-          return {
-            kind: MessageKind.Reply,
-            data: {
-              ...messageBaseProperties,
-              text: replyData.message,
-              quotedMessageId: reply.event_id,
-              quotedText: replyData.quotedMessage,
-              quotedUserDisplayName: replyData.quotedUser,
-            },
-          }
-        }
+      if (replyMessage !== null) {
+        return replyMessage
       }
 
       return {
         kind: MessageKind.Text,
+        messageId: messageBaseProperties.messageId,
         data: {
           ...messageBaseProperties,
           text: eventContent.body,
@@ -865,6 +764,7 @@ export const handleMessage = async (
 
       return {
         kind: MessageKind.Image,
+        messageId: messageBaseProperties.messageId,
         data: {
           ...messageBaseProperties,
           imageUrl: getImageUrl(eventContent.url, room.client),
@@ -873,66 +773,15 @@ export const handleMessage = async (
     }
 
     case MsgType.File: {
-      const fileUrl = eventContent.url
-
-      if (typeof fileUrl !== "string") {
-        console.warn("File url should be valid,", eventContent.url)
-
-        return null
-      }
-
-      return {
-        kind: MessageKind.File,
-        data: {
-          ...messageBaseProperties,
-          fileUrl: getFileUrl(fileUrl, room.client),
-          fileName: eventContent.body,
-          fileSize: eventContent.info.size,
-        },
-      }
+      return convertToFileMessage(eventContent, room, messageBaseProperties)
     }
 
     case MsgType.Audio: {
-      const audioUrl = eventContent.url
-
-      if (typeof audioUrl !== "string") {
-        return null
-      }
-
-      return {
-        kind: MessageKind.Audio,
-        data: {
-          ...messageBaseProperties,
-          audioUrl: getFileUrl(audioUrl, room.client),
-        },
-      }
+      return convertToAudioMessage(eventContent, room, messageBaseProperties)
     }
 
     case MsgType.Video: {
-      if (typeof eventContent.url !== "string") {
-        return null
-      }
-
-      const videoUrl = getFileUrl(eventContent.url, room.client)
-
-      if (videoUrl === undefined) {
-        return null
-      }
-
-      const poster =
-        typeof eventContent.info.thumbnail_url === "string"
-          ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            getImageUrl(eventContent.info.thumbnail_url, room.client)
-          : eventContent.info.thumbnail_url
-
-      return {
-        kind: MessageKind.Video,
-        data: {
-          ...messageBaseProperties,
-          url: videoUrl,
-          thumbnail: poster,
-        },
-      }
+      return convertToVideoMessage(eventContent, room, messageBaseProperties)
     }
 
     case undefined: {
@@ -948,6 +797,119 @@ export const handleMessage = async (
     default: {
       return null
     }
+  }
+}
+
+const convertToVideoMessage = (
+  eventContent: IContent,
+  room: Room,
+  messageBaseProperties: MessageBaseData
+): AnyMessage | null => {
+  if (typeof eventContent.url !== "string") {
+    return null
+  }
+
+  const videoUrl = getFileUrl(eventContent.url, room.client)
+
+  if (videoUrl === undefined) {
+    return null
+  }
+
+  const poster =
+    typeof eventContent.info.thumbnail_url === "string"
+      ? getImageUrl(eventContent.info.thumbnail_url, room.client)
+      : eventContent.info.thumbnail_url
+
+  return {
+    kind: MessageKind.Video,
+    messageId: messageBaseProperties.messageId,
+    data: {
+      ...messageBaseProperties,
+      url: videoUrl,
+      thumbnail: poster,
+    },
+  }
+}
+
+const convertToAudioMessage = (
+  eventContent: IContent,
+  room: Room,
+  messageBaseProperties: MessageBaseData
+): AnyMessage | null => {
+  const audioUrl = eventContent.url
+
+  if (typeof audioUrl !== "string") {
+    return null
+  }
+
+  return {
+    kind: MessageKind.Audio,
+    messageId: messageBaseProperties.messageId,
+    data: {
+      ...messageBaseProperties,
+      audioUrl: getFileUrl(audioUrl, room.client),
+    },
+  }
+}
+
+const convertToFileMessage = (
+  eventContent: IContent,
+  room: Room,
+  messageBaseProperties: MessageBaseData
+): AnyMessage | null => {
+  const fileUrl = eventContent.url
+
+  if (typeof fileUrl !== "string") {
+    console.warn("File url should be valid,", eventContent.url)
+
+    return null
+  }
+
+  return {
+    kind: MessageKind.File,
+    messageId: messageBaseProperties.messageId,
+    data: {
+      ...messageBaseProperties,
+      fileUrl: getFileUrl(fileUrl, room.client),
+      fileName: eventContent.body,
+      fileSize: eventContent.info.size,
+    },
+  }
+}
+
+const convertToReplyMessage = (
+  eventContent: IContent,
+  messageBaseProperties: MessageBaseData
+): AnyMessage | null => {
+  const relates = eventContent["m.relates_to"]
+
+  if (relates === undefined) {
+    return null
+  }
+
+  const reply = relates["m.in_reply_to"]
+
+  if (
+    reply === undefined ||
+    eventContent.body === undefined ||
+    typeof eventContent.body !== "string" ||
+    !validateReplyMessage(eventContent.body)
+  ) {
+    return null
+  }
+
+  const replyData = parseReplyMessageFromBody(eventContent.body)
+
+  return {
+    kind: MessageKind.Reply,
+    messageId: messageBaseProperties.messageId,
+    data: {
+      ...messageBaseProperties,
+      text: replyData.message,
+      quotedMessageId: reply.event_id,
+      quotedText: replyData.quotedMessage,
+      quotedUserDisplayName: replyData.quotedUser,
+    },
   }
 }
 
@@ -974,6 +936,7 @@ const convertToMessageDeleted = (
 
   return {
     kind: MessageKind.Text,
+    messageId: eventId,
     data: {
       userId: sender.userId,
       authorAvatarUrl: getImageUrl(sender.getMxcAvatarUrl(), room.client),

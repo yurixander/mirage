@@ -2,6 +2,7 @@ import {assert, CommonAssertion, validateUrl} from "@/utils/util"
 import Avatar from "boring-avatars"
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
+import MatrixImage from "./MatrixImage"
 
 export enum AvatarType {
   Profile,
@@ -61,7 +62,7 @@ const AvatarImage: FC<AvatarProps> = ({
       />
     </div>
   ) : (
-    <img
+    <MatrixImage
       src={avatarUrl}
       alt={accessibilityText}
       aria-label={accessibilityText}

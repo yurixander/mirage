@@ -3,11 +3,12 @@ import MessageContainer, {
   type MessageBaseData,
   type MessageBaseProps,
 } from "./MessageContainer"
-import {assert, CommonAssertion, validateUrl} from "@/utils/util"
+import {assert, validateUrl} from "@/utils/util"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {Text} from "./ui/typography"
 import {MessageContextMenu} from "./ui/context-menu"
+import MatrixImage from "./MatrixImage"
 
 export interface ImageMessageProps extends MessageBaseProps, ImageMessageData {
   onClickImage: (imgUrl: string) => void
@@ -26,7 +27,6 @@ const ImageMessage: FC<ImageMessageProps> = ({
   onClickImage,
   timestamp,
   contextMenuItems,
-  messageId,
   userId,
 }) => {
   const {t} = useTranslation()
@@ -34,8 +34,6 @@ const ImageMessage: FC<ImageMessageProps> = ({
   if (imageUrl !== undefined) {
     assert(validateUrl(imageUrl), "The image url should be valid.")
   }
-
-  assert(messageId.length > 0, CommonAssertion.MessageIdEmpty)
 
   return (
     <MessageContainer
@@ -55,7 +53,7 @@ const ImageMessage: FC<ImageMessageProps> = ({
               onClick={() => {
                 onClickImage(imageUrl)
               }}>
-              <img
+              <MatrixImage
                 className="cursor-pointer object-contain"
                 src={imageUrl}
                 alt={`${t(LangKey.MessageBy)} ${authorDisplayName}`}

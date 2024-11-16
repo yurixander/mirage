@@ -1,5 +1,6 @@
+/* eslint-disable unicorn/prefer-module */
 import type {StorybookConfig} from "@storybook/react-vite"
-const path = require("path")
+import path from "node:path"
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],

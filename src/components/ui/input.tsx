@@ -1,16 +1,22 @@
-import * as React from "react"
-
 import {cn} from "@/utils/utils"
 import {IoSearch} from "react-icons/io5"
 import useDebounced from "@/hooks/util/useDebounced"
 import {type IconType} from "react-icons"
 import useTooltip from "@/hooks/util/useTooltip"
 import {IconButton} from "./button"
+import {
+  forwardRef,
+  type HTMLAttributes,
+  type ReactNode,
+  type FC,
+  useState,
+  type ChangeEvent,
+  useEffect,
+} from "react"
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLInputElement, InputProps>(
   ({className, type, ...props}, ref) => {
     return (
       <input
@@ -28,15 +34,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = "Input"
 
-export interface InputIconProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+export interface InputIconProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode
 }
 
-const InputIcon: React.FC<InputIconProps> = ({
-  children,
-  className,
-  ...props
-}) => (
+const InputIcon: FC<InputIconProps> = ({children, className, ...props}) => (
   <div
     {...props}
     className={cn(
@@ -54,14 +56,13 @@ export type InputConstraint = {
   pattern: RegExp
 }
 
-export interface InputIconActionProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface InputIconActionProps extends HTMLAttributes<HTMLDivElement> {
   Icon: IconType
   onClick: () => void
   tooltip?: string
 }
 
-const InputIconAction: React.FC<InputIconActionProps> = ({
+const InputIconAction: FC<InputIconActionProps> = ({
   Icon,
   onClick,
   tooltip,
@@ -94,7 +95,7 @@ export type InputWithIconProps = {
   constraints?: InputConstraint[]
 }
 
-const InputWithIcon: React.FC<InputWithIconProps> = ({
+const InputWithIcon: FC<InputWithIconProps> = ({
   Icon,
   action,
   inputProps,
@@ -103,12 +104,12 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
   constraints,
 }) => {
   const {renderRef, showTooltip} = useTooltip<HTMLInputElement>()
-  const [value, setValue] = React.useState("")
-  const [violatedConstraints, setViolatedConstraints] = React.useState<
+  const [value, setValue] = useState("")
+  const [violatedConstraints, setViolatedConstraints] = useState<
     InputConstraint[]
   >([])
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const value = event.target.value
 
     setValue(value)
@@ -117,6 +118,7 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
       const violations = constraints.filter(
         constraint => !constraint.pattern.test(value)
       )
+
       setViolatedConstraints(violations)
     }
 
@@ -124,6 +126,17 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
       onValueChange(value)
     }
   }
+
+  useEffect(() => {
+    if (violatedConstraints.length === 0) {
+      return
+    }
+
+    // TODO: @lazaroysr96 Resolve this.
+    for (const violation of violatedConstraints) {
+      showTooltip(violation.message, true)
+    }
+  }, [showTooltip, violatedConstraints])
 
   return (
     <InputRoot>
@@ -141,26 +154,17 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
       />
 
       {action && <InputIconAction {...action} />}
-      {violatedConstraints.map(violation => (
-        // TODO: Fix this problem
-        // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-        <>{showTooltip(violation.message, true)}</>
-      ))}
     </InputRoot>
   )
 }
 
 InputWithIcon.displayName = "InputWithIcon"
 
-export interface InputRootProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+export interface InputRootProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode
 }
 
-const InputRoot: React.FC<InputRootProps> = ({
-  children,
-  className,
-  ...props
-}) => (
+const InputRoot: FC<InputRootProps> = ({children, className, ...props}) => (
   <div className={cn("relative flex items-center", className)} {...props}>
     {children}
   </div>
@@ -178,7 +182,7 @@ export type SearchInputProps = {
   onQueryDebounceChange: (query: string) => void
 }
 
-const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
+const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   (
     {
       hasIcon = true,
@@ -191,10 +195,10 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     },
     ref
   ) => {
-    const [query, setQuery] = React.useState(initialValue ?? "")
+    const [query, setQuery] = useState(initialValue ?? "")
     const debouncedQuery = useDebounced(query, searchDelay)
 
-    React.useEffect(() => {
+    useEffect(() => {
       onQueryDebounceChange(debouncedQuery)
     }, [debouncedQuery, onQueryDebounceChange])
 

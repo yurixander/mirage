@@ -1,9 +1,9 @@
 import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {IoIosAlert, IoIosCheckmarkCircle} from "react-icons/io"
-import Typography from "./Typography"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Text} from "./ui/typography"
 
 export enum ProgressBarState {
   Progress,
@@ -130,13 +130,9 @@ const CircularProgressBar: FC<CircularProgressBarProps> = ({
         !(isCompleted || isError) && "border-purple-500 shadow-circleProgress",
         className
       )}>
-      <Typography
-        className={twMerge(
-          "font-semibold",
-          isError ? "text-red-500" : "text-black"
-        )}>
+      <Text color={isError ? "destructive" : "default"} weight="medium">
         {isError ? t(LangKey.Error) : `${progress}%`}
-      </Typography>
+      </Text>
     </div>
   )
 }

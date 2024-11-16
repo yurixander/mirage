@@ -2,7 +2,6 @@ import {type FC} from "react"
 import {stringToColor, formatTime, cleanDisplayName} from "@/utils/util"
 import {twMerge} from "tailwind-merge"
 import {type UserPowerLevel} from "@/utils/members"
-import {motion} from "framer-motion"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
 import useTooltip from "@/hooks/util/useTooltip"
 import useTranslation from "@/hooks/util/useTranslation"
@@ -34,7 +33,7 @@ const RosterUser: FC<RosterUserProps> = ({
   className,
 }) => {
   const {t} = useTranslation()
-  const {renderRef, showTooltip} = useTooltip<HTMLButtonElement>()
+  const {renderRef, showTooltip} = useTooltip<HTMLDivElement>()
 
   const lastPresence =
     lastPresenceAge === undefined
@@ -43,30 +42,36 @@ const RosterUser: FC<RosterUserProps> = ({
 
   const name = displayName.length === 0 ? userId : cleanDisplayName(displayName)
 
+  const accessibleClick = (): void => {
+    try {
+      onUserClick(userId)
+    } catch (error) {
+      if (!(error instanceof Error)) {
+        return
+      }
+
+      showTooltip(t(LangKey.OpenUserError, error.message), true)
+    }
+  }
+
   return (
-    <motion.button
+    <div
+      role="button"
       aria-label={`Member: ${name}`}
-      initial={{opacity: 0, scale: 0.8}}
-      whileInView={{opacity: 1, scale: 1}}
-      transition={{
-        duration: 0.2,
-      }}
       ref={renderRef}
+      tabIndex={0}
       className={twMerge(
         "flex w-full gap-2 rounded-lg px-2 py-1 hover:bg-gray-200 dark:hover:bg-neutral-800",
         className
       )}
-      onClick={() => {
-        try {
-          onUserClick(userId)
-        } catch (error) {
-          if (!(error instanceof Error)) {
-            return
-          }
+      onKeyDown={e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault()
 
-          showTooltip(t(LangKey.OpenUserError, error.message), true)
+          accessibleClick()
         }
-      }}>
+      }}
+      onClick={accessibleClick}>
       <AvatarImage
         className="shrink-0"
         avatarUrl={avatarUrl}
@@ -91,7 +96,7 @@ const RosterUser: FC<RosterUserProps> = ({
           delayDuration={2000}
         />
       </div>
-    </motion.button>
+    </div>
   )
 }
 

@@ -27,38 +27,6 @@ const MessagesPlaceholder: FC = () => {
         <SkeletonAvatar />
 
         <div className="inline-flex w-full flex-col gap-1">
-          <SkeletonLine className="h-4 w-60" />
-
-          <div className="flex w-full flex-row gap-1.5">
-            <SkeletonLine className="h-3 w-10" />
-
-            <SkeletonLine className="h-3 w-20" />
-
-            <SkeletonLine className="h-3 w-10" />
-
-            <SkeletonLine className="h-3 w-20" />
-
-            <div className="h-3 w-full" />
-
-            <SkeletonLine className="h-3 w-full max-w-10" />
-          </div>
-
-          <div className="flex flex-row gap-1.5">
-            <SkeletonLine className="h-3 w-5" />
-
-            <SkeletonLine className="h-3 w-20" />
-
-            <SkeletonLine className="h-3 w-10" />
-
-            <SkeletonLine className="h-3 w-16" />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex w-full gap-1">
-        <SkeletonAvatar />
-
-        <div className="inline-flex w-full flex-col gap-1">
           <SkeletonLine className="h-4 w-36" />
 
           <div className="flex w-full flex-row gap-1">
@@ -79,22 +47,6 @@ const MessagesPlaceholder: FC = () => {
         <div className="inline-flex w-full flex-col gap-1">
           <SkeletonLine className="h-4 w-40" />
 
-          <div className="flex w-full flex-row gap-1.5">
-            <SkeletonLine className="h-3 w-10" />
-
-            <SkeletonLine className="h-3 w-10" />
-
-            <SkeletonLine className="h-3 w-20" />
-
-            <SkeletonLine className="h-3 w-5" />
-
-            <SkeletonLine className="h-3 w-10" />
-
-            <div className="h-3 w-full" />
-
-            <SkeletonLine className="h-3 w-full max-w-10" />
-          </div>
-
           <div className="flex flex-row gap-1.5">
             <SkeletonLine className="h-3 w-5" />
 
@@ -126,19 +78,13 @@ const MessagesPlaceholder: FC = () => {
           <SkeletonLine className="h-4 w-36" />
 
           <div className="flex w-full flex-row gap-1">
-            <SkeletonLine className="h-52 w-full max-w-44" />
+            <SkeletonLine className="h-36 w-full max-w-44" />
 
-            <SkeletonLine className="h-52 w-full max-w-44" />
+            <SkeletonLine className="h-36 w-full max-w-44" />
 
             <div className="h-3 w-full" />
 
             <SkeletonLine className="h-3 w-full max-w-10" />
-          </div>
-
-          <div className="flex flex-row gap-1">
-            <SkeletonLine className="h-52 w-44" />
-
-            <SkeletonLine className="h-52 w-44" />
           </div>
         </div>
       </div>
@@ -154,7 +100,7 @@ const SkeletonLine: FC<SkeletonProps> = ({className}) => {
   return (
     <div
       className={twMerge(
-        "animate-hold overflow-hidden rounded bg-slate-300",
+        "overflow-hidden rounded bg-neutral-300 dark:bg-neutral-700",
         className ?? "h-3 w-80"
       )}>
       <LoadingEffect />
@@ -167,7 +113,7 @@ const SkeletonAvatar: FC<SkeletonProps> = ({className = "size-10"}) => {
     <div className="relative">
       <div
         className={twMerge(
-          "relative overflow-hidden rounded-lg bg-slate-300",
+          "relative overflow-hidden rounded-lg bg-neutral-300 dark:bg-neutral-700",
           className
         )}>
         <LoadingEffect />

@@ -2,12 +2,7 @@ import {type FC} from "react"
 import {twMerge} from "tailwind-merge"
 import {IoMdSettings} from "react-icons/io"
 import AvatarImage, {AvatarType} from "@/components/AvatarImage"
-import {
-  assert,
-  getUsernameByUserId,
-  stringToColor,
-  validateUrl,
-} from "@/utils/util"
+import {assert, stringToColor, validateUrl} from "@/utils/util"
 import LoadingEffect from "@/components/LoadingEffect"
 import {UserDataState} from "./hooks/useUserData"
 import {IoAlertCircle, IoRefreshCircle} from "react-icons/io5"
@@ -15,6 +10,7 @@ import {LangKey} from "@/lang/allKeys"
 import useTranslation from "@/hooks/util/useTranslation"
 import {IconButton} from "@/components/ui/button"
 import {Heading, Text} from "@/components/ui/typography"
+import {getUsernameByUserId} from "@/utils/matrix"
 
 type UserBarProps = {
   userDataState: UserDataState

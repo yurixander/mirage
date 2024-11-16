@@ -1,7 +1,9 @@
 import {type NotificationProps} from "@/components/Notification"
+import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {getImageUrl} from "@/utils/matrix"
 import {getRoomPowerLevelByUserId, UserPowerLevel} from "@/utils/members"
 import {
   getPowerLevelsHistory,
@@ -13,7 +15,7 @@ import {
   setPowerLevelsHistory,
   NotificationType,
 } from "@/utils/notifications"
-import {generateRandomId, getImageUrl} from "@/utils/util"
+import {generateRandomId} from "@/utils/util"
 import {type MatrixClient, RoomEvent, RoomMemberEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
 import {useCallback, useEffect, useMemo, useState} from "react"
@@ -34,6 +36,7 @@ const useNotifications = (
   client: MatrixClient | null
 ): UseNotificationsReturnType => {
   const {t} = useTranslation()
+  const {setActiveRoomId} = useActiveRoomIdStore()
 
   const [notificationsState, setNotificationsState] = useState(
     NotificationState.Waiting
@@ -121,7 +124,9 @@ const useNotifications = (
             ...cachedNotification,
             onDelete: deleteNotificationById,
             markAsRead: markAsReadByNotificationId,
-            action() {},
+            action() {
+              setActiveRoomId(cachedNotification.roomId)
+            },
           }
         }
 
@@ -131,7 +136,12 @@ const useNotifications = (
           markAsRead: markAsReadByNotificationId,
         }
       }),
-    [cachedNotifications, deleteNotificationById, markAsReadByNotificationId]
+    [
+      cachedNotifications,
+      deleteNotificationById,
+      markAsReadByNotificationId,
+      setActiveRoomId,
+    ]
   )
 
   const fetchInvitedNotifications = useCallback(() => {

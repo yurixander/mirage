@@ -1,5 +1,5 @@
 import {type FC} from "react"
-import {IoCall, IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
+import {IoExit, IoNotifications, IoPaperPlane} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import useNotifications from "./hooks/useNotifications"
 import DMTrayPopup from "./DMTrayPopup"
@@ -7,8 +7,7 @@ import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import useDmTray from "./hooks/useDmTray"
 import NotificationsTray from "./NotificationsTray"
 import NotificationDot from "@/components/NotificationDot"
-import {Button} from "@/components/ui/button"
-import {FaSearch} from "react-icons/fa"
+import {IconButton} from "@/components/ui/button"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
 import {
@@ -25,7 +24,8 @@ import {
   AlertDialogTitle,
 } from "@radix-ui/react-alert-dialog"
 
-const SIDEBAR_BUTTON_CLASS = "m-1 size-5 text-neutral-400 hover:bg-transparent"
+const SIDEBAR_BUTTON_CLASS =
+  "text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-800"
 const SIDEBAR_BUTTON_SIZE = 20
 
 const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
@@ -35,8 +35,14 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
   const client = useMatrixClient()
   const {t} = useTranslation()
 
-  const {dmRooms, results, setQuery, userId, isDMLoading, clearResults} =
-    useDmTray(client)
+  const {
+    dmRooms,
+    results,
+    setDebouncedQuery,
+    userId,
+    isDMLoading,
+    clearResults,
+  } = useDmTray(client)
 
   const {isLoading, notifications, containsUnreadNotifications} =
     useNotifications(client)
@@ -44,74 +50,47 @@ const SidebarActions: FC<{className?: string; onLogOut: () => void}> = ({
   return (
     <>
       <div
-        className={twMerge(
-          "flex flex-col items-center gap-2.5 pb-2",
-          className
-        )}>
+        className={twMerge("flex flex-col items-center gap-1 pb-2", className)}>
         <DMTrayPopup
           isLoading={isDMLoading}
           userId={userId}
           dmRooms={dmRooms}
           searchResult={results}
-          setQuery={setQuery}
+          setDebouncedQuery={setDebouncedQuery}
           clearResult={clearResults}
-          dmRoomClick={function (roomId: string): void {
+          dmRoomClick={function (_roomId: string): void {
             throw new Error("DMRoomClick function not implemented.")
           }}
-          onResultUserClick={function (userId: string): void {
+          onResultUserClick={function (_userId: string): void {
             throw new Error("onResultUserClick function not implemented.")
           }}>
-          <Button
+          <IconButton
             asBoundary={false}
             aria-label={t(LangKey.ViewDirectChats)}
-            size="icon"
-            variant="ghost"
             className={SIDEBAR_BUTTON_CLASS}>
             <IoPaperPlane size={SIDEBAR_BUTTON_SIZE} />
-          </Button>
+          </IconButton>
         </DMTrayPopup>
 
         <NotificationsTray isLoading={isLoading} notifications={notifications}>
-          <Button
+          <IconButton
+            asBoundary={false}
             aria-label={t(LangKey.ViewNotifications)}
-            size="icon"
-            variant="ghost"
-            className={SIDEBAR_BUTTON_CLASS}
-            asBoundary={false}>
+            className={SIDEBAR_BUTTON_CLASS}>
             <NotificationDot isVisible={containsUnreadNotifications}>
               <IoNotifications size={SIDEBAR_BUTTON_SIZE} />
             </NotificationDot>
-          </Button>
+          </IconButton>
         </NotificationsTray>
-
-        <Button
-          aria-label={t(LangKey.SearchAnything)}
-          size="icon"
-          variant="ghost"
-          className={SIDEBAR_BUTTON_CLASS}
-          onClick={() => {}}>
-          <FaSearch size={SIDEBAR_BUTTON_SIZE} />
-        </Button>
-
-        <Button
-          aria-label={t(LangKey.Calls)}
-          size="icon"
-          variant="ghost"
-          className={SIDEBAR_BUTTON_CLASS}
-          onClick={() => {}}>
-          <IoCall size={SIDEBAR_BUTTON_SIZE} />
-        </Button>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button
+            <IconButton
               asBoundary={false}
               aria-label={t(LangKey.ExitApp)}
-              size="icon"
-              variant="ghost"
               className={SIDEBAR_BUTTON_CLASS}>
               <IoExit size={SIDEBAR_BUTTON_SIZE} />
-            </Button>
+            </IconButton>
           </AlertDialogTrigger>
 
           <AlertDialogContent>

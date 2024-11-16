@@ -10,7 +10,7 @@ const WelcomeSplash: FC = () => {
   const {t} = useTranslation()
 
   return (
-    <div className="flex size-full flex-col items-center justify-center gap-3 dark:bg-neutral-950">
+    <div className="flex size-full flex-col items-center justify-center gap-3 dark:bg-neutral-900">
       <div className="mb-6 flex flex-col items-center gap-3">
         <AppLogo />
 
@@ -30,27 +30,18 @@ const WelcomeSplash: FC = () => {
           title={t(LangKey.ExploreServers)}
           subtitle={t(LangKey.ExploreServersSubtitle)}
           Icon={FaCompass}
-          onClick={() => {
-            // TODO: Handle here explore servers card click.
-          }}
         />
 
         <GetStartedCard
           title={t(LangKey.SendAMessage)}
           subtitle={t(LangKey.SendAMessageSubtitle)}
           Icon={FaHand}
-          onClick={() => {
-            // TODO: Handle here send message card click.
-          }}
         />
 
         <GetStartedCard
           title={t(LangKey.CheckoutGitHub)}
           subtitle={t(LangKey.CheckoutGitHubSubtitle)}
           Icon={FaGithub}
-          onClick={() => {
-            // TODO: Handle here checkout github card click.
-          }}
         />
       </div>
     </div>
@@ -61,32 +52,19 @@ type GetStartedCardProps = {
   title: string
   subtitle: string
   Icon: IconType
-  onClick: () => void
 }
 
-const GetStartedCard: FC<GetStartedCardProps> = ({
-  title,
-  subtitle,
-  Icon,
-  onClick,
-}) => {
+const GetStartedCard: FC<GetStartedCardProps> = ({title, subtitle, Icon}) => {
   return (
     <button
       aria-label={`${title} - ${subtitle}`}
-      className="flex cursor-pointer flex-col gap-3 rounded-md border border-neutral-300 bg-gray-50 px-4 py-3 transition-transform hover:translate-y-1 hover:shadow-md focus-visible:translate-y-2 focus-visible:shadow-md dark:border-neutral-700 dark:bg-neutral-900"
-      onClick={onClick}>
-      <Icon
-        aria-hidden
-        className="fill-black dark:fill-neutral-400"
-        size={20}
-      />
+      className="flex cursor-default flex-col gap-3 rounded-md border border-neutral-300 bg-gray-50 px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900">
+      <Icon className="fill-black dark:fill-neutral-400" size={20} />
 
       <div>
-        <Heading level="h5" aria-hidden>
-          {title}
-        </Heading>
+        <Heading level="h5">{title}</Heading>
 
-        <Text aria-hidden>{subtitle}</Text>
+        <Text>{subtitle}</Text>
       </div>
     </button>
   )

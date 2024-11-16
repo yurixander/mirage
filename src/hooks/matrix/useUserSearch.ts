@@ -1,29 +1,26 @@
 import {useState, useEffect} from "react"
 import {type MatrixClient} from "matrix-js-sdk"
-import useDebounced from "../util/useDebounced"
-import {getImageUrl} from "@/utils/util"
+import {getImageUrl} from "@/utils/matrix"
 import {type DMUser} from "@/containers/NavigationSection/DMTrayPopup"
 
 const LIMIT_USER_SEARCH = 100
 
 type UseUserSearchReturnType = {
-  query: string
-  setQuery: React.Dispatch<React.SetStateAction<string>>
+  debouncedQuery: string
+  setDebouncedQuery: React.Dispatch<React.SetStateAction<string>>
   results: DMUser[] | null
   clearResults: () => void
 }
 
 const useUsersSearch = (
-  client: MatrixClient | null,
-  searchDelay = 500
+  client: MatrixClient | null
 ): UseUserSearchReturnType => {
-  const [query, setQuery] = useState("")
+  const [debouncedQuery, setDebouncedQuery] = useState("")
   const [results, setResult] = useState<DMUser[] | null>(null)
-  const debouncedText = useDebounced(query, searchDelay)
 
   useEffect(() => {
     const search = async (): Promise<void> => {
-      if (debouncedText.length <= 0 || client === null) {
+      if (debouncedQuery.length <= 0 || client === null) {
         setResult(null)
 
         return
@@ -31,7 +28,7 @@ const useUsersSearch = (
 
       try {
         const response = await client.searchUserDirectory({
-          term: debouncedText,
+          term: debouncedQuery,
           limit: LIMIT_USER_SEARCH,
         })
 
@@ -50,11 +47,11 @@ const useUsersSearch = (
     }
 
     void search()
-  }, [client, debouncedText])
+  }, [client, debouncedQuery])
 
   return {
-    query,
-    setQuery,
+    debouncedQuery,
+    setDebouncedQuery,
     results,
     clearResults() {
       setResult(null)

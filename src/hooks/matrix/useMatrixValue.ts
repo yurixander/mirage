@@ -1,5 +1,5 @@
 import useMatrixClient from "./useMatrixClient"
-import {useCallback, useEffect, useState} from "react"
+import {type DependencyList, useCallback, useEffect, useState} from "react"
 import {type ValueState} from "../util/useValueState"
 import {type MatrixClient} from "matrix-js-sdk"
 import useIsMountedReference from "../util/useIsMountedRef"
@@ -11,7 +11,8 @@ type MatrixAsyncValueReturnType<T> = {
 }
 
 const useMatrixValue = <T>(
-  action?: (client: MatrixClient) => Promise<T>
+  action?: (client: MatrixClient) => Promise<T>,
+  deps?: DependencyList
 ): MatrixAsyncValueReturnType<T> => {
   const client = useMatrixClient()
   const [state, setState] = useState<ValueState<T>>({status: "loading"})
@@ -55,7 +56,7 @@ const useMatrixValue = <T>(
     }
 
     execute(action)
-  }, [execute])
+  }, [execute, deps])
 
   return {state, execute, setState}
 }

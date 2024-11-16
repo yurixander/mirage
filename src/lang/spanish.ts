@@ -3,7 +3,12 @@ import {LangKey} from "./allKeys"
 
 export const spanish: LangDefinition = {
   [LangKey.MoreActions]: "Mas acciones",
+  [LangKey.CloseRoom]: "Cerrar sala",
+  [LangKey.MoreErrorInformation]: "Mas información sobre el error",
+  [LangKey.HelpInfoError]: "Informacion sobre el error",
   [LangKey.CreateRoom]: "Crear Sala",
+  [LangKey.CreateRoomModalSubtitle]:
+    "Crea una sala para comunicarte con varias personas.",
   [LangKey.Name]: "Nombre",
   [LangKey.DescriptionOptional]: "Descripción (opcional)",
   [LangKey.RoomDescriptionPlaceholder]:
@@ -18,7 +23,7 @@ export const spanish: LangDefinition = {
   [LangKey.NewSpace]: "Nuevo Espacio",
   [LangKey.CreateSpace]: "Crear Espacio",
   [LangKey.CreateSpaceSpecInfo]:
-    "Los espacios son una nueva forma de agrupar habitaciones y personas. Puedes cambiar el tipo de espacio que quieras crear.",
+    "Los espacios son una nueva forma de agrupar habitaciones y personas.",
   [LangKey.SpaceName]: "Nombre del espacio",
   [LangKey.SpaceDescriptionPlaceholder]:
     "Escribe una breve descripción sobre el propósito de este espacio",
@@ -26,6 +31,7 @@ export const spanish: LangDefinition = {
   [LangKey.PrivateRoom]: "Sala privada",
   [LangKey.Accept]: "Aceptar",
   [LangKey.Cancel]: "Cancelar",
+  [LangKey.NeedHelp]: "Ayuda",
   [LangKey.UploadAudio]: "Subir audio",
   [LangKey.Send]: "Enviar",
   [LangKey.LoadError]: "Error de carga",
@@ -107,12 +113,17 @@ export const spanish: LangDefinition = {
   [LangKey.ExpandRoster]: "Expandir el listado de miembros",
   [LangKey.DownloadImage]: "Descargar imagen",
   [LangKey.SyncState]: "Estado de syncronización",
-
+  [LangKey.JumpToDown]: "Ir abajo",
+  [LangKey.UnreadMessagesCount]: (count: string) =>
+    `${count} Mensajes no leídos`,
+  [LangKey.SpaceCreatedSuccess]: "Espacio creado exitosamente",
+  [LangKey.RoomCreatedSuccess]: "Sala creada exitosamente",
   // #region Roster
   [LangKey.People]: "Personas",
   [LangKey.SortMembers]: "Agrupar miembros",
   [LangKey.MembersError]: "Error de miembros",
   [LangKey.ReloadMembers]: "Recargar miembros",
+  [LangKey.ReloadMessages]: "Recargar mensajes",
   [LangKey.Admins]: (length: string) => `ADMINISTRADORES — ${length}`,
   [LangKey.Moderators]: (length: string) => `MODERADORES — ${length}`,
   [LangKey.Members]: (length: string) => `MIEMBROS — ${length}`,
@@ -242,6 +253,7 @@ export const spanish: LangDefinition = {
   [LangKey.NotificationsEmpty]: "No tienes notificaciones",
   [LangKey.GoTo]: "Ir a ⟶",
   [LangKey.RemoveNotification]: "Borrar notificación",
+  [LangKey.MarkAsRead]: "Marcar como leído",
   [LangKey.NotificationTypeInvited]: "Has sido invitado(a) a",
   [LangKey.NotificationTypeInvitationRemoved]:
     "La invitación para unirse ha sido retirada de",
@@ -272,7 +284,7 @@ export const spanish: LangDefinition = {
   [LangKey.MoreVariants]: "Más variantes",
   [LangKey.MessagesError]: "Error de mensajes",
   [LangKey.MessagesErrorSubtitle]:
-    "Ocurrió un error mientras se cargaban los mensajes.",
+    "Ocurrió un error mientras se cargaban los mensajes de esta sala.",
   [LangKey.NoMessages]: "No hay mensajes",
   [LangKey.NoMessagesSubtitle]: "Esta sala es nueva o no tiene mensajes",
   [LangKey.LoadingImageError]: "Ocurrió un error mientras se cargaba la imagen",
@@ -292,6 +304,32 @@ export const spanish: LangDefinition = {
   [LangKey.RoomEncrypted]:
     "Esta sala está encriptada usando cifrado de extremo a extremo",
   [LangKey.AllSpaces]: "Todos los espacios",
+  [LangKey.Topic]: "Descripción",
+  [LangKey.JoinRoom]: "Unirse",
+  [LangKey.TaskCompleted]: "Tarea completada",
+  [LangKey.JoinRoomCompleted]: "Te uniste exitosamente a la sala.",
+  [LangKey.RoomInvitedError]: "Invitación de sala errónea",
+  [LangKey.DefaultJoinRoomErrorDescription]:
+    "Se produjo un error inesperado al intentar unirse a la sala.",
+  [LangKey.DefaultPreviewInvitedErrorDescription]:
+    "Se produjo un error al cargar la vista previa de la sala, inténtelo nuevamente.",
+  [LangKey.RoomInvitedAccessError]: "No tienes acceso a esta sala.",
+  [LangKey.RoomInvitedRecommendedRoomError]:
+    "No tienes accesso al espacio que contiene esa sala.",
+  [LangKey.RoomInvitedNoAccessOrNotFound]:
+    "No tienes acceso a la sala o no existe.",
+  [LangKey.Public]: "Público",
+  [LangKey.Space]: "Espacio",
+  [LangKey.Room]: "Sala",
+  [LangKey.Direct]: "Directo",
+  [LangKey.RoomHierarchyCount]: (roomHierarchyCount: string) =>
+    `+${roomHierarchyCount} Salas`,
+  [LangKey.JoinedMembers]: (joinedMembersCount: string) =>
+    `+${joinedMembersCount} Miembros`,
+  [LangKey.RoomInvitedParentSpaceError]:
+    "No puedes acceder al mismo espacio en el que ya formas parte.",
+  [LangKey.RoomInvitedJoinError]: "Esta sala no permite unirse a cualquiera.",
+  [LangKey.RoomPreviewNotSupport]: "Esta sala no permite previsualización.",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Bienvenido a Mirage",
@@ -299,12 +337,12 @@ export const spanish: LangDefinition = {
     "¡Invita a tus amigos a chatear! Selecciona una Sala o Mensajes Directos para comenzar una conversación. También puedes seleccionar una acción a continuación para comenzar rápidamente.",
   [LangKey.ExploreServers]: "Explorar Servidores",
   [LangKey.ExploreServersSubtitle]: "únete a una comunidad relevante",
-  [LangKey.SendAMessage]: "Enviar un mensaje",
+  [LangKey.SendAMessage]: "Envia un mensaje",
   [LangKey.SendAMessageSubtitle]: "a un colega o amigo",
   [LangKey.CheckoutGitHub]: "Consulta GitHub",
   [LangKey.CheckoutGitHubSubtitle]: "para ver las últimas actualizaciones",
 
-  // Audio Recorder
+  // #region Audio Recorder
   [LangKey.RemoveAudio]: "Borrar audio",
   [LangKey.StopRecord]: "Finalizar grabación",
   [LangKey.SendAudioRecorded]: "Enviar audio grabado",
@@ -318,4 +356,11 @@ export const spanish: LangDefinition = {
   [LangKey.NoDevicesAvailableError]: "No tienes dispositivos de audio",
   [LangKey.AvatarOf]: (spaceName: string) => `Avatar de ${spaceName}`,
   [LangKey.Loading]: "Cargando...",
+
+  // #region Errors
+  [LangKey.CreateSpaceInProgressError]: "Ya hay una creación en curso.",
+  [LangKey.ClientMustBeInitialized]: "El cliente no esta activo.",
+  [LangKey.SpaceNameEmptyError]: "El nombre del espacio no puede estar vacío.",
+  [LangKey.SpaceTopicEmptyError]:
+    "La descripción del espacio no puede estar vacía.",
 }

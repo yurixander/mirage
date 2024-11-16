@@ -1,4 +1,4 @@
-import * as React from "react"
+import {type ButtonHTMLAttributes, forwardRef} from "react"
 import {Slot} from "@radix-ui/react-slot"
 import {cva, type VariantProps} from "class-variance-authority"
 import {cn} from "@/utils/utils"
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/tooltip"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex select-none items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -41,13 +41,13 @@ const buttonVariants = cva(
 )
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   asBoundary?: boolean
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
@@ -101,7 +101,7 @@ interface IconButtonProps extends ButtonProps {
   tooltip?: string
 }
 
-const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
+const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   (
     {tooltip, size = "icon", variant = "ghost", asBoundary = true, ...props},
     ref
@@ -119,7 +119,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     return tooltip === undefined ? (
       button
     ) : (
-      <TooltipProvider delayDuration={1500}>
+      <TooltipProvider delayDuration={1000}>
         <Tooltip>
           <TooltipTrigger tabIndex={-1} asChild>
             {button}

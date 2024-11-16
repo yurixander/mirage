@@ -1,6 +1,5 @@
 import Avatar from "boring-avatars"
 import {useState, type FC} from "react"
-import Typography from "./Typography"
 import {twMerge} from "tailwind-merge"
 import {
   CUTEFUNNYART_SERVER,
@@ -10,6 +9,7 @@ import {
 } from "@/utils/servers"
 import Dropdown from "./Dropdown"
 import {IoMdCheckmark} from "react-icons/io"
+import {Text} from "./ui/typography"
 
 const servers = [MATRIX_SERVER, CUTEFUNNYART_SERVER, TRYGVEME_SERVER]
 
@@ -38,7 +38,7 @@ const ServerDropdown: FC<ServerDropdownProps> = ({
             />
           </div>
 
-          <Typography className="font-medium">{serverSelected.name}</Typography>
+          <Text weight="medium">{serverSelected.name}</Text>
         </div>
       }>
       <div className="flex h-max w-full flex-col border-t border-t-slate-300">
@@ -86,7 +86,7 @@ const DropdownServerItem: FC<DropdownServerItemProps> = ({
         />
       </div>
 
-      <Typography className="font-medium">{serverName}</Typography>
+      <Text weight="medium">{serverName}</Text>
 
       {isSelected && <IoMdCheckmark className="ml-auto text-slate-300" />}
     </button>

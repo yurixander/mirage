@@ -1,6 +1,10 @@
 export enum LangKey {
   MoreActions,
   CreateRoom,
+  CreateRoomModalSubtitle,
+  CloseRoom,
+  MoreErrorInformation,
+  HelpInfoError,
   Name,
   DescriptionOptional,
   RoomDescriptionPlaceholder,
@@ -18,6 +22,7 @@ export enum LangKey {
   PrivateRoom,
   Accept,
   Cancel,
+  NeedHelp,
   UploadAudio,
   Send,
   LoadError,
@@ -97,6 +102,10 @@ export enum LangKey {
   ExpandRoster,
   DownloadImage,
   SyncState,
+  JumpToDown,
+  UnreadMessagesCount,
+  SpaceCreatedSuccess,
+  RoomCreatedSuccess,
 
   // #region Roster
   People,
@@ -195,12 +204,13 @@ export enum LangKey {
   LoadingNotifications,
   NotificationsEmpty,
   GoTo,
-  RemoveNotification,
   NotificationTypeInvited,
   NotificationTypeInvitationRemoved,
   NotificationTypeDowngradeToMember,
   NotificationTypeUpgradeToAdmin,
   NotificationTypeUpgradeToModerator,
+  RemoveNotification,
+  MarkAsRead,
 
   // #region RoomContainer
   AttachSource,
@@ -236,6 +246,26 @@ export enum LangKey {
   Are,
   Is,
   RoomEncrypted,
+  ReloadMessages,
+  Topic,
+  JoinRoom,
+  TaskCompleted,
+  JoinRoomCompleted,
+  RoomInvitedError,
+  DefaultJoinRoomErrorDescription,
+  DefaultPreviewInvitedErrorDescription,
+  RoomInvitedAccessError,
+  RoomInvitedRecommendedRoomError,
+  RoomInvitedNoAccessOrNotFound,
+  Public,
+  JoinedMembers,
+  Space,
+  Room,
+  Direct,
+  RoomHierarchyCount,
+  RoomInvitedParentSpaceError,
+  RoomInvitedJoinError,
+  RoomPreviewNotSupport,
 
   // #region WelcomeSplash
   WelcomeSplashTitle,
@@ -247,7 +277,7 @@ export enum LangKey {
   CheckoutGitHub,
   CheckoutGitHubSubtitle,
 
-  // Audio Recorder
+  // #region Audio Recorder
   RemoveAudio,
   StopRecord,
   SendAudioRecorded,
@@ -261,4 +291,10 @@ export enum LangKey {
   Loading,
   AllSpaces,
   AvatarOf,
+
+  // #region Errors
+  CreateSpaceInProgressError,
+  ClientMustBeInitialized,
+  SpaceNameEmptyError,
+  SpaceTopicEmptyError,
 }

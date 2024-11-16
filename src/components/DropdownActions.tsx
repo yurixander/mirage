@@ -2,8 +2,8 @@ import {type FC, useState} from "react"
 import {type IconType} from "react-icons"
 import {IoMdCheckmark} from "react-icons/io"
 import Dropdown from "./Dropdown"
-import Typography from "./Typography"
 import {assert} from "@/utils/util"
+import {Text} from "./ui/typography"
 
 export type DropdownOption = {
   text: string
@@ -37,7 +37,7 @@ const DropdownActions: FC<DropdownActionsProps> = ({
             <optionSelected.Icon size={20} />
           </div>
 
-          <Typography className="font-medium">{optionSelected.text}</Typography>
+          <Text weight="medium">{optionSelected.text}</Text>
         </button>
       }>
       <>
@@ -78,7 +78,7 @@ const DropdownItem: FC<DropdownOptionProps> = ({
         <Icon size={20} />
       </div>
 
-      <Typography className="font-medium">{text}</Typography>
+      <Text weight="medium">{text}</Text>
 
       {isSelected && <IoMdCheckmark className="ml-auto text-slate-300" />}
     </button>

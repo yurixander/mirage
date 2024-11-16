@@ -2,11 +2,20 @@ import {useCallback} from "react"
 import useEventListener from "@/hooks/matrix/useEventListener"
 import {EventType, type Room, RoomEvent} from "matrix-js-sdk"
 import {KnownMembership} from "matrix-js-sdk/lib/@types/membership"
-import {getImageUrl} from "@/utils/util"
+import {assert} from "@/utils/util"
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {getJoinedSpaces} from "@/utils/spaces"
 import {type ValueState} from "@/hooks/util/useValueState"
 import useMatrixValue from "@/hooks/matrix/useMatrixValue"
+import {LangKey} from "@/lang/allKeys"
+import useTranslation from "@/hooks/util/useTranslation"
+import {
+  createSpace,
+  CreationSpaceOptions,
+  getImageUrl,
+  uploadImageToMatrix,
+  validateMxcUrl,
+} from "@/utils/matrix"
 
 export type PartialSpace = {
   name: string
@@ -25,10 +34,16 @@ const processSpace = (space: Room): PartialSpace => {
 type UseSpacesReturnType = {
   spaces: ValueState<PartialSpace[]>
   onSpaceExit: (spaceId: string) => void
+  onCreateSpace: (spaceOptions: CreationSpaceOptions) => Promise<void>
+  uploadSpaceAvatar: (
+    file: File,
+    progressCallback: (percent: number) => void
+  ) => Promise<string>
 }
 
 const useSpaces = (): UseSpacesReturnType => {
   const client = useMatrixClient()
+  const {t} = useTranslation()
 
   const {state: spaces, setState: setSpacesState} = useMatrixValue(
     async client => {
@@ -47,6 +62,52 @@ const useSpaces = (): UseSpacesReturnType => {
       void client.leave(spaceId)
     },
     [client]
+  )
+
+  const onCreateSpace = async (
+    spaceOptions: CreationSpaceOptions
+  ): Promise<void> => {
+    if (client === null) {
+      throw new Error(t(LangKey.ClientMustBeInitialized))
+    }
+
+    const {name, topic, mxcAvatarUrl} = spaceOptions
+
+    assert(name.length > 0, t(LangKey.SpaceNameEmptyError))
+
+    if (topic !== undefined) {
+      assert(topic.length > 0, t(LangKey.SpaceTopicEmptyError))
+    }
+
+    if (mxcAvatarUrl !== undefined) {
+      validateMxcUrl(mxcAvatarUrl)
+    }
+
+    await createSpace(client, spaceOptions)
+  }
+
+  const uploadSpaceAvatar = useCallback(
+    async (
+      file: File,
+      progressCallback: (percent: number) => void
+    ): Promise<string> => {
+      if (client === null) {
+        throw new Error(t(LangKey.ClientMustBeInitialized))
+      }
+
+      const uploadResult = await uploadImageToMatrix(
+        file,
+        client,
+        progressCallback
+      )
+
+      if (uploadResult?.matrixUrl === undefined) {
+        throw new Error(t(LangKey.ImageUploadedError))
+      }
+
+      return uploadResult.matrixUrl
+    },
+    [client, t]
   )
 
   useEventListener(RoomEvent.Timeline, (event, room) => {
@@ -117,7 +178,7 @@ const useSpaces = (): UseSpacesReturnType => {
     })
   })
 
-  return {spaces, onSpaceExit}
+  return {spaces, onSpaceExit, onCreateSpace, uploadSpaceAvatar}
 }
 
 export default useSpaces

@@ -3,7 +3,12 @@ import {LangKey} from "./allKeys"
 
 export const english: LangDefinition = {
   [LangKey.MoreActions]: "More actions",
+  [LangKey.CloseRoom]: "Close room",
+  [LangKey.MoreErrorInformation]: "More error information",
+  [LangKey.HelpInfoError]: "Info about error",
   [LangKey.CreateRoom]: "Create Room",
+  [LangKey.CreateRoomModalSubtitle]:
+    "Crea una sala para comunicarte con varias personas.",
   [LangKey.Name]: "Name",
   [LangKey.DescriptionOptional]: "Description (optional)",
   [LangKey.RoomDescriptionPlaceholder]:
@@ -18,7 +23,7 @@ export const english: LangDefinition = {
   [LangKey.NewSpace]: "New Space",
   [LangKey.CreateSpace]: "Create Space",
   [LangKey.CreateSpaceSpecInfo]:
-    "Spaces are a new way of grouping rooms and people. What kind of space you want to create you can change",
+    "Spaces are a new way of grouping rooms and people.",
   [LangKey.SpaceName]: "Space Name",
   [LangKey.SpaceDescriptionPlaceholder]:
     "Write a brief description of what your space will be about.",
@@ -26,6 +31,7 @@ export const english: LangDefinition = {
   [LangKey.PrivateRoom]: "Private Room",
   [LangKey.Accept]: "Accept",
   [LangKey.Cancel]: "Cancel",
+  [LangKey.NeedHelp]: "Need help?",
   [LangKey.UploadAudio]: "Upload Audio",
   [LangKey.Send]: "Send",
   [LangKey.LoadError]: "Load error",
@@ -68,7 +74,7 @@ export const english: LangDefinition = {
   [LangKey.ConnectionError]: "Connection Error",
   [LangKey.GoToLogin]: "Go to login",
   [LangKey.ConnectionErrorSubtitle]:
-    "Ops we have lost connection with the server, please reload the page or login again.",
+    "Connection lost with the server; please reload the page or login again.",
   [LangKey.Reply]: "Reply",
   [LangKey.Resend]: "Resend",
   [LangKey.Save]: "Save",
@@ -107,12 +113,17 @@ export const english: LangDefinition = {
   [LangKey.ExpandRoster]: "Expand roster",
   [LangKey.DownloadImage]: "Download image",
   [LangKey.SyncState]: "Sync state",
+  [LangKey.JumpToDown]: "Jump to down",
+  [LangKey.UnreadMessagesCount]: (count: string) => `${count} Unread messages`,
+  [LangKey.SpaceCreatedSuccess]: "Space created successfully",
+  [LangKey.RoomCreatedSuccess]: "Room created successfully",
 
   // #region Roster
   [LangKey.People]: "People",
   [LangKey.SortMembers]: "Sort members",
   [LangKey.MembersError]: "Members Error",
   [LangKey.ReloadMembers]: "Reload members",
+  [LangKey.ReloadMessages]: "Reload messages",
   [LangKey.Admins]: (length: string) => `ADMINS — ${length}`,
   [LangKey.Moderators]: (length: string) => `MODERATORS — ${length}`,
   [LangKey.Members]: (length: string) => `MEMBERS — ${length}`,
@@ -176,7 +187,7 @@ export const english: LangDefinition = {
   [LangKey.DecorativeBackgroundAlt]: "Abstract background for login page",
   [LangKey.WelcomeBack]: "Welcome Back",
   [LangKey.LoginSubtitleInfo]:
-    "Glad to see you here! Already have an account? Please enter your email and password to sign in.",
+    "Already have an account? Please enter your email and password to sign in.",
   [LangKey.UserID]: "User ID",
   [LangKey.Password]: "Password",
   [LangKey.HideToken]: "Hide token",
@@ -202,7 +213,7 @@ export const english: LangDefinition = {
   [LangKey.DMTrayFindUserDescription]:
     "Start a conversation with someone using their name or username (@username:mirage.org).",
   [LangKey.EnterNameOrUsername]: "Enter name or username",
-  [LangKey.RoomsEmptyTitle]: "Ops you don't have rooms",
+  [LangKey.RoomsEmptyTitle]: "No rooms yet",
   [LangKey.RoomsEmptySubtitle]: "You can search for users and start a chat",
   [LangKey.RecentConversations]: "RECENT CONVERSATIONS",
   [LangKey.DMTrayFoundedDescription]:
@@ -221,9 +232,10 @@ export const english: LangDefinition = {
   // #region Notifications
   [LangKey.Notifications]: "Notifications",
   [LangKey.LoadingNotifications]: "Loading Notifications",
-  [LangKey.NotificationsEmpty]: "You not have notifications",
+  [LangKey.NotificationsEmpty]: "There are no notifications",
   [LangKey.GoTo]: "Go to ⟶",
   [LangKey.RemoveNotification]: "Remove notification",
+  [LangKey.MarkAsRead]: "Mark as read",
   [LangKey.NotificationTypeInvited]: "Has invited you to",
   [LangKey.NotificationTypeInvitationRemoved]:
     "The invitation to join has been withdrawn to",
@@ -266,13 +278,39 @@ export const english: LangDefinition = {
     "An error occurred while trying to join the Room.",
   [LangKey.RoomNotFound]: "Room Not Found",
   [LangKey.RoomNotFoundDescription]:
-    "You not have access to this room or this room not found.",
+    "You don't have access to this room or it doesn't exist.",
   [LangKey.SeveralPeople]: "Several people",
   [LangKey.And]: " and ",
   [LangKey.Typing]: "typing...",
   [LangKey.Are]: "are",
   [LangKey.Is]: "is",
   [LangKey.RoomEncrypted]: "This room is encrypted using End-to-end encryption",
+  [LangKey.Topic]: "Topic",
+  [LangKey.JoinRoom]: "Join room",
+  [LangKey.TaskCompleted]: "Task completed",
+  [LangKey.JoinRoomCompleted]: "You have successfully joined the room",
+  [LangKey.RoomInvitedError]: "Room Invited Error",
+  [LangKey.DefaultJoinRoomErrorDescription]:
+    "An unexpected error occurred while trying to join the room.",
+  [LangKey.DefaultPreviewInvitedErrorDescription]:
+    "An error occurred while loading the room preview, please try again.",
+  [LangKey.RoomInvitedAccessError]: "You not have access to this room.",
+  [LangKey.RoomInvitedRecommendedRoomError]:
+    "The pace to which this room belongs was not found.",
+  [LangKey.RoomInvitedNoAccessOrNotFound]:
+    "You do not have access to the room or it does not exist.",
+  [LangKey.Public]: "Public",
+  [LangKey.Space]: "Space",
+  [LangKey.Room]: "Room",
+  [LangKey.Direct]: "Direct",
+  [LangKey.RoomHierarchyCount]: (roomHierarchyCount: string) =>
+    `+${roomHierarchyCount} Rooms`,
+  [LangKey.JoinedMembers]: (joinedMembersCount: string) =>
+    `+${joinedMembersCount} Members`,
+  [LangKey.RoomInvitedParentSpaceError]:
+    "You cannot access the same parent space.",
+  [LangKey.RoomInvitedJoinError]: "This room does not allow anyone to join.",
+  [LangKey.RoomPreviewNotSupport]: "This room does not support preview.",
 
   // #region WelcomeSplash
   [LangKey.WelcomeSplashTitle]: "Welcome to Mirage",
@@ -285,7 +323,7 @@ export const english: LangDefinition = {
   [LangKey.CheckoutGitHub]: "Checkout GitHub",
   [LangKey.CheckoutGitHubSubtitle]: "to view latest updates",
 
-  // Audio Recorder
+  // #region Audio Recorder
   [LangKey.RemoveAudio]: "Remove audio",
   [LangKey.StopRecord]: "Stop record",
   [LangKey.SendAudioRecorded]: "Send audio recorded",
@@ -298,4 +336,11 @@ export const english: LangDefinition = {
   [LangKey.NoDevicesAvailableError]: "You don't have audio devices",
   [LangKey.AvatarOf]: (spaceName: string) => `Avatar of ${spaceName}`,
   [LangKey.Loading]: "Loading...",
+
+  // #region Errors
+  [LangKey.CreateSpaceInProgressError]:
+    "There is already a creation in progress.",
+  [LangKey.ClientMustBeInitialized]: "The client must be initialized.",
+  [LangKey.SpaceNameEmptyError]: "Space name should not be empty.",
+  [LangKey.SpaceTopicEmptyError]: "Space description should not be empty.",
 }

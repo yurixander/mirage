@@ -1,16 +1,28 @@
 import useMatrixClient from "@/hooks/matrix/useMatrixClient"
 import {useCallback, useEffect, useState} from "react"
 import {EMPTY_SECTIONS, type RoomSections} from "../RoomNavigator"
-import {RoomType} from "@/components/Room"
-import {getAllJoinedRooms} from "@/utils/rooms"
-import {EventType, type MatrixClient, type Room, RoomEvent} from "matrix-js-sdk"
+import {createRoom, getAllJoinedRooms, RoomCreationProps} from "@/utils/rooms"
+import {
+  EventType,
+  KnownMembership,
+  type MatrixClient,
+  type Room,
+  RoomEvent,
+} from "matrix-js-sdk"
 import useRoomListener from "@/hooks/matrix/useRoomListener"
 import {getSpaceRoomSections} from "@/utils/spaces"
-import {DASHBOARD_SPACE_ID} from "../SpacesNavigation"
+import {DASHBOARD_SPACE_ID} from "../NavigationSection"
+import useEventListener from "@/hooks/matrix/useEventListener"
+
+export enum RoomType {
+  Direct,
+  Group,
+}
 
 type UseRoomNavigatorReturnType = {
   isSectionsLoading: boolean
   sections: RoomSections
+  onCreateRoom: (props: RoomCreationProps) => Promise<void>
 }
 
 const useRoomNavigator = (spaceId: string): UseRoomNavigatorReturnType => {
@@ -26,6 +38,17 @@ const useRoomNavigator = (spaceId: string): UseRoomNavigatorReturnType => {
 
     setActiveSpace(client.getRoom(spaceId))
   }, [client, spaceId])
+
+  const onCreateRoom = useCallback(
+    async (props: RoomCreationProps) => {
+      if (client === null) {
+        throw new Error("The client is null")
+      }
+
+      await createRoom(client, props)
+    },
+    [client]
+  )
 
   const onLoadSections = useCallback(
     async (client: MatrixClient, spaceId: string) => {
@@ -73,9 +96,26 @@ const useRoomNavigator = (spaceId: string): UseRoomNavigatorReturnType => {
     void onLoadSections(client, spaceId)
   })
 
+  useEventListener(RoomEvent.MyMembership, (room, membership) => {
+    if (membership !== KnownMembership.Join || client === null) {
+      return
+    }
+
+    const isRoomRecommended = sections.recommended.some(
+      recommendedRoom => recommendedRoom.roomId === room.roomId
+    )
+
+    if (!isRoomRecommended) {
+      return
+    }
+
+    void onLoadSections(client, spaceId)
+  })
+
   return {
     isSectionsLoading: isLoading || client === null,
     sections,
+    onCreateRoom,
   }
 }
 

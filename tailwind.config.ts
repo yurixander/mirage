@@ -1,4 +1,7 @@
 import type {Config} from "tailwindcss"
+import animate from "tailwindcss-animate"
+import animateDelay from "tailwindcss-animation-delay"
+import scrollbarHide from "tailwind-scrollbar-hide"
 
 const config = {
   darkMode: ["class"],
@@ -23,6 +26,19 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        iowan: ["Iowan Old Style", "serif"],
+        noto: ["Noto sans", "sans-serif"],
+        sans: ["Satoshi", "sans-serif"],
+        unbounded: ["Unbounded", "sans-serif"],
+      },
+      fontWeight: {
+        light: "300",
+        normal: "400",
+        medium: "500",
+        bold: "700",
+        black: "900",
+      },
       maxWidth: {
         text: "660px",
       },
@@ -117,15 +133,9 @@ const config = {
         spaceSize: "40px",
         messageMaxWidth: "450px",
       },
-    },
-    fontFamily: {
-      iowan: ["Iowan Old Style", "serif"],
-      noto: ["Noto sans", "sans-serif"],
-      sans: ["Satoshi", "sans-serif"],
-      unbounded: ["Unbounded", "sans-serif"],
-    },
-    lineHeight: {
-      "160": "160%",
+      lineHeight: {
+        "160": "160%",
+      },
     },
     animation: {
       "hold": "hold 200ms",
@@ -137,7 +147,7 @@ const config = {
       "loading": "loading 1.5s infinite ease-in-out",
       "indicator": "indicator 300ms",
       "rotation": "rotation 1s infinite linear",
-      "pulse": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      "pulse": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite alternate",
     },
     keyframes: {
       "slideIn": {
@@ -149,7 +159,10 @@ const config = {
         },
       },
       "pulse": {
-        "50%": {
+        from: {
+          opacity: ".2",
+        },
+        to: {
           opacity: ".5",
         },
       },
@@ -242,9 +255,9 @@ const config = {
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
-    require("tailwindcss-animation-delay"),
-    require("tailwind-scrollbar-hide"),
+    animate,
+    animateDelay,
+    scrollbarHide,
     function ({addUtilities}) {
       const newUtilities = {
         ".bg-clip-text": {

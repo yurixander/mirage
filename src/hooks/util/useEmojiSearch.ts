@@ -7,7 +7,7 @@ type UseEmojiSearchReturnType = {
   setEmojiQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
-const useEmojiSearch = (searchDelay = 500): UseEmojiSearchReturnType => {
+const useEmojiSearch = (): UseEmojiSearchReturnType => {
   const [emojiQuery, setEmojiQuery] = useState("")
   const [results, setResult] = useState<Emoji[] | null>(null)
 

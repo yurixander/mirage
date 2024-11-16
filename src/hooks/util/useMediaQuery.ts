@@ -24,5 +24,16 @@ const useMediaQuery = (query: string): boolean => {
   return matches
 }
 
-export const useIsSmall = (): boolean => useMediaQuery("(min-width: 480px)")
-export const useIsMedium = (): boolean => useMediaQuery("(min-width: 768px)")
+type UseBreakPointReturnType = {
+  isSmall: boolean
+  isMedium: boolean
+}
+
+const useBreakpoint = (): UseBreakPointReturnType => {
+  const isSmall = useMediaQuery("(min-width: 480px)")
+  const isMedium = useMediaQuery("(min-width: 768px)")
+
+  return {isSmall, isMedium}
+}
+
+export default useBreakpoint

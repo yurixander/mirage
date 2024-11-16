@@ -3,7 +3,7 @@ import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 import {motion} from "framer-motion"
 import Avatar from "boring-avatars"
 import {twMerge} from "tailwind-merge"
-import {scaleInAnimation, spaceIndicatorAnimation} from "@/utils/animations"
+import {SCALE_IN_ANIM, SPACE_INDICATOR_ANIM} from "@/utils/animations"
 import {type SpaceProps} from "./Space"
 import {
   Tooltip,
@@ -18,6 +18,7 @@ import {StaticAssetPath} from "@/utils/util"
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {ReactSVG} from "react-svg"
 import LoadingEffect from "@/components/LoadingEffect"
+import MatrixImage from "@/components/MatrixImage"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -92,7 +93,7 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
     <div className="flex items-center">
       <motion.div
         aria-hidden
-        variants={spaceIndicatorAnimation}
+        variants={SPACE_INDICATOR_ANIM}
         animate={isSelected ? "selected" : "default"}
         className="-ml-1 mr-1 w-2 rounded-full bg-purple-500"
       />
@@ -102,7 +103,7 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
           <TooltipTrigger aria-hidden tabIndex={-1} asChild>
             <motion.div
               tabIndex={-1}
-              variants={scaleInAnimation}
+              variants={SCALE_IN_ANIM}
               initial="initial"
               whileInView="whileInView"
               whileTap={{scale: 0.9}}
@@ -127,7 +128,7 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
                     variant="bauhaus"
                   />
                 ) : (
-                  <img
+                  <MatrixImage
                     aria-hidden
                     className="size-full object-cover dark:opacity-90"
                     src={avatarUrl}
@@ -149,7 +150,7 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
 
 SpaceAvatar.displayName = "SpaceAvatar"
 
-const CreateSpaceButton: FC<{
+export const CreateSpaceButton: FC<{
   onCreateSpace: () => void
   className?: string
 }> = ({onCreateSpace, className}) => {
@@ -161,15 +162,15 @@ const CreateSpaceButton: FC<{
 
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger aria-hidden asChild>
+          <TooltipTrigger asChild>
             <motion.button
               aria-label={t(LangKey.CreateSpace)}
-              variants={scaleInAnimation}
+              variants={SCALE_IN_ANIM}
               initial="initial"
               whileInView="whileInView"
               onClick={onCreateSpace}
               className="focus-visible:rounded-sm focus-visible:ring">
-              <ReactSVG aria-hidden src={StaticAssetPath.CreateSpace} />
+              <ReactSVG src={StaticAssetPath.CreateSpace} />
             </motion.button>
           </TooltipTrigger>
 
@@ -186,7 +187,7 @@ export const SpacesPlaceHolder: FC<{length?: number}> = ({length = 1}) => {
   return Array.from({length}, (_, index) => (
     <motion.div
       aria-hidden
-      variants={scaleInAnimation}
+      variants={SCALE_IN_ANIM}
       initial="initial"
       whileInView="whileInView"
       className="flex w-max items-center gap-0.5 sm:gap-1"
