@@ -97,7 +97,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
   }
 
   return (
-    <div className={cn("mx-3 my-3 flex flex-col gap-y-1", className)}>
+    <div className={cn("mx-3 my-3 flex flex-col gap-y-3", className)}>
       <ToggleGroup
         className="flex flex-col items-start gap-y-4 overflow-x-hidden"
         type="single"
@@ -127,7 +127,7 @@ export const RoomNavigator: FC<RoomNavigatorProps> = ({
       </ToggleGroup>
 
       {recommended.length > 0 && (
-        <RoomSection className="pt-3" title={t(LangKey.Recommended)}>
+        <RoomSection title={t(LangKey.Recommended)}>
           {recommended.map(({roomName, roomId}) => (
             <motion.button
               key={roomId}

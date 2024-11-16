@@ -1,8 +1,9 @@
-import {FC, useEffect, useState} from "react"
+import {FC, useEffect, useRef, useState} from "react"
 import {IoSearch} from "react-icons/io5"
 import {twMerge} from "tailwind-merge"
 import KeyCue from "./KeyCue"
 import useDebounced from "@/hooks/util/useDebounced"
+import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 
 type SearchBarProps = {
   searchDelay?: number
@@ -19,10 +20,19 @@ const SearchBar: FC<SearchBarProps> = ({
 }) => {
   const [query, setQuery] = useState(initialValue ?? "")
   const debouncedQuery = useDebounced(query, searchDelay)
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
     onDebounceChange(debouncedQuery)
   }, [debouncedQuery, onDebounceChange])
+
+  useGlobalHotkey({key: "B", ctrl: true}, () => {
+    if (inputRef.current === null) {
+      return
+    }
+
+    inputRef.current.focus()
+  })
 
   return (
     <div
@@ -33,6 +43,7 @@ const SearchBar: FC<SearchBarProps> = ({
       <IoSearch className="text-muted-foreground" />
 
       <input
+        ref={inputRef}
         placeholder="Search..."
         value={query}
         onChange={e => setQuery(e.target.value)}
