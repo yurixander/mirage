@@ -28,7 +28,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
 }) => {
   const {t} = useTranslation()
   const {isRoomEncrypted, roomName, roomDescription} = roomDetail
-  const {isSmall} = useBreakpoint()
+  const {isLarge} = useBreakpoint()
 
   const containDescription =
     roomDescription !== undefined && roomDescription.length > 0
@@ -58,7 +58,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
           )}
         </div>
 
-        {isSmall ? (
+        {isLarge ? (
           <IconButton
             tooltip={t(LangKey.ExpandRoster)}
             onClick={() => onRosterExpanded(!isRosterExpanded)}>
