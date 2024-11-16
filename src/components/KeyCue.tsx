@@ -26,7 +26,7 @@ const KeyCue: FC<KeyCueProps> = ({
   return (
     <div
       className={cn(
-        "inline-block size-max rounded-md border border-b-4 border-solid border-neutral-500 bg-neutral-300 px-2 text-xs uppercase leading-160 dark:border-neutral-400 dark:bg-neutral-700",
+        "inline-block size-max rounded-md border border-b-4 border-solid border-neutral-500 bg-neutral-300 px-2 text-xs uppercase leading-160 text-foreground dark:border-neutral-400 dark:bg-neutral-700",
         size === "sm" &&
           "rounded-sm border-b-[3px] px-1.5 py-0.5 leading-[100%]",
         className

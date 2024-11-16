@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import {twMerge} from "tailwind-merge"
 
 const buttonVariants = cva(
   "inline-flex select-none items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
@@ -103,11 +104,22 @@ interface IconButtonProps extends ButtonProps {
 
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   (
-    {tooltip, size = "icon", variant = "ghost", asBoundary = true, ...props},
+    {
+      tooltip,
+      size = "icon",
+      className,
+      variant = "ghost",
+      asBoundary = true,
+      ...props
+    },
     ref
   ) => {
     const button = (
       <Button
+        className={twMerge(
+          "text-neutral-400/60 hover:bg-neutral-300 dark:hover:bg-neutral-800",
+          className
+        )}
         size={size}
         variant={variant}
         {...props}

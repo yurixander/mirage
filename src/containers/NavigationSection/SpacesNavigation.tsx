@@ -92,7 +92,6 @@ const SpaceAvatar: FC<SpaceAvatarProps> = ({
   return (
     <div className="flex items-center">
       <motion.div
-        aria-hidden
         variants={SPACE_INDICATOR_ANIM}
         animate={isSelected ? "selected" : "default"}
         className="-ml-1 mr-1 w-2 rounded-full bg-purple-500"
@@ -186,15 +185,12 @@ export const CreateSpaceButton: FC<{
 export const SpacesPlaceHolder: FC<{length?: number}> = ({length = 1}) => {
   return Array.from({length}, (_, index) => (
     <motion.div
-      aria-hidden
       variants={SCALE_IN_ANIM}
       initial="initial"
       whileInView="whileInView"
-      className="flex w-max items-center gap-0.5 sm:gap-1"
+      className="flex w-full justify-center gap-0.5 sm:gap-1"
       key={index}>
-      <div className="-ml-0.5 w-1 bg-transparent sm:w-1.5" />
-
-      <div className="size-8 overflow-hidden rounded-sm bg-neutral-300 dark:bg-neutral-700 sm:size-10 sm:rounded-md">
+      <div className="size-8 overflow-hidden rounded-sm bg-neutral-400/50 dark:bg-neutral-700 sm:size-10 sm:rounded-md">
         <LoadingEffect />
       </div>
     </motion.div>

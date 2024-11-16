@@ -1,12 +1,15 @@
 import {StaticAssetPath} from "@/utils/util"
 import {type FC} from "react"
-import {ReactSVG} from "react-svg"
 import {Heading} from "./ui/typography"
 
 const AppLogo: FC = () => {
   return (
-    <div className="flex w-max flex-col items-center">
-      <ReactSVG src={StaticAssetPath.NewAppLogo} className="drop-shadow-sm" />
+    <div className="flex w-max flex-col items-center gap-y-2">
+      <img
+        src={StaticAssetPath.AppLogo}
+        className="size-16 drop-shadow-sm"
+        alt="mirage logo"
+      />
 
       <Heading
         level="h6"

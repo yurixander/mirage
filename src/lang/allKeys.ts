@@ -106,6 +106,7 @@ export enum LangKey {
   UnreadMessagesCount,
   SpaceCreatedSuccess,
   RoomCreatedSuccess,
+  Contacts,
 
   // #region Roster
   People,

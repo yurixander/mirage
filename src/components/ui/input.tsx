@@ -210,9 +210,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         className={cn("pl-7 sm:pl-9", className)}
         placeholder={placeholder}
         value={query}
-        onChange={event => {
-          setQuery(event.target.value)
-        }}
+        onChange={e => setQuery(e.target.value)}
       />
     )
 

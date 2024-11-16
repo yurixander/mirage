@@ -33,7 +33,7 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
     <div
       className={cn(
         className,
-        "flex w-full justify-center gap-4 border-t border-t-stone-300 bg-neutral-100 px-2 py-0.5 dark:border-t-stone-600 dark:bg-neutral-800 sm:justify-end"
+        "flex w-full justify-center gap-4 border-t border-t-stone-300 bg-neutral-100 px-2.5 py-1 dark:border-t-stone-600 dark:bg-neutral-800 sm:justify-end"
       )}>
       <SmartAction
         aria-label={t(LangKey.SwitchTheme)}

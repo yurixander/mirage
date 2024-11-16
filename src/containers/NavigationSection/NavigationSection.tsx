@@ -1,12 +1,11 @@
-import {useState, type FC} from "react"
+import {useCallback, useState, type FC} from "react"
 import {StaticAssetPath} from "@/utils/util"
-import {ReactSVG} from "react-svg"
 import SidebarActions from "./SidebarActions"
 import UserBar from "./UserBar"
 import {twMerge} from "tailwind-merge"
 import useSpaces from "./hooks/useSpaces"
 import useUserData from "./hooks/useUserData"
-import {RoomNavigator} from "./RoomNavigator"
+import {RoomNavigator, RoomSections} from "./RoomNavigator"
 import useRoomNavigator from "./hooks/useRoomNavigator"
 import useActiveRoomIdStore from "@/hooks/matrix/useActiveRoomIdStore"
 import SpacesNavigation, {SpacesPlaceHolder} from "./SpacesNavigation"
@@ -16,11 +15,11 @@ import {ScrollArea} from "@/components/ui/scroll-area"
 import CreateRoomModal from "@/components/CreateRoomModal"
 import CreateSpaceModal from "@/components/CreateSpaceModal"
 import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
-import {Heading, Text} from "@/components/ui/typography"
-import useSpaceDetail from "@/hooks/matrix/useSpaceDetail"
+import {Text} from "@/components/ui/typography"
 import useActiveSpaceIdStore from "@/hooks/matrix/useActiveSpaceIdStore"
 import useInvitedRoom from "@/hooks/matrix/useInvitedRoom"
 import RoomInvitedSplash from "../RoomContainer/RoomInvitedSplash"
+import SearchBar from "@/components/SearchBar"
 
 export const DASHBOARD_SPACE_ID = "dashboard_space_id"
 
@@ -33,9 +32,11 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
   const {userDataState, userData, onRefreshData} = useUserData()
   const {isSmall} = useBreakpoint()
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false)
-  const {activeRoomId, setActiveRoomId} = useActiveRoomIdStore()
   const [modalCreateSpaceOpen, setModalCreateSpaceIsOpen] = useState(false)
-  const {name} = useSpaceDetail(activeSpaceId)
+  const [searchResult, setSearchResult] = useState<RoomSections | null>(null)
+
+  const {activeRoomId, setActiveRoomId, clearActiveRoomId} =
+    useActiveRoomIdStore()
 
   const [recommendedRoomSelected, setRecommendedRoomSelected] = useState<
     string | null
@@ -55,6 +56,23 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
 
   useGlobalHotkey({key: "R", ctrl: true, shift: true}, () =>
     setModalCreateSpaceIsOpen(true)
+  )
+
+  const searchRoom = useCallback(
+    (query: string) => {
+      setSearchResult({
+        directs: sections.directs.filter(({roomName}) =>
+          roomName.toLowerCase().includes(query)
+        ),
+        groups: sections.groups.filter(({roomName}) =>
+          roomName.toLowerCase().includes(query)
+        ),
+        recommended: sections.recommended.filter(({roomName}) =>
+          roomName.toLowerCase().includes(query)
+        ),
+      })
+    },
+    [sections]
   )
 
   if (!isSmall && activeRoomId !== null) {
@@ -88,19 +106,20 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
         />
       )}
 
-      <div className={twMerge("flex size-full sm:max-w-max", className)}>
-        <div className="flex size-full max-w-16 flex-col gap-2 border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
+      <div
+        className={twMerge(
+          "flex size-full w-full sm:max-w-[22rem]",
+          className
+        )}>
+        <div className="flex w-16 grow flex-col gap-2 border-r border-r-neutral-300 bg-[#FAFBFD] dark:border-r-neutral-700 dark:bg-neutral-900">
           <div className="flex flex-col items-center p-1">
-            <ReactSVG src={StaticAssetPath.NewAppLogo} />
+            <img
+              src={StaticAssetPath.AppLogo}
+              alt="Mirage logo"
+              className="size-10"
+            />
 
-            <Text
-              className="font-unbounded uppercase"
-              weight="semibold"
-              style={{
-                color: "#D64DF4",
-                fontSize: "0.70rem",
-                lineHeight: "0.75rem",
-              }}>
+            <Text className="font-serif" align="center">
               Mirage
             </Text>
 
@@ -115,7 +134,11 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
               <SpacesNavigation
                 spaces={spaces}
                 selectedSpace={activeSpaceId}
-                onSelectedSpaceChange={setActiveSpaceId}
+                onSelectedSpaceChange={spaceId => {
+                  setActiveSpaceId(spaceId)
+
+                  clearActiveRoomId()
+                }}
                 onCreateSpace={() => setModalCreateSpaceIsOpen(true)}
               />
             )}
@@ -124,21 +147,26 @@ const NavigationSection: FC<{className?: string; onLogOut: () => void}> = ({
           <SidebarActions className="mt-auto" onLogOut={onLogOut} />
         </div>
 
-        <div className="flex size-full flex-col border-r border-r-neutral-300 bg-neutral-100 dark:border-r-neutral-700 dark:bg-neutral-900">
-          <div className="border-b border-neutral-300 px-2.5 py-1.5 dark:border-neutral-700">
-            <Heading level="h5">
-              {activeSpaceId === DASHBOARD_SPACE_ID ? "Dashboard" : name}
-            </Heading>
+        <div className="flex size-full flex-col overflow-x-hidden border-r border-r-neutral-300 bg-[#FAFBFD] dark:border-r-neutral-700 dark:bg-neutral-900">
+          <div className="flex h-12 items-center border-b border-neutral-300 px-3 dark:border-neutral-700">
+            <SearchBar
+              onDebounceChange={debouncedQuery => {
+                if (debouncedQuery.length === 0) {
+                  setSearchResult(null)
+
+                  return
+                }
+
+                searchRoom(debouncedQuery.toLowerCase())
+              }}
+            />
           </div>
 
-          <ScrollArea
-            className="size-full sm:h-full sm:w-64"
-            isScrollBarHidden
-            avoidOverflow>
+          <ScrollArea className="size-full" isScrollBarHidden avoidOverflow>
             <RoomNavigator
               roomSelected={activeRoomId ?? undefined}
               onRoomSelected={setActiveRoomId}
-              sections={sections}
+              sections={searchResult ?? sections}
               isDashboardActive={activeSpaceId === undefined}
               isLoading={isSectionsLoading}
               onCreateRoom={() => setIsCreateRoomModalOpen(true)}

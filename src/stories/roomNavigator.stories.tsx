@@ -1,4 +1,4 @@
-import {RoomType} from "@/components/Room"
+import {RoomType} from "@/containers/NavigationSection/hooks/useRoomNavigator"
 import {
   RoomNavigator,
   type RoomNavigatorProps,

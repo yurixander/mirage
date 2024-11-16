@@ -26,7 +26,7 @@ export default [
     ignores: [
       "**/dist",
       "**/.github",
-      "**/.storybook",
+      "**/.storybook/**",
       "src/stories/**",
       "**/github",
       "**/vite.config.ts",

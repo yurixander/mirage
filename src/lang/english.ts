@@ -117,6 +117,7 @@ export const english: LangDefinition = {
   [LangKey.UnreadMessagesCount]: (count: string) => `${count} Unread messages`,
   [LangKey.SpaceCreatedSuccess]: "Space created successfully",
   [LangKey.RoomCreatedSuccess]: "Room created successfully",
+  [LangKey.Contacts]: "Contacts",
 
   // #region Roster
   [LangKey.People]: "People",
@@ -124,9 +125,9 @@ export const english: LangDefinition = {
   [LangKey.MembersError]: "Members Error",
   [LangKey.ReloadMembers]: "Reload members",
   [LangKey.ReloadMessages]: "Reload messages",
-  [LangKey.Admins]: (length: string) => `ADMINS — ${length}`,
-  [LangKey.Moderators]: (length: string) => `MODERATORS — ${length}`,
-  [LangKey.Members]: (length: string) => `MEMBERS — ${length}`,
+  [LangKey.Admins]: "Admins",
+  [LangKey.Moderators]: "Moderators",
+  [LangKey.Members]: "Members",
   [LangKey.SeenLongAgo]: "Seen long ago",
   [LangKey.LastSeenDate]: (date: string) => `Seen ${date} ago`,
   [LangKey.OpenUserError]: (message: string) =>
