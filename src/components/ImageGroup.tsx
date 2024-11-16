@@ -3,14 +3,21 @@ import MessageContainer from "./MessageContainer"
 import {twMerge} from "tailwind-merge"
 import {Text} from "./ui/typography"
 import {assert} from "@/utils/util"
-import ImageMessage from "./ImageMessage"
+import ImageMessage, {
+  type ImageMessageData,
+  type ImageMessageProps,
+} from "./ImageMessage"
 
-type ImageGroupProps = {
-  images: string[]
+export type ImageGroupProps = {
+  images: ImageMessageProps[]
+}
+
+export type ImageGroupData = {
+  images: ImageMessageData[]
 }
 
 type GroupProps = {
-  images: string[]
+  images: ImageMessageData[]
   onClick: () => void
 }
 
@@ -22,15 +29,15 @@ const ImageGroup: FC<ImageGroupProps> = ({images}) => {
     <>
       {images.map((img, index) => (
         <ImageMessage
-          authorDisplayName="Lazaro"
-          contextMenuItems={[]}
-          messageId="messageId"
-          onAuthorClick={() => {}}
-          onClickImage={() => {}}
-          timestamp={0}
-          userId="userId"
+          authorDisplayName={img.authorDisplayName}
+          contextMenuItems={img.contextMenuItems}
+          messageId={img.messageId}
+          onAuthorClick={img.onAuthorClick}
+          onClickImage={img.onClickImage}
+          timestamp={img.timestamp}
+          userId={img.userId}
           key={index}
-          imageUrl={img}
+          imageUrl={img.imageUrl}
         />
       ))}
     </>
@@ -60,17 +67,17 @@ const Group: FC<GroupProps> = ({images, onClick}) => {
   return (
     <div className="flex size-60 flex-col gap-1 overflow-hidden rounded-xl border bg-white shadow dark:bg-black">
       <div className="flex size-full gap-1">
-        <Image imageUrl={images[0]} />
-        <Image imageUrl={images[1]} />
+        <Image imageUrl={images[0].imageUrl} />
+        <Image imageUrl={images[1].imageUrl} />
       </div>
       <div className="flex size-full gap-1">
-        <Image imageUrl={images[2]} />
+        <Image imageUrl={images[2].imageUrl} />
         <div className="relative flex size-full items-center justify-center">
           {images.length === 4 ? (
-            <Image imageUrl={images[3]} />
+            <Image imageUrl={images[3].imageUrl} />
           ) : (
             <>
-              <Image className="blur-sm" imageUrl={images[3]} />
+              <Image className="blur-sm" imageUrl={images[3].imageUrl} />
               <button
                 onClick={onClick}
                 className="absolute rounded bg-black p-1 opacity-50 shadow">
@@ -86,7 +93,7 @@ const Group: FC<GroupProps> = ({images, onClick}) => {
   )
 }
 
-const Image: FC<{imageUrl: string; className?: string}> = ({
+const Image: FC<{imageUrl?: string; className?: string}> = ({
   imageUrl,
   className = "",
 }) => {
