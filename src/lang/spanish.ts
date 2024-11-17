@@ -307,6 +307,7 @@ export const spanish: LangDefinition = {
   [LangKey.AllSpaces]: "Todos los espacios",
   [LangKey.Topic]: "Descripción",
   [LangKey.JoinRoom]: "Unirse",
+  [LangKey.CreateConversation]: "Crear conversación",
   [LangKey.TaskCompleted]: "Tarea completada",
   [LangKey.JoinRoomCompleted]: "Te uniste exitosamente a la sala.",
   [LangKey.RoomInvitedError]: "Invitación de sala errónea",

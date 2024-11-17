@@ -288,6 +288,7 @@ export const english: LangDefinition = {
   [LangKey.RoomEncrypted]: "This room is encrypted using End-to-end encryption",
   [LangKey.Topic]: "Topic",
   [LangKey.JoinRoom]: "Join room",
+  [LangKey.CreateConversation]: "Create conversation",
   [LangKey.TaskCompleted]: "Task completed",
   [LangKey.JoinRoomCompleted]: "You have successfully joined the room",
   [LangKey.RoomInvitedError]: "Room Invited Error",

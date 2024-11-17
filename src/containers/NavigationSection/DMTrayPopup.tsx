@@ -38,7 +38,7 @@ export type DMTrayPopupProps = {
   searchResult: DMUser[] | null
   children: React.JSX.Element
   dmRoomClick: (roomId: string) => void
-  onResultUserClick: (userId: string) => void
+  onResultUserClick: (user: DMUser) => void
   setDebouncedQuery: (query: string) => void
   clearResult: () => void
 }
@@ -117,7 +117,7 @@ const DMTrayPopup: FC<DMTrayPopupProps> = ({
                     key={index}
                     id={dmUser.userId}
                     displayName={dmUser.displayName}
-                    onClick={() => onResultUserClick(dmUser.userId)}
+                    onClick={() => onResultUserClick(dmUser)}
                   />
                 ))
               )}

@@ -250,6 +250,7 @@ export enum LangKey {
   ReloadMessages,
   Topic,
   JoinRoom,
+  CreateConversation,
   TaskCompleted,
   JoinRoomCompleted,
   RoomInvitedError,
