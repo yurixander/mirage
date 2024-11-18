@@ -99,16 +99,16 @@ const UserBar: FC<UserBarProps> = ({
 const UserBarPlaceHolder: FC = () => {
   return (
     <div className="flex gap-1.5">
-      <div className="size-9 overflow-hidden rounded-full bg-neutral-300 dark:bg-neutral-700">
+      <div className="size-9 overflow-hidden rounded-full bg-neutral-400/50 dark:bg-neutral-700">
         <LoadingEffect />
       </div>
 
       <div className="flex flex-col gap-1">
-        <div className="h-5 w-28 overflow-hidden rounded-xl bg-neutral-300 dark:bg-neutral-700">
+        <div className="h-5 w-28 overflow-hidden rounded-xl bg-neutral-400/50 dark:bg-neutral-700">
           <LoadingEffect />
         </div>
 
-        <div className="h-3.5 w-20 overflow-hidden rounded-lg bg-neutral-300 dark:bg-neutral-700">
+        <div className="h-3.5 w-20 overflow-hidden rounded-lg bg-neutral-400/50 dark:bg-neutral-700">
           <LoadingEffect />
         </div>
       </div>

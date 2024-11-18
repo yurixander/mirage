@@ -1,7 +1,6 @@
 import {useState, type FC} from "react"
 import ChatContainer from "./ChatContainer"
 import Roster from "../Roster/Roster"
-import SmartActionBar from "@/components/SmartActionBar"
 import WelcomeSplash from "./WelcomeSplash"
 import RoomNotFoundSplash from "./RoomNotFoundSplash"
 import useActiveRoom, {RoomState} from "./hooks/useActiveRoom"
@@ -11,10 +10,11 @@ import useGlobalHotkey from "@/hooks/util/useGlobalHotkey"
 import useBreakpoint from "@/hooks/util/useMediaQuery"
 import RoomInvitedSplash from "./RoomInvitedSplash"
 import useInvitedRoom from "@/hooks/matrix/useInvitedRoom"
+import SmartActionBar from "@/components/SmartActionBar"
 
 const RoomContainer: FC = () => {
   const [isRosterExpanded, setIsRosterExpanded] = useState(true)
-  const {isSmall} = useBreakpoint()
+  const {isSmall, isLarge} = useBreakpoint()
 
   const {activeRoomId, roomState, clearActiveRoomId} = useActiveRoom()
   const {roomInvitedDetail, onJoinRoom} = useInvitedRoom(activeRoomId)
@@ -50,18 +50,20 @@ const RoomContainer: FC = () => {
               onRosterExpanded={setIsRosterExpanded}
             />
 
-            <motion.div animate={{width: isRosterExpanded ? "15rem" : 0}}>
-              <Roster
-                className="max-w-60"
-                isLazyLoading={isLazyLoading}
-                membersState={membersState}
-                onReloadMembers={onReloadMembers}
-                onLazyLoad={onLazyReload}
-                onUserClick={function (_userId: string): void {
-                  throw new Error("`onUserClick` function not implemented.")
-                }}
-              />
-            </motion.div>
+            {isLarge && (
+              <motion.div animate={{width: isRosterExpanded ? "15rem" : 0}}>
+                <Roster
+                  className="max-w-60"
+                  isLazyLoading={isLazyLoading}
+                  membersState={membersState}
+                  onReloadMembers={onReloadMembers}
+                  onLazyLoad={onLazyReload}
+                  onUserClick={function (_userId: string): void {
+                    throw new Error("`onUserClick` function not implemented.")
+                  }}
+                />
+              </motion.div>
+            )}
           </div>
         ) : roomState === RoomState.NotFound ? (
           <RoomNotFoundSplash />

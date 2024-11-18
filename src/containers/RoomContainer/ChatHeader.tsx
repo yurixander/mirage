@@ -10,7 +10,6 @@ import {
   IoClose,
 } from "react-icons/io5"
 import {LiaSlackHash} from "react-icons/lia"
-import {twMerge} from "tailwind-merge"
 import {type RoomDetail} from "./hooks/useRoomDetail"
 import {Heading, Text} from "@/components/ui/typography"
 
@@ -19,29 +18,23 @@ export type ChatHeaderProps = {
   isRosterExpanded: boolean
   onRosterExpanded: (isExpanded: boolean) => void
   onCloseRoom: () => void
-  className?: string
 }
 
 const ChatHeader: FC<ChatHeaderProps> = ({
   roomDetail,
   isRosterExpanded,
   onRosterExpanded,
-  className,
   onCloseRoom,
 }) => {
   const {t} = useTranslation()
   const {isRoomEncrypted, roomName, roomDescription} = roomDetail
-  const {isSmall} = useBreakpoint()
+  const {isLarge} = useBreakpoint()
 
   const containDescription =
     roomDescription !== undefined && roomDescription.length > 0
 
   return (
-    <header
-      className={twMerge(
-        className,
-        "flex h-12 w-full flex-col justify-center gap-1"
-      )}>
+    <header className="flex size-full h-12 w-full flex-col justify-center gap-1 border-b border-b-neutral-200 px-2 py-1 dark:border-b-neutral-700">
       <div className="flex w-full items-center justify-center">
         <div className="m-2 flex w-full items-center gap-1">
           <LiaSlackHash className="size-5 text-blue-800 dark:text-blue-400" />
@@ -65,7 +58,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
           )}
         </div>
 
-        {isSmall ? (
+        {isLarge ? (
           <IconButton
             tooltip={t(LangKey.ExpandRoster)}
             onClick={() => onRosterExpanded(!isRosterExpanded)}>

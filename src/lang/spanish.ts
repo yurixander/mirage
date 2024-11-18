@@ -124,9 +124,9 @@ export const spanish: LangDefinition = {
   [LangKey.MembersError]: "Error de miembros",
   [LangKey.ReloadMembers]: "Recargar miembros",
   [LangKey.ReloadMessages]: "Recargar mensajes",
-  [LangKey.Admins]: (length: string) => `ADMINISTRADORES — ${length}`,
-  [LangKey.Moderators]: (length: string) => `MODERADORES — ${length}`,
-  [LangKey.Members]: (length: string) => `MIEMBROS — ${length}`,
+  [LangKey.Admins]: "Administradores",
+  [LangKey.Moderators]: "Moderadores",
+  [LangKey.Members]: "Miembros",
   [LangKey.SeenLongAgo]: "Visto hace mucho tiempo",
   [LangKey.LastSeenDate]: (date: string) => `Visto a las ${date}`,
   [LangKey.OpenUserError]: (message: string) =>
@@ -214,6 +214,7 @@ export const spanish: LangDefinition = {
   [LangKey.ForgotPassword]: "¿Has olvidado tu contraseña?",
   [LangKey.NoAccountText]: "No tienes cuenta?",
   [LangKey.SignUp]: "Inscribirse",
+  [LangKey.Contacts]: "Contactos",
 
   // #region Navigation
   [LangKey.Rooms]: "Salas",
@@ -306,6 +307,7 @@ export const spanish: LangDefinition = {
   [LangKey.AllSpaces]: "Todos los espacios",
   [LangKey.Topic]: "Descripción",
   [LangKey.JoinRoom]: "Unirse",
+  [LangKey.CreateConversation]: "Crear conversación",
   [LangKey.TaskCompleted]: "Tarea completada",
   [LangKey.JoinRoomCompleted]: "Te uniste exitosamente a la sala.",
   [LangKey.RoomInvitedError]: "Invitación de sala errónea",

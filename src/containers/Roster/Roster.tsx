@@ -1,10 +1,10 @@
 import {type FC} from "react"
-import {IoFilterCircle, IoPeople, IoReloadOutline} from "react-icons/io5"
+import {IoPeople, IoReloadOutline} from "react-icons/io5"
 import {SmartScrollArea} from "@/components/ui/scroll-area"
 import RosterUser, {type RosterUserData} from "./RosterUser"
 import {twMerge} from "tailwind-merge"
 import {motion} from "framer-motion"
-import {Button, IconButton} from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 import UserProfileGhost from "@/components/UserProfileGhost"
 import {type GroupedMembers} from "./hooks/useRoomMembers"
 import useTranslation from "@/hooks/util/useTranslation"
@@ -43,29 +43,18 @@ const Roster: FC<RosterProps> = ({
   return (
     <div
       className={twMerge(
-        "flex h-full w-60 flex-col border border-l-neutral-300 bg-gray-50 dark:border-l-neutral-600 dark:bg-neutral-900",
+        "flex h-full w-60 flex-col border-l border-l-neutral-300 bg-[#FAFBFD] dark:border-l-neutral-600 dark:bg-neutral-900",
         className
       )}>
-      <header className="flex size-full max-h-12 border-b border-b-neutral-300 dark:border-b-neutral-600">
-        <div className="m-0.5 ml-3 flex w-full items-center justify-center">
-          <IoPeople
-            size={25}
-            className="text-neutral-500 dark:text-neutral-400"
-          />
+      <header className="flex size-full h-12 items-center gap-x-1.5 border-b border-b-neutral-300 pl-3.5 pr-1 dark:border-b-neutral-600">
+        <IoPeople className="size-5 text-neutral-400/60 dark:text-neutral-400" />
 
-          <Heading
-            level="h5"
-            className="ml-2 w-full text-neutral-600 dark:text-neutral-300">
-            {t(LangKey.People)}
-          </Heading>
-
-          <IconButton
-            aria-label={t(LangKey.SortMembers)}
-            tooltip={t(LangKey.SortMembers)}
-            className="text-neutral-500 dark:text-neutral-400">
-            <IoFilterCircle size={20} />
-          </IconButton>
-        </div>
+        <Text
+          size="4"
+          weight="medium"
+          className="w-auto grow text-neutral-600/90 dark:text-neutral-300">
+          {t(LangKey.People)}
+        </Text>
       </header>
 
       <ValueStateHandler
@@ -98,7 +87,7 @@ const Roster: FC<RosterProps> = ({
         {({admins, moderators, members}) => (
           <SmartScrollArea
             avoidOverflow
-            className="px-1 pt-3"
+            className="px-2 pt-3"
             type="scroll"
             endScrollChange={isEnd => {
               if (!isEnd || isLazyLoading) {
@@ -109,19 +98,19 @@ const Roster: FC<RosterProps> = ({
             }}>
             <div className="flex flex-col gap-4">
               <RosterSection
-                title={t(LangKey.Admins, admins.length.toString())}
+                title={t(LangKey.Admins)}
                 members={admins}
                 onUserClick={onUserClick}
               />
 
               <RosterSection
-                title={t(LangKey.Moderators, moderators.length.toString())}
+                title={t(LangKey.Moderators)}
                 members={moderators}
                 onUserClick={onUserClick}
               />
 
               <RosterSection
-                title={t(LangKey.Members, members.length.toString())}
+                title={t(LangKey.Members)}
                 members={members}
                 onUserClick={onUserClick}
               />
@@ -161,14 +150,14 @@ const RosterSection: FC<{
   return (
     <div className="flex w-full flex-col gap-2.5">
       <Text
-        size="2"
+        size="1"
         as="label"
         weight="medium"
-        className="ml-2 text-neutral-500 dark:text-neutral-400">
+        className="ml-2 uppercase text-neutral-500/70 dark:text-neutral-400">
         {title}
       </Text>
 
-      <div className="flex w-full flex-col gap-1.5">
+      <div className="flex w-full flex-col gap-y-1">
         {members.map(member => (
           <RosterUser
             key={member.userId}

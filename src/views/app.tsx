@@ -17,6 +17,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import SmartActionBar from "@/components/SmartActionBar"
 
 const AppView: FC = () => {
   const {t} = useTranslation()
@@ -56,7 +57,7 @@ const AppView: FC = () => {
 
   return (
     <>
-      <AlertDialog
+      {/* <AlertDialog
         open={connectionError}
         onOpenChange={open => setConnectionError(open)}>
         <AlertDialogContent>
@@ -78,7 +79,7 @@ const AppView: FC = () => {
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog> */}
 
       <div className="flex size-full flex-row">
         <NavigationSection
