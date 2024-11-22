@@ -1,27 +1,33 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 
 type UseThemeReturnType = {
   handleSwitchTheme: () => void
-  theme: string
+  isDarkMode: boolean
 }
 
 const useTheme = (): UseThemeReturnType => {
-  let theme = localStorage.getItem("theme")
+  const salvedTheme = localStorage.getItem("darkMode")
+  const isDarkMode = salvedTheme ? JSON.parse(salvedTheme) : false
 
-  if (theme === null) {
-    theme = ""
-  }
+  const [isDarkTheme, setIsDarkTheme] = useState(isDarkMode)
 
-  const [isDarkTheme, setIsDarkTheme] = useState(theme !== "dark")
+  useEffect(() => {
+    const html = document.documentElement
 
-  document.querySelectorAll("html")[0].className = isDarkTheme ? "dark" : ""
+    if (isDarkTheme) {
+      html.classList.add("dark")
+    } else {
+      html.classList.remove("dark")
+    }
+
+    localStorage.setItem("darkMode", JSON.stringify(isDarkTheme))
+  }, [isDarkTheme])
 
   const handleSwitchTheme = (): void => {
-    setIsDarkTheme(prevIsDarkTheme => !prevIsDarkTheme)
-    localStorage.setItem("theme", isDarkTheme ? "dark" : "")
+    setIsDarkTheme(!isDarkTheme)
   }
 
-  return {handleSwitchTheme, theme}
+  return {handleSwitchTheme, isDarkMode}
 }
 
 export default useTheme

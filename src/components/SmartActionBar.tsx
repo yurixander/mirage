@@ -22,9 +22,7 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
   const {syncState} = useClientStore()
   const {t} = useTranslation()
 
-  const {handleSwitchTheme, theme} = useTheme()
-
-  document.querySelectorAll("html")[0].className = theme
+  const {handleSwitchTheme} = useTheme()
 
   return (
     <div
