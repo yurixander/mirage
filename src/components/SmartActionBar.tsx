@@ -22,7 +22,7 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
   const {syncState} = useClientStore()
   const {t} = useTranslation()
 
-  const {handleSwitchTheme} = useTheme()
+  const {toggleTheme} = useTheme()
 
   return (
     <div
@@ -33,7 +33,7 @@ const SmartActionBar: FC<{className?: string}> = ({className}) => {
       <SmartAction
         aria-label={t(LangKey.SwitchTheme)}
         icon={IoContrast}
-        onClick={handleSwitchTheme}>
+        onClick={toggleTheme}>
         {t(LangKey.SwitchTheme)}
       </SmartAction>
 

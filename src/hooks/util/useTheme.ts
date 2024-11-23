@@ -1,13 +1,13 @@
-import {useEffect, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
 
 type UseThemeReturnType = {
-  handleSwitchTheme: () => void
+  toggleTheme: () => void
   isDarkMode: boolean
 }
 
 const useTheme = (): UseThemeReturnType => {
-  const salvedTheme = localStorage.getItem("darkMode")
-  const isDarkMode = salvedTheme ? JSON.parse(salvedTheme) : false
+  const savedTheme = localStorage.getItem("darkMode")
+  const isDarkMode = savedTheme ? JSON.parse(savedTheme) : false
 
   const [isDarkTheme, setIsDarkTheme] = useState(isDarkMode)
 
@@ -23,11 +23,11 @@ const useTheme = (): UseThemeReturnType => {
     localStorage.setItem("darkMode", JSON.stringify(isDarkTheme))
   }, [isDarkTheme])
 
-  const handleSwitchTheme = (): void => {
+  const toggleTheme = useCallback(() => {
     setIsDarkTheme(!isDarkTheme)
-  }
+  }, [isDarkTheme])
 
-  return {handleSwitchTheme, isDarkMode}
+  return {toggleTheme, isDarkMode}
 }
 
 export default useTheme
