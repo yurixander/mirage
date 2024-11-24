@@ -4,6 +4,7 @@ import {stringToColor} from "@/utils/util"
 import Avatar from "boring-avatars"
 import useTranslation from "@/hooks/util/useTranslation"
 import {LangKey} from "@/lang/allKeys"
+import {Text} from "./ui/typography"
 
 export type TypingIndicatorUser = {
   displayName: string
@@ -29,19 +30,20 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
     }
 
     return users.map((user, index) => (
-      <span key={index}>
-        <span
-          className="font-semibold"
+      <Text className="truncate" key={index} size="2">
+        <Text
+          size="2"
+          weight="semibold"
           style={{color: stringToColor(user.userId)}}>
           {user.displayName}
-        </span>
+        </Text>
 
         {index < usersLength - 2
           ? ", "
           : index === usersLength - 2
             ? t(LangKey.And)
             : ""}
-      </span>
+      </Text>
     ))
   }, [t, users, usersLength])
 
@@ -55,7 +57,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
         <div className={index === 1 || index === 2 ? "-ml-2.5" : ""}>
           <Avatar
             key={index}
-            size={24}
+            size={20}
             name={user.displayName}
             variant="beam"
           />
@@ -63,7 +65,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
       ) : (
         <img
           className={twMerge(
-            "size-6 rounded-full",
+            "size-5 rounded-full",
             index === 1 || index === 2 ? "-ml-2.5" : ""
           )}
           key={index}
@@ -74,7 +76,7 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
     )
   }, [users, usersLength])
 
-  const dotClass = "h-2 w-2 animate-dot-jump rounded-full bg-neutral-300"
+  const dotClass = "size-2 animate-dot-jump rounded-full bg-neutral-300"
 
   return (
     <div className="inline-flex items-center gap-3">
@@ -88,9 +90,9 @@ const TypingIndicator: FC<TypingIndicatorProps> = ({users}) => {
 
       <div className="flex">{typingUserElements}</div>
 
-      <div>
+      <Text size="2" className="xs:max-w-80 w-max max-w-none truncate">
         {who} {verbForm} {t(LangKey.Typing)}
-      </div>
+      </Text>
     </div>
   )
 }

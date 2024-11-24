@@ -37,11 +37,11 @@ const ChatHeader: FC<ChatHeaderProps> = ({
     <header className="flex size-full h-12 w-full flex-col justify-center gap-1 border-b border-b-neutral-200 px-2 py-1 dark:border-b-neutral-700">
       <div className="flex w-full items-center justify-center">
         <div className="m-2 flex w-full items-center gap-1">
-          <LiaSlackHash className="size-5 text-blue-800" />
+          <LiaSlackHash className="size-5 text-blue-800 dark:text-blue-400" />
 
           <Heading
             level="h5"
-            className="w-max max-w-56 truncate text-blue-800 sm:max-w-md">
+            className="w-max max-w-56 truncate text-blue-800 dark:text-blue-400 sm:max-w-md">
             {roomName}
           </Heading>
 
