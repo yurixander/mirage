@@ -77,7 +77,7 @@
     "@babel/plugin-transform-react-jsx": "^7.25.9",
     "@chromatic-com/storybook": "3.2.0",
     "@commitlint/prompt-cli": "^19.5.0",
-    "@eslint/compat": "^1.2.2",
+    "@eslint/compat": "^1.2.4",
     "@html-eslint/eslint-plugin": "^0.27.0",
     "@html-eslint/parser": "^0.27.0",
     "@storybook/addon-essentials": "^8.3.6",
